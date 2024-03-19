@@ -1,0 +1,281 @@
+
+		 	<div class="for-mobile-menu" style="display:none">
+		 	
+		 	<div class="language-convertor sect-mob-top">
+		 	<a href="#" class="lng-convertor" style="font-weight: 600;  font-family: 'Changa', sans-serif;" class="color-grey" > العربية</a>
+		 	</div>
+		 	<div class="logo-placer sect-mob-top">
+		 	<a href="<?php echo Yii::app()->createUrl('site/index');?>"  onclick="easyload(this,event,'mainContainerClass')" style="display:block;position:relative;padding: 0px !important;width:100%;" id="arablogo">
+				<img src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/ArabAvenuelogoNoText.svg');?>"  class="black_logo" alt="<?php echo $conntroller->project_name;?>">
+			</a>
+	 
+		 	</div>
+		 	<div class="icon-placer sect-mob-top"></div>
+		 	<div style="display:none" class="m-clo-di closero" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"  onclick="toggleBody()">
+					<img src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/closen.png');?>" class=" "  >
+				</div>
+					<div class="navbar-header opener" style="display:none;">
+			    	<img src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/menu-of-three-lines.png');?>" class="navbar-toggle collapsed openObject" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"  onclick="toggleBody()">
+		 
+		 	</div>
+		 	</div>
+		 	
+<header id="pageHeader" class="headerAbsolute <?php echo  empty($conntroller->white_header) ? 'blackheader' : '';?> <?php echo  !empty($conntroller->boxshdw) ? 'boxshdw' : '';?>">
+ 		<div class="headerAbsoluteHolder clearfix">
+		    <div class="header-top">
+                <div class="container" style="padding-left:0px;">
+                    <div class="top-info hidden-sm-down">
+                        <!--<div class="call-header">
+                            <p><i class="fa fa-heart-o" aria-hidden="true"></i> Favourite properties</p>
+                        </div>-->
+                     
+<ul class="info clearfix">
+  
+   <li class="no-mo-dsplay"><a href="#comming" class="color-grey">Property Mortgage</a></li>
+   <li class="no-mo-dsplay"><a href="#comming"  class="color-grey">Property Valuation</a></li>
+   <li class="no-mo-dsplay"><a href="#comming"  class="color-grey">Property Insurance</a></li>
+</ul>
+                    </div>
+                    <div class="top-social hidden-sm-down">
+						
+                         <div class="call-header">
+                            <p class="color-grey"><i class="fa fa-heart" aria-hidden="true"></i> (<span class="  dataCounter-fav" id="dataCounter" ><?php echo $conntroller->fav_count;?></span>)</p>
+                        </div>
+                      
+						<div class="mail-header">
+                            <p> <a href="#" style="font-weight: 600;  font-family: 'Changa', sans-serif;" class="color-grey" > العربية</a></p>
+                        </div>
+                       
+                     <div class="login-wrap">
+                       	<li id="footer-selector" class="nborder">
+
+								<?php 		
+								$listCountry = $conntroller->country_list; 
+								$currentCountry = $listCountry[COUNTRY_ID]; 
+								?>  
+								<a title="<?php echo $currentCountry['country_name'];?>" class=""   ><span class="spantopee"><img src="<?php echo $conntroller->app->apps->getBaseUrl('assets/flags/'.strtolower($currentCountry['code']).'.svg');?>"></span> <?php echo $currentCountry['country_name'];?> <span class="_56540a28 spantitl"><span class="fa fa-angle-down"></span></a>
+								<ul class="  ">
+								<?php ;
+								foreach($listCountry as $k=>$vs){
+								echo '<li class="_4eec698b undefined"><a href="'.Yii::app()->createUrl('site/change_country',array('country_id'=>$k)).'"><span class="_577b9776 a0c5abbd"><img src="'.$conntroller->app->apps->getBaseUrl('assets/flags/'.strtolower($vs['code'])).'.svg"></span><span><!-- -->'.$vs['country_name'].'<!-- --></span></a></li>';
+								}
+
+								?>
+
+								</ul>
+
+
+								</li>
+         </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+		    <div class="m-m-container">
+		<!-- logo -->
+ 
+		<!-- pageNav -->
+		<nav id="pageNav" class="navbar navbar-default navTransparent pageNav2 menu-active container">
+		<!-- navbar collapse -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			    	
+			<div class="navigation-wrapper" style="height: 18px;">
+			<?php $app =  Yii::App();$options= Yii::app()->options;?>
+			<strong class="h elemenBlock h4 textWhite text-center menuTitle fontNeuron hidden-wiii hidden-wiv" id="menu-title">Properties </strong>
+			<!-- pageMainNav -->
+			<ul class="nav navbar-nav pageMainNav transparentWhite pageMainNav2" id="hmmenu"  >
+			<!-- remove dropdownFull class when its just regular dropdown -->
+			<li class="portion-left">
+				<ul class="nav navbar-nav pageMainNav transparentWhite pageMainNav2 dspflxi">
+						<li class="<?php echo ( $conntroller->sec_id == SALE_SLUG  ) ? 'active' : '' ;?> byc" id="hl_buy">
+						<a href="<?php echo Yii::App()->createUrl('listing/index',array('sec'=>SALE_SLUG));?>" onclick="easyload(this,event,'mainContainerClass')"  >Buy
+						</a>
+						</li>
+					 
+						<li class="<?php echo $conntroller->sec_id == RENT_SLUG ? 'active' : '' ;?> borderh" id="hl_rent">
+						<a href="<?php echo Yii::App()->createUrl('listing/index',array('sec'=>RENT_SLUG));?>"  onclick="easyload(this,event,'mainContainerClass')">Rent</a>
+						</li>
+
+						<li class=" borderh" id="hl_commercial">
+						<a href="#comming"   >Commercial</a>
+						</li>
+
+					  
+					
+					 
+				</ul>
+			</li>
+			<li class="portion-center  nborder" id="hl_development11" >
+			 
+			<a href="<?php echo Yii::app()->createUrl('site/index');?>"  onclick="easyload(this,event,'mainContainerClass')" style="display:block;position:relative;padding: 0px !important;width:100%;" id="arablogo">
+				<img src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/ArabAvenuelogoNoText.svg');?>"  class="black_logo" alt="<?php echo $conntroller->project_name;?>">
+			</a>
+	 
+			</li>
+			<li class="portion-right dspflxi">
+			<ul class="nav navbar-nav pageMainNav transparentWhite pageMainNav2">
+					<li class="useropbt" id="useropbt">
+					<div class="userOptions userOptions2 align-center">
+			<!-- headerSearchForm -->
+		 
+			<!-- UserLinksList -->
+			<ul class="list-unstyled UserLinksList UserLinksListSingle ">
+		 <?php
+			if(!Yii::app()->user->getId()){ ?> 
+			<li class="" id="no_userli"  >
+				<div class="newheader_dropdown_action not-signed-in" data-tr-event-name="header_user_account" data-header-id="profile">
+				<a href="javascript:void(0)" class="newheader_dropdown_action_item header_link" data-ui-id="user-account">
+						<span class="newheader_useravatar_name">
+						Log in
+						</span>
+						<div class="newheader_dropdown_action_item_after"></div>
+				</a>
+				<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" class="newheader_dropdown_arrow">
+				<path fill="currentColor" d="M6 5.869l1.634-1.635a.8.8 0 1 1 1.132 1.132l-2.2 2.2a.8.8 0 0 1-1.132 0l-2.2-2.2a.8.8 0 1 1 1.132-1.132L6 5.87z"></path>
+				</svg>
+				<div class="newheader_dropdown_container newheader_dropdown">
+					<ul class="newheader_dropdown_items">
+					<li class="newheader_dropdown_item"><a class="newheader_dropdown_item_link header_link no-padding-left" style="padding-bottom: 2px;" href="<?php echo  $conntroller->app->createUrl('user/signin');?>" onclick="OpenPopupthis(this,event)">
+					Login
+					</a></li>
+					<li class="newheader_dropdown_item"><a class="newheader_dropdown_item_link header_link no-padding-left" href="<?php echo  $conntroller->app->createUrl('user/signup');?>" onclick="OpenPopupthis(this,event)">
+					Create your account
+					</a></li>
+					<li class="newheader_dropdown_item"><a class="newheader_dropdown_item_link header_link sbmitLin " href="<?php echo  $conntroller->app->createUrl('place_an_ad/create');?>">
+					Submit your property
+					</a></li>
+					</ul>
+				</div>
+				</div>
+			</li>
+			<?php } else {
+			?>
+				 
+			<li class="" id="yes_userli"  >
+				<div class="newheader_dropdown_action" data-tr-event-name="header_user_account" data-header-id="profile">
+						<a href="javascript:void(0)" class="newheader_dropdown_action_item header_link" data-ui-id="user-account"><img src="<?php echo $conntroller->mem->getAvatarUrl( 124, '',  true); ?>" class="newheader_useravatar_letter"><span class="newheader_useravatar_name"><?php echo $conntroller->mem->fullName;?></span><div class="newheader_dropdown_action_item_after"></div></a>
+						<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" class="newheader_dropdown_arrow">
+						<path fill="currentColor" d="M6 5.869l1.634-1.635a.8.8 0 1 1 1.132 1.132l-2.2 2.2a.8.8 0 0 1-1.132 0l-2.2-2.2a.8.8 0 1 1 1.132-1.132L6 5.87z"></path>
+						</svg>
+						<div class="newheader_dropdown_container newheader_dropdown">
+						<ul class="newheader_dropdown_items">
+						    <li class="newheader_dropdown_item"><a class="newheader_dropdown_item_link header_link" href="<?php echo  $conntroller->app->createUrl('member/dashboard');?>">Dashboard</a></li>
+							<li class="newheader_dropdown_item"><a class="newheader_dropdown_item_link header_link" href="<?php echo  $conntroller->app->createUrl('place_an_ad/index');?>">My Properties</a></li>
+							<li class="newheader_dropdown_item"><a class="newheader_dropdown_item_link header_link" href="<?php echo  $conntroller->app->createUrl('place_an_ad/create');?>">Post Property</a></li>
+							<li class="newheader_dropdown_item"><a class="newheader_dropdown_item_link header_link" href="<?php echo  $conntroller->app->createUrl('member/favourite');?>">My Favorites</a></li>
+							<li class="newheader_dropdown_item"><a class="newheader_dropdown_item_link header_link" href="<?php echo  $conntroller->app->createUrl('user/update_profile');?>">Account Settings</a></li>
+							<li class="newheader_dropdown_item"><a class="newheader_dropdown_item_link header_link" id="signout-link" href="<?php echo  $conntroller->app->createUrl('user/logout');?>">Sign out</a></li>
+						</ul>
+						</div>
+				</div>
+			</li>
+			<?
+			}
+			?>
+			
+						
+			</ul>
+		
+			</div>
+		 
+	
+			
+			</li>
+
+			    	 
+							
+                       
+			<li class="<?php echo $conntroller->sec_id == 'agents' ? 'active' : '' ;?> borderh" id="hl_agents">
+			<a href="<?php echo $app->createUrl('user_listing/index');?>"  onclick="easyload(this,event,'mainContainerClass')">Find Agent</a>
+			</li>
+				<li class="<?php echo $conntroller->sec_id == 'new-development' ? 'active' : '' ;?> borderh" id="hl_development">
+						<a href="<?php echo $app->createUrl('listing/index',array('sec'=>'new-development'));?>"  onclick="easyload(this,event,'mainContainerClass')">Projects</a>
+						</li>
+			
+		<li class="for-mob" style="border:0px; ">
+			<div class="zsg-footer-nav zsg-separator zsg-separator_narrow">
+			<nav class="zsg-footer-row zsg-footer-linklist-container">
+			<ul class="zsg-list_inline zsg-footer-linklist zsg-fineprint-header" style="margin-bottom:0px;" data-za-category="Navigation" data-za-action="Footer">
+			<li><a href="<?php echo $app->createUrl('about-us');?>"  >About<span class="m-mob"> Us</span></a></li><li><a href="<?php echo $app->createUrl('contact/index');?>"  >Contact<span class="m-mob"> Us</span></a></li><li><a href="<?php echo $app->createUrl('privacy');?>" >Legal Privacy</a></li><li><a href="<?php echo $app->createUrl('terms');?>" >Terms<span class="m-mob"> Of Use</span></a></li><li><a href="<?php echo $options->get('system.common.blog_link','#nogo');?>" target="_blank"   >Blog</a></li><li><a href="<?php echo $app->createUrl('sitemap');?>"   >Sitemap</a></li>
+			</ul>
+			</nav>
+			</div>
+			<div class="zsg-footer-follow"  ><span style="display: inline-block;text-align: center;color: #fff;width: 100%;line-height: 1.5px;">Follow us:</span><a href="<?php echo $options->get('system.common.facebook_url','#');?>" rel="nofollow noopener noreferrer" target="_blank" class=""   ><img src="<?php echo $app->apps->getBaseUrl('assets/img/facebook.png');?>"></a>
+			<a href="<?php echo $options->get('system.common.twitter_url','#');?>" rel="nofollow noopener noreferrer" target="_blank" class=""  ><img src="<?php echo Yii::App()->apps->getBaseUrl('assets/img/twitter.png');?>"></a>
+			<a href="<?php echo $options->get('system.common.pinterest_url','#');?>" rel="nofollow noopener noreferrer" target="_blank" class=""  ><img src="<?php echo Yii::App()->apps->getBaseUrl('assets/img/instagram.png');?>"></a>
+
+			<a href="<?php echo $options->get('system.common.google_plus_url','#');?>" rel="nofollow noopener noreferrer" target="_blank" class=""  ><img src="<?php echo Yii::App()->apps->getBaseUrl('assets/img/youtuber.png');?>"></a>
+			</div>
+			</li>
+
+			</ul>
+</li>
+
+			</ul>
+			</div>
+			</div>
+			<!-- userOptions -->
+		</div>
+		</div>
+		</header>
+
+<div class="myaccount-menu is-ended container for-mobile">
+		<nav class="clearfix margin-bottom-15">
+			<ul class="list-unstyled myaccount-menu-navigation">
+			 
+				<li style="background:var(--secondary-color);">
+					<a href="<?php echo Yii::App()->createUrl('member/dashboard');?>">
+					<span class="circle2"><img class="menu-icon" src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/user_m.png');?>"></span>
+					<span class="myaccount-menu__label"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">My Account</font></font></span>
+					</a>
+				</li>
+				
+				<li style="background:var(--logo-color);">
+					<a href="<?php echo Yii::App()->createUrl('place_an_ad/create');?>" class=""> 
+					<span class="circle2"><img src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMjsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIj48Zz48Zz4KCTxnPgoJCTxwYXRoIGQ9Ik00OTIsMjM2SDI3NlYyMGMwLTExLjA0Ni04Ljk1NC0yMC0yMC0yMGMtMTEuMDQ2LDAtMjAsOC45NTQtMjAsMjB2MjE2SDIwYy0xMS4wNDYsMC0yMCw4Ljk1NC0yMCwyMHM4Ljk1NCwyMCwyMCwyMGgyMTYgICAgdjIxNmMwLDExLjA0Niw4Ljk1NCwyMCwyMCwyMHMyMC04Ljk1NCwyMC0yMFYyNzZoMjE2YzExLjA0NiwwLDIwLTguOTU0LDIwLTIwQzUxMiwyNDQuOTU0LDUwMy4wNDYsMjM2LDQ5MiwyMzZ6IiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBjbGFzcz0iYWN0aXZlLXBhdGgiIHN0eWxlPSJmaWxsOiNGRkZGRkYiIGRhdGEtb2xkX2NvbG9yPSIjMDAwMDAwIj48L3BhdGg+Cgk8L2c+CjwvZz48L2c+IDwvc3ZnPg==" /></span>
+					<span class="myaccount-menu__label"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Property</font></font></span>
+					</a>
+				</li>
+				<li  style="line-height: 47px !important;text-align: center;background:var(--secondary-color);">
+				<a class="nav-link count-indicator" title="My favourite" id="messageDropdown" style="position:relative;display: inline-block;height: 21px;/* line-height: 50px; */" href="javascript:void(0)" onclick="openShortlistPop(this)" style="position:relative;">
+				<img src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/heart-white.png');?>" class="favIcimf">
+				<span class="badge header-saved-properties__counter dataCounter-fav" id="dataCounter" ><?php echo $conntroller->fav_count;?></span>
+				</a>
+				</li>
+			</ul>
+		</nav>
+		<div class="clearfix"></div>
+	</div>
+<link href="<?php echo $conntroller->assetsUrl.'/css/minified_new.min.css' ;?>" rel="stylesheet"> 
+<div class="mobile_bottom_filter">
+   <div class="mobile_bottom_shortlisted_container">
+      <div class="desktop-title"> My Shortlisted Properties <span class="fa fa-close srtbtn pull-right" onclick="closeShortlistPop(this)"></span> </div>
+      <div class="hide" id="emptyResults" ><img src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/love.png');?>" class="nofav-img"><span class="nofav-text">No fav items found</span></div>
+      <div class="list" style="display: block;">
+		  <div id="lodivScro"></div>
+         <ul id="shortlist_items" class="listings drawer-items" style="max-height: 453px;">
+         </ul>
+      </div>
+      <div id="ldmore"></div>
+   </div>
+   <div class="clear"></div>
+</div>
+<script>
+	var stopPaginationFav;
+	var loadingHtmlFav    	= '<div style="position:relative;"><div class="loading "><div class="spinner rmsdf"><div class="bounce1"></div>  <div class="bounce2"></div>  <div class="bounce3"></div></div></div></div>';
+	var	loadMoreHtmlFav 	= '<a href="javascript:void(0)" class="btn   btn-primary  btn-shadow btn-rounded btn-icon-right"   onclick="checkScrollFav();"  ><?php echo 'Load More' ;?></a>';  
+	var afterFinishHtmlFav = '';   
+	var scrollFav=true;
+	var limitFav='20';
+	var offsetFav ='0';
+	var stopPaginationFav;
+	var checkFutureFav = true ;
+	var loadingDivFav ;
+	$(document).ready(function () {
+	loadingDivFav  =  $('#lodivScro');
+	});
+	var currentPageFav = 1;
+	var slugFav ='<?php echo Yii::app()->createUrl('listing/fav_properties');?>';
+	var deleteFav ='<?php echo Yii::app()->createUrl('user/remove_properties');?>';
+</script>

@@ -1,2 +1,5 @@
-.lh
 .history
+.lh
+apps-old
+/apps/init2.php
+/apps/common/config/main-custom.php

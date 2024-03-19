@@ -1,0 +1,311 @@
+<div id="map_locatorww">
+<?php 
+$links_open_in  = $this->options->get('system.common.link_open_in','S');	
+$this->renderPartial('_filter_html_top');?>
+<?php 
+if(empty($adsCount)){
+ 
+	$this->renderPartial('_no_result_page'); 
+}
+else{ ?> 
+	
+<style>
+#leftColumn { padding-bottom: 80px !important; } footer{ display:none; }
+#map-load {height:calc(100vh - 174px)!important;  }
+    @media only screen and (max-width: 768px) {#leftColumn { padding-bottom:  0px !important; } 
+  .columns #map-load { order : 1;flex: unset !important;  }
+   .columns #leftColumn { order : 2; flex: unset !important; }
+   #listing .columns { flex-direction: column; }footer{ display:none; }
+  .columns #map-load { height : calc(100vh - 360px  ) !important; }
+ .columns #leftColumn #d_column{ 
+    display: flex;
+    flex-direction: row;overflow-y: scroll;
+}#map-load .gm-style { 
+    height: 100% !important;
+}
+#listing .columns #leftColumn {
+    width: 100% !important;
+    height: 155px;
+ 
+    min-width: 100% !important;
+    padding-bottom: 0px !important;
+    margin: 0px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;padding-top: 7px;
+}html #resultsColumn #d_column.container.list .arws { position:absolute;}
+html #resultsColumn #d_column.container.list .arws, html #resultsColumn #d_column.container.list .listing-item {
+    width: 40% !important;
+    height:100px !important;
+    float: left;
+}#resultsColumn .list .wrapper { display:initial;}#d_column.container.list .col-sm-4.lst-prop{ display:flex; margin-right: 10px;max-width:80%; width:80%; }
+html #resultsColumn #d_column.container.list .smartad_footer {
+  position: absolute !important;
+bottom: 0px !important;
+right: 0px !important;
+width: 98px;
+padding: 0px !important;
+}
+ 
+#resultsColumn.maker_adjust {
+    margin-left: 0px;
+    margin-right: 0px;
+}  
+html #listing .columns #leftColumn {
+
+    width: 100% !important;
+
+}html #d_column.container.list .wrapper {
+    width: calc(100% - 120px) !important;
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+}
+ 
+}
+</style>
+ <div class="row row sh-mobile restuls-list headertit">
+                <div class=" col-sm-12 desc-row2 padding-left-0">
+                  <h3 class="_jmmm34f  margin-bottom-0">
+                    <?php  
+                                        echo  Yii::t('trans', ' {cnt}    {p} ' ,array('{p}'=>  $m_title   ,'{cnt}'=> $adsCount  ));
+                                         if(!empty($userM)){
+											 echo ' <small class="user-nameing secname_'.$filterModel->section_id.'"><b>['.$userM->fullName.']</b></small>';
+										}
+					?>
+					</h3>
+					</div>
+				
+             <div class="  sh-mobile  padding-right-0 the-head-sorter text-right mcheckboxSorter pull-right">
+					   <div  style="display:flex;" class="a_<?php echo $l_view;?>">
+					    <?php
+					    if($l_view=='map'){ ?> 
+							    <a href="javascript:void(0)"    onclick="changeViewN4(this)" data-href="<?php echo   Yii::app()->createUrl('listing/index',array('sec'=>!empty($filterModel->section_id) ? $filterModel->section_id : 'Property'));?>" data-val="list"   class="newheader_dropdown_action_item header_link viewersp  <?php echo   $l_view==   'list'    ? 'active' : '';?>" data-ui-id="user-account">
+                        <svg enable-background="new 0 0 24 24" class="newheader_dropdown_arrow" height="15" viewBox="0 0 24 24" width="15" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="m5 0h-4c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h4c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m23 0h-14c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m5 9h-4c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h4c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m23 9h-14c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m5 18h-4c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h4c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m23 18h-14c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/></svg>
+                        </a>
+                       <a href="javascript:void(0)"  data-href="<?php echo   Yii::app()->createUrl('listing/index',array('sec'=>!empty($filterModel->section_id) ? $filterModel->section_id : 'Property'));?>" data-val="grid" onclick="changeViewN4(this)"  class="newheader_dropdown_action_item header_link   viewersp <?php echo   $l_view==   'grid'    ? 'active' : '';?>" data-ui-id="user-account"> 
+                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="newheader_dropdown_arrow" x="0px" y="0px" width="15"   height="15" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"> <g> <g> <g> <path fill="currentColor" d="M187.628,0H43.707C19.607,0,0,19.607,0,43.707v143.921c0,24.1,19.607,43.707,43.707,43.707h143.921 c24.1,0,43.707-19.607,43.707-43.707V43.707C231.335,19.607,211.728,0,187.628,0z"/> <path fill="currentColor" d="M468.293,0H324.372c-24.1,0-43.707,19.607-43.707,43.707v143.921c0,24.1,19.607,43.707,43.707,43.707h143.921 c24.1,0,43.707-19.607,43.707-43.707V43.707C512,19.607,492.393,0,468.293,0z"/> <path fill="currentColor" d="M187.628,280.665H43.707C19.607,280.665,0,300.272,0,324.372v143.921C0,492.393,19.607,512,43.707,512h143.921 c24.1,0,43.707-19.607,43.707-43.707V324.372C231.335,300.272,211.728,280.665,187.628,280.665z"/> <path fill="currentColor" d="M468.293,280.665H324.372c-24.1,0-43.707,19.607-43.707,43.707v143.921c0,24.1,19.607,43.707,43.707,43.707h143.921 c24.1,0,43.707-19.607,43.707-43.707V324.372C512,300.272,492.393,280.665,468.293,280.665z"/> </g> </g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg>     </a>
+                        
+                     
+				        <a data-val="map"   class="newheader_dropdown_action_item header_link listh viewersp active" data-ui-id="user-account">  
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" class="newheader_dropdown_arrow" version="1.1" width="20" height="20" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve"><g> <g xmlns="http://www.w3.org/2000/svg"> <g> <path d="M400,0c-61.76,0-112,50.24-112,112c0,57.472,89.856,159.264,100.096,170.688c3.04,3.36,7.36,5.312,11.904,5.312 s8.864-1.952,11.904-5.312C422.144,271.264,512,169.472,512,112C512,50.24,461.76,0,400,0z M400,160c-26.496,0-48-21.504-48-48 c0-26.496,21.504-48,48-48c26.496,0,48,21.504,48,48C448,138.496,426.496,160,400,160z" fill="currentColor" data-original="#000000" style=""/> </g> </g> <g xmlns="http://www.w3.org/2000/svg"> <g> <path d="M10.048,187.968C4,190.4,0,196.288,0,202.848V496c0,5.312,2.656,10.272,7.04,13.248C9.728,511.04,12.832,512,16,512 c2.016,0,4.032-0.384,5.952-1.152L160,455.616V128L10.048,187.968z" fill="currentColor" data-original="#000000" style=""/> </g> </g> <g xmlns="http://www.w3.org/2000/svg"> <g> <path d="M435.712,304.064C426.624,314.176,413.6,320,400,320c-13.6,0-26.624-5.824-35.712-15.936 c-3.264-3.616-7.456-8.384-12.288-14.048V512l149.952-59.968c6.08-2.4,10.048-8.32,10.048-14.848V201.952 C485.792,246.336,450.752,287.296,435.712,304.064z" fill="currentColor" data-original="#000000" style=""/> </g> </g> <g xmlns="http://www.w3.org/2000/svg"> <g> <path d="M266.08,157.632L192,128v327.616l128,51.2v-256.96C299.552,222.304,278.208,189.12,266.08,157.632z" fill="currentColor" data-original="#000000" style=""/> </g> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> </g></svg>  </a>
+                      
+						<?php }
+						else { ?> 
+				        <a href="javascript:void(0)"    onclick="changeViewN2(this)" data-val="list"  class="newheader_dropdown_action_item header_link viewersp  <?php echo   $l_view==   'list'    ? 'active' : '';?>" data-ui-id="user-account">
+                        <svg enable-background="new 0 0 24 24" class="newheader_dropdown_arrow" height="15" viewBox="0 0 24 24" width="15" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="m5 0h-4c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h4c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m23 0h-14c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m5 9h-4c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h4c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m23 9h-14c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m5 18h-4c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h4c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m23 18h-14c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/></svg>
+                        </a>
+                       <a href="javascript:void(0)"   onclick="changeViewN2(this)" data-val="grid"  class="newheader_dropdown_action_item header_link   viewersp <?php echo   $l_view==   'grid'    ? 'active' : '';?>" data-ui-id="user-account"> 
+                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="newheader_dropdown_arrow" x="0px" y="0px" width="15"   height="15" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"> <g> <g> <g> <path fill="currentColor" d="M187.628,0H43.707C19.607,0,0,19.607,0,43.707v143.921c0,24.1,19.607,43.707,43.707,43.707h143.921 c24.1,0,43.707-19.607,43.707-43.707V43.707C231.335,19.607,211.728,0,187.628,0z"/> <path fill="currentColor" d="M468.293,0H324.372c-24.1,0-43.707,19.607-43.707,43.707v143.921c0,24.1,19.607,43.707,43.707,43.707h143.921 c24.1,0,43.707-19.607,43.707-43.707V43.707C512,19.607,492.393,0,468.293,0z"/> <path fill="currentColor" d="M187.628,280.665H43.707C19.607,280.665,0,300.272,0,324.372v143.921C0,492.393,19.607,512,43.707,512h143.921 c24.1,0,43.707-19.607,43.707-43.707V324.372C231.335,300.272,211.728,280.665,187.628,280.665z"/> <path fill="currentColor" d="M468.293,280.665H324.372c-24.1,0-43.707,19.607-43.707,43.707v143.921c0,24.1,19.607,43.707,43.707,43.707h143.921 c24.1,0,43.707-19.607,43.707-43.707V324.372C512,300.272,492.393,280.665,468.293,280.665z"/> </g> </g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg>     </a>
+                        
+                     
+				        <a data-val="map" onclick="changeViewN2(this)" data-href="<?php echo   Yii::app()->createUrl('listing/index',array('sec'=>!empty($filterModel->section_id) ? $filterModel->section_id : 'Property'));?>" class="newheader_dropdown_action_item header_link listh viewersp" data-ui-id="user-account">  
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" class="newheader_dropdown_arrow" version="1.1" width="20" height="20" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve"><g> <g xmlns="http://www.w3.org/2000/svg"> <g> <path d="M400,0c-61.76,0-112,50.24-112,112c0,57.472,89.856,159.264,100.096,170.688c3.04,3.36,7.36,5.312,11.904,5.312 s8.864-1.952,11.904-5.312C422.144,271.264,512,169.472,512,112C512,50.24,461.76,0,400,0z M400,160c-26.496,0-48-21.504-48-48 c0-26.496,21.504-48,48-48c26.496,0,48,21.504,48,48C448,138.496,426.496,160,400,160z" fill="currentColor" data-original="#000000" style=""/> </g> </g> <g xmlns="http://www.w3.org/2000/svg"> <g> <path d="M10.048,187.968C4,190.4,0,196.288,0,202.848V496c0,5.312,2.656,10.272,7.04,13.248C9.728,511.04,12.832,512,16,512 c2.016,0,4.032-0.384,5.952-1.152L160,455.616V128L10.048,187.968z" fill="currentColor" data-original="#000000" style=""/> </g> </g> <g xmlns="http://www.w3.org/2000/svg"> <g> <path d="M435.712,304.064C426.624,314.176,413.6,320,400,320c-13.6,0-26.624-5.824-35.712-15.936 c-3.264-3.616-7.456-8.384-12.288-14.048V512l149.952-59.968c6.08-2.4,10.048-8.32,10.048-14.848V201.952 C485.792,246.336,450.752,287.296,435.712,304.064z" fill="currentColor" data-original="#000000" style=""/> </g> </g> <g xmlns="http://www.w3.org/2000/svg"> <g> <path d="M266.08,157.632L192,128v327.616l128,51.2v-256.96C299.552,222.304,278.208,189.12,266.08,157.632z" fill="currentColor" data-original="#000000" style=""/> </g> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> <g xmlns="http://www.w3.org/2000/svg"> </g> </g></svg>  </a>
+                          <?php } ?> 
+                       
+                        
+				       </div>
+				       <script>var list_view_url =  '<?php echo Yii::app()->createUrl('site/setview_list');?>';</script>
+				        
+			 </div>
+            </div>
+            
+          <div class="columns restuls-list  margin-top-5" style="width:100%;">
+                <div id="leftColumn" class="leftColumn">
+					 
+        <div class="container   list-container-rx" id="" style="width:100%; ">
+			<div class="">
+            <div class="">
+                <div class="col-sm-12 padding-left-0">
+                    <span class="ak_text margin-left-0" id="loader_againn">
+                               
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 desc-row2 padding-left-0">
+                  <h3 class="_jmmm34f  margin-bottom-0" style="margin-top: 0px;font-size: 20px !important;font-weight: 600 !important;line-height: 1 !important;margin-bottom: 5px !important;">
+                    <?php  
+                                        echo  Yii::t('trans', ' {cnt}    {p} ' ,array('{p}'=>  $m_title   ,'{cnt}'=> $adsCount  ));
+                                         if(!empty($userM)){
+											 echo ' <small class="user-nameing secname_'.$filterModel->section_id.'"><b>['.$userM->fullName.']</b></small>';
+										}
+					?>
+					</h3>
+					</div>
+				 
+             
+            </div>
+            </div>
+        </div>
+		
+                    <div id="scrollContent">
+                        <div id="srpHeaderLeftColumn" class="plm">
+                            <div data-reactroot="" data-reactid="1" data-react-checksum="-652063423">
+                                <div data-reactid="2">
+                                    <div data-reactid="3">
+                                         
+                                    </div>
+                                    <!-- react-empty: 6 -->
+                                </div>
+                                <div class="miniHidden xxsHidden" data-reactid="7">
+                                    <div class="form mtn horizontalContainer mrm" data-reactid="8">
+                                        <div class="field mtn" style="flex:1;" data-reactid="9">
+                                            
+
+                                            
+
+
+                                            <div class="fieldGroup fieldGroupInline" data-reactid="10">
+                                            
+ 
+			<div class="clearfix"></div>
+			
+			
+
+                                               </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-reactid="27">
+                                    <!-- react-empty: 28 --><!-- react-empty: 29 -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+						 <div class="map-fetaured">
+                          <div class="clearfix"></div>
+                         </div>
+                        </div>   
+                        <div id="resultsColumn" class="index_list maker_adjust listView ">
+							 <div class="resultsColumn" style="overflow:hidden;" data-reactroot="" data-reactid="1" data-react-checksum="1963441139">
+								
+                                <div id="openHouseData" data-reactid="2"></div>
+                                <!-- react-empty: 17 --><!-- react-empty: 18 --><!-- react-empty: 19 -->
+                                <div class="backgroundControls" data-reactid="20">
+                                    <div data-reactid="21">
+										
+                                        <!-- react-empty: 22 -->
+                                        <div class="containerFluid" data-reactid="23">
+                                            <ul class="mvn row list container" id="d_column"  data-reactid="24" style="background:#fff;width:100%;">
+												<?php
+												 $apps = $this->app->apps;
+												foreach($ads as $k=>$v){ 
+													$s_id ="map_item".$v->id ; $bg = true; 
+												?> 
+                                                	<div class="col-sm-4 lst-prop  propli  mul_sliderh smsec_<?php echo $v->section_id;?>" id="<?php echo $s_id;?>"  data-price="<?php echo $v->price;?>">
+							<a href="<?php echo $v->detailUrl;?>" onclick="easyload2(this,event,'details-page-container')" class="lsproplink"> </a> 
+							<div class="arws"></div> 
+							 <div class="listing-item" data-image="<?php echo $v->getSingleImage("150");?>" > 
+										
+										<div class="tagsListContainer"  >
+										<ul class="tagList tags listInlineBulleted man h7 typeEmphasize"><?php echo $v->getTagList('F');?></ul>
+										</div>
+                                     
+                                    	<div class="single-item-hover"></div>
+										<div class='single-item' >
+											<?php  echo $v->generateImage2($apps,$h=380,$w=570,$s_id,$bg);?> 
+										</div>
+										 
+                                       
+                                   <span class="pull-right sm-d-date2 margin-left-5"><?php echo $v->ShowDateFrontend;?></span>
+                                 </div>
+                            
+                                 	
+            <div class="wrapper">
+				<div class="price"><?php echo $v->listRowPrice();?><span class="forgrid pull-right"><?php echo  $v->SectionCategoryFullTitle;?></span></div>
+              <div class="smartad_infoarea">
+                <h2 class="smartad_title smartad_title-link"><a href="<?php echo $v->detailUrl;?>" ><?php echo  $v->AdTitle;?></a></h2>
+               <div class="sh-mobile"><?php echo $v->listRowPrice();?></div>
+                <div class="smartad_detail">
+                   
+                    <?php echo $v->listRowFeatures();?>
+                    </div>
+                <div class="smartad_location-area">
+                  <div class="smartad_location"><span class="svg">
+                    <svg viewBox="0 0 1792 1792" class="smartad_locationicon">
+                      <use xlink:href="#svg-location"></use>
+                    </svg>
+                    </span><span class="smartad_locationtext"><?php echo $v->listRowLocation();?></span>
+                        
+                    </div>
+                </div>
+              </div>
+            </div>
+               <?php echo $v->footerLinkNew();?>
+          
+          <div class="clearfix"></div>
+          </div>
+           
+                                                <?php } ?>
+                                    </ul>
+                                        </div>
+                                        <div class="clearfix" data-reactid="1441"></div>
+                                    </div>
+                                  
+                                    <div class="backgroundBasic" data-reactid="1442">
+                                        <div class="paginationContainer pls mtl ptl mbm" data-reactid="1443">
+                                                   	<div class="pagingarea">
+						<nav class="navigation pagination d-flex justify-content-end" role="navigation">
+							<div class="actions">
+		<?php 
+	 
+		$this->widget('frontend.components.web.widgets.SimplaPager', array(
+		'pages'=>$pages,
+		 'maxButtonCount'=>3, 
+		));  
+		 
+		?>
+		 
+		
+		
+		
+		</div>
+                 </nav>
+		</div>  
+       
+                                        </div>
+                                        <div class="mtm plm txtC " data-reactid="1466">
+                                            <span data-reactid="1467">
+												<?php if(!empty( $country_name)){ ?> 
+												<a href="#" data-reactid=""><?php echo $country_name;?></a></span>
+												
+												<?php } ?> 
+												<?php if(!empty( $state_name)){ ?> 
+													&nbsp&nbsp<i class="fas fa-angle-right" data-reactid=""></i><span data-reactid="">
+												<a href="#" data-reactid="">&nbsp&nbsp<?php echo $state_name;?></a> </span> <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                </div>
+                        </div>
+                    </div>
+                    <!-- react-empty: 1 -->
+              
+           
+            <?php   
+            
+		}
+               $this->renderPartial('_map_view');?>
+            
+            <div style="clear:both"></div>
+              </div>
+</div>
+<style>
+body { overflow-y : hidden; }
+
+</style>
+           
+ 	       <script>                                          
+	 $(function(){
+		   caroselSingle3();
+		 })
+</script>   
+<script>
+var timer_ajax; 
+var mainListUrl = '<?php echo Yii::app()->createUrl('listing/index',array('sec'=>!empty($filterModel->section_id) ? $filterModel->section_id : 'Property'));?>/';
+var autoCompleteUrl = '<?php echo Yii::app()->createUrl('listing/autocomplete');?>';
+// $(function(){ changeForm() ;   })
+ $(function(){ closeOpendDiv() ; activatelistSearchFixed()  })
+</script>  

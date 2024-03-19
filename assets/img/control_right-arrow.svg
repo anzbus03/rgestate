@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<circle id="a" cx="24" cy="24" r="24"/>
+<filter id="b" x="-12.5%" y="-12.5%" width="125%" height="125%">
+<feOffset in="SourceAlpha" result="shadowOffsetOuter1"/>
+<feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+<feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/>
+<feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.153249547 0"/>
+</filter>
+</defs>
+<g transform="translate(4 4)" fill-rule="evenodd">
+<use filter="url(#b)" xlink:href="#a"/>
+<use fill="#FFF" fill-opacity=".9" xlink:href="#a"/>
+<g transform="translate(20 17)" fill="#869099">
+<path transform="rotate(-90 4 7)" d="m3.5531 10.804l-6.366-6.6667c-0.24945-0.26-0.24945-0.68133 0-0.94133 0.24818-0.26133 0.65035-0.26133 0.8998 0l5.9168 6.1947 5.9104-6.1947c0.24818-0.26133 0.65035-0.26133 0.8998 0 0.24818 0.26 0.24818 0.68133 0 0.94133l-6.3597 6.6667c-0.11963 0.12533-0.28127 0.196-0.45054 0.196s-0.3309-0.070667-0.45054-0.196z"/>
+</g>
+</g>
+</svg>

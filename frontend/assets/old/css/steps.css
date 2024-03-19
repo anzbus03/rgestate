@@ -1,0 +1,90 @@
+/* - - - - - - CSS Document - - - - - - - - -
+Title : SS
+Author : andersondaraujo@gmail.com, Cody.Lindley@albertsons.com
+
+Created : 06/01/10
+Description: Step Menu based on Cody Lindley's implementation
+- - - - - - - - - - - - - - - - - - - - - */
+h2 {font-size: 152%} /* =20 */
+/* = .stepNavigation2 & .stepNavigation3 & .stepNavigation4 & .stepNavigation5
+----------------------------------------------------------------------------------------------------*/
+.stepNavigation li{
+	height:40px;
+	list-style:none;
+	float:left;
+	background-color:#EBEBEB;
+	background-image: url(images/navBtn.gif);
+	background-repeat: no-repeat;
+	background-position: right top;
+}
+
+.stepNavigation li.current{
+	background-color:#ff8e00;
+	background-image: url(images/navCurrentBtn.gif);
+}
+
+.stepNavigation li.lastDone{
+	background-color:#2261a0;
+	background-image: url(images/navLastDoneBtn.gif);
+}
+
+.stepNavigation li.done{
+	background-color:#2261a0;
+	background-image: url(images/navDoneBtn.gif);
+}
+
+.stepNavigation li a, .stepNavigation li a:link, .stepNavigation li a:visited, .stepNavigation li a:hover, .stepNavigation li a:active {
+color:#ccc;
+}
+
+.stepNavigation li.lastDone a, .stepNavigation li.lastDone a:link, .stepNavigation li.lastDone a:visited, .stepNavigation li.lastDone a:hover, .stepNavigation li.lastDone a:active, .stepNavigation li.current a, .stepNavigation li.current a:link, .stepNavigation li.current a:visited, .stepNavigation li.current a:hover, .stepNavigation li.current a:active, .stepNavigation li.done a, .stepNavigation li.done a:link, .stepNavigation li.done a:visited, .stepNavigation li.done a:hover, .stepNavigation li.done a:active {
+color:#fff;
+}
+
+.stepNavigation li.done a:hover, .stepNavigation li.lastDone a:hover  {
+color:#FFFF99;
+cursor:hand;
+}
+
+.stepNavigation li a em{
+width:150px;
+display:block;
+margin:3px 0 0 10px;
+font-style:normal;
+font-weight:bold;
+}
+
+.stepNavigation li a span{
+width:140px;
+display:block;
+margin-left:10px;
+font-weight:normal;
+font-size: 11px;
+}
+
+.stepNavigation li.lastStep{
+background-image:none;
+}
+
+.stepNavigation li a{
+height:71px;
+display:block;
+}
+
+/* .stepNavigation.fiveStep */
+.stepNavigation.fiveStep li{width:182px;}
+.stepNavigation.fiveStep li a{width:182px;}
+
+/* .stepNavigation.fourStep */
+.stepNavigation.fourStep li{width:257px;}
+.stepNavigation.fourStep li.lastStep{width:229px;}
+.stepNavigation.fourStep li a{width:227px;}
+
+/* .stepNavigation.threeStep */
+.stepNavigation.threeStep li{width:303px;}
+.stepNavigation.threeStep li.lastStep{width:304px;}
+.stepNavigation.threeStep li a{width:303px;}
+
+/* .stepNavigation.twoStep */
+.stepNavigation.twoStep li{width:455px;}
+.stepNavigation.twoStep li a{width:455px;}

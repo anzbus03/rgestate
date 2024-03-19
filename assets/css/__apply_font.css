@@ -1,0 +1,44 @@
+#contact .container ,#contact .container h4 { font-family: 'Circular', sans-serif !important; }
+ 
+#contact .container strong { font-weight:600; }
+#contact .container h4 { font-weight:800; }
+body, h1, h2, h3, h4, h5, h6, input[type=text], input[type=password], input[type=email], textarea, select, input[type=button], input[type=submit], button, #tiptip_content, .map-box p, .map-box div, .numerical-rating .rating-counter, body .menu-responsive i.menu-trigger:after {
+    font-family: 'Circular', sans-serif !important;
+     font-weight:normal;
+}
+.description-title {  font-weight:800; }
+#titlebar h1, #titlebar h2 { font-weight:600; }
+input[type=button], input[type=submit] {
+   font-weight:600;
+}
+a.redbold { color: #FF5A5F; font-weight:600;}
+body p {
+    font-size: 14px;
+    line-height: 22px;
+        letter-spacing: normal !important;
+}
+.description-item p { line-height:26px;}
+.radius3 h3 a { font-weight:600;}
+
+.post-title h1 {    font-weight: 600;}
+.newsdetl_tab li h3{font-weight: 600;}
+b, strong {
+    font-weight: 800;
+}
+h1.h3.defaultLineHeight .man { font-weight:800; }
+.h5, .h6, h5, h6 {
+    font-weight: 600;
+}
+.mhn.phn h3{ margin-bottom:20px;font-weight:600;}
+ul.man h4{ font-size:15px; line-height:27px;}
+.section-top-heading p {
+    font-size: 15px;
+    color: #1b1b1b;
+    line-height: 27px;
+}
+.section-top-heading h2{ font-weight:600; }
+.swiper-slide h2 span { font-weight:800; }
+.headline span{ font-weight:800;font-size:22px;  }
+.headline span a { font-weight:600;   }
+#user_listing_developers #R148698535418114705 span { font-weight:800;font-size:22px;   }
+#user_listing_developers  .t-Card-desc h3 { font-weight:600;font-size:15px;   }

@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RG Estate</title>
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Style -->
+    <link href="./assets/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/lib/select2/css/select2.min.css" rel="stylesheet">
+    <link href="./assets/lib/slick/slick.css" rel="stylesheet">
+    <link href="./assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Start RG Estate Header -->
+    <nav class="navbar navbar-expand-xl bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="./assets/images/logo.svg" alt="RG Estate">
+            </a>
+            <button class="navbar-toggler ms-5" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="navbarOffcanvasLgLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title text-uppercase" id="offcanvasNavbarLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body align-items-center">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 rg-fs-14 rg-fw-500">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Sale</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Rent</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Preleased</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Commercial</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">New Projects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Businesses For Sale</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Area Guides</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact us</a>
+                        </li>
+                    </ul>
+                    <a href="#" class="btn btn-dark">Submit Property <span
+                            class="badge rounded-pill text-bg-light rg-fs-11 rg-fw-500 rounded ms-2">Free</span></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- End RG Estate Header -->
+
+    <!-- Start EG Estate Filteration -->
+    <section class="rg-filter mt-4">
+        <div class="container">
+            <div class="rg-filter-row">
+                <div class="rg-filter-form d-flex align-items-center justify-content-between">
+                    <form action="" class="w-100">
+                        <div class="rg-filter-col d-flex align-items-center">
+                            <div class="rg-search w-100 position-relative">
+                                <svg width="14" height="14" class="position-absolute">
+                                    <use xlink:href="./assets/images/icons.svg#rg-search"></use>
+                                </svg>
+                                <input type="text" placeholder="Enter the Keyword" class="form-input w-100">
+                            </div>
+                            <div class="rg-status w-100 ps-0 ps-lg-3 mt-3 mt-lg-0 d-none d-sm-block">
+                                <select id="rg_status">
+                                    <option></option>
+                                    <option>Status</option>
+                                    <option>Status</option>
+                                    <option>Status</option>
+                                    <option>Status</option>
+                                </select>
+                            </div>
+                            <div class="rg-type w-100 ps-3 mt-3 mt-lg-0 d-none d-sm-block">
+                                <select id="rg_type">
+                                    <option></option>
+                                    <option>Type</option>
+                                    <option>Type</option>
+                                    <option>Type</option>
+                                    <option>Type</option>
+                                </select>
+                            </div>
+                            <div class="rg-cities w-100 ps-0 ps-sm-3 mt-3 mt-lg-0 d-none d-sm-block">
+                                <select id="rg_cities">
+                                    <option></option>
+                                    <option>Cities</option>
+                                    <option>Cities</option>
+                                    <option>Cities</option>
+                                    <option>Cities</option>
+                                </select>
+                            </div>
+                            <div class="rg-bedrooms w-100 ps-3 mt-3 mt-lg-0 d-none d-sm-block">
+                                <select id="rg_bedrooms">
+                                    <option></option>
+                                    <option>Bedrooms</option>
+                                    <option>Bedrooms</option>
+                                    <option>Bedrooms</option>
+                                    <option>Bedrooms</option>
+                                </select>
+                            </div>
+                            <div class="rg-search-btn w-100 ps-0 ps-md-3 mt-3 mt-lg-0 d-none d-sm-block">
+                                <button type="submit" class="btn btn-primary w-100">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                    <ul class="nav nav-pills flex-nowrap rg-filter-nav ms-auto d-none d-md-flex">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg width="17" height="13" class="position-absolute top-50 start-50 translate-middle">
+                                    <use xlink:href="./assets/images/icons.svg#rg-list"></use>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg width="13" height="13" class="position-absolute top-50 start-50 translate-middle">
+                                    <use xlink:href="./assets/images/icons.svg#rg-grid"></use>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <svg width="11" height="14" class="position-absolute top-50 start-50 translate-middle">
+                                    <use xlink:href="./assets/images/icons.svg#rg-map1"></use>
+                                </svg>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End EG Estate Filteration -->
+
+    <!-- Start RG Estate Main Content -->
+    <div class="rg-properties-map mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div
+                    class="rg-properties-header d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between mt-2">
+                    <h1 class="rg-fs-30 rg-sm-fs-24 rg-fw-700 rg-text-blue">678 Commercial Properties
+                    </h1>
+                </div>
+                <ul class="rg-properties-list">
+                    <li>
+                        <div
+                            class="rg-featured-card d-flex flex-column flex-sm-row rg-br-16 position-relative rg-mt-30">
+                            <div class="row align-items-center">
+                                <div class="col-md-5">
+                                    <div class="rg-featured-img position-relative">
+                                        <div
+                                            class="rg-badges z-1 text-uppercase d-flex align-items-center justify-content-between position-absolute w-100">
+                                            <span class="badge rg-bg-orange">FEATURED</span>
+                                            <span class="badge rg-bg-black-rgb">FOR SALE</span>
+                                        </div>
+                                        <div
+                                            class="tp-images-footer d-flex align-items-center justify-content-end position-absolute z-1 w-100">
+                                            <div
+                                                class="tp-images-footer-icon rg-wh-37 rounded-circle position-relative">
+                                                <svg width="15" height="15"
+                                                    class="position-absolute top-50 start-50 translate-middle rg-fill-white">
+                                                    <use xlink:href="./assets/images/icons.svg#rg-expand">
+                                                    </use>
+                                                </svg>
+                                            </div>
+                                            <div
+                                                class="tp-images-footer-icon rg-wh-37 rounded-circle position-relative rg-active">
+                                                <svg width="19" height="16"
+                                                    class="position-absolute top-50 start-50 translate-middle rg-fill-white">
+                                                    <use xlink:href="./assets/images/icons.svg#rg-heart">
+                                                    </use>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <img class="w-100 d-block object-fit-cover" src="./assets/images/featured.jpg"
+                                            alt="Stylish downtown apartment">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div
+                                        class="rg-featured-body d-flex flex-column align-items-start justify-content-center w-100">
+                                        <div class="rg-featured-body-top d-flex flex-column w-100 p-0">
+                                            <h4 class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-uppercase">
+                                                SINGLE FAMILY HOME</h4>
+                                            <h3 class="rg-fs-24 rg-fw-500 rg-text-blue mt-2">AED 11,900,000</h3>
+                                            <h2 class="rg-fs-20 rg-fw-500 mt-5 text-capitalize">
+                                                <a href="#" class="text-black">waterfront property</a>
+                                            </h2>
+                                            <p
+                                                class="rg-fs-12 rg-fw-500 rg-text-gray-600 text-capitalize d-flex align-items-center mt-2">
+                                                Dubai, United Arab Emirates</p>
+                                            <p
+                                                class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-1">
+                                                Al Karama, 28QA</p>
+                                            <ul class="rg-featured-list d-flex flex-wrap">
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="17" height="12" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-bed">
+                                                        </use>
+                                                    </svg>
+                                                    <span>2 bedroom</span>
+                                                </li>
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="10" height="12" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-bathroom">
+                                                        </use>
+                                                    </svg>
+                                                    <span>1 Bathroom</span>
+                                                </li>
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="17" height="12" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-car">
+                                                        </use>
+                                                    </svg>
+                                                    <span>2 parking space</span>
+                                                </li>
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="13" height="13" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-feet">
+                                                        </use>
+                                                    </svg>
+                                                    <span>2900 sq ft</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <ul
+                                            class="rg-featured-footer d-flex align-items-center justify-content-end border-top p-0 pt-4 ms-auto w-100">
+                                            <li>
+                                                <a href="#"
+                                                    class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center">
+                                                    <svg width="14" height="14" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-phone1">
+                                                        </use>
+                                                    </svg>
+                                                    <span>Call</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center">
+                                                    <svg width="15" height="12" class="rg-fill-blue me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-email1">
+                                                        </use>
+                                                    </svg>
+                                                    <span>Mail</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center">
+                                                    <svg width="14" height="14" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-whatsapp">
+                                                        </use>
+                                                    </svg>
+                                                    <span>WhatsApp</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div
+                            class="rg-featured-card d-flex flex-column flex-sm-row rg-br-16 position-relative rg-mt-30">
+                            <div class="row align-items-center">
+                                <div class="col-md-5">
+                                    <div class="rg-featured-img position-relative">
+                                        <div
+                                            class="rg-badges z-1 text-uppercase d-flex align-items-center justify-content-between position-absolute w-100">
+                                            <span class="badge rg-bg-orange">FEATURED</span>
+                                            <span class="badge rg-bg-black-rgb">FOR SALE</span>
+                                        </div>
+                                        <div
+                                            class="tp-images-footer d-flex align-items-center justify-content-end position-absolute z-1 w-100">
+                                            <div
+                                                class="tp-images-footer-icon rg-wh-37 rounded-circle position-relative">
+                                                <svg width="15" height="15"
+                                                    class="position-absolute top-50 start-50 translate-middle rg-fill-white">
+                                                    <use xlink:href="./assets/images/icons.svg#rg-expand">
+                                                    </use>
+                                                </svg>
+                                            </div>
+                                            <div
+                                                class="tp-images-footer-icon rg-wh-37 rounded-circle position-relative rg-active">
+                                                <svg width="19" height="16"
+                                                    class="position-absolute top-50 start-50 translate-middle rg-fill-white">
+                                                    <use xlink:href="./assets/images/icons.svg#rg-heart">
+                                                    </use>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <img class="w-100 d-block object-fit-cover" src="./assets/images/featured.jpg"
+                                            alt="Stylish downtown apartment">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div
+                                        class="rg-featured-body d-flex flex-column align-items-start justify-content-center w-100">
+                                        <div class="rg-featured-body-top d-flex flex-column w-100 p-0">
+                                            <h4 class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-uppercase">
+                                                SINGLE FAMILY HOME</h4>
+                                            <h3 class="rg-fs-24 rg-fw-500 rg-text-blue mt-2">AED 11,900,000</h3>
+                                            <h2 class="rg-fs-20 rg-fw-500 mt-5 text-capitalize">
+                                                <a href="#" class="text-black">waterfront property</a>
+                                            </h2>
+                                            <p
+                                                class="rg-fs-12 rg-fw-500 rg-text-gray-600 text-capitalize d-flex align-items-center mt-2">
+                                                Dubai, United Arab Emirates</p>
+                                            <p
+                                                class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-1">
+                                                Al Karama, 28QA</p>
+                                            <ul class="rg-featured-list d-flex flex-wrap">
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="17" height="12" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-bed">
+                                                        </use>
+                                                    </svg>
+                                                    <span>2 bedroom</span>
+                                                </li>
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="10" height="12" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-bathroom">
+                                                        </use>
+                                                    </svg>
+                                                    <span>1 Bathroom</span>
+                                                </li>
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="17" height="12" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-car">
+                                                        </use>
+                                                    </svg>
+                                                    <span>2 parking space</span>
+                                                </li>
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="13" height="13" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-feet">
+                                                        </use>
+                                                    </svg>
+                                                    <span>2900 sq ft</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <ul
+                                            class="rg-featured-footer d-flex align-items-center justify-content-end border-top p-0 pt-4 ms-auto w-100">
+                                            <li>
+                                                <a href="#"
+                                                    class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center">
+                                                    <svg width="14" height="14" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-phone1">
+                                                        </use>
+                                                    </svg>
+                                                    <span>Call</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center">
+                                                    <svg width="15" height="12" class="rg-fill-blue me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-email1">
+                                                        </use>
+                                                    </svg>
+                                                    <span>Mail</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center">
+                                                    <svg width="14" height="14" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-whatsapp">
+                                                        </use>
+                                                    </svg>
+                                                    <span>WhatsApp</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div
+                            class="rg-featured-card d-flex flex-column flex-sm-row rg-br-16 position-relative rg-mt-30">
+                            <div class="row align-items-center">
+                                <div class="col-md-5">
+                                    <div class="rg-featured-img position-relative">
+                                        <div
+                                            class="rg-badges z-1 text-uppercase d-flex align-items-center justify-content-between position-absolute w-100">
+                                            <span class="badge rg-bg-orange">FEATURED</span>
+                                            <span class="badge rg-bg-black-rgb">FOR SALE</span>
+                                        </div>
+                                        <div
+                                            class="tp-images-footer d-flex align-items-center justify-content-end position-absolute z-1 w-100">
+                                            <div
+                                                class="tp-images-footer-icon rg-wh-37 rounded-circle position-relative">
+                                                <svg width="15" height="15"
+                                                    class="position-absolute top-50 start-50 translate-middle rg-fill-white">
+                                                    <use xlink:href="./assets/images/icons.svg#rg-expand">
+                                                    </use>
+                                                </svg>
+                                            </div>
+                                            <div
+                                                class="tp-images-footer-icon rg-wh-37 rounded-circle position-relative rg-active">
+                                                <svg width="19" height="16"
+                                                    class="position-absolute top-50 start-50 translate-middle rg-fill-white">
+                                                    <use xlink:href="./assets/images/icons.svg#rg-heart">
+                                                    </use>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <img class="w-100 d-block object-fit-cover" src="./assets/images/featured.jpg"
+                                            alt="Stylish downtown apartment">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div
+                                        class="rg-featured-body d-flex flex-column align-items-start justify-content-center w-100">
+                                        <div class="rg-featured-body-top d-flex flex-column w-100 p-0">
+                                            <h4 class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-uppercase">
+                                                SINGLE FAMILY HOME</h4>
+                                            <h3 class="rg-fs-24 rg-fw-500 rg-text-blue mt-2">AED 11,900,000</h3>
+                                            <h2 class="rg-fs-20 rg-fw-500 mt-5 text-capitalize">
+                                                <a href="#" class="text-black">waterfront property</a>
+                                            </h2>
+                                            <p
+                                                class="rg-fs-12 rg-fw-500 rg-text-gray-600 text-capitalize d-flex align-items-center mt-2">
+                                                Dubai, United Arab Emirates</p>
+                                            <p
+                                                class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-1">
+                                                Al Karama, 28QA</p>
+                                            <ul class="rg-featured-list d-flex flex-wrap">
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="17" height="12" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-bed">
+                                                        </use>
+                                                    </svg>
+                                                    <span>2 bedroom</span>
+                                                </li>
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="10" height="12" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-bathroom">
+                                                        </use>
+                                                    </svg>
+                                                    <span>1 Bathroom</span>
+                                                </li>
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="17" height="12" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-car">
+                                                        </use>
+                                                    </svg>
+                                                    <span>2 parking space</span>
+                                                </li>
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="13" height="13" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-feet">
+                                                        </use>
+                                                    </svg>
+                                                    <span>2900 sq ft</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <ul
+                                            class="rg-featured-footer d-flex align-items-center justify-content-end border-top p-0 pt-4 ms-auto w-100">
+                                            <li>
+                                                <a href="#"
+                                                    class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center">
+                                                    <svg width="14" height="14" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-phone1">
+                                                        </use>
+                                                    </svg>
+                                                    <span>Call</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center">
+                                                    <svg width="15" height="12" class="rg-fill-blue me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-email1">
+                                                        </use>
+                                                    </svg>
+                                                    <span>Mail</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center">
+                                                    <svg width="14" height="14" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-whatsapp">
+                                                        </use>
+                                                    </svg>
+                                                    <span>WhatsApp</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div
+                            class="rg-featured-card d-flex flex-column flex-sm-row rg-br-16 position-relative rg-mt-30">
+                            <div class="row align-items-center">
+                                <div class="col-md-5">
+                                    <div class="rg-featured-img position-relative">
+                                        <div
+                                            class="rg-badges z-1 text-uppercase d-flex align-items-center justify-content-between position-absolute w-100">
+                                            <span class="badge rg-bg-orange">FEATURED</span>
+                                            <span class="badge rg-bg-black-rgb">FOR SALE</span>
+                                        </div>
+                                        <div
+                                            class="tp-images-footer d-flex align-items-center justify-content-end position-absolute z-1 w-100">
+                                            <div
+                                                class="tp-images-footer-icon rg-wh-37 rounded-circle position-relative">
+                                                <svg width="15" height="15"
+                                                    class="position-absolute top-50 start-50 translate-middle rg-fill-white">
+                                                    <use xlink:href="./assets/images/icons.svg#rg-expand">
+                                                    </use>
+                                                </svg>
+                                            </div>
+                                            <div
+                                                class="tp-images-footer-icon rg-wh-37 rounded-circle position-relative rg-active">
+                                                <svg width="19" height="16"
+                                                    class="position-absolute top-50 start-50 translate-middle rg-fill-white">
+                                                    <use xlink:href="./assets/images/icons.svg#rg-heart">
+                                                    </use>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <img class="w-100 d-block object-fit-cover" src="./assets/images/featured.jpg"
+                                            alt="Stylish downtown apartment">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div
+                                        class="rg-featured-body d-flex flex-column align-items-start justify-content-center w-100">
+                                        <div class="rg-featured-body-top d-flex flex-column w-100 p-0">
+                                            <h4 class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-uppercase">
+                                                SINGLE FAMILY HOME</h4>
+                                            <h3 class="rg-fs-24 rg-fw-500 rg-text-blue mt-2">AED 11,900,000</h3>
+                                            <h2 class="rg-fs-20 rg-fw-500 mt-5 text-capitalize">
+                                                <a href="#" class="text-black">waterfront property</a>
+                                            </h2>
+                                            <p
+                                                class="rg-fs-12 rg-fw-500 rg-text-gray-600 text-capitalize d-flex align-items-center mt-2">
+                                                Dubai, United Arab Emirates</p>
+                                            <p
+                                                class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-1">
+                                                Al Karama, 28QA</p>
+                                            <ul class="rg-featured-list d-flex flex-wrap">
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="17" height="12" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-bed">
+                                                        </use>
+                                                    </svg>
+                                                    <span>2 bedroom</span>
+                                                </li>
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="10" height="12" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-bathroom">
+                                                        </use>
+                                                    </svg>
+                                                    <span>1 Bathroom</span>
+                                                </li>
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="17" height="12" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-car">
+                                                        </use>
+                                                    </svg>
+                                                    <span>2 parking space</span>
+                                                </li>
+                                                <li
+                                                    class="rg-fs-12 rg-fw-400 rg-text-gray-600 text-capitalize d-flex align-items-center mt-3">
+                                                    <svg width="13" height="13" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-feet">
+                                                        </use>
+                                                    </svg>
+                                                    <span>2900 sq ft</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <ul
+                                            class="rg-featured-footer d-flex align-items-center justify-content-end border-top p-0 pt-4 ms-auto w-100">
+                                            <li>
+                                                <a href="#"
+                                                    class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center">
+                                                    <svg width="14" height="14" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-phone1">
+                                                        </use>
+                                                    </svg>
+                                                    <span>Call</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center">
+                                                    <svg width="15" height="12" class="rg-fill-blue me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-email1">
+                                                        </use>
+                                                    </svg>
+                                                    <span>Mail</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center">
+                                                    <svg width="14" height="14" class="me-2">
+                                                        <use xlink:href="./assets/images/icons.svg#rg-whatsapp">
+                                                        </use>
+                                                    </svg>
+                                                    <span>WhatsApp</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <div class="rg-map overflow-hidden rg-br-10 sticky-top">
+                    <img class="w-100 h-100 d-block object-fit-cover"
+                        src="https://www.bethree.pk/Ice.Web.Bt.CDN/Content/Images/ProductImages/Saddar_Rawalpindi_Pakistan_king_real_estate_6e265158_57fc_44e8_9216_0c4284de1a30_f.png"
+                        alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End RG Estate Main Content -->
+
+    <!-- jQuery -->
+    <script src="./assets/js/jquery-3.7.0.min.js"></script>
+    <script src="./assets/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/lib/select2/js/select2.full.min.js"></script>
+    <script src="./assets/lib/slick/slick.min.js"></script>
+    <script src="./assets/js/app.js"></script>
+    <script src="./assets/js/properties.js"></script>
+</body>
+
+</html>

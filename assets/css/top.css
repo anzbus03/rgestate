@@ -1,0 +1,150 @@
+.wrapper_sec_ {
+	width: 100%;
+	float: left;
+	
+}
+#span_sec_03{
+	width:225px;
+	height:auto;
+	float:left;
+	margin-left:10px;
+}
+#span_sec_03_{
+	width:225px;
+	height:auto;
+	float:right;
+	margin-left:10px;
+}
+.span_sec_01{
+	text-align:left;
+	float:left;
+	color:#363636;
+	font-size:13px;
+	font-weight:bolder;
+	margin-left:0px !important;
+}
+#span_sec_img_090 {
+	width:110px;
+	height:80px;
+	margin-top:5px;
+	float:left;
+	padding:3px;
+	border:1px solid #eee;
+	display:block;
+}
+p.location_012{
+	 float: left;
+    margin-left: 5px;
+    margin-top: 5px;
+    width: 100px;
+	font-size:12px;
+	
+}
+.foot_d {
+    color: #b80007;
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom:0px;
+	margin-left: 5px;
+    text-align: left;
+}
+.span_sec_space{
+	width:100%;
+	margin:5px 0px 5px 0px;
+	float:left;
+}
+#slider{
+	float:left;
+	margin-top:30px;
+	width:100%;
+}
+#span_sec_slide{
+	width:706px;
+	float:left;
+	height:auto;
+	margin-left:0px;
+}
+#spansec_ads{
+	  display: block;
+    float: right;
+    height: 309px;
+    margin-top: 20px;
+    width: 250px;
+	background:#000;
+}
+#span_sec_0034{
+	width:1000px;
+	float:left;
+	height:auto;
+	margin-left:30px;
+}
+fieldset {
+    border: 1px solid #363636;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 10px 8px;
+    width: 706px !important;
+}
+
+@media only screen and (max-device-width: 1024px) and (min-device-width: 641px), (max-width: 1024px) and (min-width: 641px) {
+#span_sec_0034{
+	width:100%;
+	float:left;
+	height:auto;
+	margin-left:15px;
+}
+#slider{
+	float:left;
+	margin-top:30px;
+	width:100%;
+}
+#spansec_ads{
+	  display: none;
+    float: right;
+  
+}
+
+}
+@media only screen and (max-device-width: 640px) and (min-device-width: 220px), (max-width: 640px) and (min-width: 220px) {
+
+#slider{
+	float:left;
+	margin-top:30px;
+	width:100%;
+}
+#spansec_ads{
+	  display: none;
+    float: right;
+  
+}
+
+#span_sec_03 {
+    float: left;
+    height: auto;
+    margin-left: 0px;
+    width: 100%;
+}
+
+#span_sec_03_ {
+    float: left;
+    height: auto;
+    margin-left: 0px;
+    width: 100%;
+}
+#span_sec_0034 {
+    float: left;
+    height: auto;
+    margin-left: 0px;
+    width: 100%;
+}
+
+#span_sec_slide {
+    float: left;
+    height: auto;
+    margin-left: 0;
+    width:100%;
+}
+
+}

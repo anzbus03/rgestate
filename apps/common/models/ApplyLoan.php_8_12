@@ -1,0 +1,315 @@
+<?php
+
+/**
+ * This is the model class for table "mw_contact_us".
+ *
+ * The followings are the available columns in table 'mw_contact_us':
+ * @property integer $id
+ * @property integer $type
+ * @property string $email
+ * @property string $name
+ * @property string $meassage
+ * @property string $city
+ * @property string $date
+ */
+class ApplyLoan  extends ActiveRecord
+{
+	 public $image;
+	 public $agree;
+	 public $_recaptcha; 
+ public function tableName()
+    {
+        return 'mw_loan_application';
+    }
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('name, email,  meassage,phone_false,ad_id,bank_id,monthly_income', 'required'),
+            array('agree', 'required',  'message'=>'Please select.' ),
+            array('type,phone', 'numerical', 'integerOnly'=>true),
+            array('email, name', 'length', 'max'=>150),
+            array('city', 'length', 'max'=>250),
+            array('phone', 'length', 'min'=>10),
+             array('phone_false', 'validatePhone'),
+              array('phone_false', 'length', 'min'=>9),
+              array('phone_false', 'length', 'max'=>11),
+            array('phone', 'length', 'max'=>14),
+            array('monthly_income', 'length', 'max'=>50),
+            array('email', 'email'),
+            array('country_id,phone', 'safe'),
+            array('ip_address,ad_title,phone_false,down_payment,total_loan,loan_period,interest_rate', 'safe'),
+              array('_recaptcha', 'validateRecaptcha'   ),
+           // array('verifyCode', 'CaptchaExtendedValidator', 'allowEmpty'=>!CCaptcha::checkRequirements(), 'captchaAction' => 'site/captcha'),
+           // array('verifyCode', 'safe'),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('id, type, email, name, meassage, city, date', 'safe', 'on'=>'search'),
+             array('image', 'file', 'types'=>'pdf,doc,docx', 'allowEmpty'=>true,  'safe' => true),
+        );
+    }
+ public function validateRecaptcha($attribute,$params){
+		
+		  if( Yii::app()->isAppName('frontend') and Yii::app()->controller->action->id!='validateappication'){
+ 
+	 
+			$captcha= '';
+			if(isset($_POST['g-recaptcha-response'])){
+			$captcha=$_POST['g-recaptcha-response'];
+			}
+
+			if(!$captcha){
+				$this->addError($attribute, 'Please check the   captcha forms.' );
+			}
+		 
+				 
+			$data = array(
+			'secret' => '6Ld3ZsYUAAAAAInHDCPxREnCkb8IU6cCAq0x72k5',
+			'response' => $captcha,
+			'remoteip' => $_SERVER['REMOTE_ADDR']
+			);
+
+			$verify = curl_init();
+			curl_setopt($verify, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+			curl_setopt($verify, CURLOPT_POST, true);
+			curl_setopt($verify, CURLOPT_POSTFIELDS, http_build_query($data));
+			curl_setopt($verify, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($verify, CURLOPT_RETURNTRANSFER, true);
+			$res = curl_exec($verify);
+
+			$captcha = json_decode($res);
+			
+		 
+				if ($captcha->success) {
+						 
+				 }
+				 else{
+					 $this->addError($attribute,  'You are a spammer.' );
+				 }
+				
+ 
+		 
+		  }
+		   
+	}
+	public function afterSave(){
+		 
+		
+		     $options = Yii::app()->options ; 
+			 
+            
+		  $emailTemplate_customer =  CustomerEmailTemplate::model()->findByAttributes(array('template_uid'=>"vf2394659w065"));
+		  if( $emailTemplate_customer and !empty( $url_d)){
+					$subject		= $emailTemplate_customer->subject;
+					$emailTemplate = $emailTemplate_customer->content;					 
+					$emailTemplate = str_replace('[NAME]',$this->name, $emailTemplate);
+					    $status = 'S'; 
+					$adminEmail = new Email();			 
+					$adminEmail->subject = $subject ;
+					$adminEmail->message = $emailTemplate;
+					$receipeints = serialize(array($this->email));
+					$adminEmail->status = $status;
+					$adminEmail->receipeints = $receipeints;
+					$adminEmail->sent_on =   1;
+					$adminEmail->type =   'REGISTER';
+					$adminEmail->sent_on_utc =   new CDbExpression('NOW()');
+					$adminEmail->save(false); 
+					$adminEmail->getSend(false);;
+				}
+			 
+	 return true;
+       
+     
+	}
+    public function attributeLabels()
+    {
+        return array(
+            'id' => 'ID',
+            'ad_id' => 'AD',
+            'type' => 'Position',
+            'email' => 'Email',
+            'name' => 'Name',
+            'meassage' => 'Message',
+            'country_id' => 'Country',
+               'mobile_code_id' => 'Country Mobile Code',
+            'city' => 'City',
+            'date' => 'Date',
+            'w_talk' => 'Date',
+            'phone_false' =>'Phone',
+        );
+    }
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+        'ad' => array(self::BELONGS_TO, 'PlaceAnAd', 'ad_id'),
+        //  'mobile_code' => array(self::BELONGS_TO, 'Countries', 'mobile_code_id'),
+        'country' => array(self::BELONGS_TO, 'Countries', 'country_id'),
+        'bank' => array(self::BELONGS_TO, 'Bank', 'bank_id'),
+        'ad' => array(self::BELONGS_TO, 'PlaceAnAd', 'ad_id'),
+        );
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+     public $ad_slug;
+     public function getAdTitle(){
+		if(!empty($this->ad_id)){
+		$ad =$this->ad ; 
+		return '<a href="'.$ad->DetailUrlAbsolute.'" target="_blank">'.$ad->ad_title.'</a>';
+		}
+		else{
+			return '-';
+		}
+	}
+    public function search($return=false)
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria=new CDbCriteria;
+        $criteria->compare('id',$this->id);
+        $criteria->compare('type',$this->type);
+         $criteria->compare('ad_title',$this->ad_title,true);
+        $criteria->compare('email',$this->email,true);
+        $criteria->compare('name',$this->name,true);
+        $criteria->compare('meassage',$this->meassage,true);
+        $criteria->compare('city',$this->city,true);
+        $criteria->compare('date',$this->date,true);
+       // $criteria->compare('usr2.user_id',$this->user_id );
+              $criteria->select = 't.*,ads.ad_title,ads.slug as ad_slug  '; 
+         $criteria->join = ' INNER   JOIN {{place_an_ad}} ads on ads.id = t.ad_id and  ads.isTrash="0" ';
+           
+        $criteria->order="id desc";
+        if(!empty($return)){ return $criteria; }
+	 	return new CActiveDataProvider($this, array(
+		'criteria'=>$criteria,
+	   'pagination'    => array(
+                'pageSize'  => $this->paginationOptions->getPageSize(),
+                'pageVar'   => 'page',
+            ),
+		));
+    }
+      public function getIp(){
+   		$client  = @$_SERVER['HTTP_CLIENT_IP'];
+
+		$forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+
+		$remote  = @$_SERVER['REMOTE_ADDR'];
+
+		$result  = array('country'=>'', 'city'=>'');
+
+		if(filter_var($client, FILTER_VALIDATE_IP)){
+
+		$ip = $client;
+
+		}elseif(filter_var($forward, FILTER_VALIDATE_IP)){
+
+		$ip = $forward;
+
+		}else{
+
+		$ip = $remote;
+
+		}
+		return $ip;
+  }
+    public function beforeSave(){
+		
+	   if(parent::beforeSave()) 
+	   {
+            if($this->isNewRecord){
+              $this->ip_address      =  $this->getIp();
+              if(defined('COUNTRY_ID')){
+				$this->country_id      =  COUNTRY_ID;
+			  }
+            }
+             $this->phone = (!empty($this->phone)) ? $this->phone : $this->phone_false;
+			  
+
+			 return true;
+	   }
+	return false;
+	 
+	}
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return ContactUs the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
+     public function getNameWithCountry(){
+		if(!empty($this->country_id)){
+			return $this->name.'('.$this->country->country_name.')';
+		}
+		else{
+			return $this->name;
+		}
+	}
+    public function getPhoneWithCountry(){
+		if(!empty($this->mobile_code_id)){
+			$codeing = $this->mobile_code->country_code;
+			if(empty($codeing )){
+				$codeing = $this->mobile_code->country_name;
+			}
+			return  '(+'.$codeing.')'.$this->phone;
+		}
+		else{
+			return $this->phone;
+		}
+	}
+	public $phone_false;
+    
+    public function getIpInfo(){
+	    if(!empty($this->ip_address)){ return $this->ip_address;  }
+ 
+	}
+	
+	public $section_name; 
+ public $country_name;
+	 public function getsectionTitle(){
+		 
+		 return $this->section_name;
+	}
+		public function getShortName($length = 40)
+    {
+        if(empty($this->meassage)){ return 'No details entered'; }
+        return StringHelper::truncateLength($this->meassage, (int)$length);
+    }
+    public $ad_title;
+ 
+ 
+     
+    const BULK_ACTION_DELETE = 'delete';
+ 
+	public function getBulkActionsList()
+    {
+				$ar =   
+				array(
+							self::BULK_ACTION_DELETE         => Yii::t('app', 'Delete Permanently '),
+							 
+				);
+			 
+				return $ar; 
+			 
+				 
+    }
+}

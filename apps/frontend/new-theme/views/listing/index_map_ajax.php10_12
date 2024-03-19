@@ -1,0 +1,301 @@
+<div id="map_locatorww">
+<?php 
+$links_open_in  = $this->options->get('system.common.link_open_in','S');	
+$this->renderPartial('_filter_html_top');?>
+<?php 
+if(empty($adsCount)){
+ 
+	$this->renderPartial('_no_result_page'); 
+}
+else{ ?> 
+	
+
+          <div class="columns" style="width:100%;">
+                <div id="leftColumn" class="leftColumn">
+					 
+        <div class="container margin-top-40 list-container-rx" id="" style="width:100%; ">
+			<div class="">
+            <div class="">
+                <div class="col-sm-12 padding-left-0">
+                    <span class="ak_text margin-left-0" id="loader_againn">
+                               
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 desc-row2 padding-left-0">
+                  <h3 class="_jmmm34f  margin-bottom-0">
+                    <?php  
+                                        echo  Yii::t('trans', ' {cnt}    {p} ' ,array('{p}'=>  $m_title   ,'{cnt}'=> $adsCount  ));
+                                         if(!empty($userM)){
+											 echo ' <small class="user-nameing secname_'.$filterModel->section_id.'"><b>['.$userM->fullName.']</b></small>';
+										}
+					?>
+					</h3>
+					</div>
+					<?php
+                $l_view = 'list';
+                if((isset($this->app->request->cookies['list_view'])   )){ $l_view  =  $this->app->request->cookies['list_view']->value; 	}
+		        ?>
+				   <div class="col-sm-6    padding-right-0 the-head-sorter text-right mcheckboxSorter">
+				        
+                        <div class="newheader_dropdown_action viewersp text-right pull-right <?php echo   $l_view==   'list'    ? 'active' : '';?> "  onclick="changeViewN2(this)" data-val="list"  data-tr-event-name="header_user_account" data-header-id="profile"  >
+                        <a href="<?php echo   Yii::app()->createUrl('listing/index',array('sec'=>!empty($filterModel->section_id) ? $filterModel->section_id : 'Property'));?>?view=list"  class="newheader_dropdown_action_item header_link" data-ui-id="user-account"><span class="newheader_useravatar_name">List</span><div class="newheader_dropdown_action_item_after"></div></a>
+                        <svg enable-background="new 0 0 24 24" class="newheader_dropdown_arrow" height="15" viewBox="0 0 24 24" width="15" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="m5 0h-4c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h4c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m23 0h-14c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m5 9h-4c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h4c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m23 9h-14c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m5 18h-4c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h4c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m23 18h-14c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/></svg>
+                       
+                        </div>
+                        <div class="newheader_dropdown_action viewersp text-right pull-right  <?php echo   $l_view ==   'grid'    ? 'active' : '';?> "  data-val="grid" onclick="changeViewN2(this)"   data-tr-event-name="header_user_account" data-header-id="profile"  >
+                        <a href="<?php echo   Yii::app()->createUrl('listing/index',array('sec'=>!empty($filterModel->section_id) ? $filterModel->section_id : 'Property'));?>?view=grid" class="newheader_dropdown_action_item header_link" data-ui-id="user-account"><span class="newheader_useravatar_name">Grid</span><div class="newheader_dropdown_action_item_after"></div></a>
+                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="newheader_dropdown_arrow" x="0px" y="0px" width="15"   height="15" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"> <g> <g> <g> <path fill="currentColor" d="M187.628,0H43.707C19.607,0,0,19.607,0,43.707v143.921c0,24.1,19.607,43.707,43.707,43.707h143.921 c24.1,0,43.707-19.607,43.707-43.707V43.707C231.335,19.607,211.728,0,187.628,0z"/> <path fill="currentColor" d="M468.293,0H324.372c-24.1,0-43.707,19.607-43.707,43.707v143.921c0,24.1,19.607,43.707,43.707,43.707h143.921 c24.1,0,43.707-19.607,43.707-43.707V43.707C512,19.607,492.393,0,468.293,0z"/> <path fill="currentColor" d="M187.628,280.665H43.707C19.607,280.665,0,300.272,0,324.372v143.921C0,492.393,19.607,512,43.707,512h143.921 c24.1,0,43.707-19.607,43.707-43.707V324.372C231.335,300.272,211.728,280.665,187.628,280.665z"/> <path fill="currentColor" d="M468.293,280.665H324.372c-24.1,0-43.707,19.607-43.707,43.707v143.921c0,24.1,19.607,43.707,43.707,43.707h143.921 c24.1,0,43.707-19.607,43.707-43.707V324.372C512,300.272,492.393,280.665,468.293,280.665z"/> </g> </g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg>
+                      
+                         </div>
+                        <div class="newheader_dropdown_action viewersp text-right pull-right  <?php echo   $l_view ==   'map'    ? 'active' : '';?> "  data-val="mal"    data-tr-event-name="header_user_account" data-header-id="profile"  >
+                        <a href="<?php echo   Yii::app()->createUrl('listing/index',array('sec'=>!empty($filterModel->section_id) ? $filterModel->section_id : 'Property'));?>?view=map" class="newheader_dropdown_action_item header_link" data-ui-id="user-account"><span class="newheader_useravatar_name">Map</span><div class="newheader_dropdown_action_item_after"></div></a>
+                         <svg xmlns="http://www.w3.org/2000/svg" class="newheader_dropdown_arrow" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="15"   height="15" x="0" y="0" viewBox="0 0 128 128" style="enable-background:new 0 0 512 512" xml:space="preserve"><g><g xmlns="http://www.w3.org/2000/svg"><path d="m78.777 37.021a14.777 14.777 0 1 0 -14.777 14.779 14.795 14.795 0 0 0 14.777-14.779zm-26.054 0a11.277 11.277 0 1 1 11.277 11.279 11.29 11.29 0 0 1 -11.277-11.279z" fill="currentColor" data-original="#000000" style=""/><path d="m123.328 121.069-14.266-37.4a1.751 1.751 0 0 0 -1.635-1.126h-27c.165-.269.329-.53.494-.8 10.389-17.2 15.617-32.246 15.542-44.714a32.464 32.464 0 0 0 -64.928-.011c-.075 12.479 5.153 27.527 15.542 44.725.165.273.329.534.494.8h-27a1.751 1.751 0 0 0 -1.635 1.126l-14.264 37.4a1.748 1.748 0 0 0 1.635 2.374h115.386a1.748 1.748 0 0 0 1.635-2.374zm-88.292-84.048a28.964 28.964 0 1 1 57.928.01c.15 24.858-23.09 55.517-28.964 62.869-5.874-7.349-29.115-38-28.964-62.879zm27.631 66.779a1.75 1.75 0 0 0 2.666 0 185.716 185.716 0 0 0 12.9-17.759h27.987l2.24 5.875-54.691 19.451-19.494-25.329h15.49a185.716 185.716 0 0 0 12.902 17.762zm-8.959 11.3h.01l32.627-11.6 12.655 16.443h-58.9zm-31.93-29.062h8.08l20.442 26.562-20.643 7.342h-20.81zm81.643 33.905-13.609-17.682 19.9-7.077 9.443 24.759z" fill="currentColor" data-original="#000000" style=""/></g></g></svg>
+
+                      
+                         </div>
+				       
+				       
+				       <script>var list_view_url =  '<?php echo Yii::app()->createUrl('site/setview_list');?>';</script>
+				        
+				<?php 
+				$sortArray = $filterModel->sortArray();
+				if(!isset($formData['sort'])){$formData['sort'] = 'best-asc'; }
+				/*
+				foreach($sortArray as $k=>$v){
+				?><input class="checkbox-tools" type="radio" name="order" id="tool-<?php echo $k;?>" <?php echo  (isset($formData['sort']) and  $formData['sort']==  $k ) ?   'checked': ''; ?>  onchange="changeOrderN(this)" value="<?php echo  $k;?>" ><label class="for-checkbox-tools <?php echo ($k=='sqft-desc' or $k=='title-asc')? 'n-p-r-0' : '';?>" for="tool-<?php echo $k;?>"> <?php echo $v;?> </label>
+				<?php }*/ ?>  
+                <?php
+                 $sortOrder = ''; $title_sort = '' ; 
+                foreach($sortArray as $k=>$v){ 
+                   $title_sort = (isset($formData['sort']) and  $formData['sort']==  $k ) ?   $v : $title_sort; 
+    			   $sortOrder .= '<li class="newheader_dropdown_item text-left"><a class="newheader_dropdown_item_link header_link" data-val="'.$k.'" onclick="changeOrderN2(this)" href="javascript:void(0)">'.$v.'</a></li>'; 
+    			} ?>
+                 </div>
+             	   
+             
+            </div>
+            </div>
+        </div>
+		
+                    <div id="scrollContent">
+                        <div id="srpHeaderLeftColumn" class="plm">
+                            <div data-reactroot="" data-reactid="1" data-react-checksum="-652063423">
+                                <div data-reactid="2">
+                                    <div data-reactid="3">
+                                         
+                                    </div>
+                                    <!-- react-empty: 6 -->
+                                </div>
+                                <div class="miniHidden xxsHidden" data-reactid="7">
+                                    <div class="form mtn horizontalContainer mrm" data-reactid="8">
+                                        <div class="field mtn" style="flex:1;" data-reactid="9">
+                                            
+
+                                            
+
+
+                                            <div class="fieldGroup fieldGroupInline" data-reactid="10">
+                                            
+ 
+			<div class="clearfix"></div>
+			
+			
+
+                                               </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-reactid="27">
+                                    <!-- react-empty: 28 --><!-- react-empty: 29 -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+						 <div class="map-fetaured">
+                          <div class="clearfix"></div>
+                         </div>
+                        </div>   
+                        <div id="resultsColumn" class="index_list maker_adjust listView ">
+							 <div class="resultsColumn" style="overflow:hidden;" data-reactroot="" data-reactid="1" data-react-checksum="1963441139">
+								
+                                <div id="openHouseData" data-reactid="2"></div>
+                                <!-- react-empty: 17 --><!-- react-empty: 18 --><!-- react-empty: 19 -->
+                                <div class="backgroundControls" data-reactid="20">
+                                    <div data-reactid="21">
+										
+                                        <!-- react-empty: 22 -->
+                                        <div class="containerFluid" data-reactid="23">
+                                            <ul class="mvn row list container" id="d_column"  data-reactid="24" style="background:#fff;width:100%;">
+												<?php
+												 $apps = $this->app->apps;
+												foreach($ads as $k=>$v){ 
+													$s_id ="map_item".$v->id ; 
+												?> 
+                                                	<div class="col-sm-4 lst-prop  propli  mul_sliderh smsec_<?php echo $v->section_id;?>" id="<?php echo $s_id;?>"  data-price="<?php echo $v->price;?>">
+							<a href="<?php echo $v->detailUrl;?>" onclick="easyload2(this,event,'details-page-container')" class="lsproplink"> </a> 
+							<div class="arws"></div> 
+							 <div class="listing-item"> 
+										
+										<div class="tagsListContainer"  >
+										<ul class="tagList tags listInlineBulleted man h7 typeEmphasize"><?php echo $v->getTagList('F');?></ul>
+										</div>
+                                     
+                                    	<div class="single-item-hover"></div>
+										<div class='single-item' >
+											<?php  echo $v->generateImage2($apps,$h=380,$w=570,$s_id,$bg);?> 
+										</div>
+										<?php
+										if(!empty($v->ad_images_g)){
+												echo "<script>$(document).ready(function(){ caroselSingle2('".$s_id."',{$bg});});</script>";
+										}
+										?>
+                                       
+                                   
+                                 </div>
+                            
+                                 	
+            <div class="wrapper">
+				<div class="price"><?php echo $v->listRowPrice();?></div>
+              <div class="smartad_infoarea">
+                <h2 class="smartad_title smartad_title-link"><a href="<?php echo $v->detailUrl;?>" ><?php echo  $v->AdTitle;?></a></h2>
+               <div class="sh-mobile"><?php echo $v->listRowPrice();?></div>
+                <div class="smartad_detail">
+                   
+                    <?php echo $v->listRowFeatures();?>
+                    </div>
+                <div class="smartad_location-area">
+                  <div class="smartad_location"><span class="svg">
+                    <svg viewBox="0 0 1792 1792" class="smartad_locationicon">
+                      <use xlink:href="#svg-location"></use>
+                    </svg>
+                    </span><span class="smartad_locationtext"><?php echo $v->listRowLocation();?></span>
+                        <span class="sect-d-ro">
+                          <span class="cat-info-f"><?php echo  $v->SectionCategoryFullTitle;?></span> 
+                          <span class="sm-d-date"><span><?php echo $v->ShowDateFrontend;?></span></span>
+                      </span>
+                    </div>
+                </div>
+              </div>
+            </div>
+               <?php echo $v->footerLinkNew();?>
+          
+          <div class="clearfix"></div>
+          </div>
+           
+                                                <?php } ?>
+                                    </ul>
+                                        </div>
+                                        <div class="clearfix" data-reactid="1441"></div>
+                                    </div>
+                                  
+                                    <div class="backgroundBasic" data-reactid="1442">
+                                        <div class="paginationContainer pls mtl ptl mbm" data-reactid="1443">
+                                                   	<div class="pagingarea">
+						<nav class="navigation pagination d-flex justify-content-end" role="navigation">
+							<div class="actions">
+		<?php 
+	 
+		$this->widget('frontend.components.web.widgets.SimplaPager', array(
+		'pages'=>$pages,
+		 'maxButtonCount'=>3, 
+		));  
+		 
+		?>
+		 
+		
+		
+		
+		</div>
+                 </nav>
+		</div>  
+      
+                                          <?php
+                                          if(!empty($adsCount)){
+											  ?>
+								 
+                                            <div class="txtC h6 typeWeightNormal typeLowlight" data-reactid="1465"><?php echo  Yii::t('app','Showing page {s} of {t} pages' ,array('{s}'=>$pages->currentPage+1,'{t}'=>$pages->pageCount));?></div>  
+                                            <?php } ?>
+                                        </div>
+                                        <div class="mtm plm txtC " data-reactid="1466">
+                                            <span data-reactid="1467">
+												<?php if(!empty( $country_name)){ ?> 
+												<a href="#" data-reactid=""><?php echo $country_name;?></a></span>
+												
+												<?php } ?> 
+												<?php if(!empty( $state_name)){ ?> 
+													&nbsp&nbsp<i class="fas fa-angle-right" data-reactid=""></i><span data-reactid="">
+												<a href="#" data-reactid="">&nbsp&nbsp<?php echo $state_name;?></a> </span> <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                </div>
+                        </div>
+                    </div>
+                    <!-- react-empty: 1 -->
+              
+           
+            <?php   
+            
+		}
+               $this->renderPartial('_map_view');?>
+            
+            <div style="clear:both"></div>
+              </div>
+</div>
+<style>
+body { overflow-y : hidden; }
+
+</style>
+            <script>
+			var timer_ajax; 
+			var mainListUrl = '<?php echo Yii::app()->createUrl('listing/index');?>/view/map/';
+			var autoCompleteUrl = '<?php echo Yii::app()->createUrl('listing/autocomplete');?>';
+			$(function(){ changeForm() ; })
+            </script>
+            <style>
+				.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer ;  }
+				.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+				.autocomplete-selected { background: #F0F0F0; }
+				.autocomplete-suggestions strong { font-weight: normal; color: #000; }
+				.autocomplete-group { padding: 2px 5px; }
+				.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+				
+				.btnTertiary, .btnTertiary:visited, a.btnTertiary, a.btnTertiary:visited {
+				border: 1px solid #FF5A5F;
+				background: #fff;
+				color: #FF5A5F;
+				font-weight: 600;
+				}
+			    .btnTertiary:hover  { background: #FF5A5F;color:#fff; border: 1px solid #FF5A5F; } 
+            </style>
+			<style>.boxCard{ display:none; }.opened .boxCard{ display:block !important; }</style>
+ 	                                                     
+		<div id="myModal2" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close rd-close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><?php echo  'Contact this property' ;?></h4>
+      </div>
+      <div class="modal-body" id="cn_property">
+        <p><?php echo  'loading....' ;?></p>
+      </div>
+    
+    </div>
+  </div>
+</div>  
+<script>
+    function OpenFormClick(k){
+    var idAd = $(k).attr('data-reactid');
+    if(idAd===undefined){ return false;}
+    $('#myModal2').modal('show');$('#cn_property').html('<?php echo  'loading....' ;?>');
+    $.get('<?php echo Yii::App()->createUrl('detail/contact_property');?>/id/'+idAd,function(data){ $('#cn_property').html(data);  })
+    }
+</script>
+  

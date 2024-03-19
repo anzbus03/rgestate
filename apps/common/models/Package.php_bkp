@@ -1,0 +1,146 @@
+ <?php
+
+/**
+ * This is the model class for table "mw_package".
+ *
+ * The followings are the available columns in table 'mw_package':
+ * @property integer $package_id
+ * @property string $package_name
+ * @property string $price_per_month
+ * @property integer $validity_in_days
+ * @property integer $max_listing_per_day
+ * @property string $visitors_can_directly
+ * @property string $create_profile_picture
+ * @property string $statistics
+ * @property string $logo
+ * @property string $featured
+ * @property string $added_date
+ * @property string $isTrash
+ * @property string $status
+ */
+class Package extends ActiveRecord
+{
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return 'mw_package';
+    }
+
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('package_name, price_per_month, validity_in_days, max_listing_per_day, visitors_can_directly, create_profile_picture, statistics, logo, featured ', 'required'),
+            array('validity_in_days, max_listing_per_day', 'numerical', 'integerOnly'=>true),
+            array('package_name', 'length', 'max'=>250),
+            array('price_per_month', 'length', 'max'=>10),
+            array('visitors_can_directly, create_profile_picture, statistics, logo, featured, isTrash, status', 'length', 'max'=>1),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('package_id, package_name, price_per_month, validity_in_days, max_listing_per_day, visitors_can_directly, create_profile_picture, statistics, logo, featured, added_date, isTrash, status', 'safe', 'on'=>'search'),
+        );
+    }
+
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+        );
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'package_id' => 'Package',
+            'package_name' => 'Package Name',
+            'price_per_month' => 'Price Per Month',
+            'validity_in_days' => 'Validity In Days',
+            'max_listing_per_day' => 'Max Listing Per Day',
+            'visitors_can_directly' => 'Visitors Can Directly',
+            'create_profile_picture' => 'Create Profile Picture',
+            'statistics' => 'Statistics',
+            'logo' => 'Logo',
+            'featured' => 'Featured',
+            'added_date' => 'Added Date',
+            'isTrash' => 'Is Trash',
+            'status' => 'Status',
+        );
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria=new CDbCriteria;
+
+        $criteria->compare('package_id',$this->package_id);
+        $criteria->compare('package_name',$this->package_name,true);
+        $criteria->compare('price_per_month',$this->price_per_month,true);
+        $criteria->compare('validity_in_days',$this->validity_in_days);
+        $criteria->compare('max_listing_per_day',$this->max_listing_per_day);
+        $criteria->compare('visitors_can_directly',$this->visitors_can_directly,true);
+        $criteria->compare('create_profile_picture',$this->create_profile_picture,true);
+        $criteria->compare('statistics',$this->statistics,true);
+        $criteria->compare('logo',$this->logo,true);
+        $criteria->compare('featured',$this->featured,true);
+        $criteria->compare('added_date',$this->added_date,true);
+        $criteria->compare('isTrash','0',true);
+        $criteria->compare('status','A',true);
+
+                return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+             'pagination'    => array(
+                'pageSize'  => $this->paginationOptions->getPageSize(),
+                'pageVar'   => 'page',
+            ),
+        ));
+    }
+ 	public function  listData()
+    {
+		 $criteria=new CDbCriteria;
+		 $criteria->condition = "t.isTrash='0' and t.status='A'";
+		 return $this->findAll($criteria);
+	}
+ 	public function  findFromID($id)
+    {
+		 $criteria=new CDbCriteria;
+		 $criteria->condition = "t.isTrash='0' and t.status='A' and package_id=:id";
+		 $criteria->params[':id'] = $id;
+		 return $this->find($criteria);
+	}
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return Package the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
+}

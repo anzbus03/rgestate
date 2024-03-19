@@ -1,0 +1,4684 @@
+/* RG Estate Base Font */
+html {
+  font-size: 62.5%;
+}
+
+/* RG Estate Variables */
+:root {
+  --bs-blue: #00699e;
+  --bs-light-blue: #3b7999;
+  --bs-blue-rgb: 0, 105, 158;
+  --bs-gray-dark: #1d1d1d;
+  --bs-gray: #333;
+  --bs-dark: #1c2f38;
+  --bs-orange: #ef7d28;
+  --bs-gray-200: #fafafa;
+  --bs-gray-300: #d2d2d2;
+  --bs-gray-400: #d1d1d1;
+  --bs-gray-500: #888;
+  --bs-gray-600: #656865;
+  --bs-gray-700: #424242;
+  --bs-gray-800: #3a3a3a;
+  --bs-body-color: #656865;
+  --bs-border: #cacaca;
+  --bs-border-100: #b6b3b3;
+  --bs-border-200: #5a5a5a;
+  --bs-border-300: #dddcdc;
+  --bs-font-sans-serif: "Poppins", sans-serif;
+  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-body-font-size: 1.4rem;
+  --bs-body-bg: #ffffff;
+  --bs-border-color: var(--bs-border);
+  --bs-modal-width: 700px;
+}
+
+h6,
+h5,
+h4,
+h3,
+h2,
+h1,
+p,
+ul,
+li {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+a {
+  /* color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1)); */
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.rg-link-hover-blue:hover,
+.rg-link-hover-blue a:hover {
+  color: var(--bs-blue) !important;
+}
+
+::marker {
+  display: none;
+  content: "";
+}
+
+body {
+  margin: 0;
+  font-family: var(--bs-body-font-family);
+  font-size: var(--bs-body-font-size);
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* overflow-x: hidden; */
+}
+
+.container {
+  max-width: 128rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.row {
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+}
+
+[class^="col-"] {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* EGEstate Gutter */
+.rg-gutter-20 {
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
+
+.rg-gutter-20 [class^="col-"] {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* EGEstate Text Colors */
+.rg-text-blue {
+  color: var(--bs-blue);
+}
+
+.rg-text-orange {
+  color: var(--bs-orange);
+}
+
+.rg-text-dark {
+  color: var(--bs-gray-dark);
+}
+
+.rg-text-gray-300 {
+  color: var(--bs-gray-300);
+}
+
+.rg-text-gray-400 {
+  color: var(--bs-gray-400);
+}
+
+.rg-text-gray-500 {
+  color: var(--bs-gray-500);
+}
+
+.rg-text-gray-600 {
+  color: var(--bs-gray-600);
+}
+
+.rg-text-gray-700 {
+  color: var(--bs-gray-700);
+}
+
+/* EGEstate Backgrounds */
+.rg-bg-blue {
+  background-color: var(--bs-blue);
+}
+
+.rg-bg-light-blue {
+  background-color: var(--bs-light-blue);
+}
+
+.rg-bg-orange {
+  background-color: var(--bs-orange);
+}
+
+.rg-bg-black-rgb {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.rg-bg-gray-200 {
+  background: var(--bs-gray-200);
+}
+
+.rg-bg-dark {
+  background: var(--bs-dark);
+}
+
+/* EGEstate Font Size */
+.rg-fs-10 {
+  font-size: 1rem;
+}
+
+.rg-fs-11 {
+  font-size: 1.1rem;
+}
+
+.rg-fs-12 {
+  font-size: 1.2rem;
+}
+
+.rg-fs-13 {
+  font-size: 1.3rem;
+}
+
+.rg-fs-14 {
+  font-size: 1.4rem;
+}
+
+.rg-fs-15 {
+  font-size: 1.5rem;
+}
+
+.rg-fs-16 {
+  font-size: 1.6rem;
+}
+
+.rg-fs-18 {
+  font-size: 1.8rem;
+}
+
+.rg-fs-20 {
+  font-size: 2rem;
+}
+
+.rg-fs-22 {
+  font-size: 2.2rem;
+}
+
+.rg-fs-24 {
+  font-size: 2.4rem;
+}
+
+.rg-fs-26 {
+  font-size: 2.6rem;
+}
+
+.rg-fs-27 {
+  font-size: 2.5rem;
+}
+
+.rg-fs-28 {
+  font-size: 2.8rem;
+}
+
+.rg-fs-30 {
+  font-size: 3rem;
+}
+
+.rg-fs-32 {
+  font-size: 3.2rem;
+}
+
+.rg-fs-40 {
+  font-size: 4rem;
+}
+
+.rg-fs-50 {
+  font-size: 5rem;
+}
+
+.rg-fs-55 {
+  font-size: 5.5rem;
+}
+
+/* EGEstate Font Weight */
+.rg-fw-300 {
+  font-weight: 300;
+}
+
+.rg-fw-400 {
+  font-weight: 400;
+}
+
+.rg-fw-500 {
+  font-weight: 500;
+}
+
+.rg-fw-600 {
+  font-weight: 600;
+}
+
+.rg-fw-700 {
+  font-weight: 700;
+}
+
+/* EGEstate Border Radius */
+.rg-br-4 {
+  border-radius: 0.6rem;
+}
+
+.rg-br-6 {
+  border-radius: 0.6rem;
+}
+
+.rg-br-8 {
+  border-radius: 0.8rem;
+}
+
+.rg-br-10 {
+  border-radius: 1rem;
+}
+
+.rg-br-14 {
+  border-radius: 1.4rem;
+}
+
+.rg-br-16 {
+  border-radius: 1.6rem;
+}
+
+.rg-br-20 {
+  border-radius: 2rem;
+}
+
+.rg-br-26 {
+  border-radius: 2.6rem;
+}
+
+.rg-br-30 {
+  border-radius: 3rem;
+}
+
+/* EGEstate Margin Spacing */
+.rg-mt-12 {
+  margin-top: 1.2rem;
+}
+
+.rg-mt-20 {
+  margin-top: 2rem;
+}
+
+.rg-mt-22 {
+  margin-top: 2.2rem;
+}
+
+.rg-mt-25 {
+  margin-top: 2.5rem;
+}
+
+.rg-mt-30 {
+  margin-top: 3rem;
+}
+
+.rg-mt-40 {
+  margin-top: 4rem;
+}
+
+.rg-mt-50 {
+  margin-top: 5rem;
+}
+
+.rg-mt-70 {
+  margin-top: 7rem;
+}
+
+/* EGEstate Buttons */
+.btn {
+  --bs-btn-padding-x: 2rem;
+  --bs-btn-padding-y: 1rem;
+  font-family: var(--bs-body-font-family);
+  --bs-btn-font-size: 1.6rem;
+  --bs-btn-font-weight: 500;
+  --bs-btn-line-height: 160%;
+  --bs-btn-border-radius: 3rem;
+}
+
+.btn-primary {
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--bs-blue);
+  --bs-btn-border-color: var(--bs-blue);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: var(--bs-orange);
+  --bs-btn-hover-border-color: var(--bs-orange);
+  --bs-btn-active-color: var(--bs-white);
+  --bs-btn-active-bg: var(--bs-blue);
+  --bs-btn-active-border-color: var(--bs-blue);
+  --bs-btn-active-shadow: none;
+}
+
+.btn-dark {
+  --bs-btn-padding-x: 1.5rem;
+  --bs-btn-padding-y: 1.01rem;
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--bs-gray);
+  --bs-btn-border-color: var(--bs-gray);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: var(--bs-blue);
+  --bs-btn-hover-border-color: var(--bs-blue);
+}
+
+.btn-secondary {
+  --bs-btn-color: var(--bs-blue);
+  --bs-btn-bg: var(--bs-gray-100);
+  --bs-btn-border-color: var(--bs-gray-100);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: var(--bs-blue);
+  --bs-btn-hover-border-color: var(--bs-blue);
+}
+
+.btn-outline-secondary {
+  --bs-btn-color: var(--bs-blue);
+  --bs-btn-bg: var(--bs-white);
+  --bs-btn-border-color: var(--bs-blue);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: var(--bs-orange);
+  --bs-btn-hover-border-color: var(--bs-orange);
+}
+
+/* EGEstate Form Input */
+.form-input {
+  height: 4.6rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  color: var(--bs-gray-dark);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.form-input::placeholder {
+  color: var(--bs-gray-600);
+}
+
+input:focus-visible {
+  outline: none;
+}
+
+/* EGEstate SVG */
+.rg-current-color {
+  fill: currentColor;
+}
+
+.rg-fill-white {
+  fill: var(--bs-white);
+}
+
+.rg-fill-blue {
+  fill: var(--bs-blue);
+}
+
+.rg-fill-orange {
+  fill: var(--bs-orange);
+}
+
+.rg-fill-gray-500 {
+  fill: var(--bs-gray-500);
+}
+
+/* EGEstate OffCanvas */
+.offcanvas {
+  box-shadow: -35px 4px 35px 0px rgba(0, 0, 0, 0.03);
+  --bs-offcanvas-border-color: transparent;
+  --bs-offcanvas-border-width: 0;
+  --bs-offcanvas-width: 32rem;
+}
+
+.offcanvas .rg-close {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  margin-left: 2.4rem;
+  flex: 0 0 auto;
+}
+
+.offcanvas-body {
+  padding: 0 3.5rem 3rem;
+}
+
+/* RG Estate Pagination */
+.pagination {
+  --bs-pagination-padding-x: 1.1rem;
+  --bs-pagination-padding-y: 0.4rem;
+  --bs-pagination-font-size: 1.6rem;
+  --bs-pagination-color: var(--bs-gray-600);
+  --bs-pagination-bg: transparent;
+  --bs-pagination-border-width: 0;
+  --bs-pagination-border-radius: 0.4rem;
+  --bs-pagination-hover-color: var(--bs-white);
+  --bs-pagination-hover-bg: var(--bs-blue);
+  --bs-pagination-focus-color: var(--bs-white);
+  --bs-pagination-focus-bg: var(--bs-blue);
+  --bs-pagination-focus-box-shadow: none;
+  --bs-pagination-active-color: #fff;
+  --bs-pagination-active-bg: var(--bs-blue);
+  --bs-pagination-active-border-color: var(--bs-blue);
+}
+
+.pagination .page-item {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.pagination .page-item a:hover,
+.pagination .page-item.active a {
+  border-radius: 0.4rem;
+}
+
+.pagination .page-item a:hover svg {
+  fill: var(--bs-white);
+}
+
+/* RGEstate Modal */
+.modal {
+    --bs-modal-header-padding: 1.5rem 2rem;
+    --bs-modal-box-shadow: none;
+    --bs-modal-border-width: 0;
+}
+
+.rg-modal-350 {
+  --bs-modal-width: 35rem;
+}
+
+.rg-modal-540 {
+  --bs-modal-width: 54rem;
+}
+
+.rg-blue-modal .btn-close {
+    --bs-btn-close-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
+}
+
+/* EGEstate Select2 */
+.select2 {
+  width: 100% !important;
+}
+
+.select2-container .select2-selection--single {
+  background: var(--bs-white);
+  height: 4.6rem;
+  border-radius: 3rem;
+  /* border: none; */
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 4.4rem;
+  color: var(--bs-gray-700);
+  /*font-weight: 500;*/
+  padding-left: 2rem;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 4.4rem;
+  right: 2rem;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+  background-color: var(--bs-blue);
+}
+
+.select2-container--default .select2-results__option--selected {
+  background: var(--bs-white);
+}
+
+.select2-container--open .select2-dropdown--above {
+  border-top-left-radius: 3rem;
+  border-top-right-radius: 3rem;
+  overflow: hidden;
+}
+
+.select2-container--open .select2-dropdown--below {
+  border-bottom-left-radius: 3rem;
+  border-bottom-right-radius: 3rem;
+  overflow: hidden;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+  color: var(--bs-gray-600);
+}
+
+.select2-results__option {
+  padding-left: 1.4rem;
+  padding-right: 1.4rem;
+  color: var(--bs-gray-700);
+  font-weight: 500;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  background: url(../images/up-down-arrow.svg) no-repeat right center;
+  object-fit: contain;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+  display: none;
+}
+
+/*.select2-search {*/
+/*  display: none !important;*/
+/*}*/
+
+/* RG Estate Slick Slider */
+/* the slides */
+.slick-slide {
+  margin: 0 1rem;
+}
+
+/* the parent */
+.slick-list {
+  margin: 0 -1rem;
+}
+
+.slick-dots li {
+  height: auto;
+  margin: 0;
+}
+
+.slick-dots li button {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 2rem;
+  background: rgba(239, 125, 40, 0.2);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.slick-dots li.slick-active {
+  margin-right: 0.3rem;
+}
+
+.slick-dots li.slick-active button {
+  width: 1.9rem;
+  background-color: var(--bs-blue);
+}
+
+.slick-dots li button:before,
+.slick-dots li.slick-active button:before {
+  color: transparent;
+}
+
+.slick-dots {
+  bottom: -6.5rem;
+}
+
+.slick-prev,
+.slick-next {
+  background-color: var(--bs-blue);
+  border-radius: 100%;
+  top: initial;
+  bottom: -7.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 1;
+}
+
+.slick-prev {
+  left: 47.5%;
+}
+
+.slick-next {
+  left: 52.5%;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  display: none;
+}
+
+.slick-prev:hover,
+.slick-prev:focus,
+.slick-next:hover,
+.slick-next:focus {
+  background-color: var(--bs-blue);
+}
+
+.rg-arrow-wh .slick-prev,
+.rg-arrow-wh .slick-next {
+  width: 4.2rem;
+  height: 4.2rem;
+}
+
+/* RG Estate Height/Width */
+.rg-wh-20 {
+  width: 2rem;
+  height: 2rem;
+}
+
+.rg-wh-32 {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+.rg-wh-37 {
+  width: 3.7rem;
+  height: 3.7rem;
+}
+
+.rg-wh-40 {
+  width: 4rem;
+  height: 4rem;
+}
+
+.rg-wh-55 {
+  width: 5.5rem;
+  height: 5.5rem;
+}
+
+.rg-wh-64 {
+  width: 6.4rem;
+  height: 6.4rem;
+}
+
+.rg-wh-70 {
+  width: 7rem;
+  height: 7rem;
+}
+
+.rg-wh-87 {
+  width: 8.7rem;
+  height: 8.7rem;
+}
+
+.rg-wh-127 {
+  width: 12.7rem;
+  height: 12.7rem;
+}
+
+/* RG ESTATE TOPBAR STYLE */
+.rg-topbar .rg-topbar-social-list li:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.rg-topbar-social-list li a {
+  border: 1px solid var(--bs-blue);
+}
+
+.rg-topbar-social-list li a:hover {
+  border-color: var(--bs-blue);
+  background: var(--bs-blue) !important;
+}
+
+.rg-topbar-social-list li a:hover svg {
+  fill: var(--bs-white);
+}
+
+.rg-topbar .navbar-nav li a:hover {
+  color: var(--bs-blue);
+}
+
+.rg-topbar .rg-search-content .form-input {
+  height: 3rem;
+  padding-left: 1.2rem;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.rg-search-content .rg-search-icon {
+  position: absolute;
+  top: 0.3rem;
+  right: 1rem;
+  cursor: pointer;
+}
+
+.rg-search-content ::placeholder {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.rg-topbar-dropdowns .hover-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.rg-topbar-dropdowns .dropdown-menu {
+  z-index: 9999;
+  right: 0;
+  left: auto;
+}
+
+.rg-topbar-dropdowns .dropdown-menu .dropdown-item:hover {
+  background: var(--bs-blue);
+  color: var(--bs-white);
+}
+
+.rg-likes-offcanvas.offcanvas {
+  --bs-offcanvas-width: 37rem;
+}
+
+.rg-likes-card-img {
+  padding: 0 1rem;
+  border-right: 1px solid var(--bs-border);
+}
+
+.rg-likes-card-img img {
+  width: 80px;
+  height: 100%;
+}
+
+.rg-likes-offcanvas .rg-likes-card {
+  border-color: var(--bs-border);
+}
+
+.rg-likes-offcanvas .rg-likes-card-info {
+  padding: 1rem;
+}
+
+.rg-likes-offcanvas .rg-card-location svg {
+  fill: var(--bs-gray-500);
+}
+
+.rg-likes-offcanvas .btn-close.rg-card-btn-close {
+  width: 0.4em;
+  height: 0.4em;
+  margin: 0.7rem 0.7rem 0.7rem auto;
+}
+
+/* RG Estate Header */
+.navbar-collapse {
+  position: relative;
+  top: 0.3rem;
+}
+
+.navbar {
+  padding-top: 2.4rem;
+  padding-bottom: 3rem;
+  --bs-navbar-color: var(--bs-gray-600);
+  --bs-navbar-active-color: var(--bs-blue);
+  --bs-navbar-hover-color: var(--bs-blue);
+  --bs-navbar-nav-link-padding-x: 1.5rem;
+  --bs-navbar-toggler-padding-y: 0.25rem;
+
+  --bs-navbar-toggler-border-color: transparent;
+  /* border-bottom: rgba(182, 179, 179, 0.50) .1rem solid; */
+}
+
+.rg-dropdown {
+    --bs-dropdown-font-size: 1.4rem;
+    right: 0;
+    left: initial !important;
+    --bs-dropdown-item-padding-x: 1.5rem;
+    --bs-dropdown-item-padding-y: .6rem;
+    --bs-dropdown-link-active-bg: var(--bs-blue);
+    --bs-dropdown-border-radius: 1.2rem;
+    --bs-dropdown-link-hover-color: var(--bs-white);
+    --bs-dropdown-link-hover-bg: var(--bs-blue);
+    overflow: hidden;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.offcanvas {
+  --bs-offcanvas-padding-x: 2rem;
+  --bs-offcanvas-padding-y: 2rem;
+}
+
+.offcanvas.offcanvas-end {
+  box-shadow: none;
+}
+
+.offcanvas-body {
+  position: relative;
+  top: 0.4rem;
+}
+
+.offcanvas-body .btn-dark {
+  margin-left: 1rem;
+  --bs-btn-padding-y: 0.83rem;
+  --bs-btn-font-size: 1.4rem;
+}
+
+.offcanvas-body .btn-dark span.badge {
+    background-color: var(--bs-orange);
+    color: var(--bs-white);
+}
+
+.btn-close {
+  --bs-btn-close-opacity: 1;
+}
+
+/* RG Estate Home Hero */
+.rg-hero-bg {
+  /* overflow: hidden; */
+  min-height: 75rem;
+  background: url("../images/hero.jpg") no-repeat top center;
+  background-size: cover;
+  z-index: 1;
+  border-radius: 2.5rem;
+}
+
+.rg-hero-bg:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 2.5rem;
+}
+
+.rg-hero-stats {
+  top: 13rem;
+  left: 0;
+  max-width: 23.3rem;
+  height: 24.5rem;
+  border-top-right-radius: 2.6rem;
+  border-bottom-right-radius: 2.6rem;
+  padding-left: 2.6rem;
+  padding-right: 2.6rem;
+  background: rgba(0, 105, 158, 0.7);
+}
+
+.rg-hero-stats li * {
+  flex: 1;
+}
+
+.rg-hero-stats li:not(:first-child) {
+  margin-top: 2.6rem;
+}
+
+.rg-hero-content {
+  max-width: 80.1rem;
+}
+
+.rg-hero-content h2 {
+  max-width: 62rem;
+  line-height: 6rem;
+}
+
+.rg-hero-content p {
+  max-width: 67rem;
+}
+
+.rg-home-btn-group {
+  margin-top: 4rem;
+  list-style-type: none;
+}
+
+.rg-home-btn-group li:not(:last-child) {
+  margin-right: 2rem;
+}
+
+.rg-home-btn-group .btn-secondary {
+  --bs-btn-padding-x: 2.3rem;
+  --bs-btn-bg: rgba(255, 255, 255, 0.4);
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: var(--bs-blue);
+  --bs-btn-hover-border-color: transparent;
+  box-shadow: 2px 2px 15px 0px rgba(0, 0, 0, 0.25);
+}
+
+.rg-home-btn-group .btn-secondary.rg-active {
+  background-color: var(--bs-blue);
+}
+
+.rg-hero-form {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 2.5rem 3.5rem;
+}
+
+/* RG Estate Home Categories */
+.rg-categories {
+  margin-top: -4.8rem;
+}
+
+.rg-categories-list {
+  max-width: 80.1rem;
+  padding-top: 1.6rem;
+  padding-bottom: 1.6rem;
+  box-shadow: 2px 2px 27px 0px rgba(0, 105, 158, 0.1);
+  list-style-type: none;
+}
+
+.rg-categories-list li {
+  flex: 1;
+  border-right: var(--bs-border) 0.1rem solid;
+}
+
+.rg-categories-list li:last-child {
+  border: none;
+}
+
+/* RG Estate Services */
+.rg-section-header {
+  max-width: 81.2rem;
+}
+
+.rg-section-header h3 {
+  letter-spacing: 1.92px;
+}
+
+.rg-services-slider {
+    list-style-type: none;
+}
+
+.rg-services-slider .slick-track {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  display: flex;
+}
+
+.rg-services-slider .slick-slide {
+    display: flex;
+    height: auto;
+}
+
+.rg-service {
+  padding: 3.5rem 1.8rem;
+  box-shadow: 2px 2px 15px 0px rgba(0, 0, 0, 0.1);
+}
+
+.rg-outline-btn .btn {
+  --bs-btn-padding-x: 1.5rem;
+  --bs-btn-padding-y: 0.58rem;
+  --bs-btn-font-size: 1.4rem;
+  --bs-btn-border-radius: 0.4rem;
+}
+
+/* RG Estate Featured */
+.rg-featured {
+  margin-top: 10rem;
+}
+
+.nav.rg-underline-tabs {
+  --bs-nav-link-padding-y: 1rem;
+  --bs-nav-link-color: var(--bs-gray-600);
+  --bs-nav-underline-link-active-color: var(--bs-gray-600);
+  gap: 3rem;
+}
+
+.nav-underline.rg-underline-tabs .nav-item:hover .nav-link {
+  color: var(--bs-gray-600);
+}
+
+.nav-underline.rg-underline-tabs .nav-link {
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.nav-underline.rg-underline-tabs .nav-link.active,
+.nav-underline.rg-underline-tabs .nav-link:hover,
+.nav-underline.rg-underline-tabs .nav-link:focus {
+  border-bottom-color: var(--bs-orange);
+  border-bottom-width: 0.3rem;
+}
+
+.rg-featured-slider,
+.rg-featured-footer,
+.rg-header-list,
+.rg-footer-list,
+.rg-static-stats,
+.rg-hero-contact {
+    list-style-type: none;
+}
+
+.rg-featured-slider .slick-track {
+  padding-top: 3.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.rg-featured-img {
+  height: 20.5rem;
+}
+
+.rg-featured-card {
+  overflow: hidden;
+  box-shadow: 2px 2px 15px 0px rgba(0, 0, 0, 0.11);
+}
+
+.rg-badges {
+  padding: 2.5rem 1.5rem;
+}
+
+.rg-featured-body-top {
+  padding: 2.4rem 1.5rem 1.4rem;
+}
+
+.rg-featured-footer {
+  padding: 1.5rem;
+}
+
+.rg-featured-footer .btn-outline-primary {
+  --bs-btn-padding-x: 1.7rem;
+  --bs-btn-padding-y: 0.4rem;
+  --bs-btn-color: var(--bs-gray-600);
+  --bs-btn-border-color: var(--bs-blue);
+  --bs-btn-hover-color: var(--bs-blue);
+  --bs-btn-hover-bg: var(--bs-white);
+  --bs-btn-hover-border-color: var(--bs-blue);
+  --bs-btn-active-color: var(--bs-blue);
+  --bs-btn-active-bg: var(--bs-white);
+  --bs-btn-active-border-color: var(--bs-blue);
+}
+
+.rg-featured-footer .btn-outline-primary.active svg {
+    fill: var(--bs-blue);
+}
+
+.slick-prev:before,
+.slick-next:before {
+  content: "";
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-top: 2px solid var(--bs-white);
+  border-right: 2px solid var(--bs-white);
+  opacity: 1;
+  position: relative;
+}
+
+.slick-prev:before {
+  left: 0.3rem;
+  transform: rotate(-135deg);
+}
+
+.slick-next:before {
+  right: 0.3rem;
+  transform: rotate(45deg);
+}
+
+/* RG Estate Buy/Rent/Sell */
+.rg-buy-rent-sell {
+  margin-top: 13.5rem;
+}
+
+.rg-header-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  letter-spacing: 1.92px;
+}
+
+.rg-header-list li:after {
+  content: "";
+  position: absolute;
+  left: -0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--bs-orange);
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 1rem;
+}
+
+.rg-buy-rent-sell-card p {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.rg-header-list li:first-child:after,
+.rg-buy-rent-sell [class^="col-"]:first-child .rg-buy-rent-sell-card:after {
+  display: none;
+}
+
+.rg-buy-rent-sell-card:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  width: 0.1rem;
+  height: 17.2rem;
+  background-color: var(--bs-border);
+}
+
+/* RG Estate Interested in selling your home */
+.rg-selling-card {
+  box-shadow: 4px 4px 60px 0px rgba(0, 0, 0, 0.1),
+    -4px -4px 60px 0px rgba(0, 0, 0, 0.1);
+}
+
+.rg-selling-card .row {
+  margin-left: initial;
+  margin-right: initial;
+}
+
+.rg-selling-card [class^="col-"] {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.rg-selling-meta {
+  padding: 3rem 6rem;
+}
+
+.rg-selling-card img {
+  min-height: 42rem;
+}
+
+.rg-section-meta .btn {
+  --bs-btn-padding-x: 2.5rem;
+  --bs-btn-padding-y: 1rem;
+  --bs-btn-font-size: 1.8rem;
+}
+
+/* RG Estate Members */
+.rg-members {
+  overflow-x: hidden;
+  padding-bottom: 7rem;
+}
+
+.rg-members-card {
+  box-shadow: 4px 4px 60px 0px rgba(0, 0, 0, 0.1),
+    -4px -4px 60px 0px rgba(0, 0, 0, 0.1);
+  margin-top: 11.5rem;
+  padding-top: 8rem;
+}
+
+.rg-members-card .row {
+  min-height: 50rem;
+}
+
+.rg-quote-icon {
+  left: 6rem;
+  top: -6.35rem;
+}
+
+.rg-members-meta {
+  padding-left: 5.8rem;
+}
+
+/*.rg-members-slider {*/
+/*  margin-right: -35%;*/
+/*}*/
+
+.rg-members-slider {
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.rg-members-slider .slick-track {
+  display: flex !important;
+}
+
+.rg-members-slider .slick-slide {
+  height: inherit !important;
+}
+
+.rg-member-card {
+  height: 100%;
+}
+
+.rg-member-img {
+  height: 21rem;
+}
+
+.rg-member-card-meta {
+  padding: 2rem;
+}
+
+.rg-member-card-meta .rg-quote-icon {
+  left: 0;
+  top: 0;
+  margin-top: -4.7rem;
+}
+
+.rg-wh-19 .slick-prev,
+.rg-wh-19 .slick-next {
+  width: 1.9rem;
+  height: 1.9rem;
+  bottom: -4.5rem;
+  left: 1rem;
+}
+
+.rg-wh-19 .slick-prev {
+  left: 0.8rem;
+}
+
+.rg-wh-19 .slick-next {
+  left: 4rem;
+}
+
+.rg-wh-19 .slick-prev:before,
+.rg-wh-19 .slick-next:before {
+  width: 8px;
+  height: 8px;
+}
+
+.rg-wh-19 .slick-prev:before {
+  left: 0.1rem;
+}
+
+.rg-wh-19 .slick-next:before {
+  right: 0.1rem;
+}
+
+/* Blog */
+.rg-blog-card {
+  margin-top: 5rem;
+}
+
+.rg-blog-img {
+  border-top-left-radius: 1.6rem;
+  border-top-right-radius: 1.6rem;
+  height: 29rem;
+}
+
+.rg-blog-card .btn {
+  --bs-btn-font-size: 1.5rem;
+  --bs-btn-border-radius: 0.4rem;
+}
+
+/* RG Estate Testimonials */
+.rg-testimonials-content {
+  top: 43% !important;
+}
+
+.rg-testimonials-bg {
+  background: url("../images//testimonials.jpg") no-repeat top center;
+  background-size: cover;
+  min-height: 72.5rem;
+  border-radius: 2.4rem;
+}
+
+.rg-testimonials-bg:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(249, 253, 255, 0.9);
+}
+
+/* 
+.rg-testimonial-img {
+    min-height: 72.5rem;
+} */
+
+.rg-testimonial-card {
+  padding: 4.5rem 2.5rem;
+}
+
+.rg-testimonial-card img {
+  top: 2.2rem;
+  right: 2.8rem;
+}
+
+.rg-testimonials-slider {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-top: 6.3rem;
+}
+
+.rg-testimonials-slider .slick-slide {
+  margin: 0 2rem;
+}
+
+.rg-testimonials-slider .slick-list {
+  margin: 0 -2rem;
+}
+
+.rg-testimonials-slider .slick-prev,
+.rg-testimonials-slider .slick-next {
+  bottom: -10.2rem;
+}
+
+/* RG Partners */
+.rg-partners {
+  margin-top: 4.5rem;
+}
+
+.rg-partners-bg {
+  box-shadow: 2px 2px 40px 0px rgba(0, 0, 0, 0.05),
+    -2px -2px 30px 0px rgba(0, 0, 0, 0.05);
+  min-height: 22rem;
+  padding-bottom: 2rem;
+}
+
+.rg-partners-list .slick-track .slick-slide {
+  display: flex;
+  height: auto;
+  align-items: center;
+}
+
+.rg-partners-list li img {
+  height: 4.7rem;
+  object-fit: contain;
+}
+
+/* RG Estate Get the Latest News */
+.rg-news-bg {
+  background: url("../images/news-offers.jpg") no-repeat top center;
+  background-size: cover;
+  padding: 3rem 8.5rem 3rem 6rem;
+}
+
+.rg-news-bg:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(6, 53, 78, 0.5);
+}
+
+.rg-news-bg .row {
+  min-height: 21.5rem;
+}
+
+.rg-subscribe .form-group {
+  max-width: 41rem;
+  height: 5.6rem;
+  /*border-radius: 0.4rem;*/
+  /*overflow: hidden;*/
+  /*border-top-right-radius: 0.4rem;*/
+  /*border-bottom-right-radius: 0.4rem;*/
+}
+
+.rg-subscribe svg {
+  position: absolute;
+  left: 2rem;
+  top: 2.3rem;
+}
+
+.rg-subscribe .form-input {
+  padding-left: 3rem;
+  padding-right: 14rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+  font-family: inherit;
+  color: var(--bs-black);
+  height: 5.6rem;
+  padding-left: 5rem;
+  border-radius: 0.4rem;
+  /*border-top-left-radius: 0.4rem;*/
+  /*border-bottom-left-radius: 0.4rem;*/
+}
+
+.rg-subscribe .form-input::placeholder {
+  color: var(--bs-gray-500);
+}
+
+.rg-subscribe .btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 5.6rem;
+  --bs-btn-font-size: 1.4rem;
+  --bs-btn-font-weight: 600;
+  --bs-btn-bg: var(--bs-orange);
+  --bs-btn-border-radius: 0;
+  --bs-btn-color: var(--bs-black);
+  border-radius: 0.4rem;
+  /*border-top-right-radius: 0.4rem;*/
+  /*border-bottom-right-radius: 0.4rem;*/
+}
+
+.rg-subscribe .btn:hover {
+  background-color: var(--bs-blue);
+  color: var(--bs-white);
+}
+
+/* RG Estatge Footer */
+footer {
+  border-top: rgba(101, 104, 101, 0.5) 0.1rem solid;
+  padding-top: 5.7rem;
+}
+
+footer p {
+  padding-right: 10%;
+}
+
+.rg-social-list {
+    list-style-type: none;
+}
+
+.rg-social-list li:not(:last-child) {
+  margin-right: 1.5rem;
+}
+
+.rg-social-list li a:hover {
+  background-color: var(--bs-orange);
+}
+
+.rg-footer-list li {
+  margin-top: 1rem;
+}
+
+.rg-footer-list li a,
+.rg-address-list li a {
+  color: var(--bs-gray-600);
+}
+
+.rg-footer-list li a:hover,
+.rg-address-list li a:hover {
+  color: var(--bs-blue);
+}
+
+.rg-address-list li {
+  position: relative;
+}
+
+.rg-address-list li:not(:first-child) {
+  margin-top: 5.4rem;
+}
+
+.rg-address-list li:nth-child(2) {
+  margin-top: 3rem;
+}
+
+.rg-address-list li:after {
+  content: "";
+  position: absolute;
+  top: 3.2rem;
+  left: 1.5rem;
+  width: 0.1rem;
+  height: 7rem;
+  background-color: var(--bs-blue);
+}
+
+.rg-address-list li:last-child:after {
+  display: none;
+}
+
+.rg-address-list li:first-child span {
+  position: relative;
+  top: 0.5rem;
+}
+
+.rg-address-list li span {
+  margin-left: 1.4rem;
+}
+
+.rg-footer-icon {
+  flex: 0 0 auto;
+}
+
+.rg-copyright {
+  min-height: 6.5rem;
+}
+
+.rg-copyright a {
+    color: var(--bs-white);
+}
+
+.text-white {
+    color: white;
+}
+
+/* RG Estate Properties */
+.rg-filter-col {
+  flex-grow: 1;
+}
+
+.rg-search {
+  max-width: 38.7rem;
+}
+
+.rg-search svg {
+  left: 1.5rem;
+  top: 1.6rem;
+}
+
+.rg-search .form-input {
+  border: 0.5px solid #b6b3b3;
+  border-radius: 0.6rem;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--bs-gray-dark);
+  padding-left: 4rem;
+}
+
+.rg-search .form-input::placeholder {
+  color: rgba(101, 104, 101, 0.6);
+}
+
+.rg-status {
+  max-width: 12.3rem;
+}
+
+.rg-type {
+  max-width: 11.3rem;
+}
+
+.rg-cities {
+  max-width: 13.9rem;
+}
+
+.rg-bedrooms {
+  max-width: 15.1rem;
+}
+
+.rg-search-btn {
+  max-width: 11.3rem;
+}
+
+.rg-search-btn .btn {
+  --bs-btn-font-size: 1.4rem;
+  --bs-btn-padding-y: 1.08rem;
+  --bs-btn-border-radius: 0.6rem;
+  --bs-btn-hover-bg: var(--bs-orange);
+  --bs-btn-hover-border-color: var(--bs-orange);
+}
+
+.select2-dropdown {
+  border: 0.5px solid #b6b3b3;
+}
+
+.rg-filter-col .select2-container .select2-selection--single {
+  border-radius: 0.6rem;
+  border: 0.5px solid #b6b3b3;
+}
+
+.rg-filter-col .select2-container--default .select2-selection--single .select2-selection__rendered {
+  padding-left: 1.5rem;
+  font-weight: 400;
+  line-height: 4.6rem;
+}
+
+.rg-filter-col .select2-container--default .select2-selection--single .select2-selection__placeholder {
+  color: var(--bs-border-100);
+}
+
+.rg-filter-col .select2-container--default .select2-selection--single .select2-selection__arrow {
+  right: 1.5rem;
+}
+
+.rg-filter-col .select2-container--open .select2-dropdown--below {
+  border-bottom-left-radius: 0.6rem;
+  border-bottom-right-radius: 0.6rem;
+}
+
+.rg-filter-col .select2-results__option {
+  font-weight: 400;
+}
+
+.rg-custom-select .select2-container .select2-selection--single {
+    border: .1rem solid var(--bs-border);
+}
+
+.rg-custom-select .select2-container .select2-selection--single {
+    border-radius: 0.4rem;
+}
+
+.rg-custom-select .select2-container .select2-selection--single {
+    height: 4.9rem;
+}
+
+.rg-custom-select .select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 4.7rem;
+    font-size: 1.5rem;
+}
+
+.rg-custom-select .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 4.6rem;
+    right: 2rem;
+}
+
+.rg-custom-select .select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #888888;
+}
+
+.rg-filter-nav .nav-item {
+  margin-left: 1rem;
+}
+
+.rg-filter-nav .nav-link {
+  width: 3rem;
+  height: 3rem;
+  position: relative;
+  background-color: var(--bs-white);
+  border-radius: 0.4rem;
+  box-shadow: 2px 2px 15px 0px rgba(0, 0, 0, 0.1);
+}
+
+.rg-filter-nav .nav-link svg {
+  fill: var(--bs-blue);
+}
+
+.nav-pills .nav-link.active {
+  background-color: var(--bs-blue);
+}
+
+.nav-pills .nav-link.active svg {
+  fill: var(--bs-white);
+}
+
+/* RG Estate Breadcrumb */
+.rg-breadcrumb .breadcrumb-item a {
+  color: var(--bs-black);
+}
+
+.rg-breadcrumb .breadcrumb-item.active {
+  color: var(--bs-orange);
+}
+
+.rg-breadcrumb .breadcrumb-item+.breadcrumb-item {
+  padding-left: 2.5rem;
+}
+
+.rg-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
+  content: "";
+  background: url("../images/double-arrow.svg") no-repeat center center;
+  background-size: contain;
+  width: 0.8rem;
+  height: 1.1rem;
+  position: relative;
+  top: 7px;
+  left: -1rem;
+}
+
+/* RG Estate Properties Main Content */
+.rg-properties-list .row {
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
+
+.rg-filter-by .dropdown-menu {
+  left: initial !important;
+  right: 0 !important;
+  overflow: hidden;
+}
+
+.rg-filter-by .dropdown-toggle::after {
+  border: none;
+  background: url("../images/up-down-arrow.svg") no-repeat center right;
+  background-size: contain;
+  height: 1.3rem;
+  width: 0.8rem;
+  position: relative;
+  top: 0.6rem;
+  margin-left: 1em;
+}
+
+.rg-img-slider-arrows .slick-list,
+.rg-img-slider-arrows .slick-slide {
+  margin: initial;
+}
+
+.rg-properties-list .rg-badges,
+.tp-images-footer {
+  max-width: 37rem;
+}
+
+.rg-properties-list .rg-featured-img,
+.rg-properties-list .rg-featured-img img {
+  width: 37rem;
+  height: 29rem;
+}
+
+.tp-images-footer {
+  left: -1.7rem;
+  bottom: 2.5rem;
+}
+
+.tp-images-footer .tp-images-footer-icon {
+  background-color: rgba(0, 0, 0, 0.7);
+  margin-right: 0.8rem;
+  cursor: pointer;
+}
+
+.tp-images-footer .tp-images-footer-icon.rg-active svg {
+  fill: var(--bs-blue);
+}
+
+.rg-properties-list .rg-featured-body {
+  padding: 2rem 1.5rem 1rem 0;
+}
+
+.rg-properties-list .rg-featured-body-top {
+  padding-left: 2.5rem !important;
+  padding-bottom: 1.5rem !important;
+}
+
+.rg-properties-list .rg-featured-footer {
+  border-top: #e1e1e1 0.1rem solid !important;
+}
+
+.rg-properties-list .rg-featured-footer li:not(:first-child) {
+  margin-left: 1rem;
+}
+
+.rg-properties-list .rg-featured-footer .btn-outline-primary {
+  --bs-btn-padding-x: 1rem;
+}
+
+.rg-properties-list .rg-featured-list li:not(:first-child) {
+  padding-left: 1rem;
+}
+
+.rg-properties-list .rg-featured-list li span {
+  white-space: nowrap;
+}
+
+.rg-img-slider-arrows .slick-prev,
+.rg-img-slider-arrows .slick-next {
+  top: 50%;
+  bottom: initial;
+  z-index: 1;
+  background-color: transparent;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.rg-img-slider-arrows .slick-prev {
+  left: 3.2rem;
+}
+
+.rg-img-slider-arrows .slick-next {
+  left: initial;
+  right: 1.2rem;
+}
+
+.rg-img-slider-arrows .slick-prev:before,
+.rg-img-slider-arrows .slick-next:before {
+  width: 18px;
+  height: 18px;
+  border-top: 3px solid var(--bs-white);
+  border-right: 3px solid var(--bs-white);
+}
+
+.rg-sidebar {
+  max-width: 35.2rem;
+}
+
+.rg-sidebar-slider {
+  margin-top: 7.2rem;
+}
+
+.rg-sidebar-slider img {
+  height: 28.7rem;
+  width: 100%;
+  border-radius: 1rem;
+}
+
+.rg-sidebar-slider .slick-slide {
+  position: relative;
+}
+
+.rg-sidebar-slider .slick-slide:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 1rem;
+}
+
+.rg-sidebar-slider-text {
+  bottom: 1.5rem;
+  left: 2.5rem;
+}
+
+.slick-dots li button {
+  padding: 0.4rem;
+  background: #d9d9d9;
+}
+
+.rg-sidebar-slider .slick-dots {
+  bottom: -2rem;
+}
+
+.rg-sidebar-slider .slick-dots li button,
+.rg-sidebar-slider .slick-dots li.slick-active button {
+  width: 0.6rem;
+  height: 0.6rem;
+}
+
+.rg-white-card {
+  border: 0.5px solid rgba(163, 163, 163, 0.3);
+  box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.05),
+    -2px -2px 10px 0px rgba(0, 0, 0, 0.05);
+  padding: 3rem 3.5rem;
+  margin-top: 2rem;
+}
+
+.rg-other-links {
+  margin-top: 3rem;
+}
+
+.rg-other-links li {
+  margin-top: 1rem;
+}
+
+.rg-other-links li a {
+  color: var(--bs-blue);
+}
+
+.rg-other-links li a:hover {
+  color: var(--bs-orange);
+}
+
+.rg-level-2 {
+  padding-left: 2rem;
+}
+
+.rg-properties-map {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  height: calc(100vh - 20rem);
+  overflow-y: scroll;
+}
+
+.rg-properties-map .rg-featured-img {
+  width: initial !important;
+}
+
+.rg-properties-map .rg-featured-body-top {
+  padding-left: 0 !important;
+}
+
+.rg-map {
+  height: calc(100vh - 20rem);
+}
+
+/* RG Estate Static Page */
+.rg-project-funding {
+  background: url("../images/project-funding-hero.jpg") no-repeat top center;
+}
+
+.rg-project-constracting {
+  background: url("../images/project-constracting-hero.jpg") no-repeat top center;
+}
+
+.rg-startup-funding {
+  background: url("../images/startup-funding-hero.jpg") no-repeat top center;
+}
+
+.rg-retail-investments {
+  background: url("../images/retail-investments-hero.jpg") no-repeat center center;
+}
+
+.rg-project-development {
+  background: url("../images/project-development-hero.jpg") no-repeat top center;
+}
+
+.rg-interior-fitouts {
+  background: url("../images/interior-fitouts-hero.jpg") no-repeat top center;
+}
+
+.rg-building-maintenance {
+  background: url("../images/building-maintenance-hero.jpg") no-repeat top center;
+}
+
+.rg-business-buying-sell {
+  background: url("../images/business-buying-sell-hero.jpg") no-repeat top center;
+}
+
+.rg-page-header-bg {
+  background-size: coverc;
+  border-radius: 3rem;
+}
+
+.rg-page-header-bg:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.rg-page-header-content {
+  min-height: 41.6rem;
+  max-width: 70rem;
+  padding-left: 8rem;
+}
+
+.rg-page-header-content .rg-breadcrumb .breadcrumb-item a {
+  color: var(--bs-white);
+}
+
+.rg-page-header-content .rg-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
+  background: url(../images/double-arrow-white.svg) no-repeat center center;
+}
+
+.rg-static-header {
+  padding-left: 2.5rem;
+  min-height: 13rem;
+  margin-bottom: 5rem;
+}
+
+.rg-static-header:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1rem;
+  height: 13rem;
+  border-radius: 1rem;
+  background-color: var(--bs-blue);
+}
+
+.rg-w-420 {
+  max-width: 42rem;
+}
+
+.rg-w-286 {
+  max-width: 28.6rem;
+}
+
+.rg-static-stats {
+  background: rgba(0, 105, 158, 0.1);
+  padding: 4rem 4.5rem;
+  margin-top: 6rem;
+  margin-bottom: 4rem;
+}
+
+.rg-static-stats li {
+  flex: 1;
+}
+
+.rg-static-stats li span:last-child {
+  margin-top: -1rem;
+}
+
+.rg-contact-form-outer {
+  padding-left: 4.3rem;
+}
+
+.rg-contact-form {
+  background: rgba(0, 105, 158, 0.8);
+  padding: 7rem 4rem;
+  min-height: 70.9rem;
+}
+
+.rg-contact-form h2 {
+  margin-bottom: 7.9rem;
+}
+
+.rg-contact-form .form-group {
+  margin-bottom: 2.5rem;
+}
+
+.rg-contact-form .form-input {
+  height: 5.6rem;
+  width: 100%;
+  background-color: transparent;
+  border: #e8e8e8 0.1rem solid;
+  border-radius: 0.6rem;
+  color: var(--bs-white);
+  font-size: 1.4rem;
+  font-family: inherit;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.rg-contact-form textarea.form-input {
+  padding-top: 1rem;
+  height: 10.7rem;
+  resize: none;
+}
+
+.rg-contact-form .form-input::placeholder {
+  color: var(--bs-white);
+}
+
+textarea:focus-visible {
+  outline: none;
+}
+
+.rg-contact-form .btn {
+  --bs-btn-padding-y: 1.37rem;
+  --bs-btn-font-size: 1.4rem;
+  --bs-btn-font-weight: 700;
+  --bs-btn-color: var(--bs-blue);
+  --bs-btn-hover-bg: var(--bs-white);
+  --bs-btn-hover-border-color: var(--bs-white);
+  --bs-btn-active-bg: var(--bs-white);
+  --bs-btn-active-border-color: var(--bs-white);
+  --bs-btn-bg: var(--bs-white);
+  margin-top: 3.5rem;
+}
+
+/* RG Estate Vision */
+.rg-vision {
+  background: rgba(0, 105, 158, 0.05);
+  padding-top: 9rem;
+  padding-bottom: 9rem;
+}
+
+/*.rg-vision p {*/
+/*  padding-right: 5%;*/
+/*}*/
+
+.rg-vision .btn-primary {
+  --bs-btn-padding-y: 1rem;
+  margin-top: 5rem;
+}
+
+.rg-vision img {
+  height: 57.9rem;
+}
+
+/* RG Estate Join */
+.rg-join-bg {
+  background: url("../images/join-us.jpg") no-repeat top center;
+  background-size: cover;
+  min-height: 35rem;
+}
+
+.rg-join-bg:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(84deg,
+      rgba(0, 105, 158, 0.9) 5.86%,
+      rgba(0, 105, 158, 0.9) 55.24%,
+      rgba(239, 125, 40, 0.23) 100%);
+}
+
+.rg-join-bg h2 {
+  max-width: 90rem;
+}
+
+.rg-join .btn-primary {
+  --bs-btn-padding-x: 3rem;
+  --bs-btn-padding-y: 1rem;
+  --bs-btn-bg: var(--bs-orange);
+  --bs-btn-hover-bg: var(--bs-orange);
+}
+
+.rg-join .btn-outline-light {
+  --bs-btn-padding-x: 4rem;
+}
+
+/* RG Estate Key Terms */
+.rg-key-terms img {
+  height: 45.5rem;
+}
+
+.rg-key-terms-meta {
+  padding-left: 4.7rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
+}
+
+.rg-key-terms-card {
+  background-color: #eeeeee;
+  padding: 5rem;
+}
+
+.rg-key-terms-card {
+  background-color: #eeeeee;
+  padding: 4rem 5rem;
+}
+
+.rg-key-terms-card:after {
+  content: "";
+  position: absolute;
+  top: -2rem;
+  width: 27.4rem;
+  height: 110%;
+  right: -2rem;
+  background-color: var(--bs-blue);
+  border-radius: 1rem;
+  z-index: -1;
+}
+
+.rg-key-terms-card h2 {
+  color: #858585;
+}
+
+.rg-key-terms-card a {
+  text-decoration: underline;
+}
+
+/* RG Estate We Partner */
+.rg-we-partner {
+  margin-top: 10.5rem;
+}
+
+.rg-we-partner {
+  background: rgba(54, 170, 113, 0.05);
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+.rg-we-partner-left h2 {
+  max-width: 43.4rem;
+}
+
+.rg-accordion {
+  padding-left: 4rem;
+}
+
+.accordion {
+  --bs-accordion-color: var(--bs-body-color);
+  --bs-accordion-bg: transparent;
+  --bs-accordion-border-color: transparent;
+  --bs-accordion-border-width: 0;
+  --bs-accordion-border-radius: none;
+  --bs-accordion-btn-padding-x: 0;
+  --bs-accordion-btn-padding-y: 0.5rem;
+  --bs-accordion-btn-color: transparent;
+  --bs-accordion-btn-bg: transparent;
+  --bs-accordion-btn-icon-width: 1.8rem;
+  --bs-accordion-btn-icon-transform: rotate(-180deg);
+  --bs-accordion-btn-icon-transition: transform 0.2s ease-in-out;
+  --bs-accordion-btn-focus-border-color: transparent;
+  --bs-accordion-btn-focus-box-shadow: none;
+  --bs-accordion-body-padding-x: 0;
+  --bs-accordion-body-padding-y: 1rem;
+  --bs-accordion-active-color: var(--bs-blue);
+  --bs-accordion-active-bg: transparent;
+}
+
+.accordion-button::after {
+  background: url("../images/plus.svg") no-repeat top center;
+}
+
+.accordion-button:not(.collapsed)::after {
+  background: url("../images/minus.svg") no-repeat top center;
+}
+
+.accordion-button {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--bs-blue);
+}
+
+.accordion-item:not(:first-of-type) {
+  margin-top: 3rem;
+}
+
+.accordion-body {
+  padding-right: 12rem;
+  border-bottom: #e1e1e1 0.1rem solid;
+  padding-bottom: 3rem;
+  font-size: 1.6rem;
+}
+
+/* RG Estate Our Services */
+.rg-service-card img {
+  height: 26.2rem;
+}
+
+.rg-service-card a:hover {
+  color: var(--bs-blue);
+}
+
+.rg-service-card a:hover svg {
+  fill: var(--bs-blue);
+}
+
+/* RG ESTATE LANDING PAGE HEADER STYLE */
+.rg-landing-header .navbar-nav .nav-link {
+  position: relative;
+  transition: all 0.3s ease-in;
+}
+
+.rg-landing-header .navbar-nav .nav-link:hover {
+  text-decoration: none;
+}
+
+.rg-landing-header .navbar-nav .nav-link.active::before,
+.rg-landing-header .navbar-nav .nav-item:hover .nav-link::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 15px;
+  width: 4.5rem;
+  height: 0.3rem;
+  border-radius: 5rem;
+  background: var(--bs-light-blue);
+  animation-name: fadeInLeft;
+  animation-fill-mode: both;
+  animation-duration: 500ms;
+  animation-delay: 300ms;
+}
+
+.rg-landing-header .navbar-nav .nav-link.active::after,
+.rg-landing-header .navbar-nav .nav-item:hover .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 68px;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--bs-orange);
+  animation-name: fadeInLeft;
+  animation-fill-mode: both;
+  animation-duration: 500ms;
+  animation-delay: 300ms;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translatex(-100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translatex(0);
+  }
+}
+
+/* RG ESTATE LANDING PAGE HERO STYLE */
+.rg-hero-contact {
+  background: var(--bs-blue);
+  left: auto;
+  padding-bottom: 0.938rem;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  max-width: 7.5rem;
+  height: initial;
+}
+
+.rg-hero-contact li:not(:last-child) {
+  border-bottom: 1px solid var(--bs-white);
+}
+
+.rg-hero-left-content {
+  background: rgba(6, 86, 123, 0.6);
+  max-width: 53rem;
+  width: 100%;
+  padding: 6rem 6rem;
+  border-top-left-radius: 1.5rem;
+  border-bottom-left-radius: 1.5rem;
+  height: 48rem;
+  backdrop-filter: blur(4px);
+}
+
+.rg-hero-left-content h1 {
+  line-height: 4.5rem;
+}
+
+.rg-hero-right-content h2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -8px;
+  background: var(--bs-orange);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.rg-hero-right-content {
+  background: rgba(0, 0, 0, 0.6);
+  max-width: 50rem;
+  width: 100%;
+  padding: 4rem 5.5rem;
+  border-top-right-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  height: 48rem;
+  backdrop-filter: blur(4px);
+}
+
+.rg-hero-right-form .form-input {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px solid var(--bs-border-200);
+  color: var(--bs-border);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.rg-hero-right-form .form-input::placeholder {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--bs-border);
+}
+
+.rg-hero-register .input-phone .dropdown-toggle::after {
+  border: 0;
+  margin-left: 0;
+}
+
+.rg-hero-register .input-phone {
+  border-bottom: 1px solid var(--bs-border-200);
+  margin-top: 2rem;
+}
+
+.rg-hero-register .input-phone .input-group-btn .btn-default {
+  background: transparent;
+  border: 0;
+  color: var(--bs-border);
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+}
+
+.rg-hero-register .input-phone .form-control {
+  background: transparent;
+  color: var(--bs-border);
+  border: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  position: relative;
+  top: 0.3rem;
+}
+
+.rg-hero-register .input-phone .form-control:focus {
+  box-shadow: none;
+}
+
+.rg-hero-meta .rg-hero-btn {
+  --bs-btn-padding-x: 4.5rem;
+}
+
+/* RG ESTATE LANDING PAGE HOUSING PLAN STYLE */
+.rg-housing-plan {
+  margin-top: -2.3rem;
+}
+
+.rg-housing-icon {
+  border: 0.3rem solid var(--bs-white);
+}
+
+/* RG ESTATE LANDING PAGE DRAM HOUSE VIDEO STYLE */
+.rg-section-padd {
+  padding: 6rem 0;
+}
+
+.rg-dream-house-content p {
+  padding-right: 14rem;
+  line-height: 2.7rem;
+}
+
+.rg-dream-house-video img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.rg-dream-house-video::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(35, 31, 32, 0.5);
+  border-radius: 0.5rem;
+}
+
+.rg-dream-house-video-bg {
+  background-image: linear-gradient(180deg,
+      hsl(200deg 100% 31%) 0%,
+      hsl(203deg 75% 32%) 11%,
+      hsl(204deg 63% 30%) 22%,
+      hsl(206deg 54% 28%) 33%,
+      hsl(207deg 46% 26%) 44%,
+      hsl(208deg 38% 23%) 56%,
+      hsl(210deg 31% 20%) 67%,
+      hsl(211deg 22% 18%) 78%,
+      hsl(212deg 13% 14%) 89%,
+      hsl(0deg 0% 11%) 100%);
+  max-width: 20rem;
+  width: 100%;
+  height: 20rem;
+  border-radius: 1rem;
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  z-index: -1;
+}
+
+.rg-dream-house .rg-dream-house-video-icon {
+  width: 5.8rem;
+  height: 5.8rem;
+  border: 0.5rem solid var(--bs-border-300);
+  cursor: pointer;
+}
+
+.rg-dream-house-video .rg-video-icon {
+  display: block;
+  margin: 2.1rem auto;
+}
+
+.rg-bg-shape {
+  background: url(../images/dotted-background-shape.png) no-repeat center;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin-top: -10rem;
+  padding-top: 10rem;
+  padding-bottom: 15rem;
+}
+
+.rg-bg-shape::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 105, 158, 0.05);
+  z-index: -1;
+}
+
+.rg-dream-house-video-btn a {
+  --bs-btn-padding-x: 2.3rem;
+  --bs-btn-padding-y: 1.2rem;
+}
+
+/* RG ESTATE LANDING PAGE TRIP STYLE */
+.rg-trip {
+  margin-top: -15rem;
+}
+
+.rg-trip-bg {
+  background: url(../images//fly-bg-img.png) no-repeat center;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  position: relative;
+  padding: 4rem 6rem 6rem;
+  z-index: 1;
+}
+
+.rg-trip-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(116deg,
+      rgba(16, 97, 138, 0.87) 0%,
+      rgba(0, 0, 0, 0.78) 100%);
+}
+
+.rg-trip-img img {
+  width: 110px;
+  height: 100%;
+}
+
+.rg-trip-content p {
+  color: var(--bs-gray-400);
+  padding-right: 9.2rem;
+  line-height: 2.5rem;
+}
+
+.rg-trip .rg-trip-plan-meta {
+  margin-top: 3rem;
+}
+
+/* RG ESTATE LANDING PAGE DUABI PROPERTY STYLE */
+.rg-dubai-properties {
+  margin-bottom: 12rem;
+}
+
+.rg-dubai-property-heading {
+  display: none;
+}
+
+.rg-dubai-left-images img {
+  width: 100%;
+  height: 100%;
+}
+
+.rg-dubai-left-bottom-img img {
+  width: 220px;
+  height: 100%;
+}
+
+.rg-dubai-left-bottom-img {
+  position: absolute;
+  bottom: -175px;
+  right: -110px;
+  z-index: -1;
+}
+
+.rg-dubai-right-content p {
+  line-height: 3rem;
+}
+
+.rg-dubai-right-content .rg-dubai-property-link {
+  --bs-btn-padding-x: 4.5rem;
+}
+
+.rg-dubai-properties .rg-ge-padd {
+  padding-right: 20rem;
+}
+
+/* RG ESTATE LANDING PAGE NEW PROJECT STYLE */
+.rg-new-project {
+  background: url(../images/new-project-pattern-bg.png) no-repeat center;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  position: relative;
+  padding: 10rem 0;
+}
+
+.rg-new-project::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(16, 97, 138, 0.05);
+}
+
+.rg-new-project .rg-new-project-meta {
+  padding-top: 9rem;
+}
+
+.rg-left-content img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5rem;
+}
+
+.rg-new-project-slider .slick-track {
+  margin: initial;
+}
+
+.rg-new-project-slider .slick-slide {
+  padding: 0 6rem;
+}
+
+.rg-dubai-project-list li img {
+  width: 18px;
+  height: auto;
+}
+
+.rg-dubai-project-list li {
+  margin-bottom: 2rem;
+}
+
+.rg-project-right-content .rg-dubai-project-btn {
+  background: transparent !important;
+}
+
+.rg-project-right-content .rg-dubai-project-btn:hover {
+  background: var(--bs-orange) !important;
+}
+
+.rg-project-right-content .rg-dubai-project-btn {
+  --bs-btn-padding-x: 2.2rem;
+}
+
+.rg-project-right-content p {
+  line-height: 2.5rem;
+}
+
+.rg-new-project-slider .slick-arrow {
+  width: 2.6rem;
+  height: 2.6rem;
+  position: absolute;
+  top: -4rem;
+}
+
+.rg-new-project-slider .slick-arrow.slick-prev {
+  left: auto;
+  right: 20px;
+}
+
+.rg-new-project-slider .slick-arrow.slick-next {
+  left: auto;
+}
+
+.rg-new-project-slider .slick-arrow::before {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.rg-new-project-slider .slick-prev:before {
+  left: 0.2rem;
+}
+
+.rg-new-project-slider .slick-next:before {
+  right: 0.2rem;
+}
+
+/* RG ESTATE LANDING PAGE INVEST IN DUBAI STYLE */
+.rg-invest-in-dubai-list {
+  padding-right: 7rem;
+}
+
+.rg-invest-in-dubai-list li {
+  margin-bottom: 1.5rem;
+  position: relative;
+  list-style-type: disc;
+}
+
+.rg-invest-in-dubai-list li::marker {
+  display: revert;
+  content: revert;
+  color: var(--bs-gray-500);
+}
+
+.rg-invest-indubai-left-content p {
+  padding-right: 13.3rem;
+  line-height: 2.5rem;
+}
+
+.rg-invest-in-dubai-images {
+  padding-right: 4rem;
+}
+
+.rg-invest-in-dubai-images img {
+  width: 100%;
+  height: 100%;
+}
+
+.rg-invest-in-dubai-img-top img {
+  width: 200px;
+  height: auto;
+}
+
+.rg-invest-in-dubai-img-top {
+  position: absolute;
+  top: -12rem;
+  right: -0.5rem;
+}
+
+.rg-invest-in-dubai-img-bottom img {
+  width: 235px;
+  height: auto;
+}
+
+.rg-invest-in-dubai-img-bottom {
+  position: absolute;
+  bottom: -19rem;
+  left: -5rem;
+}
+
+.rg-invest-in-dubai-btn .rg-invest-in-dubai-link {
+  --bs-btn-padding-x: 4.5rem;
+}
+
+/* RG ESTATE LANDING PAGE NEWS & OFFERS STYLE */
+.rg-landing-news .rg-news-bg {
+  padding: 10rem 16rem;
+}
+
+.rg-landing-news .rg-news-bg p {
+  padding: 0 31rem;
+}
+
+.rg-landing-news .rg-news-bg h2 {
+  line-height: 5rem;
+}
+
+/* RG ESTATE LANDING PAGE FOOTER STYLE */
+.rg-footer-img img {
+  width: 100%;
+  height: 100%;
+}
+
+.rg-footer-img::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 11, 17, 0.7);
+}
+
+.rg-footer-bottom {
+  padding: 2.3rem 0;
+}
+
+/* RG ESTATE LANDING PAGE MAP STYLE */
+.rg-footer {
+  margin-top: 4rem;
+}
+
+.rg-footer-img {
+  margin-top: -36rem;
+  z-index: -1;
+}
+
+.rg-footer-map img {
+  width: 100%;
+  height: 100%;
+}
+
+/* RGEstate Reatured Modal */
+.rg-modal-img {
+    width: 9rem;
+    height: 7rem;
+}
+
+.rg-form .form-control {
+    height: 4.5rem;
+    font-size: 1.4rem;
+    font-family: inherit;
+    color: var(--bs-dark);
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+    border: 1px solid var(--bs-border);
+    border-radius: .4rem;
+}
+
+.rg-form textarea.form-control {
+    height: 13rem;
+    resize: none;
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+    font-size: 1.2rem;
+}
+
+.rg-form .form-control:focus {
+    box-shadow: none;
+}
+
+.rg-form .form-control::placeholder {
+    color: var(--bs-gray-500);
+}
+
+.iti--allow-dropdown {
+    width: 100%;
+}
+
+/* REGISTER MODAL */
+.rg-register-intrest-modal.modal {
+    --bs-modal-width: 80rem;
+}
+
+.rg-register-intrest-modal .rg-modal-img {
+    max-width: 100%;
+    height: 100%;
+}
+
+.rg-register-intrest-modal .rg-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1;
+    background-color: var(--bs-white);
+    padding: .6rem;
+}
+
+.rg-register-intrest-modal .rg-modal-form .input-group {
+    margin-bottom: 2rem;
+}
+
+.rg-register-intrest-modal .rg-modal-form .input-group .form-control-lg {
+    min-height: calc(1.5em + 2.5rem + calc(var(--bs-border-width) * 2));
+}
+
+.rg-register-intrest-modal .rg-modal-form .input-group .form-control {
+    font-size: 1.5rem;
+    color: var(--bs-dark);
+}
+
+.rg-register-intrest-modal .rg-sub-btn .btn {
+    padding-left: 4rem;
+    padding-right: 4rem
+}
+
+#emailModal .form {
+    margin-top: 0 !important;
+}
+
+#emailModal .false {
+    padding: 0 !important;
+}
+
+#emailModal .cols24 h1 {
+    font-size: 2.8rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+#emailModal .cols24 h2 {
+    font-weight: 400;
+}
+
+#emailModal .pri.sec_1 {
+    font-size: 1.8rem; 
+}
+
+#emailModal .codc,
+#emailModal .sq_ft {
+    font-size: 1.4rem; 
+}
+
+#emailModal .residential-card__address-heading span {
+    font-weight: 300;
+}
+
+#emailModal .residential-card__address-heading span.dark {
+    color: #333 !important;
+}
+
+#emailModal hr {
+    margin: 2rem 0;
+}
+
+#emailModal .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#emailModal [class^="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#emailModal .form-control:focus {
+    box-shadow: none;
+}
+
+#emailModal textarea.form-control {
+    height: 13rem;
+    resize: none;
+}
+
+#emailModal .checkboxes {
+    position: relative;
+}
+
+#emailModal .sign-in-form label {
+    margin-bottom: 0;
+    padding-left: 3rem;
+    font-size: 1.4rem;
+}
+
+#emailModal .sign-in-form label a {
+    color: var(--bs-blue);
+}
+
+#emailModal .checkboxes input[type=checkbox] {
+    display: none;
+}
+
+#emailModal .margin-top-10 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#emailModal .checkmark {
+    border: .1rem solid var(--bs-border);
+}
+
+#emailModal .container_check input:checked~.checkmark {
+    background-color: var(--bs-blue);
+    border: .1rem solid var(--bs-blue);
+}
+
+.rg-faqs-list {
+    list-style-type: disc;
+}
+
+.rg-faqs-list li::marker {
+    display: revert;
+  content: revert;
+}
+
+.rg-faqs-list li:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+.iti__country-list {
+    z-index: 99999 !important;
+}
+
+.errorMessage {
+    font-size: 1.2rem;
+    color: red;
+    margin-top: .2rem;
+}
+
+/* RG Estate Media Queries */
+@media (min-width: 1400px) {
+  .rg-section-padd {
+    padding: 9rem 0;
+  }
+
+  .rg-dubai-properties {
+    margin-bottom: 7rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .navbar-expand-xl .navbar-nav {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .rg-mobile-topbar {
+    margin-bottom: 2rem;
+  }
+
+  .rg-mobile-topbar .rg-search-content .form-input {
+    height: 3rem;
+    padding-left: 1.2rem;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .rg-mobile-topbar .rg-search-content {
+    width: 65%;
+  }
+
+  /* RG ESTATE LANDING PAGE STYLE */
+  .rg-landing-news .rg-news-bg p {
+    padding: 0;
+  }
+
+  .rg-landing-news .rg-news-bg h2 {
+    line-height: 5rem;
+  }
+
+  .rg-project-right-content {
+    margin-top: 3rem;
+  }
+
+  .rg-new-project {
+    padding: 8rem 0 12rem;
+  }
+
+  .rg-dubai-property-heading {
+    display: block;
+  }
+
+  .rg-dubai-right-content h3 {
+    display: none;
+  }
+
+  .rg-invest-in-dubai-images {
+    padding-right: 4rem;
+    padding-left: 6rem;
+  }
+
+  .rg-invest-in-dubai-img-bottom {
+    left: 0rem;
+  }
+
+  .rg-dream-house-content p {
+    padding-right: 4rem;
+  }
+
+  .rg-dubai-properties .rg-ge-padd {
+    padding-right: 16rem;
+  }
+
+  .rg-new-project-slider .slick-slide {
+    padding: 0 5rem;
+  }
+
+  .rg-invest-indubai-left-content p {
+    padding-right: 0rem;
+  }
+}
+
+@media (max-width: 1260px) {
+
+  /* RG Estate Properties */
+  .rg-properties-list .rg-featured-img,
+  .rg-properties-list .rg-featured-img img {
+    width: 30rem;
+    height: 29rem;
+  }
+
+  .rg-properties-list .rg-badges,
+  .tp-images-footer {
+    max-width: 30rem;
+  }
+}
+
+@media (max-width: 1199px) {
+  .navbar {
+    padding-top: 1.6rem;
+    padding-bottom: 1.6rem;
+  }
+
+  .navbar-nav {
+    --bs-nav-link-padding-y: 1rem;
+  }
+
+  .navbar-toggler-icon {
+    width: 2em;
+    height: 2em;
+  }
+
+  .navbar-toggler {
+    margin-right: -1rem;
+  }
+
+  .navbar-brand img {
+    width: 9rem;
+  }
+
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+
+  .offcanvas-body .btn-dark {
+    margin-left: 0;
+    margin-top: 1rem;
+  }
+
+  /* RG Estate Hero */
+  .rg-hero-content {
+    margin-top: -8rem;
+  }
+
+  .rg-hero-stats {
+    top: initial;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 50rem;
+    height: 10rem;
+    border-top-left-radius: 2.6rem;
+    border-top-right-radius: 2.6rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    align-items: center;
+  }
+
+  .rg-hero-stats li * {
+    flex: initial;
+  }
+
+  .rg-hero-stats li {
+    text-align: center;
+  }
+
+  .rg-hero-stats li:not(:first-child) {
+    margin-top: 0;
+  }
+
+  .rg-counter {
+    font-size: 2rem;
+  }
+
+  .rg-text {
+    font-size: 1.4rem;
+    margin-top: 0.5rem;
+  }
+
+  .rg-categories {
+    margin-top: 6rem;
+  }
+
+  .rg-categories-list {
+    max-width: 100%;
+  }
+
+  /*.rg-members-slider {*/
+  /*  margin-right: -20%;*/
+  /*}*/
+
+  /* RG Estate Properties */
+  .rg-properties-list .rg-featured-img,
+  .rg-properties-list .rg-featured-img img {
+    width: 25rem;
+    height: 29rem;
+  }
+
+  .rg-properties-list .rg-badges,
+  .tp-images-footer {
+    max-width: 25rem;
+  }
+
+  .rg-properties-list .rg-featured-list li:not(:first-child) {
+    padding-left: 0;
+  }
+
+  .rg-properties-list .rg-featured-list {
+    flex-wrap: wrap !important;
+  }
+
+  .rg-properties-list .rg-featured-list li {
+    width: 50%;
+  }
+
+  /* RF Estate Project Funding */
+  .rg-page-header-content {
+    min-height: 30rem;
+  }
+
+  /* RG Estate Register */
+  .rg-hero-contact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 30rem;
+    left: 50%;
+    right: initial !important;
+    top: initial !important;
+    bottom: -25px;
+    transform: translate(-50%, -50%) !important;
+    padding: 0;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+  }
+
+  .rg-hero-contact li:not(:last-child) {
+    border-bottom: 0;
+
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .rg-hero-contact li {
+    padding: 0.5rem !important;
+    flex: 1;
+  }
+
+  /* RG ESTATE LANDING PAGE STYLE */
+  .rg-landing-header .navbar-nav .nav-link.active::before,
+  .rg-landing-header .navbar-nav .nav-item:hover .nav-link::before {
+    left: 0;
+  }
+
+  .rg-landing-header .navbar-nav .nav-link.active::after,
+  .rg-landing-header .navbar-nav .nav-item:hover .nav-link::after {
+    left: 52px;
+  }
+
+  .rg-housing-plan {
+    margin-top: 6rem;
+  }
+
+  .rg-housing-icon {
+    top: -30px;
+  }
+
+  .rg-housing-plan-content {
+    margin-top: -1rem;
+  }
+
+  .invest-in-dubai.rg-section-padd {
+    padding-top: 2rem;
+  }
+
+  .rg-dubai-properties {
+    margin-bottom: 15rem;
+  }
+
+  .rg-trip-bg .row {
+    justify-content: flex-start !important;
+  }
+
+  .invest-in-dubai .row {
+    flex-direction: column-reverse;
+  }
+
+  .invest-in-dubai h3 {
+    margin-bottom: 8rem;
+    text-align: center;
+  }
+
+  .rg-invest-indubai-left-content {
+    margin-top: 22rem;
+  }
+
+  .rg-new-project-slider .slick-slide {
+    padding: 0;
+  }
+}
+
+@media (max-width: 1070px) {
+  .rg-hero-register .rg-hero-bg {
+    min-height: 115rem;
+  }
+
+  .rg-hero-register .rg-hero-left-content {
+    border-top-left-radius: 1.5rem;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 1.5rem;
+    max-width: 80%;
+  }
+
+  .rg-hero-register .rg-hero-right-content {
+    max-width: 80%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+  }
+}
+
+@media (max-width: 1040px) {
+
+  /* RG Estate Properties Filters */
+  .rg-filter {
+    margin-top: 2rem;
+  }
+
+  .rg-filter-form {
+    flex-direction: column;
+  }
+
+  .rg-filter-nav {
+    margin-left: initial !important;
+    margin-top: 2rem;
+  }
+
+  /* RG ESTATE LANDING PAGE STYLE */
+  .rg-bg-shape {
+    padding-bottom: 12rem;
+  }
+
+  .rg-dubai-properties.rg-section-padd {
+    padding-top: 8rem;
+  }
+
+  .rg-new-project .rg-new-project-meta {
+    padding-top: 3rem;
+  }
+
+  .rg-invest-in-dubai-list {
+    padding-right: 0;
+  }
+
+  .rg-new-project {
+    padding: 8rem 0 8rem;
+  }
+
+  .rg-footer-img {
+    margin-top: -28rem;
+  }
+
+  .invest-in-dubai.rg-section-padd {
+    margin-top: 0;
+    padding: 10rem 0;
+  }
+
+  .invest-in-dubai h3 {
+    margin-bottom: 8rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .rg-mt-70 {
+    margin-top: 6rem;
+  }
+
+  /* RG Estate Topbar */
+  .rg-topbar-meta {
+    flex-direction: column;
+  }
+
+  .rg-topbar .rg-topbar-social-list {
+    margin-bottom: 0;
+  }
+
+  /* RG Estate Hero */
+  .rg-hero-bg {
+    padding: 15rem 2rem;
+  }
+
+  .rg-hero-content h2 {
+    font-size: 4rem;
+    line-height: 4.6rem;
+  }
+
+  .rg-hero-content p {
+    font-size: 1.6rem;
+    margin-top: 1.5rem !important;
+  }
+
+  .rg-home-btn-group {
+    margin-top: 2.5rem;
+  }
+
+  .rg-home-btn-group li {
+    margin-top: 1.5rem;
+  }
+
+  /* RG Estate Featured */
+  .rg-featured-slider .slick-prev {
+    left: 45.5%;
+  }
+
+  .rg-featured-slider .slick-next {
+    left: 54.5%;
+  }
+
+  .rg-underline-tabs {
+    margin-top: 3rem;
+  }
+
+  /* RG Estate Buy/Rent/Sell */
+  .rg-buy-rent-sell-card:after {
+    display: none;
+  }
+
+  /* RG Estate Members */
+  .rg-members-card {
+    padding-top: 8rem;
+  }
+
+  .rg-members-card>.rg-quote-icon {
+    width: 9rem;
+    height: 9rem;
+  }
+
+  .rg-members-card .rg-quote-icon svg {
+    width: 4.5rem;
+  }
+
+  .rg-quote-icon {
+    left: 4.3rem;
+    top: -4.35rem;
+  }
+
+  .rg-section-meta .btn {
+    font-size: 1.4rem;
+    font-weight: 400;
+  }
+
+  .rg-members-slider {
+    /*margin-left: 4.3rem;*/
+    /*margin-top: 4rem;*/
+    padding-bottom: 11rem;
+  }
+
+  .rg-members-slider .slick-prev,
+  .rg-members-slider .slick-next {
+    bottom: 4.5rem;
+  }
+
+  /* RG Estate Testimonials */
+  .rg-testimonials-slider .slick-prev {
+    left: 45.5%;
+  }
+
+  .rg-testimonials-slider .slick-next {
+    right: 54.5%;
+  }
+
+  /* RG Estate Footer */
+  footer {
+    padding-top: 4rem;
+  }
+
+  .rg-social-list {
+    margin-bottom: 4rem;
+  }
+
+  /* RG Estate Properties Filters */
+  .rg-filter-col {
+    flex-wrap: wrap;
+  }
+
+  .rg-search {
+    max-width: 100%;
+  }
+
+  .rg-status,
+  .rg-type,
+  .rg-cities,
+  .rg-bedrooms,
+  .rg-search-btn {
+    max-width: 20%;
+  }
+
+  .rg-breadcrumb {
+    margin-top: 4rem !important;
+  }
+  
+  .rg-page-header .rg-breadcrumb {
+    margin-top: 1.5rem !important;
+  }
+
+  /* RG Estate Properties */
+  .rg-properties-list .rg-featured-img,
+  .rg-properties-list .rg-featured-img img {
+    width: 30rem;
+    height: 29rem;
+  }
+
+  .rg-properties-list .rg-badges,
+  .tp-images-footer {
+    max-width: 30rem;
+  }
+
+  .rg-properties-list .rg-featured-list li:not(:first-child) {
+    padding-left: 1rem;
+  }
+
+  .rg-properties-list .rg-featured-list {
+    flex-wrap: nowrap !important;
+  }
+
+  .rg-properties-list .rg-featured-list li {
+    width: initial;
+  }
+
+  .rg-sidebar {
+    max-width: 100%;
+  }
+
+  .rg-sidebar-slider {
+    margin-top: 4rem;
+  }
+
+  /* RF Estate Project Funding */
+  .rg-page-header-bg {
+    border-radius: 1rem;
+  }
+
+  .rg-page-header-content {
+    min-height: 35rem;
+    padding-left: 2.6rem;
+    padding-right: 2.6rem;
+  }
+
+  .rg-page-header-content h1 {
+    font-size: 3rem;
+  }
+
+  .rg-page-header-content p {
+    font-size: 1.4rem;
+    margin-top: 2rem !important;
+  }
+
+  /* RG Estate History */
+  .rg-static-header {
+    min-height: 8.7rem;
+    margin-bottom: 3rem;
+  }
+
+  .rg-static-header:before {
+    width: 0.6rem;
+    height: 8.7rem;
+  }
+
+  .rg-static-header h2 {
+    font-size: 3rem;
+    margin-top: -.5rem;
+  }
+
+  .rg-history P {
+    font-size: 1.4rem;
+  }
+
+  .rg-contact-form,
+  .rg-static-stats {
+    margin-top: 3rem;
+  }
+
+  .rg-contact-form {
+    padding: 5rem 3rem;
+    min-height: initial;
+  }
+
+  .rg-contact-form h2 {
+    font-size: 2rem;
+    margin-bottom: 5rem;
+  }
+
+  .rg-contact-form .form-input {
+    height: 4.7rem;
+  }
+
+  .rg-contact-form .btn {
+    margin-top: 1.5rem;
+  }
+
+  .rg-static-stats li span:first-child {
+    font-size: 3.5rem;
+  }
+
+  /* RG Estate Vision */
+  .rg-vision {
+    margin-top: 6rem;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  .rg-vision img {
+    margin-top: 4rem;
+  }
+
+  .rg-vision p {
+    padding-right: 0;
+    font-size: 1.4rem;
+  }
+
+  .rg-vision .btn-primary {
+    margin-top: 4rem;
+  }
+
+  /* RG Estate Join */
+  .rg-join h2 {
+    font-size: 3rem;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  /* RG Estate Key Terms */
+  .rg-key-terms-meta {
+    padding-left: 0;
+  }
+
+  .rg-key-terms-card:after {
+    height: 113%;
+  }
+
+  .rg-key-terms-card {
+    margin-top: 5.3rem;
+  }
+
+  .rg-key-terms p {
+    font-size: 1.4rem;
+  }
+
+  .rg-key-terms-meta {
+    padding-right: 0;
+  }
+
+  /* RG Estate Partner */
+  .rg-we-partner {
+    margin-top: 9.5rem;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  .rg-we-partner-left h2 {
+    font-size: 3rem;
+  }
+
+  .rg-we-partner-left p {
+    font-size: 1.6rem;
+  }
+
+  .rg-accordion {
+    padding-left: 0;
+    margin-top: 4rem;
+  }
+
+  /* RG ESTATE LANDING PAGE STYLE */
+  .rg-housing-plan .rg-hp-mrgn {
+    margin-bottom: 5rem;
+  }
+
+  .rg-section-padd {
+    padding: 4rem 0;
+  }
+
+  .rg-dubai-properties.rg-section-padd {
+    padding-bottom: 0;
+  }
+
+  .rg-new-project {
+    padding: 7rem 0 12rem;
+  }
+
+  .invest-in-dubai.rg-section-padd {
+    padding-bottom: 7rem;
+  }
+
+  .rg-new-project .rg-new-project-meta {
+    padding-top: 6rem;
+  }
+
+  .rg-dubai-right-content {
+    margin-top: 18rem;
+  }
+
+  .rg-dream-house-video {
+    margin-top: 8rem;
+    margin-left: 1rem;
+  }
+
+  .rg-bg-shape {
+    padding-bottom: 22rem;
+  }
+
+  .rg-trip-meta {
+    margin-bottom: 3rem;
+  }
+
+  .rg-dubai-properties .rg-ge-padd {
+    padding-right: 15rem;
+  }
+
+  .invest-in-dubai.rg-section-padd {
+    padding-bottom: 4rem;
+  }
+
+  .rg-invest-indubai-left-content p {
+    padding-right: 0;
+  }
+
+  .rg-new-project-slider .slick-arrow {
+    top: initial;
+    bottom: -6rem;
+    transform: translateX(-50%);
+    right: 50% !important;
+  }
+
+  .rg-new-project-slider .slick-arrow.slick-prev {
+    left: 48%;
+  }
+
+  .rg-new-project-slider .slick-arrow.slick-next {
+    left: 52.2%;
+  }
+  
+  .rg-copyright {
+      min-height: auto;
+        padding: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+    
+    .rg-fs-sm-28 {
+        font-size: 2.8rem;
+    }
+    
+    .rg-fs-sm-26 {
+        font-size: 2.6rem !important;
+    }
+    
+    .rg-fs-sm-24 {
+        font-size: 2.4rem !important;
+    }
+
+  /* RG Estate Topbar */
+  .rg-topbar {
+    display: none !important;
+  }
+
+  .rg-mobile-topbar .rg-search-content {
+    width: 50%;
+  }
+
+  /* RG Estate Hero */
+  .rg-hero-content h2,
+  .rg-hero-content p {
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+
+  .rg-hero-content h2 {
+    font-size: 2.7rem;
+    line-height: 3.5rem;
+  }
+
+  .rg-home-btn-group {
+    margin-top: 1.5rem;
+  }
+
+  .rg-home-btn-group li .btn {
+    font-size: 1.2rem;
+  }
+
+  .rg-home-btn-group li:not(:last-child) {
+    margin-right: 1rem;
+  }
+
+  .rg-hero-form {
+    padding: 2rem 1.5rem;
+  }
+
+  .rg-hero-stats {
+    width: calc(100% - 4rem) !important;
+    max-width: 100%;
+    left: initial;
+    transform: none;
+    left: 2rem;
+    right: 2rem;
+  }
+
+  .rg-categories-list {
+    box-shadow: none;
+    margin-top: -6rem;
+    border-bottom: rgba(101, 104, 101, 0.5) 0.1rem solid;
+    border-radius: 0;
+    padding-bottom: 40px;
+  }
+
+  .rg-categories-list li {
+    flex: 0 0 25%;
+    max-width: 25%;
+    border-right: none;
+    margin-top: 5rem;
+  }
+
+  /* RG Estate Featured */
+  .nav.rg-underline-tabs {
+    gap: 0;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+  }
+
+  .nav.rg-underline-tabs li {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .nav-underline.rg-underline-tabs .nav-link {
+    font-size: 1.4rem;
+  }
+
+  /* RG Estate Interested in selling */
+  .rg-selling-card .col-md-6:last-child {
+    order: -1;
+  }
+
+  /* RG Estate Testimonials */
+  .rg-testimonials-slider .slick-prev {
+    left: 43.5%;
+  }
+
+  .rg-testimonials-slider .slick-next {
+    left: 56.5%;
+  }
+
+  /* RG Estage Clients And Partners */
+  .rg-partners-list li img {
+    height: 5rem;
+  }
+
+  /* RG Estate Footer */
+  .rg-social-list {
+    margin-bottom: 0;
+  }
+
+  footer h2 {
+    margin-top: 4rem;
+  }
+
+  .rg-footer-list {
+    margin-top: 2rem !important;
+  }
+
+  /* RG Estate Properties Filters */
+  .rg-status,
+  .rg-type,
+  .rg-cities,
+  .rg-bedrooms {
+    max-width: 25%;
+  }
+
+  .rg-search-btn {
+    max-width: 100%;
+  }
+
+  /* RG Estate Properties */
+  .rg-properties-list .rg-featured-img,
+  .rg-properties-list .rg-featured-img img {
+    width: 20rem;
+    height: 29rem;
+  }
+
+  .rg-properties-list .rg-badges,
+  .tp-images-footer {
+    max-width: 20rem;
+  }
+
+  .rg-properties-list .rg-featured-list li:not(:first-child) {
+    padding-left: 0;
+  }
+
+  .rg-properties-list .rg-featured-list {
+    flex-wrap: wrap !important;
+  }
+
+  .rg-properties-list .rg-featured-list li {
+    width: 50%;
+  }
+
+  /* RG Estate History */
+  .rg-static-stats li:not(:first-child) {
+    margin-top: 2rem;
+  }
+
+  /* RG Estate Key Terms */
+  .rg-key-terms p,
+  .rg-key-terms-card a {
+    font-size: 1.4rem;
+  }
+
+  .rg-key-terms-card {
+    margin-right: 2rem;
+    padding: 2rem;
+  }
+
+  .rg-key-terms-card h2 {
+    font-size: 1.8rem;
+  }
+
+  .rg-key-terms-card p {
+    margin-top: 1.5rem;
+  }
+
+  .rg-key-terms-card a {
+    margin-top: 1.5rem;
+  }
+
+  /* RG Estate Our Services */
+  .rg-service-card h2 {
+    font-size: 2rem;
+  }
+
+  /* RG ESTATE LANDING PAGE STYLE */
+  .rg-hero-register .rg-hero-bg {
+    min-height: 64.7rem;
+  }
+
+  .rg-bg-shape {
+    padding-bottom: 19rem;
+  }
+
+  .rg-hero-register .rg-hero-left-content {
+    padding: 3rem 6rem;
+    height: 30rem;
+  }
+
+  .rg-hero-register .rg-hero-left-content h1 {
+    font-size: 2rem;
+  }
+
+  .rg-hero-register .rg-hero-left-content p {
+    font-size: 1.2rem;
+    line-height: 2.2rem;
+  }
+
+  .rg-trip-content p {
+    padding-right: 0;
+  }
+
+  .rg-trip-img img {
+    width: 60px;
+  }
+
+  .rg-trip-bg .rg-trip-meta {
+    align-items: baseline !important;
+  }
+
+  .rg-trip-content {
+    padding-left: 2rem !important;
+  }
+
+  .rg-trip-content h2 {
+    font-size: 3rem;
+  }
+
+  .rg-trip-bg {
+    padding: 6rem 2rem;
+  }
+
+  .rg-dubai-property-heading {
+    font-size: 2rem;
+  }
+
+  .invest-in-dubai h3 {
+    margin-bottom: 16rem;
+  }
+
+  .rg-new-project-slider .slick-arrow.slick-next {
+    left: 54.2%;
+  }
+
+  .invest-in-dubai.rg-section-padd {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+
+  .rg-footer {
+    margin-top: 2rem;
+  }
+
+  .rg-footer-img {
+    margin-top: -20rem;
+  }
+  
+  .rg-consultation-today.rg-join h2 {
+      font-size: 2rem;
+    line-height: 2.6rem;
+  }
+  
+  .rg-consultation-today.rg-join p {
+      padding-left: 5%;
+      padding-right: 5%;
+  }
+  
+  .rg-we-partner.rg-frequently-asked {
+      margin-top: 4.5rem;
+      padding-top: 4rem;
+        padding-bottom: 4rem;
+  }
+  
+  .rg-register-intrest-modal .rg-modal-img {
+    height: auto;
+}
+
+.rg-business-buying-selling-content .rg-page-header-content {
+    min-height: 50rem;
+}
+
+}
+
+@media (max-width: 576px) {
+
+  /* RG Estate Topbar */
+  .rg-mobile-topbar {
+    flex-direction: column;
+  }
+
+  .rg-mobile-topbar .rg-search-content {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  .rg-sm-fs-24 {
+    font-size: 2.4rem;
+  }
+
+  .rg-sm-fs-14 {
+    font-size: 1.4rem;
+  }
+
+  /* RG Estate Hero */
+  .rg-hero-bg {
+    padding: 13rem 2rem;
+  }
+
+  .rg-hero-stats {
+    height: 7.9rem;
+  }
+
+  .rg-counter {
+    font-size: 1.8rem;
+  }
+
+  .rg-text {
+    font-size: 1rem;
+  }
+
+  .rg-section-header h2 {
+    font-size: 2.4rem;
+    margin-top: 1.5rem;
+  }
+
+  .rg-section-header p {
+    padding-left: 2%;
+    padding-right: 2%;
+    margin-top: 1rem;
+  }
+
+  /* RG Estate Services */
+  .rg-services-slider {
+    margin-top: 2rem;
+  }
+
+  .rg-services-slider .slick-dots {
+    bottom: -4.5rem;
+  }
+
+  .rg-services-slider-mobile {
+    margin-top: -2rem;
+  }
+
+  .rg-services-slider-mobile .rg-service {
+    max-width: 29.3rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 4rem;
+  }
+
+  /* RG Estate Featured */
+  .rg-featured {
+    margin-top: 7rem;
+  }
+
+  .rg-arrow-wh .slick-prev,
+  .rg-arrow-wh .slick-next {
+    width: 3.4rem;
+    height: 3.4rem;
+  }
+
+  .rg-featured-slider .slick-prev,
+  .rg-featured-slider .slick-next {
+    bottom: -6.2rem;
+  }
+
+  .rg-featured-slider .slick-prev {
+    left: 40%;
+  }
+
+  .rg-featured-slider .slick-next {
+    left: 60%;
+  }
+
+  /* RG Estate Buy/Rent/Sell */
+  .rg-buy-rent-sell {
+    margin-top: 12.5rem;
+  }
+
+  .rg-buy-rent-sell-card p {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* RG Estate Interested in selling */
+  .rg-selling-meta {
+    padding: 3rem 2.2rem;
+  }
+
+  .rg-section-meta .btn {
+    font-size: 1.4rem;
+    font-weight: 400;
+  }
+
+  /* RG Estate Members */
+  .rg-partners-list {
+    margin-top: -5rem;
+  }
+
+  .rg-partners-list .slick-dotted.slick-slider {
+    margin-bottom: 1rem;
+  }
+
+  .rg-partners-bg {
+    min-height: 20rem;
+    padding-bottom: 0;
+  }
+
+  .rg-members {
+    padding-bottom: 6rem;
+  }
+
+  .rg-members-card {
+    margin-top: 9.5rem;
+  }
+
+  .rg-members-card>.rg-quote-icon {
+    width: 7.4rem;
+    height: 7.4rem;
+  }
+
+  .rg-members-card .rg-quote-icon svg {
+    width: 4rem;
+  }
+
+  .rg-members-meta {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    text-align: center;
+  }
+  
+  .rg-members-card .row {
+    min-height: 45.8rem;
+    }
+
+  .rg-members-slider {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .rg-members-slider .slick-prev,
+  .rg-members-slider .slick-next {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 5rem;
+  }
+
+  .rg-members-slider .slick-prev {
+    left: 45%;
+  }
+
+  .rg-members-slider .slick-next {
+    left: 55%;
+  }
+
+  /* RG Estate Blogs */
+  .rg-blog-card {
+    margin-top: 3rem;
+  }
+
+  /* RG Estate Testimonials */
+  .rg-testimonials-bg {
+    min-height: 70rem;
+  }
+
+  .rg-testimonials-content {
+    margin-top: 2rem;
+  }
+
+  .rg-testimonials-slider {
+    margin-top: 3.3rem;
+  }
+
+  .rg-testimonials-bg:after {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .rg-testimonials-content h3 {
+    color: var(--bs-white);
+  }
+
+  .rg-testimonials-content .rg-section-header h2 {
+    color: var(--bs-blue);
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+
+  .rg-testimonials-content .rg-section-header p {
+    color: var(--bs-white);
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+
+  .rg-testimonials-slider .slick-slide {
+    margin: 0 1rem;
+  }
+
+  .rg-testimonials-slider .slick-list {
+    margin: 0 -1rem;
+  }
+
+  .rg-testimonials-slider .slick-prev {
+    left: 43.5%;
+  }
+
+  .rg-testimonials-slider .slick-next {
+    left: 56.5%;
+  }
+
+  .rg-testimonials-slider .slick-prev,
+  .rg-testimonials-slider .slick-next {
+    bottom: -7.2rem;
+  }
+
+  /* RG Estate Get Latest Offers */
+  .rg-news-bg {
+    padding: 5rem 2rem;
+  }
+
+  .rg-news-bg h2 {
+    margin-top: -5.6rem;
+  }
+
+  .rg-news-bg .row {
+    min-height: 63.8rem;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .rg-subscribe .form-group {
+    overflow: initial;
+    flex-direction: column;
+    margin-top: 3rem;
+  }
+
+  .rg-subscribe .form-input {
+    padding-right: 1.6rem;
+    line-height: 5.6rem;
+    border-radius: 0.4rem;
+  }
+
+  .rg-subscribe .btn {
+    position: relative;
+    margin-top: 3rem;
+    border-radius: 0.4rem;
+    width: 17rem;
+    --bs-btn-padding-y: 1.4rem;
+  }
+
+  /* RG Estate Properties Filters */
+  .rg-status,
+  .rg-type,
+  .rg-cities,
+  .rg-bedrooms {
+    max-width: 50%;
+  }
+
+  /* RG Estate Properties */
+  .rg-properties-list .rg-featured-img,
+  .rg-properties-list .rg-featured-img img {
+    width: 100%;
+    height: 26.3rem;
+  }
+
+  .rg-properties-list .rg-badges,
+  .tp-images-footer {
+    max-width: 100%;
+  }
+
+  .rg-filter-by {
+    order: -1;
+    margin-bottom: 1rem;
+  }
+
+  .tp-images-footer {
+    left: -0.7rem;
+    top: 22rem;
+    bottom: initial;
+  }
+
+  .tp-images-footer .tp-images-footer-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+
+  .tp-images-footer .tp-images-footer-icon svg {
+    width: 1.2rem;
+  }
+
+  .rg-properties-list .rg-featured-body {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .rg-properties-list .rg-featured-body-top {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+
+  .rg-properties-list .rg-featured-body-top h3 {
+    font-size: 1.8rem;
+  }
+
+  .rg-properties-list .rg-featured-body-top h2 {
+    font-size: 1.6rem;
+    margin-top: 2rem !important;
+  }
+
+  .rg-featured-footer {
+    /*justify-content: center !important;*/
+    /*padding-bottom: 0.3rem !important;*/
+    padding-left: 2rem;
+  }
+
+  .rg-properties-grid .rg-featured-footer {
+    justify-content: space-between !important;
+    padding-top: 1rem;
+    padding-bottom: 1rem !important;
+    padding-left: 1.5rem;
+  }
+
+  .rg-pagination {
+    margin-top: 4rem;
+  }
+
+  /* RG Estate Vision */
+  .rg-vision img {
+    height: 31.9rem;
+  }
+
+  /* RG Estate Join */
+  .rg-join-bg {
+    min-height: 46.8rem;
+  }
+
+  /* RG Estate Key Terms */
+  .rg-key-terms img {
+    height: 26.1rem;
+  }
+
+  .rg-key-terms-card:after {
+    height: 114%;
+  }
+
+  .rg-key-terms-slider .slick-dots {
+    bottom: -5rem;
+  }
+
+  /* RG Estate Partner */
+  .rg-we-partner {
+    margin-top: 7.5rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .accordion-item:not(:first-of-type) {
+    margin-top: 2rem;
+  }
+
+  .accordion-body {
+    padding-right: 5rem;
+    padding-bottom: 2rem;
+    font-size: 1.2rem;
+  }
+
+  .accordion-button {
+    padding-right: 10%;
+    font-size: 1.6rem;
+  }
+
+  .accordion-button::after {
+    position: relative;
+    right: -12%;
+  }
+
+  /* RG Estate Our Services */
+  .rg-service-card img {
+    height: 23.2rem;
+  }
+
+  /* RG ESTATE LANDING PAGE STYLE */
+  .rg-hero-register .rg-hero-bg {
+    padding: 6rem 2rem 10rem;
+  }
+
+  .rg-hero-register .rg-hero-left-content {
+    max-width: 90%;
+  }
+
+  .rg-hero-register .rg-hero-right-content {
+    max-width: 90%;
+  }
+
+  .rg-hero-register .rg-hero-left-content h1 {
+    line-height: 3rem;
+    font-size: 1.7rem;
+  }
+
+  .rg-hero-register .rg-hero-left-content {
+    height: 34rem;
+    padding: 3.8rem 2.3rem 3rem;
+  }
+
+  .rg-hero-register .rg-hero-right-content {
+    padding: 4rem 2rem 3.5rem;
+  }
+
+  .rg-hero-register .rg-hero-right-content h2 {
+    font-size: 2rem;
+  }
+
+  .rg-hero-register .rg-hero-right-content p {
+    font-size: 1.2rem;
+  }
+
+  .rg-hero-contact {
+    max-width: 20rem;
+    padding: 0;
+    height: 5rem;
+  }
+
+  .rg-housing-plan {
+    margin-top: 9rem;
+  }
+
+  .rg-housing-plan .rg-housing-meta {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+
+  .rg-dream-house-content h3 {
+    font-size: 2rem;
+  }
+
+  .rg-dream-house-content p {
+    font-size: 1.3rem;
+    line-height: 3.2rem;
+    text-align: center;
+    padding-right: 0;
+  }
+
+  .rg-dream-house-video-btn {
+    justify-content: center;
+  }
+
+  .rg-dream-house-content .rg-dream-house-video-icon {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .rg-dream-house .rg-dream-house-video {
+    margin-left: 1rem;
+  }
+
+  .rg-dream-house-video {
+    margin-top: 6rem;
+  }
+
+  .rg-bg-shape {
+    padding-bottom: 10rem;
+  }
+
+  .rg-trip {
+    margin-top: -9rem;
+  }
+
+  .rg-trip-bg {
+    padding: 6rem 0;
+  }
+
+  .rg-trip-bg .row {
+    justify-content: center !important;
+  }
+
+  .rg-trip-img img {
+    width: 40px;
+  }
+
+  .rg-trip .rg-trip-meta {
+    display: block !important;
+    padding: 0 2rem;
+  }
+
+  .rg-trip .rg-trip-meta .rg-trip-img {
+    float: left;
+    margin-top: -0.8rem;
+  }
+
+  .rg-trip .rg-trip-content {
+    padding-left: 0 !important;
+  }
+
+  .rg-trip .rg-trip-content h2 {
+    font-size: 2.2rem;
+    margin-left: 6rem;
+  }
+
+  .rg-trip .rg-trip-content p {
+    padding-top: 1rem;
+    text-align: center;
+    line-height: 3rem;
+    font-size: 1.3rem;
+  }
+
+  .rg-trip .rg-trip-plan-meta {
+    height: 100%;
+  }
+
+  .rg-section-padd {
+    padding: 5rem 0;
+  }
+
+  .rg-dream-house {
+    padding-top: 1rem;
+    padding-bottom: 5rem;
+  }
+
+  .rg-mobile-mrgn {
+    margin-top: 3rem;
+  }
+
+  .rg-dubai-properties.rg-section-padd {
+    padding-bottom: 6rem;
+    padding-top: 6rem;
+  }
+
+  .rg-dubai-property-heading {
+    font-size: 1.9rem;
+    text-align: center;
+    margin-bottom: 3rem !important;
+  }
+
+  .rg-dubai-properties .rg-ge-padd {
+    padding-right: 9rem;
+  }
+
+  .rg-dubai-left-bottom-img img {
+    width: 160px;
+    height: 100%;
+  }
+
+  .rg-dubai-left-bottom-img {
+    position: absolute;
+    bottom: -132px;
+    right: -84px;
+    z-index: -1;
+  }
+
+  .rg-new-project .rg-new-project-meta {
+    margin-top: 0;
+    padding-top: 4rem;
+  }
+
+  .rg-dubai-right-content {
+    margin-top: 14rem;
+    text-align: center;
+  }
+
+  .rg-dubai-right-content p {
+    line-height: 3rem;
+    font-size: 1.3rem;
+  }
+
+  .rg-dubai-properties {
+    margin-bottom: 0;
+  }
+
+  .rg-project-right-content p {
+    font-size: 1.3rem;
+  }
+
+  .rg-new-project-slider .slick-arrow.slick-next {
+    left: 56%;
+  }
+
+  .rg-new-project-slider .slick-arrow {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .rg-new-project-slider .slick-arrow.slick-prev {
+    left: 44%;
+  }
+
+  .rg-new-project-slider .slick-arrow.slick-next {
+    left: 55.2%;
+  }
+
+  .rg-project-right-content {
+    margin-bottom: 3rem;
+  }
+
+  .rg-new-project {
+    padding: 5rem 0 12rem;
+  }
+
+  .rg-new-project h3 {
+    font-size: 2rem;
+  }
+
+  .invest-in-dubai.rg-section-padd {
+    padding-top: 6rem;
+  }
+
+  .invest-in-dubai {
+    margin-top: 0;
+  }
+
+  .invest-in-dubai h3 {
+    font-size: 2rem;
+    margin-bottom: 12rem;
+  }
+
+  .rg-invest-in-dubai-images {
+    padding-right: 2rem;
+    padding-left: 4rem;
+  }
+
+  .rg-invest-in-dubai-img-top img {
+    width: 130px;
+    height: auto;
+  }
+
+  .rg-invest-in-dubai-img-top {
+    top: -8rem;
+  }
+
+  .rg-invest-in-dubai-img-bottom img {
+    width: 130px;
+    height: auto;
+  }
+
+  .rg-invest-in-dubai-img-bottom {
+    bottom: -10rem;
+    left: 0m;
+  }
+
+  .rg-invest-indubai-left-content {
+    margin-top: 14rem;
+  }
+
+  .rg-invest-indubai-left-content p {
+    line-height: 2.5rem;
+    font-size: 1.3rem;
+  }
+
+  .rg-invest-in-dubai-list li {
+    font-size: 1.3rem;
+  }
+
+  .rg-invest-in-dubai-btn {
+    text-align: center;
+  }
+
+  .rg-footer {
+    margin-top: 2rem;
+  }
+
+  .rg-footer-img {
+    margin-top: -17rem;
+  }
+
+  .rg-footer-map img {
+    border-radius: 0.6rem;
+    height: 32rem;
+    object-fit: cover;
+  }
+
+  .rg-footer-img img {
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    height: 50rem;
+    object-fit: cover;
+  }
+
+  .rg-footer-img::before {
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+  }
+
+  .rg-landing-news .rg-news-bg {
+    padding: 12rem 3.5rem;
+  }
+
+  .rg-landing-news .rg-news-bg h2 {
+    line-height: 3.5rem;
+    font-size: 1.8rem;
+  }
+
+  .rg-landing-news .rg-news-meta {
+    min-height: 44rem;
+  }
+  
+  
+  
+  .rg-copyright span {
+    display: block;
+    }
+    
+}
