@@ -1,0 +1,242 @@
+<div id="<?php echo $this->id;?>">
+<?php
+if (Yii::app()->request->isAjaxRequest) {
+	?> 
+	<script>$('body').attr("id","listing");$('#hmmenu').find('li').removeClass('active');
+	switch('<?php echo $this->sec_id  ;?>') {
+		case '<?php echo SALE_SLUG ;?>':
+		$('#hl_buy').addClass('active');
+		break;
+		case '<?php echo RENT_SLUG ;?>':
+		$('#hl_rent').addClass('active');
+		break;
+		case '<?php echo BUSINESS_SLUG ;?>':
+		$('#hl_business').addClass('active');
+		break;
+		case 'new-development':
+		$('#hl_development').addClass('active');
+		break;
+	 } 
+	 </script>
+	<title><?php  echo  $pageTitle ;  ?></title>
+	<meta name="description" content="<?php echo !empty($pageMetaDescription) ? $pageMetaDescription : $this->app->options->get('system.common.home_meta_description');?>">
+	<meta name="keywords" content="<?php echo $this->app->options->get('system.common.home_meta_keywords');?>">
+
+	<?php 
+}
+if($filterModel->section_id=='new-development'){
+	$this->renderPartial('_filter_html_top_project');
+ }
+ else{
+	 $this->renderPartial('_filter_html_top');
+ }
+?>
+<?php  if(!empty($b_1)){ echo '<div class="" style="margin-bottom: 20px;margin-top:20px;">'. $b_1.'<div class="clearfix"></div></div>';; } ?>
+<?php 
+if(empty($adsCount)){
+ 
+	$this->renderPartial('_no_result_page',array('full_width'=>true)); 
+	 
+}
+else{ ?>
+        <div class="container margin-top-40 list-container-rx" id="">
+			<div class="">
+            <div class="">
+                <div class="col-sm-12 padding-left-0">
+                    <span class="ak_text margin-left-0" id="loader_againn">
+                               
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 desc-row2 padding-left-0">
+                  <h3 class="_jmmm34f  margin-bottom-0">
+                    <?php  
+                                        echo  Yii::t('trans', ' {cnt}    {p} ' ,array('{p}'=>  $m_title   ,'{cnt}'=> $adsCount  ));
+                                         if(!empty($userM)){
+											 echo ' <small class="user-nameing secname_'.$filterModel->section_id.'"><b>['.$userM->fullName.']</b></small>';
+										}
+					?>
+					</h3>
+					</div>
+					<?php
+                $l_view = 'list';
+                if((isset($this->app->request->cookies['list_view'])   )){ $l_view  =  $this->app->request->cookies['list_view']->value; 	}
+		        ?>
+				   <div class="col-sm-6    padding-right-0 the-head-sorter text-right mcheckboxSorter">
+				        
+                        <div class="newheader_dropdown_action viewersp text-right pull-right <?php echo   $l_view==   'list'    ? 'active' : '';?> "  onclick="changeViewN2(this)" data-val="list"  data-tr-event-name="header_user_account" data-header-id="profile"  >
+                        <a href="javascript:void(0)"  class="newheader_dropdown_action_item header_link" data-ui-id="user-account"><span class="newheader_useravatar_name">List</span><div class="newheader_dropdown_action_item_after"></div></a>
+                        <svg enable-background="new 0 0 24 24" class="newheader_dropdown_arrow" height="15" viewBox="0 0 24 24" width="15" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="m5 0h-4c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h4c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m23 0h-14c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m5 9h-4c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h4c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m23 9h-14c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m5 18h-4c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h4c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/><path fill="currentColor" d="m23 18h-14c-.552 0-1 .448-1 1v4c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-4c0-.552-.448-1-1-1z"/></svg>
+                       
+                        </div>
+                        <div class="newheader_dropdown_action viewersp text-right pull-right  <?php echo   $l_view ==   'grid'    ? 'active' : '';?> "  data-val="grid" onclick="changeViewN2(this)"   data-tr-event-name="header_user_account" data-header-id="profile"  >
+                        <a href="javascript:void(0)" class="newheader_dropdown_action_item header_link" data-ui-id="user-account"><span class="newheader_useravatar_name">Grid</span><div class="newheader_dropdown_action_item_after"></div></a>
+                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="newheader_dropdown_arrow" x="0px" y="0px" width="15"   height="15" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"> <g> <g> <g> <path fill="currentColor" d="M187.628,0H43.707C19.607,0,0,19.607,0,43.707v143.921c0,24.1,19.607,43.707,43.707,43.707h143.921 c24.1,0,43.707-19.607,43.707-43.707V43.707C231.335,19.607,211.728,0,187.628,0z"/> <path fill="currentColor" d="M468.293,0H324.372c-24.1,0-43.707,19.607-43.707,43.707v143.921c0,24.1,19.607,43.707,43.707,43.707h143.921 c24.1,0,43.707-19.607,43.707-43.707V43.707C512,19.607,492.393,0,468.293,0z"/> <path fill="currentColor" d="M187.628,280.665H43.707C19.607,280.665,0,300.272,0,324.372v143.921C0,492.393,19.607,512,43.707,512h143.921 c24.1,0,43.707-19.607,43.707-43.707V324.372C231.335,300.272,211.728,280.665,187.628,280.665z"/> <path fill="currentColor" d="M468.293,280.665H324.372c-24.1,0-43.707,19.607-43.707,43.707v143.921c0,24.1,19.607,43.707,43.707,43.707h143.921 c24.1,0,43.707-19.607,43.707-43.707V324.372C512,300.272,492.393,280.665,468.293,280.665z"/> </g> </g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg>
+                      
+                         </div>
+				       
+				       
+				       <script>var list_view_url =  '<?php echo Yii::app()->createUrl('site/setview_list');?>';</script>
+				        
+				<?php 
+				$sortArray = $filterModel->sortArray();
+				if(!isset($formData['sort'])){$formData['sort'] = 'best-asc'; }
+				/*
+				foreach($sortArray as $k=>$v){
+				?><input class="checkbox-tools" type="radio" name="order" id="tool-<?php echo $k;?>" <?php echo  (isset($formData['sort']) and  $formData['sort']==  $k ) ?   'checked': ''; ?>  onchange="changeOrderN(this)" value="<?php echo  $k;?>" ><label class="for-checkbox-tools <?php echo ($k=='sqft-desc' or $k=='title-asc')? 'n-p-r-0' : '';?>" for="tool-<?php echo $k;?>"> <?php echo $v;?> </label>
+				<?php }*/ ?>  
+                <?php
+                 $sortOrder = ''; $title_sort = '' ; 
+                foreach($sortArray as $k=>$v){ 
+                   $title_sort = (isset($formData['sort']) and  $formData['sort']==  $k ) ?   $v : $title_sort; 
+    			   $sortOrder .= '<li class="newheader_dropdown_item text-left"><a class="newheader_dropdown_item_link header_link" data-val="'.$k.'" onclick="changeOrderN2(this)" href="javascript:void(0)">'.$v.'</a></li>'; 
+    			} ?>
+                <div class="newheader_dropdown_action srter text-right pull-right <?php echo  !empty($title_sort) ? 'active' : ''; ?>" data-tr-event-name="header_user_account" data-header-id="profile"  >
+						<a href="javascript:void(0)" class="newheader_dropdown_action_item header_link" data-ui-id="user-account"><span class="newheader_useravatar_name">Sort - <?php echo  $title_sort;?></span><div class="newheader_dropdown_action_item_after"></div></a>
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" class="newheader_dropdown_arrow" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" width="15" height="15"><g><g xmlns="http://www.w3.org/2000/svg"><path d="m0 406.5h211v105.5h-211z" fill="currentColor" data-original="#000000" style="" class=""></path><path d="m0 271h311.333v105.5h-311.333z" fill="currentColor" data-original="#000000" style="" class=""></path><path d="m0 135.5h411.667v105.5h-411.667z" fill="currentColor" data-original="#000000" style="" class=""></path><path d="m0 0h512v105.5h-512z" fill="currentColor" data-original="#000000" style="" class=""></path><path d="m255.949 512h256.051l-128.025-149.984z" fill="currentColor" data-original="#000000" style="" class=""></path></g></g></svg>
+						<div class="newheader_dropdown_container newheader_dropdown">
+						<ul class="newheader_dropdown_items">
+						     <?php echo  $sortOrder ;?>
+						</ul>
+						</div>
+				</div>
+                </div>
+             	   
+             
+            </div>
+            </div>
+        </div>
+		<div class="clearfix"></div>
+		<div class="clearfix container grdV">
+		    	<style>
+				.list-group.dvp .col-sm-3 { width:33.333333333333333%;   }
+				.list-group.dvp .col-sm-3 .listing-item {   height:241px; }
+				.list-group.dvp .col-sm-3 .dots {    top: 190px; } 
+				</style>
+			 
+			<?php 
+		$title1 = '';
+		if(!empty($categoryModelm)){
+			$title1 =  $categoryModelm->category_name;
+		}
+		else{
+			$title1 = 'Properties';
+		}
+		switch($filterModel->section_id){
+		    /*
+			
+			case 'property-for-sale':
+			$title1.= ' for sale';
+			$this->renderPartial('_featured_listing',array('total_slide_show'=>$filterModel->section_id=='development' ? '2':'3','w'=>'363','_sec_id'=>$filterModel->section_id,'title1'=>$title1)); 		
+			break;
+			case 'property-for-rent':
+			$title1.= ' for rent';			
+			$this->renderPartial('_featured_listing',array('total_slide_show'=>$filterModel->section_id=='development' ? '2':'3','w'=>'363','_sec_id'=>$filterModel->section_id,'title1'=>$title1)); 
+			break;
+			case 'development':
+			$title1 = 'New Developments';
+			$this->renderPartial('_featured_listing',array('total_slide_show'=>$filterModel->section_id=='development' ? '2':'3','w'=>'363','_sec_id'=>$filterModel->section_id,'title1'=>$title1)); 
+			break;
+			default:
+			 $title2  = $title1.' for sale';
+			 $title3  = $title1.' for rent';
+			 $title1  = $title2;
+			 $this->renderPartial('_featured_listing',array('total_slide_show'=>'3','w'=>'363','_sec_id'=>'property-for-sale','title1'=>$title1)); 
+			 $title1  = $title3;
+			 $this->renderPartial('_featured_listing_2',array('total_slide_show'=>'3','w'=>'363','_sec_id'=>'property-for-rent','title1'=>$title1)); 		
+			break;
+			*/
+		}
+		 ?>	
+	 
+		</div>
+		<style>
+	
+	
+		</style>
+		<div class="clearfix"></div>
+                
+		       <div class="container   <?php echo  $l_view  ;?>" id="d_column" style="margin-bottom: 40px !important;">
+		       <div class="row">
+				   <div class="col-sm-12  margin-top-20 margin-bottom-0 litsect wqeq_<?php echo $filterModel->section_id;?>">
+				 <div class="maker_adjust <?php echo $filterModel->section_id == 'new-development' ? 'projects' : '';?> filterModel_<?php echo $filterModel->section_id;?>" > 
+					 <?php 
+				if(!empty($ads)){
+$works = $ads;
+				if($filterModel->section_id == 'new-development'){
+				$this->renderPartial('//listing/_list_proprty_property',compact('ads' ,'works' )); 
+				}
+				else{
+					$this->renderPartial('//listing/_list_proprty',compact('ads' ,'works' ));
+				}
+				echo '<div id="suggest_friends_last_id"></div><div class="clearfix"></div>	';
+				if(sizeOf($ads) >= $limit){
+				echo '<p class="text-center loadingDiv"><a href="javascript:void(0)" onclick="checkScroll();" class="btn   btn-primary  btn-shadow btn-rounded btn-icon-right">'.  'Load More' .'</a></p>';
+				}
+				}
+				else{
+				echo $this->renderPartial('empty_results');
+				}
+			?><div class="clearfix"></div>
+				</div>
+	<div class="clearfix"></div>
+ </div> 
+ 					<div class="onlylist "><a href="https://www.google.com/?show_error=true" target="_blank"><img src="<?php echo Yii::App()->apps->getBaseUrl('assets/img/adv2.png');?>"></a></div>
+ 
+ </div>
+   <?php  if(!empty($b_2)){ echo '<div class="" style="margin-bottom: 20px;margin-top:20px;">'. $b_2.'<div class="clearfix"></div></div>';; } ?>
+
+<div class="clearfix"></div>
+
+<script>
+var timer_ajax; 
+var mainListUrl = '<?php echo Yii::app()->createUrl('listing/index',array('sec'=>!empty($filterModel->section_id) ? $filterModel->section_id : 'Property'));?>/';
+var autoCompleteUrl = '<?php echo Yii::app()->createUrl('listing/autocomplete');?>';
+// $(function(){ changeForm() ;   })
+ $(function(){ closeOpendDiv() ; activatelistSearchFixed()  })
+</script> 
+	<script type="text/javascript">
+	var stopPagination;
+	var loadingHtml    	= '<div style="position:relative;"><div class="loading "><div class="spinner rmsdf"><div class="bounce1"></div>  <div class="bounce2"></div>  <div class="bounce3"></div></div><div class="clearfix"></div><div style="    clear: both;    margin-top: 30px;    font-weight: 600;">Loading more properties, please wait.    <div></div></div>';
+	var	loadMoreHtml 	= '<a href="javascript:void(0)" class="btn   btn-primary  btn-shadow btn-rounded btn-icon-right" onclick="checkScroll();"  id="refresh_list" ><?php echo 'Load More' ;?></a>';  
+	var afterFinishHtml = '';   
+	var elementId='slideSheet';
+	var appendId='suggest_friends_last_id';
+	var scroll=true;
+	var limit='<?php echo $limit;?>';
+	var offest='0';
+	var formID  = 'frmId';
+	var checkFuture = true ;
+	var loadingDiv ;
+	$(document).ready(function () {
+	loadingDiv  =  $('.loadingDiv');
+	});
+	var currentPage = 1;
+	var scroll_Pagination5;
+	var slug ='<?php echo Yii::app()->createUrl('listing/fetch_work',array_filter(array_replace(array('state_id2'=>$state_id),$_GET)));?>';
+
+
+	</script>
+  
+
+	<script type="text/javascript">
+
+	$(document).ready(function () {
+	      const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+observer.observe();
+		   
+		$('#sortingOptions').select2();
+	$(window).scroll(function() {
+	if($(window).scrollTop() + $(window).height() > $('#d_column').height() &&  scroll && !stopPagination) {
+		scroll = false;
+		 checkScroll();
+	}
+	})
+	})
+	
+	</script> 
+
+<?php } ?> 
+<div class="clearfix"></div>
+</div>

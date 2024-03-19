@@ -1,0 +1,535 @@
+<?php defined('MW_PATH') || exit('No direct script access allowed');
+ 
+ 
+class Place_adController  extends Controller
+{
+     public function  Init()
+     {  	 
+			parent::Init();
+	 }
+ 
+	 
+	 public function actionGetListingState($country_id=null){
+	 
+	     $state_list =    States::model()->AllListingStatesOfCountry($country_id) ; 
+	     if(empty($state_list)){
+		    	 echo $this->generateOutPut('FAILED','0',array(),array());
+		 }
+		 else{
+				$ar = array() ; 
+				foreach($state_list as $k=>$v)
+				{
+						$ar[]= array("id"=>$v->state_id , "name" => $v->state_name );
+				}
+				echo $this->generateOutPut('SUCCESS','1',array(),$ar);
+		 }
+		exit; 
+	 }
+	 public function actionGetCategoryListFromType($listing_type=null){
+	 
+	     $state_list =    Category::model()->ListDataForJSON_ID_BySEction2($listing_type) ; 
+	     if(empty($state_list)){
+		    	 echo $this->generateOutPut('FAILED','0',array(),array());
+		 }
+		 else{
+				$ar = array() ; 
+				foreach($state_list as $k=>$v)
+				{
+					 
+						$ar[]= array("id"=>$k, "name" => $v  );
+				}
+				echo $this->generateOutPut('SUCCESS','1',array(),$ar);
+		 }
+		exit; 
+	 }
+	 public function actionGetSubCategoryListFromCategory($category_id=null){
+	 
+	     $state_list =    Subcategory::model()->ListDataForJSON_ID2($category_id) ; 
+	     if(empty($state_list)){
+		    	 echo $this->generateOutPut('FAILED','0',array(),array());
+		 }
+		 else{
+				$ar = array() ; 
+				foreach($state_list as $k=>$v)
+				{
+						$ar[]= array("id"=>$k, "name" => $v  );
+				}
+				echo $this->generateOutPut('SUCCESS','1',array(),$ar);
+		 }
+		exit; 
+	 }
+	   public function actionCommunity($state_id=null,$country_id=null,$text=null){
+		$limit = 30;
+		$request=Yii::app()->request;
+		$criteria= Community::model()->search(1);
+		$region_id = $state_id;
+		$country_id =$country_id;
+		$condition = '';
+		if($region_id){
+		$criteria->params = array(':state'=>$request->getQuery('state_id')); 
+				$condition    .= ' and t.region_id=:state ';
+				$criteria->params[':state'] =  $region_id;
+		}
+		else if(!empty($country_id)){
+			$criteria->join  .= ' LEFT JOIN {{countries}} c_st on c_st.country_id = st.country_id  ';
+			$condition .= ' and t.country_id=:con or c_st.country_id = :con ';
+				$criteria->params[':con'] =  $country_id;
+		}
+		if($condition){
+			if($criteria->condition){
+				$criteria->condition .= $condition;
+			}
+			else{
+				$criteria->condition .= '1 and '.$condition;
+			
+			}
+		}
+		
+		$criteria->compare('community_name',$text,true);
+		$count = Community::model()->count($criteria);
+		$criteria->limit   =  $limit ; 
+        $page =Yii::app()->request->getQuery('page',1);
+        $offset = ($page==1) ? '0' : ($page - 1) *  $limit + 1;
+		$criteria->offset =  $offset ;
+		$Result = Community::model()->findAll($criteria);
+        $ar = array(); 
+        if($Result){
+			foreach($Result as $k=>$v){
+				 $ar[]= array('id'=>$v->community_id,'name'=>$v->community_name.'('.$v->location.')');
+			}
+			echo $this->generateOutPut('SUCCESS','1',array(),$ar);
+		}
+		else{
+			 echo $this->generateOutPut('FAILED','0',array(),array());
+		}
+		exit; 
+         
+	}
+	 public function actionSubCoummunity($community_id=null,$text=null){
+		$request=Yii::app()->request;
+		$criteria=new CDbCriteria;
+		$criteria->condition =   't.community_id=:community_id';
+		$criteria->params = array(':community_id'=>$community_id); 
+		$criteria->compare('sub_community_name',$text,true);
+		$Result = SubCommunity::model()->findAll($criteria);
+        $ar = array(); 
+        if($Result){
+			foreach($Result as $k=>$v){
+				 $ar[]= array('id'=>$v->sub_community_id,'name'=>$v->sub_community_name);
+			}
+			echo $this->generateOutPut('SUCCESS','1',array(),$ar);
+		}
+		else{
+			 echo $this->generateOutPut('FAILED','0',array(),array());
+		}
+         exit; 
+	}
+	
+	 public function generateKeyArray($araay){
+	    $ar =array();
+	    if(!empty($araay)){
+	        foreach($araay as $k=>$v){
+	        $ar[] =  array('id'=>$k,'name'=>$v);
+	        }
+	    }
+	    return $ar;
+	    
+	}
+	 public $fields_to_hide ; 
+	 public $member;
+	 public function checkHideFeild($model,$field){
+		  if(!$model->checkFieldsShow($field)){ 
+			  $this->fields_to_hide[] = $field;  
+			 
+		  }
+	 }
+	 public function actionCreateAd($user_id=null,$ad_id=null){
+		 
+		 
+		$this->member =  ListingUsers::model()->findByPk($user_id);
+	    if(empty($this->member)){
+	    	 echo $this->generateOutPut('FAILED','0', 'No User Found',array());exit;
+		}
+		if($this->member->filled_info == '0' and  $this->member->FillPersonalInformation   ){ 
+		    echo $this->generateOutPut('FAILED','0', 'Please Fill Personal Information ',array());exit;
+		}
+		if( !empty( $this->member->filled_info) and $this->member->status == 'W'  ){
+			 echo $this->generateOutPut('FAILED','0', Yii::t('app','Your account is currently pending approval by the {p} administrator. In the meantime,you can\'t upload your properties.thanks for your patience.',array('{p}'=>Yii::app()->options->get('system.common.site_name'))),array());exit;
+	    }
+		if( !in_array($this->member->status,array( 'A'))){
+		     echo $this->generateOutPut('FAILED','0', 'Sorry , Your account is not active ',array());exit;
+		}
+		
+		if(!empty($ad_id)){
+			 
+			  $model = PlaceAnAd::model()->findByAttributes(array('id'=>(int)$ad_id,'user_id'=>$user_id));
+			  if(empty($model)){
+			  echo $this->generateOutPut('FAILED','0', 'No User Found',array());exit;
+			  }
+		
+		}
+		else{
+			$model = new PlaceAnAd(); 
+		}
+	
+		$request = Yii::app()->request;
+	  
+		 
+        if ($request->isPostRequest  ) {
+            
+            $attributes =  (array) $_GET ;
+			$model->country = @$attributes["country"];
+			$model->state = @$attributes["state"];
+			$model->listing_type = @$attributes["listing_type"];
+			$model->sub_category_id = @$attributes["sub_category_id"];
+			$model->category_id = @$attributes["category_id"];
+			$model->section_id = @$attributes["sec_id"];
+			$attributes = (array) $_POST;
+			 
+			if(!empty($model->category_id)){
+			    
+				$category= Category::model()->findByPk($model->category_id);
+				if(empty($category)){
+					echo $this->generateOutPut('FAILED','0','No Category found',array());exit;
+				}
+				$subcategory= Subcategory::model()->FindSubategory($model->sub_category_id);            
+				$fields=array();         
+
+				$fields=  CHtml::listData($category->relatedFields,'field_name','field_name');
+				$not_mandatory_fields=  array_merge($model->common_not_mandatory_field(),CHtml::listData($category->relatedFieldsMandatory,'field_name','field_name'));
+				$model->dynamic  =  true; 
+				$model->dynamicArray =  $model->getExcludeArray((array)$fields) ;;
+				$model->_notMadatory =  $not_mandatory_fields;
+			}
+				$model->attributes = $attributes;
+				$model->user_id = $user_id;
+			if (!$model->save()) {
+					echo $this->generateOutPut('FAILED','0',$model->getErrors(),array());
+			}
+			else
+			{ 
+			    
+			     
+						$room_image = new AdImage;
+						if(!$model->isNewRecord){
+						$room_image->deleteAll(array("condition"=>"ad_id=:ad_id","params"=>array(":ad_id"=>$model->id)));
+						}
+						$imgArr =  explode(',',$model->image);
+						if($imgArr)
+						{
+							 
+							 
+							$img_saved =false;
+							foreach($imgArr as $k)
+							{
+								 
+									if(!$img_saved and $model->image!="")
+									{
+										 
+									    $model->updateByPk($model->primaryKey,array('image'=>$k));  	
+									 
+									}
+									$room_image->isNewRecord = true;
+									$room_image->id = "";
+									$room_image->ad_id = $model->id;
+									$room_image->image_name =  $k;
+									$room_image->save();
+									 
+								 
+								
+							}
+						 
+							
+						 }
+					 
+						  $am = new  AdAmenities();
+						  if(!$model->isNewRecord){
+						  $am->deleteAll(array("condition"=>"ad_id=:ad_id","params"=>array(":ad_id"=>$model->id)));
+						  }
+						  $ameni =  explode(',',Yii::app()->request->getPost("amenities"));
+						  if($ameni)
+						  {
+							 
+							 foreach($ameni as $k)
+							 {
+								 
+									$am->isNewRecord = true;
+									$am->ad_id = $model->id;
+									$am->amenities_id =  $k;
+									$am->save();
+							 }
+							 
+						  }
+						  if($model->status=='A'){
+								$successMessage = 'Your ad\'s now live and being read by squabillions of people';
+								 
+							}
+							else {  
+							$successMessage = 'Thanks for listing  property on '. $this->app->options->get('system.common.site_name') .' After administrator valiadation , your listing  will active on main website. ';
+						     }
+						   
+						  
+					echo $this->generateOutPut('SUCCESS','1',array(),array(),	$successMessage);
+			}
+		 
+	    }
+        else
+        {
+			$model->attributes = (array)$_GET ; 
+			$model->section_id = @$_GET['sec_id'] ; 
+		
+			$not_mandatory_fields = array();
+			$this->fields_to_hide       = array();
+			if(!empty($model->category_id)){
+				$category= Category::model()->findByPk($model->category_id);
+				if(empty($category)){
+					echo $this->generateOutPut('FAILED','0','No Category found',array());exit;
+				}
+				$subcategory= Subcategory::model()->FindSubategory($model->sub_category_id);            
+				$fields=array();         
+
+				$fields=  CHtml::listData($category->relatedFields,'field_name','field_name');
+				$not_mandatory_fields=  array_merge($model->common_not_mandatory_field(),CHtml::listData($category->relatedFieldsMandatory,'field_name','field_name'));
+				$model->dynamic  =  true; 
+				$model->dynamicArray =  $model->getExcludeArray((array)$fields) ;;
+				$model->_notMadatory =  $not_mandatory_fields;
+			}
+		
+			
+			$input_data[] = array( 'field_name' => 'country' , 'label'=> $model->getAttributeLabel('country') , 'values' => Countries::model()->ListDataForJSON2() ,'field_value'=>$model->country,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'state' , 'label'=> $model->getAttributeLabel('state') , 'values' =>States::model()->ListDataForJSON2($model->country),'field_value'=>$model->state,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'sec_id' , 'label'=> $model->getAttributeLabel('section_id') , 'values' =>Section::model()->ListDataForJSON_ID2(),'field_value'=>$model->section_id,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'listing_type' , 'label'=> $model->getAttributeLabel('listing_type') , 'values' =>Category::model()->ListDataTypeForJSON_ID2(),'field_value'=>$model->listing_type,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'category_id' , 'label'=> $model->getAttributeLabel('category_id') , 'values' => Category::model()->ListDataForJSON_ID_BySEction2($model->listing_type),'field_value'=>$model->category_id,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'sub_category_id' , 'label'=> $model->getAttributeLabel('sub_category_id') , 'values' =>Subcategory::model()->ListDataForJSON_ID2($model->category_id),'field_value'=>$model->sub_category_id,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'ad_title' , 'label'=> $model->getAttributeLabel('ad_title') , 'values' =>array(),'field_value'=>$model->ad_title,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'ad_description' , 'label'=> $model->getAttributeLabel('ad_description') , 'values' =>array(),'field_value'=>$model->ad_description,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'builtup_area' , 'label'=> $model->getAttributeLabel('builtup_area') , 'values' =>array(),'field_value'=>$model->builtup_area,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'plot_area' , 'label'=> $model->getAttributeLabel('plot_area') , 'values' =>array(),'field_value'=>$model->plot_area,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'bathrooms' , 'label'=> $model->getAttributeLabel('bathrooms') , 'values' =>$this->generateKeyArray($model->bathrooms()),'field_value'=>$model->bathrooms,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'bedrooms' , 'label'=> $model->getAttributeLabel('bedrooms') , 'values' =>$this->generateKeyArray($model->bedrooms()),'field_value'=>$model->bedrooms,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'balconies' , 'label'=> $model->getAttributeLabel('balconies') , 'values' =>$this->generateKeyArray($model->balconiesArray()),'field_value'=>$model->balconies,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'FloorNo' , 'label'=> $model->getAttributeLabel('FloorNo') , 'values' =>array(),'field_value'=>$model->FloorNo,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'total_floor' , 'label'=> $model->getAttributeLabel('total_floor') , 'values' =>array(),'field_value'=>$model->total_floor,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'parking' , 'label'=> $model->getAttributeLabel('parking') , 'values' =>$this->generateKeyArray($model->parkingArray()),'field_value'=>$model->parking,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'construction_status' , 'label'=> $model->getAttributeLabel('construction_status') , 'values' =>$this->generateKeyArray($model->constructionArray()),'field_value'=>$model->construction_status,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'transaction_type' , 'label'=> $model->getAttributeLabel('transaction_type') , 'values' =>$this->generateKeyArray($model->TransactionType()),'field_value'=>$model->transaction_type,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'year_built' , 'label'=> $model->getAttributeLabel('year_built') , 'values' =>$this->generateKeyArray($model->year()),'field_value'=>$model->year_built,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'rera_no' , 'label'=> $model->getAttributeLabel('rera_no') , 'values' =>array(),'field_value'=>$model->rera_no,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'furnished' , 'label'=> $model->getAttributeLabel('furnished') , 'values' =>$this->generateKeyArray($model->YesNoArray2()),'field_value'=>$model->furnished,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'maid_room' , 'label'=> $model->getAttributeLabel('maid_room') , 'values' =>$this->generateKeyArray($model->YesNoArray2()),'field_value'=>$model->maid_room,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'PrimaryUnitView' , 'label'=> $model->getAttributeLabel('PrimaryUnitView') , 'values' =>array(),'field_value'=>$model->PrimaryUnitView,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'community_id' , 'label'=> $model->getAttributeLabel('community_id') , 'values' =>$this->generateKeyArray( CHtml::listData( Community::model()->findAllByAttributes(array('community_id'=>$model->community_id)),'community_id','community_name')),'field_value'=>$model->community_id,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'sub_community_id' , 'label'=> $model->getAttributeLabel('sub_community_id') , 'values' =>$this->generateKeyArray( CHtml::listData(  SubCommunity::model()->findAllByAttributes(array('sub_community_id'=>$model->sub_community_id)),'sub_community_id','sub_community_name')),'field_value'=>$model->sub_community_id,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'nearest_metro' , 'label'=> $model->getAttributeLabel('nearest_metro') , 'values' => array(),'field_value'=>$model->nearest_metro,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'nearest_railway' , 'label'=> $model->getAttributeLabel('nearest_railway') , 'values' => array(),'field_value'=>$model->nearest_railway,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'amenities' , 'label'=> $model->getAttributeLabel('amenities') , 'values' =>$this->generateKeyArray( CHtml::listData(Amenities::model()->findAll(),'amenities_id','amenities_name') ) ,'field_value'=>$model->amenities,'is_multiple_select'=>'1');
+			$input_data[] = array( 'field_name' => 'mobile_number' , 'label'=> $model->getAttributeLabel('mobile_number') , 'values' => array(),'field_value'=>$model->mobile_number,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'price' , 'label'=> $model->getAttributeLabel('price').'['.$model->currencyTitle.']' , 'values' => array(),'field_value'=>$model->mobile_number,'is_multiple_select'=>'');
+			$input_data[] = array( 'field_name' => 'rent_paid' , 'label'=> $model->getAttributeLabel('rent_paid')  , 'values' =>   array(array('id'=>"monthly",'name'=>"Monthly"),array('id'=>"yearly",'name'=>"Yearly")),'field_value'=>$model->rent_paid,'is_multiple_select'=>'');
+			
+			$image_logo_detail = array('file_name'=>'file','format'=>'gif , jpg , jpeg , png','upload_url'=>Yii::App()->apps->getBaseUrl('user/upload',true));
+			
+			
+			$input_data[] = array( 'field_name' => 'image' , 'label'=> $model->getAttributeLabel('image')  , 'values' =>  array() ,'field_value'=>$model->image,'is_multiple_select'=>'','upload_details'=>$image_logo_detail);
+			
+			$image_logo_detail = array('file_name'=>'file','format'=>$model->generateFormat(),'upload_url'=>Yii::App()->apps->getBaseUrl('user/upload/upload_path/floor_plan',true));
+			
+			$input_data[] = array( 'field_name' => 'floor_plan' , 'label'=> $model->getAttributeLabel('floor_plan')  , 'values' =>  array() ,'field_value'=>$model->floor_plan,'is_multiple_select'=>'','upload_details'=>$image_logo_detail);
+			$input_data[] = array( 'field_name' => 'location_latitude' , 'label'=> $model->getAttributeLabel('location_latitude'), 'values' =>array(),'field_value'=>$model->location_latitude,'is_multiple_select'=>'' );
+			$input_data[] = array( 'field_name' => 'location_longitude' , 'label'=> $model->getAttributeLabel('location_longitude'), 'values' =>array(),'field_value'=>$model->location_longitude,'is_multiple_select'=>'');
+			
+			if(!empty($model->dynamicArray )){
+				 
+				$Ar = array('builtup_area','plot_area','bathrooms','bedrooms','balconies','FloorNo','total_floor','parking','construction_status','transaction_type','year_built','rera_no','furnished','maid_room','PrimaryUnitView');
+				foreach($Ar as $t){
+					$this->checkHideFeild($model,$t);
+					 
+				}
+				if($model->section_id==$model::RENT_ID){
+					$this->fields_to_hide[] = 'rent_paid';
+				}
+				 
+			}
+			
+			echo $this->generateOutPut('SUCCESS','1',array(),array('field_data'=>$input_data,'not_mandatory_fields'=>$not_mandatory_fields,'hidden_fields'=>$this->fields_to_hide));
+		}
+		exit; 
+	 }
+	  public function actionContact_Property_detail($property_id=null)
+     {
+		 
+		$property =  PlaceAnAd::model()->findByPk($property_id);
+		if(empty($property)){
+			echo $this->generateOutPut('FAILED','0','No property found',array());exit;
+		}
+		 
+        $model = new SendEnquiry(); 
+        $model->ad_id = $property->id ;    
+        $request = Yii::app()->request; 
+        if ($request->isPostRequest  ) {
+				
+			$attributes =  (array) $_POST ;
+			$model->attributes = $attributes;
+			if (!$model->save()) {
+				echo $this->generateOutPut('FAILED','0',$model->getErrors(),array());
+			}
+			else
+			{ 
+			//	$succes_data = array("Id"=>$user->user_id,"Name"=>$this->html_encode($user->name),"Email"=>$this->html_encode($user->email));
+				echo $this->generateOutPut('SUCCESS','1',array(),array(),'Succesfully submited');
+			}
+	    }
+	    else{
+				$country = Countries::model()->ListDataN();
+				$input_data[] = array( 'field_name' => 'name' , 'label'=> $model->getAttributeLabel('name') , 'values' => $model->name ,'field_value'=>array());
+				$input_data[] = array( 'field_name' => 'email' , 'label'=> $model->getAttributeLabel('email') , 'values' => $model->email ,'field_value'=>array());
+				$input_data[] = array( 'field_name' => 'mobile_code_id' , 'label'=> $model->getAttributeLabel('mobile_code_id') , 'values' => $model->mobile_code_id,'field_value'=>$country );
+				$input_data[] = array( 'field_name' => 'phone' , 'label'=> $model->getAttributeLabel('phone') , 'values' => $model->phone,'field_value'=>array() );
+				//$input_data[] = array( 'field_name' => 'city' , 'label'=> $model->getAttributeLabel('city') , 'values' => $model->city ,'field_value'=>array());
+				$input_data[] = array( 'field_name' => 'country_id' , 'label'=> $model->getAttributeLabel('country_id') , 'values' => $model->country_id,'field_value'=>$country );
+				$input_data[] = array( 'field_name' => 'meassage' , 'label'=> $model->getAttributeLabel('meassage') , 'values' => $model->meassage,'field_value'=>array() );
+			
+				echo $this->generateOutPut('SUCCESS','1',array(),$input_data);
+		} 
+	    Yii::app()->end();
+    }
+    
+    public function actionLoad_location($country_id=null,$query=null){
+	 
+        $request = Yii::app()->request;
+       
+        $criteria=new CDbCriteria;
+		$criteria->select = 't.country_id,t.state_id,t.state_name,cn.country_name,cn.slug as country_slug,t.slug,cm.community_id,cm.community_name';
+		$criteria->join = 'INNER JOIN {{countries}} cn ON t.country_id  = cn.country_id  ';
+		$criteria->join .= 'LEFT JOIN {{community}} cm ON cm.region_id  = t.state_id  ';
+		$criteria->condition = 'cn.show_on_listing="1" and case WHEN cn.enable_all_cities="1" THEN 1  WHEN t.enable_listing="1" THEN 1 ELSE 0 END   ';
+		$criteria->order  = 'cm.community_name asc , t.state_name asc , cn.country_name asc ' ;
+		if(!empty($country_id)){
+			$criteria->condition .=  ' and cn.country_id=:cntry_id';
+			$criteria->params[':cntry_id'] = $country_id;
+		}
+		if(!empty($query)){
+			$criteria->condition .= ' and  ( CASE WHEN community_name IS NOT NULL THEN  ( CONCAT(state_name, " ", country_name," ",community_name) like  :term  ) ELSE ( CONCAT(state_name, " ", country_name) like  :term  ) END  )  ' ;
+			$criteria->params[':term'] = '%'.$query.'%' ;
+		}
+		if(empty($country_id) and empty($query)){
+				$criteria->group  = 't.country_id' ;
+		}
+        $criteria->limit = 10;
+        $models = States::model()->findAll($criteria);
+        $results = array();
+        $loaded_state =array();
+        if($models){
+			foreach ($models as $model) {
+				
+			   
+				 if(empty($model->community_name) ){
+					$results[] = array(
+					'country_id'    => 	$this->checkEmpty($model->country_id),
+					'state_id'  	=>  $this->checkEmpty($model->state_id),
+					'community_id'  =>  $this->checkEmpty($model->community_id),
+					'value1'        =>  $this->checkEmpty($model->state_name),
+					'value2'        =>  $this->checkEmpty($model->country_name)  ,
+					);
+					$loaded_state[$model->state_id] = $model->state_id;
+				}
+				 else{
+					 
+						if(!in_array($model->state_id,$loaded_state)){
+							$results[] = array(
+								'country_id'    => $this->checkEmpty($model->country_id),
+								'state_id'	    => $this->checkEmpty($model->state_id),
+								'community_id'  => $this->checkEmpty(''),
+								'value1'        => $this->checkEmpty($model->state_name) ,
+								'value2'        => $model->country_name  ,
+							);
+							$loaded_state[$model->state_id] = $model->state_id;
+						}
+			 
+						$results[] = array(
+							'country_id'    => $this->checkEmpty($model->country_id),
+							'state_id'	    => $this->checkEmpty($model->state_id),
+							'community_id'  => $this->checkEmpty($model->community_id),
+							'value1'        => $model->community_name  ,
+							'value2'        => $model->state_name .','.$model->country_name  ,
+						);
+				}
+				 
+			}
+		}
+		else{
+			$results  = array();
+		}
+       
+          
+      echo $this->generateOutPut('SUCCESS','1',array(),$results);            
+    
+	}
+     public function actionLoad_category($term=null,$limit=10,$offset=0){
+	
+	
+		 $criteria=new CDbCriteria;
+		 $criteria->condition = "t.isTrash='0' ";		  
+		 $criteria->select ="category_id,category_name,t.listing_type";
+		 $criteria->order="  category_name asc";
+		 if(!empty($term)){
+			 $criteria->condition .= "  and LOWER(t.category_name) like  :term ";
+			 $criteria->params[':term']	 = '%'.strtolower($term).'%';
+		 }
+		 $criteria->limit = $limit; 
+		 $criteria->offset  = $offset; 
+		 $arra =  Category::model()->findAll($criteria);
+		 $return_Array = array();
+		 foreach($arra as $k=>$v){
+			  switch($v->listing_type){
+				  case 'C' :
+							  $title = Yii::t('app','Commercial{t} for Sale',array('{t}'=>'->'.$v->category_name));
+							  $return_Array['S'.'_'.$v->listing_type.$v->category_id] = array('title'=> $title ,'section_id'=>'1','listing_type'=>'C','categpry_id'=>$v->category_id);
+							  $title = Yii::t('app','Commercial{t} for Rent  ',array('{t}'=>'->'.$v->category_name));
+							  $return_Array['R'.'_'.$v->listing_type.$v->category_id] = array('title'=> $title ,'section_id'=>'2','listing_type'=>'C','categpry_id'=>$v->category_id);
+				  break;
+				  case 'R' :
+							  $title = Yii::t('app','Residential{t} for Sale',array('{t}'=>'->'.$v->category_name));
+							  $return_Array['S'.'_'.$v->listing_type.$v->category_id] = array('title'=> $title ,'section_id'=>'1','listing_type'=>'R','categpry_id'=>$v->category_id);
+							  $title = Yii::t('app','Residential{t} for Rent',array('{t}'=>'->'.$v->category_name));
+							  $return_Array['R'.'_'.$v->listing_type.$v->category_id] = array('title'=> $title ,'section_id'=>'2','listing_type'=>'R','categpry_id'=>$v->category_id);
+				  break;
+				  case 'B' :
+							  $title = Yii::t('app','Residential{t} for Sale',array('{t}'=>'->'.$v->category_name));
+							  $return_Array['S'.'_R'.$v->category_id] = array('title'=> $title ,'section_id'=>'1','listing_type'=>'R','categpry_id'=>$v->category_id);
+							  $title = Yii::t('app','Residential{t} for Rent',array('{t}'=>'->'.$v->category_name));
+							  $return_Array['R'.'_R'.$v->category_id] = array('title'=> $title ,'section_id'=>'2','listing_type'=>'R','categpry_id'=>$v->category_id);
+							 
+							  $title = Yii::t('app','Commercial{t} for Sale',array('{t}'=>'->'.$v->category_name));
+							  $return_Array['S'.'_C'.$v->category_id] = array('title'=> $title ,'section_id'=>'1','listing_type'=>'C','categpry_id'=>$v->category_id);
+							  $title = Yii::t('app','Commercial{t} for Rent  ',array('{t}'=>'->'.$v->category_name));
+							  $return_Array['R'.'_C'.$v->category_id] = array('title'=> $title ,'section_id'=>'2','listing_type'=>'C','categpry_id'=>$v->category_id);
+				  break;
+				  
+			  }
+			  
+		 }
+ 
+	    echo $this->generateOutPut('SUCCESS','1',array(),$return_Array);       
+	 
+		Yii::app()->end();
+	}
+	public function actionListPicker($sec_id=null,$listing_type=null,$category_id=null){
+			$val_picker = array(); 
+			if(empty($sec_id)){
+				$val_picker[]  = array('id'=>'1','name'=>'Property For Sale');
+				$val_picker[]  = array('id'=>'2','name'=>'Property For Rent');
+			}
+			else if(empty($listing_type)){
+				$val_picker[]  = array('id'=>'C','name'=>'Commercial');
+				$val_picker[]  = array('id'=>'R','name'=>'Residential');
+			}
+			else if(empty($category_id)){
+				$val_picker    =  Category::model()->ListDataForJSON_ID_BySEction2($listing_type);
+			}
+			
+			$items = array('value_picher'=>$val_picker,'section_id'=>$this->checkEmpty($sec_id),'listing_type'=>$this->checkEmpty($listing_type),'category_id'=>$this->checkEmpty($category_id));
+			echo $this->generateOutPut('SUCCESS','1',array(),$items);
+	}
+}

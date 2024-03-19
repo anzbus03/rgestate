@@ -1,0 +1,176 @@
+                <?php $this->renderPartial('//detail/_success_html');?>
+                 
+                
+               <div id="topThirdPlacementLeadFormContainer" class="miniHidden xxsHidden xsHidden smlHidden pan plm">
+                
+                  <div class="backgroundBasic    " id="topPanelLeadFormContainer">
+                     <div data-reactroot="" class="pvn clearfix">
+                        <div class="false" style="padding: 10px;">
+							      
+						   <?php
+						   $mainTex =  $this->tag->getTag('send','Send') ; 
+						   $Validating = $this->tag->getTag('validating','Validating..');
+	$please_wait = $this->tag->getTag('please_wait','Please wait..');
+						    $contact = new ContactAgent();
+							$contact->user_id = $model->user_id ;
+							$form = $this->beginWidget('CActiveForm', array(
+							'id'=>'frm_ctnt',
+							'action'=>Yii::app()->createUrl('user_listing/validateEnquiry'),
+							'enableAjaxValidation'=>true,
+							'clientOptions'=>array(
+							'validateOnSubmit'=>true,
+							'validateOnChange'=>false,
+							'beforeValidate' => 'js:function(form) {
+
+							form.find("#bb2").html("'. $Validating .'");
+							return true;
+							}',
+							'afterValidate' => 'js:function(form, data, hasError) { 
+							if(hasError) {
+							form.find("#bb2").html("'.$mainTex.'");
+							return false;
+							}
+							else
+							{
+							form.find("#bb2").val("'. $please_wait .'"); 
+				
+							ajaxSubmitHappenlist(form, data, hasError,"'.Yii::app()->createUrl('user_listing/SendEnquiry').'"); 
+							}
+							}',
+							),
+							'htmlOptions'=>array('class'=>'form leadContact right_leadContact phs','style'=>'margin-top: 5px;' ),
+							));
+							?>
+                            <style>
+                            img.ag{max-width:110px!important;max-height:50px!important;margin-bottom:0;margin-left:auto;text-align:center;margin-right:auto;display:block}.ptn.man.kw-agent-info__agentItem___2iGT_.h7{font-weight:700;line-height:20px;display:flex}.ptn.man.kw-agent-info__agentItem___2iGT_.h7 span{margin-right:10px;font-weight:400;display:inline-block;max-width:90px;overflow:hidden;white-space:nowrap;min-width:90px;font-size:11px}
+                            .ptn.man.kw-agent-info__agentItem___2iGT_.h7 { line-height:25px;}
+                         
+                  html select.input-text.form-control, html input.input-text.form-control, input.pwdfield {
+    border: 1px solid #dfe0e3;
+    border-radius: 3px;
+    color: #72727d;
+    font: 13px arial;
+    height: 24px;
+    padding: 1px 0;
+    width: 100%;
+    margin-right: 10px;
+    text-indent : 5px; 
+}
+
+html textarea.input-text.form-control {
+    border: 1px solid #dfe0e3;
+    line-height: 1.4;
+    padding: 10px 8px;
+    color: #72727d;
+    font: 13px arial;
+}
+@media only screen and (max-width: 500px) {
+.mob-l-hide label{ display:none;}.mob-l-hide { height: 35px !important; }
+}
+                            </style>
+                           
+                              <div class="form-group ">
+                                  <div class="row">
+                                  <div class="col-sm-12">
+                                    <div style="width:90px;float:left;height:70px;border:1px solid #eee;padding:5px;">
+				<div style="background-position:center;background-size:contain;background-repeat:no-repeat;background-image:url('<?php echo  $model->CompanyLogo ;?>');width:100%;height:100%;"></div>
+			</div>
+                                  <div style="width:calc(100% - 100px);float:left;padding-left:10px;">
+								      <h3 class="" style="font-weight:600;font-size:16px;"><?php echo $model->companyName;?></h3>
+								      <h3 class="" style="font-weight:400;font-size:14px;"><?php echo $model->state_name;?></h3>
+               </div>
+          </div>
+            </div>
+			<div class="clearfix"></div>
+           
+								 </div>
+								 <div class="clear-fix"></div>
+								   <div class="form-group ">
+                                  <div class="row">
+                                  <div class="col-sm-12">
+								 <hr />
+								 </div>
+								 </div>
+								 </div>
+                           <div class="clear-fix"></div>
+                           <div class="form-group  ">
+   <div class="row">
+      <div class="col-sm-5"><?php echo $form->labelEX($contact, 'name'); ?></div>
+      <div class="col-sm-7">
+         <?php echo $form->textField($contact, 'name',$contact->getHtmlOptions('name',array('class'=>'input-text form-control'))); ?>
+         <?php echo $form->error($contact, 'name');?>
+        <?php echo $form->hiddenField($contact, 'user_id',$contact->getHtmlOptions('user_id',array('class'=>'form-control'))); ?>
+			<?php echo $form->error($contact, 'user_id');?>		
+      </div>
+   </div>
+</div>
+                           
+      
+      <div class="clearfix"></div>
+            <div class="form-group  ">
+   <div class="row">
+      <div class="col-sm-5"><?php echo $form->labelEX($contact, 'email'); ?></div>
+      <div class="col-sm-7">
+         <?php echo $form->textField($contact, 'email',$contact->getHtmlOptions('email',array('class'=>'input-text form-control'))); ?>
+         <?php echo $form->error($contact, 'email');?>
+         		
+      </div>
+   </div>
+</div>
+                       
+           <div class="clearfix"></div>
+            <div class="form-group  ">
+   <div class="row">
+      <div class="col-sm-5"><?php echo $form->labelEX($contact, 'phone'); ?></div>
+      <div class="col-sm-7">
+         <?php echo $form->textField($contact, 'phone',$contact->getHtmlOptions('phone',array('class'=>'input-text form-control'))); ?>
+         <?php echo $form->error($contact, 'phone');?>
+         		
+      </div>
+   </div>
+</div>
+                       
+             <div class="form-group  ">
+   <div class="row">
+      <div class="col-sm-5 mob-l-hide"><?php echo $form->labelEX($contact, 'considering'); ?></div>
+      <div class="col-sm-7">
+            <?php echo $form->radioButton($contact, 'considering',$contact->getHtmlOptions('phone',array('class'=>'form-check-input','value'=>'S','checked'=>true))); ?>
+			&nbsp;<?php echo $this->tag->getTag('sale','Sale');?>&nbsp;&nbsp; 
+           <?php echo $form->radioButton($contact, 'considering',$contact->getHtmlOptions('phone',array('class'=>'form-check-inputl','value'=>'B'))); ?>
+           &nbsp;<?php echo $this->tag->getTag('buy','Buy');?>&nbsp;&nbsp; 
+           <?php echo $form->error($contact, 'considering');?>
+         		
+      </div>
+   </div>
+</div>
+                        
+           <div class="form-group  ">
+   <div class="row">
+      
+      <div class="col-sm-12">
+             	<?php echo $form->textarea($contact, 'meassage',$contact->getHtmlOptions('meassage',array('class'=>'input-text form-control','style'=>'min-height:80px;'))); ?>
+			<?php echo $form->error($contact, 'meassage');?>
+         		
+      </div>
+   </div>
+</div>
+          
+  <div class="clearfix"></div>
+      <div class="form-group margin-top-10">
+          <div class="row">
+        <div class="form-check col-sm-12">
+   
+         <button type="submit" class="btn btn-primary btn-block headfont btn-sm-s" style="background:var(--logo-color);color:#fff" data-html="Send" data-auto-test-id="submitButton" id="bb2"><?php echo $mainTex;?></button>
+          <div id="msg_alert"></div>
+          <p class="hide"> You are  agree to our <a href="#"> terms of services</a> and <a href="#"> Privacy Policy</a></p>
+        </div>
+           </div>
+      </div>
+                           <?php $this->endWidget(); ?>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+			   <div class="clearfx"></div>
+         
+ 

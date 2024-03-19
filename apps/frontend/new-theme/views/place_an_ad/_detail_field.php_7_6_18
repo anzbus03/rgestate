@@ -1,0 +1,165 @@
+<div class="clearfix"><!-- --></div>
+								
+								 
+
+ <div class="form-group col-lg-6 no-padding-left">
+									 
+									 	<div class="form-group col-lg-12">
+										<?php echo $form->labelEx($model, 'ad_title');?>
+										<?php echo $form->textField($model, 'ad_title', $model->getHtmlOptions('ad_title')); ?>
+										<?php echo $form->error($model, 'ad_title');?>
+									</div>      
+									  
+									 <div class="clearfix"><!-- --></div> 
+									 
+									<div class="form-group col-lg-12">
+										<?php echo $form->labelEx($model, 'ad_description');?>
+										<?php echo $form->textArea($model, 'ad_description', array_replace($model->getHtmlOptions('ad_description'),array("rows"=>"10"))); ?>
+										<?php echo $form->error($model, 'ad_description');?>
+									</div>        
+									   
+									  <div class="clearfix"><!-- --></div> 
+									<div class="form-group col-lg-6">
+										<?php echo $form->labelEx($model, 'builtup_area');?>
+										<?php echo $form->textField($model, 'builtup_area', $model->getHtmlOptions('builtup_area')); ?>
+										<?php echo $form->error($model, 'builtup_area');?>
+									</div> 
+									 
+								   <div class="form-group col-lg-6">
+										<?php echo $form->labelEx($model, 'plot_area');?>
+										<?php echo $form->textField($model, 'plot_area', $model->getHtmlOptions('plot_area')); ?>
+										<?php echo $form->error($model, 'plot_area');?>
+									</div>       
+								 
+								 <div class="clearfix"><!-- --></div> 
+									 
+									<div class="form-group col-lg-6">
+										<?php echo $form->labelEx($model, 'bathrooms');?>
+										<?php $mer =  array_merge($model->getHtmlOptions('bathrooms'),array('empty'=>"Select bathrooms",'class'=>'form-control selectt2')); ?>
+										<?php echo $form->dropDownList($model, 'bathrooms',  $model->bathrooms() , $mer ); ?>
+										<?php echo $form->error($model, 'bathrooms');?>
+									</div>  
+									<div class="form-group col-lg-6">
+										<?php echo $form->labelEx($model, 'bedrooms');?>
+										<?php $mer =  array_merge($model->getHtmlOptions('bedrooms'),array('empty'=>"Select bedrooms",'class'=>'form-control selectt2')); ?>
+										<?php echo $form->dropDownList($model, 'bedrooms',  $model->bedrooms() , $mer ); ?>
+										<?php echo $form->error($model, 'bedrooms');?>
+									</div> 
+									 <div class="clearfix"><!-- --></div>
+									 	<div class="form-group col-lg-6">
+										<?php echo $form->labelEx($model, 'FloorNo');?>
+										<?php echo $form->textField($model, 'FloorNo',$model->getHtmlOptions('FloorNo')); ?>
+										<?php echo $form->error($model, 'FloorNo');?>
+									</div> 
+									  	 
+									<div class="form-group col-lg-6">
+										<?php echo $form->labelEx($model, 'parking');?>
+										<?php echo $form->dropDownList($model, 'parking',$model->YesNoArray2(),$model->getHtmlOptions('parking',array('class'=>'form-control selectt2'))); ?>
+										<?php echo $form->error($model, 'parking');?>
+									</div> 
+									         <div class="clearfix"><!-- --></div>
+									        	<div class="form-group col-lg-12">
+										<?php echo $form->labelEx($model, 'PrimaryUnitView');?>
+										<?php echo $form->textField($model, 'PrimaryUnitView',$model->getHtmlOptions('PrimaryUnitView',array('placeholder'=>'e.g. Full sea view, Marina View, etc...'))); ?>
+										<?php echo $form->error($model, 'PrimaryUnitView');?>
+										
+									</div>  <div class="clearfix"><!-- --></div>
+									  <?php /*
+									 <?php if(in_array("property_name",$fields)){?>
+									<div class="form-group col-lg-6">
+										<?php echo $form->labelEx($model, 'property_name');?>
+										<?php echo $form->textField($model, 'property_name',$model->getHtmlOptions('property_name')); ?>
+										<?php echo $form->error($model, 'property_name');?>
+									</div> 
+									 <?php }  ?>        
+									 <?php if(in_array("PrimaryUnitView",$fields)){?>
+									<div class="form-group col-lg-6">
+										<?php echo $form->labelEx($model, 'PrimaryUnitView');?>
+										<?php echo $form->textField($model, 'PrimaryUnitView',$model->getHtmlOptions('PrimaryUnitView')); ?>
+										<?php echo $form->error($model, 'PrimaryUnitView');?>
+									</div> 
+									 <?php }  ?>        
+							      */?>
+								 
+									  
+										<div class="form-group col-lg-6">
+										<?php echo $form->labelEx($model, 'community_id');?>
+										<?php echo $form->dropDownList($model, 'community_id', CHtml::listData( Community::model()->findAllByAttributes(array('community_id'=>$model->community_id)) ,'community_id','community_name')    , $model->getHtmlOptions('community_id' ,array('empty'=>"Select Communtiy", "onChange"=>"getSubCommunity(this)",'class'=>'autoSelect_community form-control') )); ?>
+										<?php echo $form->error($model, 'community_id');?>
+										</div> 
+										<div class="form-group col-lg-6">		
+										<?php echo $form->labelEx($model, 'sub_community_id');?>
+										
+										<?php echo $form->dropDownList($model, 'sub_community_id',  CHtml::listData( SubCommunity::model()->findAllByAttributes(array('sub_community_id'=>$model->sub_community_id)) ,'sub_community_id','sub_community_name')   ,$model->getHtmlOptions('sub_community_id',array('empty'=>"Select SubCommunity" , 'class'=>'autoSelect_sub_community form-control' ) )); ?>
+										<?php echo $form->error($model, 'sub_community_id');?>
+										</div>	
+										<div class="clearfix"></div> 	
+										<div class="form-group col-lg-6">
+										<?php echo $form->labelEx($model, 'construction_status');?>
+										<?php echo $form->dropDownList($model, 'construction_status',$model->constructionArray(), $model->getHtmlOptions('construction_status',array('empty'=>'Select','class'=>'form-control selectt2'))); ?>
+										<?php echo $form->error($model, 'construction_status');?>
+										</div> 	
+										<div class="form-group col-lg-6">
+										<?php echo $form->labelEx($model, 'rera_no');?>
+										<?php echo $form->textField($model, 'rera_no',$model->getHtmlOptions('rera_no')); ?>
+										<small>(Required for Dubai UAE Listings Only)</small>
+										<div class="clearfix"></div> 	
+										<?php echo $form->error($model, 'rera_no');?>
+										</div> 
+										<div class="clearfix"></div> 		
+										
+										 <div class="col-md-6">
+									<?php echo $form->labelEx($model, 'furnished');?>
+									<div class="form-group">
+									<?php
+									$user_type_array = $model->YesNoArray2();
+									foreach( $user_type_array as $k=>$v){
+									$checked =  $k==$model->furnished ? true :false ; 
+									echo '<div class="form-radio " style="width:56px;float:left;margin:0px;"><label class="form-check-label">'.$form->radioButton($model, 'furnished',$model->getHtmlOptions('furnished',array('class'=>'form-check-input', 'uncheckValue'=>null,'value'=>$k,'checked'=>$checked,'style'=>''))).'&nbsp;'.$v.'&nbsp;&nbsp;<i class="input-helper"></i></label></div>';
+									}
+									?>
+
+									</div>
+									<div class="clearfix"></div> 
+									<?php echo $form->error($model, 'furnished');?>
+									 </div>
+								 <div class="col-md-6">
+									<?php echo $form->labelEx($model, 'maid_room');?>
+									<div class="form-group">
+									<?php
+									$user_type_array = $model->YesNoArray2();
+									foreach( $user_type_array as $k=>$v){
+									$checked =  $k==$model->maid_room ? true :false ; 
+									echo '<div class="form-radio " style="width:56px;float:left;margin:0px;"><label class="form-check-label">'.$form->radioButton($model, 'maid_room',$model->getHtmlOptions('furnished',array('class'=>'form-check-input', 'uncheckValue'=>null,'value'=>$k,'checked'=>$checked,'style'=>''))).'&nbsp;'.$v.'&nbsp;&nbsp;<i class="input-helper"></i></label></div>';
+									}
+									?>
+
+									</div>
+									<div class="clearfix"></div> 
+									<?php echo $form->error($model, 'maid_room');?>
+									 </div>	
+									 
+									  <div class="clearfix"></div> 
+									 <br /> 
+									 <div class="clearfix"></div> 
+									 <div class="form-group col-lg-6">
+										<?php echo $form->labelEx($model, 'year_built');?>
+										<?php $mer =  array_merge($model->getHtmlOptions('year_built'),array('empty'=>"Select Year",'class'=>'form-control selectt2')); ?>
+										<?php echo $form->dropDownList($model, 'year_built',  $model->year() , $mer ); ?>
+										<?php echo $form->error($model, 'year_built');?>
+									</div>  
+									
+                       
+									  		        
+										
+										<div class="clearfix"></div> 
+														        
+</div>
+ <div class="form-group col-lg-6 no-padding-right">
+	 <?php $this->renderPartial('_image_upload',compact('form'));?> 
+<div class="clearfix"></div> 	
+ <?php $this->renderPartial('_floor_upload',compact('form'));?> 	
+ <div class="clearfix"></div> 
+    		        
+</div>
+<div class="clearfix"><!-- --></div> 

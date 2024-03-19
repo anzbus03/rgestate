@@ -1,0 +1,9 @@
+<style>
+#section_picker , #moredetails { display:none; }
+body{     
+    max-height: 100vh; } ;
+</style>
+<iframe src="<?php echo Yii::App()->createUrl('detail/preview',array('preview_id'=>$LocalStorage->cookie_name));?>" style="height:70vh;width:100%;border:0px;border-bottom: 1px solid #eee;"></iframe>
+<?php
+	$this->renderPartial('//place_property/form_new', compact('model',"country","section",'list_type','image_array','member'));
+		?>

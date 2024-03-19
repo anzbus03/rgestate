@@ -1,0 +1,49 @@
+ 
+
+                        <!-- Listing Item -->
+                        <?php
+                        $apps = Yii::app()->apps;$bg =false; 
+                        foreach($works as $k=>$v){
+						 
+							 $s_id ="list_items_s".$v->user_id ;
+							 
+						    ?> 	
+                        <div class="col-sm-12 ajaxLoaded2  no-padding mul_sliderh" id="<?php echo $s_id;?>"> 
+                      
+                        <div class="listing-item-container">
+                            <div class="listing-item" style="padding:5px;"> 
+								                                   
+                                                           
+								<a href="<?php echo $v->agentDetailUrl;?>"> 						 
+								<?php echo $v->generateImage($apps,$h=164,$w=246,$s_id,$bg);?> 
+						 </a>
+
+                                <!--<span class="like-icon"></span>-->
+                            </div>
+                            <div class="listing-item-content spanfont  no-padding">
+								<div class="">
+                                <div class="col-sm-8"> 
+                                <h3 class="_18ilrswp" style="margin-top:8px !important;margin-bottom:8px !important;"><a href="<?php echo $v->agentDetailUrl;?>"  onclick="easyload(this,event,'mainContainerClass')" ><?php echo $v->fullName;?></a></h3>
+								<h5  ><?php echo $v->state_name ;?></h5>
+								<div class="_czm8crp" ><?php echo $v->getShortDescription(200) ;?></div>
+								
+                            	<div data-reactid="61">
+							 <a href="<?php echo $v->agentDetailUrl;?>"  onclick="easyload(this,event,'mainContainerClass')" >Read More <svg viewBox="0 0 18 18" role="presentation" aria-hidden="true" focusable="false" style="height: 10px; width: 10px; fill: currentcolor;"><path d="m4.29 1.71a1 1 0 1 1 1.42-1.41l8 8a1 1 0 0 1 0 1.41l-8 8a1 1 0 1 1 -1.42-1.41l7.29-7.29z" fill-rule="evenodd"></path></svg></a>
+								<div>
+								 
+								</div>
+								</div>
+								</div>
+								
+								<div class="col-sm-4 company-contact-info   padding-top-15" style="background:#eee;"> <div class="contact">    <div class="details-contact-info-links"> <a href="<?php echo $v->RentalUrl;?>"  class="ch-2"> Rental  (<?php echo $v->rent_total;?>)  <svg viewBox="0 0 18 18" role="presentation" aria-hidden="true" focusable="false" style="height: 10px; width: 10px; fill: currentcolor;"><path d="m4.29 1.71a1 1 0 1 1 1.42-1.41l8 8a1 1 0 0 1 0 1.41l-8 8a1 1 0 1 1 -1.42-1.41l7.29-7.29z" fill-rule="evenodd"></path></svg> </a> <a href="<?php echo $v->SaleUrl;?>" class="ch-2"> Sales  (<?php echo $v->sale_total;?>) <svg viewBox="0 0 18 18" role="presentation" aria-hidden="true" focusable="false" style="height: 10px; width: 10px; fill: currentcolor;"><path d="m4.29 1.71a1 1 0 1 1 1.42-1.41l8 8a1 1 0 0 1 0 1.41l-8 8a1 1 0 1 1 -1.42-1.41l7.29-7.29z" fill-rule="evenodd"></path></svg>  </a> <br class="cleaner"> </div> <div class="buttons"> <a data-rel="nofollow" data-role="call"  href="tel:<?php echo $v->contactPhone;?>" data-number="<?php echo $v->contactPhone;?>" onclick="$(this).find('span').html($(this).attr('data-number'))"    class="button button-secondary ch-2"> <svg viewBox="0 0 15 15" class="button_icon-style3"><use xlink:href="#svg-phone-icon"></use></svg><span class="call-agent-f spl-agent" style="color:#fff">Call Agency Office</span><?php echo '<div class="phone-tooltip phone-tooltip--hide"><div class="phone-tooltip__content"><div><div class="phone-tooltip__close" onclick="closeToolTip(this,event)"><span class="svg"> <svg viewBox="0 0 30 20" class="phone-tooltip__close-icon"> <use xlink:href="#svg-close"></use></svg></span></div><div class="phone-tooltip__reference">PH:'.$v->contactPhone.'</div></div></div></div>';?> </a> <a data-role="send_enquiry"  onclick="OpenFormAgentClick(this)" data-reactid="<?php echo $v->user_id;?>" class="button button-primary ch-2"> <svg viewBox="0 0 20 16" class="button_icon-style3"><use xlink:href="#svg-envelope-icon"></use></svg><span class="spl-agent"> Enquire Now </span></a> </div>  </div> </div>
+								</div>
+								
+								<div class="clearfix"></div>
+						  </div>
+						  <div class="clearfix"></div>
+                        </div>
+                         </div>
+                        <?php
+                        } 
+                        ?> 
+ 

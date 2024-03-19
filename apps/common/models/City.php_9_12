@@ -1,0 +1,285 @@
+<?php
+
+/**
+ * This is the model class for table "mw_city".
+ *
+ * The followings are the available columns in table 'mw_city':
+ * @property integer $city_id
+ * @property string $city_name
+ * @property integer $country_id
+ * @property integer $state_id
+ * @property integer $priority
+ * @property string $isTrash
+ * @property string $status
+ */
+class City extends ActiveRecord
+{
+	public $location;public $mul_city;
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return 'mw_city';
+    }
+
+
+
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('city_name,  state_id', 'required','on'=>'insert,update,mul_city'),
+            array('country_id, state_id, priority', 'numerical', 'integerOnly'=>true),
+            array('city_name', 'length', 'max'=>250),
+            array('isTrash, status', 'length', 'max'=>1),
+             array('mul_city', 'required', 'on'=>'mul_city'),
+            array('mul_city,slug', 'safe', 'on'=>'insert'),
+                array('location_latitude,location_longitude,country_n', 'safe' ),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('city_id, city_name, country_id, state_id, priority, isTrash, status', 'safe', 'on'=>'search'),
+        );
+    }
+    
+    
+    
+    public function behaviors(){
+    return array_merge(parent::behaviors(),array(
+        'SlugBehavior' => array(
+            'class' => 'common.models.SlugBehavior.SlugBehavior',
+            'slug_col' => 'slug',
+            'title_col' => 'city_name',
+            'overwrite' => true
+        ))
+    );
+   }
+    
+    
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+           'state' => array(self::BELONGS_TO, 'States', 'state_id'),
+           'country' => array(self::BELONGS_TO, 'Countries', 'country_id'),
+        );
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'city_id' => 'City',
+            'city_name' => 'City Name',
+            'country_id' => 'Country',
+            'state_id' => 'Region',
+            'priority' => 'Priority',
+            'isTrash' => 'Is Trash',
+            'status' => 'Status',
+             'mul_city' => 'mul Location(split-by-each-line)',
+        );
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+     public $state_name ; 
+     public $city_slug ; 
+     public $state_slug ; 
+     public $country_name ; 
+     public $country_n ; 
+    public function search()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria=new CDbCriteria;
+		$criteria->condition  = 1 ; 
+        $criteria->compare('city_id',$this->city_id);
+         $criteria->compare('t.country_id',$this->country_n);
+        $criteria->compare('city_name',$this->city_name,true);
+       // $criteria->compare('country_id',$this->country_id);
+       //$criteria->compare('state_id',$this->state_id);
+        $criteria->join = ' INNER JOIN {{states}}  st on st.state_id = t.state_id   ' ;
+        $criteria->join .= ' INNER JOIN {{countries}}  cn on cn.country_id = st.country_id   ' ;
+        if(!empty($this->state_id)) { $criteria->condition .= ' and st.state_name like :st '; $criteria->params[':st'] = '%'.$this->state_id.'%';   }
+        if(!empty($this->country_id)) { $criteria->condition .= ' and cn.country_name like :cn '; $criteria->params[':cn'] = '%'.$this->country_id.'%';   }
+        $criteria->select = ' t.* , st.state_name ,cn.country_name   ' ;
+        //$criteria->compare('isTrash','0',true);
+       // $criteria->compare('status','A',true);
+//$criteria->condition  .= "  and t.location_longitude != ''   and t.image is null     " ;
+     $criteria->order = " cn.country_id =  '65949'  desc ,cn.country_id =  '65946'  desc  , t.location_longitude desc ,  cn.country_name asc    " ;
+          return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+             'pagination'    => array(
+                'pageSize'  => $this->paginationOptions->getPageSize(),
+                'pageVar'   => 'page',
+            ),
+        ));
+    }
+     public function FindCities($id=null)
+	{
+		$criteria=new CDbCriteria;
+		 $criteria->condition = "t.state_id=:state_id";
+		 $criteria->params[":state_id"] = $id ; 
+		 $criteria->order  = "city_name" ; 
+		 return $this->findAll($criteria);
+	}
+     public function findAllList($id=array())
+	{
+		$criteria=new CDbCriteria;
+		 $criteria->addInCondition('t.city_id', $id );
+		 $criteria->order  = "city_name" ; 
+		 return CHtml::listData($this->findAll($criteria),'city_id','city_name');
+	}
+
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return City the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
+    public function  ListDataForJSON($state)
+    {
+		 
+		 $criteria=new CDbCriteria;
+		 $criteria->condition = "t.isTrash='0' and t.state_id=:con";
+		 $criteria->params[':con']=$state;
+		 $criteria->select ="city_id,city_name";
+		 $criteria->order="city_name";
+		 $arra =  $this->findAll($criteria);
+		 $ar =array();
+		 if($arra)
+		 {
+			 foreach($arra as $k=>$v)
+			 {
+				 $ar[]= array("id"=>$v->city_id , "name" => $v->city_name );
+			 }
+		 }
+		 
+	 	 return CJSON::encode(array_merge(array("0"=>"Select City"),$ar));
+	}
+  
+     public function FindCitiesByCountryAll($id='66099')
+	{
+		 
+		if($id=='66099'){
+		
+			 $cacheKey = 'pkcities-onlt-group-2'.date('ymd');
+			    if(defined('SYSTEM_CAHE_K')){ $cacheKey= $cacheKey.SYSTEM_CAHE_K ; }
+				if ($items = Yii::app()->cache->get($cacheKey)) {
+					return   $items ; 
+				}
+		}
+         
+		$criteria=new CDbCriteria;
+		$criteria->condition = 't.country_id=:country_id and t.isTrash="0" and t.status="A"';
+		$criteria->join      = ' INNER JOIN {{states}}  st ON st.state_id = t.state_id  ';
+		$criteria->params[":country_id"] =$id  ; $criteria->select = 'city_id,city_name,st.state_name';
+		$criteria->order  = "st.state_name asc , city_name asc " ; $model = $this->findAll($criteria);
+		$items = array(); 
+		if( $model){
+			foreach( $model as $k=>$v){
+				$items[$v->state_name][$v->city_id] =  $v->city_name ;
+			}
+		}
+		  if($id=='66099'){
+		
+		 Yii::app()->cache->set($cacheKey, $items, 86400);
+		}
+         return  $items;
+	}
+	public function findBycityLocation($city,$state,$exact=false){
+		$criteria=new CDbCriteria;
+		$criteria->condition = ' TRIM(LOWER(t.city_name)) like  :city  and TRIM(LOWER(st.state_name)) like :state_name and t.isTrash="0" and t.country_id="66099" ';
+		$criteria->join      = ' INNER JOIN {{states}}  st ON st.state_id = t.state_id  ';
+		if($exact){
+			$criteria->params[":city"] = trim(strtolower($city)) ;
+		}else{
+			$criteria->params[":city"] = '%'.trim(strtolower($city)).'%';
+		}
+		$criteria->params[":state_name"] =  '%'.trim(strtolower($state)).'%';
+	    $criteria->select = 't.city_id,t.state_id,t.country_id';
+		return $this->find($criteria);
+	 }
+	 
+	 public function getImageButton(){
+	     if(!empty($this->location_latitude) and !empty($this->location_longitude)){
+	         if(!empty($this->image)){ $txt ='<i class="fa fa-check text-green"><i>';}else{  $txt= '';  }
+	       return CHtml::link('<i class="fa fa-photo"></i>'.$txt ,Yii::app()->createUrl('city/generate_image',array('id'=>$this->city_id)));
+    	 }
+	 }
+	 public $score;
+     public function searchLocation($keyword)
+	{
+		 $criteria=new CDbCriteria;
+	 
+		 
+		 $criteria->select = 't.city_id,t.city_name, MATCH(t.city_name) AGAINST( :word IN BOOLEAN MODE)   as score       '; 
+		   $criteria->join  .= ' INNER JOIN {{states}} st on st.state_id = t.state_id'  ;
+		 $criteria->condition = '1 and st.country_id = "66099" and   MATCH(t.city_name) AGAINST( :word IN BOOLEAN MODE)         '; 
+		 $criteria->condition .= " and  t.city_id not in ( '200942','199801','201111','197842','197720','199809','200886')"; 
+		 $criteria->params[':word'] = $keyword;
+		 $criteria->limit = 30;
+		 $criteria->order  = 'score asc';
+		 
+	
+		 
+		  $data =  $this->findAll($criteria);
+		  	if(!empty( $data)) {
+		  	     $cities_chances =   CHtml::listData($data,'city_id','city_name');
+		  	     
+		  	     
+		  	 //    print_r($cities_chances);exit; 
+	 	  	    return implode('-',array_keys($cities_chances));  }
+		if(!empty($nearest_city)){
+			return rtrim($nearest_city,',');
+		}
+		return $nearest_city;
+		  	 
+		  $nearest_city = '';
+		  if($data){
+			$cities_chances =   CHtml::listData($data,'city_id','city_name');
+			foreach($cities_chances as $city_id => $city){
+				
+				 	  if(strpos($keyword, trim(strtolower($city))) !== false){
+						  return   strtolower($city); 
+						   
+					  }
+		    }
+		} 
+		if(!empty($nearest_city)){
+			return rtrim($nearest_city,',');
+		}
+		return $nearest_city;
+	}
+	  public function getById($city_id=null){
+		 $criteria=new CDbCriteria;
+		$criteria->condition  = 1 ; 
+        $criteria->compare('city_id',(int)$city_id);
+        return self::model()->find($criteria);
+      
+	}
+}

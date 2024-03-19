@@ -1,0 +1,24 @@
+<?php
+if(!empty($featred_agencies)){ ?> 
+<div class="featured-agencies featured-agencies-top margin-top-40 padding-top-20 padding-bottom-20">
+   <div class="wrap ">
+      <h3 class="headline  margin-bottom-25  col-md-12 no-margin-left   text-center ">Featured Agencies</h3>
+      <div class="clear"></div>
+      <div class="rs featured-agencies-list">
+         <div class="container" id="frsSlider">
+			<?php
+			foreach($featred_agencies as $k=>$v){ ?> 
+            <div class="cols-3-12 agency-item" data-type="rent">
+               <a href="<?php echo $v->agentDetailUrl;?>" class="agency-logo"> <img alt="<?php echo $v->CompanyName;?>" src="<?php echo $v->CompanyLogo;?>"> </a> <a href="<?php echo $v->agentDetailUrl;?>" class="agency-name"> <?php echo $v->CompanyName;?> </a> 
+               <div class="details-contact-info-links homes"> <a href="<?php echo $v->RentalUrl;?>"> Rental     <svg viewBox="0 0 18 18" role="presentation" aria-hidden="true" focusable="false" style="height: 6px; width: 10px; fill: currentcolor;"><path d="m4.29 1.71a1 1 0 1 1 1.42-1.41l8 8a1 1 0 0 1 0 1.41l-8 8a1 1 0 1 1 -1.42-1.41l7.29-7.29z" fill-rule="evenodd"></path></svg> </a> <span class="sep">|</span> <a href="<?php echo $v->SaleUrl;?>"> Sales   <svg viewBox="0 0 18 18" role="presentation" aria-hidden="true" focusable="false" style="height: 6px; width: 10px; fill: currentcolor;"><path d="m4.29 1.71a1 1 0 1 1 1.42-1.41l8 8a1 1 0 0 1 0 1.41l-8 8a1 1 0 1 1 -1.42-1.41l7.29-7.29z" fill-rule="evenodd"></path></svg>  </a> <br class="cleaner"> </div>
+               
+            </div>
+            <?php } ?> 
+         </div>
+      </div>
+       <a href="<?php echo Yii::app()->createUrl('user_listing/index');?>" class="view-all-agents"> View all Agents <img src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNDgwIDQ4MCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDgwIDQ4MDsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBjbGFzcz0iIj48Zz48cGF0aCBzdHlsZT0iZmlsbDojMDAwMDAwMDAiIGQ9Ik0yNDAsOEMxMTEuODcsOCw4LDExMS44Nyw4LDI0MHMxMDMuODcsMjMyLDIzMiwyMzJzMjMyLTEwMy44NywyMzItMjMyUzM2OC4xMyw4LDI0MCw4eiAgIE0xNzYuMjMyLDM3NS43NjhMMzEyLDI0MEwxNzYuMjMyLDEwNC4yMzJMMzEyLDI0MEwxNzYuMjMyLDM3NS43Njh6IiBkYXRhLW9yaWdpbmFsPSIjRTZFN0U4IiBjbGFzcz0iIiBkYXRhLW9sZF9jb2xvcj0iI0U2RTdFOCI+PC9wYXRoPjxnPgoJPHBhdGggc3R5bGU9ImZpbGw6IzU2Q0NGMiIgZD0iTTI0MCw0ODBDMTA3LjQ1Miw0ODAsMCwzNzIuNTQ4LDAsMjQwUzEwNy40NTIsMCwyNDAsMHMyNDAsMTA3LjQ1MiwyNDAsMjQwICAgQzQ3OS44NSwzNzIuNDg2LDM3Mi40ODYsNDc5Ljg1LDI0MCw0ODB6IE0yNDAsMTZDMTE2LjI4OCwxNiwxNiwxMTYuMjg4LDE2LDI0MHMxMDAuMjg4LDIyNCwyMjQsMjI0czIyNC0xMDAuMjg4LDIyNC0yMjQgICBDNDYzLjg1OSwxMTYuMzQ3LDM2My42NTMsMTYuMTQxLDI0MCwxNnoiIGRhdGEtb3JpZ2luYWw9IiM0MTQwNDIiIGNsYXNzPSJhY3RpdmUtcGF0aCIgZGF0YS1vbGRfY29sb3I9IiM0MTQwNDIiPjwvcGF0aD4KCTxwYXRoIHN0eWxlPSJmaWxsOiM1NkNDRjIiIGQ9Ik0xNzYuMjMyLDM4My43NjhjLTQuNDE4LTAuMDAxLTcuOTk5LTMuNTgzLTcuOTk4LTguMDAyYzAtMi4xMjEsMC44NDMtNC4xNTQsMi4zNDItNS42NTQgICBMMzAwLjY4OCwyNDBMMTcwLjU3NiwxMDkuODg4Yy0zLjA2OS0zLjE3OC0yLjk4MS04LjI0MywwLjE5Ny0xMS4zMTJjMy4xLTIuOTk0LDguMDE1LTIuOTk0LDExLjExNSwwbDEzNS43NjgsMTM1Ljc2OCAgIGMzLjEyMywzLjEyNCwzLjEyMyw4LjE4OCwwLDExLjMxMkwxODEuODg4LDM4MS40MjRDMTgwLjM4OCwzODIuOTI0LDE3OC4zNTQsMzgzLjc2OCwxNzYuMjMyLDM4My43Njh6IiBkYXRhLW9yaWdpbmFsPSIjNDE0MDQyIiBjbGFzcz0iYWN0aXZlLXBhdGgiIGRhdGEtb2xkX2NvbG9yPSIjNDE0MDQyIj48L3BhdGg+CjwvZz48L2c+IDwvc3ZnPg=="> </a>
+   </div>
+   <div class="agencies-bg"></div>
+</div>
+<?php } ?> 
+ 

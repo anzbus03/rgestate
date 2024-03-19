@@ -1,0 +1,129 @@
+<div id="map_locator">
+<?php $this->renderPartial('_filter_html_top_map');?>
+<?php 
+if(empty($adsCount)){
+ 
+	$this->renderPartial('_no_result_page',array('full_width'=>true)); 
+}
+else{ ?>
+        <div class="container margin-top-40" id="">
+            <div class="row">
+                <div class="col-sm-4">
+                    <span class="ak_text" id="loader_againn">
+                      
+                               <?php echo $adsCount;?> properties  available on <?php echo $title;?> 
+                                  
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                  <h3 class="headline  margin-bottom-10"><?php 
+                  $title = empty($title) ? 'Explore '.$this->app->options->get('system.common.site_name') : $title;
+                  echo Yii::t('trans','{location} for {section} ',array('{location}'=>$title, '{section}'=>$filterModel->SectionViewTitle));?></h3>
+                </div>
+                <div class="col-sm-3">
+                    <div class="ak_search">
+                        <div class="form mvn">
+                            <div class="horizontalContainer">
+                                <div style="flex: 4 1 0%;">
+                                    <div class="field mtn pln">
+                                        <span id="sortFieldItem" class="fieldItem fieldItemFullWidth select">
+                                             <div class="selectPretty" data-reactid="12">
+                                                        <select id="sortingOptions" data-reactid="13" name="sort"  onchange="alertthisVal(this);setThisValueSort(this)">
+														<?php 
+														$sortArray = $filterModel->sortArray();
+														foreach($sortArray as $k=>$v){
+														echo '<option value="'.$k.'">'.$v.'</option>';
+														} 
+														?>
+                                                        </select>
+                                                        <div class="selectDisplay btn btnDefault" data-reactid="23"><span class="selectLabel" data-reactid="24"><?php echo $filterModel->sortHTml;?></span><span class="selectTrigger" data-reactid="25"><i class="fa fa-chevron-down" data-reactid="26"></i></span></div>
+                                                    </div>
+                                        </span>
+                                    </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="padding-left: 0;">
+                    <div class="map_btns text-right miniHidden xxsHidden">
+						<?php $get =$_GET ; $get['view'] = 'map' ;?> 
+                        <a href="<?php echo  Yii::app()->createUrl('listing/index', array_filter($get) );?>" title="Map View" class="map_icon disabled gridIcon">
+                            <i class="fa fa-map"></i>
+                        </a> 
+                        <a href="javascript:void(0)" title="Grid View" class="th_icon gridIcon">
+                            <i class="fa fa-th"></i>
+                        </a> 
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+		
+		<div id="slideSheet"  >
+		<ul class="list-group  no-margin no-padding" id="suggestionList">
+		<li id="suggest_friends_last_id" style="display:none;"></li>
+		</ul>
+
+		<div style="clear:both"></div>
+		<div class="bar-results bottom">
+		<div class="paging-holder">
+		<div class="paging"><div class="text-center loadingDiv marTop15 no-margin"> </div> </div>
+		</div>
+		</div>
+		<div class="clearfix"></div>
+		</div>
+<div class="clearfix"></div>
+</div>
+      <?php $limit =  '8' ; ?> 
+<script type="text/javascript">
+
+	var loadingHtml    	= '<a href="javascript:void(0)" class="btn  btn-primary   btn-more btn-lg btn-shadow btn-rounded btn-icon-right disabled"><i class="fa fa-spinner fa-pulse margin-right-10"></i></a>';
+	var	loadMoreHtml 	= '<a href="javascript:void(0)" class="btn   btn-primary  btn-shadow btn-rounded btn-icon-right"   id="refresh_list" >Load More</a>';  
+	var afterFinishHtml = '';   
+	var elementId='slideSheet';
+	var appendId='suggest_friends_last_id';
+	var scroll=false;
+	var limit='<?php echo $limit;?>';
+	var offest='0';
+	var formID  = '';
+	var checkFuture = true ;
+	var scroll_Pagination5    ;
+	var slug ='<?php echo Yii::app()->createUrl('listing/fetch_work',array_replace(array('country_id2'=>$country_id,'state_id2'=>$state_id),$_GET));?>';
+	//scrollPaginationMain(limit='3',offest='0',elementId='slideSheet',appendId='suggest_friends_last_id',slug='<?php echo Yii::app()->createUrl('list/fetch_work');?>',scroll=false,loadingHtml,loadMoreHtml,afterFinishHtml);
+ 
+$(document).ready(function () {
+    scrollPagination(); 
+});
+ 
+</script>  
+<?php } ?>                        
+<script>
+var timer_ajax; 
+var mainListUrl = '<?php echo Yii::app()->createUrl('listing/index');?>/';
+var autoCompleteUrl = '<?php echo Yii::app()->createUrl('listing/autocomplete');?>';
+$(function(){ changeForm() ;   })
+</script>
+ <style>
+	 #suggestionList .col-sm-3:nth-child(4n+1){ clear:both; }
+				.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer ;  }
+				.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+				.autocomplete-selected { background: #F0F0F0; }
+				.autocomplete-suggestions strong { font-weight: normal; color: #000; }
+				.autocomplete-group { padding: 2px 5px; }
+				.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+				
+				.btnTertiary, .btnTertiary:visited, a.btnTertiary, a.btnTertiary:visited {
+				border: 1px solid #FF5A5F;
+				background: #fff;
+				color: #FF5A5F;
+				font-weight: 600;
+				}
+			    .btnTertiary:hover  { background: #FF5A5F;color:#fff; border: 1px solid #FF5A5F; } 
+            </style>
+			<style>.boxCard{ display:none; }.opened .boxCard{ display:block !important; }</style>
+  
+  

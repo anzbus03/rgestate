@@ -1,0 +1,5 @@
+[02-Feb-2022 05:46:04 UTC] PHP Deprecated:  Function get_magic_quotes_gpc() is deprecated in /home3/rsworkspace31/public_html/rgestate/apps/common/framework/web/CHttpRequest.php on line 122
+[29-Mar-2022 07:57:15 UTC] PHP Parse error:  syntax error, unexpected 'exit' (T_EXIT), expecting ';' or ',' in /home3/rsworkspace31/public_html/rgestate/index.php on line 2
+[29-Mar-2022 07:57:33 UTC] PHP Parse error:  syntax error, unexpected 'exit' (T_EXIT), expecting ';' or ',' in /home3/rsworkspace31/public_html/rgestate/index.php on line 2
+[29-Apr-2022 12:32:50 UTC] PHP Deprecated:  Function get_magic_quotes_gpc() is deprecated in /home3/rsworkspace31/public_html/rgestate/apps/common/framework/web/CHttpRequest.php on line 122
+[06-May-2022 13:57:14 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 16384 bytes) in /home3/rsworkspace31/public_html/rgestate/apps/common/extensions/yii-easyimage-master/drivers/Image_GD.php on line 133

@@ -1,0 +1,66 @@
+
+                    <div class="Listing_info">
+
+                        <div class="Prop_img">
+                            <a href="/uae/residential/lease/sharjah/al_muweilah/mueilah/339749.xhtml" style="cursor: pointer;text-decoration:none;">
+                                <div class="flexslider">
+                                    <ul class="slides">
+                                        <li style="width: 423px; float: left; "><img src="<?php echo Yii::app()->theme->baseUrl;?>/images/15092015459.jpg" style="width: 423px; " class="img-vert-align">
+                                        </li>
+                                        <li style="width: 423px; float: left; "><img src="<?php echo Yii::app()->theme->baseUrl;?>/images/15092015459.jpg" style="width: 423px; " class="img-vert-align">
+                                        </li>
+                                        <li><img src="<?php echo Yii::app()->theme->baseUrl;?>/images/15092015459.jpg" style="width: 423px; " class="img-vert-align">
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="list_infiDiv">
+                            <div class="property_info">
+                                <div class="Price_span">AED 20,000
+                                    <br><span class="rentpermonth">(rent per annum)</span>
+                                </div>
+                                <div class="txt1-div">Studio</div><span class="txt1-div-span"></span>
+                                <div class="txt2-div">Mueilah</div><span class="txt2-div-span"></span>
+                                <div class="loctxt-div"><strong>Location</strong> Al Muweilah</div><span class="loctxt-div-span"></span>
+                                <div class="apprx-div"><strong>Approx.size</strong> 500 sq.ft.</div><span class="apprx-div-span"></span>
+                                <div class="ref-div"><strong>Ref No.</strong> APM339749</div><span style="display:none;" class="apprx-div-span"></span>
+                                <div class="readynow-div">
+                                    <span>Ready Now</span>
+                                </div>
+                                <div class="bed_bath_park"> <span style="float:left;">5</span><span title="5 Bedroom(s)" class="unitbeds"></span><span style="float:left;"> 5.5</span><span class="unitbaths" title="5.5 Bathroom(s)"></span><span style="float:left;"> 1</span><span title="1 Car Parking(s)" class="unitparkng"></span> </div>
+                                <span style="display:none;" class="apprx-div-span"></span>
+                            </div>
+                            <div class="Agent_div">
+                                <div class="save_rate">
+                                    <div class="save_rate-div1">Save &amp; Rate</div>
+                                    <div class="stardiv">
+                                        <div style="display:none" rating=" " class="rateClass" id="RateDataDiv"></div>
+                                        <div class="ratingstars agp_starListing">
+                                            <div unitid="0" currentstar="" style="width:20px;height:19px;" class="heffect1 notratedstr" id="1">&nbsp;</div>
+                                            <div unitid="1" currentstar="" style="width:20px;height:19px;" class="heffect1 notratedstr" id="2">&nbsp;</div>
+                                            <div unitid="2" currentstar="" style="width:20px;height:19px;" class="heffect1 notratedstr" id="3">&nbsp;</div>
+                                            <div unitid="3" currentstar="" style="width:20px;height:19px;" class="heffect1 notratedstr" id="4">&nbsp;</div>
+                                            <div unitid="4" currentstar="" style="width:20px;height:19px;" class="heffect1 notratedstr" id="5">&nbsp;</div>
+                                        </div>
+                                    </div>
+                                    <div class="rate_str_sep"></div>
+                                    <div class="agp_detail"><span style="margin: 0 0 0 28px;" class="agent_name">Property Listed by </span>
+                                        <a style="cursor:text; margin: 0 0 0 28px;" href="javascript:void(0);">Better Homes LLC</a>
+                                    </div>
+                                </div>
+                                <div class="View_detail">
+                                    <a href="/uae/residential/lease/sharjah/al_muweilah/mueilah/339749.xhtml">View Property Details</a>
+                                </div>
+                                <div class="service" style="display: none;">2</div>
+                                <div ref="APM339749" class="ArrangeView enquireDiv">
+                                    <a href="javascript:void(0);">Arrange for a Viewing</a>
+                                </div>
+                                <span style="display:none;" class="apprx-div-span"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="line"></div>

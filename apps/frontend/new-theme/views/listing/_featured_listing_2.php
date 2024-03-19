@@ -1,0 +1,116 @@
+<?php 
+$order	 	  = 'date-desc';
+/*$order	 	  = '';
+$order		 .= '  t.id desc    ' ;*/
+$category_idF =  '';
+ $titleF =  '';
+$links_open_in  = $this->options->get('system.common.link_open_in','S');
+
+$default_featured = array('sort'=>'featured','custom_order'=>$order,'section_id'=>$_sec_id,'cat'=>array($category_idF)) ; 
+$new_array = $formData ;
+$categny = array(); 
+if(isset($formData['cat'])){
+	$categny  = array_merge((array)$formData['cat'],(array)$default_featured['cat']);
+}
+
+	$default_featured = array_merge($formData,$default_featured);
+	$default_featured['cat'] = $categny ; 
+ 
+
+  
+$new_listing = PlaceAnAd::model()->findAds($default_featured ,false,false,false,false,'F');
+
+if(!empty($new_listing)){?>
+    <div class="col-lg-12 col-md-6 rmyror  loader-initiated fetaredSlider" id="featured1"  >
+		 
+		<script>$(function(){ $('#featured1').removeClass('loader-initiated'); })</script>
+         <div class="">
+			 
+		<style>
+		.fetaredSlider.dvps .cardPhoto { height:320px; }
+		.rcc .carousel-item{position:relative}.rcc .spanimgsize360{height:282px}.rcc .details{width:calc(100% - 15px);background:-webkit-gradient(linear,left bottom,left top,from(rgba(0,0,0,1)),to(rgba(255,255,255,0)));background:-webkit-linear-gradient(bottom,rgba(0,0,0,1) 0,rgba(255,255,255,0) 100%);background:-o-linear-gradient(bottom,rgba(0,0,0,1) 0,rgba(255,255,255,0) 100%);background:linear-gradient(0deg,rgba(0,0,0,1) 0,rgba(255,255,255,0) 100%);position:absolute;bottom:0;z-index:11111111111111111111111111;padding:22px 16px}.listSubDetails .dot,.place .dot{padding-left:4px;padding-right:4px}.rcc .spansec01{background-image:unset!important}.rcc .details .listDetails .mainDetails .price{color:#fff;font-size:20px;font-weight:600;line-height:24px;margin-top:-4px;margin-bottom:4px}.rcc .details .listDetails .mainDetails .price span{color:#fff!important;font-size:20px!important;font-weight:600!important;line-height:24px!important;margin-top:-4px;margin-bottom:4px}.rcc .listSubDetails,.rcc .place{color:#fff!important;line-height:20px}.rcc .details .listDetails .mainDetails .title{color:#fff!important;white-space:nowrap;width:95%;-o-text-overflow:ellipsis;text-overflow:ellipsis;overflow:hidden}.rcc .listSubDetails{display:flex}.rcc .details .listSubDetails span{white-space:nowrap}.place .dot{display:inline-block}.rcc .place{width:calc(100% - 85px)!important;font-size:12px}.rcc .agentLogo{margin-top:-50px;height:48px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end;-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;float:right}.rcc .listSubDetails{font-size:14px}.rcc .arws .slick-next,.rcc .arws .slick-prev{top:50%;background:#00AFF0;width:35px;height:35px;z-index:9999999999999999999;}.rcc .arws .slick-next{right:45%}.rcc .arws .slick-prev{left:45%}.rcc button.saveHome{left:10px!important;right:unset!important}.agentLogo img{max-width:85px;max-height:35px}
+   .rcc  .navbar-fixed-left {
+    position: absolute;
+    top: 10px;
+    left: 49px;
+    right: unset;
+    border-radius: 0;
+}
+.rcc.rcc2 .details {
+    width: 100%;
+}
+.rcc.rcc2 .arws .slick-next,.rcc .arws .slick-prev{top:40%; }
+.rcc2 .block_tag  { top:10px !important; }
+		</style>
+            <div class="row"  >
+				<div class="ak_loader2"></div>
+				<style>.ftred {color: #5c6872;font-weight: 600;font-size: 17px;}</style>
+				<?php /*
+				<h3 class="_jmmm34f margin-bottom-15 featured hidden"><strong>Featured</strong>  <?php echo !empty($title1 ) ? $title1 :'Properties'; ?></h3>
+				*/
+				?>
+				<div class="clearfix margin-top-0"></div>
+               <div class="simple-slick-carousel2 dots-nav spandots rcc rcc2  " style="margin-bottom: 0px;margin-left:-8px;margin-right:8px;"  >
+                 <?php 
+                  $apps = $this->app->apps;
+                  $json_array = array();
+                  foreach($new_listing  as $k=>$v){
+					  $s_id ="featured_item".$v->id ; 
+					 //  $json_array[] = $s_id;
+					   ?>
+                  <!-- Listing Item -->
+                  <div class="carousel-item mul_sliderh frs" id="<?php echo $s_id;?>" style="position:relative;" >
+                   <div class="arws"></div>   <button data-test-id="CardSaveButton" class="saveHome pam hoverPulse typeReversed  <?php if(!empty($v->fav) ){ echo 'active';}?>" aria-label="Save Home" id="fav_button_<?php echo $v->id;?>" onclick="<?php if($this->app->user->getId()){ echo 'event.preventDefault();savetofavourite(this)'; }else{ echo 'event.preventDefault();OpenSignUp(this)';}?>" data-function="save_favourite" data-id="<?php echo $v->primaryKey;?>"  data-after="saved_fave"  data-reactid="<?php echo $v->id;?>">
+                              <span><?php if(!empty($v->fav) ){ echo '<i class="iconHeart  typeReversed iconOnly" ></i>'; } else{ echo '<i class="iconHeartEmpty typeReversed iconOnly" ></i>';} ?></span>
+                              </button>
+                     <div class="item">
+                         <a href="<?php echo $v->detailUrl;?>" style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;z-index: 115"></a> 
+                        <div class="positionRelative clickable" data-reactid="26">
+                           <div class="card backgroundBasic" data-reactid="27">
+                            
+							 <div data-reactid="46">
+                                  <div class="overlayContainer" data-reactid="48">
+										  <div class="tagsListContainer"  ><ul class="tagList tags listInlineBulleted man h7 typeEmphasize"><?php echo $v->tagList;?></ul></div>
+                                       <div class="cardPhoto backgroundPulse " style="width:100%;" data-reactid="49">
+                                          
+											<div class="single-item-hover"></div>
+											<div class='single-item' >
+											<?php  echo $v->generateImage($apps,$h=380,$w=570,$s_id,false);?> 
+											</div>
+											<?php
+											if(!empty($v->ad_images_g)){
+										  
+											}
+											?>
+                                      
+                                          <div class="tagsListContainer" data-reactid="53">
+                                             <!-- react-text: 54 --><!-- /react-text --><!-- react-text: 55 --><!-- /react-text -->
+                                          </div>
+                                       </div>
+                                    </div>
+                           	
+						        	<div class="residential-card__content-wrapper" role="presentation">
+									   <div class="residential-card__content" role="presentation">
+										  <div>
+											 <div class="residential-card__price rui-truncate" role="presentation"> <?php echo $v->listRow1();?></div>
+										  </div>
+									      <div>
+											  <?php echo $v->listRow3();?>
+										  </div>
+									     <?php echo $v->listRow2();?>
+										</div>
+									</div>
+                               
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <?php } ?>
+               </div>
+            </div>
+         </div>
+      </div>
+ 
+
+<?php } ?>
