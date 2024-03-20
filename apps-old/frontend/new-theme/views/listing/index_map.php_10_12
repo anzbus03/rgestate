@@ -1,0 +1,44 @@
+<div id="details-page-container" class="detail-page details-page-container react "></div>
+	<style>
+	#mainContainerClass { max-width:100%;}
+	.xsCol12Landscape     { padding-left:10px; padding-right:10px;}
+	#listing .kkNHOn {
+    position: relative;
+    background: #fff !important;
+    z-index: 113;
+}#listing .mul_sliderh {
+    padding-right: 8px;
+    padding-left: 8px;
+    margin-bottom: 16px;
+    position: relative;
+    margin-bottom: 10px;
+}#listing .columns {
+    flex: 1;
+    display: flex;
+    margin-top: 0;
+    width: 100% !important;
+}#listing .columns #leftColumn {
+    width: 50% !important;
+}#listing .columns #leftColumn {
+    width: 50% !important;
+    padding-right: 15px;
+    padding-left: 25px;
+}#listing .columns #leftColumn{
+	height: calc(100vh - 160px);
+overflow-y: scroll;
+}html #map-load .gm-style {
+    top: 0px !important;
+    bottom: 0 !important;
+    height: 100% !important;
+}
+.cardDetails  ul { display:flex; } .gm-style .gm-style-iw-d{ overflow:hidden;}
+	</style>
+<?php
+if (Yii::app()->request->isAjaxRequest) {
+	?><script> $('body').attr("id","listing");   </script>
+	<?php } ?> 
+<script>$(window).on('popstate', function(event) {     if($('#its_detail_page').length=='1'){    $('#details-page-container').html('');  closePopupGetail();     }    });</script>
+<div id="map_locator">
+<?php echo $this->renderPartial('index_map_ajax');?>
+</div>
+ 

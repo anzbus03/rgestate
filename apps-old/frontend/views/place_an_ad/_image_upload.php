@@ -1,0 +1,70 @@
+	   <div class="form-group col-lg-12">
+										<?php echo $form->labelEx($model, 'image');?>
+									   
+										<?php echo $form->error($model, 'image');?>
+								
+									 <div class="clearfix"><!-- --></div>
+									 <?php 
+								   if(!empty($image_array) )
+								   {
+									   
+									   ?>
+										<div class="property_img_box" style="margin-bottom:20px;">
+											
+											<?php
+											$image = "";
+											foreach($image_array as $k=>$v)
+											{
+												$image .= ",".$v;
+											?>
+											<div id="property_img_<?php echo $k;?>" class="property_img">
+											<img src="<?php echo Yii::app()->apps->getBaseUrl('uploads/images/'.@$v) ?>" style="width:140px;">
+											<div class="property_img_overlay">
+											<span class="isw-favorite" style="margin-right: 0px;"></span>
+											</a>
+											<a class="btn btn-danger btn-small" onclick="delete_property_image2('<?php echo $v;?>',this);">
+											<span class="fa fa-remove" style="margin-right: 0px;"></span>
+											</a>
+											</div>
+											</div>
+											<?
+											}
+									   ?>
+										</div>
+										<?php
+										$model->image = $image;
+								   }
+								   ?>
+									<?php echo $form->hiddenField($model, 'image', $model->getHtmlOptions('image')); ?>
+									
+									
+									 <div class="clearfix"><!-- --></div>
+									<div style="color:#4E4E4E;font-size:13px;background:#EAEAEA;padding:15px">Drag and drop Photos here or click below to select photos from your computer <div class="clearfix"></div></div> 
+									<div  style=" color:#4E4E4E;font-size:12px; ;padding:12px 0px 12px 7px;">Hint: File types allowed: jpg, gif, png, Max Width & Height : 1024px</div>
+									<div id="myId" class="dropzone" title="Click or Drag here to upload photos"></div>
+									<script type="text/javascript">
+									var myDropzone = new Dropzone("div#myId", { url: "<?php echo $this->createUrl('upload'); ?>",addRemoveLinks: true, maxFilesize: 4024, acceptedMimeTypes: 'image/jpeg,image/gif',}) //according to your forms action
+									 myDropzone.on("removedfile", function(file, serverFileName) {
+									 $.post("<?php echo $this->createUrl('delete_image'); ?>",{file:file.serverId,inp:$("#PlaceAnAd_image").val()},function(data){  $("#PlaceAnAd_image").val(data) ; } );
+									});
+									myDropzone.on("success", function(file,serverFileName) {
+										 file.serverId =serverFileName;
+										 var vals  = $("#PlaceAnAd_image").val();
+										 vals += ","+serverFileName;
+										 $("#PlaceAnAd_image").val(vals) ;
+										 
+									});
+									var imgs = $("#PlaceAnAd_image").val(); 
+									function delete_property_image(img, val,k)
+									{
+										 $.post("<?php echo $this->createUrl('delete_image'); ?>",{file:img,inp:val},function(data){  $("#PlaceAnAd_image").val(data) ;imgs = data; } );
+										 $(k).parent().parent().remove();
+									}
+									function delete_property_image2(val,k)
+									{
+					 
+										 $.post("<?php echo $this->createUrl('delete_image'); ?>",{file:val,inp:imgs},function(data){  $("#PlaceAnAd_image").val(data) ;imgs=data; } );
+										 $(k).parent().parent().remove();
+									}
+									</script>
+	</div> 

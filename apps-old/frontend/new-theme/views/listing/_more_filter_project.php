@@ -1,0 +1,94 @@
+      <div  id="allForSaleToggleDiv" style="display:none;padding:10px;top:10px;position:absolute;right:0px;height:300px;overflow-y:scroll;width:330px;" class="box boxCard boxBasic backgroundBasic zIndexNavigation xxsHidden   pam txtC">
+                                                <div id="filterForm" class="moredetailsFrm phm">
+                                                   
+                                                    <div class="row">
+                                                         
+                                                            <div class="miniCol24">
+                                                                <label class="lrgHidden fieldLabel"><?php echo  'Keywords' ;?></label>
+                                                                <div id="keywordsDropdown" class="">
+                                                                    <div>
+                                                                        <div class="field mvn" >
+                                                                            <div class="fieldItem text  ">
+                                                                                <div class="col cols24 pln">
+                                                                                    <div class="suggestions" style="text-align:center;" >
+                                                                                        <input style="width:100%;;"  autocomplete="off" role="combobox" aria-autocomplete="list" aria-owns="react-autowhatever-1" aria-expanded="false" aria-haspopup="false" id="keywordInput" placeholder="<?php echo  'Pool, Parking...' ;?>" name="keyword" value="<?php echo $filterModel->keyword;?>" class="fieldTouch" type="text">
+                                                                                        <div id="react-autowhatever-1"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- react-empty: 301 -->
+                                                                    </div>
+                                                                </div>
+                                                                <div class="lrgHidden pbxl"></div>
+                                                            </div>
+                                                            <div class="xxsCol24">
+                                                                <div id="moreFilters">
+                                                                     
+                                                                    <div id="currentSquareFeetRangeField  " class="pbxxl" style="display: none;">
+                                                                        <div class="field">
+                                                                            <label class="fieldLabel"><?php echo 'Developer' ;?></label>
+                                                                            <div>
+                                                                                <div class="fieldGroupInline fulld">
+                                                                                    <span class="fieldItem text" style="width: 185px;">
+                                                                                    <select id="user_select" name="dealer"   style="width:100%;" data-url="<?php echo Yii::App()->createUrl('site/customer',array('user_type'=>'D'));?>" >
+																						<option value="">Select Developer</option>
+																						<?php
+																						if(!empty($userM)){ ?> 
+																							<option value="<?php echo $userM->slug;?>"  selected="true" ><?php echo $userM->fullName;?></option>
+																						<?php } ?> 
+																						</select>
+																						<script>
+																				         $(function(){
+																						//	 load_user('Select Developer') ;                                                                         
+																						 })
+                                                                                    </script>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div id="lotSize" class="pbxxl hidden">
+                                                                        <label class="fieldLabel">Lot Size</label>
+                                                                        <span class="fieldItem fieldTouch select">
+                                                                            <div class="selectPretty">
+                                                                                <select id="lotSize">
+                                                                                    <option value="">No Min</option>
+                                                                                    <?php
+                                                                                    /*
+                                                                                    $min_text = 'No Min';
+                                                                                    $squarefeet = $filterModel->squareFeetSearch() ;
+                                                                                    foreach($squarefeet as $k=>$v){
+																						$selected ='';
+																						if($formData->minSqft==$k ){
+																							 $min_text =  $v;$selected ='selected=true';  
+																						}
+																						echo '<option value="'.$k.'" '.$selected.'>'.$v.'</option>';
+																					}
+																					* */
+																					?>
+                                                                                </select>
+                                                                                <div class="selectDisplay btn btnTouch btnDefault"><span class="selectLabel">No Min</span><span class="selectTrigger"><i class="iconDownOpen"></i></span></div>
+                                                                            </div>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div id="yearBuilt" class="pbxxl hidden">
+                                                                        <div class="field">
+                                                                            <label class="fieldLabel">Year Built</label>
+                                                                            <div>
+                                                                                <div class="fieldGroupInline">
+                                                                                    <span class="fieldItem text" style="width: 85px;"><input class="fieldTouch" inputmode="numeric" maxlength="4" value="" id="minYearBuilt" placeholder="Min Yr" type="text"></span><!-- react-text: 355 -->&nbsp;–&nbsp;<!-- /react-text --><span class="fieldItem text" style="width: 85px;"><input class="fieldTouch" inputmode="numeric" maxlength="4" value="" id="maxYearBuilt" placeholder="Max Yr" type="text"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- react-empty: 358 -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mbxxl">&nbsp;</div>
+                                                    </div>
+                                                </div>
+                                   
+                                      

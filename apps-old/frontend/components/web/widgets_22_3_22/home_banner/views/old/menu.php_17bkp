@@ -1,0 +1,234 @@
+<?php
+$city = CHtml::listData(States::model()->AllListingStatesOfCountry(COUNTRY_ID),'slug' , 'state_name'); 
+$price_array = PlaceAnAd::model()->getPriceArray();
+$ban_titl = Yii::t('app',$conntroller->options->get('system.common.home_page_banner_title',''),array('{COUNTRY}'=>'<span class=ctry-bn>'.COUNTRY_NAME.'</span>'));                       
+$ban_titl_r = Yii::t('app',$conntroller->options->get('system.common.home_page_banner_title_r',''),array('{COUNTRY}'=>'<span class=ctry-bn>'.COUNTRY_NAME.'</span>'));                       
+$ban_titl_w = Yii::t('app',$conntroller->options->get('system.common.home_page_banner_title_w',''),array('{COUNTRY}'=>COUNTRY_NAME));                       
+$ban_titl_n = Yii::t('app',$conntroller->options->get('system.common.home_page_banner_title_n',''),array('{COUNTRY}'=>COUNTRY_NAME));                       
+?>
+ 
+<script>
+var FindCitiesh = "<?php echo Yii::app()->createUrl('ajax/FindCities',array('country_id'=>COUNTRY_ID));?>";
+$(function(){
+if($('.js-typeahead-user_v2').length >=1 ){
+findCitiesh();
+}
+});
+</script>
+ 
+<div class="home-banner-outer">
+                 
+         <div class="main-search-container dark-overlay home" >
+              <div class="container home_container" style="position:absolute !important;bottom:0px;left: 0;right: 0;">
+             
+					<div class="container  ">
+					
+					
+					
+					
+												<div class="row   margin-top-40 list-prop"> 
+												<div class="col-md-12 home_exp_sec ">
+												<div class="_ba2wq3 homechange" id="ids">
+												<a href="<?php echo Yii::app()->createUrl('listing/index',array('sec'=>'Property','type_of'=>'commercial|Office'));?>"  onclick="easyload(this,event,'mainContainerClass')" data-id="127" >
+												<div class="col-sm-4 nevrsh">
+												<div class="spanstyle hovereffect">
+												<div class="col-md-4 " style="padding: 0px;width:80px;">
+												<img class="on_live" src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/n_off2.png');?>" alt="">
+												<img  class="on_hover" src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/n_off2.png');?>" data-id="114" alt=""> 
+
+												</div>
+												<div class="col-md-8 spanfontstyle">
+												<h3>Offices</h3>
+
+												</div>
+												</div>
+												</div>
+												</a>
+												<a href="<?php echo Yii::app()->createUrl('listing/index',array('sec'=>'Property','type_of'=>'residential|Villa'));?>"  onclick="easyload(this,event,'mainContainerClass')" data-id="114">
+												<div class="col-sm-4 nevrsh">
+												<div class="spanstyle hovereffect">
+												<div class="col-md-4" style="padding: 0px;width:80px;">
+												<img  class="on_live" src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/n_villas.png');?>" data-id="114" alt=""> 
+												<img  class="on_hover" src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/n_villas.png');?>" data-id="114" alt=""> 
+												</div>
+												<div class="col-md-8 spanfontstyle">
+												<h3>Villas</h3>
+
+												</div>
+												</div>
+												</div>   </a>
+												<a href="<?php echo Yii::app()->createUrl('listing/index',array('sec'=>'Property','type_of'=>'residential|Apartment'));?>"  onclick="easyload(this,event,'mainContainerClass')" data-id="127" >
+												<div class="col-sm-4">
+												<div class="spanstyle hovereffect">
+												<div class="col-md-4 " style="padding: 0px;width:80px;">
+												<img class="on_live" src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/n_apt.png');?>" alt="">
+												<img  class="on_hover" src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/n_apt.png');?>" data-id="114" alt=""> 
+
+												</div>
+												<div class="col-md-8 spanfontstyle">
+												<h3>Apartments</h3>
+
+												</div>
+												</div>
+												</div>
+												</a>
+												<a href="<?php echo Yii::app()->createUrl('listing/index',array('sec'=>'Property','type_of'=>'residential|Land'));?>"  onclick="easyload(this,event,'mainContainerClass')" data-id="121">
+												<div class="col-sm-4">
+												<div class="spanstyle hovereffect">
+												<div class="col-md-4" style="padding: 0px;">
+												<img  class="on_live" src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/n_res.png');?>" alt="">  
+												<img  class="on_hover" src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/n_res.png');?>" alt=""> 
+												</div>
+												<div class="col-md-8 spanfontstyle">
+												<h3>Land</h3>
+
+												</div>
+												</div>
+												</div> </a>
+												
+												<a href="<?php echo Yii::app()->createUrl('listing/index',array('sec'=>'Property','type_of'=>'commercial|whole-building'));?>"  onclick="easyload(this,event,'mainContainerClass')" data-id="121">
+												<div class="col-sm-4">
+												<div class="spanstyle hovereffect">
+												<div class="col-md-4" style="padding: 0px;">
+												<img  class="on_live" src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/n_buil.png');?>" alt="">  
+												<img  class="on_hover" src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/n_buil.png');?>" alt=""> 
+												</div>
+												<div class="col-md-8 spanfontstyle">
+												<h3>Buidings</h3>
+
+												</div>
+												</div>
+												</div> </a>
+												
+												
+
+												
+
+
+												</div>
+												</div>
+												</div>
+
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					</div>
+			   </div>
+					
+            <div class="main-search-inner">
+            <div class="slider-form advamced">
+            <div class="container">
+               <h2 class="text-left mb-5" id="nban_tit"><?php echo $ban_titl;?></h2>
+            
+                  <ul class="nav nav-tabs hom-tab" role="tablist">
+                <li class="nav-item">
+                        <a class="nav-link active show" id="home-tab" data-toggle="tab" data-href="home" data-ban-title="<?php echo $ban_titl;?>" href="javascript:void(0)" role="tab" aria-controls="home" aria-selected="true" data-title="Buy" data-url="<?php echo Yii::App()->createUrl('listing/index/sec/property-for-sale');?>"  onclick="activateTab(this)">For Sale</a>
+                     </li>
+                     <li class="nav-item rentald">
+                        <a class="nav-link " id="profile-tab" data-toggle="tab" data-href="profile" data-ban-title="<?php echo $ban_titl_r;?>"   href="javascript:void(0)" role="tab" aria-controls="profile" aria-selected="false"  data-title="Rent" data-url="<?php echo Yii::App()->createUrl('listing/index/sec/property-for-rent');?>" onclick="activateTab(this)">For Rent
+                       
+					
+                        </a>
+                        <div class="topselector">
+                          <div class="">
+                        <?php
+                        $paid_array =  array("yearly"=>"Yearly", "monthly"=>"Monthly",  "Daily" => 'Daily'  );
+                        foreach($paid_array as $k=>$v){ 
+																							$checked = $k== 'yearly' ? 'checked=true' : '' ;  		 
+																							 
+																						echo '<div class="pbs checkboxes  "><span class="fieldItem checkbox"><input id="rent_paid'.$k.'"  class="h_type flabele" onchange="setRent_paid_value(this)" name="rent_paid" '.$checked.' value="'.$k.'"   type="radio"><label for="rent_paid'.$k.'" class="container_check"><span class="melipsi ">'.$v.'</span><span class="checkmark"></span></label></span></div>'; 
+																						 
+																						}	
+																						?>
+																						</div>
+                        </div>
+                     </li>
+                     	 
+                  
+                     <?php /*
+                     <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" data-href="new_project" data-ban-title="<?php echo $ban_titl_n;?>" href="javascript:void(0)" role="tab" aria-controls="profile" aria-selected="false"  data-title="Projects" onclick="activateTab(this)" data-url="<?php echo Yii::App()->createUrl('listing/index/sec/new-development');?>">Projects</a>
+                     </li> 
+                     <li class="nav-item">
+                        <a class="nav-link"      href="<?php echo Yii::App()->createUrl('listing/index/sec/new-development');?>" role="tab" aria-controls="profile" aria-selected="false"  data-title="Projects"  >Projects</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link"      href="<?php echo Yii::app()->createUrl('user_listing/index');?>" role="tab" aria-controls="profile" aria-selected="false"  data-title="Agents"  >Agents</a>
+                     </li>*/ ?> 
+                 </ul>
+                   <div class="tab-content hom-content" id="tab-home-srch" data-select2-id="14">
+                     <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab" data-select2-id="home">
+						<?php $this->render('_for_sale_search',compact('city','city_array','city_array','price_array','conntroller'));?>
+                     </div>
+                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="home-tab" data-select2-id="home">
+						<?php $this->render('_for_rent_search',compact('city','city_array','city_array','price_array','conntroller'));?>
+                     </div>
+                 
+                  </div>
+            </div>
+         </div>
+         
+            
+             </div>
+            <!-- Video -->
+            <div class="video-container">
+              <?php 
+              
+              $banners =   $conntroller->banners;
+              $bannerModel = new HomeBanner();
+               if( $banners){
+				 ?>
+				<div class="row fullwidth">
+				<div class="columns small-12 slider">
+				 
+					<?php 
+					foreach($banners as $k=>$v){
+						$mag= $v['image'];
+						$mob= !empty($v['mobile']) ? $v['mobile'] :  $v['image'];
+					?>
+                            <picture style="
+    height: 100%;
+    width: 100%;
+    display: flex;
+    display: block;
+    height: 100%;
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+">
+                            <source srcset="<?php echo Yii::app()->apps->getBaseUrl('uploads/feeta_property_xyz/'.$mag);?>" media="(min-width:720px)" />
+                            <img class="lozad" src="<?php echo Yii::app()->apps->getBaseUrl('uploads/feeta_property_xyz/'.$mob);?>"  style="background:url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AABEIAAUACgMBEQACEQEDEQH/xAGiAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgsQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+gEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoLEQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/APH9Nt/jf4ts/gB8cvBv7Qvjf4b2HxKitvh1r3w40WO5j8Py6bqVinhXxNJLqHhzXPB9/cx69p8UMjB1TVbe6iWebW76QKyfNUXVzHDwxcqrw0swjUyyp9VhTozjhptKrT54xtUp1YrlqUqkGppLmcldPLEYyarxoOKq0qVSjiYwrP2kPbKK5aiSUGpxbbUua6bbW59Ny/Ejx/4elk0CG90GeHQ5H0eKeSHx6Xmj0xjZJK5uPiTdTl5FgDsZrm4lJJMk8r7pG8Ofh/lLnN/2jnkbyl7tPGYanTjq/dp04YFQpwW0YRSjCNoxSSR1/wCtuNh7jo024e7dVKqvy6XtKU5a2+1OT7yk9X//2Q==');background-size:cover" />
+                             </picture>
+				 	 
+					<?php } ?>
+				  
+		 
+				</div>
+				</div>
+					   <?
+				   
+				}; ?>
+
+ 
+            </div>
+		
+         </div>
+            <script>
+			var load_city_url = '<?php echo Yii::App()->createUrl('site/load_city');?>';
+			$(function(){ homefn(); })
+			if(window.innerWidth < 768) {  $(function(){ hm_tab()}) }
+			ResizeWin();
+			</script>
+         
+         <div class="clearfix"></div>
+</div>
+ 
+ 

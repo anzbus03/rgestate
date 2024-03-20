@@ -1,0 +1,949 @@
+<?php defined('MW_PATH') || exit('No direct script access allowed');
+
+/**
+ * PricePlanOrder
+ * 
+ * @package MailWizz EMA
+ * @author Serban George Cristian <cristian.serban@mailwizz.com> 
+ * @link http://www.mailwizz.com/
+ * @copyright 2013-2017 MailWizz EMA (http://www.mailwizz.com)
+ * @license http://www.mailwizz.com/license/
+ * @since 1.3.4.4
+ */
+
+/**
+ * This is the model class for table "{{price_plan_order}}".
+ *
+ * The followings are the available columns in table '{{price_plan_order}}':
+ * @property integer $order_id
+ * @property string $order_uid
+ * @property integer $customer_id
+ * @property integer $plan_id
+ * @property integer $promo_code_id
+ * @property integer $tax_id
+ * @property integer $currency_id
+ * @property string $subtotal
+ * @property string $tax_percent
+ * @property string $tax_value
+ * @property string $discount
+ * @property string $total
+ * @property string $status
+ * @property string $date_added
+ * @property string $last_updated
+ *
+ * The followings are the available model relations:
+ * @property Tax $tax
+ * @property PricePlan $plan
+ * @property Customer $customer
+ * @property PricePlanPromoCode $promoCode
+ * @property Currency $currency
+ * @property PricePlanOrderNote[] $notes
+ * @property PricePlanOrderTransaction[] $transactions
+ */
+class PricePlanOrder extends ActiveRecord
+{
+    const STATUS_INCOMPLETE = 'incomplete';
+    
+    const STATUS_COMPLETE = 'complete';
+    
+    const STATUS_PENDING = 'pending';
+    
+    const STATUS_FAILED = 'failed';
+    
+    const STATUS_REFUNDED = 'refunded';
+    
+    const STATUS_DUE = 'due';
+     const STATUS_TRASHED = 'trash';
+    
+    protected $_initStatus;
+    public $t_allowed;
+    public $d_allowed;
+    public $promo_allowed;
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return '{{price_plan_order}}';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		$rules = array(
+			array('customer_id,    total ,payment_type', 'required'),
+			array('created_by,show_trash,promo_allowed', 'safe'),
+			array('customer_id, plan_id, promo_code_id, currency_id, tax_id', 'numerical', 'integerOnly' => true),
+			array('subtotal, discount, total, tax_value, tax_percent', 'numerical'),
+            array('subtotal, discount, total, tax_value, tax_percent', 'type', 'type' => 'float'),
+			array('status', 'in', 'range' => array_keys($this->getStatusesList())),
+			
+            // The following rule is used by search().
+			array('order_uid, customer_id, plan_id, promo_code_id, currency_id, tax_id, subtotal, tax_value, tax_percent, discount, total, status,from_date,to_date,show_all,d_allowed,t_allowed', 'safe', 'on'=>'search'),
+            array('subtotal, tax_value, discount, total', 'safe', 'on'=>'customer-search'),
+		);
+        return CMap::mergeArray($rules, parent::rules());
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		$relations = array(
+            'tax'            => array(self::BELONGS_TO, 'Tax', 'tax_id'),
+			'plan'           => array(self::BELONGS_TO, 'Package', 'plan_id'),
+			'customer'       => array(self::BELONGS_TO, 'ListingUsers', 'customer_id'),
+			'deletedby'       => array(self::BELONGS_TO, 'User', 'deleted_by'),
+			'sales_person'       => array(self::BELONGS_TO, 'User', 'created_by'),
+			'promoCode'      => array(self::BELONGS_TO, 'PricePlanPromoCode', 'promo_code_id'),
+			'currency'       => array(self::BELONGS_TO, 'Currency', 'currency_id'),
+            'notes'          => array(self::HAS_MANY, 'PricePlanOrderNote', 'order_id'),
+            'transactions'   => array(self::HAS_MANY, 'PricePlanOrderTransaction', 'order_id'),
+		);
+        return CMap::mergeArray($relations, parent::relations());
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		$labels = array(
+			'order_id'       => Yii::t('orders', 'Order'),
+			'order_uid'      => Yii::t('orders', 'Order no.'),
+			'customer_id'    => Yii::t('orders', 'Customer'),
+			'plan_id'        => Yii::t('orders', 'Package'),
+			'promo_code_id'  => Yii::t('orders', 'Promo code'),
+            'tax_id'         => Yii::t('orders', 'Tax'),
+			'currency_id'    => Yii::t('orders', 'Currency'),
+			'subtotal'       => Yii::t('orders', 'Subtotal'),
+            'tax_percent'    => Yii::t('orders', 'Tax percent'),
+            'tax_value'      => Yii::t('orders', 'Tax value'),
+			'discount'       => Yii::t('orders', 'Discount'),
+			'total'          => Yii::t('orders', 'Topup Amount - (Rs.)'),
+			'total1'          => Yii::t('orders', 'Topup Amount'),
+			'total3'            =>  Yii::t('orders', 'Total'),
+		);
+        return CMap::mergeArray($labels, parent::attributeLabels());
+	}
+	
+	    public function getPaymentName($status1 = null)
+    {
+        if (!$status1 && $this->hasAttribute('payment_type')) {
+            $status1 = $this->payment_type;
+        }
+        if (!$status1) {
+            return;
+        }
+        $list = $this->paymentArray();
+        return isset($list[$status1]) ? $list[$status1] : Yii::t('app', ucfirst(preg_replace('/[^a-z]/', ' ', strtolower($status1))));
+    }
+		public function paymentArray(){
+		return array(
+		'e' => 'Easy Paisa',
+		'b' => 'Bank transfer/Cash',
+		
+		);
+	}
+	 
+	public $total_ordered;
+	
+	public function calculateTotalBalance($customer_id){
+		
+		  /*total_used*/
+		  $criteria = new CDbCriteria;
+		  $criteria->select = 'sum(t.amount) as total_used' ; 
+		  $criteria->compare('t.user_id', (int)$customer_id);
+		  $criteria->compare('t.status', 'active');
+		  $criteria->group = 't.user_id';
+		  $total_usedModel = UserPackages::model()->find($criteria);
+		  if(empty($total_usedModel)){ $total_used =  0; }
+		  else{
+			  $total_used =  $total_usedModel->total_used;
+		  }
+		  
+		
+		  /*total_paid*/
+		  $criteria = new CDbCriteria;
+		  $criteria->select = 'sum(COALESCE(t.total,0)-COALESCE(t.tax_value,0)) as total_ordered' ;
+		  $criteria->compare('t.customer_id', (int)$customer_id);
+		  $criteria->compare('t.status', 'complete');
+		  $criteria->group = 't.customer_id';
+		  $total_paidMaodel = PricePlanOrder::model()->find($criteria);
+		  if(!empty($total_paidMaodel)){ $total_paid = $total_paidMaodel->total_ordered;   }
+		  else{
+			  $total_paid = 0; 
+		  }
+		  
+		  $account_balance = $total_paid-$total_used;
+		  ListingUsers::model()->updateByPk((int) $customer_id,array('amount'=>$account_balance));
+	}
+    
+    /**
+     * @return array help text for attributes
+     */
+    public function attributeHelpTexts()
+    {
+        $texts = array(
+			'customer_id'    => Yii::t('orders', 'The customer this order applies to, autocomplete enabled'),
+			'plan_id'        => Yii::t('orders', 'The price plan included in this order, autocomplete enabled'),
+			'promo_code_id'  => Yii::t('orders', 'The promo code applied to this order, autocomplete enabled'),
+		);
+        
+        return CMap::mergeArray($texts, parent::attributeHelpTexts());
+    }
+    
+    /**
+     * @return array attribute placeholders
+     */
+    public function attributePlaceholders()
+    {
+        $placeholders = array(
+            'customer_id'    => Yii::t('orders', 'Customer, autocomplete enabled'),
+			'plan_id'        => Yii::t('orders', 'Plan, autocomplete enabled'),
+			'promo_code_id'  => Yii::t('orders', 'Promo code, autocomplete enabled'),
+			'currency_id'    => '',
+			'subtotal'       => '0.0000',
+			'discount'       => '0.0000',
+			'total'          => '0.0000',
+		);
+        
+        return CMap::mergeArray($placeholders, parent::attributePlaceholders());
+    }
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 *
+	 * Typical usecase:
+	 * - Initialize the model fields with values from filter form.
+	 * - Execute this method to get CActiveDataProvider instance which will filter
+	 * models according to data in model fields.
+	 * - Pass data provider to CGridView, CListView or any similar widget.
+	 *
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
+	 */
+	   public $from_date;public $to_date;
+		  public $show_all;
+		   public $show_trash;
+	public function search()
+	{
+		$criteria = new CDbCriteria;$criteria->condition = '1'; 
+
+        if ($this->customer_id) {
+            if (is_string($this->customer_id)) {
+                $criteria->with['customer'] = array(
+                    'together' => true,
+                    'joinType' => 'INNER JOIN',
+                    'condition'=> '(CONCAT(customer.first_name, " ", customer.last_name) LIKE :c01 OR customer.email LIKE :c01 OR customer.company_name LIKE :c01)',
+                    'params'   => array(':c01' => '%'. $this->customer_id .'%')
+                );
+            } else {
+                $criteria->compare('t.customer_id', (int)$this->customer_id);
+            }
+        }
+        
+        if ($this->plan_id) {
+            if (is_string($this->plan_id)) {
+                $criteria->with['plan'] = array(
+                    'together' => true,
+                    'joinType' => 'INNER JOIN',
+                    'condition'=> 'plan.package_name LIKE :p01',
+                    'params'   => array(':p01' => '%'. $this->plan_id .'%')
+                );
+            } else {
+                $criteria->compare('t.plan_id', (int)$this->plan_id);
+            }
+        }
+        
+        if ($this->promo_code_id) {
+            if (is_string($this->promo_code_id)) {
+                $criteria->with['promoCode'] = array(
+                    'together' => true,
+                    'joinType' => 'INNER JOIN',
+                    'condition'=> 'promoCode.code LIKE :pc01',
+                    'params'   => array(':pc01' => '%'. $this->promo_code_id .'%')
+                );
+            } else {
+                $criteria->compare('t.promo_code_id', (int)$this->promo_code_id);
+            }
+        }
+        
+        if ($this->currency_id) {
+            if (is_string($this->currency_id)) {
+                $criteria->with['currency'] = array(
+                    'together' => true,
+                    'joinType' => 'INNER JOIN',
+                    'condition'=> 'currency.code LIKE :cr01',
+                    'params'   => array(':cr01' => '%'. $this->currency_id .'%')
+                );
+            } else {
+                $criteria->compare('t.currency_id', (int)$this->currency_id);
+            }
+        }
+        
+        if ($this->tax_id) {
+            if (is_string($this->tax_id)) {
+                $criteria->with['tax'] = array(
+                    'together' => true,
+                    'joinType' => 'INNER JOIN',
+                    'condition'=> 'currency.code LIKE :t01',
+                    'params'   => array(':t01' => '%'. $this->tax_id .'%')
+                );
+            } else {
+                $criteria->compare('t.tax_id', (int)$this->tax_id);
+            }
+        }
+        
+        if(!empty($this->created_by)){
+                $criteria->select   =   ' t.* ';
+            	$criteria->join  .=   ' INNER   JOIN {{user}} gpu on gpu.user_id = t.created_by ';
+            	$criteria->condition   .=  ' and gpu.group_id = 8 '; 
+                if(empty($this->show_all)){
+                    $criteria->compare('created_by',$this->created_by);
+            	}
+        }
+         if(!empty($this->from_date)){
+        $criteria->condition .= ' and DATE(t.date_added) >= :fromdate  ' ;
+        $criteria->params[':fromdate'] = date('Y-m-d',strtotime($this->from_date));
+		}
+		if(!empty($this->to_date)){
+        $criteria->condition .= ' and DATE(t.date_added) <= :to_date  ' ;
+        $criteria->params[':to_date'] = date('Y-m-d',strtotime($this->to_date));
+		}
+		if(!empty($this->t_allowed)){
+		    $criteria->compare('t.tax_value >', '0.1');
+		}
+		if(!empty($this->d_allowed)){
+		    $criteria->compare('t.discount >',  '0.1');
+		}
+        $criteria->compare('t.payment_type', $this->payment_type);
+        $criteria->compare('t.order_uid', $this->order_uid, true);
+		$criteria->compare('t.subtotal', $this->subtotal, true);
+        $criteria->compare('t.tax_value', $this->tax_value, true);
+        $criteria->compare('t.tax_percent', $this->tax_percent, true);
+		$criteria->compare('t.discount', $this->discount, true);
+		$criteria->compare('t.total', $this->total, true);
+		$criteria->compare('t.status', $this->status);
+        if(!empty($this->show_trash)){
+			$criteria->compare('t.status',self::STATUS_TRASHED);
+		}
+		else{
+			$criteria->compare('t.status!',self::STATUS_TRASHED);
+		}
+		
+		if(!empty($this->promo_allowed)){
+		 	$criteria->condition .= ' and t.promo_code_id!=""' ;
+		}
+        $criteria->order = 't.order_id DESC';
+        
+		return new CActiveDataProvider(get_class($this), array(
+            'criteria'   => $criteria,
+            'pagination' => array(
+                'pageSize' => $this->paginationOptions->getPageSize(),
+                'pageVar'  => 'page',
+            ),
+            'sort'=>array(
+                'defaultOrder' => array(
+                    't.order_id'  => CSort::SORT_DESC,
+                ),
+            ),
+        ));
+	}
+public $total_payment; 
+	public function orderStatistics(){
+	    	$criteria = new CDbCriteria;
+	    	$criteria->condition = '1'; 
+	    	$criteria->select ='sum(COALESCE(t.total,0)) as total_payment,sum(COALESCE(t.tax_value,0)) as total,sum(COALESCE(t.discount,0)) as discount,t.date_added';
+	    	$criteria->compare('t.status', 'complete');
+	    	$criteria->group     = 'MONTH(t.date_added)';
+	    	$criteria->limit     = 12;
+	    	return self::model()->findAll($criteria);
+
+	}
+	public function orderStatisticsdatewise($from_date,$to_date){
+	    	$criteria = new CDbCriteria;
+	    	$criteria->condition = '1'; 
+	    	$criteria->select ='sum(COALESCE(t.total,0)) as total_payment,sum(COALESCE(t.tax_value,0)) as tax_value,sum(COALESCE(t.discount,0)) as discount,t.date_added';
+	    	$criteria->compare('t.status', 'complete');
+	     
+			if(!empty($from_date)){
+				$criteria->condition .= ' and DATE(t.date_added) >= :fromDate ';
+				$criteria->params[':fromDate']  = date('Y-m-d',strtotime($from_date));
+			}
+	     
+			if(!empty($to_date)){
+				$criteria->condition .= ' and DATE(t.date_added) <= :toDate ';
+				$criteria->params[':toDate']  = date('Y-m-d',strtotime($to_date));
+			}
+	    	return self::model()->find($criteria);
+
+	}
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
+	 * @return PricePlanOrder the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+    
+    public function getStatusesList()
+    {
+        return array(
+            self::STATUS_INCOMPLETE => Yii::t('app', 'Incomplete'),
+            self::STATUS_COMPLETE   => Yii::t('app', 'Complete'),
+            self::STATUS_PENDING    => Yii::t('app', 'Pending'),
+            self::STATUS_DUE        => Yii::t('app', 'Due'),
+            self::STATUS_FAILED     => Yii::t('app', 'Failed'),
+            self::STATUS_REFUNDED   => Yii::t('app', 'Refunded'),
+             self::STATUS_TRASHED   => Yii::t('app', 'Moved To Trash'),
+        );
+    }
+
+    protected function beforeSave()
+    {
+        if (!parent::beforeSave()) {
+            return false;
+        }
+        if($this->isNewRecord and Yii::app()->isAppName('backend')){
+			if(empty($this->status) or $this->status==self::STATUS_INCOMPLETE) { $this->status= 'pending'; }
+			$this->created_by = Yii::app()->user->getId();
+		}
+		 
+		
+		if (!empty($this->promo_code_id) && !empty($this->promoCode)) {
+            $this->discount = 0;
+            
+            if ($this->promoCode->type == PricePlanPromoCode::TYPE_FIXED_AMOUNT) {
+                $this->discount += $this->promoCode->discount;
+            } else {
+                $this->discount += (($this->promoCode->discount / 100) * $this->total);
+            }
+            
+             
+        }
+		$this->applyTaxes2();
+        if (empty($this->order_uid)) {
+            $this->order_uid = $this->generateUid();
+        }
+
+        return true;
+    }
+
+    protected function afterConstruct()
+    {
+        $this->_initStatus = $this->status;
+        if (empty($this->currency_id)) {
+            $currency = Currency::model()->findDefault();
+            $this->addRelatedRecord('currency', $currency, false);
+            $this->currency_id = $currency->currency_id;
+        }
+        parent::afterConstruct();
+    }
+
+    protected function afterFind()
+    {
+        $this->_initStatus = $this->status;
+        parent::afterFind();
+    }
+
+    protected function afterSave()
+    {
+        $options =Yii::app()->options;
+        if($this->isNewRecord){
+				
+			    $emailTemplate =  CustomerEmailTemplate::model()->findByAttributes(array('template_uid'=>"nz111h3hrv376"));;
+			    $customer = $this->customer;
+			    if($emailTemplate)
+			    {
+				 
+					$subject		= $emailTemplate->subject;
+					$emailTemplate  = $emailTemplate->content;							
+					$url 			=   Yii::app()->apps->getAppUrl('backend', 'index.php/orders/update/id/'.$this->order_id, true);
+					$emailTemplate = str_replace('[URL]','<a href="'.$url.'">'.$url.'</a>' , $emailTemplate);
+					$receipeints = serialize(array($options->get('system.common.admin_email','support@feeta.pk')));
+					//$receipeints = serialize(array('njalilvineeth@gmail.com'));
+					$status = 'S'; 
+					$adminEmail = new Email();			 
+					$adminEmail->subject = $subject ;
+					$adminEmail->message = $emailTemplate;
+					$adminEmail->message = Yii::t('app',$adminEmail->message,array('[INVOICE DETAILS]'=>$this->InvoiceDetails($this,$customer)));
+					$adminEmail->status = $status;
+					$adminEmail->receipeints = $receipeints;
+					$adminEmail->sent_on =   1;
+					$adminEmail->type =   'REGISTER';
+					$adminEmail->sent_on_utc =   new CDbExpression('NOW()');
+					$adminEmail->save(false); 
+					$adminEmail->send;
+				}
+				/*sending to customer*/
+			    $emailTemplate =  CustomerEmailTemplate::model()->findByAttributes(array('template_uid'=>"jp701wpcwm989"));;
+			    if($emailTemplate)
+			    {
+				 
+				
+					$subject		= $emailTemplate->subject;
+					$emailTemplate  = $emailTemplate->content;							
+					$receipeints = serialize(array($customer->email));
+					//$receipeints = serialize(array('vineethnjalil@gmail.com'));
+					$status = 'S'; 
+					$adminEmail = new Email();	 
+					$adminEmail->subject = $subject ;
+					$adminEmail->message = Yii::t('app',$emailTemplate,array('[CUSTOMER]'=>$customer->first_name));
+					$adminEmail->message = Yii::t('app',$adminEmail->message,array('[INVOICE DETAILS]'=>$this->InvoiceDetails($this,$customer)));
+					$adminEmail->status = $status;
+					$adminEmail->receipeints = $receipeints;
+					$adminEmail->sent_on =   1;
+					$adminEmail->type =   'REGISTER';
+					$adminEmail->sent_on_utc =   new CDbExpression('NOW()');
+					$adminEmail->save(false); 
+					$adminEmail->send;
+				}
+		}
+        
+        if (in_array($this->_initStatus, array(self::STATUS_INCOMPLETE, self::STATUS_PENDING, self::STATUS_DUE)) && $this->status == self::STATUS_COMPLETE) {
+            
+            /*customer*/
+             $emailTemplate =  CustomerEmailTemplate::model()->findByAttributes(array('template_uid'=>"fa259py9mf141"));;
+			    if($emailTemplate)
+			    {
+			    	$customer = $this->customer;
+				    $admin_email =  $options->get('system.common.admin_email','support@feeta.pk');
+					$subject		= Yii::t('app',$emailTemplate->subject,array('[INVOICE NUMBER]'=>$this->order_uid));
+					$emailTemplate  = $emailTemplate->content;							
+					$receipeints = serialize(array($customer->email));
+					//$receipeints = serialize(array('vineethnjalil@gmail.com'));
+					$status = 'S'; 
+					$adminEmail = new Email();	 
+					$adminEmail->subject = $subject ;
+					$adminEmail->message = Yii::t('app',$emailTemplate,array('[CUSTOMER]'=>$customer->first_name));
+					$adminEmail->message = Yii::t('app',$adminEmail->message,array('[AMOUNT]'=>$this->formattedTotalPaid ,'[INVOICE_NUMBER]'=>$this->order_uid,'[ADMIN_EMAIL]'=>$admin_email ));
+					$adminEmail->status = $status;
+					$adminEmail->receipeints = $receipeints;
+					$adminEmail->sent_on =   1;
+					$adminEmail->type =   'REGISTER';
+					$adminEmail->sent_on_utc =   new CDbExpression('NOW()');
+					$adminEmail->save(false); 
+					$adminEmail->send;
+				}
+				/*admin*/
+				$emailTemplate =  CustomerEmailTemplate::model()->findByAttributes(array('template_uid'=>"pl117hej79c7d"));;
+			    if($emailTemplate)
+			    {
+			    	$customer = $this->customer;
+				    $admin_email =  $options->get('system.common.admin_email','support@feeta.pk');
+					$subject		= Yii::t('app',$emailTemplate->subject,array('[INVOICE NUMBER]'=>$this->order_uid));
+					$emailTemplate  = $emailTemplate->content;							
+					$receipeints = serialize(array($admin_email));
+					//$receipeints = serialize(array('njalilvineeth@gmail.com'));
+					$status = 'S'; 
+					$adminEmail = new Email();	 
+					$adminEmail->subject = $subject ;
+					$adminEmail->message = Yii::t('app',$emailTemplate,array('[CUSTOMER]'=>$customer->first_name));
+					$adminEmail->message = Yii::t('app',$adminEmail->message,array('[AMOUNT]'=>$this->formattedTotalPaid ,'[INVOICE_NUMBER]'=>$this->order_uid,'[ADMIN_EMAIL]'=>$admin_email ));
+					$adminEmail->status = $status;
+					$adminEmail->receipeints = $receipeints;
+					$adminEmail->sent_on =   1;
+					$adminEmail->type =   'REGISTER';
+					$adminEmail->sent_on_utc =   new CDbExpression('NOW()');
+					$adminEmail->save(false); 
+					$adminEmail->send;
+				}
+            //$this->customer->group_id = $this->plan->group_id;
+            //$this->customer->save(false);
+            //$this->customer->createQuotaMark();
+        }
+        $this->calculateTotalBalance($this->customer_id);
+        parent::afterSave();
+    }
+    protected function afterDelete()
+    {
+		 
+        $this->calculateTotalBalance($this->customer_id);
+
+        parent::afterDelete();
+    }
+    
+    public function calculate()
+    {
+        if (empty($this->plan_id)) {
+         //   return $this;
+        }
+        echo "WERWER";exit; 
+        $this->subtotal = $this->total;
+        $this->total    = $this->total ;
+        
+        if (!empty($this->promo_code_id) && !empty($this->promoCode)) {
+            $this->discount = 0;
+            
+            if ($this->promoCode->type == PricePlanPromoCode::TYPE_FIXED_AMOUNT) {
+                $this->discount += $this->promoCode->discount;
+            } else {
+                $this->discount += (($this->promoCode->discount / 100) * $this->total);
+            }
+            
+            $this->total -= $this->discount;
+            if ($this->total < 0) {
+                $this->total = 0;
+            }
+        }
+        
+        $this->applyTaxes();
+ 
+        return $this;
+    }
+    
+    public function getFormattedSubtotal()
+    {
+        return Yii::app()->numberFormatter->formatCurrency($this->subtotal, 'Rs ');
+    }
+    
+    public function getFormattedTaxPercent()
+    {
+        return Yii::app()->format->formatNumber($this->tax_percent) . '%';
+    }
+    
+      public function getFormattedTaxValue()
+    {
+        return Yii::app()->numberFormatter->formatCurrency($this->tax_value,'Rs ');
+    }
+    
+    public function getFormattedDiscount()
+    {
+        return Yii::app()->numberFormatter->formatCurrency($this->discount,'Rs ');
+    }
+    
+    public function getFormattedTotal()
+    {
+        return Yii::app()->numberFormatter->formatCurrency($this->total, 'Rs ');
+    }
+ 
+        public function getFormattedTotalPaid()
+    {
+		if(!empty($this->discount)){
+         return Yii::app()->numberFormatter->formatCurrency($this->total - $this->discount, 'Rs ');
+		}else{
+		 return Yii::app()->numberFormatter->formatCurrency($this->total, 'Rs ');
+		}
+    }
+     public function getFormattedTotalTopup()
+    {
+		if(!empty($this->tax)){
+         return Yii::app()->numberFormatter->formatCurrency($this->total - $this->tax_value, 'Rs ');
+		}else{
+		 return Yii::app()->numberFormatter->formatCurrency($this->total, 'Rs ');
+		}
+    }
+    public function findByUid($order_uid)
+    {
+        return $this->findByAttributes(array(
+            'order_uid' => $order_uid,
+        ));    
+    }
+    
+    public function generateUid()
+    {
+        //$unique = date('ydm-His');
+        $unique  =  date('ydm-His').'-'.rand(10,100);
+        $exists = $this->findByUid($unique);
+        
+        if (!empty($exists)) {
+            return $this->generateUid();
+        }
+        
+        return $unique;
+    }
+
+    public function getUid()
+    {
+        return $this->order_uid;
+    }
+    
+    public function applyTaxes()
+    {
+        if (empty($this->customer_id)) {
+            return $this;
+        }
+        
+        if ($this->tax_id !== null && $this->tax_percent > 0 && $this->tax_value > 0) {
+            return $this;
+        }
+        
+        if (empty($this->tax_id) || empty($this->tax)) {
+            $tax = $zoneTax = $countryTax = null;
+            $globalTax = Tax::model()->findByAttributes(array('is_global' => Tax::TEXT_YES));
+            if (!empty($this->customer) && !empty($this->customer->company)) {
+                $company  = $this->customer->company;
+                $zoneTax  = Tax::model()->findByAttributes(array('zone_id' => (int)$company->zone_id));
+                if (empty($zoneTax)) {
+                    $countryTax = Tax::model()->findByAttributes(array('country_id' => (int)$company->country_id));
+                }
+            }
+            
+            if (!empty($zoneTax)) {
+                $tax = $zoneTax;
+            } elseif (!empty($countryTax)) {
+                $tax = $countryTax;
+            } elseif (!empty($globalTax)) {
+                $tax = $globalTax;
+            } else {
+                return $this;
+            }
+            
+            if ($tax->percent < 0.1) {
+                return $this;
+            }
+            
+            $this->tax_id = $tax->tax_id;
+            $this->addRelatedRecord('tax', $tax, false);    
+        }
+        
+        
+        $this->tax_percent = $this->tax->percent;
+        $this->tax_value   = ($this->tax->percent / 100) * $this->total;
+        $this->total += $this->tax_value;
+        
+        return $this;
+    }
+    
+    public function getHtmlPaymentFrom($headingTag = 'strong', $separator = '<br />')
+    {
+        if (empty($this->customer_id)) {
+            return;
+        }
+        
+        $customer    = $this->customer;
+        $paymentFrom = array();
+        
+        if ($headingTag !== null && $headingTag != "\n") {
+            $paymentFrom[] = CHtml::tag($headingTag, array(), $customer->getFullName());
+        } else {
+            $paymentFrom[] = $customer->getFullName();
+        }
+        
+        
+        $paymentFrom[] = $customer->email;
+        
+        return implode($separator, $paymentFrom);
+    }
+    
+    public function getHtmlPaymentTo($headingTag = 'strong', $separator = '<br />')
+    {
+        if (empty($this->customer_id)) {
+            return;
+        }
+        
+        $customer  = $this->customer;
+        $paymentTo = array();
+        
+        if ($headingTag !== null && $headingTag != "\n") {
+            $paymentTo[] = CHtml::tag($headingTag, array(), Yii::app()->options->get('system.common.site_name'));
+        } else {
+            $paymentTo[] = Yii::app()->options->get('system.common.site_name');
+        }
+        
+        if ($separator !== null && $separator != "\n") {
+            $paymentTo[] = nl2br(Yii::app()->options->get('system.common.company_info'));
+        } else {
+            $paymentTo[] = Yii::app()->options->get('system.common.company_info');
+        }
+        
+        return implode($separator, $paymentTo);
+    }
+    
+    public function getIsComplete()
+    {
+        return $this->status == self::STATUS_COMPLETE;
+    }
+     
+	public function InvoiceDetails($order,$customer){
+		$html  = '<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0"  align="center">
+   <tbody>
+      <tr>
+         <td>
+            <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+               <tbody>
+              
+                  <tr>
+                     <td width="100%" align="center">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" align="center">
+                           <tbody>
+                          
+                              <tr>
+                                 <td style="color:#0e1724;text-align:left;font-size:16px;line-height:28px" width="100%" align="center">
+                                    <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                                       <tbody>
+                                         
+                                          <tr>
+                                             <td colspan="3" style="padding:0;margin:0;font-size:1;line-height:0">
+                                                <h2 style="color:#404040;font-size:22px;font-weight:bold;line-height:26px;padding:0px 30px;margin:0">
+                                                   Invoice Details                                
+                                                </h2>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </td>
+                              </tr>
+                                  
+                               
+                                                    
+                                  <tr>
+									 
+                                 <td style="color:#0e1724;text-align:left;font-size:16px;line-height:28px" width="100%" align="center">
+                                    <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                                       <tbody>
+                                          <tr>
+											    <td width="30"> </td>
+                                       
+                                             <td   style="padding:0;margin:0;width:calc(100% - 30px;) ">
+                                                 <table  width="100%" cellspacing="0"   style="font-size:13px;line-height:22px;  "cellpadding="0" border="0" align="center">
+                                                 	 <tr><td>Invoice No#</td><td>'.$order->order_uid.'</td></tr>
+													 <tr><td>Invoice Date</td><td>'. date('d-m-Y',strtotime($order->dateAdded)).'</td></tr>
+                                                
+													 <tr><td>COMPANY NAME:</td><td>'. $customer->company_name.'</td></tr>
+													 <tr><td>PERSON NAME:</td><td>'. $customer->first_name.' ['. $customer->email.']</td></tr>
+													 <tr><td>PHONE:</td><td>'.$customer->full_number.'</td></tr>';
+													 if(!empty($order->created_by)){ 
+														 
+													 $sates_person = $order->sales_person;	 
+													$html .= '<tr><td>SALES PERSON:</td><td>'.$sates_person->first_name.' '.$sates_person->last_name.'('.$sates_person->email.')</td></tr>';
+													  }   
+                                          
+                                                 $html .= '<tr> <td   height="20"></td> </tr></table>
+                                             </td>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td width="100%" align="center">
+                                    <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                                       <tbody>
+                                          <tr bgcolor="#ffffff">
+                                             <td width="30"></td>
+                                             <td>
+                                                <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                                                   <tbody>
+                                               
+                                                    
+                                                     
+                                                      <tr>
+                                                         <td colspan="3">
+                                                      
+                                                            <table  style="font-size:13px;line-height:22px;  " width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" align="center">
+                                                               <tbody>
+                                                                  <tr>
+                                                                     <td style="padding:16px 0" width="calc(100% - 150px)" valign="top" height="86" align="left">
+                                                                       <table class="table"  style="font-size:13px;line-height:22px;  text-align: left;width: 100%;  ">
+                  
+                    <tbody>
+						 <tr>
+                        <th>'.Yii::t('orders', 'Sub Total').':</th>
+                        <td>'. $order->formattedTotal.'</td>
+                    </tr>';
+                    
+                    if(!empty($order->tax_id)) { 
+                        	$html .= '<tr>
+                        <th>'.Yii::t('orders', $order->tax->name).':</th>
+                        <td>'.$order->formattedTaxValue.'</td>
+                    </tr> '; 
+                      }  
+                    	$html .= '<tr>
+                        <th>'.Yii::t('orders', 'Discount').':</th>
+                        <td>'.$order->formattedDiscount.'</td>
+                    </tr>
+                   
+                    <tr>
+                        <th>'.Yii::t('orders', 'Paid Amount').':</th>
+                        <td>'.$order->formattedTotalPaid.'</td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <th>'.Yii::t('orders', 'Topup Amount').':</th>
+                        <td>'. $order->formattedTotalTopup.'</td>
+                    </tr>
+                    <tr>
+                        <th>'.Yii::t('orders', 'Status').':</th>
+                        <td>'.$order->statusName.'</td>
+                    </tr>
+                </tbody></table>
+                                                                     </td>
+                                                                     <td width="20"></td>
+                                                                  </tr>
+                                                                  <tr>
+                                                                     <td     bgcolor="#fff"><a href="'.ASKAAN_PATH_BASE.'site/pdf/order_uid/'.base64_encode($order->order_id).'" style="color:#fff;background:#34A853;padding:7px 10px; text-decoration: none;">Download Invoice</a></td>
+                                                                  </tr>
+                                                                
+                                                                     
+                                                               </tbody>
+                                                            </table>
+                                                         </td>
+                                                      </tr>
+                                                   </tbody>
+                                                </table>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </td>
+      </tr>
+   </tbody>
+</table>';
+return $html ; 
+	}
+public function applyTaxes2()
+    {
+        if (empty($this->customer_id)) {
+            return $this;
+        }
+        
+        /*
+        if ($this->tax_id !== null && $this->tax_percent > 0 && $this->tax_value > 0) {
+            return $this;
+        }
+        */ 
+        if (empty($this->tax_id) || empty($this->tax)) {
+            $tax = $zoneTax = $countryTax = null;
+            $globalTax = Tax::model()->findByAttributes(array('is_global' => Tax::TEXT_YES));
+            if (!empty($zoneTax)) {
+                $tax = $zoneTax;
+            } elseif (!empty($countryTax)) {
+                $tax = $countryTax;
+            } elseif (!empty($globalTax)) {
+                $tax = $globalTax;
+            } else {
+                return $this;
+            }
+            
+            if ($tax->percent < 0.1) {
+                return $this;
+            }
+            
+            $this->tax_id = $tax->tax_id;
+            $this->addRelatedRecord('tax', $tax, false);    
+        }
+        
+        
+        $this->tax_percent = $this->tax->percent;
+        $this->tax_value   = ($this->tax->percent / 100) * ($this->total-$this->discount);
+        //$this->total += $this->tax_value;
+        return $this;
+    }
+}

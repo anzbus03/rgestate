@@ -1,0 +1,213 @@
+<form id="frmId" method="get" class="blackheader2" style="z-index: 112;position: relative;" autocomplete="off" onSubmit="return false;" name="rwe">
+
+  <style>#filterBarContainer span.miniHidden{position:relative;}</style>
+   <?php /*
+  <input type="hidden" name="country"  id="country" value="<?php echo @$formData['country'] ;?>">
+  * */
+  ?>
+  <input type="hidden" name="city"  id="city" value="<?php echo $city;?>">
+  <input type="hidden" name="community"  id="community_id" value="<?php echo @$community;?>">
+  <input type="hidden" id="bed_val" value="<?php echo @$filterModel->bedrooms ;?>" name="bedrooms" />
+  <input type="hidden" id="section_val" value="<?php echo @$filterModel->section_id ;?>" name="sec" />
+  <input type="hidden" id="bath_val" value="<?php echo @$filterModel->bathrooms ;?>" name="bathrooms"   />
+  <input type="hidden" id="sort_val" value="<?php echo @$filterModel->sort ;?>" name="sort" />
+  <input type="hidden" id="recommended_val" value="<?php echo @$filterModel->recmnded ;?>" name="recommended" />
+  <input type="hidden" id="poplar_area_val" value="<?php echo @$filterModel->poplar_area ;?>" name="poplar_area" />
+  <input type="hidden" id="keyword_val" value="<?php echo @$formData['keywords'] ;?>" name="keywords" />
+  <input type="hidden" id="city_ids_val" value="<?php echo @$formData['city_ids'] ;?>" name="city_ids" />
+  <input type="hidden" id="category_ids_val" value="<?php echo @$formData['category_ids'] ;?>" name="category_ids" />
+  <input type="hidden" id="locality" value="<?php echo @$formData['locality'] ;?>" name="locality" />
+  <input type="hidden" id="word" value="<?php echo @$formData['word'] ;?>" name="word" />
+  <input type="hidden" id="term" value="<?php echo @$formData['term'] ;?>" name="term" />
+  <input type="hidden" id="view" value="<?php echo @$formData['view'] ;?>" name="view" />
+   <div  class="top_search-mob" >
+	 <div style="display:flex">
+  <div class="flx1 agentbr">
+	 <?php
+	 $cityDats = CHtml::listData(States::model()->AllListingStatesOfCountry(COUNTRY_ID),'slug' , 'state_name'); 
+	 switch($this->sec_id){
+		 case SALE_SLUG :
+		 $placeholder ='Search   for sale.';
+		 break; 
+		 case RENT_SLUG :
+		 $placeholder ='Search   for rent.';
+		 break; 
+		 case BUSINESS_SLUG :
+		 $placeholder ='Search business   for sale.';
+		 break; 
+		 default:
+		 $placeholder ='Search properties by keyword.';
+		 break;
+	 }
+	 ?>
+	 <div class="mldifil">
+		 <label for="srchkeywrod" class="dispinl"><i class="fa fa-search"></i></label><input type="text" id="srchkeywrod" class="serchmob-input" placeholder="<?php echo $placeholder;?>" value="<?php echo @$formData['mkeyword'] ;?>" onclick="showfrm(this)" /></div>
+  </div>
+  
+  <div class="flx1 flrbr" style="padding-left:15px; ">
+      <?php 
+	  $has_filter_open = false; $total_s_items = 0; 
+      if(isset($formData['state']) and  !empty($formData['state'])){ $has_filter = true;$total_s_items++; } 
+      if(isset($formData['word']) and  !empty($formData['word'])){ $has_filter = true;$total_s_items++; } 
+      if(!empty($filterModel->type_of)){ $has_filter = true;$total_s_items++; } 
+      if(isset($formData['minPrice']) and  !empty($formData['minPrice'])){ $has_filter = true;$total_s_items++; } 
+      if($title_more =='More Search++'){ $has_filter = true; $total_s_items++;} 
+      ?> 
+	 <button type="button" onclick="showfrm(this)"  class="btn btn-secondary btn-block rnded font-weight-bold opener  <?php echo !empty($has_filter) ? 'opend_filter' :'' ;?>">Filter<i class='fa  fa-check'></i></button>
+	 <button type="button" onclick="closerfrm(this)"  class="btn btn-black btn-block rnded font-weight-bold closer">Cancel</button>
+	 </div>
+ </div>
+ </div>
+ 
+   <div id="filterBarContainer" style="min-height: 60px; order: 2;">
+               <div class="slider-form advamced ">
+            <div class="">
+               
+				     
+                  <div class="tab-content hom-content" data-select2-id="14" style="margin:0px; ">
+                     <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab" data-select2-id="home">
+                        <div class="row no-gutters  normal-listing" data-select2-id="13">
+                     
+                            <div class="col-sm-2 only-show-when-scroll" style="position:relative;" >
+                                <a href="<?php echo Yii::app()->createUrl('site/index');?>"  onclick="easyload(this,event,'mainContainerClass')">
+				<img src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/logo.svg');?>" style="width:100%;margin-top:-15px;max-width: 166px;;" class="black_logo" alt="<?php echo $conntroller->project_name;?>">
+			</a>
+                          
+                           </div>
+                            <div class="col-sm-2 city-selector" style="position:relative;" data-select2-id="12">
+                                 <?php 
+                                      
+                                  echo  CHtml::dropDownList('state',$formData['state'],$cityDats,array('class'=>'form-control select2 no-radius' ,'data-url'=>Yii::App()->createUrl('site/select_location2') ,'empty'=>'Select City','onchange'=>'search_byAjax()','style'=>'width:100%;max-height:43.9px;padding:0px 10px;')); ?> 
+                               
+                          
+                           </div>
+                              <div class="col-sm-3 city-selector " id="cty-s" data-select2-id="12">
+								  
+							  <div tabindex="-1" class="sc-chAAoq lgJTPn"  >
+   <div class="sc-cBdUnI jNhpJt">
+      <div class="sc-18n4g8v-0 gAhmYY sc-hdPSEv gaQgjK" style="width:100% !important;">
+         <i class="rbbb40-1 MxLSp pointer" color="var(--logo-color)" size="20">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#F57082" width="20" height="20" viewBox="0 0 20 20" aria-labelledby="icon-svg-title- icon-svg-desc-" role="img" class="rbbb40-0 kIxlGM">
+               <linearGradient id="ckfdzuddo0096256u6dgh9rpm" x1="0" x2="100%" y1="0" y2="0">
+                  <stop offset="0" stop-color="#F57082"></stop>
+                  <stop offset="100%" stop-color="#F57082"></stop>
+               </linearGradient>
+               <desc id="icon-svg-desc-">It is an icon with title </desc>
+               <path d="M10.2 0.42c-4.5 0-8.2 3.7-8.2 8.3 0 6.2 7.5 11.3 7.8 11.6 0.2 0.1 0.3 0.1 0.4 0.1s0.3 0 0.4-0.1c0.3-0.2 7.8-5.3 7.8-11.6 0.1-4.6-3.6-8.3-8.2-8.3zM10.2 11.42c-1.7 0-3-1.3-3-3s1.3-3 3-3c1.7 0 3 1.3 3 3s-1.3 3-3 3z" fill="url(#ckfdzuddo0096256u6dgh9rpm)"></path>
+            </svg>
+         </i>
+         <div class="typeahead__container" id="form-user_v2" style="width:100%;">
+        <div class="typeahead__field">
+            <div class="typeahead__query">
+				<?php
+				if(isset($formData['locality'])){ $value = $formData['locality']; }else if(isset($formData['word'])){  $value = $formData['word']; }else {  $value='';  } ?> 
+                <input class="js-typeahead-user_v2" id="js-typeahead-user_v2"  value="<?php echo  $value;?>"  placeholder="Enter Location/Keywords" autocomplete="off">
+            </div>
+        </div>
+    </div>
+    
+          <i class="rbbb40-1 MxLSp sc-fHSTwm hyorsL rightDown" color="#4F4F4F" size="12">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#4F4F4F" width="12" height="12" viewBox="0 0 20 20" aria-labelledby="icon-svg-title- icon-svg-desc-" role="img" class="rbbb40-0 fQZfgq">
+               <linearGradient id="ckfdzuddo0097256u5tby9y95" x1="0" x2="100%" y1="0" y2="0">
+                  <stop offset="0" stop-color="#4F4F4F"></stop>
+                  <stop offset="100%" stop-color="#4F4F4F"></stop>
+               </linearGradient>
+               <desc id="icon-svg-desc-">It is an icon with title </desc>
+               <path d="M20 5.42l-10 10-10-10h20z" fill="url(#ckfdzuddo0097256u5tby9y95)"></path>
+            </svg>
+         </i>
+        </div>
+        
+    </div>
+</div>
+  
+                     
+								  
+                           </div>
+                         
+                                
+                           <div class="col-sm-5">  
+							   <div style="width:150px;float:left;margin-right:10px;">
+                               			<?php 	$ids =  $filterModel->section_id; 
+									$categories = Category::model()->ListDataForJSON_ID_BySEctionNewSlugNt($ids );
+									$time = rand(0,1000); ?>
+									<?php echo  CHtml::dropDownList('type_of',$filterModel->type_of,$categories ,array('id'=>'','class'=>'form-control   select2 no-radius  ','empty'=>'Property Type' ,'onchange'=>'search_byAjax()' )); ?> 
+                         
+                                  </div>
+                               
+                           
+                               <div class="  price_picker miniHidden smalh">  
+                                <div class="input-group <?php echo (isset($formData['minPrice']) and  !empty($formData['minPrice'])) ? 'itmSelected' : '';?> <?php echo (isset($formData['maxPrice']) and  !empty($formData['maxPrice'])) ? 'itmSelected' : '';?>" data-select2-id="72">
+                                                                    
+                                                                    <?php $this->renderPartial('_price_picker',compact('formData'));?>
+                                                             
+								</div>
+							</div>
+                           
+                           
+                         
+                           <?php $title_more = $filterModel->MoreTitle ;?>
+                           <div class="  more-selector miniHidden smalh <?php echo $title_more =='More Search++' ? 'itmSelected' : '';?>">  
+                              <button id="moreToggle" class="btn btnDefault prm" style=" border-radius: 0px;background-color:transparent;border: 0px;"  onclick="openDivThislatest(this)" data-open="allForSaleToggleDiv">
+                                                                        <!-- react-text: 513 --><span class="ttlec"><?php echo $title_more  ;?></span><!-- /react-text --><i class="mls iconDownOpen"></i>
+                                                                    </button>
+                                                                     <?php $this->renderPartial('_more_filter');?>
+                           </div>
+                           </div>
+                           
+                           <div class="col-sm-2 open-selector">  
+                              <button type="button"  onclick="openPropertySearchMore(this)" class="btn btn-default btn-block no-radius font-weight-bold">More<img style="width:20px;" src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDQ1OSA0NTkiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQ1OSA0NTk7IiB4bWw6c3BhY2U9InByZXNlcnZlIj48Zz48Zz4KCTxnIGlkPSJ1bmZvbGQtbW9yZSI+CgkJPHBhdGggZD0iTTIyOS41LDcxLjRsODEuNiw4MS42bDM1LjctMzUuN0wyMjkuNSwwTDExMi4yLDExNy4zbDM1LjcsMzUuN0wyMjkuNSw3MS40eiBNMjI5LjUsMzg3LjZMMTQ3LjksMzA2bC0zNS43LDM1LjdMMjI5LjUsNDU5ICAgIGwxMTcuMy0xMTcuM0wzMTEuMSwzMDZMMjI5LjUsMzg3LjZ6IiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBjbGFzcz0iYWN0aXZlLXBhdGgiIGRhdGEtb2xkX2NvbG9yPSIjMDAwMDAwIiBzdHlsZT0iZmlsbDojQzNDOEQwIj48L3BhdGg+Cgk8L2c+CjwvZz48L2c+IDwvc3ZnPg==" /></button>
+                           </div>
+                          
+                        </div>
+                     </div>
+                  </div>
+              </div>
+         </div>
+      
+        
+            
+            </div>
+</form>
+ <style>
+	.closer { display:none}
+	.flx1 { flex:1 ; } .btn-default { background: #fff; } .btn-black { color: #fff;background: #000; }
+	.form .fieldGroupInline .fieldItem, .form .fieldGroupInline label{ display:inline; }
+	#homeTypeToggleDiv .pbs input[type="checkbox"] { vertical-align: middle !important;}
+</style>
+<script>
+var load_city_url = '<?php echo Yii::App()->createUrl('site/load_city');?>';
+var load_city_ajax = '<?php echo Yii::App()->createUrl('listing/autocompleteNew');?>';
+var load_location_ajax = '<?php echo Yii::App()->createUrl('listing/autocompleteLocation');?>';
+var load_location_ajax_json = '<?php echo Yii::app()->apps->getBaseUrl('json/pakcities.json',1);?>';
+if(typeof autoComplete2 === "undefined"){
+var autoComplete2 = [];
+}
+$(function(){
+	listJs();
+	loadListJs2(); 
+})
+</script>
+<script>
+	var st_slug  = $('#city_d_a').val() ; var selectted_city  ;
+$(function(){
+      selectted_city = $('#city_d').val() ; 
+	//autocompleteCity();
+    //autocompleteLocationJson()
+  		})
+		
+		 
+
+</script>
+<script>
+		 var FindCities = "<?php echo Yii::app()->createUrl('ajax/FindCities',array('country_id'=>COUNTRY_ID));?>";
+		 
+		 var searchbtn = '<a href="javascript:void(0)" onclick="submitKeyword()" class="apply-button" >Apply Keyword</a>';
+		 
+        $(function(){
+			if($('.js-typeahead-user_v2').length >=1 ){
+				findCities2();
+			}
+		});
+	
+        </script>

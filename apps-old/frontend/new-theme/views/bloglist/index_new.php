@@ -1,0 +1,295 @@
+
+<style>#mainContainerClass{max-width:100%; }
+@media only screen and (max-width: 64rem) {
+  #blogheader nav#main-menu {
+    position: relative;
+     
+    top: unset ;
+   
+}
+}
+@media only screen and (min-width: 48rem) {
+#bloglist li._1w7e1y2:nth-child(6n+1){
+    clear:both
+}
+}
+.box { background:transparent;}#main-content {
+   
+    background: #fff;
+}
+.f-ull-height { height:100%;position:relative;}
+.f-ull-height .blog-img { height:15.625rem; margin-bottom:.9375rem;}
+.f-ull-height .blog-img img {
+    object-fit: cover !important;
+    height: 100%;
+    width: 100%;
+    border-radius: .625rem;
+    background: #eee;
+    min-height: 100%;
+}
+.mb-15 {margin-bottom:1.5625rem; }
+.f-ull-height a { position:absolute;left:0;right:0;top:0;bottom:0;z-index:111;}
+.blog-text{
+    font-weight: 600;
+    font-size: .9375rem;
+}
+#bloglist li.brkr:nth-child(6n+1) {
+	clear: both;
+}#main-content{ padding-top:0rem !important;}
+#blogheader #main-menu {
+  
+    box-shadow: unset; 
+}nav#main-menu ul#menu-main-menu li a {
+    color: #484848;
+    text-transform: none;
+    font-style: normal;
+    font-weight: 400;
+    font-size: .875rem;
+    letter-spacing: .0063rem;
+    padding: .625rem 1.25rem;
+    font-size: 1rem;
+    color: #222;
+    transition: all ease-in-out .1s;
+    margin: 0;
+    border: .0625rem solid #e9ecf1;
+    border-radius: 1.375rem; margin-right:.9375rem; 
+}nav#main-menu ul.j-main-menu {
+   
+    justify-content: flex-start; 
+}nav#main-menu ul#menu-main-menu li a:hover, nav#main-menu ul#menu-main-menu li.active a {
+  
+    background: #fafafa;
+}.banner{
+        margin-left: -0.9375rem;
+    margin-right: -0.9375rem;
+    width: calc(100% + 1.875rem);position: relative;
+    height: 20.56vw;
+    background-color:rgba(0,0,0,0.8);background-size:cover;background-repeat:no-repeat;    background-position: center;
+}#mainContainerClass, #pageContainer {
+    max-width: 100%;
+    width: 100%;
+}
+.abs-banner::before{content:'';left:0rem;right:0rem;top:0rem;bottom:0rem;position:absolute;background:rgba(0,0,0,0.2); }
+.bloghead {
+    align-items:center;
+    justify-content: center;
+    height: 100%;
+    flex-direction: column;
+    font-weight: 300;display:flex;z-index: 1;
+    position: relative;
+}.bloghead {
+    
+}.bloghead h1, .bloghead p {
+    background-color: transparent !important;
+    color: #fff !important; 
+}.bloghead   h1 {
+    margin-bottom: 1.1875rem;
+}.bloghead p {
+    font-weight: 300;
+    font-size: 1rem;
+}
+.abs-banner{
+   
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #fff;
+    z-index: 1;
+    content: '';
+ 
+}.bloghead p {
+    font-weight: 300;
+    font-size: 1.125rem;
+    font-weight: 400;
+    max-width: 40.625rem;
+    text-align: center;
+    line-height: 1.3;
+}
+.box {
+   
+    padding-left: 0rem;
+    padding-right: 0rem;
+    margin-top: .625rem;
+}
+.main {
+    background: transparent;
+    display: flex;
+    padding: .625rem 0rem;
+}
+@media only screen and (min-width: 64rem) {
+  li.brkr:nth-child(3n+1){
+    clear:left
+}
+}
+</style>
+   <style>
+        a.current.pvl.phm{background:var(--logo-color);color:#fff;border:.0625rem solid var(--logo-color)}.actions.li-css-n{width:100%;clear:both;margin:1.25rem 0;text-align:center}#listing .pagination .actions.li-css-n li{display:inline-block;width:auto;margin-right:.625rem;margin-bottom:.625rem;min-width:2.625rem}#listing .pagination .actions.li-css-n a{width:100%;height:100%;margin:0!important}#listing .pagination .actions.li-css-n a{font-size:.875rem;line-height:.875rem}#listing .pagination .actions.li-css-n a.current{background:var(--logo-color);color:#fff}#listing .pagination .actions.li-css-n a{border-radius:.3125rem!important;border:.0625rem solid #eee;padding:.625rem;display:inline-block;margin-bottom:.9375rem!important}#listing .pagination .actions.li-css-n a:hover:not(:disabled){background-color:#cdebd5;color:var(--logo-color)}#listing .actions.li-css-n span.spl-inrt{margin-right:.125rem;margin-left:.125rem}#listing .actions.li-css-n span{display:inline-block}.pagination a,.pagination span{align-items:center;display:inline-flex}
+        @media only screen and (max-width:37.5rem){html #listing #d_column.container.list .smartad_footer{bottom:.5rem!important;width:60%!important;position:unset!important}html #listing #d_column.container.list .company_image_li{right:0;bottom:.3125rem;left:unset!important}html #listing .footerbtns.smallnomarl .mbtn-div a.button_call-property{background:var(--secondary-color)!important;color:#fff!important}html #listing .footerbtns.smallnomarl .mbtn-div a.tooltipm{background:var(--secondary-color)!important;color:#fff!important}html #listing .footerbtns.smallnomarl .mbtn-div a.tooltipm .text-not-mob,html .footerbtns.smallnomarl .mbtn-div a.button_call-property .text-not-mob{font-size:.8125rem;display:initial}html #listing .list .footerbtns.smallnomarl .mbtn-div a.tooltipm i,html .list .footerbtns.smallnomarl .mbtn-div a.button_call-property i,html .list .footerbtns.smallnomarl .mbtn-div a.fshare-whatsap i{color:#fff!important}html #listing .list .footerbtns.smallnomarl .mbtn-div a{padding:.25rem .375rem!important}html #listing .list .footerbtns.smallnomarl .mbtn-div a.favbtn{position:absolute;right:0;top:-4.6875rem;z-index:111111111}html #listing .list .footerbtns.smallnomarl .mbtn-div a.fshare-whatsap{display:initial!important;color:#fff;background:#29d247!important;color:#fff!important;display:block!important}html #listing .list .footerbtns.smallnomarl .mbtn-div a.fshare-whatsap,html .footerbtns.smallnomarl .mbtn-div a.button_call-property,html .footerbtns.smallnomarl .mbtn-div a.tooltipm{min-width:25%!important}html #listing #d_column.container.grid .smartad_footer{bottom:.5rem!important;width:60%!important;position:unset!important}html #listing #d_column.container.grid .company_image_li{right:.9375rem;position:absolute;bottom:.3125rem;left:unset!important}html #listing .footerbtns.smallnomarl .mbtn-div a.button_call-property{background:var(--secondary-color)!important;color:#fff!important}html #listing .footerbtns.smallnomarl .mbtn-div a.tooltipm{background:var(--secondary-color)!important;color:#fff!important}html #listing .footerbtns.smallnomarl .mbtn-div a.tooltipm .text-not-mob,html .footerbtns.smallnomarl .mbtn-div a.button_call-property .text-not-mob{font-size:.8125rem;display:initial}html #listing .grid .footerbtns.smallnomarl .mbtn-div a.tooltipm i,html .grid .footerbtns.smallnomarl .mbtn-div a.button_call-property i,html .grid .footerbtns.smallnomarl .mbtn-div a.fshare-whatsap i{color:#fff!important}html #listing .grid .footerbtns.smallnomarl .mbtn-div a{padding:.5rem .375rem!important}html #listing .grid .footerbtns.smallnomarl .mbtn-div a.favbtn{position:absolute;right:0;top:-5.25rem;z-index:111111111}html #listing .grid .footerbtns.smallnomarl .mbtn-div a.fshare-whatsap{display:initial!important;color:#fff;background:#29d247!important;color:#fff!important;display:block!important}html #listing .grid .footerbtns.smallnomarl .mbtn-div a.fshare-whatsap,html .footerbtns.smallnomarl .mbtn-div a.button_call-property,html .footerbtns.smallnomarl .mbtn-div a.tooltipm{min-width:31.333%!important}html #listing #d_column.container.grid .smartad_footer{bottom:.5rem!important;width:60%!important;position:unset!important;left:unset!important;right:unset!important;top:unset!important;bottom:unset!important;min-width:100%;padding:.625rem;background:#fafafa;display:flex;align-items:center;justify-content:center}html[dir=rtl] #listing .grid .footerbtns.smallnomarl .mbtn-div a.favbtn{left:0;right:unset}html[dir=rtl] #listing #d_column.container.grid .company_image_li{right:unset;left:.9375rem!important}html[dir=rtl] #listing .list .footerbtns.smallnomarl .mbtn-div a.favbtn{left:0;right:unset}html[dir=rtl] #listing #d_column.container.list .company_image_li{right:unset;left:0!important}}
+        #listing .pagination .actions.li-css-n a {  margin-bottom: 0rem!important; }
+</style>
+<section class="panel panel-bg banner" style="background-image:url(<?php echo $this->app->apps->getBaseUrl('assets/img/dubai.jpg');?>);">
+    <div class="abs-banner">
+        
+          
+            <div class="bloghead container">
+           
+               <h1 class="mt-1"><?php echo $this->project_name;?> <?php echo $this->tag->getTag('blog','Blog');?></h1>
+                 <p>Find the latest real estate news and market trend insights from around UAE, as well as access the latest updates and media releases from <?php echo $this->project_name;?>.</p>
+ 
+                  
+                 
+             
+            </div>
+            
+        
+    </div>
+    
+    
+    
+</section>
+
+<section id="main-content" class="clearfix">
+	<div class="container" id="d_column">
+	 
+            <div id="blogheader">
+	<nav id="main-menu" class="default" style="position:relative;top: .375rem;">
+		<ul id="menu-main-menu" class="main j-main-menu sf-js-enabled sticky1">
+		    <li   class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4252 <?php echo $slug=='blog' ? 'active':'';?>"><a href="<?php echo Yii::app()->createUrl('bloglist/index');?>"><?php echo $this->tag->getTag('blog','Blog')  ;?> </a>
+			</li> 
+			<?php
+			foreach($category as $k=>$v){ ?> 
+			<li   class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4252 <?php echo $slug==$v->slug ? 'active':'';?>"><a href="<?php echo Yii::app()->createUrl('bloglist/index',array('category'=>$v->slug));?>"><?php echo ucfirst($v->name)  ;?> </a>
+			</li> 
+			<?php } ?> 
+		</ul>
+	</nav>
+</div>
+		<div class="box">
+		 
+				<?
+				if(!empty($ads)){
+				    echo '<ul class="  row"    >';
+				$this->renderPartial('_blog_li',compact('ads'  )); 
+				
+				echo '	<div id="suggest_friends_last_id"></div>';
+				  echo '</ul>';
+					if(sizeOf($ads) >= $limit){
+					//	echo '<p class="text-center loadingDiv"><a href="javascript:void(0)" onclick="checkScroll();" class="btn   btn-primary  btn-shadow btn-rounded btn-icon-right add_top_30">Load More</a></p>';
+					}
+				}
+				else{
+					echo $this->renderPartial('empty_results');
+				}
+				?>
+		
+		
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</section>
+ 
+ 	  <div class=" " id="listing">
+              <div class="" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                  	<nav class="navigation pagination d-flex justify-content-end margin-top-0 margin-bottom-0" role="navigation">
+							<ul class="actions li-css-n m-0 margin-top-0 margin-bottom-0">
+                            <?php
+                            $this->widget('frontend.components.web.widgets.SimplaPagerO', array(
+                            'pages'=>$pages,	 'maxButtonCount'=>3,));  
+                            ?>
+		</ul>
+	
+                 </nav>
+                 <div>
+                <ul class="pagination   <?php echo $pages->pageCount>1 ? 'd-block' : 'hide';?>  " data-pagination-param="page" data-current-page="<?php echo $pages->currentPage+1;?>" data-total-pages="<?php echo $pages->pageCount;?>">
+                <li class="d-block text-center"><?php echo Yii::t('app',$this->tag->getTag('viewing_page_{o}_of_{t}','Viewing Page {o} of {t}'),array('{o}'=>$pages->currentPage+1,'{t}'=>$pages->pageCount));?></strong></li>
+                </ul>
+                <?php
+                if(empty($ads)){
+				echo $this->renderPartial('_no_result_page');
+				}
+				?>
+                 
+                 </div>
+               </div>
+            </div>
+          
+ 
+ 	<style>
+	    .sticky1 {
+  transition: ease .3s;
+   padding-top: .9375rem !important;
+    padding-bottom: .9375rem !important;
+}
+
+.sticky-pin {
+    position: fixed;
+    top: 0;
+    z-index: 11111;
+    background: #fff;
+    width: 100%;
+   
+}@media only screen and (max-width: 48rem) {
+ 
+.sb-btn {
+    position: fixed;
+    bottom: 2.25rem !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    border-radius: 0rem !important;
+    background: #fff !important;
+    z-index: 1;
+    min-width: 100%;
+}
+}
+	</style>
+<script> 
+    function setPagenumber(k){
+    var pageNaumber =  $(k).attr('data-page')
+     $('#page1').val(pageNaumber).change();
+     return false;  
+ }
+$(document).ready(function(){
+
+  var stickyElement = $(".sticky1"),
+      stickyClass = "sticky-pin",
+      stickyPos = stickyElement.offset().top, //Distance from the top of the window.
+      stickyHeight;
+
+  //Create a negative margin to prevent content 'jumps':
+  stickyElement.after('<div class="jumps-prevent"></div>');
+  function jumpsPrevent() {
+    stickyHeight = stickyElement.innerHeight();
+    stickyElement.css({"margin-bottom":"-" + stickyHeight + "px"});
+    stickyElement.next().css({"padding-top": + stickyHeight + "px"}); 
+  };
+  jumpsPrevent(); //Run.
+
+  //Function trigger:
+  $(window).resize(function(){
+    jumpsPrevent();
+  });
+
+  //Sticker function:
+  function stickerFn() {
+    var winTop = $(this).scrollTop();
+    //Check element position:
+    winTop >= stickyPos ?
+      stickyElement.addClass(stickyClass):
+      stickyElementNaNpxoveClass(stickyClass) //Boolean class switcher.
+  };
+  stickerFn(); //Run.
+
+  //Function trigger:
+  $(window).scroll(function(){
+    stickerFn();
+  });
+ const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+ observer.observe();
+});
+</script>
+<div class="container text-center margin-bottom-50">
+		 <button type="button" class="btn btn-primary sb-btn  " style="max-width:18.75rem;" data-toggle="modal" data-target="#exampleModal"><?php echo  $this->tag->getTag('subscribe_to_our_free_newslett','Subscribe to our free newsletter');?></button>
+</div>

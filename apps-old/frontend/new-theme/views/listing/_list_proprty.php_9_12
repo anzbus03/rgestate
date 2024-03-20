@@ -1,0 +1,44 @@
+                        <!-- Listing Item -->
+                        <?php
+                        $links_open_in  = $this->options->get('system.common.link_open_in','S');	
+                        $apps = $this->app->apps;
+                        $s_class_n = 'col-sm-4';$bg = true;
+                        foreach($works as $k=>$v){ 
+							?>
+							    	<div class="col-sm-4 lst-prop smsec_<?php echo $v->section_id;?>" data-price="<?php echo $v->price;?>">
+							<div class="strip grid">
+            <figure class="llod"> <span class="icnsetAbsolute"> <?php echo $v->VerifiedTitles;?> </span><a href="<?php echo $v->detailUrl;?>" onclick="easyload2(this,event,'details-page-container')"><img data-src="<?php echo $v->SingleImage;?>"  alt="<?php echo  $v->ad_title;?>" class="img-fluid lozad" alt="">
+              <div class="read_more"><span>Read more</span></div>
+              </a>   
+                 
+              </figure>
+            <div class="wrapper">
+				<div class="price"><?php echo $v->listRowPrice();?></div>
+              <div class="smartad_infoarea">
+                <h2 class="smartad_title smartad_title-link"><a href="<?php echo $v->detailUrl;?>"  onclick="easyload2(this,event,'details-page-container')"><?php echo  $v->AdTitle;?></a></h2>
+               <div class="sh-mobile"><?php echo $v->listRowPrice();?></div>
+                <div class="smartad_detail">
+                   
+                    <?php echo $v->listRowFeatures();?>
+                    </div>
+                <div class="smartad_location-area">
+                  <div class="smartad_location"><span class="svg">
+                    <svg viewBox="0 0 1792 1792" class="smartad_locationicon">
+                      <use xlink:href="#svg-location"></use>
+                    </svg>
+                    </span><span class="smartad_locationtext"><?php echo $v->listRowLocation();?></span>
+                        <span class="sect-d-ro">
+                          <span class="cat-info-f"><?php echo  $v->SectionCategoryFullTitle;?></span> 
+                          <span class="sm-d-date"><span><?php echo $v->ShowDateFrontend;?></span></span>
+                      </span>
+                    </div>
+                </div>
+              </div>
+            </div>
+               <?php echo $v->footerLinkNew();?>
+          </div>
+          </div>
+                         
+							<?
+						 
+						 }
