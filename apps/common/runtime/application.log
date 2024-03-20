@@ -2568,3 +2568,35 @@ Stack trace:
 REQUEST_URI=/index.php/property/commercial-land-for-sale-12
 HTTP_REFERER=http://localhost:8000/backend/index.php/place_property/index
 ---
+2024/03/20 16:20:56 [error] [exception.CException] CException: Theme directory "/var/www/html/rgestate/rgestate/frontend/themes" does not exist. in /var/www/html/rgestate/rgestate/apps/common/framework/web/CThemeManager.php:110
+Stack trace:
+#0 /var/www/html/rgestate/rgestate/apps/common/components/managers/ThemeManager.php(68): CThemeManager->setBasePath()
+#1 /var/www/html/rgestate/rgestate/apps/common/framework/base/CComponent.php(152): ThemeManager->setBasePath()
+#2 /var/www/html/rgestate/rgestate/apps/common/framework/YiiBase.php(220): CComponent->__set()
+#3 /var/www/html/rgestate/rgestate/apps/common/framework/base/CModule.php(386): YiiBase::createComponent()
+#4 /var/www/html/rgestate/rgestate/apps/common/framework/base/CModule.php(103): CModule->getComponent()
+#5 /var/www/html/rgestate/rgestate/apps/common/components/init/SystemInit.php(82): CModule->__get()
+#6 /var/www/html/rgestate/rgestate/apps/common/framework/base/CComponent.php(561): SystemInit->_runOnBeginRequest()
+#7 /var/www/html/rgestate/rgestate/apps/common/framework/base/CApplication.php(207): CComponent->raiseEvent()
+#8 /var/www/html/rgestate/rgestate/apps/common/framework/base/CApplication.php(178): CApplication->onBeginRequest()
+#9 /var/www/html/rgestate/rgestate/apps/init2.php(196): CApplication->run()
+#10 /var/www/html/rgestate/rgestate/index.php(9): require_once('/var/www/html/r...')
+#11 {main}
+REQUEST_URI=/
+---
+2024/03/20 16:21:22 [error] [exception.CException] CException: Theme directory "/var/www/html/rgestate/rgestate/frontend/themes" does not exist. in /var/www/html/rgestate/rgestate/apps/common/framework/web/CThemeManager.php:110
+Stack trace:
+#0 /var/www/html/rgestate/rgestate/apps/common/components/managers/ThemeManager.php(68): CThemeManager->setBasePath()
+#1 /var/www/html/rgestate/rgestate/apps/common/framework/base/CComponent.php(152): ThemeManager->setBasePath()
+#2 /var/www/html/rgestate/rgestate/apps/common/framework/YiiBase.php(220): CComponent->__set()
+#3 /var/www/html/rgestate/rgestate/apps/common/framework/base/CModule.php(386): YiiBase::createComponent()
+#4 /var/www/html/rgestate/rgestate/apps/common/framework/base/CModule.php(103): CModule->getComponent()
+#5 /var/www/html/rgestate/rgestate/apps/common/components/init/SystemInit.php(82): CModule->__get()
+#6 /var/www/html/rgestate/rgestate/apps/common/framework/base/CComponent.php(561): SystemInit->_runOnBeginRequest()
+#7 /var/www/html/rgestate/rgestate/apps/common/framework/base/CApplication.php(207): CComponent->raiseEvent()
+#8 /var/www/html/rgestate/rgestate/apps/common/framework/base/CApplication.php(178): CApplication->onBeginRequest()
+#9 /var/www/html/rgestate/rgestate/apps/init2.php(196): CApplication->run()
+#10 /var/www/html/rgestate/rgestate/index.php(9): require_once('/var/www/html/r...')
+#11 {main}
+REQUEST_URI=/
+---
