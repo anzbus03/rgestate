@@ -165,27 +165,27 @@ array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to
 				  array('listing/index/sec/wanted', 'pattern' => 'wanted/*'), 
 				  array('listing/index', 'pattern' => 'properties'),
 				  array('listing/index', 'pattern' => 'properties/*'),
-				  array('detail/index/section/1', 'pattern' => 'sale/<slug:(.*)>' ,'urlSuffix'      => '.html', ),
-				  array('detail/index/section/2', 'pattern' => 'rent/<slug:(.*)>' ,'urlSuffix'      => '.html',),
-				   array('detail/index/section/1', 'pattern' => 'property-for-sale/<slug_en:(.*)>' ,'urlSuffix'      => '.html', ),
-				  array('detail/index/section/2', 'pattern' => 'for-rent/<slug_en:(.*)>' ,'urlSuffix'      => '.html',),
+				  array('detail/index/section/1', 'pattern' => 'sale/<slug:(.*)>'  ),
+				  array('detail/index/section/2', 'pattern' => 'rent/<slug:(.*)>' ),
+				   array('detail/index/section/1', 'pattern' => 'property-for-sale/<slug_en:(.*)>'  ),
+				  array('detail/index/section/2', 'pattern' => 'for-rent/<slug_en:(.*)>' ),
 				  
 				  
-				  array('detail/index/section/1', 'pattern' => 'تخفيض-السعر/<slug_ar:(.*)>' ,'urlSuffix'      => '.html', ),
-				  array('detail/index/section/2', 'pattern' => 'تأجير/<slug_ar:(.*)>' ,'urlSuffix'      => '.html',),
+				  array('detail/index/section/1', 'pattern' => 'تخفيض-السعر/<slug_ar:(.*)>'  ),
+				  array('detail/index/section/2', 'pattern' => 'تأجير/<slug_ar:(.*)>' ),
 				 
-				   array('detail/index_business/section/6', 'pattern' => 'business-sale/<slug:(.*)>' ,'urlSuffix'      => '.html',),
+				   array('detail/index_business/section/6', 'pattern' => 'business-sale/<slug:(.*)>' ),
 				   
-				   	  array('detail/short_link/section/1', 'pattern' => 'property-for-sale/<id:(.*)>' ,'urlSuffix'      => '.html', ),
-				  array('detail/short_link/section/2', 'pattern' => 'for-rent/<id:(.*)>' ,'urlSuffix'      => '.html',),
-				   array('detail/short_link/section/5', 'pattern' => 'business-sale/<id:(.*)>' ,'urlSuffix'      => '.html',),
+				   	  array('detail/short_link/section/1', 'pattern' => 'property-for-sale/<id:(.*)>'  ),
+				  array('detail/short_link/section/2', 'pattern' => 'for-rent/<id:(.*)>' ),
+				   array('detail/short_link/section/5', 'pattern' => 'business-sale/<id:(.*)>' ),
 				   
 				   
-				      	  array('detail/index', 'pattern' => 'id-<id:(.*)>' ,'urlSuffix'      => '.html', ),
-				  array('detail/index', 'pattern' => 'id-<id:(.*)>' ,'urlSuffix'      => '.html',),
+				      	  array('detail/index', 'pattern' => 'id-<id:(.*)>'  ),
+				  array('detail/index', 'pattern' => 'id-<id:(.*)>' ),
 				
-				   array('detail/index_business', 'pattern' => 'business-for-sale-id-<id:(.*)>' ,'urlSuffix'      => '.html', ),
-				  array('detail/index_business', 'pattern' => 'business-for-sale-<id:(.*)>' ,'urlSuffix'      => '.html',),
+				   array('detail/index_business', 'pattern' => 'business-for-sale-id-<id:(.*)>'  ),
+				  array('detail/index_business', 'pattern' => 'business-for-sale-<id:(.*)>' ),
 				    array('detail/index', 'pattern' => 'property/<slug:(.*)>'),
 				 
 			  array('detail/project', 'pattern' => 'project/<slug:(.*)>'),

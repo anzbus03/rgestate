@@ -2600,3 +2600,23 @@ Stack trace:
 #11 {main}
 REQUEST_URI=/
 ---
+2024/03/20 16:37:11 [error] [exception.CHttpException.404] CHttpException: Unable to resolve the request "listing/index". in /var/www/html/rgestate/rgestate/apps/common/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /var/www/html/rgestate/rgestate/apps/common/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#1 /var/www/html/rgestate/rgestate/apps/common/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /var/www/html/rgestate/rgestate/apps/init2.php(196): CApplication->run()
+#3 /var/www/html/rgestate/rgestate/index.php(9): require_once('/var/www/html/r...')
+#4 {main}
+REQUEST_URI=/property-for-sale
+HTTP_REFERER=http://localhost:8000/property-for-rent
+---
+2024/03/20 16:38:19 [error] [exception.CHttpException.404] CHttpException: Unable to resolve the request "listing/index". in /var/www/html/rgestate/rgestate/apps/common/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /var/www/html/rgestate/rgestate/apps/common/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#1 /var/www/html/rgestate/rgestate/apps/common/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /var/www/html/rgestate/rgestate/apps/init2.php(196): CApplication->run()
+#3 /var/www/html/rgestate/rgestate/index.php(9): require_once('/var/www/html/r...')
+#4 {main}
+REQUEST_URI=/property-for-sale
+HTTP_REFERER=http://localhost:8000/property-for-rent
+---
