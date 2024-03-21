@@ -126,18 +126,8 @@ class ListingController extends Controller
 		if ($location_title != '') {
 			$location_title = rtrim($location_title, ', ');
 		}
-		/*
-		$regions = 	MainRegion::model()->getStateWithCountry_2datas(COUNTRY_ID);
-		$region_with_slug = 	MainRegion::model()->getStateWithCountry_2dataslug(COUNTRY_ID);
-		$statesData = States::model()->AllListingStatesOfCountry(COUNTRY_ID); 
-		$cityDats = CHtml::listData($statesData,'slug' , 'state_name'); 
-		$region_list = CHtml::listData($statesData,'slug' , 'region_id');
-		*/
-
 		$apps = $this->app->apps;
-		//$this->getData('pageStyles')->add(array('src' => $apps->getBaseUrl('assets/js/multiselect/jquery.dropdown.css?q=1'), 'priority' => -100));
-		//$this->getData('pageScripts')->add(array('src' => $apps->getBaseUrl('assets/js/multiselect/jquery.dropdown.js?q=1'), 'priority' => -100));
-
+		
 		$state = 'ajman';
 		$file_view = 'index';
 
