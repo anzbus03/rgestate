@@ -59,14 +59,22 @@ if (Yii::app()->request->isAjaxRequest) {
        $this->renderPartial('_arab_avenue_filter_business');
  
 ?>
+<div class="container margin-top-40 list-container-rx" id="">
+
+<h1><?php 
+						echo $m_title;
+						 if(!empty($userM)){
+							 echo ' <small class="user-nameing secname_'.$filterModel->section_id.'"><b>['.$userM->fullName.']</b></small> <a href="'.$this->app->createUrl('listing/index',array('sec'=>$filterModel->section_id)).'"><img src="'.$this->app->apps->getBaseUrl('assets/img/cancel.png').'" style="width:15px; "/></a>';
+						}
+						?>
+						</h1>
 <?php 
+
 if(empty($adsCount)){
- 
 	$this->renderPartial('_no_result_page',array('full_width'=>true)); 
 	 
 }
 else{ ?>
-        <div class="container margin-top-40 list-container-rx" id="">
 			<div class="">
             <div class="">
                 <div class="col-sm-12 padding-left-0">
@@ -84,13 +92,7 @@ else{ ?>
               .feat_property .details .tc_content h2{color:#555;font-weight:600}.feat_property .details .tc_content h2{font-size:14px;font-family:var(--main-font);color:#333;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:7px}
                 @media only screen and (max-width: 600px) { .style2 h1 { font-size:20px; } }
             </style>
-						<h1><?php 
-						echo $m_title;
-                         if(!empty($userM)){
-    						 echo ' <small class="user-nameing secname_'.$filterModel->section_id.'"><b>['.$userM->fullName.']</b></small> <a href="'.$this->app->createUrl('listing/index',array('sec'=>$filterModel->section_id)).'"><img src="'.$this->app->apps->getBaseUrl('assets/img/cancel.png').'" style="width:15px; "/></a>';
-    					}
-			        	?>
-						</h1>
+						
 						<div class="left_area tac-xsd">
 									<p><?php echo Yii::t('app',$this->tag->getTag('{n}_results_found.','{n} results found.'),array('{n}'=>$adsCount)) ;?></p>
 								</div>

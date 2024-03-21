@@ -8,6 +8,7 @@ class Business_listingController extends Controller
 	public function actionIndex($country = null, $state = null, $city = null, $sub_category = null, $type = null, $community = null, $sec = null, $category = null, $dealer = null, $loc = null)
 	{
 	   //// exit;
+		// print_r($_GET);
 	    define('ITS_LIST_PAGE', '1');
 		$criteriaState=new CDbCriteria;
 		$criteriaState->select = 't.state_id,t.country_id';
@@ -43,6 +44,19 @@ class Business_listingController extends Controller
            
         }
         
+        if (isset($_GET['type_of'])) {
+            $subCategory = $_GET['type_of'];
+            $subCategoryModel = Subcategory::model()->findByAttributes(['slug' => $subCategory]);
+        
+            if (!$subCategoryModel) {
+                $mainRegion = MainRegion::model()->findByAttributes(['slug' => $subCategory]);
+        
+                if ($mainRegion) {
+                    $_GET['state'] = $mainRegion->slug;
+                    unset($_GET['type_of']);
+                }
+            }
+        }
         if (isset($_GET['sub_category'])) {
             $subCategory = $_GET['sub_category'];
             $subCategoryModel = Subcategory::model()->findByAttributes(['slug' => $subCategory]);
