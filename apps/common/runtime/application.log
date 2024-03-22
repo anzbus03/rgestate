@@ -2620,3 +2620,37 @@ Stack trace:
 REQUEST_URI=/property-for-sale
 HTTP_REFERER=http://localhost:8000/property-for-rent
 ---
+2024/03/22 09:26:56 [error] [exception.CDbException] CDbException: CDbConnection failed to open the DB connection: SQLSTATE[HY000] [2002] Connection refused in /var/www/html/rgestate/rgestate/apps/common/framework/db/CDbConnection.php:382
+Stack trace:
+#0 /var/www/html/rgestate/rgestate/apps/common/framework/db/CDbConnection.php(330): CDbConnection->open()
+#1 /var/www/html/rgestate/rgestate/apps/common/framework/db/CDbConnection.php(308): CDbConnection->setActive()
+#2 /var/www/html/rgestate/rgestate/apps/common/framework/base/CModule.php(387): CDbConnection->init()
+#3 /var/www/html/rgestate/rgestate/apps/common/framework/base/CModule.php(103): CModule->getComponent()
+#4 /var/www/html/rgestate/rgestate/apps/common/components/managers/OptionsManager.php(161): CModule->__get()
+#5 /var/www/html/rgestate/rgestate/apps/common/components/managers/OptionsManager.php(73): OptionsManager->loadCategory()
+#6 /var/www/html/rgestate/rgestate/apps/common/components/init/SystemInit.php(48): OptionsManager->get()
+#7 /var/www/html/rgestate/rgestate/apps/common/framework/base/CComponent.php(561): SystemInit->_runOnBeginRequest()
+#8 /var/www/html/rgestate/rgestate/apps/common/framework/base/CApplication.php(207): CComponent->raiseEvent()
+#9 /var/www/html/rgestate/rgestate/apps/common/framework/base/CApplication.php(178): CApplication->onBeginRequest()
+#10 /var/www/html/rgestate/rgestate/apps/init2.php(196): CApplication->run()
+#11 /var/www/html/rgestate/rgestate/index.php(9): require_once('/var/www/html/r...')
+#12 {main}
+REQUEST_URI=/
+---
+2024/03/22 09:27:13 [error] [exception.CDbException] CDbException: CDbConnection failed to open the DB connection: SQLSTATE[HY000] [2006] MySQL server has gone away in /var/www/html/rgestate/rgestate/apps/common/framework/db/CDbConnection.php:382
+Stack trace:
+#0 /var/www/html/rgestate/rgestate/apps/common/framework/db/CDbConnection.php(330): CDbConnection->open()
+#1 /var/www/html/rgestate/rgestate/apps/common/framework/db/CDbConnection.php(308): CDbConnection->setActive()
+#2 /var/www/html/rgestate/rgestate/apps/common/framework/base/CModule.php(387): CDbConnection->init()
+#3 /var/www/html/rgestate/rgestate/apps/common/framework/base/CModule.php(103): CModule->getComponent()
+#4 /var/www/html/rgestate/rgestate/apps/common/components/managers/OptionsManager.php(161): CModule->__get()
+#5 /var/www/html/rgestate/rgestate/apps/common/components/managers/OptionsManager.php(73): OptionsManager->loadCategory()
+#6 /var/www/html/rgestate/rgestate/apps/common/components/init/SystemInit.php(48): OptionsManager->get()
+#7 /var/www/html/rgestate/rgestate/apps/common/framework/base/CComponent.php(561): SystemInit->_runOnBeginRequest()
+#8 /var/www/html/rgestate/rgestate/apps/common/framework/base/CApplication.php(207): CComponent->raiseEvent()
+#9 /var/www/html/rgestate/rgestate/apps/common/framework/base/CApplication.php(178): CApplication->onBeginRequest()
+#10 /var/www/html/rgestate/rgestate/apps/init2.php(196): CApplication->run()
+#11 /var/www/html/rgestate/rgestate/index.php(9): require_once('/var/www/html/r...')
+#12 {main}
+REQUEST_URI=/
+---

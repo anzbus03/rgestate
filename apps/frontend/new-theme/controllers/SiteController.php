@@ -1721,6 +1721,8 @@ Jq4pd48R
 			$htm = $this->renderPartial('_list_nested_sub_categories', compact('formData', 'adModel'), true, false);
         }else if (!isset($formData['state'])) {
 			$htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
+		}else if (isset($formData['state'])) {
+            $htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
 		}
 
 		//$htm = $this->renderPartial('_list_categories',compact('new_homes','formData'),true,false);
