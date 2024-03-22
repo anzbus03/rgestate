@@ -90,7 +90,7 @@ else{ ?>
             
             
             <div class="row">
-				<div class="col-md-8 col-lg-8 margin-top-0">
+				<div class="col-md-8 col-lg-8 margin-top-0" style="margin-bottom: 20px;">
 					<div class="breadcrumb_content ">
 					  
 						
