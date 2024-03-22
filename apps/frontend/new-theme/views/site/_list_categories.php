@@ -37,7 +37,7 @@ if(!empty($new_homes)){
     		$formData1 = $formData; 
     	    $formData1['type_of'] =$slug;
     	    unset($formData1['state']);
-        	echo '<li class="col-sm-3"><p><a href="'.Yii::app()->createUrl('business_listing/index', $formData1 ).$query.'">'.$name.'<span> ('.$v->id.')</span></a></p></li>';
+        	echo '<li class="col-sm-3"><p><a href="'.Yii::app()->createUrl('listing/index', $formData1 ).$query.'">'.$name.'<span> ('.$v->id.')</span></a></p></li>';
         }
          
 	}
