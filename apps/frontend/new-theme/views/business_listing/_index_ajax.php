@@ -59,7 +59,11 @@ if (Yii::app()->request->isAjaxRequest) {
        $this->renderPartial('_arab_avenue_filter_business');
  
 ?>
-<div class="container margin-top-40 list-container-rx" id="">
+ <style>.style2 h1 { font-size:28px; }
+              .feat_property .details .tc_content h2{color:#555;font-weight:600}.feat_property .details .tc_content h2{font-size:14px;font-family:var(--main-font);color:#333;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:7px}
+                @media only screen and (max-width: 600px) { .style2 h1 { font-size:20px; } }
+            </style>
+<div class="container margin-top-40 list-container-rx style2" id="">
 
 <h1><?php 
 						echo $m_title;
@@ -87,11 +91,8 @@ else{ ?>
             
             <div class="row">
 				<div class="col-md-8 col-lg-8 margin-top-0">
-					<div class="breadcrumb_content style2">
-					   <style>.style2 h1 { font-size:28px; }
-              .feat_property .details .tc_content h2{color:#555;font-weight:600}.feat_property .details .tc_content h2{font-size:14px;font-family:var(--main-font);color:#333;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:7px}
-                @media only screen and (max-width: 600px) { .style2 h1 { font-size:20px; } }
-            </style>
+					<div class="breadcrumb_content ">
+					  
 						
 						<div class="left_area tac-xsd">
 									<p><?php echo Yii::t('app',$this->tag->getTag('{n}_results_found.','{n} results found.'),array('{n}'=>$adsCount)) ;?></p>

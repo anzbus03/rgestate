@@ -1707,15 +1707,13 @@ Jq4pd48R
 		if (!isset($formData['type_of'])) {
 			$htm = $this->renderPartial('_list_categories', compact('formData', 'adModel'), true, false);
 		}else if (!isset($formData['sub_category'])) {
-            $category = Category::model()->getCategoryFromSlug($formData['type_of']);
-            // print_r($category->category_id);
-
+			$category = Category::model()->getCategoryFromSlug($formData['type_of']);
+			
             $subCategories = Subcategory::model()->ListDataForCategory($category->category_id);
             if (count($subCategories) > 0){
-                
-                $htm = $this->renderPartial('_list_sub_categories', compact('formData', 'adModel', 'subCategories'), true, false);		
+				$htm = $this->renderPartial('_list_sub_categories', compact('formData', 'adModel', 'subCategories'), true, false);		
             }else {
-    			$htm = $this->renderPartial('_list_location_business', compact('formData', 'adModel'), true, false);
+				$htm = $this->renderPartial('_list_location_business', compact('formData', 'adModel'), true, false);
             }
         }else if (!isset($formData['nested_sub_category'])){
 			$htm = $this->renderPartial('_list_nested_sub_categories', compact('formData', 'adModel'), true, false);
