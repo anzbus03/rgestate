@@ -1,24 +1,29 @@
 <?php
-	 $cityDats = States::model()->byIdIterate();
-//  print_r($formData);
+$cityDats = MainRegion::model()->byIdIterate();
 $adModelCriteria =	$adModel->findAds($formData ,false,true); 
-$adModelCriteria->select= 't.state as city_name,count(t.id) as id   ';
+$adModelCriteria->select= 'rgn.region_id as city_name,count(t.id) as id   ';
 $adModelCriteria->join.= ' LEFT JOIN {{states}} city ON t.state = city.state_id  ';
-$adModelCriteria->group = 't.state'; 
-$adModelCriteria->order  ='city.state_name asc '; 
+$adModelCriteria->join.= ' LEFT JOIN {{main_region}} rgn ON rgn.region_id = city.region_id  ';
+$adModelCriteria->join  .= ' left JOIN {{subcategory}} subcat ON subcat.sub_category_id = t.sub_category_id ';
+$adModelCriteria->join  .= ' left JOIN {{subcategory}} nestsubcat ON nestsubcat.sub_category_id = t.nested_sub_category ';
+$adModelCriteria->condition .= ' and nestsubcat.slug=:nested_sub_category and subcat.slug=:sub_category_id ';
+$adModelCriteria->params[':nested_sub_category'] = $formData['nested_sub_category'];
+$adModelCriteria->params[':sub_category_id'] = $formData['sub_category'];
+$adModelCriteria->group = 'city.region_id'; 
+$adModelCriteria->order  ='rgn.name asc '; 
 $new_homes =  $adModel->findAll($adModelCriteria);
  unset($formData['section_id']); unset($formData['country']);unset($formData['reg_id']);
   if(isset($formData['preleased'])){
           unset($formData['preleased']);
           $formData['sec'] = 'preleased'; 
       }
-  $create_array = array();
- foreach($formData as $k1=>$v1){
-    if(!in_array($k1,array('sec','type_of','state','reg','category','sub_category','nested_sub_category'))){
-        unset($formData[$k1]);
+    $create_array = array();
+    foreach($formData as $k1=>$v1){
+        if(!in_array($k1,array('sec','type_of','state','reg','category','sub_category','nested_sub_category'))){
+            unset($formData[$k1]);
          $create_array[$k1] = $v1; 
-     }
- }
+        }
+    }
  $query = '?';
  if(!empty($create_array)){
       
@@ -26,7 +31,6 @@ $new_homes =  $adModel->findAll($adModelCriteria);
  }
  if($query=='?'){ $query =''; }
 if(!empty($new_homes)){
- 
     echo '<ul id="ldlist" class="list-inline-item row col-sm-12 ">';
     $count ='1';
     foreach($new_homes as $k=>$v){

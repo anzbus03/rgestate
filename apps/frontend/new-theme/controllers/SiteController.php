@@ -1718,7 +1718,10 @@ Jq4pd48R
         }else if (!isset($formData['nested_sub_category'])){
 			$htm = $this->renderPartial('_list_nested_sub_categories', compact('formData', 'adModel'), true, false);
         }else if (!isset($formData['state'])) {
+			$htm = $this->renderPartial('_list_business_location', compact('formData', 'adModel'), true, false);
+		}else {
 			$htm = $this->renderPartial('_list_location_business', compact('formData', 'adModel'), true, false);
+		
 		}
 
 		//$htm = $this->renderPartial('_list_categories',compact('new_homes','formData'),true,false);

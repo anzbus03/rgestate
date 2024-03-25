@@ -68,6 +68,13 @@ class Business_listingController extends Controller
                     $_GET['state'] = $mainRegion->slug;
                     unset($_GET['sub_category']);
                 }
+				// else{
+				// 	$subRegion = States::model()->findByAttributes(['slug' => $subCategory]);
+				// 	if ($subRegion) {
+				// 		$_GET['state'] = $subRegion->slug;
+				// 		unset($_GET['sub_category']);
+				// 	}
+				// }
             }
         }
         
@@ -84,7 +91,6 @@ class Business_listingController extends Controller
                 }
             }
         }
-
     	if (isset($_GET['reg'])) {
 			if (!isset($_GET['state'])) {
 				$_GET['state'] = $_GET['reg'];
