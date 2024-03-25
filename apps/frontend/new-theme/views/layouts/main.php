@@ -91,13 +91,11 @@ if(!empty($schema)){ echo $schema; } ?>
 </script>
 <?php echo LANGUAGE == 'ar' ? '<script>var isRtl = true;</script>' : '<script>var isRtl = false;</script>' ; ?>
 <style>.closepopu {display:none; } .isOnFram  .closepopu {display:block; }.for-mobile { display: none;}</style>
-<link href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/lib/select2/css/select2.min.css" rel="stylesheet">
-<link href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/lib/slick/slick.css" rel="stylesheet">
 
 <link media="all" href="<?php echo $this->app->apps->getBaseUrl('new_assets/css/style.css?q=2122');?>" rel="stylesheet" />
 <link rel="stylesheet" href="<?php echo $this->app->apps->getBaseUrl('new_assets/css/stylee.css?q=600');?>">
 <link rel="stylesheet" href="<?php echo $this->app->apps->getBaseUrl('new_assets/css/responsive.css');?>">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo $this->app->apps->getBaseUrl('assets/css/new_responsive.css?q=234');?>">
 <script>
     $(function(){$(".btn-menu").click(function(){$(this).toggleClass('open');$('.mobile-nav').toggleClass('open');$('body').toggleClass('fix');return false;})})
@@ -111,6 +109,15 @@ if($this->id=='detail'){
 ?>
 </head>
 <style>
+      .close-btn {
+            display: flex;
+            margin-left: auto;
+            margin-right: 10px;
+        }
+        .close-btn span {
+            font-size: 35px;
+            color: red;
+        }
 .list_details a,#footer-selector a { color:var(--black-color);}.list_details a:hover{ color:var(--secondary-color);}
 .dropdown-chose {
     display: none;
@@ -131,6 +138,15 @@ if($this->id=='detail'){
    
     position: relative;
     z-index: 2;
+}
+.close-btn {
+    display: flex;
+    margin-left: auto;
+    margin-right: 10px;
+}
+.btn-close span {
+    font-size: 35px;
+    color: red;
 }
 .btn-close{
 /* position: relative; */
@@ -332,7 +348,8 @@ if($this->id != 'contact'){ ?>
     z-index: 1050;
     display: none;
     overflow: hidden;
-    outline: 0;    margin: auto;
+    outline: 0;    
+    margin: auto;
 }
 .modal.modal.modal-new .modal-content {
     position: relative;
@@ -420,11 +437,13 @@ if($this->id != 'contact'){ ?>
 }
 
 </style>
-<div class="modal modal-new fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" >
+<div class="modal modal-new" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="min-width: 100% !important;">
         <div class="modal-content position-relative rounded-0">
             <div class="modal-body">
-            <button type="button" class="btn-close rg-close-btn" id="closepopup" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
                 <div class="row m-0">
                         
                     <div class="col-md-6 col-12 p-0">
