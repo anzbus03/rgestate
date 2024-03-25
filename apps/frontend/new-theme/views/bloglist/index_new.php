@@ -1,4 +1,3 @@
-
 <style>#mainContainerClass{max-width:100%; }
 @media only screen and (max-width: 1024px) {
   #blogheader nav#main-menu {
@@ -245,13 +244,16 @@
 }
 }
 	</style>
+    
 <script> 
     function setPagenumber(k){
     var pageNaumber =  $(k).attr('data-page')
      $('#page1').val(pageNaumber).change();
      return false;  
  }
+
 $(document).ready(function(){
+   
 
   var stickyElement = $(".sticky1"),
       stickyClass = "sticky-pin",

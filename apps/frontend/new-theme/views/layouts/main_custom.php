@@ -323,27 +323,7 @@
   </div>
 <div id="dynamicScripts"></div>
 <div class="modal modal-new fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="row m-0">
-                        
-                    <div class="col-md-6 col-12 p-0">
-                        <img class="rg-modal-img d-block w-100 object-fit-cover" style="height: 100%;" src="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/subscribe-modal.jpg" alt="Register Your Invest">
-                    </div>
-                    <div class="col-md-6 col-12 p-0">
-                        <script data-b24-form="inline/10/7knami" data-skip-moving="true">
-                            (function(w,d,u){
-                            var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);
-                            var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
-                            })(window,document,'https://cdn.bitrix24.in/b25292121/crm/form/loader_10.js');
-                        </script>
-                    </div>
-                </div>
-                    
-            </div>
-        </div>
-    </div>
+  
 </div>
 <ul class="rg-hero-contact w-100 position-fixed top-50 end-0 translate-middle-y z-1 text-white">
           <li class="pt-4 pb-3">
