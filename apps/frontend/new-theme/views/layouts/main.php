@@ -95,7 +95,7 @@ if(!empty($schema)){ echo $schema; } ?>
 <link media="all" href="<?php echo $this->app->apps->getBaseUrl('new_assets/css/style.css?q=2122');?>" rel="stylesheet" />
 <link rel="stylesheet" href="<?php echo $this->app->apps->getBaseUrl('new_assets/css/stylee.css?q=600');?>">
 <link rel="stylesheet" href="<?php echo $this->app->apps->getBaseUrl('new_assets/css/responsive.css');?>">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link rel="stylesheet" href="<?php echo $this->app->apps->getBaseUrl('assets/css/new_responsive.css?q=234');?>">
 <script>
     $(function(){$(".btn-menu").click(function(){$(this).toggleClass('open');$('.mobile-nav').toggleClass('open');$('body').toggleClass('fix');return false;})})
@@ -446,10 +446,10 @@ if($this->id != 'contact'){ ?>
             </button>
                 <div class="row m-0">
                         
-                    <div class="col-md-6 col-12 p-0">
+                    <!-- <div class="col-md-6 col-12 p-0">
                         <img class="rg-modal-img d-block w-100 object-fit-cover" style="height: 100%;" src="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/subscribe-modal.jpg" alt="Register Your Interest">
-                    </div>
-                    <div class="col-md-6 col-12 p-0">
+                    </div> -->
+                    <div class="col-md-12 col-12 p-0">
                         <script data-b24-form="inline/34/btf76q" data-skip-moving="true">
                         (function(w,d,u){
                         var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);
