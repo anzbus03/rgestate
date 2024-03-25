@@ -5,7 +5,7 @@ if (defined('MW_FORCE_DEBUG_MODE') && MW_FORCE_DEBUG_MODE) {
     error_reporting(1);
     ini_set('display_errors', 0);
     define('MW_CACHE_TTL',  0);
-    define('YII_DEBUG', true);
+    define('YII_DEBUG', false);
     define('YII_TRACE_LEVEL', 3);  
 } else {
 	    

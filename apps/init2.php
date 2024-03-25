@@ -1,18 +1,19 @@
 <?php
 defined('MW_APP_NAME') || exit('No direct script access allowed');
 ob_start();
-define('MW_FORCE_DEBUG_MODE',2);   
+// define('MW_FORCE_DEBUG_MODE',0);   
 // if debug mode is forced then go with it
 // return 5;
-if (defined('MW_FORCE_DEBUG_MODE') && MW_FORCE_DEBUG_MODE) {
+if (defined('MW_FORCE_DEBUG_MODE')) {
     error_reporting(1);
     ini_set('display_errors', 1);
     define('MW_CACHE_TTL',  0);
-    define('YII_DEBUG', true);
+    define('YII_DEBUG', false);
     define('YII_TRACE_LEVEL', 3);  
 } else { 
       error_reporting(0);
     ini_set('display_errors', 0);
+    
      define('MW_CACHE_TTL', 0);
 }
 define('SYSTEM_CAHE_K',  1);

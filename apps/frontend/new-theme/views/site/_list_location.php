@@ -45,11 +45,11 @@ if(!empty($new_homes)){
 	}
     echo '</ul>';
     if($count>41){
-        echo '<a href="javascript:void(0)" id="v_moer" class=" btn-more-view" onclick="showAlllist()" >View All</a>';
-        echo '<a href="javascript:void(0)" class="d-none btn-more-view" id="v_less" onclick="hideAlllist()" >View Less</a>';
+        // echo '<a href="javascript:void(0)" id="v_moer" class=" btn-more-view" onclick="showAlllist()" >View All</a>';
+        // echo '<a href="javascript:void(0)" class="d-none btn-more-view" id="v_less" onclick="hideAlllist()" >View Less</a>';
         ?>
          <style>
-     .btn-more-view {
+     /* .btn-more-view {
     display: inline-block;
     margin: auto;
     text-align: center;
@@ -64,7 +64,7 @@ if(!empty($new_homes)){
     width: auto;
     max-width: 100px;
     background: #fff;
-}
+} */
     </style>
     <script>
         function showAlllist(){
