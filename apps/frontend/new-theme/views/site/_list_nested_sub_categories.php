@@ -1,12 +1,13 @@
 <?php
 $subCategory = Subcategory::model()->findByAttributes(array('slug' => $formData['sub_category']));
+$category = Category::model()->findByAttributes(array('slug' => $formData['type_of']));
 $adModelCriteria = $adModel->findAds($formData, false, true);
-$adModelCriteria->condition = 't.sub_category_id = ' . $subCategory->sub_category_id;
+// $adModelCriteria->condition = 't.category_id = ' . $category->category_id;
+$adModelCriteria->condition = 't.sub_category_id = ' . $subCategory->sub_category_id . ' and t.category_id = ' . $category->category_id;
 // $adModelCriteria->params[':sub_category_id'] = ;
 $adModelCriteria->select = 't.nested_sub_category, COUNT(t.id) AS id';
 $adModelCriteria->group = 't.nested_sub_category';
 $new_homes = $adModel->findAll($adModelCriteria);
-
 // Process form data
 unset($formData['section_id']);
 unset($formData['country']);
