@@ -1708,7 +1708,6 @@ Jq4pd48R
 			$htm = $this->renderPartial('_list_categories', compact('formData', 'adModel'), true, false);
 		}else if (!isset($formData['sub_category'])) {
 			$category = Category::model()->getCategoryFromSlug($formData['type_of']);
-			
             $subCategories = Subcategory::model()->ListDataForCategory($category->category_id);
             if (count($subCategories) > 0){
 				$htm = $this->renderPartial('_list_sub_categories', compact('formData', 'adModel', 'subCategories'), true, false);		
