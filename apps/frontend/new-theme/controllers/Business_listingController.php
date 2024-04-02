@@ -43,6 +43,19 @@ class Business_listingController extends Controller
            
         }
         
+        if (isset($_GET['type_of'])) {
+            $subCategory = $_GET['type_of'];
+            $subCategoryModel = Subcategory::model()->findByAttributes(['slug' => $subCategory]);
+        
+            if (!$subCategoryModel) {
+                $mainRegion = MainRegion::model()->findByAttributes(['slug' => $subCategory]);
+        
+                if ($mainRegion) {
+                    $_GET['state'] = $mainRegion->slug;
+                    unset($_GET['type_of']);
+                }
+            }
+        }
         if (isset($_GET['sub_category'])) {
             $subCategory = $_GET['sub_category'];
             $subCategoryModel = Subcategory::model()->findByAttributes(['slug' => $subCategory]);
@@ -54,6 +67,13 @@ class Business_listingController extends Controller
                     $_GET['state'] = $mainRegion->slug;
                     unset($_GET['sub_category']);
                 }
+				// else{
+				// 	$subRegion = States::model()->findByAttributes(['slug' => $subCategory]);
+				// 	if ($subRegion) {
+				// 		$_GET['state'] = $subRegion->slug;
+				// 		unset($_GET['sub_category']);
+				// 	}
+				// }
             }
         }
         
@@ -70,7 +90,6 @@ class Business_listingController extends Controller
                 }
             }
         }
-
     	if (isset($_GET['reg'])) {
 			if (!isset($_GET['state'])) {
 				$_GET['state'] = $_GET['reg'];
@@ -456,14 +475,15 @@ class Business_listingController extends Controller
 		$pageContent = ListingContents::model()->getListingContent($formData['sec'], $cat_i, $formData['state'],  $formData['sub_category'], $formData['nested_sub_category']);
 
 		if ($this->app->request->isAjaxRequest) {
-		 	unset($formData['_pjax']);
-			unset($formData['_']);
-			// echo $file_view;exit;
+			unset($formData['_pjax']);
+		   	unset($formData['_']);
+			echo '<script>location.reload();</script>';
+			exit;
+			echo $file_view;
 			if (isset($_GET['pja']) and $this->app->request->isAjaxRequest) {
 				$this->renderPartial('_left_column', compact('pageContent', 'locations', 'regions', 'cityDats', 'region_list', 'm_title', 'locationas', 'b_1', 'b_2', 'b_3', 'l_view', 'stateModel', 'search_url', 'found_search', 'load_location', 'active_state', 'section_title', 'country_id', 'state_id', 'ads', 'adsCount', 'state_name', 'country_name', 'country', 'pages', 'state', 'title', 'community', 'filterModel', 'formData', 'city', 'active_city', 'categoryModelm', 'userM', 'ads', 'limit'));
 				exit;
 			}
-			//echo $file_view;exit;
 			$this->renderPartial($file_view, compact('pageContent', 'locations', 'areaData', 'regions', 'cityDats', 'region_list', 'm_title', 'locationas', 'b_1', 'b_2', 'b_3', 'l_view', 'stateModel', 'search_url', 'found_search', 'load_location', 'active_state', 'section_title', 'country_id', 'state_id', 'ads', 'adsCount', 'state_name', 'country_name', 'country', 'pages', 'state', 'title', 'community', 'filterModel', 'formData', 'city', 'active_city', 'categoryModelm', 'userM', 'ads', 'limit'));
 			$this->app->end();
 		}

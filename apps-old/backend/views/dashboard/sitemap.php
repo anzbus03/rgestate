@@ -1,1 +1,0 @@
-<iframe src="<?php echo ASKAAN_PATH_BASE.'site/generate_sitemap';?> " style="border:0px;"></iframe>

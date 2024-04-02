@@ -45,7 +45,6 @@ if (!empty($new_homes)) {
 
         $name = $subcategory->sub_category_name;
         $slug = $subcategory->slug;
-        unset($formData['state']);
         $formData['sub_category'] = $slug;
         $formData1 = $formData;
         $dClass = ($count >= 41) ? 'd-none hideles' : '';
