@@ -112,7 +112,7 @@ class BusinessForSale extends ActiveRecord
 
 		$rules  =  array(
 
-			array('section_id,  category_id,user_id ,ad_title,ad_description,state,nested_sub_category', 'required', 'message' => $required),
+			array('section_id,  category_id,user_id ,ad_title,ad_description,state', 'required', 'message' => $required),
 			array('listing_type', 'validateNonFranchis'),
 			array('maid_room', 'validateBusisessInfo'),
 
