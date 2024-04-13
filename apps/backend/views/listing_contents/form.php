@@ -137,7 +137,7 @@ if ($viewCollection->renderContent) {
                 </div>
                 <script type="text/javascript">
                     document.addEventListener("DOMContentLoaded", function() {
-                        var subCategoryId = "<?php echo $model->sub_category_id; ?>";
+                        var subCategoryId = "<?php echo $areaguides->sub_category; ?>";
                         
                         populateNestedSubcategoriesOnLoad(subCategoryId);
                     });
@@ -154,11 +154,10 @@ if ($viewCollection->renderContent) {
                     }
                     function populateNestedSubcategoriesOnLoad(subCategoryId) {
                         var parentId = subCategoryId;
-                        console.log(parentId)
                         $.ajax({
                             type: 'POST',
                             url: '<?php echo CController::createUrl("place_property/dynamicNestedSubcategories"); ?>',
-                            data: {parentId: parentId},
+                            data: {parentId: parentId,nestedSubcategoryId: "<?php echo $areaguides->nested_sub_category; ?>"},
                             success: function(data) {
                                 $('#ListingContents_nested_sub_category').html(data);
                             }
