@@ -50,9 +50,7 @@ class BloglistController extends Controller
 		 
 	 
         $modelCritera=Article::model()->findPosts($formData,$count_future=false,1,$calculate=false);
-        
-        
-        	$adsCount =   Article::model()->count($modelCritera);
+$adsCount = Article::model()->count($modelCritera);
 
 		$pages = new CPagination($adsCount);
 		$pages->pageSize = $limit;

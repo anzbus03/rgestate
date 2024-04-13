@@ -28,8 +28,6 @@ class BlogController extends Controller
     public function actionIndex($slug='blog')
     {
 		 
-        print_r(5);
-    exit;
 		$articleCategoryFromSlug = ArticleCategory::model()->findByAttributes(array('slug'=>$slug));
 		 
 		if(empty($articleCategoryFromSlug))

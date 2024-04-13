@@ -26,7 +26,6 @@ class ArticlesController extends Controller
     }
     public function actionIndex()
     {
-		
         $criteria = new CDbCriteria();
         $criteria->compare('status', Article::STATUS_PUBLISHED);
         $criteria->order = 'article_id DESC';

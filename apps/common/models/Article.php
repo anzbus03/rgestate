@@ -394,6 +394,7 @@ class Article extends ActiveRecord
 	public function findPosts($formData=array(),$count_future=false,$returnCriteria=false,$calculate=false){
         $criteria=new CDbCriteria;  
 		$criteria->with = array('categories') ;
+        $criteria->order = 't.article_id DESC';
 		$criteria->condition  = '1';
  			if(isset($formData['parent_id']) and !empty($formData['parent_id']))
 		{

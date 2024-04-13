@@ -26,6 +26,7 @@ class AreaguidesController extends Controller
         //  $pages = new CPagination($count);
         //  $pages->pageSize = 10;
         //  $pages->applyLimit($criteria);
+        
         $sql = 'SELECT mw_areaguides.image as image,mw_areaguides.area as area,mw_states.state_name,mw_states.slug as state_slug FROM mw_areaguides INNER JOIN mw_states ON mw_areaguides.city = mw_states.state_id WHERE mw_areaguides.status=:status limit 21';
         
         $areaguides = Areaguides::model()->findAllBySql($sql,[':status' =>  Areaguides::STATUS_PUBLISHED]);
