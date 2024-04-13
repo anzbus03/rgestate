@@ -1633,23 +1633,26 @@ Jq4pd48R
 		if (!isset($formData['state']) && !isset($formData['type_of']) && !isset($formData['sub_category'])) {
 			$htm = $this->renderPartial('_list_categories', compact('formData', 'adModel'), true, false);
         } else if (isset($formData['state']) && !isset($formData['type_of']) && !isset($formData['sub_category'])) {
-            if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai'))) {
-                $htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
+			if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai'))) {
+				
+				$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
             } else {
-                $htm = $this->renderPartial('_list_categories', compact('formData', 'adModel'), true, false);
+				
+				$htm = $this->renderPartial('_list_categories', compact('formData', 'adModel'), true, false);
             }
         } 
         // else if (!isset($formData['state']) && isset($formData['type_of']) && !isset($formData['sub_category'])) {
-           
-            // $subCategories = SubCategory::model()->find($fermData['sub_category']);
+			
+			// $subCategories = SubCategory::model()->find($fermData['sub_category']);
             // $htm = $this->renderPartial('_list_sub_categories', compact('formData', 'adModel', 'subCategories'), true, false);
-        // } 
-        else if (isset($formData['state']) && isset($formData['type_of']) && isset($formData['sub_category'])) {
-			$htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
-        } else if (!isset($formData['state']) && isset($formData['type_of']) && !isset($formData['sub_category'])) {
-			$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
-        } else if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai')) && !isset($formData['sub_category'])) {
-			$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
+			// } 
+			else if (isset($formData['state']) && isset($formData['type_of']) && isset($formData['sub_category'])) {
+				$htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
+			} else if (!isset($formData['state']) && isset($formData['type_of']) && !isset($formData['sub_category'])) {
+				$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
+			} else if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai')) && !isset($formData['sub_category'])) {
+				$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
+				// print_r(5);
         } else {
 			$htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
         }

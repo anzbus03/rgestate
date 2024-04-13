@@ -14,8 +14,8 @@ $new_homes =  $adModel->findAll($adModelCriteria);
       }
   $create_array = array();
  foreach($formData as $k1=>$v1){
-    if(!in_array($k1,array('sec','type_of','state','reg','category','sub_category','nested_sub_category'))){
-        unset($formData[$k1]);
+     if(!in_array($k1,array('sec','type_of','state','reg','category'))){
+         unset($formData[$k1]);
          $create_array[$k1] = $v1; 
      }
  }
@@ -40,16 +40,16 @@ if(!empty($new_homes)){
          }
 		 $formData1['state'] = $slug;
 		 $dClass = ($count>='41') ? 'd-none hideles' : ''; 
-    	echo '<li class="'.$dClass.' col-sm-3"><p><a href="'.Yii::app()->createUrl('business_listing/index', $formData1 ).$query.'">'.$name.'<span> ('.$v->id.')</span></a></p></li>';
+    	echo '<li class="'.$dClass.' col-sm-3"><p><a href="'.Yii::app()->createUrl('listing/index', $formData1 ).$query.'">'.$name.'<span> ('.$v->id.')</span></a></p></li>';
     	$count++;
 	}
     echo '</ul>';
     if($count>41){
-        // echo '<a href="javascript:void(0)" id="v_moer" class=" btn-more-view" onclick="showAlllist()" >View All</a>';
-        // echo '<a href="javascript:void(0)" class="d-none btn-more-view" id="v_less" onclick="hideAlllist()" >View Less</a>';
+        echo '<a href="javascript:void(0)" id="v_moer" class=" btn-more-view" onclick="showAlllist()" >View All</a>';
+        echo '<a href="javascript:void(0)" class="d-none btn-more-view" id="v_less" onclick="hideAlllist()" >View Less</a>';
         ?>
          <style>
-     /* .btn-more-view {
+     .btn-more-view {
     display: inline-block;
     margin: auto;
     text-align: center;
@@ -64,7 +64,7 @@ if(!empty($new_homes)){
     width: auto;
     max-width: 100px;
     background: #fff;
-} */
+}
     </style>
     <script>
         function showAlllist(){
