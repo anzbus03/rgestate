@@ -27,6 +27,7 @@ $new_homes =  $adModel->findAll($adModelCriteria);
      $query .= http_build_query($create_array);
  }
  if($query=='?'){ $query =''; }
+
 if(!empty($new_homes)){
  
     echo '<ul id="ldlist" class="list-inline-item row col-sm-12 ">';

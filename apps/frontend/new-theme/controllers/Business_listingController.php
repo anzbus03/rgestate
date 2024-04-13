@@ -270,7 +270,6 @@ class Business_listingController extends Controller
 
 
 		$placead = new BusinessForSale();
-	   
 		$criteria =  $placead->findAds($formData, false, 1);
     //  print_r($formData);
 	   // exit;
@@ -510,7 +509,7 @@ class Business_listingController extends Controller
 		* */
 
 		$formData = (array)$_GET;
-     
+		
 		//	 print_r($formData['poplar_area']);exit;
 		$works =   BusinessForSale::model()->findAds($formData, $count_future, false, $calculate);
 		if (!$hide_featured) {

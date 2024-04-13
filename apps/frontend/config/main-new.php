@@ -108,11 +108,12 @@ array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to
 
                     '<sec:(property-for-sale|property-for-rent|preleased)>'=>'listing/index',
 
+                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<nested_sub_category:(.*)>/<state:(.*)>/<location:(.*)>/*'),
                     array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<nested_sub_category:(.*)>/<state:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<state:(.*)>/<sub_category:(.*)>/<nested_sub_category:(.*)>/*'),
                     array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<nested_sub_category:(.*)>/*'),
                     array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<state:(.*)>/*'),
                     array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/*'),
+                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<state:(.*)>/<location:(.*)>/*'),
                     array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<state:(.*)>/*'),
                     array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/*'),
                     array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<sub_category:(.*)>/*'),
