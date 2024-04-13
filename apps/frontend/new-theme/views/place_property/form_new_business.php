@@ -1211,7 +1211,6 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
                                         <script type="text/javascript">
                                             document.addEventListener("DOMContentLoaded", function() {
                                                 var subCategoryId = "<?php echo $model->sub_category_id; ?>";
-                                                
                                                 populateNestedSubcategoriesOnLoad(subCategoryId);
                                             });
                                             function populateNestedSubcategories(subCategoryId) {
@@ -1228,11 +1227,10 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
                                             }
                                             function populateNestedSubcategoriesOnLoad(subCategoryId) {
                                                 var parentId = subCategoryId;
-                                                console.log(parentId)
                                                 $.ajax({
                                                     type: 'POST',
                                                     url: '<?php echo CController::createUrl("place_property/dynamicNestedSubcategories"); ?>',
-                                                    data: {parentId: parentId},
+                                                    data: {parentId: parentId, nestedSubcategoryId: "<?php echo $model->nested_sub_category; ?>"},
                                                     success: function(data) {
                                                         $('#BusinessForSale_nested_sub_category').html(data);
                                                     }
@@ -1247,8 +1245,8 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
                                             <div class="col-sm-7">
                                                 <?php
                                                 $options = array();
-                                                $mer = array_merge($model->getHtmlOptions('nested_sub_category'), array('class' => 'input-text form-control', 'empty' => 'Select'));
-                                                echo $form->dropDownList($model, 'nested_sub_category', $options, $mer);
+                                                $mer = array_merge($model->getHtmlOptions('nested_sub_category'), array('class' => 'input-text form-control', 'empty' => 'Select Nested Sub Category'));
+												echo $form->dropDownList($model, 'nested_sub_category', $options, $mer);
                                                 echo $form->error($model, 'nested_sub_category');
                                                 ?>
                                             </div>
