@@ -449,7 +449,7 @@ if($this->id != 'contact'){ ?>
                     <!-- <div class="col-md-6 col-12 p-0">
                         <img class="rg-modal-img d-block w-100 object-fit-cover" style="height: 100%;" src="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/subscribe-modal.jpg" alt="Register Your Interest">
                     </div> -->
-                    <h4>Subscribe to our FREE Newsletter and Stay Updated!</h4>
+                    <h4 class="text-center">Subscribe to our FREE Newsletter and Stay Updated!</h4>
                     <div class="col-md-12 col-12 p-0">
                         <script data-b24-form="inline/34/btf76q" data-skip-moving="true">
                         (function(w,d,u){
