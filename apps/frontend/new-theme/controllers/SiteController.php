@@ -225,21 +225,22 @@ class SiteController extends Controller
             $criteria->select = 't.*,usr.phone as user_number,usr.email as user_email,usr.first_name,usr.first_name_ar,usr.last_name,usr.user_type as user_type,usr.full_number as mobile_number,usr.first_name,usr.last_name';
             $criteria->join  =   ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
 			//$criteria->join  =   ' LEFT JOIN {{listing_users}} p_usr on p_usr.user_id = usr.parent_user ';
-            $criteria->condition ="t.category_id=:category_id AND t.status=:status";
+            $criteria->condition ="t.category_id=:category_id AND t.status=:status AND t.isTrash = :isTrash";
             
             $criteria->params[':category_id'] = $category->category_id;
             //$criteria->params[':featured'] = 'Y';
             $criteria->params[':status'] = 'A';
+            $criteria->params[':isTrash'] = '0';
             
 			$cookieName = 'USERFAV'.COUNTRY_ID;
 			if((isset(Yii::app()->request->cookies[$cookieName])   )){
-									$cook =  Yii::app()->request->cookies[$cookieName]->value;
-									//print_r($cook);exit; 
-									if(!empty($cook) and is_array($cook)){
-											
-													$userStr = implode("', '", $cook);
-													$criteria->select .= " , CASE WHEN t.id  in ('{$userStr}') THEN 1 ELSE 0 END as fav " ;
-											 }
+				$cook =  Yii::app()->request->cookies[$cookieName]->value;
+				//print_r($cook);exit; 
+				if(!empty($cook) and is_array($cook)){
+						
+								$userStr = implode("', '", $cook);
+								$criteria->select .= " , CASE WHEN t.id  in ('{$userStr}') THEN 1 ELSE 0 END as fav " ;
+							}
 			}
 			
 			$criteria->limit = 10;
@@ -1633,23 +1634,26 @@ Jq4pd48R
 		if (!isset($formData['state']) && !isset($formData['type_of']) && !isset($formData['sub_category'])) {
 			$htm = $this->renderPartial('_list_categories', compact('formData', 'adModel'), true, false);
         } else if (isset($formData['state']) && !isset($formData['type_of']) && !isset($formData['sub_category'])) {
-            if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai'))) {
-                $htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
+			if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai'))) {
+				
+				$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
             } else {
-                $htm = $this->renderPartial('_list_categories', compact('formData', 'adModel'), true, false);
+				
+				$htm = $this->renderPartial('_list_categories', compact('formData', 'adModel'), true, false);
             }
         } 
         // else if (!isset($formData['state']) && isset($formData['type_of']) && !isset($formData['sub_category'])) {
-           
-            // $subCategories = SubCategory::model()->find($fermData['sub_category']);
+			
+			// $subCategories = SubCategory::model()->find($fermData['sub_category']);
             // $htm = $this->renderPartial('_list_sub_categories', compact('formData', 'adModel', 'subCategories'), true, false);
-        // } 
-        else if (isset($formData['state']) && isset($formData['type_of']) && isset($formData['sub_category'])) {
-			$htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
-        } else if (!isset($formData['state']) && isset($formData['type_of']) && !isset($formData['sub_category'])) {
-			$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
-        } else if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai')) && !isset($formData['sub_category'])) {
-			$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
+			// } 
+			else if (isset($formData['state']) && isset($formData['type_of']) && isset($formData['sub_category'])) {
+				$htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
+			} else if (!isset($formData['state']) && isset($formData['type_of']) && !isset($formData['sub_category'])) {
+				$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
+			} else if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai')) && !isset($formData['sub_category'])) {
+				// $htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
+				// print_r(5);
         } else {
 			$htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
         }
@@ -1718,9 +1722,10 @@ Jq4pd48R
 			$htm = $this->renderPartial('_list_nested_sub_categories', compact('formData', 'adModel'), true, false);
         }else if (!isset($formData['state'])) {
 			$htm = $this->renderPartial('_list_business_location', compact('formData', 'adModel'), true, false);
+		}else if (isset($formData['location'])){
+		
 		}else {
 			$htm = $this->renderPartial('_list_location_business', compact('formData', 'adModel'), true, false);
-		
 		}
 
 		//$htm = $this->renderPartial('_list_categories',compact('new_homes','formData'),true,false);

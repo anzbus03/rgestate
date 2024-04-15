@@ -389,10 +389,10 @@ header('Content-type: text/html; charset=UTF-8');
             foreach ($nestedSubcategories as $subcategory) {
                 $options[$subcategory->sub_category_id] = $subcategory->sub_category_name;
             }
-            echo CHtml::tag('option', array('value' => ''), CHtml::encode('Select'), true);
-            foreach ($options as $value => $name) {
-                echo CHtml::tag('option', array('value' => $value), CHtml::encode($name), true);
-            }
+            echo CHtml::tag('option', array('value' => ''), CHtml::encode('Select Nested Sub Category'), true);
+			foreach ($options as $value => $name) {
+				$selected = ($_POST['nestedSubcategoryId'] == $value) ? 'selected' : '';
+				echo CHtml::tag('option', array('value' => $value, 'selected' => $selected), CHtml::encode($name), true);            }
         }
         Yii::app()->end();
     }

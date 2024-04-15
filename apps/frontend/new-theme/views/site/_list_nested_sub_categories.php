@@ -35,7 +35,6 @@ if (!empty($create_array)) {
 if ($query == '?') {
     $query = '';
 }
-
 // Display sub-categories
 if (!empty($new_homes)) {
     echo '<ul id="ldlist" class="list-inline-item row col-sm-12">';

@@ -3485,6 +3485,11 @@ class BusinessForSale extends ActiveRecord
 			$criteria->condition .= ' and nestsubcat.slug=:nested_sub_category ';
 			$criteria->params[':nested_sub_category'] = $formData['nested_sub_category'];
 		}
+		if(isset($formData['location']) and !empty($formData['location'])){
+	        $criteria->join  .= ' left join {{states}} sta ON sta.state_id = t.state ';
+			$criteria->condition .= ' and sta.slug=:location ';
+			$criteria->params[':location'] = $formData['location'];
+		}
 		
 		if (isset($formData['section_id']) and !empty($formData['section_id'])) {
 			$criteria->join  .= ' left join {{section}} sec ON sec.section_id = t.section_id ';
