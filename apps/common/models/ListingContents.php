@@ -328,6 +328,18 @@ class ListingContents extends ActiveRecord
                 $criteria->condition .= ' and t.p_type= :p_type ';
                 $criteria->params[':p_type']  = $this->p_type;
 		}
+		if(!empty($this->sub_category)){
+                $criteria->condition .= ' and t.sub_category= :sub_category ';
+                $criteria->params[':sub_category']  = $this->sub_category;
+		}
+		if(!empty($this->sub_category)){
+                $criteria->condition .= ' and t.sub_category= :sub_category ';
+                $criteria->params[':sub_category']  = $this->sub_category;
+		}
+		if(!empty($this->nested_sub_category)){
+                $criteria->condition .= ' and t.nested_sub_category= :nested_sub_category ';
+                $criteria->params[':nested_sub_category']  = $this->nested_sub_category;
+		}
 	    $found = self::model()->find($criteria);
 	    if($found and ($found->areaguides_id != $this->areaguides_id)  ){
 	        	$this->addError($attribute, 'Same Area, City, Category Already Exist. Click here to update it'.Chtml::link('Update',Yii::app()->createUrl('listing_contents/update',array('id'=>$found->areaguides_id))));
