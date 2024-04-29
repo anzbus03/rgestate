@@ -128,7 +128,7 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Services <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="<?php echo $app->createUrl('/services/project_funding');?>">Project Funding</a></li>
-                    <li><a class="dropdown-item" href="<?php echo $app->createUrl('/services/startup_funding');?>">Startup Funding</a></li>
+                    <li><a class="dropdown-item" href="<?php echo $app->createUrl('/services/business_funding');?>">Business Funding</a></li>
                     <li><a class="dropdown-item" href="<?php echo $app->createUrl('/services/project_development');?>">Project Development</a></li>
                     <li><a class="dropdown-item" href="<?php echo $app->createUrl('/services/project_contracting');?>">Project Contracting</a></li>
                     <li><a class="dropdown-item" href="<?php echo $app->createUrl('/services/interior_fitouts');?>">Interior Fitouts</a></li>

@@ -226,7 +226,7 @@ $languages = OptionCommon::systemLanguages();
                       <ul class="dropdown-menu rg-dropdown">
                         <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/project_funding');?>"><?php echo Yii::app()->tags->getTag('project_funding','Project Funding')?></a></li>
                         <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/retail_investments');?>"><?php echo Yii::app()->tags->getTag('retail_investments','Retail Investments')?></a></li>
-                        <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/startup_funding');?>"><?php echo Yii::app()->tags->getTag('startup_funding','Startup Funding')?></a></li>
+                        <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/business_funding');?>"><?php echo Yii::app()->tags->getTag('startup_funding','Business Funding')?></a></li>
                         <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/project_development');?>"><?php echo Yii::app()->tags->getTag('project_development','Project Development')?></a></li>
                         <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/project_contracting');?>"><?php echo Yii::app()->tags->getTag('project_contracting','Project Contracting')?></a></li>
                         <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/interior_fitouts');?>"><?php echo Yii::app()->tags->getTag('interior_fitouts','Interior Fitouts')?></a></li>

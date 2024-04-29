@@ -12,7 +12,7 @@
                         <nav>
                             <ol class="breadcrumb rg-fs-16 rg-fw-400 mb-0">
                                 <li class="breadcrumb-item"><a href="#"><?php echo $this->tag->getTag('home','Home');?></a></li>
-                                <li class="breadcrumb-item active"><?php echo $this->tag->getTag('startup_funding','Startup Funding');?></li>
+                                <li class="breadcrumb-item active"><?php echo $this->tag->getTag('startup_funding','Business Funding');?></li>
                             </ol>
                         </nav>
                     </div>

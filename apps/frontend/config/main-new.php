@@ -275,7 +275,7 @@ array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to
 				array('services/interior_fitouts','pattern' => 'services/interior-fitouts'),
 				array('services/building_maintenance','pattern' => 'services/building-maintenance'),
 				array('services/business_buying_selling','pattern' => 'services/business-buying-selling'),
-				array('services/startup_funding','pattern' => 'services/startup-funding'),
+				array('services/business_funding','pattern' => 'services/business-funding'),
 				array('for-rent','pattern' => 'property-for-rent'),
 				
             ),

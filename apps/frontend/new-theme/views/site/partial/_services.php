@@ -40,11 +40,11 @@
                               <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-startup-funding"></use>
                           </svg>
                       </div>
-                      <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('startup_funding','Startup Funding')?></h2>
+                      <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('business_funding','Business Funding')?></h2>
                       <p class="rg-fs-14 rg-fw-400 rg-text-gray-600 rg-mt-12">Limitless potential in real estate with
                           our comprehensive project funding solutions, propelling your ventures towards success and
                           growth."</p>
-                      <a href="<?php echo Yii::app()->createUrl('services/startup_funding'); ?>" class="btn btn-outline-secondary mt-4">Learn More</a>
+                      <a href="<?php echo Yii::app()->createUrl('services/business_funding'); ?>" class="btn btn-outline-secondary mt-4">Learn More</a>
                   </div>
               </li>
               <li>
