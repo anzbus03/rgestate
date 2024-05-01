@@ -321,13 +321,16 @@ smartad_title a {
                             <a href="<?php echo Yii::app()->createUrl('services/business_buying_selling'); ?>"><?php echo $this->tag->getTag('business_buying_&_sell','Business Buying & Selling');?></a>
                         </li>
                         <li>
+                            <a href="<?php echo Yii::app()->createUrl('services/business_funding'); ?>"><?php echo $this->tag->getTag('project_funding','Business Funding');?></a>
+                        </li>
+                        <li>
                             <a href="<?php echo Yii::app()->createUrl('services/project_funding'); ?>"><?php echo $this->tag->getTag('project_funding','Project Funding');?></a>
                         </li>
                         <li>
                             <a href="<?php echo Yii::app()->createUrl('services/project_development'); ?>"><?php echo $this->tag->getTag('project_development','Project Development');?></a>
                         </li>
                         <li>
-                            <a href="<?php echo Yii::app()->createUrl('services/project_contracting'); ?>"><?php echo $this->tag->getTag('project_contracting','Project Cotracting');?></a>
+                            <a href="<?php echo Yii::app()->createUrl('services/project_contracting'); ?>"><?php echo $this->tag->getTag('project_contracting','Project Contracting');?></a>
                         </li>
                         <li>
                             <a href="javascript:void(0)"><?php echo $this->tag->getTag('industrial_maintenance','Industrial Maintenance');?></a>
