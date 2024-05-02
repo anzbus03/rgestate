@@ -225,10 +225,10 @@ class SiteController extends Controller
             $criteria->select = 't.*,usr.phone as user_number,usr.email as user_email,usr.first_name,usr.first_name_ar,usr.last_name,usr.user_type as user_type,usr.full_number as mobile_number,usr.first_name,usr.last_name';
             $criteria->join  =   ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
 			//$criteria->join  =   ' LEFT JOIN {{listing_users}} p_usr on p_usr.user_id = usr.parent_user ';
-            $criteria->condition ="t.category_id=:category_id AND t.featured = :featured AND t.status=:status AND t.isTrash = :isTrash";
+            $criteria->condition ="t.category_id=:category_id AND t.status=:status AND t.isTrash = :isTrash";
             
             $criteria->params[':category_id'] = $category->category_id;
-            $criteria->params[':featured'] = 'Y';
+            // $criteria->params[':featured'] = 'Y';
             $criteria->params[':status'] = 'A';
             $criteria->params[':isTrash'] = '0';
             
