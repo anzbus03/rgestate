@@ -228,7 +228,7 @@ class SiteController extends Controller
             $criteria->condition ="t.category_id=:category_id AND t.status=:status AND t.isTrash = :isTrash";
             
             $criteria->params[':category_id'] = $category->category_id;
-            //$criteria->params[':featured'] = 'Y';
+            // $criteria->params[':featured'] = 'Y';
             $criteria->params[':status'] = 'A';
             $criteria->params[':isTrash'] = '0';
             

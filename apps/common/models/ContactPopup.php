@@ -152,7 +152,7 @@ class ContactPopup extends ActiveRecord
 		    'Real Estate'            => 'Real Estate',
 			'Project Funding'        => 'Project Funding',
 			'Retail Investments'     => 'Retail Investments',
-			'Startup Funding'        => 'Startup Funding',
+			'Business Funding'        => 'Business Funding',
 			'Project Development'    => 'Project Development',
 			'Project Contracting'    => 'Project Contracting',
 			'Interior Fitouts'       => 'Interior Fitouts',

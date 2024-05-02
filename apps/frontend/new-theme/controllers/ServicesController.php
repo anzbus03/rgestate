@@ -104,18 +104,18 @@ class ServicesController extends Controller
 		$this->render('project-funding',compact('model'));		
 	}
 
-	public function actionStartup_funding(){
+	public function actionBusiness_funding(){
 	    $model = new ContactPopup;
 	    $this->setData(array(
-            'pageTitle'             => "Startup Funding in Dubai".' | '.BRAND_TITLE, 
-            'pageMetaTitle'         => "Dubai Startups Funding: Discover Investment Opportunities in the UAE".' | '.BRAND_TITLE, 
-            'pageMetaDescription'   => 'Elevate your Dubai startup with expert funding services. Unlock growth opportunities and thrive in the bustling business landscape with RGEstate',
-            'title'                 => "Startup Funding in Dubai" ,
-            'description'           => "Are you a visionary entrepreneur looking to launch your startup in Dubai? Our specialized Startup Funding service at RGEstate, a division of Riveria Global Group, is your key to accessing the financial resources needed to turn your innovative ideas into reality.",
+            'pageTitle'             => "Business Funding in Dubai".' | '.BRAND_TITLE, 
+            'pageMetaTitle'         => "Dubai Business Funding: Discover Investment Opportunities in the UAE".' | '.BRAND_TITLE, 
+            'pageMetaDescription'   => 'Elevate your Dubai business with expert funding services. Unlock growth opportunities and thrive in the bustling business landscape with RGEstate',
+            'title'                 => "Business Funding in Dubai" ,
+            'description'           => "Are you a visionary entrepreneur looking to launch your startup in Dubai? Our specialized Business Funding service at RGEstate, a division of Riveria Global Group, is your key to accessing the financial resources needed to turn your innovative ideas into reality.",
              
         ));
 	    
-		$this->render('startup-funding',compact('model'));		
+		$this->render('business-funding',compact('model'));		
 	}
 	public function actionContact_popup(){
         

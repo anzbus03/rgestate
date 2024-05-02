@@ -64,9 +64,10 @@ html textarea.input-text.form-control {
                         <div class="rg-featured-card rg-br-16">
                             <div class="rg-featured-img position-relative">
                                 <div
-                                    class="rg-badges text-uppercase d-flex align-items-center justify-content-between position-absolute w-100">
-                                    <span class="badge rg-bg-orange">FEATURED</span>
-                                    <?php if($add->super_hot){ ?>
+                                class="rg-badges text-uppercase d-flex align-items-center justify-content-between position-absolute w-100">
+                                    <?php if($add->featured == "Y"){ ?>
+                                        <span class="badge rg-bg-orange">FEATURED</span>
+                                    <?php }if($add->super_hot){ ?>
                                         <span class="badge rg-bg-black-rgb">SUPER HOT</span>
                                     <?php }else if($add->hot){ ?>
                                         <span class="badge rg-bg-black-rgb">HOT</span>

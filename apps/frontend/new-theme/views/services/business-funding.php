@@ -4,17 +4,17 @@
             <div class="rg-page-header-bg rg-startup-funding position-relative overflow-hidden">
                 <div class="rg-page-header-content position-relative d-flex flex-column justify-content-center z-1">
                     <h1 class="rg-fs-40 rg-fw-600 text-white">
-                        <?php echo $this->tag->getTag('startup_funding_dubai','Startup Funding in Dubai') ?>
+                        <?php echo $this->tag->getTag('startup_funding_dubai','Business Funding in Dubai') ?>
                     </h1>
                     <p class="rg-fs-16 mt-4 rg-text-gray-300">
-                        <?php echo $this->tag->getTag('startup_funding_visionary','Are you a visionary entrepreneur looking to launch your startup in Dubai? Our specialized Startup Funding service at RGEstate, a division of Riveria Global Group, is your key to accessing the financial resources needed to turn your innovative ideas into reality.') ?>
+                        <?php echo $this->tag->getTag('startup_funding_visionary','Are you a visionary entrepreneur looking to launch your business in Dubai? Our specialized Business Funding service at RGEstate, a division of Riveria Global Group, is your key to accessing the financial resources needed to turn your innovative ideas into reality.') ?>
                         
                     </p>
                     <div class="rg-breadcrumb mt-4">
                         <nav>
                             <ol class="breadcrumb rg-fs-16 rg-fw-400 mb-0">
                                 <li class="breadcrumb-item"><a href="#"><?php echo $this->tag->getTag('home','Home') ?></a></li>
-                                <li class="breadcrumb-item active"><?php echo $this->tag->getTag('startup_funding','Startup Funding') ?></li>
+                                <li class="breadcrumb-item active"><?php echo $this->tag->getTag('startup_funding','Business Funding') ?></li>
                             </ol>
                         </nav>
                     </div>
@@ -31,19 +31,19 @@
                 <div class="col-lg-7">
                     <div class="rg-static-header position-relative d-flex flex-column justify-content-center">
                         <h2 class="rg-fs-40 rg-fs-sm-26 rg-fw-700 rg-text-blue">
-                            <?php echo $this->tag->getTag('unlock_startup_funding','Unlocking Opportunities for Startup Funding in Dubai') ?>
+                            <?php echo $this->tag->getTag('unlock_startup_funding','Unlocking Opportunities for Business Funding in Dubai') ?>
                         </h2>
                         <p class="rg-fs-18 rg-fw-400 rg-text-gray-800 mt-3 rg-w-420">
-                            <?php echo $this->tag->getTag('startup_funding_navigating','Navigating the Thriving Startup Ecosystem') ?>
+                            <?php echo $this->tag->getTag('startup_funding_navigating','Navigating the Thriving Business Ecosystem') ?>
                             
                         </p>
                     </div>
                     <p class="rg-fs-18 rg-fw-400 rg-text-gray-800">
-                        <?php echo $this->tag->getTag('startup_funding_vibrant','Dubai\'s vibrant business landscape offers a plethora of opportunities for startups, but securing funding can be a daunting task. That\'s where we come in. With over 20 years of industry experience and a team of seasoned professionals, we are your trusted partner in the pursuit of startup funding in Dubai.') ?>
+                        <?php echo $this->tag->getTag('startup_funding_vibrant','Dubai\'s vibrant business landscape offers a plethora of opportunities for businesses, but securing funding can be a daunting task. That\'s where we come in. With over 20 years of industry experience and a team of seasoned professionals, we are your trusted partner in the pursuit of Business funding in Dubai.') ?>
                         
                     </p>
                     <p class="rg-fs-18 rg-fw-400 rg-text-gray-800 mt-4">
-                        <?php echo $this->tag->getTag('startup_understand','At RGEstate, we understand that securing the right funding is essential for the growth and success of your startup. 
+                        <?php echo $this->tag->getTag('startup_understand','At RGEstate, we understand that securing the right funding is essential for the growth and success of your business. 
                         Our comprehensive service is designed to provide you with the guidance and expertise needed to navigate Dubai\'s dynamic entrepreneurial ecosystem.') ?>
                     </p>
                      <div class="rg-contact-form rg-br-20 d-block d-lg-none">
@@ -91,7 +91,7 @@
                                 <?php echo $form->textField($model, 'phone_false',$model->getHtmlOptions('phone_false',array('id'=>'phone2','class'=>'form-input','placeholder'=>$this->tag->getTag('contact_number_*','Contact Number *')))); ?>
 							    <?php echo $form->error($model, 'phone_false');?>
 							</div>
-							<input type="hidden" name="ContactPopup[type]" value="Startups Funding" >
+							<input type="hidden" name="ContactPopup[type]" value="Business Funding" >
                             <div class="form-group">
                                 <?php echo $form->textArea($model, 'message',$model->getHtmlOptions('message',array('cols'=>'40','rows'=>'2',
                                 'class'=>'form-input','style'=>'min-height:200px;',
@@ -117,13 +117,13 @@
                         </li>
                     </ul>
                     <p class="rg-fs-18 rg-fw-400 rg-text-gray-800">
-                        <?php echo $this->tag->getTag('personalized_assistance','We offer personalized assistance in identifying suitable funding sources, preparing compelling business plans, and presenting your startup in the most attractive light to potential investors. Whether you\'re seeking angel investors, venture capital, government grants, or exploring crowdfunding options, we have the knowledge and network to help you secure the financial backing you need.');?>
+                        <?php echo $this->tag->getTag('personalized_assistance','We offer personalized assistance in identifying suitable funding sources, preparing compelling business plans, and presenting your business in the most attractive light to potential investors. Whether you\'re seeking angel investors, venture capital, government grants, or exploring crowdfunding options, we have the knowledge and network to help you secure the financial backing you need.');?>
                     </p>
                     <p class="rg-fs-18 rg-fw-400 rg-text-gray-800 mt-4">
-                        <?php echo $this->tag->getTag('teams_commitment','Our team\'s commitment goes beyond funding acquisition. We provide ongoing support, helping you fine-tune your business strategy, navigate regulatory requirements, and position your startup for sustainable growth in Dubai\'s competitive market.');?>
+                        <?php echo $this->tag->getTag('teams_commitment','Our team\'s commitment goes beyond funding acquisition. We provide ongoing support, helping you fine-tune your business strategy, navigate regulatory requirements, and position your business for sustainable growth in Dubai\'s competitive market.');?>
                         </p>
                     <p class="rg-fs-18 rg-fw-400 rg-text-gray-800 mt-4">
-                        <?php echo $this->tag->getTag('startup_ready','Ready to take the next step in securing funding for your Dubai startup? Reach out to us now to schedule a consultation. Our experts are eager to understand your specific funding requirements and help you embark on your entrepreneurial journey.');?>
+                        <?php echo $this->tag->getTag('startup_ready','Ready to take the next step in securing funding for your Dubai business? Reach out to us now to schedule a consultation. Our experts are eager to understand your specific funding requirements and help you embark on your entrepreneurial journey.');?>
                         
                     </p>
                 </div>
@@ -174,7 +174,7 @@
                                     <?php echo $form->textField($model, 'phone_false',$model->getHtmlOptions('phone_false',array('class'=>'form-input','placeholder'=>$this->tag->getTag('contact_number_*','Contact Number *')))); ?>
     							    <?php echo $form->error($model, 'phone_false');?>
     							</div>
-    							<input type="hidden" name="ContactPopup[type]" value="Startups Funding" >
+    							<input type="hidden" name="ContactPopup[type]" value="Business Funding" >
                                 <div class="form-group">
                                     <?php echo $form->textArea($model, 'message',$model->getHtmlOptions('message',array('cols'=>'40','rows'=>'2',
                                     'class'=>'form-input','style'=>'min-height:200px;',
@@ -198,7 +198,7 @@
     <!--        <div class="row">-->
     <!--            <div class="col-lg-6">-->
     <!--                <div class="rg-static-header position-relative d-flex flex-column justify-content-center">-->
-    <!--                    <h2 class="rg-fs-40 rg-fw-700 rg-text-blue">Kickstart Your Startup Funding Journey Today</h2>-->
+    <!--                    <h2 class="rg-fs-40 rg-fw-700 rg-text-blue">Kickstart Your Business Funding Journey Today</h2>-->
     <!--                    <p class="rg-fs-18 rg-fw-400 rg-text-gray-800 mt-3 rg-w-286">Let's Fuel Your Entrepreneurial Vision</p>-->
     <!--                </div>-->
     <!--                <p class="rg-fs-18 rg-fw-400 rg-text-gray-600">We deliver the fine enjoy in the whole thing actual-->
@@ -229,7 +229,7 @@
                 class="rg-join-bg position-relative d-flex align-items-center justify-content-center rg-br-10 overflow-hidden">
                 <div class="position-relative z-1">
                     <h2 class="rg-fs-28 rg-fw-700 text-white mx-auto text-center">
-                        <?php echo $this->tag->getTag('kick_start_startup','Kickstart Your Startup Funding Journey Today');?>
+                        <?php echo $this->tag->getTag('kick_start_startup','Kickstart Your Business Funding Journey Today');?>
                     </h2>
                     <p class="rg-fs-16 rg-sm-fs-14 rg-fw-400 text-white text-center mt-3">
                         <?php echo $this->tag->getTag('startup_fuel','Let\'s Fuel Your Entrepreneurial Vision');?>
@@ -360,7 +360,7 @@
                 <div class="col-lg-6">
                     <div class="rg-we-partner-left">
                         <h2 class="rg-fs-30 rg-fs-sm-24rg-fw-700 text-black">
-                            <?php echo $this->tag->getTag('faq_startup','Frequently Asked Questions about Startup Funding in Dubai');?>
+                            <?php echo $this->tag->getTag('faq_startup','Frequently Asked Questions about Business Funding in Dubai');?>
                             
                         </h2>
                         <p class="rg-fs-18 tp-bg-gray-600 rg-mt-20">
@@ -383,13 +383,13 @@
                                 <h2 class="accordion-header">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <?php echo $this->tag->getTag('funding_options_startup', 'What funding options are available for startups in Dubai?') ?>
+                                        <?php echo $this->tag->getTag('funding_options_startup', 'What funding options are available for business in Dubai?') ?>
                                     </button>
                                 </h2>
                                 <div id="collapseOne" class="accordion-collapse collapse show"
                                     data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <?php echo $this->tag->getTag('funding_options_startup_answer', 'Dubai offers a range of funding options, including angel investors, venture capital, government grants, and crowdfunding platforms. We\'ll help you explore the best fit for your startup.') ?>
+                                        <?php echo $this->tag->getTag('funding_options_startup_answer', 'Dubai offers a range of funding options, including angel investors, venture capital, government grants, and crowdfunding platforms. We\'ll help you explore the best fit for your business.') ?>
                                     </div>
                                 </div>
                             </div>
@@ -397,13 +397,13 @@
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        <?php echo $this->tag->getTag('challenging_startup', 'Is it challenging for startups to secure funding in Dubai?') ?>
+                                        <?php echo $this->tag->getTag('challenging_startup', 'Is it challenging for business to secure funding in Dubai?') ?>
                                     </button>
                                 </h2>
                                 <div id="collapseTwo" class="accordion-collapse collapse"
                                     data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <?php echo $this->tag->getTag('challenging_startup_answer', 'While competition exists, Dubai\'s supportive environment and incentives for startups make it an attractive destination for investors. We\'ll guide you through the process.') ?>
+                                        <?php echo $this->tag->getTag('challenging_startup_answer', 'While competition exists, Dubai\'s supportive environment and incentives for business make it an attractive destination for investors. We\'ll guide you through the process.') ?>
                                     </div>
                                 </div>
                             </div>
@@ -412,13 +412,13 @@
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseThree" aria-expanded="false"
                                         aria-controls="collapseThree">
-                                        <?php echo $this->tag->getTag('business_plan', 'Do I need a business plan to secure startup funding?') ?>
+                                        <?php echo $this->tag->getTag('business_plan', 'Do I need a business plan to secure Business funding?') ?>
                                     </button>
                                 </h2>
                                 <div id="collapseThree" class="accordion-collapse collapse"
                                     data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <?php echo $this->tag->getTag('business_plan_answer', 'Yes, a well-prepared business plan is often crucial. We can assist in creating a compelling plan that highlights your startup\'s potential.') ?>
+                                        <?php echo $this->tag->getTag('business_plan_answer', 'Yes, a well-prepared business plan is often crucial. We can assist in creating a compelling plan that highlights your business\'s potential.') ?>
                                     </div>
                                 </div>
                             </div>
@@ -457,13 +457,13 @@
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseSix" aria-expanded="false"
                                         aria-controls="collapseSix">
-                                        <?php echo $this->tag->getTag('what_sets_startups', 'What sets RGEstate\'s startup funding services apart?') ?>
+                                        <?php echo $this->tag->getTag('what_sets_startups', 'What sets RGEstate\'s Business funding services apart?') ?>
                                     </button>
                                 </h2>
                                 <div id="collapseSix" class="accordion-collapse collapse"
                                     data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <?php echo $this->tag->getTag('what_sets_startups_answer', 'Our expertise, industry knowledge, and personalized approach ensure your startup gets the attention it deserves.') ?>
+                                        <?php echo $this->tag->getTag('what_sets_startups_answer', 'Our expertise, industry knowledge, and personalized approach ensure your business gets the attention it deserves.') ?>
                                         
                                     </div>
                                 </div>
@@ -480,7 +480,7 @@
                                 <div id="collapseSeven" class="accordion-collapse collapse"
                                     data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <?php echo $this->tag->getTag('post_funding_startup_answer', 'Absolutely, we offer ongoing support to help your startup grow and thrive in Dubai\'s entrepreneurial ecosystem.') ?> 
+                                        <?php echo $this->tag->getTag('post_funding_startup_answer', 'Absolutely, we offer ongoing support to help your business grow and thrive in Dubai\'s entrepreneurial ecosystem.') ?> 
                                     </div>
                                 </div>
                             </div>
@@ -489,13 +489,13 @@
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseEight" aria-expanded="false"
                                         aria-controls="collapseEight">
-                                            <?php echo $this->tag->getTag('initiate_startup', 'How can I initiate the startup funding process with RGEstate?') ?>
+                                            <?php echo $this->tag->getTag('initiate_startup', 'How can I initiate the Business funding process with RGEstate?') ?>
                                     </button>
                                 </h2>
                                 <div id="collapseEight" class="accordion-collapse collapse"
                                     data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <?php echo $this->tag->getTag('initiate_startup_answer', 'Simply reach out to us, and we\'ll schedule a consultation to discuss your specific funding needs and get your startup on the path to success.') ?>
+                                        <?php echo $this->tag->getTag('initiate_startup_answer', 'Simply reach out to us, and we\'ll schedule a consultation to discuss your specific funding needs and get your business on the path to success.') ?>
                                     </div>
                                 </div>
                             </div>
