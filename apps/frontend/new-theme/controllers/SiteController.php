@@ -218,7 +218,20 @@ class SiteController extends Controller
 		$featured = [];
 
 		$model = new PlaceAnAdNew();
-
+		// Fetch featured listings separately
+		$criteriaFeatured = new CDbCriteria();
+		$criteriaFeatured->select = 't.*,usr.phone as user_number,usr.email as user_email,usr.first_name,usr.first_name_ar,usr.last_name,usr.user_type as user_type,usr.full_number as mobile_number,usr.first_name,usr.last_name';
+		$criteriaFeatured->join = ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
+		$criteriaFeatured->condition = "t.featured = 'Y' AND t.status = :status AND t.isTrash = :isTrash";
+		$criteriaFeatured->params[':status'] = 'A';
+		$criteriaFeatured->params[':isTrash'] = '0';
+		$criteriaFeatured->limit = 10;
+		$featuredListings = $model->findAll($criteriaFeatured);
+		   // Add featured listings to $featured array
+		   $featured[] = array(
+			'category' => (object) ['category_name' => 'Featured Listings'],
+			'listings' => $featuredListings
+		);
 		foreach($catSlugs as $slug){
 
 			$category = Category::model()->getCategoryFromSlug($slug);
