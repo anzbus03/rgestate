@@ -53,11 +53,14 @@ html textarea.input-text.form-control {
             <?php  foreach($featured as $key =>  $featured_list){  //print_r($featured_list);?>
             <?php $category = $featured_list['category']; ?>
             <?php $listings = $featured_list['listings']; ?>
+          
             <div class="tab-pane fade <?php echo ($key == 0) ? 'show active' : ''; ?>" id="cat-<?php echo $category->category_id; ?>-tab-pane" role="tabpanel"
                 aria-labelledby="warehouse-tab" tabindex="0">
                 <ul class="rg-featured-slider rg-arrow-wh">
                     <?php foreach( $listings as $add){ 
-                        // echo '<pre>'; print_r($add); echo '</pre>'; 
+                        $category = Category::model()->findByPk($add->category_id);
+                        // echo '<pre>'; print_r($add->category_id . " ASD"); echo '</pre>'; 
+                        
                     ?>
                     <?php $add->ad_images_g = $add->cron_images; ?>
                     <li>

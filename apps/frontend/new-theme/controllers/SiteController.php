@@ -213,7 +213,7 @@ class SiteController extends Controller
     }
 	private function getHomeFeaturedListing(){
         $criteria = new CDbCriteria();
-		$catSlugs = ['Warehouse','retail','labor-camp','land','hospital','hospitals','schools','building','hotels'];
+		$catSlugs = ['featured', 'Warehouse','retail','labor-camp','land','hospital','hospitals','schools','building','hotels'];
 
 		$featured = [];
 
