@@ -134,7 +134,6 @@
             font-size: 35px;
             color: red;
         }
-        
     </style>
 </head>
 
@@ -321,10 +320,62 @@
       </div>
     </div>
   </div>
-<div id="dynamicScripts"></div>
-<div class="modal modal-new fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  
+  <style>
+    .close {
+        position: absolute;
+        /* top: 10px; */
+        right: 10px;
+        font-size: 24px;
+        color: #000; /* Change color as needed */
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Close button hover effect */
+    .close:hover {
+        color: #ff0000; /* Change color on hover as needed */
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var closeButton = document.querySelector(".modal-header .close");
+
+      closeButton.addEventListener("click", function() {
+        var modal = document.getElementById("exampleModal");
+        $(modal).modal("hide");
+      });
+    });
+  </script>
+<div id="dynamicScripts"></div><div class="modal modal-new fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content position-relative rounded-0">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row m-0">
+                  
+              <!-- <div class="col-md-6 col-12 p-0">
+                  <img class="rg-modal-img d-block w-100 object-fit-cover" style="height: 100%;" src="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/subscribe-modal.jpg" alt="Register Your Interest">
+              </div> -->
+              <h4 class="text-center" style="margin-bottom: 0px;">Subscribe to our FREE Newsletter and Stay Updated!</h4>
+              <div class="col-md-12 col-12 p-0">
+                  <script data-b24-form="inline/34/btf76q" data-skip-moving="true">
+                  (function(w,d,u){
+                  var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);
+                  var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
+                  })(window,document,'https://cdn.bitrix24.in/b25292121/crm/form/loader_34.js');
+                  </script>
+              </div>
+          </div>    
+        </div>
+      </div>
+  </div>
 </div>
+
 <ul class="rg-hero-contact w-100 position-fixed top-50 end-0 translate-middle-y z-1 text-white">
           <li class="pt-4 pb-3">
             <a href="#" class="d-block text-center" data-bs-toggle="modal" data-bs-target="#popupmodal">
