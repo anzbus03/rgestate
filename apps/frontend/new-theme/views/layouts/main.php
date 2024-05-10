@@ -476,9 +476,12 @@ if($this->id != 'contact'){ ?>
             
             Cookies.set('modalShownBlog', 'true', { expires: 7 }); 
         })
-        document.getElementById('closepopup').addEventListener('click', function() {
-            $('#exampleModal').modal('hide')
-        });  
+        var closeButton = document.getElementById('closepopup');
+        if (closeButton) {
+            closeButton.addEventListener('click', function() {
+                $('#exampleModal').modal('hide');
+            });
+        }
         function showModalBlog() {
     
             $('#exampleModal').modal("show")

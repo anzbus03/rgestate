@@ -78,7 +78,7 @@
                               <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-building-maintenance"></use>
                           </svg>
                       </div>
-                      <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('building_maintainence','Building Maintanance')?></h2>
+                      <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('building_maintainence','Building Maintenance')?></h2>
                       <p class="rg-fs-14 rg-fw-400 rg-text-gray-600 rg-mt-12">Elevate the value of your real estate assets with our top-notch building maintenance offerings. From routine upkeep to specialized services, we keep your properties at their best.</p>
                       <a href="<?php echo Yii::app()->createUrl('services/building_maintenance'); ?>" class="btn btn-outline-secondary mt-4">Learn More</a>
                   </div>

@@ -29,7 +29,7 @@
                         <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-accomodation"></use>
                     </svg>
                 </div>
-                <p class="rg-fs-12 rg-fw-400 rg-text-dark mt-3"><?php echo Yii::app()->tags->getTag('accommodation','Accomidation')?></p>
+                <p class="rg-fs-12 rg-fw-400 rg-text-dark" style="margin: 10px 10px 0;"><?php echo Yii::app()->tags->getTag('accommodation','Accommodation')?></p>
             </a>
             </li>
             <li>
