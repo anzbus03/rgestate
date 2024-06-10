@@ -225,7 +225,7 @@ class SiteController extends Controller
 		$criteriaFeatured->condition = "t.featured = 'Y' AND t.status = :status AND t.isTrash = :isTrash";
 		$criteriaFeatured->params[':status'] = 'A';
 		$criteriaFeatured->params[':isTrash'] = '0';
-		$criteriaFeatured->order = 't.last_updated DESC';
+		$criteriaFeatured->order = 't.featured_date DESC';
 		$criteriaFeatured->limit = 10;
 		$featuredListings = $model->findAll($criteriaFeatured);
 		   // Add featured listings to $featured array

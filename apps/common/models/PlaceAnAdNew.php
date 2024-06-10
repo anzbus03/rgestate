@@ -46,6 +46,7 @@ class PlaceAnAdNew extends PlaceAnAd
 	 public function getExpityConditionFronEnd(){
 	   return  ' and t.cron_expiry ="1" '; 
     }
+
 	 public static function model($className=__CLASS__)
     {
         return parent::model($className);
