@@ -26,7 +26,7 @@
                             <div class="bg-white rg-br-10">
                                 <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('commercial_real_estate','Commercial Real Estate ')?></h2>
                                 <p class="rg-fs-14 rg-fw-400 rg-text-gray-600 rg-mt-12"><?php echo Yii::app()->tags->getTag('commercial_real_estate_details','RG Group: Dubai\'s top commercial real estate partner with 15+ years of experience. Tailored solutions for your business needs.')?></p>
-                                <a href="<?php echo Yii::app()->createUrl('services/commercial_real_estate'); ?>" class="btn btn-outline-secondary mt-4"><?php echo Yii::app()->tags->getTag('learn_more','Learn More')?></a>
+                                <!-- <a href="<?php echo Yii::app()->createUrl('services/commercial_real_estate'); ?>" class="btn btn-outline-secondary mt-4"><?php echo Yii::app()->tags->getTag('learn_more','Learn More')?></a> -->
                             </div>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                             <div class="bg-white rg-br-10">
                                 <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('project_development','Project Development ')?></h2>
                                 <p class="rg-fs-14 rg-fw-400 rg-text-gray-600 rg-mt-12"><?php echo Yii::app()->tags->getTag('project_development_details','Turn your dreams into reality with RGEstate\'s skilled project development in Dubai. Partner with us for customized solutions and successful outcomes.')?></p>
-                                <a href="<?php echo Yii::app()->createUrl('services/project_development'); ?>" class="btn btn-outline-secondary mt-4"><?php echo Yii::app()->tags->getTag('learn_more','Learn More')?></a>
+                                <!-- <a href="<?php echo Yii::app()->createUrl('services/project_development'); ?>" class="btn btn-outline-secondary mt-4"><?php echo Yii::app()->tags->getTag('learn_more','Learn More')?></a> -->
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                             <div class="bg-white rg-br-10">
                                 <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('contracting_&_building_maintenance','Contracting & Building Maintenance ')?></h2>
                                 <p class="rg-fs-14 rg-fw-400 rg-text-gray-600 rg-mt-12"><?php echo Yii::app()->tags->getTag('contracting_&_building_maintenance_details','Looking for customized contracting and building maintenance in Dubai? <strong> Trust RG Group (Is it possible to include a backlink to YAS & RG within the text RG Group. Let us know if this can be done.)</strong>  for flawless execution and top-notch service.')?></p>
-                                <a href="<?php echo Yii::app()->createUrl('services/contracting_&_building_maintenance'); ?>" class="btn btn-outline-secondary mt-4"><?php echo Yii::app()->tags->getTag('learn_more','Learn More')?></a>
+                                <!-- <a href="<?php echo Yii::app()->createUrl('services/contracting_&_building_maintenance'); ?>" class="btn btn-outline-secondary mt-4"><?php echo Yii::app()->tags->getTag('learn_more','Learn More')?></a> -->
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                             <div class="bg-white rg-br-10">
                                 <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('buying_&_selling_businesses','Buying & Selling Businesses ')?></h2>
                                 <p class="rg-fs-14 rg-fw-400 rg-text-gray-600 rg-mt-12"><?php echo Yii::app()->tags->getTag('buying_&_selling_businesses_details','Business Buying or Selling Got you stressed? Relax! Get started with us today and let us handle the rest.')?></p>
-                                <a href="<?php echo Yii::app()->createUrl('services/buying_&_selling_businesses'); ?>" class="btn btn-outline-secondary mt-4"><?php echo Yii::app()->tags->getTag('learn_more','Learn More')?></a>
+                                <!-- <a href="<?php echo Yii::app()->createUrl('services/buying_&_selling_businesses'); ?>" class="btn btn-outline-secondary mt-4"><?php echo Yii::app()->tags->getTag('learn_more','Learn More')?></a> -->
                             </div>
                         </div>
                     </div>
