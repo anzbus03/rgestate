@@ -68,6 +68,7 @@ class PlaceAnAd extends ActiveRecord
 	 public $team_manager;
 	 public $licence_no;
 	 public $unpublished;
+	 public $featured_date;
 	 public $enter_city;public $whatsapp; 
 	 public $f_properties;
 	 
@@ -1221,6 +1222,16 @@ class PlaceAnAd extends ActiveRecord
     public function beforeSave(){
         
 		 parent::beforeSave();
+		 if (!$this->isNewRecord) {
+            $existingRecord = self::model()->findByPk($this->primaryKey);
+            if ($existingRecord && $existingRecord->featured == 'N' && $this->featured == 'Y') {
+                $this->featured_date = new CDbExpression('NOW()');
+            }
+        } else {
+            if ($this->featured == 'Y') {
+                $this->featured_date = new CDbExpression('NOW()');
+            }
+        }
 		 if(defined('IS_MOBILE')){
 		      $this->status  = Yii::app()->options->get('system.common.frontend_default_ad_status','W');
 		 }
