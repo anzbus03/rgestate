@@ -252,10 +252,9 @@ class SiteController extends Controller
 				$cook =  Yii::app()->request->cookies[$cookieName]->value;
 				//print_r($cook);exit; 
 				if(!empty($cook) and is_array($cook)){
-						
-								$userStr = implode("', '", $cook);
-								$criteria->select .= " , CASE WHEN t.id  in ('{$userStr}') THEN 1 ELSE 0 END as fav " ;
-							}
+					$userStr = implode("', '", $cook);
+					$criteria->select .= " , CASE WHEN t.id  in ('{$userStr}') THEN 1 ELSE 0 END as fav " ;
+				}
 			}
 			
 			$criteria->limit = 10;

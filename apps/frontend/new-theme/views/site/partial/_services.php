@@ -9,29 +9,7 @@
         </div>
         <ul class="rg-services-slider rg-mt-40">
        
-            <li>
-                <div class="rg-service-card">
-                    <div class="rg-service-card-inner">
-                        <div class="rg-service-card-front">
-                            <div class="bg-white rg-br-10">
-                                <div class="rg-bg-blue rg-wh-64 rounded-circle position-relative mx-auto">
-                                    <svg width="35" height="35" class="position-absolute top-50 start-50 translate-middle">
-                                        <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-project-funding"></use>
-                                    </svg>
-                                </div>
-                                <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('commercial_real_estate','Commercial Real Estate')?></h2>
-                            </div>
-                        </div>
-                        <div class="rg-service-card-back">
-                            <div class="bg-white rg-br-10">
-                                <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('commercial_real_estate','Commercial Real Estate ')?></h2>
-                                <p class="rg-fs-14 rg-fw-400 rg-text-gray-600 rg-mt-12"><?php echo Yii::app()->tags->getTag('commercial_real_estate_details','RG Group: Dubai\'s top commercial real estate partner with 15+ years of experience. Tailored solutions for your business needs.')?></p>
-                                <!-- <a href="<?php echo Yii::app()->createUrl('services/commercial_real_estate'); ?>" class="btn btn-outline-secondary mt-4"><?php echo Yii::app()->tags->getTag('learn_more','Learn More')?></a> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
+          
             <li>
                 <div class="rg-service-card">
                     <div class="rg-service-card-inner">
@@ -73,6 +51,29 @@
                                 <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('contracting_&_building_maintenance','Contracting & Building Maintenance ')?></h2>
                                 <p class="rg-fs-14 rg-fw-400 rg-text-gray-600 rg-mt-12"><?php echo Yii::app()->tags->getTag('contracting_&_building_maintenance_details','Looking for customized contracting and building maintenance in Dubai? <strong> Trust RG Group (Is it possible to include a backlink to YAS & RG within the text RG Group. Let us know if this can be done.)</strong>  for flawless execution and top-notch service.')?></p>
                                 <!-- <a href="<?php echo Yii::app()->createUrl('services/contracting_&_building_maintenance'); ?>" class="btn btn-outline-secondary mt-4"><?php echo Yii::app()->tags->getTag('learn_more','Learn More')?></a> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="rg-service-card">
+                    <div class="rg-service-card-inner">
+                        <div class="rg-service-card-front">
+                            <div class="bg-white rg-br-10">
+                                <div class="rg-bg-blue rg-wh-64 rounded-circle position-relative mx-auto">
+                                    <svg width="35" height="35" class="position-absolute top-50 start-50 translate-middle">
+                                        <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-project-funding"></use>
+                                    </svg>
+                                </div>
+                                <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('commercial_real_estate','Commercial Real Estate')?></h2>
+                            </div>
+                        </div>
+                        <div class="rg-service-card-back">
+                            <div class="bg-white rg-br-10">
+                                <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('commercial_real_estate','Commercial Real Estate ')?></h2>
+                                <p class="rg-fs-14 rg-fw-400 rg-text-gray-600 rg-mt-12"><?php echo Yii::app()->tags->getTag('commercial_real_estate_details','RG Group: Dubai\'s top commercial real estate partner with 15+ years of experience. Tailored solutions for your business needs.')?></p>
+                                <!-- <a href="<?php echo Yii::app()->createUrl('services/commercial_real_estate'); ?>" class="btn btn-outline-secondary mt-4"><?php echo Yii::app()->tags->getTag('learn_more','Learn More')?></a> -->
                             </div>
                         </div>
                     </div>
