@@ -116,7 +116,6 @@ class Adv_interestController extends Controller
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="ExportedData_' . date('YmdHis') . '.xls"');
             header('Cache-Control: max-age=0');
-        
             // Open output stream
             $output = fopen('php://output', 'w');
         
