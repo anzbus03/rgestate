@@ -29,6 +29,11 @@
     <script>  function iniFrame() { if(window.self !== window.top) {   $('html').addClass("isOnFram");   }  }  iniFrame();</script>
     <style>html.isOnFram ul.breadcrumb {display:none; } html.isOnFram .closepopu {display:block !important; position: fixed;top: 0px;z-index: 1;right: 0;display: block;background: #fafafa;padding: 5px;text-align: center;} html.isOnFram aside.left-side,html.isOnFram header{display:none}html.isOnFram aside.right-side{width:100%;margin-left:0}html.isOnFram textarea.form-control{height:400px}html.isOnFram .col-sm-5{width:41.66666667%;float:left}html.isOnFram .col-sm-7{width:58.33333333%;float:left}html.isOnFram .box-header{display:none}html.isOnFram .box-footer{border:0;padding-top:0;position:fixed;z-index:11111;bottom:0;width:100%;left:0;padding:10px!important;background:#eee}html.isOnFram .col-sm-2{width:16.66666667%;float:left}html.isOnFram .col-lg-9{width:75%;float:left}html.isOnFram .col-lg-3{width:25%;float:left}html.isOnFram .col-sm-6{width:50%;float:left}html.isOnFram .box-danger .col-sm-2{width:25%;float:left}html.isOnFram .col-sm-3{width:25%;float:left} </style>
 	<?php } ?>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+ 
 </head>
 <body class="skin-blue">
     <a href="javascript:void(0)" style="display:none; " class="closepopu" onclick="parent.closePopupAdm();"><img style="width: 66%;" src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/closeme.png');?>"></a>

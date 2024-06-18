@@ -46,6 +46,10 @@ class Contact_usController extends Controller
        
          $model->unsetAttributes();
          $model->attributes = (array)$request->getQuery($model->modelName, array());
+         if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+            $model->startDate = $_GET['startDate'];
+            $model->endDate = $_GET['endDate'];
+        }
          $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"), 
             'pageHeading'       => Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
@@ -56,7 +60,59 @@ class Contact_usController extends Controller
          ));
         $this->render('list', compact('model'));
     }
-    
+    /*
+        * Export to excel functionality
+    */
+    public function actionExportExcel() {
+        try{
+            
+            $model = new ContactUs('search');
+            $model->unsetAttributes();  // clear any default values
+        
+            if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+                $model->startDate = $_GET['startDate'];
+                $model->endDate = $_GET['endDate'];
+            }
+        
+            $dataProvider = $model->search();
+            $dataProvider->pagination = false; // Get all data
+        
+            // Prepare data for export
+            $data = $dataProvider->getData();
+        
+            // Set headers to force download
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="ExportedData_' . date('YmdHis') . '.xls"');
+            header('Cache-Control: max-age=0');
+        
+            // Open output stream
+            $output = fopen('php://output', 'w');
+        
+            // Write column headers
+            $header = array('Name', 'Email', 'Phone', 'Date', 'Message Text');
+            fputcsv($output, $header, "\t");
+        
+            // Write data rows
+            foreach ($data as $item) {
+                $row = array(
+                    $item->name,
+                    $item->email,
+                    $item->phone,
+                    $item->date,
+                    $item->meassage
+                );
+                fputcsv($output, $row, "\t");
+            }
+        
+            // Close output stream
+            fclose($output);
+        
+            Yii::app()->end();
+        }catch (Exception $e){
+            print_r($e->getMessage());
+            exit;
+        }
+    }
     
     /**
      * Delete existing user

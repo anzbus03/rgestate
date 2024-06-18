@@ -14,8 +14,10 @@
  */
 class ContactUs extends ActiveRecord
 {
-	 public $verifyCode;  public $_recaptcha ;
-	 public $phone_false; 
+	public $verifyCode;  public $_recaptcha ;
+	public $phone_false; 
+	public $startDate;
+	public $endDate;
     /**
      * @return string the associated database table name
      */
@@ -178,6 +180,11 @@ class ContactUs extends ActiveRecord
         $criteria->compare('city',$this->city,true);
         $criteria->compare('date',$this->date,true);
         $criteria->compare('contact_type','CONTACT');
+		if ($this->startDate && $this->endDate) {
+			$criteria->addCondition('date >= :startDate AND date <= :endDate');
+			$criteria->params[':startDate'] = $this->startDate;
+			$criteria->params[':endDate'] = $this->endDate;
+		}
          $criteria->order="id desc";
 	 	return new CActiveDataProvider($this, array(
 		'criteria'=>$criteria,

@@ -35,13 +35,17 @@ if ($viewCollection->renderContent) { ?>
             </div>
             <div class="pull-right">
                   <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
-            </div>
+                  <input type="text" id="dateRange" class="btn btn-default btn-xs" style="margin-left: 10px;" />
+
+                </div>
             <div class="clearfix"><!-- --></div>
         </div>
           <div class="clearfix"><!-- --></div>
         		 <a href="javascript:void(0)"> 
                     <button type="button" class="btn bg-purple btn-flat  margin pull-right" style="margin-right:0px;" data-id="<?php echo $template_id='az3438eqlm2fc';$template_id;?>" onclick="UpdateEmailReceivers(this)" ><i class="fa fa-pencil-square-o"></i> Update Email Receivers </button>
                 </a>
+                <button type="button" id="exportExcel" class="btn btn-success btn-xs" style="margin-left: 10px;margin-top:10px;">Export to Excel</button>
+
 			 <div class="clearfix">
         <div class="box-body">
             <div class="table-responsive">
@@ -227,6 +231,54 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
   </div>
 </div>
 <script>
+$(document).ready(function() {
+  // Initialize the date range picker
+  $('#dateRange').daterangepicker({
+      locale: {
+          format: 'YYYY-MM-DD'
+      },
+      startDate: moment().subtract(29, 'days'),
+      endDate: moment(),
+      ranges: {
+          'Today': [moment(), moment()],
+          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      }
+  }, function(start, end, label) {
+      fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+  });
+
+  // Function to fetch filtered data
+  function fetchFilteredData(startDate, endDate) {
+      $.ajax({
+          url: '<?php echo Yii::app()->createUrl($this->route); ?>',
+          type: 'GET',
+          data: {
+              startDate: startDate,
+              endDate: endDate
+          },
+          success: function(data) {
+              $('#<?php echo $model->modelName; ?>-grid').html($(data).find('#<?php echo $model->modelName; ?>-grid').html());
+          }
+      });
+  }
+  $('#exportExcel').click(function(e) {
+    var dateRange = $('#dateRange').data('daterangepicker');
+    var startDate = dateRange.startDate.format('YYYY-MM-DD');
+    var endDate = dateRange.endDate.format('YYYY-MM-DD');
+    var exportUrl = '<?php echo Yii::app()->createUrl('contact_services/exportExcel'); ?>';
+
+    if (startDate && endDate) {
+        exportUrl += '?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate);
+    }
+
+    // Redirect to the export URL
+    window.location.href = exportUrl;    
+  });
+});
 function UpdateEmailReceivers(k){
 	var id = $(k).attr('data-id');
 	if(id !==undefined){
