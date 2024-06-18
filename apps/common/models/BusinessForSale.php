@@ -2657,11 +2657,12 @@ class BusinessForSale extends ActiveRecord
 	function FomatMoney($money = "0")
 	{
 		return  number_format($money, 0, '.', ',');
-	}function priceOptions()
+	}
+	function priceOptions()
 	{
 		$options = "";
 		$currency = Yii::app()->options->get('system.common.defalut_currency');
-	
+		$exchangeRate = $this->getUsdValue();
 		$prices = array(
 			10000 => '10000',
 			50000 => '50000',
@@ -2674,10 +2675,15 @@ class BusinessForSale extends ActiveRecord
 		);
 	
 		foreach ($prices as $price => $label) {
-			$selected = Yii::app()->request->getQuery("min-price") == $price ? "selected=true" : "";
-			$options .= "<option value=\"$price\" $selected>$currency $label</option>";
-		}
+			// Convert price to USD equivalent if default currency is not USD
+			if ($currency !== 'USD') {
+				$price *= $exchangeRate;
+			}
 	
+			$priceFormatted = number_format($price, 2); // Format price
+			$selected = Yii::app()->request->getQuery("min-price") == $price ? "selected=true" : "";
+			$options .= "<option value=\"$price\" $selected>$currency $priceFormatted</option>";
+		}
 		return $options;
 	}
 	
@@ -4147,6 +4153,39 @@ class BusinessForSale extends ActiveRecord
 		if ($this->section_id == 'property-for-rent') {
 			return $this->getPriceArrayFromRentTo();
 		}
+		if (defined('SYSTEM_CURRENCY') && SYSTEM_CURRENCY == "1") {
+			return array(
+				'20000' =>'20,000',
+				'30000' =>'30,000',
+				'40000' =>'40,000',
+				'50000' =>'50,000',
+				'60000' =>'60,000',
+				'85000' =>'85,000',
+				'110000' =>'110,000',
+				'135000' =>'135,000',
+				'160000' =>'160,000',
+				'185000' =>'185,000',
+				'210000' =>'210,000',
+				'235000' =>'235,000',
+				'260000' =>'260,000',
+				'285000' =>'285,000',
+				'310000' =>'310,000',
+				'335000' =>'335,000',
+				'360000' =>'360,000',
+				'410000' =>'410,000',
+				'460000' =>'460,000',
+				'510,000' =>'510,000',
+				'560000' =>'560,000',
+				'610000' =>'610,000',
+				'660000' =>'660,000',
+				'710000' =>'710,000',
+				'760000' =>'760,000',
+				'810000' =>'810,000',
+				'910000' =>'910,000',
+				'1010000' =>'1,010,000',
+				'2010000' =>'2,010,000',
+			);
+		}
 		return
 			array(
 				'' => 0,
@@ -4228,6 +4267,37 @@ class BusinessForSale extends ActiveRecord
 		$Millions = $Million;
 		$Billion = $this->mTag()->getTag('billion', 'Billion');
 		$Billions = $Billion;
+		if (defined('SYSTEM_CURRENCY') && SYSTEM_CURRENCY == "1") {
+			return array(
+				'20000' =>'20,000',
+				'30000' =>'30,000',
+				'40000' =>'40,000',
+				'50000' =>'50,000',
+				'60000' =>'60,000',
+				'85000' =>'85,000',
+				'110000' =>'110,000',
+				'135000' =>'135,000',
+				'160000' =>'160,000',
+				'185000' =>'185,000',
+				'210000' =>'210,000',
+				'235000' =>'235,000',
+				'260000' =>'260,000',
+				'285000' =>'285,000',
+				'310000' =>'310,000',
+				'335000' =>'335,000',
+				'360000' =>'360,000',
+				'410000' =>'410,000',
+				'460000' =>'460,000',
+				'510,000' =>'510,000',
+				'560000' =>'560,000',
+				'610000' =>'610,000',
+				'660000' =>'660,000',
+				'710000' =>'710,000',
+				'760000' =>'760,000',
+				'810000' =>'810,000',
+				'910000' =>'910,000',
+			);
+		}
 		return
 			array(
 				'' => '0',
