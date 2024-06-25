@@ -625,7 +625,7 @@ class DetailController extends Controller
 					$sql = "insert into  {{statistics}} (id,user_id,type,date,count) values {$values} ON DUPLICATE KEY UPDATE count=count+1";
 					Yii::app()->db->createCommand($sql)->execute();
 				} catch (Exception $e) {
-					print_r($e);
+					print_r($e->getMessage());
 					exit;
 				}
 			}

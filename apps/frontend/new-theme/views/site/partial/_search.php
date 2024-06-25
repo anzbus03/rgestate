@@ -78,7 +78,7 @@ $banners =   $this->banners;
                 <div class="rg-hero-form rg-br-20 rg-mt-25" style="display:none">
                     <div class="d-flex align-items-center justify-content-center button-container mb-0 mb-md-4 mb-lg-5">
                         <button id="commercial" class="rounded-5 px-4 py-3 text-white active"><?php echo Yii::app()->tags->getTag('commercial','Commercial')?></button>
-                        <button id="residential" class="rounded-5 px-4 py-3 text-white" ><?php echo Yii::app()->tags->getTag('residential','Resedential')?></button>
+                        <button id="residential" class="rounded-5 px-4 py-3 text-white" ><?php echo Yii::app()->tags->getTag('residential','Residential')?></button>
                     </div>
                     <form onsubmit="createSearchUrl(event,this);" id="rg-search-form">
                         <div class="row">
