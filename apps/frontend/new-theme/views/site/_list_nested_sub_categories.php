@@ -1,11 +1,12 @@
 <?php
 $subCategory = Subcategory::model()->findByAttributes(array('slug' => $formData['sub_category']));
 $category = Category::model()->findByAttributes(array('slug' => $formData['type_of']));
-$listingType = Category::model()->findByAttributes(array('slug' => $formData['sub_category']));
+// $listingType = Category::model()->findByAttributes(array('slug' => $formData['sub_category']));
+// print_r($formData);
 $adModelCriteria = $adModel->findAds($formData, false, true);
 // $adModelCriteria->condition = 't.category_id = ' . $category->category_id;
-$adModelCriteria->condition = 't.listing_type = ' . $listingType->category_id . ' and t.sub_category_id = ' . $subCategory->sub_category_id . ' and t.category_id = ' . $category->category_id;
-// $adModelCriteria->params[':isTrash'] = 0;
+$adModelCriteria->condition = 't.sub_category_id = ' . $subCategory->sub_category_id . ' and t.category_id = ' . $category->category_id;
+// $adModelCriteria->params[':isTrash'] = 1;
 $adModelCriteria->params[':status'] = "A";
 $adModelCriteria->select = 't.nested_sub_category, COUNT(t.id) AS id';
 $adModelCriteria->group = 't.nested_sub_category';
