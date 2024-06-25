@@ -665,7 +665,7 @@ class DetailController extends Controller
 						"TYPE_ID" => "CLIENT",
 						"SOURCE_ID" => "SELF",
 						"EMAIL" => [["VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK"]],
-						"PHONE" => [["VALUE" => $requestParms['phone_false'], "VALUE_TYPE" => "WORK"]]
+						"PHONE" => [["VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK"]]
 					],
 				];
 				$postCustomerData = http_build_query($crmCustomerData);
