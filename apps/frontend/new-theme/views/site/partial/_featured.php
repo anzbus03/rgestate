@@ -28,7 +28,7 @@ html textarea.input-text.form-control {
 }
 </style>
 <!-- Start RG Estate Featured -->
-<section class="rg-featured">
+<section class="rg-featured" dir="ltr">
     <div class="container">
         <div class="rg-section-header text-center mx-auto">
             <h3 class="rg-fs-16 rg-text-dark rg-fw-400 text-uppercase"><?php echo Yii::app()->tags->getTag('latest_listings','Latest Listings')?></h3>
@@ -44,7 +44,7 @@ html textarea.input-text.form-control {
                 <li class="nav-item" role="presentation">
                     <button class="nav-link <?php echo ($key == 0) ? 'active' : ''; ?>" id="cat-<?php echo $category->category_id; ?>-tab" data-bs-toggle="tab"
                         data-bs-target="#cat-<?php echo $category->category_id; ?>-tab-pane" type="button" role="tab" aria-controls="cat-<?php echo $category->category_id; ?>-tab-pane"
-                        aria-selected="true"><?php echo $category->category_name; ?></button>
+                        aria-selected="true"><?php echo Yii::app()->tags->getTag($category->slug,$category->category_name); ?></button>
                 </li>
             <?php } ?>
             <?php } ?>
@@ -69,7 +69,7 @@ html textarea.input-text.form-control {
                                 <div
                                 class="rg-badges text-uppercase d-flex align-items-center justify-content-between position-absolute w-100">
                                     <?php if($add->featured == "Y"){ ?>
-                                        <span class="badge rg-bg-orange">FEATURED</span>
+                                        <span class="badge rg-bg-orange"><?php  echo Yii::app()->tags->getTag('featured','FEATURED'); ?></span>
                                     <?php }if($add->super_hot){ ?>
                                         <span class="badge rg-bg-black-rgb">SUPER HOT</span>
                                     <?php }else if($add->hot){ ?>

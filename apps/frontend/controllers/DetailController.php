@@ -148,11 +148,11 @@ class DetailController extends Controller
     public function actionValidateEnquiry2(){
 		$model = new SendEnquiry2;
 		if (isset($_POST['ajax'])) {
-		echo CActiveForm::validate($model);
-		Yii::app()->end();
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
 		}
 	} 
-		public function actionSendEnquiry2(){
+	public function actionSendEnquiry2(){
 		$request    = Yii::app()->request;
 		$model  = new SendEnquiry2();
 

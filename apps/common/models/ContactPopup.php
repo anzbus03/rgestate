@@ -15,6 +15,10 @@ class ContactPopup extends ActiveRecord
 {
 	 public $verifyCode;  public $_recaptcha ;
 	 public $phone_false; 
+
+	 public $startDate;
+	 public $endDate;
+	 
     /**
      * @return string the associated database table name
      */
@@ -124,6 +128,14 @@ class ContactPopup extends ActiveRecord
         $criteria=new CDbCriteria;
         $criteria->compare('id',$this->id);
         $criteria->compare('type',$this->type);
+
+		if ($this->startDate && $this->endDate) {
+			$criteria->addCondition('date >= :startDate AND date <= :endDate');
+			$criteria->params[':startDate'] = $this->startDate;
+			$criteria->params[':endDate'] = $this->endDate;
+		}
+
+
         //$criteria->compare('contact_type','CONTACTPOPUP');
          $criteria->order="id desc";
 	 	return new CActiveDataProvider($this, array(

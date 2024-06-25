@@ -149,7 +149,6 @@ class ContactController extends Controller
 	public function actionSend(){
 		$request    = Yii::app()->request;
 		$requestParms = $request->getPost("ContactUs");
-		
 		$model  = new ContactUs();
 		if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
 			  $model->attributes = $attributes;
@@ -245,16 +244,19 @@ class ContactController extends Controller
 				echo json_encode(array('status'=>'0','msg'=>'<div class="alert alert-danger1"><strong>Error!</strong> '.CHtml::errorSummary($e->getMessage()).'. </div>'));
         }
 		
-		$crmUrl = 'https://crm.rgestate.com/rest/158/x0g9p2hpse2h48si/crm.lead.add.json';
+		$crmUrl = 'https://crm.rgestate.com/rest/88/x0g9p2hpse2h48si/crm.lead.add.json';
 
         // Prepare data for the request
         $crmData = [
             'FIELDS' => [
                 'TITLE' => 'RGestate Lead - Contact Form',
                 'CATEGORY_ID' => 16,
+                'LEAD_PHONE' => $requestParms['phone'],
+                'LEAD_LAST_NAME' => $lastName,
+                'LEAD_NAME' => $firstName,
+                'LEAD_EMAIL' => $requestParms['email'],
                 'CONTACT_ID' => $customerId,
                 'COMMENTS' => $requestParms['meassage'],
-                'UF_CRM_1701236145750' => 2908,
                 'ASSIGNED_BY_ID' => 22
             ],
         ];
@@ -277,11 +279,12 @@ class ContactController extends Controller
 		try {
             // Send the HTTP request using file_get_contents
             $response = file_get_contents($crmUrl, false, $context);
-
+           
             // Handle the CRM response as needed
 
         } catch (Exception $e) {
             // Handle exceptions, e.g., connection errors
+          
 				echo json_encode(array('status'=>'0','msg'=>'<div class="alert alert-danger1"><strong>Error!</strong> '.CHtml::errorSummary($e->getMessage()).'. </div>'));
         }
 

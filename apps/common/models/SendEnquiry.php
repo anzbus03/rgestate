@@ -18,6 +18,9 @@ class SendEnquiry  extends ContactUs
 	 public $agree;
 	 public $_recaptcha; 
 	 public $section_id; 
+	 public $startDate;
+	 public $endDate;
+
  
     /**
      * @return array validation rules for model attributes.
@@ -32,7 +35,7 @@ class SendEnquiry  extends ContactUs
             array('type,phone', 'numerical', 'integerOnly'=>true),
             array('email, name', 'length', 'max'=>150),
             array('city', 'length', 'max'=>250),
-            array('phone', 'length', 'min'=>10),
+            array('phone', 'length', 'min'=>8),
              array('phone_false', 'validatePhone'),
               array('phone_false', 'length', 'min'=>9),
               array('phone_false', 'length', 'max'=>11),
@@ -140,6 +143,13 @@ class SendEnquiry  extends ContactUs
         $criteria->compare('city',$this->city,true);
         $criteria->compare('date',$this->date,true);
         $criteria->compare('requested_by',$this->requested_by);
+		if ($this->startDate && $this->endDate) {
+			$criteria->addCondition('date >= :startDate AND date <= :endDate');
+			$criteria->params[':startDate'] = $this->startDate;
+			$criteria->params[':endDate'] = $this->endDate;
+		}
+		
+
        // $criteria->compare('usr2.user_id',$this->user_id );
         $criteria->compare('contact_type','ENQUIRY');
              $criteria->select = 't.*,ads.ad_title,ads.slug as ad_slug  '; 

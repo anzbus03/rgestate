@@ -46,6 +46,10 @@ class Adv_interestController extends Controller
        
          $model->unsetAttributes();
          $model->attributes = (array)$request->getQuery($model->modelName, array());
+         if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+            $model->startDate = $_GET['startDate'];
+            $model->endDate = $_GET['endDate'];
+        }
          $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"), 
             'pageHeading'       => Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
@@ -91,7 +95,55 @@ class Adv_interestController extends Controller
         
         $this->render('form', compact('model','note','note2'));
     }
-    
+    public function actionExportExcel() {
+        try{
+            
+            $model = new AdvertisementContact('search');
+            $model->unsetAttributes();  // clear any default values
+        
+            if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+                $model->startDate = $_GET['startDate'];
+                $model->endDate = $_GET['endDate'];
+            }
+        
+            $dataProvider = $model->search();
+            $dataProvider->pagination = false; // Get all data
+        
+            // Prepare data for export
+            $data = $dataProvider->getData();
+        
+            // Set headers to force download
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="ExportedData_' . date('YmdHis') . '.xls"');
+            header('Cache-Control: max-age=0');
+            // Open output stream
+            $output = fopen('php://output', 'w');
+        
+            // Write column headers
+            $header = array('How can we help?', 'Name', 'Email', 'Phone', 'Date');
+            fputcsv($output, $header, "\t");
+        
+            // Write data rows
+            foreach ($data as $item) {
+                $row = array(
+                    "Submit your listings on RGEstate for free",
+                    $item->name,
+                    $item->email,
+                    $item->phone,
+                    $item->date,
+                );
+                fputcsv($output, $row, "\t");
+            }
+        
+            // Close output stream
+            fclose($output);
+        
+            Yii::app()->end();
+        }catch (Exception $e){
+            print_r($e->getMessage());
+            exit;
+        }
+    }
     /**
      * Delete existing user
      */

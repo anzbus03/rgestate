@@ -35,6 +35,7 @@ if ($viewCollection->renderContent) { ?>
             </div>
             <div class="pull-right">
                 <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
+                <input type="text" id="dateRange" class="btn btn-default btn-xs" style="margin-left: 10px;" />
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
@@ -46,14 +47,23 @@ if ($viewCollection->renderContent) { ?>
 		</script>
         <div class="box-body">
             <div class="row">
-                  <div class="col-sm-2">
-                     <div class="form-group">
-                 <label for="submited_by">Section</label>
-                 <?php
-                   
-                 echo CHtml::dropDownList( 'section_id',$model->section_id,$model->SectionList(), array('empty'=>'Please select','class'=>'form-control','onchange'=>'setvalThis(this,"SendEnquiry_section_id")')); ?>
-                   </div>
-                   </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="submited_by">Section</label>
+                        <div class="row">
+
+                            <div class="col-sm-3">
+
+                                <?php
+                                    echo CHtml::dropDownList( 'section_id',$model->section_id,$model->SectionList(), array('empty'=>'Please select','class'=>'form-control','onchange'=>'setvalThis(this,"SendEnquiry_section_id")')); 
+                                ?>
+                            </div>
+                            <div class="col-sm-9">
+                                <button type="button" id="exportExcel" class="btn btn-success btn-xs" style="float: right;margin-left: 10px;">Export to Excel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             
             </div>
             <div class="table-responsive">
@@ -235,6 +245,55 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 </div>
 
 <script>
+$(document).ready(function() {
+  // Initialize the date range picker
+  $('#dateRange').daterangepicker({
+      locale: {
+          format: 'YYYY-MM-DD'
+      },
+      startDate: moment().subtract(29, 'days'),
+      endDate: moment(),
+      ranges: {
+          'Today': [moment(), moment()],
+          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      }
+  }, function(start, end, label) {
+      fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+  });
+
+  // Function to fetch filtered data
+  function fetchFilteredData(startDate, endDate) {
+      $.ajax({
+          url: '<?php echo Yii::app()->createUrl($this->route); ?>',
+          type: 'GET',
+          data: {
+              startDate: startDate,
+              endDate: endDate
+          },
+          success: function(data) {
+              $('#<?php echo $model->modelName; ?>-grid').html($(data).find('#<?php echo $model->modelName; ?>-grid').html());
+          }
+      });
+  }
+  $('#exportExcel').click(function(e) {
+    var dateRange = $('#dateRange').data('daterangepicker');
+    var startDate = dateRange.startDate.format('YYYY-MM-DD');
+    var endDate = dateRange.endDate.format('YYYY-MM-DD');
+    var exportUrl = '<?php echo Yii::app()->createUrl('enquiry/exportExcel'); ?>';
+
+    if (startDate && endDate) {
+        exportUrl += '?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate);
+    }
+
+    // Redirect to the export URL
+    window.location.href = exportUrl;    
+  });
+});
+
 function loadthis(k,e){
 	e.preventDefault();
 	var href_url  = $(k).attr('href');

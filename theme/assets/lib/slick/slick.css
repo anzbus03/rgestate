@@ -71,35 +71,35 @@
     left: -25px;
 }
 
-[dir='rtl'] .slick-prev {
+/* [dir='rtl'] .slick-prev {
     right: -25px;
     left: auto;
-}
+} */
 
 .slick-prev:before {
     content: '←';
 }
 
-[dir='rtl'] .slick-prev:before {
+/* [dir='rtl'] .slick-prev:before {
     content: '→';
-}
+} */
 
 .slick-next {
     right: -25px;
 }
 
-[dir='rtl'] .slick-next {
+/* [dir='rtl'] .slick-next {
     right: auto;
     left: -25px;
-}
+} */
 
 .slick-next:before {
     content: '→';
 }
 
-[dir='rtl'] .slick-next:before {
+/* [dir='rtl'] .slick-next:before {
     content: '←';
-}
+} */
 
 /* Dots */
 .slick-dotted.slick-slider {

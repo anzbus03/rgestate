@@ -17,6 +17,8 @@ class AdvertisementContact extends ActiveRecord
 	 public $verifyCode;
 	 public $phone_false;
 	 public $_recaptcha ;
+     public $startDate;
+     public $endDate;    
     /**
      * @return string the associated database table name
      */
@@ -251,9 +253,16 @@ class AdvertisementContact extends ActiveRecord
         $criteria->compare('meassage',$this->meassage,true);
         $criteria->compare('city',$this->city,true);
         $criteria->compare('date',$this->date,true);
+
+        if ($this->startDate && $this->endDate) {
+            $criteria->addCondition('date >= :startDate AND date <= :endDate');
+            $criteria->params[':startDate'] = $this->startDate;
+            $criteria->params[':endDate'] = $this->endDate;
+        }
+
         if(!empty($this->position_id)){
-        $criteria->compare('t.position_id',$this->position_id);
-	}
+            $criteria->compare('t.position_id',$this->position_id);
+        }
         $criteria->compare('contact_type','AD');
         $criteria->join = ' LEFT JOIN {{banner_position}}  bp on bp.position_id = t.position_id ' ;
          $criteria->order="id desc";
