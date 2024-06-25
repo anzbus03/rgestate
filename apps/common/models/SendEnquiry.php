@@ -35,7 +35,7 @@ class SendEnquiry  extends ContactUs
             array('type,phone', 'numerical', 'integerOnly'=>true),
             array('email, name', 'length', 'max'=>150),
             array('city', 'length', 'max'=>250),
-            array('phone', 'length', 'min'=>10),
+            array('phone', 'length', 'min'=>8),
              array('phone_false', 'validatePhone'),
               array('phone_false', 'length', 'min'=>9),
               array('phone_false', 'length', 'max'=>11),
