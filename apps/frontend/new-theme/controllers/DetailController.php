@@ -618,7 +618,7 @@ class DetailController extends Controller
 			$id = $model->ad_id;
 			$u_date = $this->converToTz(date('Y-m-d H:i:s'), 'Asia/Riyadh', 'UTC', 'Y-m-d H:i:s');
 			$u_id = Yii::app()->user->getId();
-			$u_id = empty($u_id) ? '31845' : $u_id;
+			$u_id = empty($u_id) ? '31988' : $u_id;
 			if (!empty($u_id) and !empty($id)) {
 				$values =  "('{$id}','{$u_id}' ,'E','{$u_date}','1')";
 				try {
