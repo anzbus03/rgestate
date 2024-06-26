@@ -49,7 +49,7 @@
                         <div class="rg-service-card-back">
                             <div class="bg-white rg-br-10">
                                 <h2 class="rg-fs-18 rg-fw-500 text-black mt-4"><?php echo Yii::app()->tags->getTag('contracting_&_building_maintenance','Contracting & Building Maintenance ')?></h2>
-                                <p class="rg-fs-14 rg-fw-400 rg-text-gray-600 rg-mt-12"><?php echo Yii::app()->tags->getTag('contracting_&_building_maintenance_details','Looking for customized contracting and building maintenance in Dubai? <strong> Trust <a href="https://www.rggroup.ae/yas-rg-development-company-llc/" target="_blank">RG Group</a> </strong> for flawless execution and top-notch service.')?></p>
+                                <p class="rg-fs-14 rg-fw-400 rg-text-gray-600 rg-mt-12"><?php echo Yii::app()->tags->getTag('contracting_&_building_maintenance_details','Looking for customized contracting and building maintenance in Dubai? Trust<strong> <a href="https://www.rggroup.ae/yas-rg-development-company-llc/" target="_blank">RG Group</a> </strong> for flawless execution and top-notch service.')?></p>
                                 <!-- <a href="<?php echo Yii::app()->createUrl('services/contracting_&_building_maintenance'); ?>" class="btn btn-outline-secondary mt-4"><?php echo Yii::app()->tags->getTag('learn_more','Learn More')?></a> -->
                             </div>
                         </div>
