@@ -76,7 +76,6 @@ if (Yii::app()->request->isAjaxRequest) {
 
 if(empty($adsCount)){
 	$this->renderPartial('_no_result_page',array('full_width'=>true)); 
-	 
 }
 else{ ?>
 			<div class="">
