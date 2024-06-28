@@ -71,7 +71,8 @@ class PlaceAnAd extends ActiveRecord
 	 public $featured_date;
 	 public $enter_city;public $whatsapp; 
 	 public $f_properties;
-	 
+	 public $startDate;
+	 public $endDate;
      const FEATURED_CONDITION = " t.isTrash='0' and featured='Y'  and t.status='A'   "; 
      const LATEST_CONDITION   = " t.isTrash='0'  and t.status='A'  "; 
      const FEATURED_ORDER     = " featured='Y' desc,t.id desc "; 
@@ -883,9 +884,14 @@ class PlaceAnAd extends ActiveRecord
 		    //echo "E".$this->date_added."F";exit; 
         	$this->date_added = $comparisonSigns[$this->pickerDateStartComparisonSign] . $this->date_added;
 		}
+	
         $criteria=new CDbCriteria;$criteria->condition ='1';
         $criteria->select = 't.*,lstype.category_name as listing_category ,cat.category_name as  category_name,'.$this->FetauredQuery.'TIMESTAMPDIFF(DAY,(CASE WHEN t.extended_on IS NOT NULL THEN t.extended_on ELSE  t.date_added END),NOW()) as days_active ,usr.first_name,usr.email as user_email,usr.full_number as mob,usr.email_verified,usr.o_verified,usr.last_name,usr.slug as u_slug,cn.country_name,st.state_name, (SELECT CONCAT(image_name, "||F||", status)  FROM {{ad_image}} img  WHERE  img.ad_id = t.id   and  img.isTrash="0" order by img.status="A" desc  limit 1 )   as ad_image2';
-
+		if ($this->startDate && $this->endDate) {
+			$criteria->addCondition('t.date_added >= :startDate AND t.date_added <= :endDate');
+			$criteria->params[':startDate'] = $this->startDate;
+			$criteria->params[':endDate'] = $this->endDate;
+		}
         $criteria->compare('id',$this->id);
         if(!empty($this->reference_number)){
             $criteria->condition .=  ' and t.id like :reference_number or t.RefNo like :reference_number ' ;
