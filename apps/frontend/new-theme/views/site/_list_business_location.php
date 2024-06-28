@@ -4,8 +4,6 @@ $adModelCriteria =	$adModel->findAds($formData ,false,true);
 $adModelCriteria->select= 'rgn.region_id as city_name,count(t.id) as id   ';
 $adModelCriteria->join.= ' LEFT JOIN {{states}} city ON t.state = city.state_id  ';
 $adModelCriteria->join.= ' LEFT JOIN {{main_region}} rgn ON rgn.region_id = city.region_id  ';
-$adModelCriteria->join  .= ' left JOIN {{subcategory}} subcat ON subcat.sub_category_id = t.sub_category_id ';
-$adModelCriteria->join  .= ' left JOIN {{subcategory}} nestsubcat ON nestsubcat.sub_category_id = t.nested_sub_category ';
 $adModelCriteria->condition .= ' and nestsubcat.slug=:nested_sub_category and subcat.slug=:sub_category_id ';
 $adModelCriteria->params[':nested_sub_category'] = $formData['nested_sub_category'];
 $adModelCriteria->params[':sub_category_id'] = $formData['sub_category'];

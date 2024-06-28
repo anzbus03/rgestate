@@ -3285,14 +3285,13 @@ function getMBathroomHtml()
         if(isset($formData['sta']) and !empty($formData['sta'])){
 			$criteria->compare('t.status',$formData['sta']);
 		}else{
-        $criteria->compare('t.status','A');
+        	$criteria->compare('t.status','A');
 		}
         if(!empty($user_id)){
-					$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END '; 
-			$criteria->params[':thisusr'] = (int) $user_id;
-	
-			 
+			$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END '; 
+			$criteria->params[':thisusr'] = (int) $user_id;	 
 		}
+		
         $criteria->distinct =  't.id' ;
         $criteria->select .= ',  (t.builtup_area*(1/au.value))   as converted_unit ,au.master_name as atitle'; 
         $criteria->join  .= ' left join {{category}} lstype ON lstype.category_id = t.listing_type ';
@@ -3630,7 +3629,7 @@ function getMBathroomHtml()
 		else{
 		 $criteria->condition .=  $this->getExpityConditionFronEnd();
 		}
-		 
+		
 		
 	 
         $order_val = '';

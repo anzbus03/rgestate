@@ -3269,22 +3269,23 @@ class BusinessForSale extends ActiveRecord
 	public function findAds($formData = array(), $count_future = false, $returnCriteria = false, $calculate = false, $user_id = false)
 	{
 		$criteria = new CDbCriteria;
-		$criteria->select = 't.ad_title,cat.category_name as category_name, t.verified,t.income,t.roi,t.hot,t.slug_en,t.slug_ar,t.user_id as user_id,t.property_status,t.id,t.slug,t.section_id,t.category_id,t.state,t.listing_type,t.sub_category_id,t.location_latitude,t.location_longitude,from_price_unit,to_price_unit,area_unit,rent_paid,price,p_o_r,bathrooms,bedrooms,t.builtup_area,t.view_360,t.view_video,t.view_floor,t.cron_featured as featured2,   usr.full_number as mobile_number ,  usr.first_name,usr.last_name';
+		$criteria->select = 't.ad_title,t.isTrash,t.status,cat.category_name as category_name, t.verified,t.income,t.roi,t.hot,t.slug_en,t.slug_ar,t.user_id as user_id,t.property_status,t.id,t.slug,t.section_id,t.category_id,t.state,t.listing_type,t.sub_category_id,t.location_latitude,t.location_longitude,from_price_unit,to_price_unit,area_unit,rent_paid,price,p_o_r,bathrooms,bedrooms,t.builtup_area,t.view_360,t.view_video,t.view_floor,t.cron_featured as featured2,   usr.full_number as mobile_number ,  usr.first_name,usr.last_name';
 		$criteria->select .= ', t.cron_images  as ad_images_g,t.cron_simage as ad_image2';
 
 
 		$criteria->select .= ',f_fee,price_to,price_false,price_to_false,request_r,price_b,price_b_to,p_b_r,price_v,price_v_to,p_v_r';
 
-		$criteria->compare('t.isTrash', '0');
-		if (isset($formData['sta']) and !empty($formData['sta'])) {
-			$criteria->compare('t.status', $formData['sta']);
-		} else {
-			$criteria->compare('t.status', 'A');
-		}
+		// $criteria->compare('t.isTrash', '0');
+		// if (isset($formData['sta']) and !empty($formData['sta'])) {
+		// 	$criteria->compare('t.status', $formData['sta']);
+		// } else {
+		// 	$criteria->compare('t.status', 'A');
+		// }
 		if (!empty($user_id)) {
 			$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END ';
 			$criteria->params[':thisusr'] = (int) $user_id;
 		}
+		$criteria->condition = 't.status = "A" and t.sub_category_id != "null" and t.nested_sub_category != "null" and t.isTrash = "0" '; 
 
 		$criteria->distinct =  't.id';
 		$criteria->select .= ',  (t.builtup_area*(1/au.value))   as converted_unit ,au.master_name as atitle';
