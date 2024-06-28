@@ -367,7 +367,7 @@ $works = $ads;
 					 ?>
 				    <div  id="stky">
  					 <?php  if(!empty($b_2)){ echo '<div class="margin-bottom-15" >'. $b_2.'<div class="clearfix"></div></div>';; } ?>
-     					  <div id="fx-onscroll">
+     					  <div id="fx-onscroll" style="margin-bottom: 100%;">
                         <?php  if(!empty($b_3)){ echo '<div class="margin-bottom-15" >'. $b_3.'<div class="clearfix"></div></div>';; } ?>
                         </div>
                         </div>
