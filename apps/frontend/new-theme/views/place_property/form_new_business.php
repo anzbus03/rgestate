@@ -1283,6 +1283,19 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 											</div>
 
 										</div>
+										<div class="row  form-group  ">
+
+											<div class="col-sm-5 text-right">
+
+												<?php echo $form->labelEx($model, 'Permit Number'); ?>
+
+											</div>
+											<div class="col-sm-7">
+												<?php $mer =  array_merge($model->getHtmlOptions('PropertyID'), array('placeholder' => $this->tag->getTag('ref_no', 'Refrence No.'), 'class' => 'input-text  form-control')); ?>
+												<?php echo $form->textField($model, 'PropertyID',   $mer); ?>
+												<?php echo $form->error($model, 'PropertyID'); ?>
+											</div>
+										</div>
 
 										<div class="clearfix"><!-- --></div>
 										<div class="row">

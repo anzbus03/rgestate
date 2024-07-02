@@ -315,7 +315,7 @@ background:
                   <div class="subhead font_s ros subhead2">Property Type and Location</div>
                 
                    <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-4 no-front ">
+                <div class="form-group col-lg-3 no-front ">
                    <?php echo $form->labelEx($model, 'country');?>
                     <?php echo $form->dropDownList($model, 'country',Countries::model()->ListData(), $model->getHtmlOptions('country',array('empty'=>'Select Country','class'=>'form-control select2','data-url'=>Yii::App()->createUrl($this->id.'/select_city_new'),'onchange'=>'load_via_ajax(this,"state")'))); ?>
                     <?php echo $form->error($model, 'country');?>
@@ -325,7 +325,7 @@ background:
                      $cities =  CHtml::listData(States::model()->AllListingStatesOfCountry((int) $model->country) ,'state_id' , 'state_name') ;
                     $m_class = empty( $cities ) ? 'hidden' : '' ; 
                     ?>
-                <div class="form-group col-lg-4 <?php echo $m_class;?>">
+                <div class="form-group col-lg-3 <?php echo $m_class;?>">
                       <?php echo $form->labelEx($model, 'state');?>
                     <?php echo $form->dropDownList($model, 'state', $cities  , $model->getHtmlOptions('state',array('empty'=>'Select City','class'=>'form-control select2 ' ,'data-url'=>Yii::App()->createUrl($this->id.'/select_location'),'onchange'=>'load_via_ajax(this,"city")'))); ?>
                     <?php echo $form->error($model, 'state');?>
@@ -335,17 +335,22 @@ background:
                      $locationlist =   CHtml::listData(City::model()->FindCities((int) $model->state) ,'city_id' , 'city_name') ;
                     $m_class = empty(  $locationlist ) ? 'hidden' : '' ; 
                     ?>
-                <div class="form-group col-lg-4 <?php echo $m_class;?>">
+                <div class="form-group col-lg-3 <?php echo $m_class;?>">
                     
                     <?php echo $form->labelEx($model, 'city');?>
                     <?php echo $form->dropDownList($model, 'city', $locationlist, $model->getHtmlOptions('state',array('empty'=>'Select Location','class'=>'form-control select2','onchange'=>'changeMap()'))); ?>
                     <?php echo $form->error($model, 'city');?>
                 </div>  
-                 <div class="form-group col-lg-4  ">
+                 <div class="form-group col-lg-3  ">
                     
                     <?php echo $form->labelEx($model, 'project_status');?>
                     <?php echo $form->dropDownList($model, 'project_status', $model->projectStatus(), $model->getHtmlOptions('state',array('empty'=>'Please Select','class'=>'form-control select2' ))); ?>
                     <?php echo $form->error($model, 'project_status');?>
+                </div>  
+				<div class="form-group col-lg-3  ">
+					<?php echo $form->labelEx($model, 'Permit Number'); ?>
+					<?php echo $form->textField($model, 'PropertyID', $model->getHtmlOptions('Permit No')); ?>
+					<?php echo $form->error($model, 'PropertyID'); ?>
                 </div>  
                 <div class="clearfix"><!-- --></div>
                 

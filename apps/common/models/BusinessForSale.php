@@ -145,7 +145,7 @@ class BusinessForSale extends ActiveRecord
 			array('client_ref', 'length', 'max' => 30),
 			//array('xml_type', 'length', 'max'=>2),
 			//array('xml_reference', 'length', 'max'=>25),
-			array('code, RefNo', 'length', 'max' => 20),
+			array('code, RefNo, PropertyID', 'length', 'max' => 20),
 			array('plot_area, builtup_area,interior_size', 'numerical'),
 			array('video', 'required', 'on' => 'add_youtube', 'message' => $required),
 			array('plot_area, builtup_area,interior_size', 'length', 'max' => 10),
@@ -165,7 +165,7 @@ class BusinessForSale extends ActiveRecord
 			array('modified_date, xml_listing_date, xml_update_date, expiry_date,property_overview,LocalAreaAmenitiesDesc,RecommendedProperties,PropertyID,status,rent_paid,name,unsubmited,amenities_fields', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, section_id, category_id, sub_category_id,nested_sub_category, ad_title, ad_description, price, country, state, city, district, mobile_number, bathrooms, bedrooms, user_id, added_date, modified_date, priority, isTrash, status,occupant_status, slug, image, dynamic, dynamicArray, location_latitude, location_longitude, featured, area_location, xml_inserted, xml_pk, xml_type, xml_reference, xml_listing_date, xml_update_date, code, RefNo, community_id, sub_community_id, property_name, builtup_area, PrimaryUnitView,     FloorNo, HandoverDate,     parking,   salesman_email, expiry_date,       mandate, currency_abr, area_measurement, PDFBrochureLink,property_overview,ReraStrNo', 'safe', 'on' => 'search'),
+			array('id, section_id, category_id, sub_category_id,nested_sub_category, ad_title, ad_description, price, country, state, city, district, mobile_number, bathrooms, bedrooms, user_id, added_date, modified_date, priority, isTrash, status,occupant_status, slug, image, dynamic, dynamicArray, location_latitude, location_longitude, featured, area_location, xml_inserted, xml_pk, xml_type, xml_reference, xml_listing_date, xml_update_date, code, RefNo, PropertyID, community_id, sub_community_id, property_name, builtup_area, PrimaryUnitView,     FloorNo, HandoverDate,     parking,   salesman_email, expiry_date,       mandate, currency_abr, area_measurement, PDFBrochureLink,property_overview,ReraStrNo', 'safe', 'on' => 'search'),
 		);
 		return $rules;
 	}
