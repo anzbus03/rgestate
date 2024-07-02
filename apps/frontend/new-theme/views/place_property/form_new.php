@@ -1117,7 +1117,20 @@ if ($viewCollection->renderContent) {
 										<?php echo $form->textField($model, 'RefNo',   $mer); ?>
 										<?php echo $form->error($model, 'RefNo'); ?>
 									</div>
+									
+								</div>
+								<div class="row  form-group  ">
 
+									<div class="col-sm-5 text-right">
+
+										<?php echo $form->labelEx($model, 'Permit Number'); ?>
+
+									</div>
+									<div class="col-sm-7">
+										<?php $mer =  array_merge($model->getHtmlOptions('PropertyID'), array('placeholder' => $this->tag->getTag('PropertyID', 'Permit No'), 'class' => 'input-text  form-control')); ?>
+										<?php echo $form->textField($model, 'PropertyID',   $mer); ?>
+										<?php echo $form->error($model, 'PropertyID'); ?>
+									</div>
 								</div>
 								<div class="clearfix"><!-- --></div>
 

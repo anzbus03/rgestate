@@ -11,6 +11,10 @@
       <div class="value left"><?php echo $model->ReferenceNumberTitle;?></div>
    </li>
    <li class="left">
+      <div class="category left"><?php echo $model->getAttributeLabel('Permit No');?></div>
+      <div class="value left"><?php echo $model->PropertyID;?></div>
+   </li>
+   <li class="left">
       <div class="category left"><?php echo $this->tag->getTag('title', 'Title') ;?></div>
       <div class="value left">
          <?php echo $model->ad_title;?>

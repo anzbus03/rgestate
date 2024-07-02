@@ -152,7 +152,7 @@ class PlaceAnAd extends ActiveRecord
             array('client_ref', 'length', 'max'=>30),
             //array('xml_type', 'length', 'max'=>2),
             //array('xml_reference', 'length', 'max'=>25),
-            array('code, RefNo', 'length', 'max'=>20),
+            array('code, RefNo,PropertyID', 'length', 'max'=>20),
             array('plot_area, builtup_area,interior_size', 'numerical' ),
             array('video', 'required' , 'on' => 'add_youtube', 'message'=>$required ),
             array('plot_area, builtup_area,interior_size', 'length', 'max'=>10),
@@ -166,13 +166,13 @@ class PlaceAnAd extends ActiveRecord
 		    array('video_urls', 'validateAddVideo' ),
 		      array('is_mor,rights,r_facade,may_affect,disputes,p_limits', 'length', 'max'=>250),
             array('l_no,plan_no,no_of_u,floor_no,unit_no', 'length', 'max'=>20),
-		    array('ad_images_g,sub_category_id,reference_number,no_image,insert_via,slug_z,verified,location,site,available_units,show_expired,n_send_at,city_location_image,package_used,location_latitude,location_longitude,adv_ch,is_mor,rights,r_facade,may_affect,disputes,p_limits,l_no,plan_no,no_of_u,floor_no,unit_no,expiry_date,selling_price,c_date,unpublished,hot,broker_pad,RefNo,f_properties', 'safe' ),
+		    array('ad_images_g,sub_category_id,reference_number,no_image,insert_via,slug_z,verified,location,site,available_units,show_expired,n_send_at,city_location_image,package_used,location_latitude,location_longitude,adv_ch,is_mor,rights,r_facade,may_affect,disputes,p_limits,l_no,plan_no,no_of_u,floor_no,unit_no,expiry_date,selling_price,c_date,unpublished,hot,broker_pad,RefNo,PropertyID,f_properties', 'safe' ),
 		    array('meta_title,meta_description,tag_list2,image,company_name,video,image_status,uid,property_status,p_o_r,user_updated,team_manager,custom_price,xml_update_date', 'safe' ),
             array('nearest_metro,nearest_railway,category_name,community_name,country_name,user_name,keyword,maxSqft,minSqft,sort,year_built,floor_plan,listing_type,area_unit,area_unit_1,p_id,p_url', 'safe'),
             array('modified_date, xml_listing_date, xml_update_date, expiry_date,property_overview,LocalAreaAmenitiesDesc,RecommendedProperties,PropertyID,status,rent_paid,name,unsubmited,amenities_fields', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, section_id, category_id, sub_category_id, ad_title, ad_description, price, country, state, city, district, mobile_number, bathrooms, bedrooms, user_id, added_date, modified_date, priority, isTrash, status,occupant_status, slug, image, dynamic, dynamicArray, location_latitude, location_longitude, featured, area_location, xml_inserted, xml_pk, xml_type, xml_reference, xml_listing_date, xml_update_date, code, RefNo, community_id, sub_community_id, property_name, builtup_area, PrimaryUnitView,     FloorNo, HandoverDate,     parking,   salesman_email, expiry_date,       mandate, currency_abr, area_measurement, PDFBrochureLink,property_overview,ReraStrNo,preleased', 'safe', 'on'=>'search'),
+            array('id, section_id, category_id, sub_category_id, ad_title, ad_description, price, country, state, city, district, mobile_number, bathrooms, bedrooms, user_id, added_date, modified_date, priority, isTrash, status,occupant_status, slug, image, dynamic, dynamicArray, location_latitude, location_longitude, featured, area_location, xml_inserted, xml_pk, xml_type, xml_reference, xml_listing_date, xml_update_date, code, RefNo, community_id, sub_community_id, property_name, builtup_area, PrimaryUnitView,     FloorNo, HandoverDate,     parking,   salesman_email, expiry_date,       mandate, currency_abr, area_measurement, PDFBrochureLink,property_overview,ReraStrNo,preleased,PropertyID', 'safe', 'on'=>'search'),
         );
         return array_merge($rules1,$rules);
     }
