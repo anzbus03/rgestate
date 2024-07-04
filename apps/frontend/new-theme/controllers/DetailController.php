@@ -235,7 +235,7 @@ class DetailController extends Controller
 		define('CATEGORY_URL', Yii::App()->createAbsoluteUrl('listing/index', array('sec' => $model->sec_slug, 'type_of' => $model->category_slug)));
 		define('AD_TITLE', $model->ad_title);
 		define('AD_URL', CURRENT_URL);
-
+		
 
 		if ($this->app->request->isAjaxRequest) {
 

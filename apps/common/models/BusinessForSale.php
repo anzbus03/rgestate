@@ -5475,6 +5475,7 @@ class BusinessForSale extends ActiveRecord
 	public function detailList()
 	{
 		return  array(
+			'permit_no' 	 =>  $this->PropertyID ,
 			//	'location' 	 =>  $this->mandate ,
 			'category_id' 	 =>   !empty($this->category_name) ? $this->category_name :     $this->ListingTypeCategory,
 			'listing_type'	 =>  !empty($this->listing_category) ? $this->listing_category :  $this->ListingType,

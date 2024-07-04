@@ -5197,46 +5197,49 @@ $w_share_url = Yii::t('app','https://wa.me/{number}?text={text}',array('{number}
 	}
 	 
 	public function detailList(){
-	    if($this->interior_size==$this->builtup_area){ $this->interior_size = ''; }
+	    if($this->interior_size==$this->builtup_area){ 
+			$this->interior_size = ''; 
+		}
 		return  array(
-		    	'reference' 	 =>     $this->ReferenceNumberTitle ,
-		'listing_type'	 =>  !empty($this->listing_category) ? $this->listing_category :  $this->ListingType ,
-		//	'location' 	 =>  $this->mandate ,
-		'category_id' 	 =>   !empty($this->category_name) ? $this->category_name :     $this->ListingTypeCategory ,
-	 
+			'permit_no' 	 =>     $this->PropertyID ,
+			'reference' 	 =>     $this->ReferenceNumberTitle ,
+			'listing_type'	 =>  !empty($this->listing_category) ? $this->listing_category :  $this->ListingType ,
+			//	'location' 	 =>  $this->mandate ,
+			'category_id' 	 =>   !empty($this->category_name) ? $this->category_name :     $this->ListingTypeCategory ,
+		
 			'section_id'	   =>  $this->SecNewTitle ,    
-		//'client_ref' 	 =>     $this->client_ref ,
-		'bedrooms'		 =>    $this->BedroomTitle,
-		'bathrooms' 	 =>     $this->BathroomTitle ,
-		'balconies'		 =>   $this->BalconiesTitle ,
-		'builtup_area' 	 =>  $this->BuiltUpArea ,
-		'interior_size' 	 =>  $this->interiorSize ,
+			//'client_ref' 	 =>     $this->client_ref ,
+			'bedrooms'		 =>    $this->BedroomTitle,
+			'bathrooms' 	 =>     $this->BathroomTitle ,
+			'balconies'		 =>   $this->BalconiesTitle ,
+			'builtup_area' 	 =>  $this->BuiltUpArea ,
+			'interior_size' 	 =>  $this->interiorSize ,
 		
       	
 		
-	//	'plot_area' 	 =>   $this->PloatArea ,            
-		//'sub_category_id' =>  $this->sub_category_name ,
-		'FloorNo' 		 =>  $this->FloorNoTitle ,
-		'total_floor' 	 =>   $this->total_floorTitle ,
-		'parking' 		 =>  $this->parkingTitle ,
-		'construction_status' => $this->ConstructionTitle ,
-		'transaction_type' =>   $this->TransactionTypeTitle ,
-		'year_built' 	   =>   $this->year_built ,
-	  	//'rera_no'		   =>  in_array('rera_no',$this->getFieldsList()) ? $this->rera_no: '',
-		'furnished'		   =>  $this->FurnishedTitle ,
-		'maid_room'		   =>  $this->MaidRooMTitle ,
-	        
-		//'status'		   =>  $this->StatusTitle ,
-	//	'area_location'		   =>  $this->area_location ,
-	'l_no'=>$this->l_no ,
-	'plan_no'=>$this->plan_no ,
-	'no_of_u'=>$this->no_of_u ,
-	'floor_no'=>$this->floor_no ,
-	'unit_no'=>$this->unit_no ,
-//	'c_date'=>$this->CdateTitle ,
-	'selling_price'=>$this->selling_price ,
+			//	'plot_area' 	 =>   $this->PloatArea ,            
+			//'sub_category_id' =>  $this->sub_category_name ,
+			'FloorNo' 		 =>  $this->FloorNoTitle ,
+			'total_floor' 	 =>   $this->total_floorTitle ,
+			'parking' 		 =>  $this->parkingTitle ,
+			'construction_status' => $this->ConstructionTitle ,
+			'transaction_type' =>   $this->TransactionTypeTitle ,
+			'year_built' 	   =>   $this->year_built ,
+			//'rera_no'		   =>  in_array('rera_no',$this->getFieldsList()) ? $this->rera_no: '',
+			'furnished'		   =>  $this->FurnishedTitle ,
+			'maid_room'		   =>  $this->MaidRooMTitle ,
+					
+			//'status'		   =>  $this->StatusTitle ,
+			//	'area_location'		   =>  $this->area_location ,
+			'l_no'=>$this->l_no ,
+			'plan_no'=>$this->plan_no ,
+			'no_of_u'=>$this->no_of_u ,
+			'floor_no'=>$this->floor_no ,
+			'unit_no'=>$this->unit_no ,
+			//	'c_date'=>$this->CdateTitle ,
+			'selling_price'=>$this->selling_price ,
 		
-	);
+		);
 	}
 public function getselling_price_total(){
 		if(!empty($this->selling_price)){
