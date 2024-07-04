@@ -1713,9 +1713,7 @@ Jq4pd48R
 		if (isset($formData['type_of']) and strpos($formData['type_of'], 'business') !== false) {
 			define('BUSINESS', '1');
 		}
-		$adModel = new PlaceAnAdNew();
-
-
+		$adModel = new BusinessForSale();
 		$htm = '';
 		/*
 		    if(!isset($formData['reg'])){

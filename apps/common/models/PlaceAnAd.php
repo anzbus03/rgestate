@@ -71,7 +71,8 @@ class PlaceAnAd extends ActiveRecord
 	 public $featured_date;
 	 public $enter_city;public $whatsapp; 
 	 public $f_properties;
-	 
+	 public $startDate;
+	 public $endDate;
      const FEATURED_CONDITION = " t.isTrash='0' and featured='Y'  and t.status='A'   "; 
      const LATEST_CONDITION   = " t.isTrash='0'  and t.status='A'  "; 
      const FEATURED_ORDER     = " featured='Y' desc,t.id desc "; 
@@ -883,9 +884,14 @@ class PlaceAnAd extends ActiveRecord
 		    //echo "E".$this->date_added."F";exit; 
         	$this->date_added = $comparisonSigns[$this->pickerDateStartComparisonSign] . $this->date_added;
 		}
+	
         $criteria=new CDbCriteria;$criteria->condition ='1';
         $criteria->select = 't.*,lstype.category_name as listing_category ,cat.category_name as  category_name,'.$this->FetauredQuery.'TIMESTAMPDIFF(DAY,(CASE WHEN t.extended_on IS NOT NULL THEN t.extended_on ELSE  t.date_added END),NOW()) as days_active ,usr.first_name,usr.email as user_email,usr.full_number as mob,usr.email_verified,usr.o_verified,usr.last_name,usr.slug as u_slug,cn.country_name,st.state_name, (SELECT CONCAT(image_name, "||F||", status)  FROM {{ad_image}} img  WHERE  img.ad_id = t.id   and  img.isTrash="0" order by img.status="A" desc  limit 1 )   as ad_image2';
-
+		if ($this->startDate && $this->endDate) {
+			$criteria->addCondition('t.date_added >= :startDate AND t.date_added <= :endDate');
+			$criteria->params[':startDate'] = $this->startDate;
+			$criteria->params[':endDate'] = $this->endDate;
+		}
         $criteria->compare('id',$this->id);
         if(!empty($this->reference_number)){
             $criteria->condition .=  ' and t.id like :reference_number or t.RefNo like :reference_number ' ;
@@ -3285,14 +3291,13 @@ function getMBathroomHtml()
         if(isset($formData['sta']) and !empty($formData['sta'])){
 			$criteria->compare('t.status',$formData['sta']);
 		}else{
-        $criteria->compare('t.status','A');
+        	$criteria->compare('t.status','A');
 		}
         if(!empty($user_id)){
-					$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END '; 
-			$criteria->params[':thisusr'] = (int) $user_id;
-	
-			 
+			$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END '; 
+			$criteria->params[':thisusr'] = (int) $user_id;	 
 		}
+		
         $criteria->distinct =  't.id' ;
         $criteria->select .= ',  (t.builtup_area*(1/au.value))   as converted_unit ,au.master_name as atitle'; 
         $criteria->join  .= ' left join {{category}} lstype ON lstype.category_id = t.listing_type ';
@@ -3630,7 +3635,7 @@ function getMBathroomHtml()
 		else{
 		 $criteria->condition .=  $this->getExpityConditionFronEnd();
 		}
-		 
+		
 		
 	 
         $order_val = '';
@@ -5192,46 +5197,49 @@ $w_share_url = Yii::t('app','https://wa.me/{number}?text={text}',array('{number}
 	}
 	 
 	public function detailList(){
-	    if($this->interior_size==$this->builtup_area){ $this->interior_size = ''; }
+	    if($this->interior_size==$this->builtup_area){ 
+			$this->interior_size = ''; 
+		}
 		return  array(
-		    	'reference' 	 =>     $this->ReferenceNumberTitle ,
-		'listing_type'	 =>  !empty($this->listing_category) ? $this->listing_category :  $this->ListingType ,
-		//	'location' 	 =>  $this->mandate ,
-		'category_id' 	 =>   !empty($this->category_name) ? $this->category_name :     $this->ListingTypeCategory ,
-	 
+			'permit_no' 	 =>     $this->PropertyID ,
+			'reference' 	 =>     $this->ReferenceNumberTitle ,
+			'listing_type'	 =>  !empty($this->listing_category) ? $this->listing_category :  $this->ListingType ,
+			//	'location' 	 =>  $this->mandate ,
+			'category_id' 	 =>   !empty($this->category_name) ? $this->category_name :     $this->ListingTypeCategory ,
+		
 			'section_id'	   =>  $this->SecNewTitle ,    
-		//'client_ref' 	 =>     $this->client_ref ,
-		'bedrooms'		 =>    $this->BedroomTitle,
-		'bathrooms' 	 =>     $this->BathroomTitle ,
-		'balconies'		 =>   $this->BalconiesTitle ,
-		'builtup_area' 	 =>  $this->BuiltUpArea ,
-		'interior_size' 	 =>  $this->interiorSize ,
+			//'client_ref' 	 =>     $this->client_ref ,
+			'bedrooms'		 =>    $this->BedroomTitle,
+			'bathrooms' 	 =>     $this->BathroomTitle ,
+			'balconies'		 =>   $this->BalconiesTitle ,
+			'builtup_area' 	 =>  $this->BuiltUpArea ,
+			'interior_size' 	 =>  $this->interiorSize ,
 		
       	
 		
-	//	'plot_area' 	 =>   $this->PloatArea ,            
-		//'sub_category_id' =>  $this->sub_category_name ,
-		'FloorNo' 		 =>  $this->FloorNoTitle ,
-		'total_floor' 	 =>   $this->total_floorTitle ,
-		'parking' 		 =>  $this->parkingTitle ,
-		'construction_status' => $this->ConstructionTitle ,
-		'transaction_type' =>   $this->TransactionTypeTitle ,
-		'year_built' 	   =>   $this->year_built ,
-	  	//'rera_no'		   =>  in_array('rera_no',$this->getFieldsList()) ? $this->rera_no: '',
-		'furnished'		   =>  $this->FurnishedTitle ,
-		'maid_room'		   =>  $this->MaidRooMTitle ,
-	        
-		//'status'		   =>  $this->StatusTitle ,
-	//	'area_location'		   =>  $this->area_location ,
-	'l_no'=>$this->l_no ,
-	'plan_no'=>$this->plan_no ,
-	'no_of_u'=>$this->no_of_u ,
-	'floor_no'=>$this->floor_no ,
-	'unit_no'=>$this->unit_no ,
-//	'c_date'=>$this->CdateTitle ,
-	'selling_price'=>$this->selling_price ,
+			//	'plot_area' 	 =>   $this->PloatArea ,            
+			//'sub_category_id' =>  $this->sub_category_name ,
+			'FloorNo' 		 =>  $this->FloorNoTitle ,
+			'total_floor' 	 =>   $this->total_floorTitle ,
+			'parking' 		 =>  $this->parkingTitle ,
+			'construction_status' => $this->ConstructionTitle ,
+			'transaction_type' =>   $this->TransactionTypeTitle ,
+			'year_built' 	   =>   $this->year_built ,
+			//'rera_no'		   =>  in_array('rera_no',$this->getFieldsList()) ? $this->rera_no: '',
+			'furnished'		   =>  $this->FurnishedTitle ,
+			'maid_room'		   =>  $this->MaidRooMTitle ,
+					
+			//'status'		   =>  $this->StatusTitle ,
+			//	'area_location'		   =>  $this->area_location ,
+			'l_no'=>$this->l_no ,
+			'plan_no'=>$this->plan_no ,
+			'no_of_u'=>$this->no_of_u ,
+			'floor_no'=>$this->floor_no ,
+			'unit_no'=>$this->unit_no ,
+			//	'c_date'=>$this->CdateTitle ,
+			'selling_price'=>$this->selling_price ,
 		
-	);
+		);
 	}
 public function getselling_price_total(){
 		if(!empty($this->selling_price)){

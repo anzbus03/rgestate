@@ -396,6 +396,8 @@ header('Content-type: text/html; charset=UTF-8');
         }
         Yii::app()->end();
     }
+
+
     
    public function actionIndex()
     {
@@ -461,6 +463,63 @@ header('Content-type: text/html; charset=UTF-8');
         $tags_short =  $model->place_ad_tag_code();;
         $this->render('list', compact('model','tags','tags_short'));
     }
+	public function actionExportExcel(){
+		try{
+            
+            $model = new PlaceAnAd('search');
+            $model->unsetAttributes();  // clear any default values
+        
+            if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+                $model->startDate = $_GET['startDate'];
+                $model->endDate = $_GET['endDate'];
+            }
+        
+            $dataProvider = $model->search();
+            $dataProvider->pagination = false; // Get all data
+        
+            // Prepare data for export
+            $data = $dataProvider->getData();
+        
+            // Set headers to force download
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="ExportedData_' . date('YmdHis') . '.xls"');
+            header('Cache-Control: max-age=0');
+            // Open output stream
+            $output = fopen('php://output', 'w');
+        
+            // Write column headers
+            $header = array('RefNo', 'Title', 'Description', 'Country', "City", 'Date Created', "Type", "Price", "Rent", "Status", "Section", "Category", "Featured");
+            fputcsv($output, $header, "\t");
+        
+            // Write data rows
+            foreach ($data as $item) {
+                $row = array(
+                    $item->RefNo,
+                    $item->ad_title,
+                    $item->ad_description,
+                    $item->country_name,
+                    $item->state,
+                    $item->date_added,
+                    $item->listing_type,
+                    $item->price,
+                    $item->Rent,
+                    $item->status,
+                    $item->section_id,
+                    $item->category_id,
+                    $item->featured,
+                );
+                fputcsv($output, $row, "\t");
+            }
+        
+            // Close output stream
+            fclose($output);
+        
+            Yii::app()->end();
+        }catch (Exception $e){
+            print_r($e->getMessage());
+            exit;
+        }
+	}
       public function actionBusiness()
     {
        

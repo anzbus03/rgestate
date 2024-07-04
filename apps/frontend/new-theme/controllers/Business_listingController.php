@@ -270,7 +270,6 @@ class Business_listingController extends Controller
 		$title = ltrim($title, ',');
 
 
-
 		$limit = 24;
 
 
@@ -333,6 +332,8 @@ class Business_listingController extends Controller
 		$pages->pageSize = $limit;
 		$pages->applyLimit($criteria);
 		$criteria->limit =  $limit;
+		$criteria->condition .= ' AND t.isTrash = "0" AND t.status = "A"';
+
 
 		$ads = $placead->findAll($criteria);
 

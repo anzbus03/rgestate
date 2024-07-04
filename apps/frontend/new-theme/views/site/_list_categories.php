@@ -3,7 +3,8 @@
 $cityDats = Category::model()->ListDataForJSON_ID_BySEctionNewSlugNtCacheWithId(''); 
  
 $adModelCriteria =	$adModel->findAds($formData ,false,true); 
-$adModelCriteria->select= 't.category_id as category_name,count(t.id) as id  ';
+
+$adModelCriteria->select = 't.category_id as category_name,count(t.id) as id  ';
  
 $adModelCriteria->group = 't.category_id'; 
 $adModelCriteria->order  ='count(t.id) desc ';

@@ -208,19 +208,18 @@
     			$listing_type = 'lst'.$model->listing_type;; 
     			$category_ids  = 'cat'.$model->category_id; 
     			$sect_ids  = 'sect'.$model->section_id; 
-			
     			foreach($array as $k=>$fld){
-    			if(!empty( $fld)) { 
-    			?>
-                    <div class="facts_listitem <?php echo $k.' '.$listing_type.' '.$category_ids.' '.$sect_ids;?> <?php echo in_array($k,array('permit_no', 'bedrooms','bathrooms','builtup_area','listing_type','category_id','section_id','reference','client_ref','interior_size','l_no','plan_no','no_of_u','floor_no','unit_no','c_date','selling_price','furnished')) ? 'lefticons': '';?>"
-                        style="border-bottom:0px;">
-                        <div class="facts_label " style="width:100% !important;">
-                            <?php echo !in_array($k,array()) ?  $model->getAttributeLabel($k).' <span style="font-weight:500;" dir="auto">'.$fld.'</span>': $fld;?>
-                        </div>
+                    if(!empty( $fld)) { 
+                    ?>
+                        <div class="facts_listitem <?php echo $k.' '.$listing_type.' '.$category_ids.' '.$sect_ids;?> <?php echo in_array($k,array('permit_no', 'bedrooms','bathrooms','builtup_area','listing_type','category_id','section_id','reference','client_ref','interior_size','l_no','plan_no','no_of_u','floor_no','unit_no','c_date','selling_price','furnished')) ? 'lefticons': '';?>"
+                            style="border-bottom:0px;">
+                            <div class="facts_label " style="width:100% !important;">
+                                <?php echo !in_array($k,array()) ?  $model->getAttributeLabel($k).' <span style="font-weight:500;" dir="auto">'.$fld.'</span>': $fld;?>
+                            </div>
 
-                    </div>
-                    <?php
-    			}
+                        </div>
+                        <?php
+                    }
     			}
 			
 			}
@@ -302,7 +301,6 @@ if($hasedit and !empty($model->slug_z)){
         </style>
         <div data-qs="text-trimmer" id="txttrim" class="  propertydescription_texttrim ">
             <div class="txtcnt1" dir="auto">
-				Permit No: <?php echo $model->PropertyID ?> <br/>
                 <?php echo nl2br($model->AdDescription2);?>
             </div>
             <div>

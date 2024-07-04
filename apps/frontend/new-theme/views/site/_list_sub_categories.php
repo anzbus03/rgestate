@@ -1,7 +1,9 @@
 <?php
 $subCategories = SubCategory::model()->findAll(); // Fetch all sub-categories
 $adModelCriteria = $adModel->findAds($formData, false, true);
+$adModelCriteria->condition .= ' AND t.status = "A" and t.isTrash = "0" and t.nested_sub_category != "null" and t.category_id = 208';
 $adModelCriteria->select = 't.sub_category_id, COUNT(t.id) AS id';
+
 $adModelCriteria->group = 't.sub_category_id';
 $new_homes = $adModel->findAll($adModelCriteria);
 
@@ -39,7 +41,7 @@ if (!empty($new_homes)) {
     $count = 1;
     foreach ($new_homes as $k => $v) {
         $subcategory = Subcategory::model()->findByPk($v->sub_category_id); // Fetch sub-category details
-        if (!$subcategory) {
+        if (!$subcategory || $subcategory->isTrash == 1) {
             continue;
         }
 
