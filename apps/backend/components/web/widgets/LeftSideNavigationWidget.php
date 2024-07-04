@@ -138,7 +138,7 @@ class LeftSideNavigationWidget extends CWidget
                 ),
             ),
               'business' => array(
-                'name'      => Yii::t('app', 'Business for Sale'),
+                'name'      => Yii::t('app', 'Business Opportiunities'),
                 'icon'      => 'glyphicon-list',
                 'active'    => 'place_property',
                 'route'     => array('place_property/business'),
