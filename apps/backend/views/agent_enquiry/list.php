@@ -213,11 +213,13 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 </div>
 
 <script>
-function loadthis(k,e){
-	e.preventDefault();
-	var href_url  = $(k).attr('href');
-	$('#myModal').modal('show');$('#html_content').html('<p>Loading..</p>');
-	$.get(href_url,function(data){ $('#html_content').html(data); })
+function loadthis(element, event) {
+    event.preventDefault();
+    var hrefUrl = $(element).attr('href');
+    $('#myModal').modal('show');
+    $('#html_content').html('<p>Loading...</p>');
+    $.get(hrefUrl, function(data) {
+        $('#html_content').html(data);
+    });
 }
-
 </script>

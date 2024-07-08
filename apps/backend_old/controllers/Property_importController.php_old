@@ -1,0 +1,880 @@
+<?php defined('MW_PATH') || exit('No direct script access allowed');
+
+/**
+ * UsersController
+ * 
+ * Handles the actions for users related tasks
+ * 
+ * @package MailWizz EMA
+ * @author Serban George Cristian <cristian.serban@mailwizz.com> 
+ * @link http://www.mailwizz.com/
+ * @copyright 2013-2014 MailWizz EMA (http://www.mailwizz.com)
+ * @license http://www.mailwizz.com/license/
+ * @since 1.0
+ */
+ 
+class Property_importController extends Controller
+{
+ public function actionCsv_import()
+    {
+        $list     = array();
+        $options  = Yii::app()->options;
+        $request  = Yii::app()->request;
+        $notify   = Yii::app()->notify;
+		$this->getData('pageScripts')->add(array('src' => AssetsUrl::js('list-import.js')));
+		 
+        $importLog = array();
+        $filePath  = Yii::getPathOfAlias('common.runtime.list-import').'/';
+
+        $importAtOnce = (int)$options->get('system.importer.import_at_once', 50);
+        $pause        = (int)$options->get('system.importer.pause', 1);
+
+        set_time_limit(0);
+        if ($memoryLimit = $options->get('system.importer.memory_limit')) {
+            ini_set('memory_limit', $memoryLimit);
+        }
+        ini_set('auto_detect_line_endings', true);
+
+        $import = new ListCsvImport('upload');
+        $import->file_size_limit = (int)$options->get('system.importer.file_size_limit', 1024 * 1024 * 1); // 1 mb
+        $import->attributes      = (array)$request->getPost($import->modelName, array());
+        $import->file            = CUploadedFile::getInstance($import, 'file');
+
+        if (!empty($import->file)) {
+            if (!$import->upload()) {
+                $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
+                $notify->addError($import->shortErrors->getAllAsString());
+                $this->redirect(array('place_import/Create_import'));
+            }
+
+            $this->setData(array(
+                'pageMetaTitle'     => $this->data->pageMetaTitle.' | '.Yii::t('list_import', 'Import Properties'),
+                'pageHeading'       => Yii::t('list_import', 'Import Properties'),
+                'pageBreadcrumbs'   => array(
+                    Yii::t('leads', 'Properties') => $this->createUrl('place_property/index/'),
+                    Yii::t('list_import', 'CSV Import')
+                )
+            ));
+
+             return $this->render('csv', compact('list', 'import', 'importAtOnce', 'pause'));echo 'wer';exit; 
+        }
+
+        // only ajax from now on.
+        if (!$request->isAjaxRequest) {
+           // $this->redirect(array('leads/index'));
+        }
+
+       try {
+
+            if (!is_file($filePath.$import->file_name)) {
+                return $this->renderJson(array(
+                    'result'  => 'error',
+                    'message' => Yii::t('list_import', 'The import file does not exist anymore!')
+                ));
+            }
+
+ 
+            $file = new SplFileObject($filePath.$import->file_name);
+            $file->setFlags(SplFileObject::READ_CSV | SplFileObject::SKIP_EMPTY | SplFileObject::DROP_NEW_LINE | SplFileObject::READ_AHEAD);
+            $columns = $file->current(); // the header
+
+
+ 
+
+            if (empty($columns)) {
+                unset($file);
+                @unlink($filePath.$import->file_name);
+                return $this->renderJson(array(
+                    'result'  => 'error',
+                    'message' => Yii::t('list_import', 'Your file does not contain the header with the fields title!')
+                ));
+            }
+
+            if ($import->is_first_batch) {
+                $linesCount         = iterator_count($file);
+                $totalFileRecords   = $linesCount - 1; // minus the header
+                $import->rows_count = $totalFileRecords;
+            } else {
+                $totalFileRecords = $import->rows_count;
+            }
+
+            $file->seek(1);
+
+            
+            $totalSubscribersCount = 0;
+            $listSubscribersCount  = 0;
+            $maxSubscribersPerList = (int)  -1 ;
+            $maxSubscribers        = (int)  -1 ;
+
+            /*
+            $criteria = new CDbCriteria();
+            $criteria->select = 'field_id, label, tag';
+            $criteria->compare('list_id', $list->list_id);
+            $fields = ListField::model()->findAll($criteria);
+            * */
+			$fields = array();
+            $foundTags = array();
+            $searchReplaceTags = array(
+                'E_MAIL'        => 'EMAIL',
+                'EMAIL_ADDRESS' => 'EMAIL',
+                'EMAILADDRESS'  => 'EMAIL',
+            );
+            
+       
+            
+            foreach ($fields as $field) {
+				 
+                if ($field->tag == 'FNAME') {
+                    $searchReplaceTags['F_NAME']     = 'FNAME';
+                    $searchReplaceTags['FIRST_NAME'] = 'FNAME';
+                    $searchReplaceTags['FIRSTNAME']  = 'FNAME';
+                    continue;
+                }
+                if ($field->tag == 'LNAME') {
+                    $searchReplaceTags['L_NAME']    = 'LNAME';
+                    $searchReplaceTags['LAST_NAME'] = 'LNAME';
+                    $searchReplaceTags['LASTNAME']  = 'LNAME';
+                    continue;
+                }
+            }
+ 
+            $ioFilter = Yii::app()->ioFilter;
+            $columns  = (array)$ioFilter->stripTags($ioFilter->xssClean($columns));
+            $columns  = array_map('trim', $columns);
+
+            foreach ($columns as $value) {
+                $tagName     = StringHelper::getTagFromString($value);
+                $tagName     = str_replace(array_keys($searchReplaceTags), array_values($searchReplaceTags), $tagName);
+                $foundTags[] = $tagName;
+            }
+             
+            $foundEmailTag = false;
+            foreach ($foundTags as $tagName) {
+                if ($tagName === 'MOBILENUMBER') {
+                    $foundEmailTag = true;
+                    break;
+                }
+            }
+
+            if (!$foundEmailTag) {
+                unset($file);
+                @unlink($filePath.$import->file_name);
+                return $this->renderJson(array(
+                    'result'  => 'error',
+                    'message' => Yii::t('list_import', 'Cannot find the "MobileNumber" column in your file!')
+                ));
+            }
+
+            $foundReservedColumns = array();
+            $field_check_array = array(
+					'ad_title' => array( 'title') ,
+					'ad_description' => array('description'),
+					'city_id' => array('location'),
+					'price' => array('price'),
+					'bedrooms' => array('bedrooms'),
+					'bathrooms' => array('baths'),
+					'category' => array('category'),
+					'purpose' => array('purpose'),
+					'area' =>array('area') ,
+					'amenities' =>array('amenities') ,
+					'agentname' =>array('agentname') ,
+					'phone' => array('mobilenumber'),
+					'phonenumbers' => array('phone'),
+					'LocationUrl' => array('locationurl'),
+					'url' => array('url'),
+					 
+					);
+					$find_array =array();
+					foreach ($columns as $columnName) {
+					 
+						foreach($field_check_array as $k=>$check_columValue ){
+							 
+							$found_clmn = array_search(strtolower($columnName) ,(array)$check_columValue);
+							 
+							if( strlen($found_clmn)>=1){
+								$find_array[$k] = strtolower($columnName);
+								break;
+							}
+						}
+
+					}
+					
+					
+            foreach ($columns as $columnName) {
+				 
+				  
+				 
+                $columnName     = StringHelper::getTagFromString($columnName);
+                $columnName     = str_replace(array_keys($searchReplaceTags), array_values($searchReplaceTags), $columnName);
+             
+            }
+           
+
+            if ($import->is_first_batch) {
+                /*
+                if ($logAction = Yii::app()->customer->getModel()->asa('logAction')) {
+                    $logAction->listImportStart($list, $import);
+                }
+                * */
+
+                $importLog[] = array(
+                    'type'    => 'info',
+                    'message' => Yii::t('list_import', 'Found the following column names: {columns}', array(
+                        '{columns}' => implode(', ', $columns)
+                    )),
+                    'counter' => false,
+                );
+            }
+
+            $offset = $importAtOnce * ($import->current_page - 1);
+            if ($offset >= $totalFileRecords) {
+                return $this->renderJson(array(
+                    'result'  => 'success',
+                    'message' => Yii::t('list_import', 'The import process has finished!')
+                ));
+            }
+            $file->seek($offset);
+
+            $csvData     = array();
+            $columnCount = count($columns);
+            $i           = 0;
+
+            while (!$file->eof()) {
+
+                $row = $file->fgetcsv();
+                if (empty($row)) {
+                    continue;
+                }
+
+                $row = (array)$ioFilter->stripTags($ioFilter->xssClean($row));
+                $row = array_map('trim', $row);
+                $rowCount = count($row);
+
+                if ($rowCount == 0) {
+                    continue;
+                }
+
+                $isEmpty = true;
+                foreach ($row as $value) {
+                    if (!empty($value)) {
+                        $isEmpty = false;
+                        break;
+                    }
+                }
+
+                if ($isEmpty) {
+                    continue;
+                }
+
+                if ($columnCount > $rowCount) {
+                    $fill = array_fill($rowCount, $columnCount - $rowCount, '');
+                    $row  = array_merge($row, $fill);
+                } elseif ($rowCount > $columnCount) {
+                    $row  = array_slice($row, 0, $columnCount);
+                }
+
+                $csvData[] = array_combine($columns, $row);
+
+                ++$i;
+
+                if ($i >= $importAtOnce) {
+                    break;
+                }
+            }
+            unset($file);
+
+            $fieldType =  array();
+
+            $data = array();
+            foreach ($csvData as $row) {
+                $rowData = array();
+                foreach ($row as $name => $value) {
+                    $tagName = StringHelper::getTagFromString($name);
+                    $tagName = str_replace(array_keys($searchReplaceTags), array_values($searchReplaceTags), $tagName);
+
+                    $rowData[] = array(
+                        'name'      => ucwords(str_replace('_', ' ', $name)),
+                        'tagName'   => trim($tagName),
+                        'tagValue'  => trim($value),
+                    );
+                }
+                $data[] = $rowData;
+            }
+          
+            unset($csvData);
+
+            if (empty($data) || count($data) < 1) {
+                @unlink($filePath.$import->file_name);
+
+                if ($logAction = Yii::app()->customer->getModel()->asa('logAction')) {
+                    $logAction->listImportEnd($list, $import);
+                }
+
+                if ($import->is_first_batch) {
+                    return $this->renderJson(array(
+                        'result'  => 'error',
+                        'message' => Yii::t('list_import', 'Your file does not contain enough data to be imported!')
+                    ));
+                } else {
+                    return $this->renderJson(array(
+                        'result'  => 'success',
+                        'message' => Yii::t('list_import', 'The import process has finished!')
+                    ));
+                }
+            }
+
+            $tagToModel = array();
+           
+  
+            // since 1.3.5.9
+            $bulkEmails = array();
+            foreach ($data as $index => $fields) {
+                foreach ($fields as $detail) {
+                    if ($detail['tagName'] == 'MobileNumber' && !empty($detail['tagValue'])) {
+                        $email = $detail['tagValue'];
+                       
+                        break;
+                    }
+                }
+            }
+            $failures = (array)Yii::app()->hooks->applyFilters('list_import_data_bulk_check_failures', array(), (array)$bulkEmails);
+            /*
+            foreach ($failures as $email => $message) {
+                EmailBlacklist::addToBlacklist($email, $message);
+            }
+            * */
+            // end 1.3.5.9
+
+            $finished    = false;
+            $importCount = 0;
+
+            // since 1.3.5.9
+            Yii::app()->hooks->doAction('list_import_before_processing_data', $collection = new CAttributeCollection(array(
+                'data'        => $data,
+                'list'        => $list,
+                'importLog'   => $importLog,
+                'finished'    => $finished,
+                'importCount' => $importCount,
+                'failures'    => $failures,
+                'importType'  => 'csv'
+            )));
+
+            $data        = $collection->data;
+            $importLog   = $collection->importLog;
+            $importCount = $collection->importCount;
+            $finished    = $collection->finished;
+            $failures    = $collection->failures;
+            //
+
+            //$transaction = Yii::app()->getDb()->beginTransaction();
+            $mustCommitTransaction = true;
+
+            try {
+              
+                $model = new PlaceAnAd();
+                $attribute_array = array();
+			 
+				$company_grade_value = array();
+				$company_type_value = array();
+				
+				
+                foreach ($data as $index => $fields) {
+					
+					
+					  $attribute_array = array();
+				 
+                    foreach ($fields as $detail) {
+						
+						$tag_name_small = strtolower($detail['tagName']);
+						$tag_name_value = trim($detail['tagValue']);
+					 	
+					
+						if(empty($tag_name_value)){ continue;}
+						
+						 $attribute_name = array_search($tag_name_small,$find_array);
+						 
+						 
+						 
+						 if(strlen($attribute_name)>=1){
+							 
+							 
+							 
+							    if($attribute_name=='city_id') { 
+								   
+								   $cityModel = $this->findCityFrmName($tag_name_value);
+								   if(!empty($cityModel)){
+									   $attribute_array['city'] = $cityModel->city_id; 
+									   $attribute_array['state'] = $cityModel->state_id; 
+									   $attribute_array['country'] = $cityModel->country_id; 
+									   unset($attribute_array['city_id']); 
+								   }
+								   
+							    } 
+							    if($attribute_name=='price') { 
+								   $tag_name_value = $this->findPrice($tag_name_value);
+								   
+							    } 
+							    if($attribute_name=='bathrooms') { 
+								   $tag_name_value =  (int) $tag_name_value;
+								   
+							    } 
+							    if($attribute_name=='purpose') { 
+								   $tag_name_value = $this->findPurpose($tag_name_value);
+								   if(!empty($tag_name_value)){
+									    $attribute_array['section_id'] = $tag_name_value ;
+									    if($tag_name_value=='2'){
+									       $attribute_array['rent_paid'] =  'monthly';
+									    }
+								   }
+								   
+							    } 
+							    if($attribute_name=='area') { 
+								   $unitModel = $this->findbuiltup_area($tag_name_value);
+								    if(!empty($unitModel)){
+									   if(isset($unitModel['area_unit'])){
+										   $attribute_array['area_unit'] = $unitModel['area_unit']; 
+									   }
+									   if(isset($unitModel['builtup_area'])){
+										   $attribute_array['builtup_area'] = $unitModel['builtup_area']; 
+									   }
+								   }
+								   
+							    } 
+							    if($attribute_name=='amenities') { 
+								   $tag_name_value = $this->findAmenities($tag_name_value);
+								    
+							    } 
+							   
+							    if($attribute_name=='category') { 
+								   $categoryModel = $this->findCategory($tag_name_value);
+								   if(!empty($categoryModel)){
+									   if(isset($categoryModel['sub_category_id'])){
+										   $attribute_array['sub_category_id'] = $categoryModel['sub_category_id']; 
+									   }
+									   if(isset($categoryModel['category_id'])){
+										   $attribute_array['category_id'] = $categoryModel['category_id']; 
+									   }
+								   }
+								   
+							    } 
+							    if($attribute_name=='LocationUrl') { 
+								   $LocationUrlModel = $this->findLatitude($tag_name_value);
+								   if(!empty($LocationUrlModel)){
+									   if(isset($LocationUrlModel['location_latitude'])){
+										   $attribute_array['location_latitude'] = $LocationUrlModel['location_latitude']; 
+									   }
+									   if(isset($LocationUrlModel['location_longitude'])){
+										   $attribute_array['location_longitude'] = $LocationUrlModel['location_longitude']; 
+									   }
+								   }
+								   
+							    } 
+							  if($attribute_name=='phone') { 
+								    $tag_name_value = Yii::t('app',$tag_name_value,array('-'=>''));
+									$attribute_array['full_number'] =  $tag_name_value ; 
+									$tag_name_value =  substr($tag_name_value, -10); 
+								 
+								   
+							    }
+							  if($attribute_name=='agentname') { 
+									$attribute_array['contact_person'] =  $tag_name_value ; 
+							  }
+							  if($attribute_name=='phone') { 
+									$attribute_array['mobile_number'] =  $tag_name_value ; 
+							   }
+								
+							  if($attribute_name=='url') { 
+								     $slug = $this->findSlug($tag_name_value);
+								     $attribute_array['slug_z'] = $slug; 
+								 
+							   }
+								
+								$attribute_array[$attribute_name] = $tag_name_value; 
+						 }
+                        	
+			
+                        
+                         
+                    }
+                    
+                   
+                    
+                    
+                    $user_id  = $this->findOrInsertUser($attribute_array);
+                    $attribute_array['user_id'] = $user_id;
+                      
+                  
+                     
+                   
+					$email = $attribute_array['ad_title'];
+                    if (empty($email)) {
+                        unset($data[$index]);
+                       // continue;
+                    }
+
+                    $importLog[] = array(
+                        'type'    => 'info',
+                        'message' => Yii::t('list_import', 'Checking the list for the title: "{email}"', array(
+                            '{email}' => CHtml::encode($email),
+                        )),
+                        'counter' => false,
+                    );
+
+                    if (!empty($failures[$email])) {
+                        $importLog[] = array(
+                            'type'    => 'error',
+                            'message' => Yii::t('list_import', 'Failed to save the title "{email}", reason: {reason}', array(
+                                '{email}'  => CHtml::encode($email),
+                                '{reason}' => '<br />'.$failures[$email],
+                            )),
+                            'counter' => true,
+                        );
+                        continue;
+                    }
+
+                    $subscriber = null;
+                    if (!empty($email)) {
+						$subscriber  = array(); 
+						 
+                      
+                        
+                    }
+
+                    if (empty($subscriber)) {
+
+                        $importLog[] = array(
+                            'type'    => 'info',
+                            'message' => Yii::t('list_import', 'The title "{email}" was not found, we will try to create it...', array(
+                                '{email}' => CHtml::encode($email),
+                            )),
+                            'counter' => false,
+                        );
+
+                         $subscriber = PlaceAnAd::model()->findByAttributes(array(
+                            'slug_z'   => $attribute_array['slug_z'] ,
+                        ));
+                        if(empty($subscriber)){   $subscriber  = new PlaceAnAd(); }
+                        $subscriber->scenario = 'new_insert';
+                        $subscriber->attributes = $attribute_array;
+                        $subscriber->no_image =  '1';
+                        $subscriber->insert_via =  '1';
+                         
+						
+                        if ($subscriber->hasErrors() || !$subscriber->save()) {
+							
+                            $importLog[] = array(
+                                'type'    => 'error',
+                                'message' => Yii::t('list_import', 'Failed to save the title "{email}", reason: {reason}', array(
+                                    '{email}'  => CHtml::encode($email),
+                                    '{reason}' => '<br />'.$subscriber->shortErrors->getAllAsString()
+                                )),
+                                'counter' => true,
+                            );
+                            continue;
+                        }
+                        else { 
+						  $am = new  AdAmenities();
+						  $am->deleteAll(array("condition"=>"ad_id=:ad_id","params"=>array(":ad_id"=>$subscriber->id)));
+						  if(isset($attribute_array['amenities']))
+						  {
+							 $ameni =  $attribute_array['amenities'];
+							 foreach($ameni as $k)
+							 {
+								 
+									$am->isNewRecord = true;
+									$am->ad_id = $subscriber->id;
+									$am->amenities_id =  $k;
+									$am->save();
+							 }
+							 
+						  }
+						  
+						 
+						  
+						  $cityM = City::model()->findByPk($subscriber->city);
+						  
+						 
+						  if(!empty($cityM)){ 
+							  if(empty($cityM->location_latitude)){
+								  City::model()->updateByPk($subscriber->city,array('location_latitude'=>$subscriber->location_latitude,'location_longitude'=>$subscriber->location_longitude));
+								
+							 
+							  }
+						  }
+						  
+						}
+
+                        $listSubscribersCount++;
+                        $totalSubscribersCount++;
+
+                      
+
+                        $importLog[] = array(
+                            'type'    => 'success',
+                            'message' => Yii::t('list_import', 'The Property "{email}" has been successfully saved.', array(
+                                '{email}' => CHtml::encode($email),
+                            )),
+                            'counter' => true,
+                        );
+
+                    } else {
+
+                        $importLog[] = array(
+                            'type'    => 'info',
+                            'message' => Yii::t('list_import', 'The Property "{email}" has been found, we will update it.', array(
+                                '{email}' => CHtml::encode($email),
+                            )),
+                            'counter' => true,
+                        );
+                    }
+
+                  
+
+                    unset($data[$index]);
+                    ++$importCount;
+
+                    if ($finished) {
+                        break;
+                    }
+                }
+
+              //  $transaction->commit();
+                $mustCommitTransaction = false;
+
+             } catch(Exception $e) {
+
+                if (isset($file)) {
+                    unset($file);
+                }
+
+                if (is_file($filePath.$import->file_name)) {
+                    @unlink($filePath.$import->file_name);
+                }
+
+               // $transaction->rollback();
+                $mustCommitTransaction = false;
+
+                return $this->renderJson(array(
+                    'result'  => 'error',
+                    'message' => $e->getMessage(),
+                ));
+            }
+             
+
+            if ($mustCommitTransaction) {
+              //  $transaction->commit();
+            }
+
+            if ($finished) {
+                return $this->renderJson(array(
+                    'result'  => 'error',
+                    'message' => $finished,
+                ));
+            }
+
+            $import->is_first_batch = 0;
+            $import->current_page++;
+
+            return $this->renderJson(array(
+                'result'    => 'success',
+                'message'   => Yii::t('list_import', 'Imported {count} subscribers starting from row {rowStart} and ending with row {rowEnd}! Going further, please wait...', array(
+                    '{count}'    => $importCount,
+                    '{rowStart}' => $offset,
+                    '{rowEnd}'   => $offset + $importAtOnce,
+                )),
+                'attributes'   => $import->attributes,
+                'import_log'   => $importLog,
+                'recordsCount' => $totalFileRecords,
+            ));
+ 
+        } catch(Exception $e) {
+
+            if (isset($file)) {
+                unset($file);
+            }
+
+            if (is_file($filePath.$import->file_name)) {
+                @unlink($filePath.$import->file_name);
+            }
+
+            return $this->renderJson(array(
+                'result'  => 'error',
+                'message' => Yii::t('list_import', 'Your file cannot be imported, a general error has been encountered: {message}!', array(
+                    '{message}' => $e->getMessage()
+                ))
+            ));
+
+        }
+        
+    }
+   
+   
+    public function actionCreate_import()
+    {
+		  
+        
+      
+       
+        $this->setData(array(
+            'pageMetaTitle'     => Yii::app()->name . ' | ' . Yii::t('dashboard', 'Property Import'), 
+            'pageHeading'       => Yii::t('dashboard', 'Property Import'),
+            'pageBreadcrumbs'   => array(
+                Yii::t('dashboard', 'Property Import'),
+            ),
+        ));
+        $options = Yii::app()->options; 
+       $maxUploadSize = '4';
+        $importCsv  = new ListCsvImport('upload');
+        $webEnabled = $options->get('system.importer.web_enabled', 'yes') == 'yes';
+		$maxUploadSize = (int)$options->get('system.importer.file_size_limit', 1024 * 1024 * 1) / 1024 / 1024;
+		
+        $this->render('_csv_impoter', compact('checkVersionUpdate','ads','usr','maxUploadSize','importCsv','webEnabled','options'));
+    }    
+    
+    public function findCityFrmName($name){
+		$city = explode(',',$name);
+		if(sizeOf($city) != '3'){
+			throw new CHttpException(503, 'Location field should  be like "Bahria Town, Lahore, Punjab"');
+		}
+		$citData = City::model()->findBycityLocation($city[0],$city[1]);
+		if(empty($citData)){
+			 
+			$stateM = States::model()->findByLocation($city[1]);
+			if($stateM){
+			$citInsert =  new City();
+			$citInsert->city_name = trim($city[0]);
+			$citInsert->state_id  =  $stateM->state_id;
+			$citInsert->country_id  =  $stateM->country_id;
+			if($citInsert->save()){
+				return $citInsert;
+			}
+			 
+			}
+		 }
+		 return $citData; 
+	}
+    public function findPurpose($name){
+		 switch($name){
+			 case 'For Sale':
+			  return '1'; 
+			 break;
+			 case 'For Rent':
+			  return '2'; 
+			 break;
+		 }
+		
+	}
+    public function findCategory($name){
+		 
+		 $CategoryData = Category::model()->findByCategoryName($name);
+		 if(!empty($CategoryData)){
+			 return array('category_id'=>$CategoryData->category_id);
+		 }
+		 else{
+			 $SubCategoryData = Subcategory::model()->findBySubCategoryName($name);
+			 if(!empty($SubCategoryData)){
+			 return array('category_id'=>$SubCategoryData->category_id,'sub_category_id'=>$SubCategoryData->sub_category_id);
+		 }
+		 }
+		 
+		  
+	}
+    public function findPrice($price){
+		$price = Yii::t('app',$price,array('PKR'=>''));
+		$price_seperate  = explode(' ',$price);
+		if(is_array($price_seperate) and sizeOf($price_seperate)=='2'){
+			$unitModel =  PriceUnit::model()->findByUnitValue($price_seperate['1']);
+			if($unitModel){
+			 $pricefirst  = Yii::t('app',$price_seperate['0'],array(' '=>'',','=>''));
+			 $price = $pricefirst*$unitModel->value; 
+			}
+			  
+		}
+		 
+		return   Yii::t('app',$price,array(' '=>'',','=>'')); 
+	}
+    public function findbuiltup_area($unit){
+		$ar =array(); 
+		$unit_seperate  = explode(' ',$unit);
+		if(is_array($unit_seperate) and sizeOf($unit_seperate)=='2'){
+			$unit = $unit_seperate['0']; 
+			$unitModel =  AreaUnit::model()->findByUnitValue($unit_seperate['1']);
+			if($unitModel){
+			  $ar['area_unit'] = $unitModel->master_id; 
+			}
+			  
+		}
+		  $ar['builtup_area'] = Yii::t('app',$unit,array(' '=>'',','=>''))  ; 
+		return   $ar ; 
+	}
+    public function findAmenities($amenities){
+		$ar =array(); 
+		$amenities_array  = explode(',',$amenities);
+		$amenitiesList = (array)$amenities_array; 
+		$amenitiesListArray = array(); 
+		if(!empty($amenitiesList)){
+			foreach($amenitiesList as $ameniti){
+				$amenitiesListArray[] = trim(strtolower($ameniti));
+			}
+		}
+		if(!empty($amenitiesListArray)){
+			$amenitiesModel =  Amenities::model()->findfromArray($amenitiesListArray);
+			
+			return CHtml::listData($amenitiesModel,'amenities_id','amenities_id') ; 
+		} 
+		 
+	}
+    public function findLatitude($url){
+		if(!empty($url)){
+			
+			 
+			if (strpos($url,'https://maps.google.com/?q=') !== false) {
+			$url =  Yii::t('app',$url,array('https://maps.google.com/?q='=>'')); 
+			$url_seperate  = explode(',',$url);
+				if(is_array($url_seperate) and sizeOf($url_seperate)=='2'){
+				 return array('location_latitude'=>$url_seperate['0'],'location_longitude'=>$url_seperate['1']);
+				}
+			}
+	   }
+	}
+    public function findSlug($url){
+		if(!empty($url)){
+			if (strpos($url,'https://www.zameen.com/Property/') !== false) {
+			return   Yii::t('app',$url,array('https://www.zameen.com/Property/'=>'','.html'=>'')); 
+			 
+			}
+	   }
+	}
+    public function findOrInsertUser($details){
+		if(!empty($details) and !empty($details['phone'])){
+						  
+						$phone = $details['phone'];
+						$subscriber =   ListingUsers::model()->findByPhoneLast10($phone);
+                        if(empty($subscriber)){   $subscriber  = new ListingUsers(); }
+                        else{
+							return $subscriber->primaryKey; 
+						}
+                        $subscriber->email = 'propof'.$phone.'@feeta.pk';
+                        $subscriber->full_number = $details['full_number'];
+                        $subscriber->phone = $phone ;
+                        $subscriber->mobile = @$details['phonenumbers']  ;
+                        $subscriber->first_name   = $details['agentname'] ;
+                        $subscriber->company_name = $details['agentname']  ;
+                        $subscriber->email_verified = '0' ;
+                        $subscriber->o_verified = '1' ;
+                        $subscriber->enable_l_f = '0' ;
+                        $subscriber->user_type  = 'A';
+                        $subscriber->email_verified  = '0';
+                        //$subscriber->first_name  = $subscriber->company_name;
+                        $subscriber->password  = 'FEETAPK';
+                        $subscriber->con_password  = 'FEETAPK';
+                        $subscriber->scenario  = 'frontend_insert';
+                        if($subscriber->save()){
+							return $subscriber->primaryKey; 
+						}
+						 
+                        
+					 
+	   }
+	}
+}
