@@ -884,7 +884,7 @@ header('Content-type: text/html; charset=UTF-8');
            
         }
        
-		 $this->render('root.apps.frontend.new-theme.views.place_property.form_new', compact('model',"country","section",'list_type','image_array'));
+		 $this->render('root.apps.backend.views.place_property.form_new', compact('model',"country","section",'list_type','image_array'));
 		 
         
  

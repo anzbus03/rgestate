@@ -1031,7 +1031,6 @@ if ($viewCollection->renderContent) {
 					<div class="clearfix"><!-- --></div>
 				</div>
 				<div id="moredetails">
-
 					<h4 class="subheading_font row  full-content" style="display:block;"><?php echo $this->tag->getTag('selected_category', 'Selected Category'); ?> <?php if (Yii::app()->isAppName('frontend')) { ?> <a href="<?php $refref = Yii::app()->request->urlReferrer;
 																																																							echo  !empty($refref) ? $refref : Yii::app()->createUrl('site/index'); ?>" class="pull-right margin-right-10"><?php echo $this->tag->getTag('back', 'Back'); ?></a> <?php } ?></h4>
 					<div class="_1ybgv full-content" data-aut-id="breadcrumb">

@@ -332,24 +332,22 @@ ul.homepage-main-post li .post-title {
     }
 </style>
 
-
-
 <section class="panel panel-bg banner" style="background-image:url(<?php echo $this->app->apps->getBaseUrl('assets/img/dubai.jpg');?>);">
     <div class="abs-banner">
-            <div class="bloghead container main-search-container">
-           
-               <h1 class="mt-1 section_title">Discover the UAE!</h1>
-               <form role="search" method="get" id="alia-suggested-form-452340" action="#">
-					<div>
-						<div class="alia-fieldid-container">
-							<input type="text" id="company_works_at" placeholder="Location" class="alia-autocomplete-posts" data-ajax-url="#" data-fieldid="452340" autocomplete="off">
-						</div> 
-						<a href="javascript:void(0);" class="alia-suggested-link alia-suggested-link-452340">Search</a>
-					</div>
-				</form>
-            </div>
+        <div class="bloghead container main-search-container">
+            <h1 class="mt-1 section_title">Discover the UAE!</h1>
+            <form role="search" method="get" id="alia-suggested-form-452340" action="<?php echo Yii::app()->createUrl('area-guides'); ?>">
+                <div>
+                    <div class="alia-fieldid-container">
+                        <input type="text" name="search" id="company_works_at" placeholder="Search Area Guides by Name" class="alia-autocomplete-posts" autocomplete="off">
+                    </div>
+                    <button  class="btn btn-primary ml-4 alia-suggested-link alia-suggested-link-452340">Search</button>                
+                </div>
+            </form>
+        </div>
     </div>
 </section>
+
 <section id="main-content" class="clearfix">
     <div class="container" id="d_column">
         <?php 
