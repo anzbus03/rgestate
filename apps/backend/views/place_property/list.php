@@ -129,14 +129,15 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
         </div>
         <div class="box-body">
             <div class="row">
+                <div class="col-sm-10">
+                   <div class="form-group" style="float: left;">
+                       <input type="text" value="<?php echo $model->keyword;?>"  class="form-control" id="Keyword" onblur="setvalThis(this,'PlaceAnAd_keyword')" placeholder="Search Keyword">
+                   </div>
+                  </div>
                 <div class="col-sm-2">
-                    <button type="button" id="exportExcel" class="btn btn-success btn-xs" style="margin-left: 10px;">Export to Excel</button>
+                    
+                    <button type="button" id="exportExcel" class="btn btn-success btn-xs" style="margin-left: 10px;float: right;">Export to Excel</button>
                 </div>
-                 <div class="col-sm-10">
-                     <div class="form-group" style="float: right;">
-                  <input type="text" value="<?php echo $model->keyword;?>"  class="form-control" id="Keyword" onblur="setvalThis(this,'PlaceAnAd_keyword')" placeholder="Search Keyword">
-                   </div>
-                   </div>
                
                    </div>
                  <div class="col-sm-2">
