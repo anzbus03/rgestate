@@ -270,6 +270,7 @@
     <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/dlabnav-init.js');?>" type="text/javascript"></script>
     <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/demo.js');?>" type="text/javascript"></script>
     <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/styleSwitcher.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/dashboard/cms.js');?>" type="text/javascript"></script>
     <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/datatables/js/jquery.dataTables.min.js');?>" type="text/javascript"></script>
     <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/plugins-init/datatables.init.js');?>" type="text/javascript"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>

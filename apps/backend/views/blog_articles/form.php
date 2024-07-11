@@ -1,221 +1,364 @@
-<?php defined('MW_PATH') || exit('No direct script access allowed');
-
-/**
- * This file is part of the MailWizz EMA application.
- * 
- * @package MailWizz EMA
- * @author Serban George Cristian <cristian.serban@mailwizz.com> 
- * @link http://www.mailwizz.com/
- * @copyright 2013-2014 MailWizz EMA (http://www.mailwizz.com)
- * @license http://www.mailwizz.com/license/
- * @since 1.0
- */
-
-/**
- * This hook gives a chance to prepend content or to replace the default view content with a custom content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderContent} to false 
- * in order to stop rendering the default content.
- * @since 1.3.3.1
- */
-$hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCollection(array(
-    'controller'    => $this,
-    'renderContent' => true,
-)));
-
-// and render if allowed
-if ($viewCollection->renderContent) {
-    /**
-     * This hook gives a chance to prepend content before the active form or to replace the default active form entirely.
-     * Please note that from inside the action callback you can access all the controller view variables 
-     * via {@CAttributeCollection $collection->controller->data}
-     * In case the form is replaced, make sure to set {@CAttributeCollection $collection->renderForm} to false 
-     * in order to stop rendering the default content.
-     * @since 1.3.3.1
-     */
-    $hooks->doAction('before_active_form', $collection = new CAttributeCollection(array(
-        'controller'    => $this,
-        'renderForm'    => true,
-    )));
-    
-    // and render if allowed
-    if ($collection->renderForm) {
-        $form = $this->beginWidget('CActiveForm'); 
-        ?>
-        <div class="card">
-            <div class="card-header">
-                <div class="pull-left">
-                    <h3 class="card-title"><span class="glyphicon glyphicon-book"></span> <?php echo $pageHeading;?></h3>
+<div class="row">
+    <div class="col-xl-12">
+        
+        <div class="mb-3">
+            <ul class="d-flex align-items-center flex-wrap">
+                <li><a href="add-email.html" class="btn btn-primary">Blog List</a></li>
+                <li><a href="blog-category.html" class="btn btn-primary mx-1">Blog Category</a></li>
+                <li><a href="blog-category.html" class="btn btn-primary me-1 mt-sm-0 mt-1">Add Blog Category</a></li>
+            </ul>
+        </div>
+        <div class="main-check" style="display:none;">
+           
+        </div>
+        <div class="mb-3 ">
+            <label  class="form-label">Title</label>
+            <input type="text" class="form-control w-50" placeholder="Title">
+        </div>
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="card h-auto">
+                    <div class="card-body pt-3">
+                        <div id="ckeditor"></div>
+                    </div>
                 </div>
-                <div class="pull-right">
-                    <?php if (!$article->isNewRecord) { ?>
-                    <?php echo CHtml::link(Yii::t('app', 'Create new'), array('blog_articles/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
-                    <?php } ?>
-                    <?php echo CHtml::link(Yii::t('app', 'Cancel'), array('blog_articles/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
-                </div>
-                <div class="clearfix"><!-- --></div>
-            </div>
-            <div class="card-body">
-                <?php 
-                /**
-                 * This hook gives a chance to prepend content before the active form fields.
-                 * Please note that from inside the action callback you can access all the controller view variables 
-                 * via {@CAttributeCollection $collection->controller->data}
-                 * @since 1.3.3.1
-                 */
-                $hooks->doAction('before_active_form_fields', new CAttributeCollection(array(
-                    'controller'    => $this,
-                    'form'          => $form    
-                )));
-                ?>
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($article, 'title');?><?php echo $article->getTranslateHtml('title');?>
-                    <?php echo $form->textField($article, 'title', $article->getHtmlOptions('title', array('data-article-id' => (int)$article->article_id, 'data-slug-url' => $this->createUrl('articles/slug')))); ?>
-                    <?php echo $form->error($article, 'title');?>
-                </div>
-                  <div class="form-group">
-                    <?php echo $form->labelEx($article, 'meta_title');?>
-                    <?php echo $form->textField($article, 'meta_title', $article->getHtmlOptions('meta_title')); ?>
-                    <?php echo $form->error($article, 'meta_title');?>
-                </div>
-               
-               
+                    
                 
-                  <div class="form-group">
-                    <?php echo $form->labelEx($article, 'meta_description');?>
-                    <?php echo $form->textArea($article, 'meta_description', $article->getHtmlOptions('meta_description', array('rows' => 4))); ?>
-                    <?php echo $form->error($article, 'meta_description');?>
-                </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($article, 'content');?><?php echo $article->getTranslateHtml('content','ar',false,'1200px');?>
-                    <?php echo $form->textArea($article, 'content', $article->getHtmlOptions('content', array('rows' => 15))); ?>
-                    <?php echo $form->error($article, 'content');?>
-                </div>
-                <div class="form-group col-lg-8">
-                    <?php echo $form->labelEx($articleToCategory, 'category_id');?>
-                    <div class="article-categories-scrollbox">
-						<style>
-						.article-categories-scrollbox .list-group-item:first-child  { display:none ; }
-						</style>
-						<script>
-						$(function(){ $('.list-group-item:first-child').find('input').prop('checked',true) })
-						</script>
-                        <ul class="list-group">
-                        <?php echo CHtml::checkBoxList($articleToCategory->modelName, $article->getSelectedCategoriesArray(), $article->getAvailableCategoriesArray(), $articleToCategory->getHtmlOptions('category_id', array(
-                            'class'        => '',
-                            'template'     => '<li class="list-group-item">{beginLabel}{input} <span>{labelTitle}</span> {endLabel}</li>',
-                            'container'    => '',
-                            'separator'    => '',
-                            'labelOptions' => array('style' => 'margin-right: 10px;')
-                        ))); ?>
-                        </ul>
+                <div class="filter cm-content-box box-primary">
+                    <div class="content-title">
+                        <div class="cpa">		Excerpt
+                        </div>
+                        <div class="tools">
+                            <a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
+                        </div>
                     </div>
-                    <?php echo $form->error($articleToCategory, 'category_id');?>
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group slug-wrapper"<?php if (empty($article->slug)) { echo ' style="display:none"'; } ?>>
-                        <?php echo $form->labelEx($article, 'slug'); ?>
-                        <?php echo $form->textField($article, 'slug', array('class' => 'form-control', 'maxlength' => 1100)); ?>
-                        <?php echo $form->error($article, 'slug'); ?>
-                    </div>
-                    <div class="form-group">
-                        <?php echo $form->labelEx($article, 'status');?>
-                        <?php echo $form->dropDownList($article, 'status', $article->getStatusesArray(), $article->getHtmlOptions('status')); ?>
-                        <?php echo $form->error($article, 'status');?>
+                    <div class="cm-content-body publish-content form excerpt">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Excerpt</label>
+                                <textarea class="form-control" rows="3"></textarea>	     	
+                                <div class="form-text">Excerpts are optional hand-crafted summaries of your content that can be used in your theme. </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="clearfix"><!-- --></div>
-                <div class="clearfix"><!-- --></div>
-                	<div class="form-group col-lg-3">
-					<?php echo $form->labelEx($article, 'blan');?>
-					<?php echo $form->dropDownList($article,'blan',$article->blanArray(), $article->getHtmlOptions('blan')); ?>
-					<?php echo $form->error($article, 'blan');?>
-					</div> 
-                	<div class="form-group col-lg-3">
-					<?php echo $form->labelEx($article, 'show_all');?>
-					<?php echo $form->dropDownList($article,'show_all',$article->countryOption(), $article->getHtmlOptions('show_all',array('onchange'=>'showCountries(this)'))); ?>
-					<?php echo $form->error($article, 'show_all');?>
-					</div> 
-                <div class="clearfix"><!-- --></div>
-                	<div class="amn row <?php echo $article->show_all=='1' ? '' : 'hide';?>" style="margin-left:0px; margin-right:0px;">
-										  <?php
-										   $categoris =   CHtml::listData(Countries::model()->listingCountries(),'country_id','country_name');
-										   foreach($categoris as $k=>$v){
-											 
-											   echo '<div class="col-sm-2" style="">';
-											       
-											     	
-													  echo '<div class="form-check form-check-flat"><label class="form-check-label"><input value="'.$k.'" id="amenities_'.$k.'" '; echo  in_array($k,(array) $article->listing_countries) ? 'checked' : '';  echo ' type="checkbox" name="listing_countries[]"  >  '.$v.' <i class="input-helper"></i></label></div>';
-												  
-											      
-											      
-											       echo '</div>';
-											    
-										   }
-										   
-											?>
-										</div>
-				
-             
+                <div class="filter cm-content-box box-primary">
+                    <div class="content-title">
+                        <div class="cpa">
+                            Custom Fields
+                        </div>
+                        <div class="tools">
+                            <a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                    <div class="cm-content-body form excerpt">
+                        <div class="card-body"> 
+                            <h6>Add New Custom Field:</h6>
+                            <div class="row">
+                                <div class="col-xl-6 col-sm-6">
+                                    <div class="mb-3">
+                                    <label  class="form-label">Title</label>
+                                    <input type="text" class="form-control" placeholder="Title">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-sm-6">
+                                    <label  class="form-label">Value</label>
+                                    <textarea class="form-control" rows="3"></textarea>
+                                </div>
+                            </div>	
+                            <button type="button" class="btn btn-primary btn-sm mt-3 mt-sm-0">Add Custom Field</button>
+                            <span class="mt-3 d-block">Custom fields can be used to extra metadata to a post that you can use in your theme.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter cm-content-box box-primary">
+                    <div class="content-title">
+                        <div class="cpa">
+                            Discussion							
+                        </div>
+                        <div class="tools">
+                            <a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                    <div class="cm-content-body form excerpt">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-15">
+                                <label class="form-check-label" for="flexCheckDefault-15">
+                                    Allow comments.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter cm-content-box box-primary">
+                    <div class="content-title">
+                        <div class="cpa">	Slug												
+                        </div>
+                        <div class="tools">
+                            <a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                    <div class="cm-content-body form excerpt">
+                        <div class="card-body">
+                            <label class="form-label">Slug</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="filter cm-content-box box-primary">
+                    <div class="content-title">
+                        <div class="cpa">Author
+                                                            
+                        </div>
+                        <div class="tools">
+                            <a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                    <div class="cm-content-body form excerpt">
+                        <div class="card-body">
+                            <label class="form-label">User</label>
+                            <select class="js-example-disabled">
+                                <option value="AL">admin@gmail.com</option>
+                                <option value="WY">India</option>
+                                <option value="WY">Information</option>
+                                <option value="WY">New Menu</option>
+                                <option value="WY">Page Menu</option>
+                            </select>
+                                
+                        </div>
+                    </div>
+                </div>
+                <div class="filter cm-content-box box-primary">
+                    <div class="content-title">
+                        <div class="cpa">                    Seo							
+                        </div>
+                        <div class="tools"><a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                    <div class="cm-content-body form excerpt">
+                        <div class="card-body">
+                            <label class="form-label">Page Title</label>
+                            <input type="text" class="form-control mb-3" placeholder="Page title">
+                            <div class="row">
+                                <div class="col-xl-6 col-sm-6">
+                                    <label class="form-label">Keywords</label>
+                                    <input type="text" class="form-control mb-sm-0 mb-3 " placeholder="Enter meta Keywords">
+                                </div>
+                                <div class="col-xl-6 col-sm-6">
+                                    <label class="form-label">Descriptions</label>
+                                    <textarea  class="form-control" placeholder="Enter meta Keywords" rows="3"></textarea>
+                                </div>
+                            </div>
+                                
+                        </div>
+                    </div>
+                </div>
                 
-                <div class="clearfix"><!-- --></div> 
-                <div class="clearfix"><!-- --></div>
-                <?php 
-                /**
-                 * This hook gives a chance to append content after the active form fields.
-                 * Please note that from inside the action callback you can access all the controller view variables 
-                 * via {@CAttributeCollection $collection->controller->data}
-                 * @since 1.3.3.1
-                 */
-                $hooks->doAction('after_active_form_fields', new CAttributeCollection(array(
-                    'controller'    => $this,
-                    'form'          => $form    
-                )));
-                ?>
-                <div class="clearfix"><!-- --></div>
             </div>
-            <div class="box-footer">
-                <div class="pull-right">
-                    <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
+            <div class="col-xl-4">
+                <div class="right-sidebar-sticky">
+                    <div class="filter cm-content-box box-primary">
+                        <div class="content-title">
+                            <div class="cpa">
+                                Published    	
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
+                            </div>
+                        </div>
+                        <div class="cm-content-body publish-content form excerpt">
+                            <div class="card-body pb-0">
+                                <ul class="d-flex align-items-center mb-2">
+                                    <li><a href="javascript:void(0);"><i class="fa-solid fa-key"></i></a></li>
+                                    <li><a href="javascript:void(0);" class="ms-2">Status:</a></li>
+                                    <li><strong><a href="javascript:void(0);" class="mx-2">Published</a></strong></li>
+                                    <li><a href="javascript:void(0);" class="accordion accordion-primary"  id="headingOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-controls="collapseOne"   aria-expanded="true" role="button">Edit</a></li>
+                                </ul>
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordion-one">
+                                    <div class="accordion-body-text border rounded">
+                                    <div class="mb-2">
+                                        <label class="from-label w-100">Content Type</label>
+                                        <select class="publish-drop form-control default-select dashboard-select-2 mb-2 h-auto">
+                                            <option selected>Select Status</option>
+                                            <option value="1">Published</option>
+                                            <option value="2">Draft</option>
+                                            <option value="3">Trash</option>
+                                            <option value="4">Private</option>
+                                            <option value="5">Pending</option>
+                                        </select> 
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-primary btn-sm me-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                        Ok
+                                        </button>
+                                        <button class="btn btn-danger light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                        Cancel
+                                        </button>
+                                        
+                                    </div>
+                                    </div>
+                                </div>	
+                                <ul class="d-flex align-items-center mb-2">
+                                    <li><a href="javascript:void(0);"><i class="fa-solid fa-eye"></i></a></li>
+                                    <li><a href="javascript:void(0);" class="ms-2">Status:</a></li>
+                                    <li><strong><a href="javascript:void(0);" class="mx-2">Public</a></strong></li>
+                                    <li><a href="javascript:void(0);" class="accordion accordion-primary"  id="headingtwo" data-bs-toggle="collapse" data-bs-target="#collapsetwo" aria-controls="collapsetwo"   aria-expanded="true" role="button">Edit</a></li>
+                                </ul>
+                                <div id="collapsetwo" class="collapse" aria-labelledby="headingtwo" data-bs-parent="#accordion-one">
+                                    <div class="accordion-body-text border rounded">
+                                    <div class="basic-form">
+                                        <form>
+                                            <div class="mb-3 mb-0">
+                                                <div class="radio">
+                                                    <label class="form-check-label"><input type="radio" name="optradio" class="form-check-input"> Public</label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label class="form-check-label"><input type="radio" name="optradio" class="form-check-input"> Password Protected</label>
+                                                </div>
+                                                <div class="radio disabled">
+                                                    <label class="form-check-label"><input type="radio" name="optradio" class="form-check-input" > Private</label>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div>
+                                    <button class="btn btn-primary btn-sm me-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetwo" aria-expanded="false" aria-controls="collapsetwo">
+                                        Ok
+                                        </button>
+                                        <button class="btn btn-danger light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetwo" aria-expanded="false" aria-controls="collapsetwo">
+                                        Cancel
+                                        </button>
+                                    </div>
+                                    </div>
+                                </div>
+                                <ul class="d-flex align-items-center mb-2 flex-wrap">
+                                    <li><a href="javascript:void(0);"><i class="fa-solid fa-calendar-days"></i></a></li>
+                                    <li><a href="javascript:void(0);" class="ms-2">Published</a></li>
+                                    <li><strong><a href="javascript:void(0);" class="mx-2">on :24-09-2023 16:22:52 </a></strong></li>
+                                    <li><a href="javascript:void(0);" class="accordion accordion-primary"  id="headingthree" data-bs-toggle="collapse" data-bs-target="#collapsethree" aria-controls="collapsethree"   aria-expanded="true" role="button">Edit</a></li>
+                                    
+                                </ul>
+                                <div id="collapsethree" class="collapse" aria-labelledby="headingthree" data-bs-parent="#accordion-one">
+                                    <div class="accordion-body-text border rounded">
+                                    <div class="basic-form mb-2">
+                                        <input type="date" name="datepicker" class=" form-control" >
+                                    </div>
+                                    <button class="btn btn-primary btn-sm me-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapsethree" aria-expanded="false" aria-controls="collapsethree">
+                                        Ok
+                                        </button>
+                                        <button class="btn btn-danger light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapsethree" aria-expanded="false" aria-controls="collapsethree">
+                                        Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                                <hr class="mx-2">
+                            <div class="card-footer border-0 pt-0 text-end">
+                                <a href="javascript:void(0);" class="btn btn-primary btn-sm">Publish</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter cm-content-box box-primary">
+                        <div class="content-title">
+                            <div class="cpa">
+                                        Categories
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
+                            </div>
+                        </div>
+                        <div class="cm-content-body publish-content form excerpt">
+                            <div class="card-body">
+                                <div class="border p-3 mb-3">
+                                    <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-10">
+                                            <label class="form-check-label" for="flexCheckDefault-10">
+                                            Beauty
+                                            </label>
+                                    </div>
+                                    <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-11">
+                                            <label class="form-check-label" for="flexCheckDefault-11">
+                                            Fashion
+                                            </label>
+                                    </div>
+                                    <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-12">
+                                            <label class="form-check-label" for="flexCheckDefault-12">
+                                                Lifestyle
+                                            </label>
+                                    </div>
+                                    <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-13">
+                                            <label class="form-check-label" for="flexCheckDefault-13">
+                                            Food
+                                            </label>
+                                    </div>
+                                    <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault-14">
+                                            <label class="form-check-label" for="flexCheckDefault-14">
+                                            Beauty
+                                            </label>
+                                    </div>
+                                </div>
+                                <a href="javascript:void(0);"><i class="fa-solid fa-plus"></i> Add New Categories</a>
+                                <div class="input-group mt-3">
+                                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                        <span class="input-group-text" id="basic-addon1"><a href="javascript:void(0);">Add New</a></span>
+                                </div>
+                            </div>
+                                
+                        </div>
+                    </div>
+                    <div class="filter cm-content-box box-primary">
+                        <div class="content-title">
+                            <div class="cpa">
+                                    Tag
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
+                            </div>
+                        </div>
+                        <div class="cm-content-body  form excerpt">
+                            <div class="card-body">
+                                <select id="multi-value-select" multiple="multiple">
+                                    <option selected="selected">orange</option>
+                                    <option>white</option>
+                                    <option selected="selected">purple</option>
+                                </select>
+                            </div>
+                                
+                        </div>
+                    </div>
+                    <div class="filter cm-content-box box-primary">
+                        <div class="content-title">
+                            <div class="cpa">
+                                Featured Image
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
+                            </div>
+                        </div>
+                        <div class="cm-content-body publish-content form excerpt">
+                            <div class="card-body">
+                                <div class="avatar-upload d-flex align-items-center">
+                                    <div class=" position-relative ">
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview" style="background-image: url(assets/images/no-img-avatar.png);"> 			
+                                            </div>
+                                        </div>
+                                        <div class="change-btn d-flex align-items-center flex-wrap">
+                                            <input type='file' class="form-control d-none"  id="imageUpload" accept=".png, .jpg, .jpeg">
+                                            <label for="imageUpload" class="btn btn-light ms-0">Select Image</label>
+                                        </div>
+                                    </div>		
+                                </div>
+                            </div>
+                        </div>
+                    </div>	
                 </div>
-                <div class="clearfix"><!-- --></div>
             </div>
         </div>
-        <?php 
-        $this->endWidget(); 
-    }
-    /**
-     * This hook gives a chance to append content after the active form.
-     * Please note that from inside the action callback you can access all the controller view variables 
-     * via {@CAttributeCollection $collection->controller->data}
-     * @since 1.3.3.1
-     */
-    $hooks->doAction('after_active_form', new CAttributeCollection(array(
-        'controller'      => $this,
-        'renderedForm'    => $collection->renderForm,
-    )));
-}
-/**
- * This hook gives a chance to append content after the view file default content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * @since 1.3.3.1
- */
-$hooks->doAction('after_view_file_content', new CAttributeCollection(array(
-    'controller'        => $this,
-    'renderedContent'   => $viewCollection->renderContent,
-)));
-?>
- <script>
-		function showCountries(k){
-			if($(k).val()=='1'){
-				$('.amn').removeClass('hide')
-			}
-			else{
-				$('.amn').addClass('hide')
-			}
-		}
-
-</script>
+    </div>
+</div>
