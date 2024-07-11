@@ -28,8 +28,27 @@ class AreaguidesController extends Controller
         //  $pages->applyLimit($criteria);
         
         $sql = 'SELECT mw_areaguides.image as image,mw_areaguides.area as area,mw_states.state_name,mw_states.slug as state_slug FROM mw_areaguides INNER JOIN mw_states ON mw_areaguides.city = mw_states.state_id WHERE mw_areaguides.status=:status limit 21';
+        if (isset($_GET['search'])) {
+            $sql = 'SELECT mw_areaguides.image as image,
+                           mw_areaguides.area as area,
+                           mw_states.state_name,
+                           mw_states.slug as state_slug 
+                    FROM mw_areaguides 
+                    INNER JOIN mw_states ON mw_areaguides.city = mw_states.state_id 
+                    WHERE mw_areaguides.status=:status 
+                      AND mw_areaguides.highlights LIKE :search 
+                    LIMIT 21';
+            $areaguides = Areaguides::model()->findAllBySql($sql, [
+                ':status' => Areaguides::STATUS_PUBLISHED,
+                ':search' => '%' . $_GET['search'] . '%'
+            ]);
+        } else {
+            // If no search term, fetch all area guides without the search filter
+            $areaguides = Areaguides::model()->findAllBySql($sql, [
+                ':status' => Areaguides::STATUS_PUBLISHED
+            ]);
+        }
         
-        $areaguides = Areaguides::model()->findAllBySql($sql,[':status' =>  Areaguides::STATUS_PUBLISHED]);
         //print_r($areaguides);
         $this->setData(array(
             'pageTitle'     =>  Yii::t('articles', 'Area Guides'),
@@ -38,7 +57,31 @@ class AreaguidesController extends Controller
 
         $this->render('index', compact('areaguides', 'pages'));
     }
-    
+    public function actionSearch()
+    {
+
+        $criteria = new CDbCriteria();
+        $criteria->select = 'mw_areaguides.image as image,
+                            mw_areaguides.area as area,
+                            mw_states.state_name,
+                            mw_states.slug as state_slug';
+        $criteria->join = 'INNER JOIN mw_states ON mw_areaguides.city = mw_states.state_id';
+        $criteria->condition = 'mw_areaguides.status = :status';
+        $criteria->params = [':status' => Areaguides::STATUS_PUBLISHED];
+
+        // Handle search parameters
+        if (isset($_GET['search']) && !empty($_GET['search'])) {
+            $searchTerm = $_GET['search'];
+            $criteria->addCondition('mw_areaguides.area LIKE :searchTerm');
+            $criteria->params[':searchTerm'] = '%' . $searchTerm . '%';
+        }
+
+        // Execute query with criteria
+        $areaguides = Areaguides::model()->findAll($criteria);
+
+        // Pass data to view
+        $this->render('index', compact('areaguides'));
+    }
 	public function actionView($area=null)
     {
 		  $criteria = new CDbCriteria();
