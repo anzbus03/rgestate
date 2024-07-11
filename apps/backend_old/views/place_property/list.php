@@ -444,7 +444,7 @@ foreach ($categories as $category) {
                             'footer'    => $model->paginationOptions->getGridFooterPagination(),
                             'buttons'   => array(
                                 'update' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/update", array("id" => $data->id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
@@ -457,14 +457,14 @@ foreach ($categories as $category) {
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => '','target'=>'_blank'),
                                 ),
                                  'view' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="fa fa-eye"></span> &nbsp;', 
                                     'url'       => '$data->PreviewUrlTrashB',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'View'), 'class' => 'text-green','target'=>'_blank'),
                                    //   'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/update")',
                                 ),
                                 'delete' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp; ', 
                                     'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/delete", array("id"=>$data->id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
@@ -504,11 +504,11 @@ foreach ($categories as $category) {
                                       'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/status",array("id"=>$data->id,"status"=>$data->status))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Activate AD'), 'class' => 'Enable',
-                                     'ajax'=>array(
+                                    'ajax'=>array(
 										'type'=>'POST',
 										'url'=>"js:$(this).attr('href')",
 										'success' => 'js:$.fn.yiiGridView.update("'.$model->modelName.'-grid")'
-                     )
+                                    )
                                     ),
                                    'visible'   => '$data->status === "I"',
                                 ),

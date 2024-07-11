@@ -344,7 +344,7 @@ if ($viewCollection->renderContent) {
                                         'footer'    => $note->paginationOptions->getGridFooterPagination(),
                                         'buttons'   => array(
                                             'delete' => array(
-                                                 'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp;', 
+                                                 'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp;', 
                                                 'url'       => 'Yii::app()->createUrl("orders/delete_note", array("id" => $data->note_id))',
                                                 'imageUrl'  => null,
                                                 'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'btn btn-danger btn-flat delete'),

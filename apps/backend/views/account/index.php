@@ -43,11 +43,11 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm'); 
         ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <h3 class="box-title"><span class="glyphicon glyphicon-user"></span> <?php echo Yii::t('users', 'Update your account data.');?></h3>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><span class="glyphicon glyphicon-user"></span> <?php echo Yii::t('users', 'Update your account data.');?></h3>
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.

@@ -107,7 +107,7 @@ if ($viewCollection->renderContent) { ?>
                             'afterDelete'=> 'function(){window.location.reload();}',
                             'buttons'    => array(
                                 'page' => array(
-                                    'label'     => '<i class="glyphicon glyphicon-eye-open"></i>', 
+                                    'label'     => '<i class="fa fa-eye"></i>', 
                                     'url'       => '$data["pageUrl"]',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('extensions', 'Extension detail page'), 'class'=>'btn btn-xs'),
@@ -236,7 +236,7 @@ if ($viewCollection->renderContent) { ?>
                             'afterDelete'=> 'function(){window.location.reload();}',
                             'buttons'    => array(
                                 'page' => array(
-                                    'label'     => '<i class="glyphicon glyphicon-eye-open"></i>', 
+                                    'label'     => '<i class="fa fa-eye"></i>', 
                                     'url'       => '$data["pageUrl"]',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('extensions', 'Extension detail page'), 'class'=>'btn btn-xs'),

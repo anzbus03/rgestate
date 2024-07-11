@@ -43,9 +43,9 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm'); ?>
         <div class="box box-primary borderless">
-            <div class="box-header">
+            <div class="card-header">
                 <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+                    <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$model->isNewRecord) { ?>
@@ -55,7 +55,7 @@ if ($viewCollection->renderContent) {
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
@@ -344,7 +344,7 @@ if ($viewCollection->renderContent) {
                                         'footer'    => $note->paginationOptions->getGridFooterPagination(),
                                         'buttons'   => array(
                                             'delete' => array(
-                                                 'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp;', 
+                                                 'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp;', 
                                                 'url'       => 'Yii::app()->createUrl("orders/delete_note", array("id" => $data->note_id))',
                                                 'imageUrl'  => null,
                                                 'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'btn btn-danger btn-flat delete'),

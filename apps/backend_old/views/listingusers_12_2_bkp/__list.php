@@ -132,13 +132,13 @@ if ($viewCollection->renderContent) { ?>
                                     'options'   => array('title' => Yii::t('app', 'Login as this user'),'target'=>'_blank', 'class' => ''),
                                 ), 
                                 'update' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("listingusers/update", array("id" => $data->user_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
                                 ),
                                 'delete' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp; ', 
                                     'url'       => 'Yii::app()->createUrl("listingusers/delete", array("id" => $data->user_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),

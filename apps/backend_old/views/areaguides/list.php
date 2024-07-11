@@ -120,21 +120,21 @@ if ($viewCollection->renderContent) {
                             'footer'    => $areaguide->paginationOptions->getGridFooterPagination(),
                             'buttons'   => array(
                                 'view' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="fa fa-eye"></span> &nbsp;', 
                                     'url'       => '$data->permalink',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'View'), 'class' => '', 'target' => '_blank'),
                                         'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/view")',
                                 ),
                                 'update' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("areaguides/update", array("id" => $data->areaguides_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
                                       'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/update")',
                                 ),
                                 'delete' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp; ', 
                                     'url'       => 'Yii::app()->createUrl("areaguides/delete", array("id" => $data->areaguides_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),

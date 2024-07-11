@@ -131,18 +131,18 @@ class LeftSideNavigationWidget extends CWidget {
                 'active'    => 'partners/index',
                 'route'     => array( 'partners/index' ),
             ),
-            'spam_report' => array(
-                'name'      => Yii::t( 'app', 'Prospace CRM Import' ),
-                'icon'      => 'flaticon-068-plus',
-                'active'    => 'xml_insert',
-                'route'     => array( 'xml_insert/index' ),
-            ),
-            'BrokerPAD' => array(
-                'name'      => Yii::t( 'app', 'BrokerPAD CRM Import' ),
-                'icon'      => 'flaticon-068-plus',
-                'active'    => 'xml_insert',
-                'route'     => array( 'xml_insert/brokerpad' ),
-            ),
+            // 'spam_report' => array(
+            //     'name'      => Yii::t( 'app', 'Prospace CRM Import' ),
+            //     'icon'      => 'flaticon-068-plus',
+            //     'active'    => 'xml_insert',
+            //     'route'     => array( 'xml_insert/index' ),
+            // ),
+            // 'BrokerPAD' => array(
+            //     'name'      => Yii::t( 'app', 'BrokerPAD CRM Import' ),
+            //     'icon'      => 'flaticon-068-plus',
+            //     'active'    => 'xml_insert',
+            //     'route'     => array( 'xml_insert/brokerpad' ),
+            // ),
             'Mastersd' => array(
                 'name'      => Yii::t( 'app', 'Master' ),
                 'icon'      => 'flaticon-044-menu',

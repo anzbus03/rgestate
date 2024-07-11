@@ -145,14 +145,14 @@ if ($viewCollection->renderContent) {
                                    
                                 ),
                                 'update' => array(
-                                     'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
+                                     'label'     => ' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("subscribe_package/update", array("id" => $data->id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
 									'visible'   => 'AccessHelper::hasRouteAccess("subscribe_package/update")',
                                 ),
                                 'delete' => array(
-                                     'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp;',  
+                                     'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp;',  
                                     'url'       => 'Yii::app()->createUrl("subscribe_package/delete_permanent", array("id" => $data->id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),

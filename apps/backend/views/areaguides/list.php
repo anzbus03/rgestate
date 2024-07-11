@@ -29,10 +29,10 @@ if ($viewCollection->renderContent) {
 // print_r($viewCollection);
 ?>
 
-    <div class="box box-primary">
-        <div class="box-header">
+    <div class="card">
+        <div class="card-header">
             <div class="pull-left">
-                <h3 class="box-title">
+                <h3 class="card-title">
                     <span class="glyphicon glyphicon-book"></span> <?php echo Yii::t('areaguides', 'Area Guides');?>
                 </h3>
             </div>
@@ -42,7 +42,7 @@ if ($viewCollection->renderContent) {
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="box-body">
+        <div class="card-body">
             <div class="table-responsive">
             <?php 
             /**
@@ -120,21 +120,21 @@ if ($viewCollection->renderContent) {
                             'footer'    => $areaguide->paginationOptions->getGridFooterPagination(),
                             'buttons'   => array(
                                 'view' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="fa fa-eye"></span> &nbsp;', 
                                     'url'       => '$data->permalink',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'View'), 'class' => '', 'target' => '_blank'),
                                         'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/view")',
                                 ),
                                 'update' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("areaguides/update", array("id" => $data->areaguides_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
                                       'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/update")',
                                 ),
                                 'delete' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp; ', 
                                     'url'       => 'Yii::app()->createUrl("areaguides/delete", array("id" => $data->areaguides_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),

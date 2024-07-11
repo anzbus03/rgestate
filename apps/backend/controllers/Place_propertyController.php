@@ -826,8 +826,7 @@ $objWriter->save('php://output');
             $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'assets/js/custom.js?q=1' ) ) );
 
             $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'backend/assets/js/jquery.autocomplete.js' ) ) );
-            //  print_r( $_POST );
-            exit;
+            // exit;
             if ( Yii::app()->request->isAjaxRequest ) {
                 echo CActiveForm::validate( $model );
                 Yii::app()->end();
@@ -966,7 +965,7 @@ $objWriter->save('php://output');
 
             }
 
-            $this->render( 'root.apps.frontend.new-theme.views.place_property.form_new', compact( 'model', 'country', 'section', 'list_type', 'image_array' ) );
+            $this->render( 'root.apps.backend.views.place_property.form_new', compact( 'model', 'country', 'section', 'list_type', 'image_array' ) );
 
         }
 
@@ -1190,7 +1189,7 @@ $objWriter->save('php://output');
         public function actionDetails( $model, $subcategory, $category, $fields, $image_array ) {
             $apps = Yii::app()->apps;
             $this->getData( 'pageScripts' )->add( array( 'src' => $apps->getBaseUrl( 'backend/assets/js/myAjax.js' ) ) );
-            $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'assets/js/dropzone.min.js' ) ) );
+            // $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'assets/js/dropzone.min.js' ) ) );
             $this->getData( 'pageStyles' )->add( array( 'src' => $apps->getBaseUrl( 'backend/assets/css/dropzone.css' ) ) );
             $this->render( 'details', compact( 'model', 'subcategory', 'category', 'fields', 'image_array', 'hooks' ) );
         }
@@ -1205,7 +1204,7 @@ $objWriter->save('php://output');
         public function actionDetails_edit( $model, $subcategory, $category, $fields, $image_array ) {
             $apps = Yii::app()->apps;
             $this->getData( 'pageScripts' )->add( array( 'src' => $apps->getBaseUrl( 'backend/assets/js/myAjax.js' ) ) );
-            $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'assets/js/dropzone.min.js' ) ) );
+            // $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'assets/js/dropzone.min.js' ) ) );
             $this->getData( 'pageStyles' )->add( array( 'src' => $apps->getBaseUrl( 'backend/assets/css/dropzone.css' ) ) );
             $this->render( 'details_edit', compact( 'model', 'subcategory', 'category', 'fields', 'image_array' ) );
         }
@@ -1505,6 +1504,7 @@ $objWriter->save('php://output');
         }
 
         public function actionSelect_category() {
+         
             echo   Category::model()->ListDataForJSON_ID_BySEction( Yii::app()->request->getPost( 'section' ) ) ;
             exit;
         }
@@ -2428,7 +2428,6 @@ $objWriter->save('php://output');
 	 public function actionSelect_category3($id=null)
     {
 	  $category =    Category::model()->ListDataForJSON_ID_BySEctionNew($id) ;
-	 
 		 $html =  CHtml::radioButtonList('listing_type','' ,$category,array( 'onchange'=>'load_via_ajax_main_category( this )','data-url'=>Yii::App()->createUrl($this->id.'/select_category4'),'separator'=>'','labelOptions'=>array('class'=>'')
 				,'template'=>'<div class = "inputGroup"> {
     input}

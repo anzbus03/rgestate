@@ -32,7 +32,7 @@ $post = array();
 					else{
 						$path_file = ENABLED_AWS_PATH.$post['file'][$i];
 					}
-			$html .= '<tr class="'; $html .= empty( $post['title'][$i]) ? 'textFields2 error' : '';  $html .='"><td><input type="text" class="form-control" name="'.$fileField.'[title][]" maxlength="150"  value="'. $post['title'][$i].'" /></td><td><input type="hidden" class="form-control" name="'.$fileField.'[file][]" value="'. $post['file'][$i].'" /><a class="btn btn-xs btn-primary" target="_blank" style="width:100%" href="'.	$path_file .'">View</a></td><td><a href="javascript:remove()" data-id="'.$fileField.'" onclick="removeThisRow(this)" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>';
+			$html .= '<tr class="'; $html .= empty( $post['title'][$i]) ? 'textFields2 error' : '';  $html .='"><td><input type="text" class="form-control" name="'.$fileField.'[title][]" maxlength="150"  value="'. $post['title'][$i].'" /></td><td><input type="hidden" class="form-control" name="'.$fileField.'[file][]" value="'. $post['file'][$i].'" /><a class="btn btn-xs btn-primary" target="_blank" style="width:100%" href="'.	$path_file .'">View</a></td><td><a href="javascript:remove()" data-id="'.$fileField.'" onclick="removeThisRow(this)" ><i class="fa fa-trash"></i></a></td></tr>';
 		};  
 	  }
 
@@ -74,7 +74,7 @@ $post = array();
 				
 				$("#table_append_<?php echo $fileField;?>").closest('table').removeClass('hide');
 				//alert($("#table_append_<?php echo $fileField;?>").closest('table').find('tr').length);
-				$("#table_append_<?php echo $fileField;?>").before('<tr><td><input type="text" class="form-control"  maxlength="150"   name="<?php echo $fileField;?>[title][]"/></td><td><input type="hidden"  class="form-control"  name="<?php echo $fileField;?>[file][]" value="'+serverFileName+'" /><a class="btn btn-xs btn-primary" target="_blank" style="width:100%" href="<?php echo ENABLED_AWS_PATH ;?>'+serverFileName+'">View</a></td><td><a href="javascript:remove()" data-id="<?php echo $fileField;?>" onclick="removeThisRow(this)" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+				$("#table_append_<?php echo $fileField;?>").before('<tr><td><input type="text" class="form-control"  maxlength="150"   name="<?php echo $fileField;?>[title][]"/></td><td><input type="hidden"  class="form-control"  name="<?php echo $fileField;?>[file][]" value="'+serverFileName+'" /><a class="btn btn-xs btn-primary" target="_blank" style="width:100%" href="<?php echo ENABLED_AWS_PATH ;?>'+serverFileName+'">View</a></td><td><a href="javascript:remove()" data-id="<?php echo $fileField;?>" onclick="removeThisRow(this)" ><i class="fa fa-trash"></i></a></td></tr>')
 				<?php echo $fileField;?><?php echo $fileField;?>.removeAllFiles();  
 
 				});

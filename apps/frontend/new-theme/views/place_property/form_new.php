@@ -930,10 +930,10 @@ if ($viewCollection->renderContent) {
 
 								<?php
 								/*
-				echo CHtml::radioButtonList('listing_type',$model->listing_type,$list_type,array('data-url'=>Yii::App()->createUrl($this->id.'/select_category3'),'onchange'=>'load_via_ajax_category(this,"category_id")' ,'separator'=>'','labelOptions'=>array('class'=>'')
-				,'template'=>'<div class="inputGroup" id="l_type_{idInput}"><span class="img"></span> {input}  <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg>  {label}<div class="clearfix"><!-- --></div></div>'));                                              
-				
-				*/
+									echo CHtml::radioButtonList('listing_type',$model->listing_type,$list_type,array('data-url'=>Yii::App()->createUrl($this->id.'/select_category3'),'onchange'=>'load_via_ajax_category(this,"category_id")' ,'separator'=>'','labelOptions'=>array('class'=>'')
+									,'template'=>'<div class="inputGroup" id="l_type_{idInput}"><span class="img"></span> {input}  <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg>  {label}<div class="clearfix"><!-- --></div></div>'));                                              
+									
+									*/
 								?>
 								<?php
 								$list_typeq =    Category::model()->ListDataForJSON_ID_BySEctionNew($model->section_id);

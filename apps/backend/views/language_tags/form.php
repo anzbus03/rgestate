@@ -35,9 +35,9 @@ if ($viewCollection->renderContent) {
         ?>
         <div class="box box-primary borderless">
              
-              <div class="box-header">
+              <div class="card-header">
                 <div class="pull-left">
-                    <h3 class="box-title">
+                    <h3 class="card-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id,$pageHeading);?>
                 </h3>
                 </div>
@@ -49,7 +49,7 @@ if ($viewCollection->renderContent) {
                 <div class="clearfix"><!-- --></div>
             </div>
            
-             <div class="box-body">
+             <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.

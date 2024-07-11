@@ -49,17 +49,17 @@ if ($viewCollection->renderContent) { ?>
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm'); 
         ?>
-        <div class="box box-primary">
-            <div class="box-header">
+        <div class="card">
+            <div class="card-header">
                 <div class="pull-left">
-                    <h3 class="box-title"><?php echo Yii::t('settings', 'Email templates - {type}', array('{type}' => CHtml::encode(ucfirst($type))));?></h3>
+                    <h3 class="card-title"><?php echo Yii::t('settings', 'Email templates - {type}', array('{type}' => CHtml::encode(ucfirst($type))));?></h3>
                 </div>
                 <div class="pull-right">
                     <?php echo CHtml::link(Yii::t('app', 'Cancel'), array('settings/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.

@@ -56,10 +56,10 @@ if ($viewCollection->renderContent) { ?>
          
                 <div class="box-footer">
                     <div class="pull-left">
-                        <a href="<?php echo Yii::app()->createUrl("templates/delete", array("template_uid" => $model->template_uid));?>" class="btn btn-danger btn-xs btn-delete-template" data-confirm-text="<?php echo Yii::t('app', 'Are you sure you want to remove this item?')?>"><span class="glyphicon glyphicon-remove-circle"></span> <?php echo Yii::t('app', 'Delete');?></a>
+                        <a href="<?php echo Yii::app()->createUrl("templates/delete", array("template_uid" => $model->template_uid));?>" class="btn btn-danger btn-xs btn-delete-template" data-confirm-text="<?php echo Yii::t('app', 'Are you sure you want to remove this item?')?>"><span class="fa fa-trash"></span> <?php echo Yii::t('app', 'Delete');?></a>
                     </div>
                     <div class="pull-right">
-                        <a href="<?php echo Yii::app()->createUrl("templates/update", array("template_uid" => $model->template_uid));?>" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> <?php echo Yii::t('app', 'Update');?></a>
+                        <a href="<?php echo Yii::app()->createUrl("templates/update", array("template_uid" => $model->template_uid));?>" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> <?php echo Yii::t('app', 'Update');?></a>
                     </div>
                     <div class="clearfix"><!-- --></div>
                 </div>

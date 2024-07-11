@@ -112,14 +112,14 @@
                             'buttons'   => array(
                                  
                                 'delete' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp; ', 
                                     'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/delete", array("id" => $data->id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
                                    // 'visible'   => '$data->removable === User::TEXT_YES',
                                 ),    
                                 'view' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="fa fa-eye"></span> &nbsp; ', 
                                     
                                    
                                     'url'       => 'Yii::app()->createUrl("send_email/preview", array("id" => $data->id))',
@@ -128,7 +128,7 @@
                                    // 'visible'   => '$data->removable === User::TEXT_YES',
                                 ),    
                                 'status' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="fa fa-eye"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("send_email/view_status", array("id" => $data->id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => '' ,'target'=>'_blank'),

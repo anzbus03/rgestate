@@ -91,7 +91,7 @@ if ($viewCollection->renderContent) { ?>
                             'header'    => Yii::t('app', 'Options'),
                             'buttons'   => array(
                                 'page' => array(
-                                    'label'     => '<i class="glyphicon glyphicon-eye-open"></i>', 
+                                    'label'     => '<i class="fa fa-eye"></i>', 
                                     'url'       => '$data["page_url"]',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('ip_location', 'Service detail page'), 'class'=>'btn btn-xs'),

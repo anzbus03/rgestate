@@ -4579,19 +4579,19 @@ function getMBathroomHtml()
 			 $usrl = Yii::App()->createUrl('place_an_ad/view',array('id'=>$this->id)) ; 
 		 switch($this->status){
 			 case 'A':
-			 return '<span class="label  bg-green" title="Active" onclick="previewthis(this,event)"   href="'.$usrl.'">A</span>';
+			 return '<span class="label text-white bg-green" title="Active" onclick="previewthis(this,event)"   href="'.$usrl.'">A</span>';
 			 break;
 			 case 'W':
-			 return '<span class="label  bg-blue" onclick="previewthis(this,event)" title="Waiting" href="'.$usrl.'">W</span>';
+			 return '<span class="label text-white bg-blue" onclick="previewthis(this,event)" title="Waiting" href="'.$usrl.'">W</span>';
 			 break;
 			 case 'I':
-			 return '<span class="label  btn-warning" onclick="previewthis(this,event)" title="Inactive" href="'.$usrl.'"  >I</span>';
+			 return '<span class="label text-white bg-warning" onclick="previewthis(this,event)" title="Inactive" href="'.$usrl.'"  >I</span>';
 			 break;
 			 case 'R':
-			 return '<span class="label   bg-red" onclick="previewthis(this,event)" title="Waiting" href="'.$usrl.'"  title="Rejected">R</span>';
+			 return '<span class="label text-white bg-danger" onclick="previewthis(this,event)" title="Waiting" href="'.$usrl.'"  title="Rejected">R</span>';
 			 break;
 			  case 'C':
-			 return '<span class="label  bg-yellow" title="Active" onclick="previewthis(this,event)"   href="'.$usrl.'">C</span>';
+			 return '<span class="label text-white bg-yellow" title="Active" onclick="previewthis(this,event)"   href="'.$usrl.'">C</span>';
 			 break;
 		 }
 	 }
