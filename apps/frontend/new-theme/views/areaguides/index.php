@@ -341,12 +341,13 @@ ul.homepage-main-post li .post-title {
                     <div class="alia-fieldid-container">
                         <input type="text" name="search" id="company_works_at" placeholder="Search Area Guides by Name" class="alia-autocomplete-posts" autocomplete="off">
                     </div>
-                    <button  class="btn btn-primary ml-4 alia-suggested-link alia-suggested-link-452340">Search</button>                
+                    <button class="btn btn-primary ml-4 alia-suggested-link alia-suggested-link-452340">Search</button>                
                 </div>
             </form>
         </div>
     </div>
 </section>
+
 <section id="main-content" class="clearfix">
     <div class="container" id="d_column">
         <?php 
@@ -402,3 +403,30 @@ ul.homepage-main-post li .post-title {
     </div>
 </section>
 
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script>
+$(document).ready(function() {
+    $("#company_works_at").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "<?php echo Yii::app()->createUrl('area-guides/suggest'); ?>",
+                dataType: "json",
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+        select: function(event, ui) {
+            window.location.href = ui.item.link;
+        },
+        minLength: 2
+    });
+});
+</script>

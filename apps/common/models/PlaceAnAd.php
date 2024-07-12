@@ -579,7 +579,7 @@ class PlaceAnAd extends ActiveRecord
 					//	'state'=>'City',
 						'location_latitude' => 'Select location from list',
 						'city'=>'City',
-						'state'=>'Select State',
+						'state'=>'Select Location',
 						'contact_person' => $this->mTag()->getTag('contact_name','Contact Name'),'salesman_email' => $this->mTag()->getTag('contact_email','Contact Email'),
 						'year_built'=> $this->section_id=='3' ? 'Completion Year' :'Year Built',
 						'reference_number' =>'Ref. #',
