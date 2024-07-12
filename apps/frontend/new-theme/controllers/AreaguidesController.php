@@ -36,7 +36,7 @@ class AreaguidesController extends Controller
                     FROM mw_areaguides 
                     INNER JOIN mw_states ON mw_areaguides.city = mw_states.state_id 
                     WHERE mw_areaguides.status=:status 
-                      AND mw_areaguides.highlights LIKE :search 
+                      AND mw_states.state_name LIKE :search 
                     LIMIT 21';
             $areaguides = Areaguides::model()->findAllBySql($sql, [
                 ':status' => Areaguides::STATUS_PUBLISHED,
@@ -48,6 +48,7 @@ class AreaguidesController extends Controller
                 ':status' => Areaguides::STATUS_PUBLISHED
             ]);
         }
+        
         
         //print_r($areaguides);
         $this->setData(array(
@@ -82,25 +83,91 @@ class AreaguidesController extends Controller
         // Pass data to view
         $this->render('index', compact('areaguides'));
     }
+    public function actionSuggest() {
+        if (Yii::app()->request->isAjaxRequest && isset($_GET['term'])) {
+            $term = $_GET['term'];
+            // $criteria = new CDbCriteria;
+            // $criteria->compare('state_name', $term, true);
+            // $criteria->limit = 10;
+            
+            // $areas = Areaguides::model()->findAll($criteria);
+            $sql = 'SELECT mw_areaguides.image as image,
+                        mw_areaguides.area as area,
+                        mw_states.state_name,
+                        mw_states.slug as state_slug 
+                FROM mw_areaguides 
+                INNER JOIN mw_states ON mw_areaguides.city = mw_states.state_id 
+                WHERE mw_areaguides.status=:status 
+                AND mw_states.state_name LIKE :search 
+                LIMIT 21';
+            $areaguides = Areaguides::model()->findAllBySql($sql, [
+                ':status' => Areaguides::STATUS_PUBLISHED,
+                ':search' => '%' . $term . '%'
+            ]);
+            $results = [];
+            foreach ($areas as $area) {
+                $results[] = [
+                    'label' => $area->state_name,
+                    'value' => $area->state_name,
+                    'link' => $this->createUrl('areaguides/view', ['area' => $area->state_slug]),
+                ];
+            }
+            
+            echo CJSON::encode($results);
+            Yii::app()->end();
+        }
+    }
 	public function actionView($area=null)
     {
-		  $criteria = new CDbCriteria();
-          $criteria->select ='t.*,st.state_name as state_name,st.slug as state_slug';
-         $criteria->compare('status', Areaguides::STATUS_PUBLISHED);
-          $criteria->join =' inner join {{states}} st on st.state_id = t.city ';
-    $criteria->condition .= ' and st.slug = :slug '; $criteria->params[':slug'] = $area; 
+        if (Yii::app()->request->isAjaxRequest && isset($_GET['term'])) {
+            $term = $_GET['term'];
+            $sql = 'SELECT mw_areaguides.image as image,
+                        mw_areaguides.area as area,
+                        mw_states.state_name,
+                        mw_states.slug as state_slug 
+                FROM mw_areaguides 
+                INNER JOIN mw_states ON mw_areaguides.city = mw_states.state_id 
+                WHERE mw_areaguides.status=:status 
+                AND mw_states.state_name LIKE :search 
+                LIMIT 21';
+            $areaguides = Areaguides::model()->findAllBySql($sql, [
+                ':status' => Areaguides::STATUS_PUBLISHED,
+                ':search' => '%' . $term . '%'
+            ]);
+            $results = [];
+            $check = [];
+            foreach ($areaguides as $area) {
+                if (!in_array($area->state_slug, $check)){
+                    $results[] = [
+                        'label' => $area->state_name,
+                        'value' => $area->state_name,
+                        'link' => $this->createUrl('areaguides/view', ['area' => $area->state_slug]),
+                    ];
+                    $check[] = $area->state_slug;
+                }
+
+            }
+            
+            echo CJSON::encode($results);
+            Yii::app()->end();
+        }
+        $criteria = new CDbCriteria();
+        $criteria->select ='t.*,st.state_name as state_name,st.slug as state_slug';
+        $criteria->compare('status', Areaguides::STATUS_PUBLISHED);
+        $criteria->join =' inner join {{states}} st on st.state_id = t.city ';
+        $criteria->condition .= ' and st.slug = :slug '; $criteria->params[':slug'] = $area; 
 		$areaguides = Areaguides::model()->find($criteria);
 		  if (empty($areaguides)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         }
-      $title =    Yii::t('app','[H1] Area Guide and Locality Overview | [BrandName]',array('[H1]'=> $areaguides->state_name,'[BrandName]'=>BRAND_TITLE));
+        $title =    Yii::t('app','[H1] Area Guide and Locality Overview | [BrandName]',array('[H1]'=> $areaguides->state_name,'[BrandName]'=>BRAND_TITLE));
 	
 		//echo"<pre>";print_r($areaguide_detail);exit; 
-		  $this->setData(array(
+        $this->setData(array(
             'pageTitle'     =>  $title,
-            	'meta_keyword' => Yii::t('app',Yii::app()->options->get('system.common.areaguide_keywords',''),array('[H1]'=> $areaguides->state_name,'[BrandName]'=>BRAND_TITLE)),         
+            'meta_keyword' => Yii::t('app',Yii::app()->options->get('system.common.areaguide_keywords',''),array('[H1]'=> $areaguides->state_name,'[BrandName]'=>BRAND_TITLE)),         
 		 	'pageMetaDescription' =>  Yii::t('app',Yii::app()->options->get('system.common.areaguide_description',''),array('[H1]'=> $areaguides->state_name,'[BrandName]'=>BRAND_TITLE)) 
-       ));
+        ));
         $this->render('view', compact('areaguides', 'pages'));
     }
 	

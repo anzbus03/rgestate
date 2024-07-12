@@ -56,47 +56,47 @@
 			<?php echo $form->dropDownList($model, 'state', $cities, [
 				'empty' => $this->tag->getTag('select', 'Select'),
 				'class' => 'input-text form-control',
-				'id' => 'state-dropdown', // Add an ID to target in JavaScript
+				'id' => 'location-dropdown', // Add an ID to target in JavaScript
 				'disabled' => empty($cities) ? 'disabled' : '', // Disable if no cities
 			]); ?>
 			<?php echo $form->error($model, 'state'); ?>
 		</div>
 	</div>
+    <?php print_r($citiesForRegion); ?>
 
 	<script>
 		// JavaScript function to filter cities based on selected region
-function filterCities(select) {
-    var selectedRegion = $(select).val();
-    var filteredCities = [];
+    function filterCities(select) {
+        var selectedRegion = $(select).val();
+        var filteredCities = [];
+        console.log("ASD")
+        <?php foreach ($regions as $regionId => $regionName): ?>
+            // Fetch cities for the current region using Yii criteria
+            <?php
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('country_id=:countryId');
+            $criteria->addCondition('region_id=:regionId');
+            $criteria->params = array(':countryId' => $model->country, ':regionId' => $regionId);
+            $citiesForRegion = States::model()->findAll($criteria);
+            ?>
 
-    <?php foreach ($regions as $regionId => $regionName): ?>
-        // Fetch cities for the current region using Yii criteria
-        <?php
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('country_id=:countryId');
-        $criteria->addCondition('region_id=:regionId');
-        $criteria->params = array(':countryId' => $model->country, ':regionId' => $regionId);
-        $citiesForRegion = States::model()->findAll($criteria);
-        ?>
-
-        // Prepare JavaScript array for cities if region matches selectedRegion
-        <?php foreach ($citiesForRegion as $city): ?>
-            if ('<?php echo $regionId; ?>' == selectedRegion) {
-                filteredCities.push({ id: '<?php echo $city->state_id; ?>', name: '<?php echo addslashes($city->state_name); ?>' });
-            }
+            <?php foreach ($citiesForRegion as $city): ?>
+                if ('<?php echo $regionId; ?>' == selectedRegion) {
+                    filteredCities.push({ id: '<?php echo $city->state_id; ?>', name: '<?php echo addslashes($city->state_name); ?>' });
+                }
+            <?php endforeach; ?>
         <?php endforeach; ?>
-    <?php endforeach; ?>
 
-    // Empty the dropdown before updating it
-    $('#location-dropdown').empty();
+        // Empty the dropdown before updating it
+        $('#location-dropdown').empty();
 
-    // Update the dropdown options dynamically
-    var options = '<option value="">Select</option>';
-    for (var i = 0; i < filteredCities.length; i++) {
-        options += '<option value="' + filteredCities[i].id + '">' + filteredCities[i].name + '</option>';
+        // Update the dropdown options dynamically
+        var options = '<option value="">Select</option>';
+        for (var i = 0; i < filteredCities.length; i++) {
+            options += '<option value="' + filteredCities[i].id + '">' + filteredCities[i].name + '</option>';
+        }
+        $('#location-dropdown').html(options);
     }
-    $('#location-dropdown').html(options);
-}
 
 	</script>
 
