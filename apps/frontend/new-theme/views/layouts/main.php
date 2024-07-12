@@ -404,12 +404,12 @@ if($this->id != 'contact'){ ?>
     --bs-modal-width: 120rem !important;
 }
 
-.exampleModal .rg-modal-img {
+.exampleModalBlogMessage .rg-modal-img {
     max-width: 100%;
     height: 100%;
 }
 
-.exampleModal .rg-close-btn {
+.exampleModalBlogMessage .rg-close-btn {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -418,26 +418,26 @@ if($this->id != 'contact'){ ?>
     padding: .6rem;
 }
 
-.exampleModal .rg-modal-form .input-group {
+.exampleModalBlogMessage .rg-modal-form .input-group {
     margin-bottom: 2rem;
 }
 
-.exampleModal .rg-modal-form .input-group .form-control-lg {
+.exampleModalBlogMessage .rg-modal-form .input-group .form-control-lg {
     min-height: calc(1.5em + 2.5rem + calc(var(--bs-border-width) * 2));
 }
 
-.exampleModal .rg-modal-form .input-group .form-control {
+.exampleModalBlogMessage .rg-modal-form .input-group .form-control {
     font-size: 1.5rem;
     color: var(--bs-dark);
 }
 
-.exampleModal .rg-sub-btn .btn {
+.exampleModalBlogMessage .rg-sub-btn .btn {
     padding-left: 4rem;
     padding-right: 4rem
 }
 
 </style>
-<div class="modal modal-new" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal modal-new" id="exampleModalBlogMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalBlogMessageLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="min-width: 100% !important;">
         <div class="modal-content position-relative rounded-0">
             <div class="modal-body">
@@ -464,6 +464,14 @@ if($this->id != 'contact'){ ?>
         </div>
     </div>
 </div>
+<style>
+  @media (max-width: 576px) {
+    #exampleModalBlogMessage .modal-content {
+      width: 60% !important;
+      margin: 0 !important;
+    }
+  }
+</style>
     
 <div id="dynamicScripts"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
@@ -472,19 +480,19 @@ if($this->id != 'contact'){ ?>
         if (!Cookies.get('modalShownBlog') && window.location.pathname === '/blog') {
             showModalBlog();
         }
-        $('#exampleModal').on('hidden.bs.modal', function (e) {
+        $('#exampleModalBlogMessage').on('hidden.bs.modal', function (e) {
             
             Cookies.set('modalShownBlog', 'true', { expires: 7 }); 
         })
         var closeButton = document.getElementById('closepopup');
         if (closeButton) {
             closeButton.addEventListener('click', function() {
-                $('#exampleModal').modal('hide');
+                $('#exampleModalBlogMessage').modal('hide');
             });
         }
         function showModalBlog() {
     
-            $('#exampleModal').modal("show")
+            $('#exampleModalBlogMessage').modal("show")
         }
     })
 </script>
