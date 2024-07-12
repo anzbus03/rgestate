@@ -347,7 +347,6 @@ ul.homepage-main-post li .post-title {
         </div>
     </div>
 </section>
-
 <section id="main-content" class="clearfix">
     <div class="container" id="d_column">
         <?php 
@@ -381,17 +380,15 @@ ul.homepage-main-post li .post-title {
                     $processedStates[] = $area->state_name;
                     ?>
                     <li class="post-list">
-                        <a class="post-link" href="#">
-                            <div class="post-thumbnail">
-                                <?php 
-                                $link = $this->app->createUrl('areaguides/view', array('area' => $area->state_slug));
-                                echo CHtml::image('uploads/category/' . $area['image']);
-                                ?>
-                            </div>
-                            <div class="post-info">
-                                <h3 class="post-title"><?php echo CHtml::link($area->state_name, $link); ?></h3>
-                            </div>
-                        </a>
+                        <div class="post-thumbnail">
+                            <?php 
+                            $link = $this->app->createUrl('areaguides/view', array('area' => $area->state_slug));
+                            echo CHtml::link(CHtml::image('uploads/category/' . $area['image']), $link);
+                            ?>
+                        </div>
+                        <div class="post-info">
+                            <h3 class="post-title"><?php echo CHtml::link($area->state_name, $link); ?></h3>
+                        </div>
                     </li>
                 <?php endforeach; ?>        
                 <div class="clearfix"></div>
@@ -404,3 +401,4 @@ ul.homepage-main-post li .post-title {
         <div class="clearfix"></div>
     </div>
 </section>
+

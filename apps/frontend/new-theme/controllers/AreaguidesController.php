@@ -36,7 +36,7 @@ class AreaguidesController extends Controller
                     FROM mw_areaguides 
                     INNER JOIN mw_states ON mw_areaguides.city = mw_states.state_id 
                     WHERE mw_areaguides.status=:status 
-                      AND mw_areaguides.highlights LIKE :search 
+                      AND mw_states.state_name LIKE :search 
                     LIMIT 21';
             $areaguides = Areaguides::model()->findAllBySql($sql, [
                 ':status' => Areaguides::STATUS_PUBLISHED,
