@@ -891,6 +891,148 @@ header('Content-type: text/html; charset=UTF-8');
         
     }
    
+	public function actionUploadExcel()
+    {
+        $model = new PlaceAnAd();
+		$notify = Yii::app()->notify;
+        if (isset($_POST['PlaceAnAd'])) {
+			// Handle file uploads
+            $excelFile = CUploadedFile::getInstance($model, 'excelFile');
+            $zipFile = CUploadedFile::getInstance($model, 'zipFile');
+		
+
+            if ($excelFile) {
+                $uploadsPath = Yii::getPathOfAlias('webroot.uploads');
+                $excelFilePath = $uploadsPath . '/' . $excelFile->name;
+            	$excelFile->saveAs($excelFilePath);
+				
+                // Extract ZIP file
+				if ($zipFile){
+					$zipFilePath = $uploadsPath . '/' . $zipFile->name;
+					$zipFile->saveAs($zipFilePath);
+					$zip = new ZipArchive;
+					if ($zip->open($zipFilePath) === TRUE) {
+						$zip->extractTo($uploadsPath . '/images');
+						$zip->close();
+					} else {
+						$notify->addError(Yii::t('app', 'Failed to open ZIP file.'));
+					}
+				}
+
+                // Read the Excel file
+			
+                $data = $this->readExcelFile($excelFilePath);
+
+                // Process the data
+                foreach ($data as $row) {
+                    $ad = new PlaceAnAd();
+                    $ad->attributes = $row;
+
+                    // Handle image
+                    $imageName = $row['image'];
+                    $imagePath = $uploadsPath . '/images/' . $imageName;
+                    if (file_exists($imagePath)) {
+                        $ad->image = '/uploads/images/' . $imageName;
+                    } else {
+                        // Handle missing image
+                        $ad->image = null;
+                    }
+
+                    if ($ad->validate()) {
+                        $ad->save();
+                    } else {
+                        // Handle validation errors
+                    }
+                }
+				$notify->addSuccess(Yii::t('app', 'Files have been uploaded and processed successfully.'));
+            } else {	
+				$notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
+
+            }
+        }
+
+        $this->render('list', array('model' => $model));
+    }
+
+    protected function readExcelFile($filePath)
+    {
+		Yii::import('backend.extensions.PhpSpreadsheet.src');
+		$data = array();
+		$phpExcelPath = Yii::getPathOfAlias('ext.phpexcel.Classes');
+     
+		// Turn off our amazing library autoload 
+		spl_autoload_unregister(array('YiiBase','autoload'));        
+   
+		//
+		// making use of our reference, include the main class
+		// when we do this, phpExcel has its own autoload registration
+		// procedure (PHPExcel_Autoloader::Register();)
+	   include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel.php');
+   
+		// Create new PHPExcel object
+		$objPHPExcel = new PHPExcel();
+   
+        $objPHPExcel = \PhpSpreadsheet\IOFactory::load($filePath);
+        foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
+            $highestRow = $worksheet->getHighestRow();
+            $highestColumn = $worksheet->getHighestColumn();
+            for ($row = 2; $row <= $highestRow; ++$row) {
+                $rowData = $worksheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, null, true, false);
+                $data[] = array(
+                    'sr_no' => $rowData[0][0],
+                    'date' => $rowData[0][1],
+                    'property_id' => $rowData[0][2],
+                    'rg_estate_id' => $rowData[0][3],
+                    'property_type' => $rowData[0][4],
+                    'availability' => $rowData[0][5],
+                    'transaction_type' => $rowData[0][6],
+                    'location' => $rowData[0][7],
+                    'listing_type' => $rowData[0][8],
+                    'ad_title' => $rowData[0][9],
+                    'property_details' => $rowData[0][10],
+                    'ownership' => $rowData[0][11],
+                    'bedrooms' => $rowData[0][12],
+                    'plot_area' => $rowData[0][13],
+                    'size' => $rowData[0][14],
+                    'total_price' => $rowData[0][15],
+                    'rent_paid' => $rowData[0][16],
+                    'land_mark' => $rowData[0][17],
+                    'google_location' => $rowData[0][18],
+                    'people_capacity' => $rowData[0][19],
+                    'toilet' => $rowData[0][20],
+                    'total_lc_people_capacity' => $rowData[0][21],
+                    'kitchen' => $rowData[0][22],
+                    'bathroom' => $rowData[0][23],
+                    'lc_water_closet_wc' => $rowData[0][24],
+                    'wash_basin' => $rowData[0][25],
+                    'dining' => $rowData[0][26],
+                    'wh_no_of_units' => $rowData[0][27],
+                    'mezzanine' => $rowData[0][28],
+                    'office' => $rowData[0][29],
+                    'insulation' => $rowData[0][30],
+                    'sprinkler' => $rowData[0][31],
+                    'power' => $rowData[0][32],
+                    'wh_height' => $rowData[0][33],
+                    'usage' => $rowData[0][34],
+                    'type' => $rowData[0][35],
+                    'company_name' => $rowData[0][36],
+                    'name' => $rowData[0][37],
+                    'mobile1' => $rowData[0][38],
+                    'mobile2' => $rowData[0][39],
+                    'email' => $rowData[0][40],
+                    'mobile3' => $rowData[0][41],
+                    'type2' => $rowData[0][42],
+                    'name2' => $rowData[0][43],
+                    'mobile4' => $rowData[0][44],
+                    'email2' => $rowData[0][45],
+                    'plot_no' => $rowData[0][46],
+                    'Files' => $rowData[0][47],
+                );
+            }
+        }
+        return $data;
+    
+    }
    /*
     public function actionUpdate($id=null)
     {  

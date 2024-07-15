@@ -95,6 +95,8 @@ class PlaceAnAd extends ActiveRecord
 	  public $_notMadatory;
 	  public $dynamicArray;
 	 public $tags_list;
+	 public $excelFile;
+	 public $zipFile;
 	  public $tag_list2;
 	  public $id2;
 	  public $a_number;
@@ -125,6 +127,8 @@ class PlaceAnAd extends ActiveRecord
 				 
 		 }
 		 $rules  =  array(
+			array('excelFile, zipFile', 'file', 'types' => 'xls, xlsx, zip', 'allowEmpty' => true),
+
             array('section_id,state,city, category_id,user_id ,ad_title,ad_description,builtup_area', 'required', 'message'=>$required),
             //array('city', 'required','on'=>'new_insert', 'message'=>$required),
              array('ad_description', 'required','on'=>'update_content', 'message'=>$required),

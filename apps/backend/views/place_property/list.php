@@ -135,8 +135,10 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
                    </div>
                   </div>
                 <div class="col-sm-2">
-                    
                     <button type="button" id="exportExcel" class="btn btn-success btn-xs" style="margin-left: 10px;float: right;">Export to Excel</button>
+                    <button type="button" class="btn btn-secondary btn-xs" data-toggle="modal" style="float: right;" data-target="#uploadModal">
+                        Upload By Excel
+                    </button>
                 </div>
                
                    </div>
@@ -563,6 +565,43 @@ foreach ($categories as $category) {
 			</div>
 			</div>
           <?php $this->endWidget(); ?>
+        </div>
+    </div>
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLabel">Upload Excel and Images</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <?php
+                $form = $this->beginWidget('CActiveForm', array(
+                    'id'        => 'upload-form',
+                    'enableClientValidation' => true,
+                    'action' => Yii::app()->createUrl(Yii::app()->controller->id . '/uploadExcel'), 
+                    'htmlOptions' => array('enctype' => 'multipart/form-data'),
+                ));
+                ?>
+                <div class="form-group">
+                <?php echo $form->labelEx($model, 'excelFile'); ?>
+                <?php echo CHtml::activeFileField($model, 'excelFile'); ?>
+                <?php echo $form->error($model, 'excelFile'); ?>
+                </div>
+                <div class="form-group">
+                <?php echo $form->labelEx($model, 'zipFile'); ?>
+                <?php echo CHtml::activeFileField($model, 'zipFile'); ?>
+                <?php echo $form->error($model, 'zipFile'); ?>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <?php echo CHtml::submitButton('Upload', array('class' => 'btn btn-primary')); ?>
+                </div>
+                <?php $this->endWidget(); ?>
+            </div>
+            </div>
         </div>
     </div>
 <?php 

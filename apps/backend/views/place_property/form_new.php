@@ -1099,7 +1099,7 @@ if ($viewCollection->renderContent) {
 								</div>
 								<div class="insidecontent full-content">
 									<div class="clearfix"><!-- --></div>
-									<?php $this->renderPartial('root.apps.frontend.new-theme.views.place_property._ad_location', compact('form')); ?>
+									<?php $this->renderPartial('root.apps.backend.views.place_property._ad_location', compact('form')); ?>
 
 									<div class="clearfix"><!-- --></div>
 
@@ -1173,25 +1173,20 @@ if ($viewCollection->renderContent) {
 
 								<div class="clearfix"><!-- --></div>
 								<div class="row">
-								<div class="form-group col-lg-12">
-									<div style="width:100%;height:15px;"></div>
-									<?php echo $form->labelEx($model, 'ad_description'); ?>
-									<?php
-									if (Yii::App()->isAppName('backend') and !$model->isNewRecord) {
-										echo $model->getTranslateHtml('ad_description');
-									}
-									?>
-									<?php echo $form->textArea($model, 'ad_description', array_replace($model->getHtmlOptions('ad_description'), array("rows" => "5", 'dir' => 'auto', 'placeholder' => $this->tag->getTag('mention_the_key_feature_of_you', 'Mention the key feature of your property (short description of your property)'), 'style' => 'resize: both;'))); ?>
-									<div class="text-warning small hide pull-left">
-										<?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::DESC_MIN, '{max}' => $model::DESC_MAX)); ?>
+									<div class="form-group col-lg-12">
+										<div style="width:100%;height:15px;"></div>
+										<?php echo $form->labelEx($model, 'ad_description'); ?>
+										<?php
+										if (Yii::App()->isAppName('backend') and !$model->isNewRecord) {
+											echo $model->getTranslateHtml('ad_description');
+										}
+										?>
+										<?php echo $form->textArea($model, 'ad_description', array_replace($model->getHtmlOptions('ad_description'), array("rows" => "5", 'dir' => 'auto', 'placeholder' => $this->tag->getTag('mention_the_key_feature_of_you', 'Mention the key feature of your property (short description of your property)')))); ?>
+										<div class="text-warning small hide pull-left"><?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::DESC_MIN, '{max}' => $model::DESC_MAX));; ?></div>
+										<div class="pull-right text-warning" style="font-size: 12px;"><span id="inputcounter2"></span></div>
+										<div class="clearfix"></div>
+										<?php echo $form->error($model, 'ad_description'); ?>
 									</div>
-									<div class="pull-right text-warning" style="font-size: 12px;">
-										<span id="inputcounter2"></span>
-									</div>
-									<div class="clearfix"></div>
-									<?php echo $form->error($model, 'ad_description'); ?>
-								</div>
-
 								</div>
 
 
