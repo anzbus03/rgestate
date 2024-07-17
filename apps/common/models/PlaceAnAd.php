@@ -129,7 +129,7 @@ class PlaceAnAd extends ActiveRecord
 		 $rules  =  array(
 			array('excelFile, zipFile', 'file', 'types' => 'xls, xlsx, zip', 'allowEmpty' => true),
 
-            array('section_id,state,city, category_id,user_id ,ad_title,ad_description,builtup_area', 'required', 'message'=>$required),
+            array('section_id, category_id,user_id ,ad_title,ad_description,builtup_area', 'required', 'message'=>$required),
             //array('city', 'required','on'=>'new_insert', 'message'=>$required),
              array('ad_description', 'required','on'=>'update_content', 'message'=>$required),
             array('country,state,city', 'safe','on'=>'new_insert'),
