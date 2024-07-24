@@ -424,7 +424,6 @@ header('Content-type: text/html; charset=UTF-8');
 		exit; 
 		*/
 		
-		
         echo '<script>function iniFrame() {   if(window.self !== window.top) {   parent.closeBackendIFrame();  }  }  iniFrame();  </script> ';
          $request = Yii::app()->request;
          $notify = Yii::app()->notify;

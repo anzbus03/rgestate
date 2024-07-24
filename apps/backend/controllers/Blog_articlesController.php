@@ -1,5 +1,7 @@
 <?php defined('MW_PATH') || exit('No direct script access allowed');
 
+use DateTime;
+
 /**
  * ArticlesController
  * 
@@ -69,11 +71,18 @@ class Blog_articlesController extends Controller
         $articleToCategory = new ArticleToCategory();
         
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($article->modelName, array()))) {
-            $article->attributes = $attributes;
-            $article->listing_countries = Yii::app()->request->getPost("listing_countries");
             if (isset(Yii::app()->params['POST'][$article->modelName]['content'])) {
                 $article->content = Yii::app()->ioFilter->purify(Yii::app()->params['POST'][$article->modelName]['content']);
             }
+            if (isset($_FILES['BlogArticle']['name']['featured_image']) && $_FILES['BlogArticle']['error']['featured_image'] == UPLOAD_ERR_OK) {
+                $imageName = $this->uploadImage($_FILES['BlogArticle']);
+                if ($imageName) {
+                    $attributes['featured_image'] = $imageName;
+                }
+            }
+            
+            $article->attributes = $attributes;
+            $article->listing_countries = Yii::app()->request->getPost("listing_countries");
             if (!$article->save()) {
                 $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
             } else {
@@ -110,6 +119,42 @@ class Blog_articlesController extends Controller
         
         $this->render('form', compact('article', 'articleToCategory'));
     }
+    protected function uploadImage($file)
+    {
+        $imageName = null;
+    
+        // Check if a file was uploaded
+        $tempName = $file['tmp_name']['featured_image'];
+        $fileName = $file['name']['featured_image'];
+        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        
+        // Generate a unique file name
+        $imageName = time() . '_' . rand(0, 9999) . '.' . $ext;
+        $path = Yii::getPathOfAlias('root.uploads.images');
+        // Move the uploaded file to the target directory
+        if (move_uploaded_file($tempName, $path . '/' . $imageName)) {
+          
+            return $imageName;
+        }    
+        return null;
+    }
+    public function actionCheckPublishDates()
+    {
+        // Get the current datetime
+        $now = new DateTime();
+
+        // Query for articles that are not published yet but their publish date has passed
+        $articles = BlogArticle::model()->findAll(array(
+            'condition' => 'status = :status AND publish_date <= :now',
+            'params'    => array(':status' => 'unpublished', ':now' => $now->format('Y-m-d H:i:s')),
+        ));
+
+        // Update the status of these articles to 'published'
+        foreach ($articles as $article) {
+            $article->status = 'published';
+            $article->save(false); // Set to true if you want to trigger validation
+        }
+    }
     
     /**
      * Update existing article
@@ -127,6 +172,13 @@ class Blog_articlesController extends Controller
         $articleToCategory = new ArticleToCategory();
        
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($article->modelName, array()))) {
+            if (isset($_FILES['BlogArticle']['name']['featured_image']) && $_FILES['BlogArticle']['error']['featured_image'] == UPLOAD_ERR_OK) {
+                $imageName = $this->uploadImage($_FILES['BlogArticle']);
+                if ($imageName) {
+                    $attributes['featured_image'] = $imageName;
+                }
+            }
+            
             $article->attributes = $attributes;
             if (isset(Yii::app()->params['POST'][$article->modelName]['content'])) {
                 $article->content = Yii::app()->ioFilter->purify(Yii::app()->params['POST'][$article->modelName]['content']);
