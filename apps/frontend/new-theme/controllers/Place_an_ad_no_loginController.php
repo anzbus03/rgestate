@@ -1428,7 +1428,7 @@ class Place_an_ad_no_loginController extends Controller
                     if(!$model->save()){
         				echo json_encode(array('status'=>'0','msg'=>'<div class="alert alert-danger1"><strong>Error!</strong> '.CHtml::errorSummary($model).'. </div>'));
         			}else{
-        				echo json_encode(array('status'=>'1','name'=>$model->name , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+        				echo json_encode(array('status'=>'1','name'=>$model->enail , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
         		    }
                 }
 

@@ -2014,7 +2014,7 @@ Jq4pd48R
 				'CATEGORY_ID' => 16,
 				'ASSIGNED_BY_ID' => 22,
 				'CONTACT_ID' => $customerId,
-				'COMMENTS' => 'Name: ' . $requestParms['name'] . ' <br/> Phone: ' . $requestParms['phone'] . ' <br/> Email: ' . $requestParms['email'],
+				'COMMENTS' => 'Name: ' . $requestParms['name'] . ' <br/> Phone: ' . $requestParms['phone'] . ' <br/> Email: ' . $requestParms['email'] . ' <br/> Message: ' . $requestParms['message'],
 				'UF_CRM_1701236145750' => $services[$requestParms['type']],
 			],
 		];
@@ -2046,7 +2046,7 @@ Jq4pd48R
 			if(!$model->save()){
 				echo json_encode(array('status'=>'0','msg'=>'<div class="alert alert-danger1"><strong>Error!</strong> '.CHtml::errorSummary($model).'. </div>'));
 			}else{
-				echo json_encode(array('status'=>'1','name'=>$model->name , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+				echo json_encode(array('status'=>'1','name'=>$model->email , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
 			}
 		}
 	

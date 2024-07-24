@@ -342,12 +342,13 @@
       var closeButton = document.querySelector(".modal-header .close");
 
       closeButton.addEventListener("click", function() {
-        var modal = document.getElementById("exampleModal");
+        var modal = document.getElementById("exampleModalBlogMessage");
         $(modal).modal("hide");
       });
     });
   </script>
-<div id="dynamicScripts"></div><div class="modal modal-new fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div id="dynamicScripts"></div>
+<div class="modal modal-new fade" id="exampleModalBlogMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalBlogMessageLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
       <div class="modal-content position-relative rounded-0">
         <div class="modal-header">

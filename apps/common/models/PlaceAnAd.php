@@ -95,6 +95,8 @@ class PlaceAnAd extends ActiveRecord
 	  public $_notMadatory;
 	  public $dynamicArray;
 	 public $tags_list;
+	 public $excelFile;
+	 public $zipFile;
 	  public $tag_list2;
 	  public $id2;
 	  public $a_number;
@@ -125,7 +127,9 @@ class PlaceAnAd extends ActiveRecord
 				 
 		 }
 		 $rules  =  array(
-            array('section_id,state, category_id,user_id ,ad_title,ad_description,builtup_area', 'required', 'message'=>$required),
+			array('excelFile, zipFile', 'file', 'types' => 'xls, xlsx, zip', 'allowEmpty' => true),
+
+            array('section_id, category_id,user_id ,ad_title,ad_description,builtup_area', 'required', 'message'=>$required),
             //array('city', 'required','on'=>'new_insert', 'message'=>$required),
              array('ad_description', 'required','on'=>'update_content', 'message'=>$required),
             array('country,state,city', 'safe','on'=>'new_insert'),
@@ -578,7 +582,8 @@ class PlaceAnAd extends ActiveRecord
 						'balconies'=>'Total Balconies',
 					//	'state'=>'City',
 						'location_latitude' => 'Select location from list',
-						'city'=>'Select Location',
+						'city'=>'City',
+						'state'=>'Select Location',
 						'contact_person' => $this->mTag()->getTag('contact_name','Contact Name'),'salesman_email' => $this->mTag()->getTag('contact_email','Contact Email'),
 						'year_built'=> $this->section_id=='3' ? 'Completion Year' :'Year Built',
 						'reference_number' =>'Ref. #',
@@ -3288,8 +3293,8 @@ function getMBathroomHtml()
         $criteria->select .= ',(SELECT  group_concat(CASE WHEN img.status="A" THEN `image_name` ELSE "waiting-feeta.jpg" END order by id asc)  FROM {{ad_image}} img  WHERE  img.ad_id = t.id and      img.isTrash="0" and   img.status="A"   )   as ad_images_g';
        
         $criteria->compare('t.isTrash','0');
-        if(isset($formData['sta']) and !empty($formData['sta'])){
-			$criteria->compare('t.status',$formData['sta']);
+        if(isset($formData['status']) and !empty($formData['status'])){
+			$criteria->compare('t.status',$formData['status']);
 		}else{
         	$criteria->compare('t.status','A');
 		}
@@ -3310,7 +3315,7 @@ function getMBathroomHtml()
 		 
 		 $criteria->join  .= ' left join {{area_unit}} au ON au.master_id = t.area_unit ';
         $criteria->join  .=   ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
-		$criteria->condition .= ' and usr.status = "A" and usr.isTrash="0"' ; 	
+		$criteria->condition .= ' and t.isTrash = "0" and usr.status = "A" and usr.isTrash="0"' ; 	
 		if(Yii::app()->user->getId() and !isset($formData['logged_in'])  ){
 			$criteria->select .= ' ,fav.ad_id as fav ';
 			$criteria->join  .= ' left join {{ad_favourite}} fav ON fav.ad_id = t.id and fav.user_id =:user_me';
@@ -3427,12 +3432,23 @@ function getMBathroomHtml()
 			$criteria->condition .= ' and sec.slug=:sec ';$criteria->params[':sec'] = $formData['sec'];
 		}
 		if(isset($formData['minPrice']) and !empty($formData['minPrice'])){
-			 
-			$criteria->condition .= ' and t.price>=:minPrice ';$criteria->params[':minPrice'] = $formData['minPrice'];
+			if (defined('SYSTEM_CURRENCY') and SYSTEM_CURRENCY == '1') {
+
+				$criteria->condition .= ' and t.price>=:minPrice ';
+				$criteria->params[':minPrice'] =  $formData['minPrice'] * 3.65;
+			}else {
+				$criteria->condition .= ' and t.price>=:minPrice ';
+				$criteria->params[':minPrice'] =  $formData['minPrice'];
+			}
 		}
 		if(isset($formData['maxPrice']) and !empty($formData['maxPrice'])){
-			 
-			$criteria->condition .= ' and t.price<=:maxPrice ';$criteria->params[':maxPrice'] = $formData['maxPrice'];
+			if (defined('SYSTEM_CURRENCY') and SYSTEM_CURRENCY == '1') {
+				$criteria->condition .= ' and t.price<=:maxPrice ';
+				$criteria->params[':maxPrice'] = $formData['maxPrice'] * 3.65;
+			}else {
+				$criteria->condition .= ' and t.price<=:maxPrice ';
+				$criteria->params[':maxPrice'] = $formData['maxPrice'];
+			}
 		}
 		if(isset($formData['locality']) and !empty($formData['locality'])){
 			 
