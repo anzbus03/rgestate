@@ -47,6 +47,7 @@ class New_projectsController   extends Controller
 		$request = Yii::app()->request;
 		$notify = Yii::app()->notify;
 		$model = new NewDevelopment();
+	
 		$model->fieldDecorator->onHtmlOptionsSetup = array($this, '_setupEditorOptions');
 		$model->scenario = 'new_insert';
 		$image_array = array();

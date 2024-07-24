@@ -215,7 +215,12 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
 
                             if (startDate && endDate) {
                                 exportUrl += '?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate);
+                                var currentUrl = window.location.href;
+                                if (currentUrl.includes("trash")) {
+                                    exportUrl += "&type=trash";
+                                }
                             }
+                               
 
                             // Redirect to the export URL
                             window.location.href = exportUrl;    
