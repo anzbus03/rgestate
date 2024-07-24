@@ -26,8 +26,8 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
   ?>
-    <div class="card">
-        <div class="card-header" style="    padding: 20px;">
+    <div class="box box-primary">
+        <div class="box-header" style="    padding: 20px;">
              <h3>Already Inserted Property</h3>
              <?php echo CHtml::link('Update this Property',Yii::app()->createUrl('place_property/update',array('id'=>$found->id)),array('class'=>'btn btn-primary'));?>
             <div class="clearfix"><!-- --></div>

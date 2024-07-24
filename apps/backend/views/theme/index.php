@@ -31,10 +31,10 @@ if ($viewCollection->renderContent) { ?>
         <li class="<?php echo $app == $appName ? 'active' : 'inactive';?>"><a href="<?php echo $this->createUrl('theme/index', array('app' => $appName))?>"><?php echo CHtml::encode(Yii::t('app', ucfirst($appName)));?></a></li>
         <?php } ?>
     </ul>
-    <div class="card">
-        <div class="card-header">
+    <div class="box box-primary">
+        <div class="box-header">
             <div class="pull-left">
-                <h3 class="card-title">
+                <h3 class="box-title">
                     <span class="glyphicon glyphicon-plus-sign"></span> <?php echo Yii::t('themes', 'Available themes');?>
                 </h3>
             </div>
@@ -44,7 +44,7 @@ if ($viewCollection->renderContent) { ?>
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
             <div class="table-responsive">
             <?php 
             /**
@@ -105,7 +105,7 @@ if ($viewCollection->renderContent) { ?>
                             'afterDelete'=> 'function(){window.location.reload();}',
                             'buttons'    => array(
                                 'page' => array(
-                                    'label'     => '<i class="fa fa-eye"></i>', 
+                                    'label'     => '<i class="glyphicon glyphicon-eye-open"></i>', 
                                     'url'       => '$data["pageUrl"]',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('themes', 'Extension detail page'), 'class'=>'btn btn-xs'),

@@ -1,8 +1,8 @@
      <div class="col-md-12 no-padding-left">
-		 	  <div class="card">
-        <div class="card-header">
+		 	  <div class="box box-primary">
+        <div class="box-header">
             <div class="pull-left">
-                <h3 class="card-title">
+                <h3 class="box-title">
 					<?php
 					if(Yii::app()->request->getQuery('draft','0')=='1'){
 						echo '<span class="fa fa-file-text-o"></span> Mail Draft';
@@ -16,7 +16,7 @@
             
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
     <div class="table-responsive">
             <?php 
             /**
@@ -112,14 +112,14 @@
                             'buttons'   => array(
                                  
                                 'delete' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
                                     'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/delete", array("id" => $data->id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
                                    // 'visible'   => '$data->removable === User::TEXT_YES',
                                 ),    
                                 'view' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-eye"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp; ', 
                                     
                                    
                                     'url'       => 'Yii::app()->createUrl("send_email/preview", array("id" => $data->id))',
@@ -128,7 +128,7 @@
                                    // 'visible'   => '$data->removable === User::TEXT_YES',
                                 ),    
                                 'status' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-eye"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("send_email/view_status", array("id" => $data->id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => '' ,'target'=>'_blank'),

@@ -182,7 +182,7 @@ class Contact_usController extends Controller
          ));
        
         
-        $this->renderPartial('form', compact('model','note','note2'));
+        $this->render('form', compact('model','note','note2'));
     }
     
       public function actionBulk_action()

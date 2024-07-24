@@ -77,7 +77,7 @@ class Adv_interestController extends Controller
         if (empty($model)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         }
-        // $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/bootstrap.min.css')));
+        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/bootstrap.min.css')));
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         
@@ -92,7 +92,7 @@ class Adv_interestController extends Controller
             )
          ));
        
-        return;
+        
         $this->render('form', compact('model','note','note2'));
     }
     public function actionExportExcel() {
@@ -169,17 +169,19 @@ class Adv_interestController extends Controller
     }
      public function actionUpdate($id)
     {
+		 
         $model = AdvertisementContact::model()->findByPk((int)$id);
 
         if (empty($model)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         }
-        // $this->getData('')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/bootstrap.min.css')));
+        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/bootstrap.min.css')));
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         
   
         
+        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/bootstrap.min.css')));
         
         $this->renderPartial('form', compact('model'));
     }

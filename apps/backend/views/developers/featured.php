@@ -27,20 +27,20 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
 	 
-    <div class="card">
+    <div class="box box-primary">
 		<?php   $form=$this->beginWidget('CActiveForm', array( 
 			 
 			 ));   ?> 
-        <div class="card-header">
+        <div class="box-header">
             <div class="pull-left">
-                <h3 class="card-title"">
+                <h3 class="box-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo  $user->fullName .' Feature Settings';?>
                 </h3>
             </div>
          
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
 			 
             <div class="table-responsive">
             <table class="table table-bordered table-hover table-striped">

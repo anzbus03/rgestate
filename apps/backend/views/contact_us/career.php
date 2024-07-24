@@ -26,74 +26,139 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
-    <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="card-title">
-                <span class="fa fa-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
-            </h3>
-            <div>
-            <!-- <input type="text" id="dateRange" class="form-control " style="margin-left: 10px;" /> -->
+    <div class="box box-primary">
+        <div class="box-header">
+            <div class="pull-left">
+                <h3 class="box-title">
+                    <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
+                </h3>
             </div>
+            <div class="pull-right">
+                  <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
+            </div>
+            <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
-            <div class="mb-2">
-                <div class="row">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-9">
-                        <button type="button" id="exportExcel" class="btn btn-success btn-sm pull-right" style="margin-right: 10px;">Export to Excel</button>
-                    </div>
-                </div>
-            </div>
+          <div class="clearfix"><!-- --></div>
+      		 <div class="clearfix">
+        <div class="box-body">
             <div class="table-responsive">
-                <table id="careerList" class="table table-striped table-bordered" style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Date Added</th>
-                            <th>Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($model->search()->getData() as $data) { 
-                            ?>
-                            
-                            <tr>
-                                <td><?php echo CHtml::encode($data->name); ?></td>
-                                <td><?php echo CHtml::encode($data->email); ?></td>
-                                <td><?php echo CHtml::encode($data->phone); ?></td>
-                                <td><?php echo CHtml::encode($data->dateAdded); ?></td>
-                                <td>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/update')) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'View'); ?>" onclick="loadthis(this, event)">
-                                            <span class="fa fa-eye"></span>
-                                        </a>
-                                    <?php } ?>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/delete')) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
-                                            <span class="fa fa-trash"></span>
-                                        </a>
-                                    <?php } ?>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Date Added</th>
-                            <th>Options</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+            <?php 
+            /**
+             * This hook gives a chance to prepend content or to replace the default grid view content with a custom content.
+             * Please note that from inside the action callback you can access all the controller view
+             * variables via {@CAttributeCollection $collection->controller->data}
+             * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderGrid} to false 
+             * in order to stop rendering the default content.
+             * @since 1.3.3.1
+             */
+            $hooks->doAction('before_grid_view', $collection = new CAttributeCollection(array(
+                'controller'    => $this,
+                'renderGrid'    => true,
+            )));
+      
+			 
+			
+            // and render if allowed
+            if ($collection->renderGrid) {
+                $this->widget('zii.widgets.grid.CGridView', $hooks->applyFilters('grid_view_properties', array(
+                     'ajaxUrl'           => $this->createUrl($this->route),
+                    'id'                => $model->modelName.'-grid',
+                           'ajaxUpdate'           =>false,
+                    'dataProvider'      => $model->search(),
+                    'filter'            => $model,
+                    'filterPosition'    => 'body',
+                    'filterCssClass'    => 'grid-filter-cell',
+                    'itemsCssClass'     => 'table table-bordered table-hover table-striped',
+                    'selectableRows'    => 0,
+                    'enableSorting'     => false,
+                    'cssFile'           => false,
+                    'pagerCssClass'     => 'pagination pull-right',
+                    'pager'             => array(
+                        'class'         => 'CLinkPager',
+                        'cssFile'       => false,
+                        'header'        => false,
+                        'htmlOptions'   => array('class' => 'pagination')
+                    ),
+                    'columns' => $hooks->applyFilters('grid_view_columns', array(
+               
+                        array(
+                            'name'  => 'name',
+                            'value' => '@$data->name' ,
+                            'filter'=>false,
+                        ),
+                        array(
+                            'name'  => 'email',
+                            'value' => '@$data->email' ,
+                             'filter'=>false,
+                        ),
+                     array(
+                            'name'  => 'phone',
+                            'value' => '@$data->phone' ,
+                             'filter'=>false,
+                        ),
+                     
+                     
+                    
+                        array(
+                            'name'  => 'date_added',
+                            'value' => '@$data->dateAdded' ,
+                             'filter'=>false,
+                        ),
+                        
+                       
+                        
+                        array(
+                            'class'     => 'CButtonColumn',
+                            'header'    => Yii::t('app', 'Options'),
+                               'footer'    => $model->paginationOptions->getGridFooterPagination(),
+                            'buttons'   => array(
+                                'update' => array(
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
+                                    'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/update", array("id" => $data->id))',
+                                    'imageUrl'  => null,
+                                   'options'   => array('title' => Yii::t('app', 'View'), 'id' => 'iframe1','onclick'=>'loadthis(this,event)'),
+                                        'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/update")',
+                                ),
+                                'delete' => array(
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
+                                    'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/delete", array("id" => $data->id))',
+                                    'imageUrl'  => null,
+                                    'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
+                                   // 'visible'   => '$data->removable === User::TEXT_YES',
+                                        'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/delete")',
+                                ),    
+                            ),
+                            'htmlOptions' => array(
+                                'style' => 'width:70px;',
+                            ),
+                            'template' => ' {update}{delete}'
+                        ),
+                    ), $this),
+                ), $this)); 
+            }
+            /**
+             * This hook gives a chance to append content after the grid view content.
+             * Please note that from inside the action callback you can access all the controller view
+             * variables via {@CAttributeCollection $collection->controller->data}
+             * @since 1.3.3.1
+             */
+            $hooks->doAction('after_grid_view', new CAttributeCollection(array(
+                'controller'    => $this,
+                'renderedGrid'  => $collection->renderGrid,
+            )));
+            ?>
+            <div class="clearfix"><!-- --></div>
+            </div>    
+            
+			<div class="box-footer">
+			<div class="pull-right">
+			</div>
+			<div class="clearfix"><!-- --></div>
+			</div>
+			</div>
+          
         </div>
     </div>
-
 <?php 
 }
 /**
@@ -112,19 +177,6 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
 
  <script>
-    $(document).ready(function() {
-        $('#careerList').DataTable({
-            createdRow: function (row, data, index) {
-                $(row).addClass('selected');
-            },
-            language: {
-                paginate: {
-                    next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
-                    previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
-                }
-            }
-        });
-    });
 function UpdateEmailReceivers(k){
 	var id = $(k).attr('data-id');
 	if(id !==undefined){
@@ -167,14 +219,14 @@ function updateReceiveList(k){
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="btn close" data-bs-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Contact Us</h4>
       </div>
       <div class="modal-body" id="html_content">
         <p>Loading...</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 

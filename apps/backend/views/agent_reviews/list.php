@@ -27,10 +27,10 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
  
-    <div class="card">
-        <div class="card-header">
+    <div class="box box-primary">
+        <div class="box-header">
             <div class="pull-left">
-                <h3 class="card-title">
+                <h3 class="box-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
                 </h3>
             </div>
@@ -45,7 +45,7 @@ if ($viewCollection->renderContent) { ?>
 			 <div class="clearfix">
 				 <?php $this->renderPartial('_at_a_glance');?>
 			 <div class="clearfix">
-        <div class="card-body">
+        <div class="box-body">
             <div class="table-responsive">
             <?php 
             /**
@@ -137,21 +137,21 @@ if ($viewCollection->renderContent) { ?>
                                'footer'    => $model->paginationOptions->getGridFooterPagination(),
                             'buttons'   => array(
                                 'update' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-eye"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/update", array("id" => $data->review_id))',
                                     'imageUrl'  => null,
                                    'options'   => array('title' => Yii::t('app', 'View'), 'id' => 'iframe1','onclick'=>'loadthis(this,event)'),
                                         'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/update")',
                                 ),
                                 'view1' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-eye"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/view", array("id" => $data->review_id))',
                                     'imageUrl'  => null,
                                    'options'   => array('title' => Yii::t('app', 'View') ),
                                         'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/view")',
                                 ),
                                 'delete' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
                                     'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/delete", array("id" => $data->review_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),

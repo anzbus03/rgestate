@@ -56,11 +56,11 @@ if ($viewCollection->renderContent) {
  */
  
 ?>     <?php $this->renderPartial('_breadcrumb');?>
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title"><?php echo Yii::t('settings', 'Page Headings')?></h3>
+<div class="box box-primary">
+    <div class="box-header">
+        <h3 class="box-title"><?php echo Yii::t('settings', 'Page Headings')?></h3>
     </div>
-    <div class="card-body">
+    <div class="box-body">
     
         <?php 
         /**
@@ -133,7 +133,7 @@ if ($viewCollection->renderContent) {
     </div>
 </div>
  
-        <div class="card">
+        <div class="box box-primary">
             <div class="box-footer">
                 <div class="pull-right">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>

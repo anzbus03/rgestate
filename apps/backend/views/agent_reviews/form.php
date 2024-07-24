@@ -1,9 +1,9 @@
 <div class="col-sm-7">
          <div class="box box-success">
-            <div class="card-header">
-              <h3 class="card-title">Agent Review -  <?php echo $model->review_id;?></h3>
+            <div class="box-header">
+              <h3 class="box-title">Agent Review -  <?php echo $model->review_id;?></h3>
             </div>
-            <div class="card-body">
+            <div class="box-body">
               <!-- Minimal style -->
 
               <!-- checkbox -->
@@ -77,10 +77,10 @@ if($this->action->id=='view'){
 
           <!-- iCheck -->
           <div class="box box-success">
-            <div class="card-header">
-              <h3 class="card-title">Change Review Status</h3>
+            <div class="box-header">
+              <h3 class="box-title">Change Review Status</h3>
             </div>
-            <div class="card-body">
+            <div class="box-body">
               <!-- Minimal style -->
 
               <!-- checkbox -->

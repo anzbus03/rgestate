@@ -26,10 +26,10 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
-    <div class="card">
-        <div class="card-header">
+    <div class="box box-primary">
+        <div class="box-header">
             <div class="pull-left">
-                <h3 class="card-title">
+                <h3 class="box-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
                 </h3>
             </div>
@@ -37,8 +37,9 @@ if ($viewCollection->renderContent) { ?>
                 <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id.'/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
                 <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
             </div>
+            <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
             <div class="table-responsive">
             <?php 
             /**
@@ -126,13 +127,13 @@ if ($viewCollection->renderContent) { ?>
                             'footer'    => $model->paginationOptions->getGridFooterPagination(),
                             'buttons'   => array(
                                 'update' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/update", array("id" => $data->sub_category_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
                                 ),
                                 'delete' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
                                     'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/delete", array("id" => $data->sub_category_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),

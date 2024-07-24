@@ -52,10 +52,10 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
             </form>
             </div>
             </div>
-    <div class="card">
-        <div class="card-header">
+    <div class="box box-primary">
+        <div class="box-header">
             <div class="pull-left">
-                <h3 class="card-title">
+                <h3 class="box-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t('hotel', $pageHeading);?>
                 </h3>
             </div>
@@ -77,7 +77,7 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
 			<div class="col-sm-4" style="padding-left:0px;">
 			<label></label>
 			<?php
@@ -227,13 +227,13 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
                             'footer'    => $user->paginationOptions->getGridFooterPagination(),
                             'buttons'   => array(
                                 'update' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl( "listingusers/update", array("id" => $data->user_id,"type"=>"$data->user_type"))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
                                 ),
                                 'delete' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
                                     'url'       => 'Yii::app()->createUrl("listingusers/delete", array("id" => $data->user_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),

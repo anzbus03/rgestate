@@ -25,7 +25,7 @@
 				))); 
 				?>
 				<div class="messageDiv"></div>
-				<div class="card-body"> 
+				<div class="box-body"> 
 				
 				 
 				<?php echo $form->hiddenField($model, 'lan' ); ?>

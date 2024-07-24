@@ -27,20 +27,20 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
 	 
-    <div class="card">
+    <div class="box box-primary">
 		<?php   $form=$this->beginWidget('CActiveForm', array( 
 			 
 			 ));   ?> 
-        <div class="card-header">
+        <div class="box-header">
             <div class="pull-left">
-                <h3 class="card-title">
+                <h3 class="box-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
                 </h3>
             </div>
          
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
 			<div class="alert alert-info">
 			<strong>Info!</strong> <a href="<?php echo Yii::app()->createUrl('countries/index');?>">Click here to add more listing countries.</a>
 			</div>

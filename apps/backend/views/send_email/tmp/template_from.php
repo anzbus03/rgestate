@@ -35,10 +35,10 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm'); 
         ?>    
-        <div class="card">
-            <div class="card-header">
+        <div class="box box-primary">
+            <div class="box-header">
                  <div class="pull-left">
-                <h3 class="card-title">
+                <h3 class="box-title">
                     <span class="glyphicon glyphicon-text-width"></span> <?php echo $pageHeading;?>
                 </h3>
             </div>
@@ -54,7 +54,7 @@ if ($viewCollection->renderContent) {
 					echo CHtml::link(Yii::t('app', 'List Templates'), array('send_email/email_template'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'List Templates')));?>
             </div>
             </div>
-            <div class="card-body">
+            <div class="box-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.

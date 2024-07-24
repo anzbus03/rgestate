@@ -32,9 +32,9 @@ if ($viewCollection->renderContent) {
     $itemsCount = UserGroup::model()->count();
     ?>
     <div class="box box-primary  ">
-        <div class="card-header">
+        <div class="box-header">
              <div class="pull-left">
-                <h3 class="card-title">
+                <h3 class="box-title">
                     <span class="glyphicon glyphicon-user"></span> <?php echo Yii::t('users', 'User Groups');?>
                 </h3>
             </div>
@@ -45,7 +45,7 @@ if ($viewCollection->renderContent) {
             
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
             <div class="table-responsive">
             <?php 
             /**
@@ -113,14 +113,14 @@ if ($viewCollection->renderContent) {
                             'footer'    => $group->paginationOptions->getGridFooterPagination(),
                             'buttons'   => array(
                                 'update' => array(
-                                    'label'     =>  ' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', 
+                                    'label'     =>  ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("user_groups/update", array("id" => $data->group_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ' '),
                                       'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/update")',
                                  ),
                                 'delete' => array(
-                                    'label'     =>  ' &nbsp; <span class="fa fa-trash"></span> &nbsp; ', 
+                                    'label'     =>  ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
                                     'url'       => 'Yii::app()->createUrl("user_groups/delete", array("id" => $data->group_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => ' delete'),

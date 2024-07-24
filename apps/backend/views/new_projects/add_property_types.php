@@ -27,7 +27,7 @@
       $thnl .= '<td><input type="text" class="form-control" placeholder="Residential Plots (Plot) "  name="add_property_types[title][]" value="{value_title}" maxlength="150" /></td>';
       $thnl .= '<td><input type="text" class="form-control col-sm-6 nemeric"  placeholder="From*" pattern="[0-9.,]+" name="add_property_types[size][]" value="{value_size}" maxlength="10"  style="width: 33% !important;max-width: 90px;" /><input type="text" class="form-control  col-sm-6 nemeric"  placeholder="To" name="add_property_types[size_to][]" value="{value_size_to}" pattern="[0-9.,]+"   maxlength="10" style="width: 33% !important;max-width: 90px;" />'.$unitArea.'</td>';
       $thnl .= '<td><input type="text" class="form-control col-sm-6 nemeric"  placeholder="From" pattern="[0-9.,]+" style="width: 33% !important;max-width: 90px;"   name="add_property_types[from_price][]"   value="{value_from_price}"   maxlength="10" /><input type="text" class="form-control  col-sm-6 nemeric"  placeholder="To"  name="add_property_types[to_price][]"   value="{value_to_price}"  pattern="[0-9.,]+" style="width: 33% !important;max-width: 90px;"   maxlength="10" />'.$unitPrice.'</td>';
-      $thnl .= '<td><a href="javascript:void(0)"  onclick="removeAppendRow(this)"><i class="fa fa-trash"></i></a></td></tr>';
+      $thnl .= '<td><a href="javascript:void(0)"  onclick="removeAppendRow(this)"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>';
      $post = array();
       if(!$model->isNewRecord and !Yii::app()->request->isPostRequest){
 				 

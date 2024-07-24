@@ -108,11 +108,11 @@ class BackendSystemInit extends CApplicationComponent
     {
         $apps = Yii::app()->apps;
         $scripts->mergeWith(array(
-            // array('src' => $apps->getBaseUrl('assets/js/knockout-3.1.0.js'), 'priority' => -1000),
-            // array('src' => $apps->getBaseUrl('assets/js/bootstrap.min.js'), 'priority' => -1000),
-            // array('src' => $apps->getBaseUrl('assets/js/notify.js'), 'priority' => -1000),
-            // array('src' => $apps->getBaseUrl('assets/js/adminlte.js'), 'priority' => -1000),
-            // array('src' => AssetsUrl::js('app.js'), 'priority' => -1000),
+            array('src' => $apps->getBaseUrl('assets/js/knockout-3.1.0.js'), 'priority' => -1000),
+            array('src' => $apps->getBaseUrl('assets/js/bootstrap.min.js'), 'priority' => -1000),
+            array('src' => $apps->getBaseUrl('assets/js/notify.js'), 'priority' => -1000),
+            array('src' => $apps->getBaseUrl('assets/js/adminlte.js'), 'priority' => -1000),
+            array('src' => AssetsUrl::js('app.js'), 'priority' => -1000),
         ));  
         return $scripts;
     }
@@ -121,13 +121,13 @@ class BackendSystemInit extends CApplicationComponent
     {
         $apps = Yii::app()->apps;
         $styles->mergeWith(array(
-            // array('src' => $apps->getBaseUrl('assets/css/bootstrap.min.css'), 'priority' => -1000),
-            // array('src' =>  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css', 'priority' => -1000),
-            // array('src' => $apps->getBaseUrl('assets/css/ionicons.min.css'), 'priority' => -1000),
-            // array('src' => $apps->getBaseUrl('assets/css/adminlte.css'), 'priority' => -1000),
-            // array('src' => $apps->getBaseUrl('assets/css/skin-blue.css?q=1'), 'priority' => -1000),
-            // array('src' => $apps->getBaseUrl('assets/css/common.css'), 'priority' => -1000),
-            // array('src' => AssetsUrl::css('style.css'), 'priority' => -1000),
+            array('src' => $apps->getBaseUrl('assets/css/bootstrap.min.css'), 'priority' => -1000),
+            array('src' =>  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css', 'priority' => -1000),
+            array('src' => $apps->getBaseUrl('assets/css/ionicons.min.css'), 'priority' => -1000),
+            array('src' => $apps->getBaseUrl('assets/css/adminlte.css'), 'priority' => -1000),
+            array('src' => $apps->getBaseUrl('assets/css/skin-blue.css?q=1'), 'priority' => -1000),
+            array('src' => $apps->getBaseUrl('assets/css/common.css'), 'priority' => -1000),
+            array('src' => AssetsUrl::css('style.css'), 'priority' => -1000),
         ));
         return $styles;
     }

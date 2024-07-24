@@ -15,17 +15,17 @@
 
 <div class="clearfix"><!-- --></div>
 
-<div class="card">
-    <div class="card-header">
+<div class="box box-primary">
+    <div class="box-header">
         <div class="pull-left">
-            <h3 class="card-title"><span class="glyphicon glyphicon-lock"></span> <?php echo Yii::t('servers', 'Domain policies');?></h3>
+            <h3 class="box-title"><span class="glyphicon glyphicon-lock"></span> <?php echo Yii::t('servers', 'Domain policies');?></h3>
         </div>
         <div class="pull-right">
             <a href="javascript:;" class="btn btn-xs btn-primary btn-add-policy"><?php echo Yii::t('servers', 'Add new policy');?></a>
         </div>
         <div class="clearfix"><!-- --></div>
     </div>
-    <div class="card-body">
+    <div class="box-body">
         <div class="callout callout-info">
             <?php echo Yii::t('servers', 'If your delivery server cannot send emails to certain domains, or it can only send to a small list of domains, you can add domain policies to reflect this.');?><br />
             <?php echo Yii::t('servers', 'If you want to send emails only to yahoo.com but deny for any other domain, you will need a allow policy for the domain yahoo.com and a deny policy on domain *');?><br />

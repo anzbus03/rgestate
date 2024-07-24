@@ -5,12 +5,12 @@
               if(!empty($property)){
                   ?>
                     <div class="box-header with-border">
-				<h3 class="card-title">Statistics - <?php echo $property->ad_title;?></h3>
+				<h3 class="box-title">Statistics - <?php echo $property->ad_title;?></h3>
 				</div>
                   <?
   }
   ?>
-                <div class="card-body">
+                <div class="box-body">
                   <div class="row">
                     <div class="col-md-12">
                       <a href="javascript:void(0)" onclick="togglaChart1(this)" style="    position: absolute;    right:15px;    top: 0px;    z-index: 1;" class="btn btn-primary btn-xs">Line Chart</a>

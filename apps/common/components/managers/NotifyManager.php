@@ -19,17 +19,17 @@ class NotifyManager extends CApplicationComponent
     const INFO       = 'info';
     const SUCCESS    = 'success';    
     
-    public $errorClass = 'alert alert-dismissible alert-danger';
+    public $errorClass = 'alert alert-block alert-danger';
     
-    public $warningClass = 'alert alert-dismissible alert-warning';
+    public $warningClass = 'alert alert-block alert-warning';
     
-    public $infoClass = 'alert alert-dismissible alert-info';
+    public $infoClass = 'alert alert-block alert-info';
     
-    public $successClass = 'alert alert-dismissible alert-success';
+    public $successClass = 'alert alert-block alert-success';
     
     public $htmlWrapper = '<div class="%s">%s</div>';
     
-    public $htmlCloseButton = '';
+    public $htmlCloseButton = '<button type="button" class="close" data-dismiss="alert">&times;</button>';
     
     public $htmlHeading = '<p>%s</p>';
 

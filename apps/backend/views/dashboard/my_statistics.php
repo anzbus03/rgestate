@@ -26,10 +26,10 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
-    <div class="card">
-        <div class="card-header">
+    <div class="box box-primary">
+        <div class="box-header">
             <div class="pull-left">
-                <h3 class="card-title">
+                <h3 class="box-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?>
                 </h3>
             </div>
@@ -38,7 +38,7 @@ if ($viewCollection->renderContent) { ?>
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
             		<form method="get" autocomplete="off" class="hide">
 			<div class="row">
 		
@@ -107,7 +107,7 @@ if ($viewCollection->renderContent) { ?>
 			       <div class="row">
   
         <div class="col-sm-6">
-             <div class="card">
+             <div class="box box-primary">
             <div class="box-header with-border" >
               
 
@@ -116,7 +116,7 @@ if ($viewCollection->renderContent) { ?>
              
             </div>
             <!-- /.box-header -->
-            <div class="card-body" style="height:300px;overflow-y:scroll">
+            <div class="box-body" style="height:300px;overflow-y:scroll">
              <?php 
              echo $this->actionLatestCustomerByManager($user_id);
 		     ?>
@@ -128,14 +128,14 @@ if ($viewCollection->renderContent) { ?>
        
        <div class="col-sm-6">
            
-           <div class="card">
+           <div class="box box-primary">
             <div class="box-header with-border">
               <i class="fa fa-bullhorn"></i>
 
-              <h3 class="card-title">Latest Uploaded properties by  agents</h3>
+              <h3 class="box-title">Latest Uploaded properties by  agents</h3>
             </div>
             <!-- /.box-header -->
-            <div class="card-body"  style="height:300px;overflow-y:scroll">
+            <div class="box-body"  style="height:300px;overflow-y:scroll">
               <?php $this->actionLatestAdsByManager($user_id); ?>
             </div>
             <!-- /.box-body -->

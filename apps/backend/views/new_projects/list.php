@@ -26,67 +26,26 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
-    <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="card-title">
-                <span class="fa fa-star"></span> 
-                <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
-            </h3>
-            <div>
-                <div class="row">
-                    <div class="col-md-4 mt-2">
-                        <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id.'/create'), array('class' => 'btn btn-primary btn-sm', 'title' => Yii::t('app', 'Create new')));?>
-                    </div>
-                    <!-- <div class="col-md-3">
-                        <?php //echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-sm', 'title' => Yii::t('app', 'Refresh')));?>
-                    </div> -->
-                    <div class="col-md-8">
-                        <input type="text" id="dateRange" class="form-control" style="margin-left: 10px;" />
-                    </div>
-                </div>
+    <div class="box box-primary">
+        <div class="box-header">
+            <div class="pull-left">
+                <h3 class="box-title">
+                    <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
+                </h3>
             </div>
+            <div class="pull-right">
+                <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id.'/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
+                <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
+                <input type="text" id="dateRange" class="btn btn-default btn-xs" style="margin-left: 10px;" />
+            </div>
+            <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
-            <div class="col-sm-2 mb-5">
+        <div class="box-body">
+            <div class="col-sm-2">
                 <button type="button" id="exportExcel" class="btn btn-success btn-xs" style="margin-left: 10px;">Export to Excel</button>
             </div>
             <script>
                 $(document).ready(function() {
-                    $('#projectsList').DataTable({
-                        createdRow: function (row, data, index) {
-                            $(row).addClass('selected');
-                        },
-                        language: {
-                            paginate: {
-                                next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
-                                previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
-                            }
-                        }
-                    });
-
-                    // Handle select all checkbox
-                    $('#selectAll').on('click', function() {
-                        var rows = $('#projectsList').DataTable().rows({ 'search': 'applied' }).nodes();
-                        $('input[type="checkbox"]', rows).prop('checked', this.checked);
-                    });
-
-                    $('#selectAllFoot').on('click', function() {
-                        var rows = $('#projectsList').DataTable().rows({ 'search': 'applied' }).nodes();
-                        $('input[type="checkbox"]', rows).prop('checked', this.checked);
-                    });
-
-                    $('#projectsList tbody').on('change', 'input[type="checkbox"]', function() {
-                        if(!this.checked) {
-                            var el = $('#selectAll').get(0);
-                            var elFoot = $('#selectAllFoot').get(0);
-                            if(el && el.checked && ('indeterminate' in el)) {
-                                el.indeterminate = true;
-                            }
-                            if(elFoot && elFoot.checked && ('indeterminate' in elFoot)) {
-                                elFoot.indeterminate = true;
-                            }
-                        }
-                    });
                     // Initialize the date range picker
                     $('#dateRange').daterangepicker({
                         locale: {
@@ -140,93 +99,227 @@ if ($viewCollection->renderContent) { ?>
                 });
             </script>
             <div class="table-responsive">
-                <table id="projectsList" class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Project Title</th>
-                            <th>City</th>
-                            <th>Section</th>
-                            <th>Status</th>
-                            <th>Priority</th>
-                            <th>Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($model->search()->getData() as $data) { ?>
-                        <tr>
-                            <td><?php echo $data->date_added ?></td>
-                            <td>
-                                <?php echo CHtml::decode($data->AdTitleWithIcons2, Yii::app()->createUrl("place_property/update", array("id" => $data->id))); ?>
-                                <div><?php echo $data->Tags; ?></div>
-                                <input type="hidden" class="propertyId" value="<?php echo $data->id; ?>">
-                                <input type="hidden" class="sId" value="<?php echo $data->section_id; ?>">
-                                <input type="hidden" class="cId" value="<?php echo $data->category_id; ?>">
-                                <input type="hidden" class="lId" value="<?php echo $data->listing_type; ?>">
-                                <input type="hidden" id="meta_title-<?php echo $data->id; ?>" class="meta_title" value="<?php echo $data->metaTitleEnglish; ?>">
-                                <input type="hidden" id="meta_title-ar-<?php echo $data->id; ?>" class="meta_title_ar" value="<?php echo $data->MetaTitleArabic; ?>">
-                                <input type="hidden" id="meta_description-<?php echo $data->id; ?>" class="meta_description" value="<?php echo $data->MetaDescriptionEnglish; ?>">
-                                <input type="hidden" id="meta_description-ar-<?php echo $data->id; ?>" class="meta_description_ar" value="<?php echo $data->MetaDescriptionArabic; ?>">
-                            </td>
-                            <td><?php echo CHtml::decode($data->CountryNameSection); ?></td>
-                            <td><?php echo CHtml::encode($data->section->section_name); ?></td>
-                            <td><?php echo $data->statusLink; ?></td>
-                            <td><?php echo CHtml::textField("priority[$data->id]", $data->priority, array("style" => "width:50px;text-align:center", "class" => "form-controll")); ?></td>
-                            <td>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/update')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                <?php } ?>
-                                <a href="<?php echo Yii::app()->createUrl('statistics/property_statistics', array('property_id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Statistics'); ?>" target="_blank">
-                                    <i class="fa fa-bar-chart text-red"></i>
-                                </a>
-                                <a href="<?php echo $data->PreviewUrlTrashB; ?>" title="<?php echo Yii::t('app', 'View'); ?>" target="_blank" class="text-green">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/delete')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
-                                        <i class="fa fa-times-circle"></i>
-                                    </a>
-                                <?php } ?>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/featured')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/featured', array('id' => $data->id, 'featured' => $data->featured)); ?>" title="<?php echo Yii::t('app', 'Featured'); ?>">
-                                        <i class="fa fa-star"></i>
-                                    </a>
-                                <?php } ?>
-                                <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/verified', array('id' => $data->id, 'verified' => $data->verified)); ?>" title="<?php echo Yii::t('app', 'Verified'); ?>">
-                                    <i class="fa fa-check-circle"></i>
-                                </a>
-                                <?php if ($data->status === "A") { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/status', array('id' => $data->id, 'status' => $data->status)); ?>" title="<?php echo Yii::t('app', 'Inactive AD'); ?>" class="Block">
-                                        <i class="fa fa-ban"></i>
-                                    </a>
-                                <?php } ?>
-                                <?php if ($data->status === "I") { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/status', array('id' => $data->id, 'status' => $data->status)); ?>" title="<?php echo Yii::t('app', 'Activate AD'); ?>" class="Enable" 
-                                    onclick="event.preventDefault(); $.ajax({type:'POST', url:$(this).attr('href'), success: function() {$.fn.yiiGridView.update('<?php echo $model->modelName; ?>-grid');}});">
-                                        <i class="fa fa-check-circle"></i>
-                                    </a>
-                                <?php } ?>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/image_management')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/image_management', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Image Management'); ?>">
-                                        <i class="fa fa-picture-o"></i>
-                                    </a>
-                                <?php } ?>
-                                <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Update Meta Tag'); ?>" data-toggle="modal" onclick="openUp(this)">
-                                    <i class="fa fa-tags"></i>
-                                </a>
-                                <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Tag Your Property'); ?>" data-toggle="modal" onclick="openUp2(this)">
-                                    <i class="fa fa-tags bg-yellow"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                    </tbody>
+            <?php 
+            /**
+             * This hook gives a chance to prepend content or to replace the default grid view content with a custom content.
+             * Please note that from inside the action callback you can access all the controller view
+             * variables via {@CAttributeCollection $collection->controller->data}
+             * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderGrid} to false 
+             * in order to stop rendering the default content.
+             * @since 1.3.3.1
+             */
+            $hooks->doAction('before_grid_view', $collection = new CAttributeCollection(array(
+                'controller'    => $this,
+                'renderGrid'    => true,
+            )));
+              $this->widget('common.components.web.widgets.GridViewBulkAction', array(
+			'model'      => $model,
+			'formAction' => $this->createUrl($this->id.'/bulk_action'),
+			));
+             $form=$this->beginWidget('CActiveForm', array( 
+			 'enableAjaxValidation'=>true,
+			 ));  
+			 
+			
+            // and render if allowed
+            if ($collection->renderGrid) {
+                $this->widget('zii.widgets.grid.CGridView', $hooks->applyFilters('grid_view_properties', array(
+                    'ajaxUrl'           => $this->createUrl($this->route),
+                    'ajaxUpdate'        =>$model->modelName.'-grid',
+                    'id'                => $model->modelName.'-grid',
+                    'dataProvider'      => $model->search(),
+                    'filter'            => $model,
+                    'filterPosition'    => 'body',
+                    'filterCssClass'    => 'grid-filter-cell',
+                    'itemsCssClass'     => 'table table-bordered table-hover table-striped',
+                    'selectableRows'    => 0,
+                    'enableSorting'     => false,
+                    'cssFile'           => false,
+                    'pagerCssClass'     => 'pagination pull-right',
+                    'pager'             => array(
+                        'class'         => 'CLinkPager',
+                        'cssFile'       => false,
+                        'header'        => false,
+                        'htmlOptions'   => array('class' => 'pagination')
+                    ),
+                    'columns' => $hooks->applyFilters('grid_view_columns', array(
+                    	  array(
+                            'class'               => 'CCheckBoxColumn',
+                            'name'                => 'id',
+                            'selectableRows'      => 100,  
+                            'checkBoxHtmlOptions' => array('name' => 'bulk_item[]'),
+                            'visible'   => $model->BulkActionPermission ,
+                        ),
+                    	 array(
+                            'name'  => 'date_added',
+                            'value' => 'date("Y-m-d", strtotime($data->date_added))',
+                            'htmlOptions'=>array("width"=>"100px" ),
+                            'filter'=>false,
+                        ),
+                           array(
+                            'name'  => 'ad_title',
+                            'value' => function($data){
+                                echo CHtml::link($data->AdTitleWithIcons,Yii::app()->createUrl($this->id."/update",array("id"=>$data->id))) ;
+                                echo'<div>'.$data->Tags.'</div>' ;
+                                echo '<input type="hidden" class="propertyId"   value="'. $data->id.'" />' ;
+                                echo '<input type="hidden" class="sId"   value="'. $data->section_id.'" />' ;  
+                                echo '<input type="hidden" class="cId"   value="'. $data->category_id.'" />' ;  
+                                echo '<input type="hidden" class="lId"   value="'. $data->listing_type.'" />' ;  
+                                echo '<input type="hidden" id="meta_title-'.$data->id.'" class="meta_title"   value="'. $data->meta_title.'" />' ;  
+                                echo '<input type="hidden" id="meta_description-'.$data->id.'" class="meta_description"   value="'. $data->meta_description.'" />' ;  
+                                },
+                             'filter'=>CHtml::activeTextField($model, 'ad_title').CHtml::activeHiddenField($model, 'tag_list2',array('id'=>'tag_list2')),
+                              'type'  => 'raw',
+                        ),
                 
-                </table>
-          
+                        array(
+                            
+                            'name'  => 'country_name',
+                            'value' => '@$data->CountryNameSection' ,
+                            'htmlOptions'=>array("width"=>"200px"),
+                            'type'=>'raw',
+                            
+                        ),
+                        array(
+                            
+                            'name'  => 'section_id',
+                            'value' => '@$data->section->section_name' ,
+                            'htmlOptions'=>array("width"=>"150px"),
+                            'filter'=>Section::model()->getSection(),
+                        ),
+                      
+                  
+                        array(
+                            'name'  => 'status',
+                            'value' => '$data->statusLink',
+                            'filter'=>$model->statusArray(),
+                            'htmlOptions'=>array("width"=>"50px","style"=>"text-align:center;"),
+                            'type'  => 'raw',
+                        ),
+                        
+					
+						array(
+						'name'=>'priority',
+						'type'=>'raw',
+						'filter'=>false,
+						'value'=>'CHtml::textField("priority[$data->id]",$data->priority,array("style"=>"width:50px;text-align:center","class"=>"form-controll"))',
+						'htmlOptions'=>array("style"=>"width:50px;text-align:center","class"=>"form-controll"),
+						),
+                       
+                      
+                       
+                        array(
+                            'class'     => 'CButtonColumn',
+                            'header'    => Yii::t('app', 'Options'),
+                            'footer'    => $model->paginationOptions->getGridFooterPagination(),
+                            'buttons'   => array(
+                                'update' => array(
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
+                                    'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/update", array("id" => $data->id))',
+                                    'imageUrl'  => null,
+                                    'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
+                                      'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/update")',
+                                ),
+                                 'view' => array(
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
+                                    'url'       => '$data->PreviewUrlTrash',
+                                    'imageUrl'  => null,
+                                    'options'   => array('title' => Yii::t('app', 'View'), 'class' => '','target'=>'_blank'),
+                                      'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/view")',
+                                ),
+                                'delete' => array(
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
+                                    'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/delete", array("id"=>$data->id))',
+                                    'imageUrl'  => null,
+                                    'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
+                                   // 'visible'   => '$data->removable === User::TEXT_YES',
+                                     'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/delete")',
+                                ),    
+                                'featured' => array(
+                                    
+                                    'label'     => ' &nbsp; <span class="glyphicon    glyphicon-star  "></span> &nbsp; ', 
+                                    'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/featured",array("id"=>$data->id,"featured"=>$data->featured))',
+                                    'imageUrl'  => null,
+                                    'options'   => array('title' => Yii::t('app', 'Featured'), 'class' => 'cssGridButton',
+                      
+                                   // 'visible'   => '$data->removable === User::TEXT_YES',
+                                ),  ),  
+                                   'ban' => array(
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-ban-circle"></span> &nbsp; ', 
+                                     'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/status",array("id"=>$data->id,"status"=>$data->status))',
+                                    'imageUrl'  => null,
+                                    'options'   => array('title' => Yii::t('app', 'Inactive AD'), 'class' => 'Block',  
+                                    ),
+                                   'visible'   => '$data->status === "A"',
+                                ),    
+                                'app' => array(
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-ok-circle"></span> &nbsp; ', 
+                                      'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/status",array("id"=>$data->id,"status"=>$data->status))',
+                                    'imageUrl'  => null,
+                                    'options'   => array('title' => Yii::t('app', 'Activate AD'), 'class' => 'Enable',
+                                     'ajax'=>array(
+										'type'=>'POST',
+										'url'=>"js:$(this).attr('href')",
+										'success' => 'js:$.fn.yiiGridView.update("'.$model->modelName.'-grid")'
+                     )
+                                    ),
+                                   'visible'   => '$data->status === "I"',
+                                ),
+                            
+                                'image' => array(
+                                    
+                                    'label'     => ' &nbsp; <span class="glyphicon   glyphicon-picture  "></span> &nbsp; ', 
+                                    'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/image_management", array("id" => $data->id))',
+                                    'imageUrl'  => null,
+                                    'options'   => array('title' => Yii::t('app', 'Image Management'), 'class' => 'image',
+ 
+                                   // 'visible'   => '$data->removable === User::TEXT_YES',
+                                ),  ),  
+                                  'meta' => array(
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-tags"></span> &nbsp;', 
+                                    'url'       => function($data){ return "javascript:void(0)" ; },
+                                    'imageUrl'  => null,
+                                    'options'   => array('title' => Yii::t('app', 'Update Meta Tag'), 'class' => '' , 'data-toggle'=>'modal', 'onclick'=>"javascript:void(0);openUp(this)", ),
+                                   
+                                ),
+                                  'tag' => array(
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-tags bg-yellow"></span> &nbsp;', 
+                                    'url'       => function($data){ return "javascript:void(0)" ; },
+                                    'imageUrl'  => null,
+                                    'options'   => array('title' => Yii::t('app', 'Tag Your Property'), 'class' => '' , 'data-toggle'=>'modal', 'onclick'=>"javascript:void(0);openUp2(this)", ),
+                                   
+                                ),
+                            ),
+                            'htmlOptions' => array(
+                                'style' => 'width:150px;',
+                            ),
+                            'template' => '{view}{featured}{ban}{app}{image}{update}{delete}{meta} '
+                        ),
+                    ), $this),
+                ), $this)); 
+            }
+            /**
+             * This hook gives a chance to append content after the grid view content.
+             * Please note that from inside the action callback you can access all the controller view
+             * variables via {@CAttributeCollection $collection->controller->data}
+             * @since 1.3.3.1
+             */
+            $hooks->doAction('after_grid_view', new CAttributeCollection(array(
+                'controller'    => $this,
+                'renderedGrid'  => $collection->renderGrid,
+            )));
+            ?>
+            <div class="clearfix"><!-- --></div>
             </div>    
+            
+			<div class="box-footer">
+			<div class="pull-right">
+			<button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Update Priority');?></button>
+			</div>
+			<div class="clearfix"><!-- --></div>
+			</div>
+			</div>
+          <?php $this->endWidget(); ?>
         </div>
     </div>
 <?php 
