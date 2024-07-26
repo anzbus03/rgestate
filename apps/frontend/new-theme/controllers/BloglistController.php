@@ -19,7 +19,7 @@ class BloglistController extends Controller
 	public function actionIndex($category='blog', $page="1")
 	{
 		$slug = $category; 
-		$limit = "24";  
+		$limit = "10";  
 		if ($slug == 'index' || $slug == 'index/page') {
 			$slug = 'blog';
 		}
