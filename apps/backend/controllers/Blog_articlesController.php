@@ -144,7 +144,7 @@ class Blog_articlesController extends Controller
         $request    = Yii::app()->request;
         $notify     = Yii::app()->notify;
         $article    = new BlogAuthors();
-        print_r($request->getPost($article->modelName, array()));
+        // print_r($request->getPost($article->modelName, array()));
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($article->modelName, array()))) {
             if (isset($_FILES['BlogAuthors']['name']['image']) && $_FILES['BlogAuthors']['error']['image'] == UPLOAD_ERR_OK) {
                 $imageName = $this->uploadImage($_FILES['BlogAuthors']);
