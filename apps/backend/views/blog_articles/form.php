@@ -164,6 +164,14 @@ if ($viewCollection->renderContent) {
                                     <?php echo $form->timeField($article, 'publish_time', array('class' => 'form-control')); ?>
                                     <?php echo $form->error($article, 'publish_time'); ?>
                                 </div>
+                                <div class="form-group">
+                                    <?php
+                                        $authors = CHtml::listData(BlogAuthors::model()->findAll(),'author_id','name');
+                                        echo $form->labelEx($article, 'author_id'); 
+                                        echo $form->dropDownList($article, 'author_id', $authors, $article->getHtmlOptions('author_id'));
+                                        echo $form->error($article, 'author_id');
+                                    ?>
+                                </div>
                             </div>
                             <div class="box box-secondary" style="margin-top: 2%;">
                                 <div class="box-header">
