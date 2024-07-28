@@ -141,6 +141,8 @@ class Submited_preqController extends Controller
                         'TITLE' => 'Complete CRM form "Post Requirement Form"', 
                         'CONTACT_ID' => $customerId,
                         'ASSIGNED_BY_ID' => 22,
+                        "EMAIL" => [[ "VALUE" => $requestParams['email'], "VALUE_TYPE" => "WORK" ]],
+                        "PHONE" => [[ "VALUE" => $requestParams['phone'], "VALUE_TYPE" => "WORK" ]],
                         'COMMENTS' => 
                             ($requestParams['owner_type'] == 1 ? "Client Type: OWNER" : "Client Type: AGENT").
                             ($requestParams['p_for'] == 1 ? "<br/> Property For: Buy" : "<br/> Property For: Rent").

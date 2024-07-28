@@ -2014,6 +2014,8 @@ Jq4pd48R
 				'CATEGORY_ID' => 16,
 				'ASSIGNED_BY_ID' => 22,
 				'CONTACT_ID' => $customerId,
+				"EMAIL" => [[ "VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK" ]],
+                "PHONE" => [[ "VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK" ]],
 				'COMMENTS' => 'Name: ' . $requestParms['name'] . ' <br/> Phone: ' . $requestParms['phone'] . ' <br/> Email: ' . $requestParms['email'] . ' <br/> Message: ' . $requestParms['message'],
 				'UF_CRM_1701236145750' => $services[$requestParms['type']],
 			],

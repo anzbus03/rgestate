@@ -383,6 +383,8 @@ class Place_an_ad_no_loginController extends Controller
                         'TITLE' => 'New Lead - Property Submitted - RGEstate',
                         'CATEGORY_ID' => 10,
                         'CONTACT_ID' => $customerId,
+						"EMAIL" => [[ "VALUE" => $requestParms['salesman_email'], "VALUE_TYPE" => "WORK" ]],
+                        "PHONE" => [[ "VALUE" => $requestParms['mobile_number'], "VALUE_TYPE" => "WORK" ]],
                         'COMMENTS' => 
                             'Description: '.$requestParms['ad_description'].
                             '<br/> Area: '.$requestParms['area_location'].
@@ -1383,6 +1385,8 @@ class Place_an_ad_no_loginController extends Controller
                         'SOURCE_ID' => "WEB",
                         'BEGINDATE' => date("d/m/Y"),
                         "OPENED" => "Y",
+						"EMAIL" => [[ "VALUE" => $requestParms['salesman_email'], "VALUE_TYPE" => "WORK" ]],
+                        "PHONE" => [[ "VALUE" => $requestParms['mobile_number'], "VALUE_TYPE" => "WORK" ]],
                         'CONTACT_ID' => $customerId,
                         'COMMENTS' => 
                         'Title: '. $requestParms['ad_title'].
