@@ -251,7 +251,8 @@ class ContactController extends Controller
             'FIELDS' => [
                 'TITLE' => 'RGestate Lead - Contact Form',
                 'CATEGORY_ID' => 16,
-                'LEAD_PHONE' => $requestParms['phone'],
+                'PHONE' => [[ "VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK" ]],
+                "EMAIL" => [[ "VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK" ]],
                 'LEAD_LAST_NAME' => $lastName,
                 'LEAD_NAME' => $firstName,
                 'LEAD_EMAIL' => $requestParms['email'],

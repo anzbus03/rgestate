@@ -271,6 +271,8 @@ class ServicesController extends Controller
 				'TITLE' => 'RGestate Lead - Service Form',
 				'CATEGORY_ID' => 16,
                 'CONTACT_ID' => $customerId,
+				"EMAIL" => [[ "VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK" ]],
+                "PHONE" => [[ "VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK" ]],
                 'ASSIGNED_BY_ID' => 22,
 				'COMMENTS' => $requestParms['message'],
 				'UF_CRM_6576C6B05945E' => $services[$requestParms['type']],
