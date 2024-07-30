@@ -138,7 +138,7 @@ class LeftSideNavigationWidget extends CWidget
                 ),
             ),
               'business' => array(
-                'name'      => Yii::t('app', 'Business for Sale'),
+                'name'      => Yii::t('app', 'Business Opportiunities'),
                 'icon'      => 'glyphicon-list',
                 'active'    => 'place_property',
                 'route'     => array('place_property/business'),
@@ -348,6 +348,7 @@ class LeftSideNavigationWidget extends CWidget
                 'items'     => array(
                     array('url' => array('articles/index'), 'label' => Yii::t('app', 'View all articles'), 'active' => strpos($route, 'articles/index') === 0),
                     array('url' => array('blog_articles/index'), 'label' => Yii::t('app', 'View all blogs'), 'active' => strpos($route, 'blog_articles/index') === 0),
+                    array('url' => array('blog_articles/index_authors'), 'label' => Yii::t('app', 'View Authors'), 'active' => strpos($route, 'blog_articles/index_authors') === 0),
                       array('url' => array('advertisement_articles/index'), 'label' => Yii::t('app', 'View all adv articles'), 'active' => strpos($route, 'advertisement_articles/index') === 0),
                     array('url' => array('content_pages/index'), 'label' => Yii::t('app', 'Content Pages'), 'active' => strpos($route, 'content_pages/index') === 0),
                     array('url' => array('listing_contents/index'), 'label' => Yii::t('app', 'Listing Contents'), 'active' => strpos($route, 'listing_contents/index') === 0),
@@ -398,8 +399,9 @@ class LeftSideNavigationWidget extends CWidget
                 'items'     => array(
                     array('url' => array('settings/index'), 'label' => Yii::t('app', 'Common'), 'active' => strpos($route, 'settings/index') === 0),
                     array('url' => array('settings/page_titles'), 'label' => Yii::t('app', 'Static Page titles'), 'active' => strpos($route, 'settings/page_titles') === 0),
-                   //array('url' => array('settings/success_messages'), 'label' => Yii::t('app', 'Success Messages'), 'active' => strpos($route, 'settings/success_messages') === 0),
-                   // array('url' => array('upload_settings/index'), 'label' => Yii::t('app', 'Upload Settings'), 'active' => strpos($route, 'upload_settings/index') === 0),
+                    array('url' => array('settings/menu_management'), 'label' => Yii::t('app', 'Menu Management'), 'active' => strpos($route, 'settings/menu_management') === 0),
+                    //array('url' => array('settings/success_messages'), 'label' => Yii::t('app', 'Success Messages'), 'active' => strpos($route, 'settings/success_messages') === 0),
+                    // array('url' => array('upload_settings/index'), 'label' => Yii::t('app', 'Upload Settings'), 'active' => strpos($route, 'upload_settings/index') === 0),
                     array('url' => array('settings/email_templates'), 'label' => Yii::t('app', 'Common email template'), 'active' => strpos($route, 'settings/email_templates') === 0),
                     array('url' => array('templates/index'), 'label' => Yii::t('app', 'Other email templates'), 'active' => strpos($route, 'template/index') === 0),
                     array('url' => array('delivery_servers/index'), 'label' => Yii::t('app', 'Delivery Servers'), 'active' => strpos($route, 'delivery_servers/index') === 0),

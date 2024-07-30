@@ -123,13 +123,16 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
             <div class="pull-right">
                 <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id.'/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
                 <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
-            
+                <input type="text" id="dateRange" class="btn btn-default btn-xs" style="margin-left: 10px;" />
 
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
         <div class="box-body">
             <div class="row">
+                <div class="col-sm-2">
+                    <button type="button" id="exportExcel" class="btn btn-success btn-xs" style="margin-left: 10px;">Export to Excel</button>
+                </div>
                  <div class="col-sm-2">
                      <div class="form-group">
                   <input type="text" value="<?php echo $model->keyword;?>"  class="form-control" id="Keyword" onblur="setvalThis(this,'PlaceAnAd_keyword')" placeholder="Search Keyword">
@@ -151,21 +154,74 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
                 </div>
                 <div class="clearfix"></div>
                 <script>
-			function setvalThis(k,fid){
-			 $('#'+fid).val($(k).val()).change();
-			  
-			}
-			function setTagThis2(k,id){
-				if($(k).is(':checked')){
-				$('#'+id).val($(k).val()).change(); 
-				}else{
-					$('#'+id).val('').change(); 
-				}
-			}
-			function setTagThis(k){
-				$('#tag_list2').val($(k).val()).change()
-			}
-			</script>
+                    $(document).ready(function() {
+                        // Initialize the date range picker
+                        $('#dateRange').daterangepicker({
+                            locale: {
+                                format: 'YYYY-MM-DD'
+                            },
+                            startDate: moment().subtract(29, 'days'),
+                            endDate: moment(),
+                            ranges: {
+                                'Today': [moment(), moment()],
+                                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                            }
+                        }, function(start, end, label) {
+                            fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                        });
+
+                        // Function to fetch filtered data
+                        function fetchFilteredData(startDate, endDate) {
+                            $.ajax({
+                                url: '<?php echo Yii::app()->createUrl($this->route); ?>',
+                                type: 'GET',
+                                data: {
+                                    startDate: startDate,
+                                    endDate: endDate
+                                },
+                                success: function(data) {
+                                    $('#<?php echo $model->modelName; ?>-grid').html($(data).find('#<?php echo $model->modelName; ?>-grid').html());
+                                }
+                            });
+                        }
+                        $('#exportExcel').click(function(e) {
+                            var dateRange = $('#dateRange').data('daterangepicker');
+                            var startDate = dateRange.startDate.format('YYYY-MM-DD');
+                            var endDate = dateRange.endDate.format('YYYY-MM-DD');
+                            var exportUrl = '<?php echo Yii::app()->createUrl('place_property/exportExcel'); ?>';
+
+                            if (startDate && endDate) {
+                                exportUrl += '?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate);
+                                var currentUrl = window.location.href;
+                                if (currentUrl.includes("business")) {
+                                    exportUrl += "&type=business";
+                                }
+                            }
+                               
+
+                            // Redirect to the export URL
+                            window.location.href = exportUrl;    
+                        });
+                    });
+                    function setvalThis(k,fid){
+                    $('#'+fid).val($(k).val()).change();
+                    
+                    }
+                    function setTagThis2(k,id){
+                        if($(k).is(':checked')){
+                        $('#'+id).val($(k).val()).change(); 
+                        }else{
+                            $('#'+id).val('').change(); 
+                        }
+                    }
+                    function setTagThis(k){
+                        $('#tag_list2').val($(k).val()).change()
+                    }
+			    </script>
                 <?php
                 /*
             <div class="col-sm-4 hidden">

@@ -38,7 +38,8 @@ class NewDevelopment extends PlaceAnAd
 {
 	public $add_property_types;
 	public $payment_plan; 
-	
+	public $startDate;
+	public $endDate;
 	public function attributeLabels()
     {
 		$label1 =  array();
@@ -175,7 +176,7 @@ class NewDevelopment extends PlaceAnAd
             array('modified_date, xml_listing_date, xml_update_date, expiry_date,property_overview,LocalAreaAmenitiesDesc,RecommendedProperties,PropertyID,status,rent_paid,name', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, section_id, category_id, sub_category_id, ad_title, ad_description, price, country, state, city, district, mobile_number, bathrooms, bedrooms, user_id, added_date, modified_date, priority, isTrash, status,occupant_status, slug, image, dynamic, dynamicArray, location_latitude, location_longitude, featured, area_location, xml_inserted, xml_pk, xml_type, xml_reference, xml_listing_date, xml_update_date, code, RefNo, community_id, sub_community_id, property_name, builtup_area, PrimaryUnitView,     FloorNo, HandoverDate,     parking,   salesman_email, expiry_date,       mandate, currency_abr, area_measurement, PDFBrochureLink,property_overview,ReraStrNo', 'safe', 'on'=>'search'),
+            array('id, section_id, category_id, sub_category_id, ad_title, ad_description, price, country, state, city, district, mobile_number, bathrooms, bedrooms, user_id, added_date, modified_date, priority, isTrash, status,occupant_status, slug, image, dynamic, dynamicArray, location_latitude, location_longitude, featured, area_location, xml_inserted, xml_pk, xml_type, xml_reference, xml_listing_date, xml_update_date, code, RefNo, community_id, sub_community_id, property_name, builtup_area, PrimaryUnitView,     FloorNo, HandoverDate,     parking,   salesman_email, expiry_date,   endDate,startDate,date_added,    mandate, currency_abr, area_measurement, PDFBrochureLink,property_overview,ReraStrNo', 'safe', 'on'=>'search'),
         );
         return array_merge($rules1,$rules);
     }
@@ -217,6 +218,7 @@ class NewDevelopment extends PlaceAnAd
 					}
 				}
 	}
+
       public function validateAddProperty3($attribute,$params){
 			     $post =  Yii::App()->request->getPost('floor_plan',array());
 			     $errorFound = false; 

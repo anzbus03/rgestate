@@ -1,3 +1,18 @@
+<?php
+					$art = new Article();
+					 
+					$formData = array_filter((array)$_GET);
+		 
+		$formData['parent_id'] =  '20';
+		 
+		 
+	 
+        $modelCritera=Article::model()->findPosts($formData,$count_future=false,1,$calculate=false);
+        $modelCritera->limit = 6 ; 
+        $result = Article::model()->findAll($modelCritera);
+   	
+					
+					?>
 <style>
 #main-content .widget-title h4 {
     font-size: 23px !important;
@@ -203,6 +218,29 @@ html .detail ul li { width: 100% !important;
     border-radius: 0px !important;
 }
 }
+.breadcrumb {
+    background: none;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    padding: 0 5px;
+    color: #6c757d;
+}
+
+.publish-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.publish-date {
+    color: #6c757d;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
 </style>  
 <style>#mainContainerClass{max-width:100%; }</style>
 
@@ -213,8 +251,26 @@ html .detail ul li { width: 100% !important;
 		 
 				 <article   class="post type-post status-publish format-standard has-post-thumbnail hentry category-rental-basics category-tips-advice">
 				     <header class="heading">
+                         <!-- Breadcrumbs -->
+                         <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="<?php echo Yii::app()->getBaseUrl('/'); ?>">Home</a></li>
+                                <li class="breadcrumb-item"><a href="<?php echo Yii::app()->createUrl('bloglist/index'); ?>">Blog</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><?php echo $model->title;?></li>
+                            </ol>
+                        </nav>
 					<h1 class="article-title"><?php echo $model->title;?></h1>
-				
+                    <div class="publish-info">
+                        <p class="publish-date">Last Updated - <?php echo date('F j, Y', strtotime($model->last_updated)); ?></p>
+                        <div class="share-buttons">
+                            <a title="Facebook Share" target="_blank" href="https://www.facebook.com/sharer.php?u=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug.'/blog'));?>"> 
+                                <span class="fa fa-facebook"></span>
+                            </a>
+                            <a title="Twitter Share" target="_blank" href="https://twitter.com/intent/tweet?original_referer=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug.'/blog'));?>&amp;url=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug.'/blog'));?>&amp;text=<?php echo urlencode($model->title);?>">
+                                <span class="fa fa-twitter"></span>
+                            </a>
+                        </div>
+                    </div>
         
 			</header>
 			      <div id="blogheader" class="padding-bottom-25">
@@ -244,14 +300,160 @@ html .detail ul li { width: 100% !important;
  
 				<div class="detail">
 					<p><?php  echo $model->content ; 	?></p>
- 
+                    <hr>
+                    <?php
+                        // Assuming $model is the current article model
+                        $author_id = $model->author_id;
+
+                        // Find the author by author_id
+                        $author = BlogAuthors::model()->findByPk($author_id);
+
+                        if ($author !== null) {
+                            $imagePath = Yii::app()->baseUrl . '/uploads/images/' . $author->image;
+                            ?>
+                            <div class="author-details">
+                                <img src="<?php echo $imagePath; ?>" style="width: 25% !important;" alt="Author Image" class="author-image">
+                                <div class="author-info">
+                                    <h5 class="author-name"><?php echo htmlspecialchars($author->name); ?></h5>
+                                    <p class="author-description"><?php echo htmlspecialchars($author->description); ?></p>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    ?>
+
+                    <?php
+                        // Assuming $model->tags contains a comma-separated list of tags
+                        $tags = isset($model->tags) ? explode(',', $model->tags) : [];
+
+                        // Check if there are any tags
+                        if (!empty($tags)) {
+                            echo '<div class="tags">';
+                            foreach ($tags as $tag) {
+                                // Trim any extra whitespace and encode the tag for safe output
+                                $tag = trim(htmlspecialchars($tag));
+                                echo '<span class="tag">' . $tag . '</span>';
+                            }
+                            echo '</div>';
+                        }
+                    ?>
+
+                   
+                    <?php
+    // Assuming $current_slug is the slug of the current blog post
+    $current_slug = $model->slug;
+
+    // Placeholder variables for previous and next posts
+    $previous_post = null;
+    $next_post = null;
+
+    // Find the current post index
+    $current_index = -1;
+    foreach ($result as $index => $post) {
+        if ($post->slug == $current_slug) {
+            $current_index = $index;
+            break;
+        }
+    }
+
+    // Determine previous and next posts if the current post is found
+    if ($current_index != -1) {
+        if ($current_index > 0) {
+            $previous_post = $result[$current_index - 1];
+        }
+        if ($current_index < count($result) - 1) {
+            $next_post = $result[$current_index + 1];
+        }
+    }
+    // Navigation links for previous and next posts
+    echo '<div class="navigation">';
+
+    if ($previous_post) {
+        echo '<a href="' . Yii::app()->createUrl('bloglist/details', array('slug' => $previous_post->slug)) . '" class="previous-post">
+            &larr; Previous: ' . htmlspecialchars(mb_strimwidth($previous_post->title, 0, 30, '...')) . '
+        </a>';
+    }
+
+    if ($next_post) {
+        echo '<a href="' . Yii::app()->createUrl('bloglist/details', array('slug' => $next_post->slug)) . '" class="next-post">
+            Next: ' . htmlspecialchars(mb_strimwidth($next_post->title, 0, 30, '...')) . ' &rarr;
+        </a>';
+    }
+
+    echo '</div>';
+?>
+
+                    <style>
+                        .navigation {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-top: 30px;
+                        }
+
+                        .previous-post, .next-post {
+                            background-color: #f1f1f1;
+                            color: #333;
+                            border-radius: 3px;
+                            padding: 10px 15px;
+                            text-decoration: none;
+                            font-size: 1em;
+                        }
+
+                        .previous-post:hover, .next-post:hover {
+                            background-color: #ddd;
+                        }
+
+                        .author-details {
+                            display: flex;
+                            align-items: center;
+                            margin-top: 30px;
+                        }
+
+                        .author-image {
+                            border-radius: 50%;
+                            width: 50px;
+                            height: 100px;
+                            margin-right: 20px;
+                        }
+
+                        .author-info {
+                            display: flex;
+                            flex-direction: column;
+                        }
+
+                        .author-name {
+                            font-size: 1.5em;
+                            margin: 0;
+                        }
+
+                        .author-description {
+                            font-size: 1em;
+                            color: #666;
+                        }
+
+                        .tags {
+                            margin-top: 10px;
+                        }
+
+                        .tag {
+                            display: inline-block;
+                            background-color: #f1f1f1;
+                            color: #333;
+                            border-radius: 3px;
+                            padding: 5px 10px;
+                            margin-right: 5px;
+                            margin-top: 5px;
+                            font-size: 0.9em;
+                        }
+
+                    </style>
 				 
-					<div class="share-buttons">
+					<!-- <div class="share-buttons">
 						<div class="addthis_toolbox addthis_default_style">
 							<a title="Facebook Share" target="_blank" href="https://www.facebook.com/sharer.php?u=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug.'/blog'));?>"> <span class="fa fa-facebook"></span>
 							</a>	<a title="Twitter Share" target="_blank" href="https://twitter.com/intent/tweet?original_referer=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug.'/blog'));?>&amp;url=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug.'/blog'));?>&amp;text=<?php echo urlencode($model->title);?>"><span class="fa fa-twitter"></span></a>
 						</div>
-					</div>
+					</div> -->
 									 
 				</div>
 				 <div class="clearfix"></div>
@@ -359,21 +561,7 @@ html .detail ul li { width: 100% !important;
 					 <button type="button" class="btn btn-primary sb-btn  " data-toggle="modal" data-target="#exampleModal"><?php echo  $this->tag->getTag('subscribe_to_our_free_newslett','Subscribe to our free newsletter');?></button>
 
 				<!-- /widget -->
-					<?php
-					$art = new Article();
-					 
-					$formData = array_filter((array)$_GET);
-		 
-		$formData['parent_id'] =  '20';
-		 
-		 
-	 
-        $modelCritera=Article::model()->findPosts($formData,$count_future=false,1,$calculate=false);
-        $modelCritera->limit = 6 ; 
-        $result = Article::model()->findAll($modelCritera);
-   	
 					
-					?>
 					<?php
 					if(!empty($result)){ ?> 
 					<div class="widget">
@@ -397,6 +585,16 @@ html .detail ul li { width: 100% !important;
 						</ul>
 					</div>
 					<?php } ?>  
+                    <hr>
+                        <h4 class="text-center">Subscribe To Our Free Newsletter</h4>
+                        <div class="form-container">
+                            <script data-b24-form="inline/34/btf76q" data-skip-moving="true">
+                                (function(w,d,u){
+                                var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);
+                                var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
+                                })(window,document,'https://cdn.bitrix24.in/b25292121/crm/form/loader_34.js');
+                            </script>
+                        </div>
            </div>
 			</div>
 		</div>

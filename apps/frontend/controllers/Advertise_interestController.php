@@ -107,7 +107,7 @@ class Advertise_interestController extends Controller
 					$adminEmail->save(false); 
 					$adminEmail->send;
 				}
-				  $notify->addSuccess(Yii::t('app', 'Your message was successfully sent to the {p} Support Team. One of our representative will contact you soon.'  ,array('{p}'=>$this->options->get('system.common.site_name') )));
+				  $notify->addSuccess(Yii::t('app', 'Your message {e} was successfully sent to the {p} Support Team. One of our representative will contact you soon.'  ,array('{p}'=>$this->options->get('system.common.site_name'), '{e}' => $model->email )));
 				  $this->refresh() ;
 					 
 					 

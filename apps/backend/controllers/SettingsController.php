@@ -141,6 +141,58 @@ class SettingsController extends Controller
         
         $this->render('page_titles', compact('commonModel'));
     }
+    public function actionMenu_management()
+    {
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+        if ($request->isPostRequest) {
+            // Handle Save Request
+            $postData = $request->getPost('menus', array());
+            
+            // First, delete all existing menu items
+            Menu::model()->deleteAll();
+
+            // Array to track menu IDs that were found in the request
+            $existingMenuIds = [];
+
+            foreach ($postData as $menuData) {
+                // Create a new menu item
+                $menu = new Menu();
+                $menu->name = $menuData['name'];
+                $menu->url = $menuData['url'];
+                $menu->parent_id = null; // Root menu items have no parent
+                
+                if (!$menu->save()) {
+                    throw new CHttpException(400, Yii::t('app', 'Failed to save menu item.'));
+                }
+                
+                // Store the newly created menu ID
+                $menuMap[$menuData['name']] = $menu->id;
+                
+                // Handle submenus
+                foreach ($menuData['submenus'] as $submenuData) {
+                    $submenu = new Menu();
+                    $submenu->name = $submenuData['name'];
+                    $submenu->url = $submenuData['url'];
+                    $submenu->parent_id = $menu->id; // Set parent_id to the current menu item ID
+
+                    if (!$submenu->save()) {
+                        throw new CHttpException(400, Yii::t('app', 'Failed to save submenu item.'));
+                    }
+                }
+            }
+
+            $notify->addSuccess(Yii::t('app', 'Menu items have been successfully saved!'));
+
+        } else {
+            // Handle List Request
+            $menuItems = Menu::model()->findAll();
+    
+            // Render the view with menu items
+            $this->render('menu_management', array('commonModel' => new Menu, 'menuItems' => $menuItems));
+        }
+    }
+
     /**
      * Handle the settings for importer/exporter
      */

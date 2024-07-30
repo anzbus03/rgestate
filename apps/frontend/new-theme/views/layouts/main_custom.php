@@ -377,7 +377,7 @@
   </div>
 </div>
 
-<ul class="rg-hero-contact w-100 position-fixed top-50 end-0 translate-middle-y z-1 text-white">
+        <ul class="rg-hero-contact w-100 position-fixed top-50 end-0 translate-middle-y z-1 text-white">
           <li class="pt-4 pb-3">
             <a href="#" class="d-block text-center" data-bs-toggle="modal" data-bs-target="#popupmodal">
               <svg width="16" height="13" class="rg-fill-white mb-1">
