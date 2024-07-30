@@ -185,22 +185,42 @@ class Blog_articlesController extends Controller
     protected function uploadImage($file)
     {
         $imageName = null;
-    
+        
         // Check if a file was uploaded
         $tempName = isset($file['tmp_name']['featured_image']) ? $file['tmp_name']['featured_image'] : $file['tmp_name']['image'];
-        $fileName = isset($file['name']['featured_image']) ? $file['name']['featured_image'] : $file['name']['image']; 
-        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileName = isset($file['name']['featured_image']) ? $file['name']['featured_image'] : $file['name']['image'];
         
-        // Generate a unique file name
-        $imageName = time() . '_' . rand(0, 9999) . '.' . $ext;
-        $path = Yii::getPathOfAlias('root.uploads.images');
-        // Move the uploaded file to the target directory
-        if (move_uploaded_file($tempName, $path . '/' . $imageName)) {
-          
-            return $imageName;
-        }    
-        return null;
+        // Ensure that a file is actually uploaded
+        if ($tempName && $fileName) {
+            $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+            
+            // Allowed file extensions
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            
+            // Check file extension
+            if (!in_array($ext, $allowedExtensions)) {
+                return null; // Invalid file type
+            }
+    
+            // Generate a unique file name
+            $imageName = time() . '_' . rand(0, 9999) . '.' . $ext;
+            $path = Yii::getPathOfAlias('root.uploads.images');
+            $targetFile = $path . '/' . $imageName;
+            
+            // Check if the directory exists
+            if (!is_dir($path)) {
+                mkdir($path, 0777, true); // Create directory if not exists
+            }
+            
+            // Check if the file was uploaded correctly
+            if (move_uploaded_file($tempName, $targetFile)) {
+                return $imageName; // Return the new file name
+            }
+        }
+        
+        return null; // Return null if upload failed
     }
+    
     public function actionCheckPublishDates()
     {
         // Get the current datetime
@@ -236,9 +256,11 @@ class Blog_articlesController extends Controller
        
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($article->modelName, array()))) {
             if (isset($_FILES['BlogArticle']['name']['featured_image']) && $_FILES['BlogArticle']['error']['featured_image'] == UPLOAD_ERR_OK) {
-                $imageName = $this->uploadImage($_FILES['BlogArticle']);
-                if ($imageName) {
-                    $attributes['featured_image'] = $imageName;
+                if ($_FILES['BlogArticle']['size']['featured_image'] > 0) {
+                    $imageName = $this->uploadImage($_FILES['BlogArticle']);
+                    if ($imageName) {
+                        $attributes['featured_image'] = $imageName;
+                    }
                 }
             }
             
