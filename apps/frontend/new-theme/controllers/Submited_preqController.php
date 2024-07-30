@@ -186,8 +186,19 @@ class Submited_preqController extends Controller
                 
                 
                 // End CRM
+                $this->setData(array(
+                    'pageMetaTitle'     => Yii::app()->options->get('system.common.site_name') . ' | ' . Yii::t('articles', 'Contact Us'),
+                    'pageBreadcrumbs'   => array()
+                ));
+                $this->setData(array(
+                    'pageTitle'     => 'Submit Your Requirements',
+                    'pageMetaDescription'   => 'Submit Your Requirements',
+                    'metaKeywords'   => 'Submit Your Requirements',
+                ));
+        
+                $this->render("success", compact('model'));
                 //$notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
-                $this->redirect(Yii::app()->createUrl('submited_preq/success'));
+                // $this->redirect(Yii::app()->createUrl('submited_preq/success'));
             }
 
             Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
