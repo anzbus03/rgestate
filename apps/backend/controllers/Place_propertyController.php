@@ -1096,7 +1096,7 @@ $objWriter->save('php://output');
 
             $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'backend/assets/js/jquery.autocomplete.js' ) ) );
             //  print_r( $_POST );
-            exit;
+            // exit;
             if ( Yii::app()->request->isAjaxRequest ) {
                 echo CActiveForm::validate( $model );
                 Yii::app()->end();
