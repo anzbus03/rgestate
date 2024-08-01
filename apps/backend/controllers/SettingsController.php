@@ -145,53 +145,88 @@ class SettingsController extends Controller
     {
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
+        
         if ($request->isPostRequest) {
-            // Handle Save Request
             $postData = $request->getPost('menus', array());
-            
-            // First, delete all existing menu items
+            // Delete all existing menu items
             Menu::model()->deleteAll();
-
-            // Array to track menu IDs that were found in the request
-            $existingMenuIds = [];
-
+            
             foreach ($postData as $menuData) {
-                // Create a new menu item
+                // Save root menu
                 $menu = new Menu();
                 $menu->name = $menuData['name'];
                 $menu->url = $menuData['url'];
-                $menu->parent_id = null; // Root menu items have no parent
-                
+                $menu->parent_id = null;
                 if (!$menu->save()) {
                     throw new CHttpException(400, Yii::t('app', 'Failed to save menu item.'));
                 }
                 
-                // Store the newly created menu ID
-                $menuMap[$menuData['name']] = $menu->id;
-                
-                // Handle submenus
+                // Save first-level submenus
                 foreach ($menuData['submenus'] as $submenuData) {
                     $submenu = new Menu();
                     $submenu->name = $submenuData['name'];
                     $submenu->url = $submenuData['url'];
-                    $submenu->parent_id = $menu->id; // Set parent_id to the current menu item ID
-
+                    $submenu->parent_id = $menu->id;
                     if (!$submenu->save()) {
                         throw new CHttpException(400, Yii::t('app', 'Failed to save submenu item.'));
+                    }
+
+                    // Save second-level submenus
+                    if (isset($submenuData['submenus'])) {
+                        foreach ($submenuData['submenus'] as $subSubmenuData) {
+                            $subSubmenu = new Menu();
+                            $subSubmenu->name = $subSubmenuData['name'];
+                            $subSubmenu->url = $subSubmenuData['url'];
+                            $subSubmenu->parent_id = $submenu->id;
+                            if (!$subSubmenu->save()) {
+                                throw new CHttpException(400, Yii::t('app', 'Failed to save sub-submenu item.'));
+                            }
+                        }
                     }
                 }
             }
 
             $notify->addSuccess(Yii::t('app', 'Menu items have been successfully saved!'));
-
         } else {
             // Handle List Request
             $menuItems = Menu::model()->findAll();
-    
+            $structuredMenu = $this->buildMenuStructure($menuItems);
+
             // Render the view with menu items
-            $this->render('menu_management', array('commonModel' => new Menu, 'menuItems' => $menuItems));
+            $this->render('menu_management', array('commonModel' => new Menu, 'structuredMenu' => $structuredMenu));
         }
     }
+
+    private function buildMenuStructure($menuItems)
+    {
+        $menuArray = [];
+        $menuMap = [];
+
+        // First, map each item by its ID for easy access
+        foreach ($menuItems as $item) {
+            $menuMap[$item->id] = [
+                'id' => $item->id,
+                'name' => $item->name,
+                'url' => $item->url,
+                'parent_id' => $item->parent_id,
+                'submenus' => [],
+            ];
+        }
+
+        // Now, loop through the items again to build the hierarchy
+        foreach ($menuMap as $id => $menuItem) {
+            if ($menuItem['parent_id']) {
+                // If the item has a parent, add it as a submenu
+                $menuMap[$menuItem['parent_id']]['submenus'][] = &$menuMap[$id];
+            } else {
+                // If no parent, it's a top-level menu
+                $menuArray[] = &$menuMap[$id];
+            }
+        }
+
+        return $menuArray;
+    }
+
 
     /**
      * Handle the settings for importer/exporter

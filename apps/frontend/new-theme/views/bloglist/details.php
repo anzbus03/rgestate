@@ -240,6 +240,31 @@ html .detail ul li { width: 100% !important;
     font-size: 0.9em;
     margin-bottom: 20px;
 }
+#blogheader {
+    position: relative; /* Initial position */
+    z-index: 1000; /* Make sure it stays on top of other elements */
+    width: 100%; /* Ensure it takes the full width */
+}
+
+#blogheader.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white; /* Optional: Set a background color when fixed */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}
+
+#blogheader nav {
+    display: flex;
+    /* justify-content: center; */
+}
+
+.container #blogheader.fixed nav {
+    max-width: 1140px; /* Adjust to match your container width */
+    margin: 0 auto;
+}
+
 
 </style>  
 <style>#mainContainerClass{max-width:100%; }</style>
@@ -247,8 +272,20 @@ html .detail ul li { width: 100% !important;
 <section id="main-content" class="clearfix">
 	<div class="container">
 	    <div class="row margin-top-40">
-		<div class="col-sm-9  ">
-		 
+		    <div class="col-sm-9  ">
+            <div id="blogheader">
+                <nav id="main-menu" class="default" style="position:relative;top: 6px;">
+                    <ul id="menu-main-menu" class="main j-main-menu sf-js-enabled">
+                        <li   class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4252 <?php echo $slug=='blog' ? 'active':'';?>"><a href="<?php echo Yii::app()->createUrl('bloglist/index');?>"><?php echo $this->tag->getTag('blog','Blog')  ;?> </a>
+                        </li> 
+                        <?php
+                        foreach($category as $k=>$v){ ?> 
+                        <li   class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4252 <?php echo $slug==$v->slug ? 'active':'';?>"><a href="<?php echo Yii::app()->createUrl('bloglist/index',array('category'=>$v->slug));?>"><?php echo ucfirst($v->name)  ;?> </a>
+                        </li> 
+                        <?php } ?> 
+                    </ul>
+                </nav>
+            </div>
 				 <article   class="post type-post status-publish format-standard has-post-thumbnail hentry category-rental-basics category-tips-advice">
 				     <header class="heading">
                          <!-- Breadcrumbs -->
@@ -273,19 +310,7 @@ html .detail ul li { width: 100% !important;
                     </div>
         
 			</header>
-			      <div id="blogheader" class="padding-bottom-25">
-	<nav id="main-menu" class="default" style="position:relative;top: 6px;">
-		<ul id="menu-main-menu" class="main j-main-menu sf-js-enabled">
-		    <li   class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4252 <?php echo $slug=='blog' ? 'active':'';?>"><a href="<?php echo Yii::app()->createUrl('bloglist/index');?>"><?php echo $this->tag->getTag('blog','Blog')  ;?> </a>
-			</li> 
-			<?php
-			foreach($category as $k=>$v){ ?> 
-			<li   class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4252 <?php echo $slug==$v->slug ? 'active':'';?>"><a href="<?php echo Yii::app()->createUrl('bloglist/index',array('category'=>$v->slug));?>"><?php echo ucfirst($v->name)  ;?> </a>
-			</li> 
-			<?php } ?> 
-		</ul>
-	</nav>
-</div>
+            
 	
 				<?php
 				if(isset($imageUrl)){
@@ -312,7 +337,7 @@ html .detail ul li { width: 100% !important;
                             $imagePath = Yii::app()->baseUrl . '/uploads/images/' . $author->image;
                             ?>
                             <div class="author-details">
-                                <img src="<?php echo $imagePath; ?>" style="width: 25% !important;" alt="Author Image" class="author-image">
+                                <img src="<?php echo $imagePath; ?>" style="width: 15% !important;" alt="Author Image" class="author-image">
                                 <div class="author-info">
                                     <h5 class="author-name"><?php echo htmlspecialchars($author->name); ?></h5>
                                     <p class="author-description"><?php echo htmlspecialchars($author->description); ?></p>
@@ -382,7 +407,20 @@ html .detail ul li { width: 100% !important;
 
     echo '</div>';
 ?>
+<script>
+  window.onscroll = function() {
+    var header = document.getElementById("blogheader");
+    var sticky = header.offsetTop;
 
+    if (window.pageYOffset > sticky) {
+        header.classList.add("fixed");
+    } else {
+        header.classList.remove("fixed");
+    }
+};
+
+
+</script>
                     <style>
                         .navigation {
                             display: flex;
@@ -466,8 +504,9 @@ html .detail ul li { width: 100% !important;
 		
 		</div>
 		<div class="col-sm-3"  id="stky_w" >
-		    <div  id="stky" style="width:100%;">
+		    <div  id="sty" style="width:100%;">
 		     <div>
+                
 		      <script src="<?php echo $this->app->apps->getBaseUrl('assets/js/sticky.js');?>"></script> 
                     <script>
                     var widowwidth = screen.width; 
@@ -491,110 +530,353 @@ html .detail ul li { width: 100% !important;
 		    
 		    	<style>
 				.comments-list {
-    padding: 0;
-    list-style: none;
-}.comments-list li {
-    margin-bottom: 10px;
-    display: table;
-    width: 100%;
-}.comments-list li .alignleft {
-    float: left;
-    margin: 0 15px 10px 0;
-    width: 80px;
-    height: 50px;
-    overflow: hidden;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -ms-border-radius: 3px;
-    border-radius: 3px;
-    position: relative;
-}.comments-list small {
-    font-size: 80%;
-    font-weight: 400;
-}.comments-list h3 {
-    font-size: 14px;
-    padding: 0 0 0;
-    margin-bottom: 0;
-    margin-top: 0px;
-    letter-spacing: 0;
-}
-			.comments-list h3 a {
-    color: #555;
-}	.comments-list li a {
-    padding: 5px 0 5px 0px
-}.search_blog .form-group input[type="submit"] {
-    border: 0;
-    position: absolute;
-    top: 12px;
-    right: 5px;
-    background-color:#550a12;
-    color: #fff;
-    font-weight: 500;
-    height: 32px;
-    padding: 0 10px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -ms-border-radius: 3px;
-    border-radius: 3px;
-    -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    -webkit-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-}.share-buttons a .fa {
-    width: 38px;
-    height: 38px;
-    line-height: 38px;
-    background: #f4f5f7;
-    border-radius: 50%;
-    color: var(--secondary-color);
-    transition: all .2s ease-out;align-items: center;
-    justify-content: center;
-    display: inline-flex;
-    margin: 0px 10px;
-}.share-buttons a:hover .fa {background: var(--secondary-color);color:#fff ;
-}
+                        padding: 0;
+                        list-style: none;
+                    }.comments-list li {
+                        margin-bottom: 10px;
+                        display: table;
+                        width: 100%;
+                    }.comments-list li .alignleft {
+                        float: left;
+                        margin: 0 15px 10px 0;
+                        width: 80px;
+                        height: 50px;
+                        overflow: hidden;
+                        -webkit-border-radius: 3px;
+                        -moz-border-radius: 3px;
+                        -ms-border-radius: 3px;
+                        border-radius: 3px;
+                        position: relative;
+                    }.comments-list small {
+                        font-size: 80%;
+                        font-weight: 400;
+                    }.comments-list h3 {
+                        font-size: 11px;
+                        padding: 0 0 0;
+                        margin-bottom: 0;
+                        margin-top: 0px;
+                        letter-spacing: 0;
+                    }
+                    .comments-list .date {
+                        font-size: 11px;
+                        font-weight: 400;
+                    }
+                                
+                    .comments-list h3 a {
+                        color: #555;
+                    }	
+                    .comments-list li a {
+                        padding: 5px 0 5px 0px
+                    }.search_blog .form-group input[type="submit"] {
+                        border: 0;
+                        position: absolute;
+                        top: 12px;
+                        right: 5px;
+                        background-color:#550a12;
+                        color: #fff;
+                        font-weight: 500;
+                        height: 32px;
+                        padding: 0 10px;
+                        -webkit-border-radius: 3px;
+                        -moz-border-radius: 3px;
+                        -ms-border-radius: 3px;
+                        border-radius: 3px;
+                        -moz-transition: all 0.3s ease-in-out;
+                        -o-transition: all 0.3s ease-in-out;
+                        -webkit-transition: all 0.3s ease-in-out;
+                        -ms-transition: all 0.3s ease-in-out;
+                        transition: all 0.3s ease-in-out;
+                    }.share-buttons a .fa {
+                        width: 38px;
+                        height: 38px;
+                        line-height: 38px;
+                        background: #f4f5f7;
+                        border-radius: 50%;
+                        color: var(--secondary-color);
+                        transition: all .2s ease-out;align-items: center;
+                        justify-content: center;
+                        display: inline-flex;
+                        margin: 0px 10px;
+                    }.share-buttons a:hover .fa {background: var(--secondary-color);color:#fff ;
+                    }
+                      /* Add border and margin to form fields */
+                   
 				</style>
 				
 								 
 					<!-- /widget -->
 					 <button type="button" class="btn btn-primary sb-btn  " data-toggle="modal" data-target="#exampleModal"><?php echo  $this->tag->getTag('subscribe_to_our_free_newslett','Subscribe to our free newsletter');?></button>
+                    <style>
+                        .card {
+                            border: 1px solid #ddd;
+                            border-radius: 8px;
+                            margin-bottom: 20px;
+                        }
+
+                        .card-header {
+                            border-bottom: 1px solid #ddd;
+                            padding: 15px;
+                            text-align: center;
+                            font-size: 18px;
+                            font-weight: bold;
+                        }
+                        .b24-form-content{
+                            padding: 0px 12px !important;
+                        }
+
+                        /* Form group styling */
+                        .form-group {
+                            margin-bottom: 8px; /* Smaller margin between form groups */
+                        }
+
+                        /* Input field styling */
+                        .form-group input {
+                            border: 1px solid #ccc;
+                            padding: 8px; /* Smaller padding */
+                            border-radius: 4px;
+                            font-size: 14px; /* Smaller font size */
+                            width: 100%; /* Full width */
+                            box-sizing: border-box; /* Include padding and border in the width */
+                        }
+
+                        /* Text area styling */
+                        .form-group textarea {
+                            border: 1px solid #ccc;
+                            padding: 8px; /* Smaller padding */
+                            border-radius: 4px;
+                            font-size: 14px; /* Smaller font size */
+                            width: 100%; /* Full width */
+                            box-sizing: border-box; /* Include padding and border in the width */
+                            resize: vertical; /* Allow vertical resizing only */
+                        }
+
+                        /* Select dropdown styling */
+                        .form-group select {
+                            border: 1px solid #ccc;
+                            padding: 8px; /* Smaller padding */
+                            border-radius: 4px;
+                            font-size: 14px; /* Smaller font size */
+                            width: 100%; /* Full width */
+                            box-sizing: border-box; /* Include padding and border in the width */
+                            background-color: #fff; /* Background color */
+                            appearance: none; /* Remove default dropdown arrow */
+                        }
+
+                        /* Additional styling for select dropdowns */
+                        .form-group select::-ms-expand {
+                            display: none; /* Hide default dropdown arrow in IE */
+                        }
+
+                        .form-group select:focus {
+                            border-color: #007bff; /* Border color on focus */
+                            outline: none; /* Remove default outline */
+                            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25); /* Shadow on focus */
+                        }
+
+                        /* Additional styling for textarea on focus */
+                        .form-group textarea:focus {
+                            border-color: #007bff; /* Border color on focus */
+                            outline: none; /* Remove default outline */
+                            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25); /* Shadow on focus */
+                        }
+
+                        /* Submit button styling */
+                        .rg-sub-btn input[type="submit"] {
+                            padding: 10px; /* Adjust padding if needed */
+                            font-size: 14px; /* Smaller font size */
+                            border-radius: 4px; /* Rounded corners */
+                        }
+                    </style>
 
 				<!-- /widget -->
-					
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="text-left" style="margin-bottom: 0px;">Contact Our Experts</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-container">
+                        <script data-b24-form="inline/52/nxfpsp" data-skip-moving="true">
+                            (function(w,d,u){
+                            var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);
+                            var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
+                            })(window,document,'https://cdn.bitrix24.in/b25292121/crm/form/loader_52.js');
+                        </script>
+                        <?php
+/*
+                            $modelForm = new ContactPopup;
+                            $form = $this->beginWidget('CActiveForm', array(
+                                'id' => 'signUpForm3',
+                                'htmlOptions' => array(
+                                'class' => '',
+                                ),
+
+                                'action' => Yii::app()->createUrl('site/contact_popup'),
+                                'enableAjaxValidation' => true,
+                                'clientOptions' => array(
+                                'validateOnSubmit' => true,
+                                'validateOnChange' => false,
+                                'beforeValidate' => 'js:function(form) {
+                                        
+                                            form.find("#bb3").val("Validating");
+                                            return true;
+                                        }',
+                                'afterValidate' => 'js:function(form, data, hasError) { 
+                                                if(hasError) {
+                                                form.find("#bb3").val("SEND INQUIRY");
+                                                
+                                                return false;
+                                                }
+                                                else
+                                                {
+                                                form.find("#bb3").val("Please Wait"); 
+                                    
+                                                ajaxSubmitHappenlistmort_popup(form, data, hasError,"' . Yii::app()->createUrl($this->id . '/send') . '"); 
+                                                }
+                                                }',
+                                ),
+                            ));
+                            */
+                            ?>
+
+                            <!-- <div class="form-group mb-4">
+                                <?php// echo $form->textField($modelForm, 'name', $modelForm->getHtmlOptions('name', array('class' => 'form-control', 'placeholder' => $this->tag->getTag('full_name_*', 'Full Name *')))); ?>
+                                <?php// echo $form->error($modelForm, 'name'); ?>
+
+                            </div>
+                            <div class="form-group mb-4">
+                                <?php// echo $form->textField($modelForm, 'email', $modelForm->getHtmlOptions('email', array('class' => 'form-control', 'placeholder' => $this->tag->getTag('email_*', 'Email *')))); ?>
+                                <?php// echo $form->error($modelForm, 'email'); ?>
+                            </div>
+                            <div class="form-group mb-4">
+                                <?php// echo $form->textField($modelForm, 'phone_false', $modelForm->getHtmlOptions('phone_false', array('id' => 'popup-phone', 'class' => 'form-control', 'placeholder' => $this->tag->getTag('contact_number_*', 'Contact Number *')))); ?>
+                                <?php// echo $form->error($modelForm, 'phone_false'); ?>
+                            </div>
+                            <div class="form-group rg-filter-col rg-project-dropdown rg-custom-select mb-4">
+                                <!--<select class="form-select form-control" id="rg-project-dropdown" name="ContactPopup[projects]">-->
+                                <!--<option></option>
+                                <?php// echo $form->dropDownList($modelForm, 'type', $modelForm->Model_type(), array()); ?>
+                                <?php// echo $form->error($modelForm, 'type'); ?>
+                                <!--</select>
+                            </div>
+                            <div class="form-group mb-4">
+                                    <?php// //  echo $form->textArea($modelForm, 'message', $modelForm->getHtmlOptions('message', array('class' => 'form-control', 'placeholder' => $this->tag->getTag('message_*', 'Message *')))); ?>
+                                    <?php//  // echo $form->error($modelForm, 'message'); ?>
+                                </div>
+                            <p class="rg-fs-12 rg-text-dark">I agree to share my data with rgestate properties, and allow rgestate properties or its affiliates to collect, control or process my data in order to communicate with me. Should I wish to unsubscribe, I will send an email to <a href="mailto:sales@rgestate.com">sales@rgestate.com</a>. For more information on our Terms & Conditions, <a href="https://www.dev.rgestate.com/terms">Please click here</a>.</p>
+                            <div class="rg-sub-btn text-center mt-5">
+                                <input type="submit" id="bb3" class="btn btn-outline-secondary w-100" style="color: white;" value="SEND INQUIRY">
+                            </div> -->
+                            <?php// $this->endWidget(); ?>
+                        
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .property-info-box {
+                        display: flex;
+                        align-items: center;
+                        background-color: #F0F0F0;
+                        border-radius: 10px;
+                        padding: 20px;
+                        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .property-info-content {
+                        flex-grow: 1;
+                    }
+
+                    .property-info-content h2 {
+                        margin: 0;
+                        font-size: 18px;
+                        font-weight: bold;
+                    }
+
+                    .property-info-content p {
+                        margin: 10px 0;
+                        font-size: 14px;
+                        color: #666;
+                    }
+
+                    .property-info-content a {
+                        background-color: #00629f;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                    }
+
+                    .property-info-icon {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: #E0E0E0;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                        margin-left: 10px;
+                    }
+
+                    /* Replace this with your icon styles */
+                    .fa-solid.fa-house-search {
+                        font-size: 24px;
+                        color: #333;
+                    }
+
+                </style>
+               <div class="property-info-box">
+                    <div class="property-info-content">
+                        <h2>Are you Interested in Buying or Renting a Property?</h2>
+                        <p>Explore Different Options to Buy or Rent a property. Embed this widget on right sidebar in detail pages</p>
+                        <a href="<?php echo Yii::app()->createUrl('choose-your-option'); ?>">Try Now</a>
+                    </div>
+                    <!-- <div class="property-info-icon">
+                        <i class="fa fa-home"></i>
+                    </div> -->
+                </div>
+
 					<?php
 					if(!empty($result)){ ?> 
-					<div class="widget">
-						<div class="widget-title">
-							<h4>Latest Updates</h4>
-						</div>
-						<ul class="comments-list">
-							<?php
-							foreach($result as $k2=>$v2){
-								preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $v2->content, $image);
-	 
-							$img = @$image['1'] ;
-							?> 
-							<li>
-								<div class="alignleft">
-									<a href="<?php echo Yii::app()->createUrl('bloglist/details', array('slug' => $v2->slug));?>"><img src="<?php echo $img;?>" alt=""></a>
-								</div>
-								<h3><a href="<?php echo Yii::app()->createUrl('bloglist/details', array('slug' => $v2->slug));?>" title=""><?php echo $v2->title;?></a></h3>
-							</li> 
-							<?php } ?> 				 
-						</ul>
-					</div>
+                    <hr>
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h4>Latest Updates</h4>
+                            </div>
+                            <ul class="comments-list">
+                                <?php
+                                foreach($result as $k2=>$v2){
+                                    if (!empty($v2->featured_image) && !is_null($v2->featured_image)){
+                                        $featuredImageUrl = Yii::app()->baseUrl . '/uploads/images/' . $v2->featured_image;
+                                    } else {
+                                        preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $v2->content, $featuredImageUrl);
+                                    }
+
+                                    $img = @$image['1'];
+                                    $formattedDate = date('F j, Y', strtotime($v2->date_added)); // Format the date
+                                ?> 
+                                <li class="row" style="margin-left: 0px;margin-right: 0px;">
+                                    <div class="alignleft">
+                                        <a href="<?php echo Yii::app()->createUrl('bloglist/details', array('slug' => $v2->slug));?>">
+                                            <img src="<?php echo is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl; ?>" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="text-container">
+                                        <h3>
+                                            <a href="<?php echo Yii::app()->createUrl('bloglist/details', array('slug' => $v2->slug));?>" title="">
+                                                <?php echo $v2->title;?>
+                                                <p class="date"><?php echo $formattedDate; ?></p> <!-- Display the formatted date -->
+                                            </a>
+                                        </h3>
+                                    </div>
+                                </li> 
+                                <?php } ?> 				 
+                            </ul>
+                        </div>
+
+
 					<?php } ?>  
                     <hr>
-                        <h4 class="text-center">Subscribe To Our Free Newsletter</h4>
-                        <div class="form-container">
-                            <script data-b24-form="inline/34/btf76q" data-skip-moving="true">
-                                (function(w,d,u){
-                                var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);
-                                var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
-                                })(window,document,'https://cdn.bitrix24.in/b25292121/crm/form/loader_34.js');
-                            </script>
-                        </div>
+                     
            </div>
 			</div>
 		</div>

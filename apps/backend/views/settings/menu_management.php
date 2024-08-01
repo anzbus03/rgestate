@@ -76,31 +76,47 @@ $form = $this->beginWidget('CActiveForm');
                 </div>
             </div>
             <div class="col-md-8">
-                <div id="menu-structure">
-                    <!-- Render existing menu items here -->
-                    <?php foreach ($menuItems as $menuItem) { ?>
-                        <div class="menu-item" data-id="<?php echo CHtml::encode($menuItem['id']); ?>">
-                            <span class="menu-name-<?php echo $menuItem->id; ?>"><?php echo CHtml::encode($menuItem['name']); ?></span>
-                            <span class="menu-url-<?php echo $menuItem->id; ?>">URL: <?php echo CHtml::encode($menuItem['url']); ?></span>
-                            <div class="menu-actions">
-                                <button type="button" class="btn btn-danger btn-remove-menu-item"><?php echo Yii::t('app', 'Remove'); ?></button>
-                                <button type="button" class="btn btn-secondary btn-add-submenu"><?php echo Yii::t('app', 'Add Submenu'); ?></button>
-                            </div>
-                        </div>
-                        <div class="submenu">
-                            <!-- Submenu items will be appended here -->
-                            <?php if (isset($menuItem['submenus'])) { ?>
-                                <?php foreach ($menuItem['submenus'] as $submenuItem) { ?>
-                                    <div class="menu-item" data-id="<?php echo CHtml::encode($submenuItem['id']); ?>">
-                                        <span class="menu-name"><?php echo CHtml::encode($submenuItem['name']); ?></span>
-                                        <span class="menu-url">URL: <?php echo CHtml::encode($submenuItem['url']); ?></span>
-                                        <button type="button" class="btn btn-danger btn-remove-menu-item"><?php echo Yii::t('app', 'Remove'); ?></button>
+            <div id="menu-structure">
+            <!-- Render existing menu items here -->
+            <?php foreach ($structuredMenu as $menuItem) { ?>
+                <div class="menu-item" data-id="<?php echo CHtml::encode($menuItem['id']); ?>">
+                    <span class="menu-name-<?php echo $menuItem['id']; ?>"><?php echo CHtml::encode($menuItem['name']); ?></span>
+                    <span class="menu-url-<?php echo $menuItem['id']; ?>">URL: <?php echo CHtml::encode($menuItem['url']); ?></span>
+                    <div class="menu-actions">
+                        <button type="button" class="btn btn-danger btn-remove-menu-item"><?php echo Yii::t('app', 'Remove'); ?></button>
+                        <button type="button" class="btn btn-secondary btn-add-submenu"><?php echo Yii::t('app', 'Add Submenu'); ?></button>
+                    </div>
+                    <div class="submenu">
+                    <?php if (!empty($menuItem['submenus'])) { ?>
+                        <?php foreach ($menuItem['submenus'] as $submenuItem) { ?>
+                            <div class="menu-item" data-id="<?php echo CHtml::encode($submenuItem['id']); ?>">
+                                <span class="menu-name"><?php echo CHtml::encode($submenuItem['name']); ?></span>
+                                <span class="menu-url">URL: <?php echo CHtml::encode($submenuItem['url']); ?></span>
+                                <div class="menu-actions">
+                                    <button type="button" class="btn btn-danger btn-remove-menu-item"><?php echo Yii::t('app', 'Remove'); ?></button>
+                                    <button type="button" class="btn btn-secondary btn-add-submenu"><?php echo Yii::t('app', 'Add Submenu'); ?></button>
+                                </div>
+                                <div class="submenu">
+                                <?php if (!empty($submenuItem['submenus'])) { ?>
+                                        <?php foreach ($submenuItem['submenus'] as $subSubmenuItem) { ?>
+                                            <div class="menu-item" data-id="<?php echo CHtml::encode($subSubmenuItem['id']); ?>">
+                                                <span class="menu-name"><?php echo CHtml::encode($subSubmenuItem['name']); ?></span>
+                                                <span class="menu-url">URL: <?php echo CHtml::encode($subSubmenuItem['url']); ?></span>
+                                                <div class="menu-actions">
+                                                    <button type="button" class="btn btn-danger btn-remove-menu-item"><?php echo Yii::t('app', 'Remove'); ?></button>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                        <?php } ?>
                                     </div>
-                                <?php } ?>
-                            <?php } ?>
-                        </div>
-                    <?php } ?>
+                            </div>
+                        <?php } ?>
+                        <?php } ?>
+                    </div>
                 </div>
+            <?php } ?>
+        </div>
+
             </div>
         </div>
 
@@ -153,24 +169,25 @@ $(document).ready(function() {
         }
     });
 
-    // Function to add a sub-menu item
     $('#menu-structure').on('click', '.btn-add-submenu', function() {
         var parentMenuItem = $(this).closest('.menu-item');
         var url = prompt('Enter URL for sub-menu item:');
         var name = prompt('Enter Name for sub-menu item:');
         var randomId = generateRandomId();
-
         if (url && name) {
             var submenuHtml = '<div class="menu-item" data-id="' + randomId + '">'
                 + '<span class="menu-name">' + name + '</span>'
                 + '<span class="menu-url">URL: ' + url + '</span>'
                 + '<div class="menu-actions">'
                 + '<button type="button" class="btn btn-danger btn-remove-menu-item"><?php echo Yii::t('app', 'Remove'); ?></button>'
+                + '<button type="button" class="btn btn-secondary btn-add-submenu"><?php echo Yii::t('app', 'Add Submenu'); ?></button>'
                 + '</div>'
+                + '<div class="submenu"></div>'
                 + '</div>';
-            parentMenuItem.find('.submenu').append(submenuHtml);
+            parentMenuItem.find('.submenu').first().append(submenuHtml);
         }
     });
+
 
     // Function to remove a menu item
     $('#menu-structure').on('click', '.btn-remove-menu-item', function() {
@@ -180,32 +197,44 @@ $(document).ready(function() {
         var menus = [];
 
         // Loop through each main menu item
-        $('#menu-structure .menu-item').each(function() {
+        $('#menu-structure > .menu-item').each(function() {
             // Collect the main menu data
-            if ($(this).find('.menu-name-'+$(this).data('id')).text().trim() != ""){
-                var menu = {
+            var menu = {
+                id: $(this).data('id'),  // Use empty string if id is not present
+                name: $(this).children('.menu-name-' + $(this).data('id')).text().trim(),
+                url: $(this).children('.menu-url-' + $(this).data('id')).text().replace('URL: ', '').trim(),
+                submenus: []
+            };
+
+            // Loop through each submenu within the current main menu item (First level submenu)
+            $(this).children('.submenu').children('.menu-item').each(function() {
+                var submenu = {
                     id: $(this).data('id'),  // Use empty string if id is not present
-                    name: $(this).find('.menu-name-'+$(this).data('id')).text().trim(),
-                    url: $(this).find('.menu-url-'+$(this).data('id')).text().replace('URL: ', '').trim(),
+                    name: $(this).children('.menu-name').first().text().trim(),
+                    url: $(this).children('.menu-url').first().text().replace('URL: ', '').trim(),
                     submenus: []
                 };
-    
-                // Loop through each submenu within the current main menu item
-                $(this).find('.submenu .menu-item').each(function() {
-                    var submenu = {
+
+                // Loop through each sub-submenu within the current submenu item (Second level submenu)
+                $(this).children('.submenu').children('.menu-item').each(function() {
+                    var subSubmenu = {
                         id: $(this).data('id'),  // Use empty string if id is not present
-                        name: $(this).find('.menu-name').text().trim(),
-                        url: $(this).find('.menu-url').text().replace('URL: ', '').trim()
+                        name: $(this).children('.menu-name').first().text().trim(),
+                        url: $(this).children('.menu-url').first().text().replace('URL: ', '').trim()
                     };
-                    menu.submenus.push(submenu);
+                    submenu.submenus.push(subSubmenu);
                 });
-                menus.push(menu);
-            }
+
+                menu.submenus.push(submenu);
+            });
+
+            menus.push(menu);
         });
 
         console.log(menus);
         return menus;
     }
+
 
     $('#submitForm').click(function(e) {
         e.preventDefault();
@@ -217,12 +246,13 @@ $(document).ready(function() {
                 csrf_token: "<?php echo Yii::app()->request->csrfToken; ?>"
             },
             success: function(response) {
-                window.location.reload()
+                window.location.reload();
             },
             error: function() {
                 // Handle error
             }
         });
     });
+
 });
 </script>
