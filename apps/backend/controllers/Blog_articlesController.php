@@ -94,7 +94,7 @@ class Blog_articlesController extends Controller
             if (isset(Yii::app()->params['POST'][$article->modelName]['content'])) {
                 $article->content = Yii::app()->ioFilter->purify(Yii::app()->params['POST'][$article->modelName]['content']);
             }
-            if (isset($_FILES['BlogArticle']['name']['featured_image']) && $_FILES['BlogArticle']['error']['featured_image'] == UPLOAD_ERR_OK) {
+            if (isset($_FILES['BlogArticle']['name']['featured_image']) && !empty($_FILES['BlogArticle']['name']['featured_image']) && $_FILES['BlogArticle']['error']['featured_image'] == UPLOAD_ERR_OK) {
                 $imageName = $this->uploadImage($_FILES['BlogArticle']);
                 if ($imageName) {
                     $attributes['featured_image'] = $imageName;
@@ -255,13 +255,17 @@ class Blog_articlesController extends Controller
         $articleToCategory = new ArticleToCategory();
        
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($article->modelName, array()))) {
-            if (isset($_FILES['BlogArticle']['name']['featured_image']) && $_FILES['BlogArticle']['error']['featured_image'] == UPLOAD_ERR_OK) {
+            // print_r($article->featured_image);
+            // exit;
+            if (isset($_FILES['BlogArticle']['name']['featured_image']) && !empty($_FILES['BlogArticle']['name']['featured_image']) && $_FILES['BlogArticle']['error']['featured_image'] == UPLOAD_ERR_OK) {
                 if ($_FILES['BlogArticle']['size']['featured_image'] > 0) {
                     $imageName = $this->uploadImage($_FILES['BlogArticle']);
                     if ($imageName) {
                         $attributes['featured_image'] = $imageName;
                     }
                 }
+            }else {
+                $attributes['featured_image'] = $article->featured_image;
             }
             
             $article->attributes = $attributes;
