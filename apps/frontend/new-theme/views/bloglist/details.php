@@ -1,18 +1,3 @@
-<?php
-					$art = new Article();
-					 
-					$formData = array_filter((array)$_GET);
-		 
-		$formData['parent_id'] =  '20';
-		 
-		 
-	 
-        $modelCritera=Article::model()->findPosts($formData,$count_future=false,1,$calculate=false);
-        $modelCritera->limit = 6 ; 
-        $result = Article::model()->findAll($modelCritera);
-   	
-					
-					?>
 <style>
 #main-content .widget-title h4 {
     font-size: 23px !important;
@@ -265,7 +250,6 @@ html .detail ul li { width: 100% !important;
     margin: 0 auto;
 }
 
-
 </style>  
 <style>#mainContainerClass{max-width:100%; }</style>
 
@@ -288,26 +272,8 @@ html .detail ul li { width: 100% !important;
             </div>
 				 <article   class="post type-post status-publish format-standard has-post-thumbnail hentry category-rental-basics category-tips-advice">
 				     <header class="heading">
-                         <!-- Breadcrumbs -->
-                         <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="<?php echo Yii::app()->getBaseUrl('/'); ?>">Home</a></li>
-                                <li class="breadcrumb-item"><a href="<?php echo Yii::app()->createUrl('bloglist/index'); ?>">Blog</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><?php echo $model->title;?></li>
-                            </ol>
-                        </nav>
 					<h1 class="article-title"><?php echo $model->title;?></h1>
-                    <div class="publish-info">
-                        <p class="publish-date">Last Updated - <?php echo date('F j, Y', strtotime($model->last_updated)); ?></p>
-                        <div class="share-buttons">
-                            <a title="Facebook Share" target="_blank" href="https://www.facebook.com/sharer.php?u=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug.'/blog'));?>"> 
-                                <span class="fa fa-facebook"></span>
-                            </a>
-                            <a title="Twitter Share" target="_blank" href="https://twitter.com/intent/tweet?original_referer=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug.'/blog'));?>&amp;url=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug.'/blog'));?>&amp;text=<?php echo urlencode($model->title);?>">
-                                <span class="fa fa-twitter"></span>
-                            </a>
-                        </div>
-                    </div>
+				
         
 			</header>
             
@@ -497,13 +463,14 @@ html .detail ul li { width: 100% !important;
                         }
 
                     </style>
+
 				 
-					<!-- <div class="share-buttons">
+					<div class="share-buttons">
 						<div class="addthis_toolbox addthis_default_style">
 							<a title="Facebook Share" target="_blank" href="https://www.facebook.com/sharer.php?u=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug.'/blog'));?>"> <span class="fa fa-facebook"></span>
 							</a>	<a title="Twitter Share" target="_blank" href="https://twitter.com/intent/tweet?original_referer=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug.'/blog'));?>&amp;url=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug.'/blog'));?>&amp;text=<?php echo urlencode($model->title);?>"><span class="fa fa-twitter"></span></a>
 						</div>
-					</div> -->
+					</div>
 									 
 				</div>
 				 <div class="clearfix"></div>
@@ -956,6 +923,7 @@ html .detail ul li { width: 100% !important;
 					<?php } ?>  
                     <hr>
                      
+
            </div>
 			</div>
 		</div>

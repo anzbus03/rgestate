@@ -1,8 +1,8 @@
 <?php
-$timthumb = Yii::app()->apps->getBaseUrl('timthumb.php');
-$read_more = 'Read more';
-$last_updated_on = 'Last updated on';
-$language = 'en';  // Fixed typo in variable name
+$timthumb =  Yii::app()->apps->getBaseUrl('timthumb.php');
+$read_more =  'Read more'  ;
+$last_updated_on = 'Last updated on' ;
+ $langaugae = 'en';
 $commonModel = new OptionCommon();
 ?>
 <div class="container">

@@ -201,5 +201,8 @@
 	    .grid-filter-cell input ,  .grid-filter-cell select{ height: 32px;text-indent: 0px;font-size: 16px;width: 100% !important;line-height: 1.2; }
 	    
 	</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+
     </body>
 </html>
+

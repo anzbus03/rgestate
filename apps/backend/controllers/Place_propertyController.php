@@ -827,7 +827,7 @@ $objWriter->save('php://output');
 
             $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'backend/assets/js/jquery.autocomplete.js' ) ) );
             //  print_r( $_POST );
-            exit;
+            // exit;
             if ( Yii::app()->request->isAjaxRequest ) {
                 echo CActiveForm::validate( $model );
                 Yii::app()->end();
@@ -966,7 +966,7 @@ $objWriter->save('php://output');
 
             }
 
-            $this->render( 'root.apps.frontend.new-theme.views.place_property.form_new', compact( 'model', 'country', 'section', 'list_type', 'image_array' ) );
+            $this->render( 'root.apps.backend.views.place_property.form_new', compact( 'model', 'country', 'section', 'list_type', 'image_array' ) );
 
         }
 
@@ -1096,7 +1096,7 @@ $objWriter->save('php://output');
 
             $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'backend/assets/js/jquery.autocomplete.js' ) ) );
             //  print_r( $_POST );
-            exit;
+            // exit;
             if ( Yii::app()->request->isAjaxRequest ) {
                 echo CActiveForm::validate( $model );
                 Yii::app()->end();
@@ -2425,30 +2425,22 @@ $objWriter->save('php://output');
 	  exit;
 	  exit;
 	}
-	 public function actionSelect_category3($id=null)
+    public function actionSelect_category3($id=null)
     {
 	  $category =    Category::model()->ListDataForJSON_ID_BySEctionNew($id) ;
 	 
-		 $html =  CHtml::radioButtonList('listing_type','' ,$category,array( 'onchange'=>'load_via_ajax_main_category( this )','data-url'=>Yii::App()->createUrl($this->id.'/select_category4'),'separator'=>'','labelOptions'=>array('class'=>'')
-				,'template'=>'<div class = "inputGroup"> {
-    input}
-    {
-        label}
-        </div>'));
+		 $html =  CHtml::radioButtonList('listing_type','' ,$category,array( 'onchange'=>'load_via_ajax_main_category(this)','data-url'=>Yii::App()->createUrl($this->id.'/select_category4'),'separator'=>'','labelOptions'=>array('class'=>'')
+				,'template'=>'<div class="inputGroup">{input}   {label}</div>'));
 		echo json_encode(array('data'=>$html,'size'=>sizeOf($category))) ;
 	  
 	  exit;
 	}
-	 public function actionSelect_category4($id=null)
+    public function actionSelect_category4($id=null)
     {
 	  $category =    Category::model()->ListDataForJSON_ID_ByListingType($id) ;
 	 
 		 $html =  CHtml::radioButtonList('category_id','' ,$category,array( 'onchange'=>'validateInputSector()','separator'=>'','labelOptions'=>array('class'=>'')
-				,'template'=>'<div class = "inputGroup"> {
-            input}
-            {
-                label}
-                </div>'));
+				,'template'=>'<div class="inputGroup">{input}   {label}</div>'));
 		echo json_encode(array('data'=>$html,'size'=>sizeOf($category))) ;
 	  
 	  exit;
