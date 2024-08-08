@@ -317,14 +317,22 @@ html .detail ul li { width: 100% !important;
 					$timthumb =  Yii::app()->apps->getBaseUrl('timthumb.php');
 					 ?> 
 				<div class="thumbnail">
-					 
-						<img style="object-fit: contain;margin-top:10px;display:block;" src="<?php echo @$imageUrl;?>" class="attachment-blog-image size-blog-image wp-post-image" alt="<?php echo $model->title;?>" srcset="<?php echo $imageUrl;?> 2200w,<?php echo $timthumb.'?src='.@$imageUrl.'&h=167&w=300&zc=1';?> 300w,<?php echo $timthumb.'?src='.@$imageUrl.'&h=427&w=768&zc=1';?> 768w,<?php echo $timthumb.'?src='.@$imageUrl.'&h=569&w=1024&zc=1';?> 1024w" sizes="(max-width: 2200px) 100vw, 2200px" width="2200" height="1222">
-					 
+                    <img style="object-fit: contain;margin-top:10px;display:block;" src="<?php echo @$imageUrl;?>" class="attachment-blog-image size-blog-image wp-post-image" alt="<?php echo $model->title;?>" srcset="<?php echo $imageUrl;?> 2200w,<?php echo $timthumb.'?src='.@$imageUrl.'&h=167&w=300&zc=1';?> 300w,<?php echo $timthumb.'?src='.@$imageUrl.'&h=427&w=768&zc=1';?> 768w,<?php echo $timthumb.'?src='.@$imageUrl.'&h=569&w=1024&zc=1';?> 1024w" sizes="(max-width: 2200px) 100vw, 2200px" width="2200" height="1222">
 				</div>
 				<?php } ?> 
  
 				<div class="detail">
-					<p><?php  echo $model->content ; 	?></p>
+					<p>
+                        <?php 
+                        if (!empty($model->featured_image) && !is_null($model->featured_image)){
+                            $featuredImageUrl = Yii::app()->baseUrl . '/uploads/images/' . $model->featured_image;
+                        } else {
+                            preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $model->content, $featuredImageUrl);
+                        }
+                        ?>
+                        <img src="<?php echo is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl; ?>" alt="">
+
+                        <?php  echo $model->content ; 	?></p>
                     <hr>
                     <?php
                         // Assuming $model is the current article model
@@ -422,6 +430,10 @@ html .detail ul li { width: 100% !important;
 
 </script>
                     <style>
+                        html .detail ul {
+                            list-style-type: disc; /* Use 'disc' to display bullet points */
+                            padding-left: 20px; /* Indent the bullets */
+                        }
                         .navigation {
                             display: flex;
                             justify-content: space-between;
@@ -605,7 +617,7 @@ html .detail ul li { width: 100% !important;
 				
 								 
 					<!-- /widget -->
-					 <button type="button" class="btn btn-primary sb-btn  " data-toggle="modal" data-target="#exampleModal"><?php echo  $this->tag->getTag('subscribe_to_our_free_newslett','Subscribe to our free newsletter');?></button>
+					 <button type="button" class="btn btn-primary sb-btn  " data-toggle="modal" data-target="#exampleModalBlogMessage"><?php echo  $this->tag->getTag('subscribe_to_our_free_newslett','Subscribe to our free newsletter');?></button>
                     <style>
                         .card {
                             border: 1px solid #ddd;
@@ -694,15 +706,10 @@ html .detail ul li { width: 100% !important;
                         <h4 class="text-left" style="margin-bottom: 0px;">Contact Our Experts</h4>
                     </div>
                     <div class="card-body">
-                        <div class="form-container">
-                        <script data-b24-form="inline/52/nxfpsp" data-skip-moving="true">
-                            (function(w,d,u){
-                            var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);
-                            var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
-                            })(window,document,'https://cdn.bitrix24.in/b25292121/crm/form/loader_52.js');
-                        </script>
+
+                        <div id="contact-message"></div>
+                        <div class="form-container" style="padding: 10px;">
                         <?php
-/*
                             $modelForm = new ContactPopup;
                             $form = $this->beginWidget('CActiveForm', array(
                                 'id' => 'signUpForm3',
@@ -730,43 +737,115 @@ html .detail ul li { width: 100% !important;
                                                 {
                                                 form.find("#bb3").val("Please Wait"); 
                                     
-                                                ajaxSubmitHappenlistmort_popup(form, data, hasError,"' . Yii::app()->createUrl($this->id . '/send') . '"); 
+                                                ajaxSubmitHappenlistmort_popup(form, data, hasError,"' . Yii::app()->createUrl('site/send') . '"); 
                                                 }
                                                 }',
                                 ),
                             ));
-                            */
                             ?>
 
-                            <!-- <div class="form-group mb-4">
-                                <?php// echo $form->textField($modelForm, 'name', $modelForm->getHtmlOptions('name', array('class' => 'form-control', 'placeholder' => $this->tag->getTag('full_name_*', 'Full Name *')))); ?>
-                                <?php// echo $form->error($modelForm, 'name'); ?>
+                            <div class="form-group mb-4">
+                                <?php echo $form->textField($modelForm, 'name', $modelForm->getHtmlOptions('name', array('class' => '', 'placeholder' => $this->tag->getTag('full_name_*', 'Full Name *')))); ?>
+                                <?php echo $form->error($modelForm, 'name'); ?>
 
                             </div>
                             <div class="form-group mb-4">
-                                <?php// echo $form->textField($modelForm, 'email', $modelForm->getHtmlOptions('email', array('class' => 'form-control', 'placeholder' => $this->tag->getTag('email_*', 'Email *')))); ?>
-                                <?php// echo $form->error($modelForm, 'email'); ?>
+                                <?php echo $form->textField($modelForm, 'email', $modelForm->getHtmlOptions('email', array('class' => '', 'placeholder' => $this->tag->getTag('email_*', 'Email *')))); ?>
+                                <?php echo $form->error($modelForm, 'email'); ?>
                             </div>
+                            <style>
+                                #popup-phone{
+                                    padding-left:88px !important;
+                                }
+                            </style>
                             <div class="form-group mb-4">
-                                <?php// echo $form->textField($modelForm, 'phone_false', $modelForm->getHtmlOptions('phone_false', array('id' => 'popup-phone', 'class' => 'form-control', 'placeholder' => $this->tag->getTag('contact_number_*', 'Contact Number *')))); ?>
-                                <?php// echo $form->error($modelForm, 'phone_false'); ?>
+                                <?php echo $form->textField($modelForm, 'phone_false', $modelForm->getHtmlOptions('phone_false', array('id' => 'popup-phone', 'class' => '', 'placeholder' => $this->tag->getTag('contact_number_*', 'Contact Number *')))); ?>
+                                <?php echo $form->error($modelForm, 'phone_false'); ?>
                             </div>
                             <div class="form-group rg-filter-col rg-project-dropdown rg-custom-select mb-4">
-                                <!--<select class="form-select form-control" id="rg-project-dropdown" name="ContactPopup[projects]">-->
-                                <!--<option></option>
-                                <?php// echo $form->dropDownList($modelForm, 'type', $modelForm->Model_type(), array()); ?>
-                                <?php// echo $form->error($modelForm, 'type'); ?>
-                                <!--</select>
+                                <?php echo $form->dropDownList($modelForm, 'type', $modelForm->Model_type(), [
+                                    'class' => 'form-select',
+                                    'id' => 'rg-project-dropdown',
+                                    'name' => 'ContactPopup[type]',
+                                ]); ?>
+                                <?php echo $form->error($modelForm, 'type'); ?>
                             </div>
+                            <script>
+                                $(function(){  
+                                    var popup = document.querySelector("#popup-phone");
+                                    window.intlTelInput(popup, {
+                                        hiddenInput: "phone",
+                                        initialCountry: "<?php echo COUNTRY_CODE;?>",
+                                        placeholderNumberType: "MOBILE",
+                                        separateDialCode: true,
+                                        utilsScript: "<?php echo Yii::app()->apps->getBaseUrl('assets/js/build/js/utils.js');?>",
+                                    });
+                            
+                                });
+                                function ajaxSubmitHappenlistmort_popup(form, data, hasError, saveUrl) {
+                                    // console.log(form.serialize());
+
+                                    if (!hasError) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: saveUrl,
+                                            data: form.serialize(),
+                                            success: function(data) {
+                                                var data = JSON.parse(data);
+
+                                                if ($("#requestBtn").length > 0) {
+                                                    var hhtmk = $("#requestBtn").attr('data-html');
+                                                    if (hhtmk !== undefined) {
+                                                        $("#requestBtn").attr('disabled', false);
+                                                        $("#requestBtn").html(hhtmk);
+                                                    }
+                                                }
+
+                                                if ($("#bb").length > 0) {
+                                                    var hhtmk = $("#bb").attr('data-html');
+                                                    if (hhtmk !== undefined) {
+                                                        $("#bb").attr('disabled', false);
+                                                        $("#bb").val(hhtmk);
+                                                    }
+                                                }
+                                                
+                                                var imgSucces = 'Sent Successfully!';
+                                                var success_message = 'Sent Successfully!';
+                                                if (data.status == '1') {
+                                                    $('#signUpForm3').find('input.form-control').val('');
+                                                    form.find("#bb3").val(imgSucces);
+                                                    $('#signUpForm3').find('textarea').val('');
+                                                    $('#signUpForm3').find('select').val('');
+
+                                                    var msg_new = success_message;
+                                                    if (data.name != undefined) {
+                                                        //successAlert('&nbsp; ', msg_new.replace("{name}", data.name));
+                                                        $('#contact-message').html('<div class="text-success" style="padding-left: 12px;" role="alert">' + success_message + '</div>');
+                                                    } else {
+                                                        //successAlert('&nbsp; ', msg_new.replace("{name}", ''));
+                                                    }
+                                                    //onRecaptchaLoadCallback();
+                                                } else {
+                                                    errorAlert('Error', data.msg);
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        alert('error');
+                                    }
+                                }
+
+                            </script>
+
                             <div class="form-group mb-4">
-                                    <?php// //  echo $form->textArea($modelForm, 'message', $modelForm->getHtmlOptions('message', array('class' => 'form-control', 'placeholder' => $this->tag->getTag('message_*', 'Message *')))); ?>
-                                    <?php//  // echo $form->error($modelForm, 'message'); ?>
+                                    <?php echo $form->textArea($modelForm, 'message', $modelForm->getHtmlOptions('message', array('class' => '', 'placeholder' => $this->tag->getTag('message_*', 'Message *')))); ?>
+                                    <?php echo $form->error($modelForm, 'message'); ?>
                                 </div>
-                            <p class="rg-fs-12 rg-text-dark">I agree to share my data with rgestate properties, and allow rgestate properties or its affiliates to collect, control or process my data in order to communicate with me. Should I wish to unsubscribe, I will send an email to <a href="mailto:sales@rgestate.com">sales@rgestate.com</a>. For more information on our Terms & Conditions, <a href="https://www.dev.rgestate.com/terms">Please click here</a>.</p>
-                            <div class="rg-sub-btn text-center mt-5">
-                                <input type="submit" id="bb3" class="btn btn-outline-secondary w-100" style="color: white;" value="SEND INQUIRY">
-                            </div> -->
-                            <?php// $this->endWidget(); ?>
+                            <!-- <p class="rg-fs-12 rg-text-dark">I agree to share my data with rgestate properties, and allow rgestate properties or its affiliates to collect, control or process my data in order to communicate with me. Should I wish to unsubscribe, I will send an email to <a href="mailto:sales@rgestate.com">sales@rgestate.com</a>. For more information on our Terms & Conditions, <a href="https://www.dev.rgestate.com/terms">Please click here</a>.</p> -->
+                            <div class="rg-sub-btn text-center mt-3">
+                                <input type="submit" id="bb3" class="btn btn-outline-secondary w-100" style="color: white;width: 100% !important;" value="SEND INQUIRY">
+                            </div>
+                            <?php $this->endWidget(); ?>
                         
                         </div>
                     </div>
@@ -827,7 +906,7 @@ html .detail ul li { width: 100% !important;
                <div class="property-info-box">
                     <div class="property-info-content">
                         <h2>Are you Interested in Buying or Renting a Property?</h2>
-                        <p>Explore Different Options to Buy or Rent a property. Embed this widget on right sidebar in detail pages</p>
+                        <p>Explore Different Options to Buy or Rent a property.</p>
                         <a href="<?php echo Yii::app()->createUrl('choose-your-option'); ?>">Try Now</a>
                     </div>
                     <!-- <div class="property-info-icon">

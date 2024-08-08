@@ -234,7 +234,47 @@ $(document).ready(function() {
         console.log(menus);
         return menus;
     }
+      // Inline edit menu item
+    //   $('#menu-structure').on('click', '.btn-edit-menu-item', function() {
+    //     var menuItem = $(this).closest('.menu-item');
+    //     menuItem.find('span[class^="menu-name"]').hide();
+    //     menuItem.find('span[class^="menu-url"]').hide();
+    //     menuItem.find('input[class^="edit-menu-name"]').show();
+    //     menuItem.find('input[class^="edit-menu-url"]').show();
+    //     $(this).hide();
+    //     menuItem.find('.btn-save-menu-item').show();
+    // });
 
+    // Save edited menu item
+    // $('#menu-structure').on('click', '.btn-save-menu-item', function() {
+    //     var menuItem = $(this).closest('.menu-item');
+    //     var newName = menuItem.find('input[class^="edit-menu-name"]').val();
+    //     var newUrl = menuItem.find('input[class^="edit-menu-url"]').val();
+
+    //     menuItem.find('span[class^="menu-name"]').text(newName).show();
+    //     menuItem.find('span[class^="menu-url"]').text('URL: ' + newUrl).show();
+    //     menuItem.find('input[class^="edit-menu-name"]').hide();
+    //     menuItem.find('input[class^="edit-menu-url"]').hide();
+    //     menuItem.find('.btn-save-menu-item').hide();
+    //     menuItem.find('.btn-edit-menu-item').show();
+    // });
+
+    // $('#menu-structure').sortable({
+    //     placeholder: "ui-state-highlight",
+    //     update: function(event, ui) {
+    //         // You can handle the updated order here if needed
+    //         console.log('Menu order updated');
+    //     }
+    // });
+
+    // Ensure submenus are sortable as well
+    // $('.submenu').sortable({
+    //     connectWith: '.submenu',
+    //     placeholder: "ui-state-highlight",
+    //     update: function(event, ui) {
+    //         console.log('Submenu order updated');
+    //     }
+    // });
 
     $('#submitForm').click(function(e) {
         e.preventDefault();
