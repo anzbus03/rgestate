@@ -130,9 +130,11 @@ class SiteController extends Controller
 		$model = new ContactPopup;
 		$notify = Yii::app()->notify;
 		if (isset($_POST['ajax'])) {
-		echo CActiveForm::validate($model);
-		Yii::app()->end();
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
 		}
+		print_r(5);
+		exit;
         if (Yii::app()->request->isPostRequest && ($attributes = (array)Yii::app()->request->getPost($model->modelName, array()))) {
 		echo $model->name;
 		$model->attributes = $attributes;

@@ -346,5 +346,5 @@ $(document).ready(function(){
 });
 </script>
 <div class="container text-center margin-bottom-50">
-		 <button type="button" class="btn btn-primary sb-btn  " style="max-width:300px;" data-toggle="modal" data-target="#exampleModal"><?php echo  $this->tag->getTag('subscribe_to_our_free_newslett','Subscribe to our free newsletter');?></button>
+		 <button type="button" class="btn btn-primary sb-btn  " style="max-width:300px;" data-toggle="modal" data-target="#exampleModalBlogMessage"><?php echo  $this->tag->getTag('subscribe_to_our_free_newslett','Subscribe to our free newsletter');?></button>
 </div>

@@ -24,10 +24,10 @@
  <?php 
   $order = '';
     $order .= '  t.category_id  = "'.$model->category_id.'" desc' ;
- if(!empty($model->city)){
-	 $order .= ',  t.city = "'.$model->city.'" desc  , ' ; 
- }
- $order .= ' , t.state = "'.$model->state.'" desc' ;
+    if(!empty($model->city)){
+      $order .= ',  t.city = "'.$model->city.'" desc  ' ; 
+    }
+    $order .= ' , t.state = "'.$model->state.'" desc' ;
 
  $apps= Yii::app()->apps;
  $crit = PlaceAnAd::model()->findAds(array('sort'=>'custom','custom_order'=>$order),false,1,false,false);
