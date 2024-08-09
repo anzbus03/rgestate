@@ -467,10 +467,46 @@ if($this->id != 'contact'){ ?>
 <style>
   @media (max-width: 576px) {
     #exampleModalBlogMessage .modal-content {
-      width: 60% !important;
-      margin: 0 !important;
+        margin: 0 !important;
     }
-  }
+
+    @media (min-width: 400px) and (max-width: 424px) {
+        #exampleModalBlogMessage .modal-content {
+            width: 60% !important;
+        }
+    }
+
+    @media (min-width: 425px) and (max-width: 449px) {
+        #exampleModalBlogMessage .modal-content {
+            width: 68% !important;
+        }
+    }
+
+    @media (min-width: 450px) and (max-width: 474px) {
+        #exampleModalBlogMessage .modal-content {
+            width: 73% !important;
+        }
+    }
+
+    @media (min-width: 475px) and (max-width: 499px) {
+        #exampleModalBlogMessage .modal-content {
+            width: 77% !important;
+        }
+    }
+
+    @media (min-width: 500px) and (max-width: 524px) {
+        #exampleModalBlogMessage .modal-content {
+            width: 85% !important;
+        }
+    }
+
+    @media (min-width: 525px) and (max-width: 576px) {
+        #exampleModalBlogMessage .modal-content {
+            width: 90% !important;
+        }
+    }
+}
+
 </style>
     
 <div id="dynamicScripts"></div>

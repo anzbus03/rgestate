@@ -278,6 +278,9 @@ html .detail ul li { width: 100% !important;
             margin-right: 0px !important;
             margin-bottom: 25px !important;
         }
+        /* #popup-phone{
+            width: 120% !important;
+        } */
     }
 </style>
 <section id="main-content" class="clearfix">
@@ -769,6 +772,9 @@ html .detail ul li { width: 100% !important;
                                 #popup-phone{
                                     padding-left:88px !important;
                                 }
+                                .iti {
+                                    width: 100%;
+                                } 
                             </style>
                             <div class="form-group mb-4">
                                 <?php echo $form->textField($modelForm, 'phone_false', $modelForm->getHtmlOptions('phone_false', array('id' => 'popup-phone', 'class' => '', 'placeholder' => $this->tag->getTag('contact_number_*', 'Contact Number *')))); ?>
