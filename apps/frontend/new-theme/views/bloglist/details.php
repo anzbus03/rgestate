@@ -179,6 +179,7 @@ html .detail ul li { width: 100% !important;
 }.main {
     background: transparent;
     display: flex;
+    flex-wrap: wrap;
     padding: 10px 0px;
 }
 @media only screen and (max-width: 768px) {
@@ -252,7 +253,17 @@ html .detail ul li { width: 100% !important;
 
 </style>  
 <style>#mainContainerClass{max-width:100%; }</style>
-
+<style>
+    @media (max-width: 767px) {
+        #menu-main-menu li {
+            /* flex: 1;
+            text-align: center; */
+            /* margin: 0 5px; */
+            margin-right: 0px !important;
+            margin-bottom: 25px !important;
+        }
+    }
+</style>
 <section id="main-content" class="clearfix">
 	<div class="container">
 	    <div class="row margin-top-40">
@@ -590,6 +601,7 @@ html .detail ul li { width: 100% !important;
                             border: 1px solid #ddd;
                             border-radius: 8px;
                             margin-bottom: 20px;
+                            margin-top: 30px;
                         }
 
                         .card-header {
