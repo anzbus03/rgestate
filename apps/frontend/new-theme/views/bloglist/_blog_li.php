@@ -63,6 +63,7 @@ $commonModel = new OptionCommon();
     position: relative;
     display: flex;
     padding: 0px;
+    height: 100%;
     flex-direction: column;
 }
 
@@ -97,5 +98,12 @@ $commonModel = new OptionCommon();
     padding-left: 10px;
     padding-top: 10px;
     border-top: 1px solid #7777778a;
+}
+
+@media only screen and (max-width: 1024px) {
+ 
+    .blog-meta {
+        margin-top: 6% !important;
+    }
 }
 </style>
