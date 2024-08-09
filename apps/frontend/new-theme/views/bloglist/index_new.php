@@ -151,7 +151,44 @@
 
 <section id="main-content" class="clearfix">
 	<div class="container" id="d_column">
-	 
+        <style>
+            /* Mobile view adjustments */
+@media (max-width: 767px) {
+        /* #menu-main-menu2 {
+            flex-direction: row;
+            justify-content: space-evenly;
+        } */
+
+        #menu-main-menu2 li {
+            /* flex: 1;
+            text-align: center; */
+            /* margin: 0 5px; */
+            margin-right: 0px !important;
+            margin-bottom: 25px !important;
+        }
+
+        #menu-main-menu2 .menu-item-search {
+            width: 100%;
+            margin-right: 20px !important;
+            margin-bottom: 0px !important;
+        }
+
+        #menu-main-menu2 .menu-item-search .search-form {
+            display: flex;
+            justify-content: center;
+        }
+
+        #menu-main-menu2 .menu-item-search input[type="text"] {
+            width: 100%;
+            max-width: 300px;
+            margin-right: 5px;
+        }
+
+        #menu-main-menu2 .menu-item-search button {
+            flex-shrink: 0;
+        }
+    }
+        </style>
         <div id="blogheader" >
             <nav id="main-menu" class="default" style="position:relative;top: 6px;">
                 <ul id="menu-main-menu2" class="main j-main-menu sf-js-enabled sticky1">
