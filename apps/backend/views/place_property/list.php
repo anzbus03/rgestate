@@ -27,26 +27,27 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
 <style>
-    .grid-filter-cell input, .grid-filter-cell select {
- 
+.grid-filter-cell input,
+.grid-filter-cell select {
+
     min-width: 50px;
 }
 </style>
 <div id="export_generator" class="hide">
-            <div style="width:100%;display:block;">
-				<form   action="<?php echo Yii::app()->createUrl('place_property/export_properties');?>" id="actifrn">
-				    <div class="row">
-				        		 <div class="col-sm-3 form-group">
-  <label for="fr_date1">All Properties</label>
- 
-  <input id="fr_date1" type="checkbox" onchange="checkthisCheckbox(this)" name="all" value="1"/>
-  </div>
-				        
-				    </div>
-             <div class="row"  >
-				 <div class="col-sm-3 form-group">
-  <label for="fr_date">From Date (Date - Added):</label>
- <?php
+    <div style="width:100%;display:block;">
+        <form action="<?php echo Yii::app()->createUrl('place_property/export_properties');?>" id="actifrn">
+            <div class="row">
+                <div class="col-sm-3 form-group">
+                    <label for="fr_date1">All Properties</label>
+
+                    <input id="fr_date1" type="checkbox" onchange="checkthisCheckbox(this)" name="all" value="1" />
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-3 form-group">
+                    <label for="fr_date">From Date (Date - Added):</label>
+                    <?php
 $this->widget('zii.widgets.jui.CJuiDatePicker',array(
     'name'=>'datepicker',
      'value' => Yii::app()->request->getQuery('datepicker',date('d-m-Y')),
@@ -62,11 +63,11 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
     ),
 ));
 ?>
-  
-  </div>
-  			 <div class="col-sm-3 form-group">
-  <label for="fr_date">To Date (Date - Added):</label>
- <?php
+
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="fr_date">To Date (Date - Added):</label>
+                    <?php
 $this->widget('zii.widgets.jui.CJuiDatePicker',array(
     'name'=>'todatepicker',
     'value' => Yii::app()->request->getQuery('todatepicker',date('d-m-Y')),
@@ -81,167 +82,198 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
     ),
 ));
 ?>
-  
-  </div>
-  	 
-  	   <script>
-  	       function submmitFRm(k){
-  	           var act = $(k).attr('data-action');
-  	           $('#actifrn').attr('action',act);
-  	            $('#actifrn').submit();
-  	           
-  	       }
-  	       function checkthisCheckbox(k){
-  	           if($(k).is(':checked')){
-  	               $('#datepicker').val('');$('#todatepicker').val('');
-  	           }else{
-  	                $('#datepicker').val($('#datepicker').attr('data-value'));$('#todatepicker').val($('#todatepicker').attr('data-value'));
-  	           }
-  	       }
-  	       
-  	   </script>
- <div class="col-sm-6 form-group">
-	 <label for="pwd" style="display:block;">&nbsp;  </label>
-  <button type="button" onclick="submmitFRm(this)" class="btn btn-info hide" data-action="<?php echo Yii::app()->createUrl('place_property/export_properties',array('type'=>'xl'));?>" >Export Excel</button>
-  <button type="button" onclick="submmitFRm(this)" class="btn btn-info hide" data-action="<?php echo Yii::app()->createUrl('place_property/export_properties');?>" >Export CSV</button>
-  <a href="javascript:void(0)" onclick="$('#export_generator').toggleClass('hide')" class="btn btn-default">Hide </a>
-  </div>
- 
-</div> 
-            <div class="clearfix"></div>
-            </form>
-            </div>
-            </div>
- 
-    <div class="box box-primary">
-        <div class="box-header">
-            <div class="pull-left">
-                <h3 class="box-title">
-                    <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
-                </h3>
-            </div>
-            <div class="pull-right">
-                <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id.'/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
-                <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
-                <input type="text" id="dateRange" class="btn btn-default btn-xs" style="margin-left: 10px;" />
-            </div>
-            <div class="clearfix"><!-- --></div>
-        </div>
-        <div class="box-body">
-            <div class="row">
-                <div class="col-sm-10">
-                   <div class="form-group" style="float: left;">
-                       <input type="text" value="<?php echo $model->keyword;?>"  class="form-control" id="Keyword" onblur="setvalThis(this,'PlaceAnAd_keyword')" placeholder="Search Keyword">
-                   </div>
-                  </div>
-                <div class="col-sm-2">
-                    <button type="button" id="exportExcel" class="btn btn-success btn-xs" style="margin-left: 10px;float: right;">Export to Excel</button>
-                    <button type="button" class="btn btn-secondary btn-xs" data-toggle="modal" style="float: right;" data-target="#uploadModal">
-                        Upload By Excel
-                    </button>
+
                 </div>
-               
-                   </div>
-                 <div class="col-sm-2">
-                     <div class="form-group">
-                 <label for="featured"> <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;" class="form-control" id="featured"   onchange="setTagThis2(this,'PlaceAnAd_featured')" <?php echo !empty($model->featured) ? 'checked' : '';?>  >Featured</label>
-                   </div>
-                   </div>
-                 <div class="col-sm-2">
-                     <div class="form-group">
-                 <label for="verified"> <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;" class="form-control" id="verified"   onchange="setTagThis2(this,'PlaceAnAd_verified')" <?php echo !empty($model->verified) ? 'checked' : '';?>  >Verified</label>
-                   </div>
-                   </div>	
-									
-                 <div class="col-sm-2">
-                     <div class="form-group">
-                 <label for="preleased"> <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;" class="form-control" id="preleased"   onchange="setTagThis2(this,'PlaceAnAd_preleased')" <?php echo !empty($model->preleased) ? 'checked' : '';?>  >Preleased</label>
-                   </div>
-                   </div>
-                   <div class="col-sm-2">
-                     <div class="form-group">
-                 <label for="f_properties"> <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;" class="form-control" id="f_properties"   onchange="setTagThis2(this,'PlaceAnAd_f_properties')" <?php echo !empty($model->f_properties) ? 'checked' : '';?>  >Submitted Properties</label>
-                   </div>
-                   </div>
-                       <div class="col-sm-2">
-                     <div class="form-group">
-                 <label for="submited_by">  Submitted By</label>
-                 <?php echo CHtml::dropDownList( 'submited_by',$model->submited_by,$model->getsubmited_by_array(), array('empty'=>'Please select','class'=>'form-control','onchange'=>'setvalThis(this,"PlaceAnAd_submited_by")')); ?>
-                   </div>
-                   </div>
-            
-                </div>
-                <div class="clearfix"></div>
+
                 <script>
-                    $(document).ready(function() {
-                        // Initialize the date range picker
-                        $('#dateRange').daterangepicker({
-                            locale: {
-                                format: 'YYYY-MM-DD'
-                            },
-                            startDate: moment().subtract(29, 'days'),
-                            endDate: moment(),
-                            ranges: {
-                                'Today': [moment(), moment()],
-                                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                            }
-                        }, function(start, end, label) {
-                            fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
-                        });
+                function submmitFRm(k) {
+                    var act = $(k).attr('data-action');
+                    $('#actifrn').attr('action', act);
+                    $('#actifrn').submit();
 
-                        // Function to fetch filtered data
-                        function fetchFilteredData(startDate, endDate) {
-                            $.ajax({
-                                url: '<?php echo Yii::app()->createUrl($this->route); ?>',
-                                type: 'GET',
-                                data: {
-                                    startDate: startDate,
-                                    endDate: endDate
-                                },
-                                success: function(data) {
-                                    $('#<?php echo $model->modelName; ?>-grid').html($(data).find('#<?php echo $model->modelName; ?>-grid').html());
-                                }
-                            });
-                        }
-                        $('#exportExcel').click(function(e) {
-                            var dateRange = $('#dateRange').data('daterangepicker');
-                            var startDate = dateRange.startDate.format('YYYY-MM-DD');
-                            var endDate = dateRange.endDate.format('YYYY-MM-DD');
-                            var exportUrl = '<?php echo Yii::app()->createUrl('place_property/exportExcel'); ?>';
+                }
 
-                            if (startDate && endDate) {
-                                exportUrl += '?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate);
-                                var currentUrl = window.location.href;
-                                if (currentUrl.includes("trash")) {
-                                    exportUrl += "&type=trash";
-                                }
-                            }
-                               
+                function checkthisCheckbox(k) {
+                    if ($(k).is(':checked')) {
+                        $('#datepicker').val('');
+                        $('#todatepicker').val('');
+                    } else {
+                        $('#datepicker').val($('#datepicker').attr('data-value'));
+                        $('#todatepicker').val($('#todatepicker').attr('data-value'));
+                    }
+                }
+                </script>
+                <div class="col-sm-6 form-group">
+                    <label for="pwd" style="display:block;">&nbsp; </label>
+                    <button type="button" onclick="submmitFRm(this)" class="btn btn-info hide"
+                        data-action="<?php echo Yii::app()->createUrl('place_property/export_properties',array('type'=>'xl'));?>">Export
+                        Excel</button>
+                    <button type="button" onclick="submmitFRm(this)" class="btn btn-info hide"
+                        data-action="<?php echo Yii::app()->createUrl('place_property/export_properties');?>">Export
+                        CSV</button>
+                    <a href="javascript:void(0)" onclick="$('#export_generator').toggleClass('hide')"
+                        class="btn btn-default">Hide </a>
+                </div>
 
-                            // Redirect to the export URL
-                            window.location.href = exportUrl;    
-                        });
-                    });
-			function setvalThis(k,fid){
-			 $('#'+fid).val($(k).val()).change();
-			  
-			}
-			function setTagThis2(k,id){
-				if($(k).is(':checked')){
-				$('#'+id).val($(k).val()).change(); 
-				}else{
-					$('#'+id).val('').change(); 
-				}
-			}
-			function setTagThis(k){
-				$('#tag_list2').val($(k).val()).change()
-			}
-			</script>
-                <?php
+            </div>
+            <div class="clearfix"></div>
+        </form>
+    </div>
+</div>
+
+<div class="box box-primary">
+    <div class="box-header">
+        <div class="pull-left">
+            <h3 class="box-title">
+                <span class="glyphicon glyphicon-star"></span>
+                <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
+            </h3>
+        </div>
+        <div class="pull-right">
+            <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id.'/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
+            <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
+            <input type="text" id="dateRange" class="btn btn-default btn-xs" style="margin-left: 10px;" />
+        </div>
+        <div class="clearfix">
+            <!-- -->
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="form-group" style="float: left;">
+                    <input type="text" value="<?php echo $model->keyword;?>" class="form-control" id="Keyword"
+                        onblur="setvalThis(this,'PlaceAnAd_keyword')" placeholder="Search Keyword">
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <button type="button" id="exportExcel" class="btn btn-success btn-xs"
+                    style="margin-left: 10px;float: right;">Export to Excel</button>
+                <button type="button" class="btn btn-secondary btn-xs" data-toggle="modal" style="float: right;"
+                    data-target="#uploadModal">
+                    Upload By Excel
+                </button>
+            </div>
+
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="featured"> <input type="checkbox" value="1"
+                        style="width:auto;height:auto;float:left; margin-right:10px;" class="form-control" id="featured"
+                        onchange="setTagThis2(this,'PlaceAnAd_featured')"
+                        <?php echo !empty($model->featured) ? 'checked' : '';?>>Featured</label>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="verified"> <input type="checkbox" value="1"
+                        style="width:auto;height:auto;float:left; margin-right:10px;" class="form-control" id="verified"
+                        onchange="setTagThis2(this,'PlaceAnAd_verified')"
+                        <?php echo !empty($model->verified) ? 'checked' : '';?>>Verified</label>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="preleased"> <input type="checkbox" value="1"
+                        style="width:auto;height:auto;float:left; margin-right:10px;" class="form-control"
+                        id="preleased" onchange="setTagThis2(this,'PlaceAnAd_preleased')"
+                        <?php echo !empty($model->preleased) ? 'checked' : '';?>>Preleased</label>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="f_properties"> <input type="checkbox" value="1"
+                        style="width:auto;height:auto;float:left; margin-right:10px;" class="form-control"
+                        id="f_properties" onchange="setTagThis2(this,'PlaceAnAd_f_properties')"
+                        <?php echo !empty($model->f_properties) ? 'checked' : '';?>>Submitted Properties</label>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="submited_by"> Submitted By</label>
+                <?php echo CHtml::dropDownList( 'submited_by',$model->submited_by,$model->getsubmited_by_array(), array('empty'=>'Please select','class'=>'form-control','onchange'=>'setvalThis(this,"PlaceAnAd_submited_by")')); ?>
+            </div>
+        </div>
+
+    </div>
+    <div class="clearfix"></div>
+    <script>
+    $(document).ready(function() {
+        // Initialize the date range picker
+        $('#dateRange').daterangepicker({
+            locale: {
+                format: 'YYYY-MM-DD'
+            },
+            startDate: moment().subtract(29, 'days'),
+            endDate: moment(),
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                    'month').endOf('month')]
+            }
+        }, function(start, end, label) {
+            fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+        });
+
+        // Function to fetch filtered data
+        function fetchFilteredData(startDate, endDate) {
+            $.ajax({
+                url: '<?php echo Yii::app()->createUrl($this->route); ?>',
+                type: 'GET',
+                data: {
+                    startDate: startDate,
+                    endDate: endDate
+                },
+                success: function(data) {
+                    $('#<?php echo $model->modelName; ?>-grid').html($(data).find(
+                        '#<?php echo $model->modelName; ?>-grid').html());
+                }
+            });
+        }
+        $('#exportExcel').click(function(e) {
+            var dateRange = $('#dateRange').data('daterangepicker');
+            var startDate = dateRange.startDate.format('YYYY-MM-DD');
+            var endDate = dateRange.endDate.format('YYYY-MM-DD');
+            var exportUrl = '<?php echo Yii::app()->createUrl('place_property/exportExcel'); ?>';
+
+            if (startDate && endDate) {
+                exportUrl += '?startDate=' + encodeURIComponent(startDate) + '&endDate=' +
+                    encodeURIComponent(endDate);
+                var currentUrl = window.location.href;
+                if (currentUrl.includes("trash")) {
+                    exportUrl += "&type=trash";
+                }
+            }
+
+
+            // Redirect to the export URL
+            window.location.href = exportUrl;
+        });
+    });
+
+    function setvalThis(k, fid) {
+        $('#' + fid).val($(k).val()).change();
+
+    }
+
+    function setTagThis2(k, id) {
+        if ($(k).is(':checked')) {
+            $('#' + id).val($(k).val()).change();
+        } else {
+            $('#' + id).val('').change();
+        }
+    }
+
+    function setTagThis(k) {
+        $('#tag_list2').val($(k).val()).change()
+    }
+    </script>
+    <?php
                 /*
             <div class="col-sm-4 hidden">
 			<label>Listing Tags</label>
@@ -251,12 +283,12 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
 				echo '<style>.tag_short_'.$k.'{ display:inline-block;background:'.@$v_code[1].'; padding:2px 5px; margin-right:2px; }.tag_short_'.$k.':before{ content:"'.@$v_code[0].'"; color:#fff; } </style>';
 			}
 			?>
-			
-			</div>
-			* */
-			?>
-			 
-                <?php
+
+</div>
+* */
+?>
+
+<?php
                    function getCategoryName($categoryId, $categoriesArray) {
                 return isset($categoriesArray[$categoryId]) ? $categoriesArray[$categoryId] : '';
             }
@@ -282,8 +314,8 @@ foreach ($categories as $category) {
     $categoriesArray[$category->category_id] = $category->category_name;
 }
                 ?>
-            <div class="table-responsive">
-            <?php 
+<div class="table-responsive">
+    <?php 
             /**
              * This hook gives a chance to prepend content or to replace the default grid view content with a custom content.
              * Please note that from inside the action callback you can access all the controller view
@@ -559,26 +591,32 @@ foreach ($categories as $category) {
                 'renderedGrid'  => $collection->renderGrid,
             )));
             ?>
-            <div class="clearfix"><!-- --></div>
-            </div>    
-            
-			<div class="box-footer">
-			<div class="pull-right">
-			<button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Update Priority');?></button>
-			</div>
-			<div class="clearfix"><!-- --></div>
-			</div>
-			</div>
-          <?php $this->endWidget(); ?>
-        </div>
+    <div class="clearfix">
+        <!-- -->
     </div>
-    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
+</div>
+
+<div class="box-footer">
+    <div class="pull-right">
+        <button type="submit" class="btn btn-primary btn-submit"
+            data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Update Priority');?></button>
+    </div>
+    <div class="clearfix">
+        <!-- -->
+    </div>
+</div>
+</div>
+<?php $this->endWidget(); ?>
+</div>
+</div>
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="uploadModalLabel">Upload Excel and Images</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -591,24 +629,24 @@ foreach ($categories as $category) {
                 ));
                 ?>
                 <div class="form-group">
-                <?php echo $form->labelEx($model, 'excelFile'); ?>
-                <?php echo CHtml::activeFileField($model, 'excelFile'); ?>
-                <?php echo $form->error($model, 'excelFile'); ?>
+                    <?php echo $form->labelEx($model, 'excelFile'); ?>
+                    <?php echo CHtml::activeFileField($model, 'excelFile'); ?>
+                    <?php echo $form->error($model, 'excelFile'); ?>
                 </div>
                 <div class="form-group">
-                <?php echo $form->labelEx($model, 'zipFile'); ?>
-                <?php echo CHtml::activeFileField($model, 'zipFile'); ?>
-                <?php echo $form->error($model, 'zipFile'); ?>
+                    <?php echo $form->labelEx($model, 'zipFile'); ?>
+                    <?php echo CHtml::activeFileField($model, 'zipFile'); ?>
+                    <?php echo $form->error($model, 'zipFile'); ?>
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <?php echo CHtml::submitButton('Upload', array('class' => 'btn btn-primary')); ?>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <?php echo CHtml::submitButton('Upload', array('class' => 'btn btn-primary')); ?>
                 </div>
                 <?php $this->endWidget(); ?>
             </div>
-            </div>
         </div>
     </div>
+</div>
 <?php 
 }
 /**
@@ -622,295 +660,387 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'renderedContent'   => $viewCollection->renderContent,
 )));
 ?>
- 
- 
- 
- <script>
- var lilink  ;
- function previewthis(k,e)
-{
-	e.preventDefault(); lilink  = $(k) ;
-	var url_d = $(k).attr('href') ;
-	$('#myModal').modal('show');
-	$('#preview_body').html('loading...');
-	$.get(url_d,function(data){ if(data){ $('#preview_body').html(data); } })
-}
-function updateStatus(k)
-{
-	 
-	  
-	var url_d = $(k).attr('data-url') ;
-	$.get(url_d,function(data){ 
-	    var data = JSON.parse(data);
-	    lilink.closest('td').html(data.html);  alert("Succesfully Updated");$('#myModal').modal('hide');  })
-} 
-function  saveFormFunction_grid_update_new(form, data, hasError ,Url )
-{ if(!hasError) { $.ajax({  "type":"POST",
-									"url": Url,
-                                    "data":form.serialize(),
-                                    "success":function(data){
-										if(data==1){ 
-											alert('Successfuly updated');
-											$('#myModal').modal('hide');
-				  
-										}
-										else{
-										    
-										 	
-											$('#messager').html('<div class="alert alert-warning"><strong>Warning!</strong>  '+data+'.</div>');
-										}
-                                     },
 
-                                  });
-     }
-      else
-    { 
-		form.find("button.btn-submit").button("reset");
+
+
+<script>
+var lilink;
+
+function previewthis(k, e) {
+    e.preventDefault();
+    lilink = $(k);
+    var url_d = $(k).attr('href');
+    $('#myModal').modal('show');
+    $('#preview_body').html('loading...');
+    $.get(url_d, function(data) {
+        if (data) {
+            $('#preview_body').html(data);
+        }
+    })
+}
+
+function updateStatus(k) {
+
+
+    var url_d = $(k).attr('data-url');
+    $.get(url_d, function(data) {
+        var data = JSON.parse(data);
+        lilink.closest('td').html(data.html);
+        alert("Succesfully Updated");
+        $('#myModal').modal('hide');
+    })
+}
+
+function saveFormFunction_grid_update_new(form, data, hasError, Url) {
+    if (!hasError) {
+        $.ajax({
+            "type": "POST",
+            "url": Url,
+            "data": form.serialize(),
+            "success": function(data) {
+                if (data == 1) {
+                    alert('Successfuly updated');
+                    $('#myModal').modal('hide');
+
+                } else {
+
+
+                    $('#messager').html('<div class="alert alert-warning"><strong>Warning!</strong>  ' +
+                        data + '.</div>');
+                }
+            },
+
+        });
+    } else {
+        form.find("button.btn-submit").button("reset");
         alert('error');
-     }
- }
- </script>
+    }
+}
+</script>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
 
                 </button>
-                 <h4 class="modal-title" id="myModalLabel"> Approval</h4>
+                <h4 class="modal-title" id="myModalLabel"> Approval</h4>
 
             </div>
             <div id="preview_body">
-            
+
             </div>
         </div>
     </div>
 </div>
 <style>
-a.strike { text-decoration: line-through; }
+a.strike {
+    text-decoration: line-through;
+}
 </style>
 
- <script>
-   function  openUp(k)
-    {
-			$('#PlaceAnAd_id').val($(k).parent().parent().find('.propertyId').val())
-		$('#PlaceAnAd_meta_title').val($(k).parent().parent().find('.meta_title').val())
-		$('#PlaceAnAd_meta_title_ar').val($(k).parent().parent().find('.meta_title_ar').val())
-		$('#PlaceAnAd_meta_description').val($(k).parent().parent().find('.meta_description').val())
-		$('#PlaceAnAd_meta_description_ar').val($(k).parent().parent().find('.meta_description_ar').val())
-		$('#extension-upload-modal').modal();
-	 
-	}
-	function  openUp2(k)
-    {
-		var property_id = $(k).parent().parent().find('.propertyId').val();
-		var section_id = $(k).parent().parent().find('.sId').val();
-		var category_id = $(k).parent().parent().find('.cId').val();
-		var listing_type = $(k).parent().parent().find('.lId').val();
-		 
-		if(property_id !=undefined){
-			$('.cli').prop('checked', false);
-			$.get('<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/get_tag_list"); ?>',{id:property_id,sect_id:section_id,category_id:category_id,listing_type:listing_type},function(data){ 
-				 var data = JSON.parse(data);
-				//  alert(data.enabled)
-				 //$('.cli').prop('disabled','disabled');
-				 if(data.enabled !== undefined){
-					// $.each(data.enabled,function(v){  $("input[type=checkbox][value="+v+"]").prop("disabled",false); })
-				 }
-				 if(data.items !==undefined){
-					 
-						 $.each(data.items,function(v){ $("input[type=checkbox][value="+v+"]").prop("checked",true);;})
-					 
-				 }
-				$('#PlaceAnAd_id2').val(property_id); $('#extension-upload-modal2').modal();  })
-			
-		
-		}
-		
-	 
-	}
-	$(function(){
-	$('.ajax-Smit').click(function(){
-		  
-		 var data=$("#miscellaneous-pages-form").serialize();
- 
+<script>
+function openUp(k) {
+    $('#PlaceAnAd_id').val($(k).parent().parent().find('.propertyId').val())
+    $('#PlaceAnAd_meta_title').val($(k).parent().parent().find('.meta_title').val())
+    $('#PlaceAnAd_meta_title_ar').val($(k).parent().parent().find('.meta_title_ar').val())
+    $('#PlaceAnAd_meta_description').val($(k).parent().parent().find('.meta_description').val())
+    $('#PlaceAnAd_meta_description_ar').val($(k).parent().parent().find('.meta_description_ar').val())
+    $('#extension-upload-modal').modal();
 
-		$.ajax({
-		type: 'POST',
-		url: '<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/updatemetatag"); ?>',
-		data:data,
-		success:function(data){
-		
-		 $(".ajax-Smit").removeClass("disabled");
-		 $(".ajax-Smit").removeAttr("disabled");
-		 $(".ajax-Smit").text("Update Meta Tag");
-		 if(parseInt(data)>0)
-		 {
-				$('#meta_description-'+data).val($('#PlaceAnAd_meta_description').val());
-				$('#meta_description-ar-'+data).val($('#PlaceAnAd_meta_description_ar').val());
-				$('#meta_title-'+data).val($('#PlaceAnAd_meta_title').val())
-				$('#meta_title-ar-'+data).val($('#PlaceAnAd_meta_title_ar').val())
-				$("#notify-container-success").show();
-				setTimeout(function(){ $("#notify-container-success").hide();$('#extension-upload-modal').modal('hide'); }, 2000);
-			 
-		 }
-		 else
-		 {
-			   $("#notify-container-failure").show();
-		 }
-		},
-		error: function(data) { // if error occured
-		alert("Error occured.please try again");
-		alert(data);
-		},
+}
 
-		dataType:'html'
-		});
-		
-		})
-			$('.ajax-Smit2').click(function(){
-		  
-		 var data=$("#miscellaneous-pages-form2").serialize();
- 
+function openUp2(k) {
+    var property_id = $(k).parent().parent().find('.propertyId').val();
+    var section_id = $(k).parent().parent().find('.sId').val();
+    var category_id = $(k).parent().parent().find('.cId').val();
+    var listing_type = $(k).parent().parent().find('.lId').val();
 
-		$.ajax({
-		type: 'POST',
-		url: '<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/savetaglist"); ?>',
-		data:data,
-		success:function(data){
-		
-		 $(".ajax-Smit2").removeClass("disabled");
-		 $(".ajax-Smit2").removeAttr("disabled");
-		 $(".ajax-Smit2").text("Update   Tag");
-		 if(parseInt(data)>0)
-		 {
-				 	$("#notify-container-success2").show();
-				setTimeout(function(){ $("#notify-container-success2").hide();$('#extension-upload-modal2').modal('hide'); }, 2000);
-			 
-		 }
-		 else
-		 {
-			   $("#notify-container-failure2").show();
-		 }
-		},
-		error: function(data) { // if error occured
-		alert("Error occured.please try again");
-		alert(data);
-		},
+    if (property_id != undefined) {
+        $('.cli').prop('checked', false);
+        $.get('<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/get_tag_list"); ?>', {
+            id: property_id,
+            sect_id: section_id,
+            category_id: category_id,
+            listing_type: listing_type
+        }, function(data) {
+            var data = JSON.parse(data);
+            //  alert(data.enabled)
+            //$('.cli').prop('disabled','disabled');
+            if (data.enabled !== undefined) {
+                // $.each(data.enabled,function(v){  $("input[type=checkbox][value="+v+"]").prop("disabled",false); })
+            }
+            if (data.items !== undefined) {
 
-		dataType:'html'
-		});
-		
-		})
-		})
-    </script> 
- 
-<div aria-hidden="false" aria-labelledby="extension-upload-modal-label" role="dialog" tabindex="-1" id="extension-upload-modal" class="modal fade in" style="display: none;">
-        <div class="modal-dialog">
-          <div class="modal-content">
+                $.each(data.items, function(v) {
+                    $("input[type=checkbox][value=" + v + "]").prop("checked", true);;
+                })
+
+            }
+            $('#PlaceAnAd_id2').val(property_id);
+            $('#extension-upload-modal2').modal();
+        })
+
+
+    }
+
+
+}
+$(function() {
+    $('.ajax-Smit').click(function() {
+
+        var data = $("#miscellaneous-pages-form").serialize();
+
+
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/updatemetatag"); ?>',
+            data: data,
+            success: function(data) {
+
+                $(".ajax-Smit").removeClass("disabled");
+                $(".ajax-Smit").removeAttr("disabled");
+                $(".ajax-Smit").text("Update Meta Tag");
+                if (parseInt(data) > 0) {
+                    $('#meta_description-' + data).val($('#PlaceAnAd_meta_description')
+                    .val());
+                    $('#meta_description-ar-' + data).val($(
+                        '#PlaceAnAd_meta_description_ar').val());
+                    $('#meta_title-' + data).val($('#PlaceAnAd_meta_title').val())
+                    $('#meta_title-ar-' + data).val($('#PlaceAnAd_meta_title_ar').val())
+                    $("#notify-container-success").show();
+                    setTimeout(function() {
+                        $("#notify-container-success").hide();
+                        $('#extension-upload-modal').modal('hide');
+                    }, 2000);
+
+                } else {
+                    $("#notify-container-failure").show();
+                }
+            },
+            error: function(data) { // if error occured
+                alert("Error occured.please try again");
+                alert(data);
+            },
+
+            dataType: 'html'
+        });
+
+    })
+    $('.ajax-Smit2').click(function() {
+
+        var data = $("#miscellaneous-pages-form2").serialize();
+
+
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/savetaglist"); ?>',
+            data: data,
+            success: function(data) {
+
+                $(".ajax-Smit2").removeClass("disabled");
+                $(".ajax-Smit2").removeAttr("disabled");
+                $(".ajax-Smit2").text("Update   Tag");
+                if (parseInt(data) > 0) {
+                    $("#notify-container-success2").show();
+                    setTimeout(function() {
+                        $("#notify-container-success2").hide();
+                        $('#extension-upload-modal2').modal('hide');
+                    }, 2000);
+
+                } else {
+                    $("#notify-container-failure2").show();
+                }
+            },
+            error: function(data) { // if error occured
+                alert("Error occured.please try again");
+                alert(data);
+            },
+
+            dataType: 'html'
+        });
+
+    })
+})
+</script>
+
+<div aria-hidden="false" aria-labelledby="extension-upload-modal-label" role="dialog" tabindex="-1"
+    id="extension-upload-modal" class="modal fade in" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
             <div class="modal-header">
-              <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-              <h4 class="modal-title">Update Meta Tags.</h4>
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">Update Meta Tags.</h4>
             </div>
             <div class="modal-body">
-				
-				
-                     
-				<?php $form=$this->beginWidget('CActiveForm', array(
+
+
+
+                <?php $form=$this->beginWidget('CActiveForm', array(
 				'id'=>'miscellaneous-pages-form',
 				'enableAjaxValidation'=>false,
 				)); ?>
-				<div id="notify-container-success" style="display:none;"><div class="alert alert-block alert-success"><button data-dismiss="alert" class="close" type="button">×</button><ul><li>Succesfully updated meta tag!</li></ul></div></div>    
-				<div id="notify-container-failure" style="display:none;"><div class="alert alert-block alert-danger"><button data-dismiss="alert" class="close" type="button">×</button><ul><li>Failted to  Updated Meta Tag!</li></ul></div></div>
-				<div class="form-group">
-				<?php echo $form->labelEx($model, 'meta_title');?>
-				<?php echo $form->textField($model, 'meta_title',$model->getHtmlOptions('meta_title')); ?>
-				<?php echo $form->error($model, 'meta_title');?>
-				<?php echo $form->hiddenField($model, 'id',$model->getHtmlOptions('id')); ?>
-				</div>   
-                  
-                <div class="clearfix"><!-- --></div>  
-				<div class="form-group">
-				<?php echo $form->labelEx($model, 'meta_description');?>
-				<?php echo $form->textArea($model, 'meta_description',$model->getHtmlOptions('meta_description')); ?>
-				<?php echo $form->error($model, 'meta_description');?>
-				</div>   
-                <div class="clearfix"><!-- --></div>  
-                     <div class="clearfix"><!-- --></div> 
-                <div class="clearfix"><!-- --></div>  
-				<div class="form-group">
-				<?php echo $form->labelEx($model, 'meta_title_ar');?>
-				<?php echo $form->textField($model, 'meta_title_ar',$model->getHtmlOptions('meta_title_ar',array('max-length'=>250,'dir'=>'auto'))); ?>
-				<?php echo $form->error($model, 'meta_title_ar');?>
-				</div>   
-                <div class="clearfix"><!-- --></div>  
-				<div class="form-group">
-				<?php echo $form->labelEx($model, 'meta_description_ar');?>
-				<?php echo $form->textArea($model, 'meta_description_ar',$model->getHtmlOptions('meta_description_ar',array('max-length'=>250,'dir'=>'auto'))); ?>
-				<?php echo $form->error($model, 'meta_description_ar');?>
-				</div>   
-                <div class="clearfix"><!-- --></div>   
+                <div id="notify-container-success" style="display:none;">
+                    <div class="alert alert-block alert-success"><button data-dismiss="alert" class="close"
+                            type="button">×</button>
+                        <ul>
+                            <li>Succesfully updated meta tag!</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="notify-container-failure" style="display:none;">
+                    <div class="alert alert-block alert-danger"><button data-dismiss="alert" class="close"
+                            type="button">×</button>
+                        <ul>
+                            <li>Failted to Updated Meta Tag!</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'meta_title');?>
+                    <?php echo $form->textField($model, 'meta_title',$model->getHtmlOptions('meta_title')); ?>
+                    <?php echo $form->error($model, 'meta_title');?>
+                    <?php echo $form->hiddenField($model, 'id',$model->getHtmlOptions('id')); ?>
+                </div>
+
+                <div class="clearfix">
+                    <!-- -->
+                </div>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'meta_description');?>
+                    <?php echo $form->textArea($model, 'meta_description',$model->getHtmlOptions('meta_description')); ?>
+                    <?php echo $form->error($model, 'meta_description');?>
+                </div>
+                <div class="clearfix">
+                    <!-- -->
+                </div>
+                <div class="clearfix">
+                    <!-- -->
+                </div>
+                <div class="clearfix">
+                    <!-- -->
+                </div>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'meta_title_ar');?>
+                    <?php echo $form->textField($model, 'meta_title_ar',$model->getHtmlOptions('meta_title_ar',array('max-length'=>250,'dir'=>'auto'))); ?>
+                    <?php echo $form->error($model, 'meta_title_ar');?>
+                </div>
+                <div class="clearfix">
+                    <!-- -->
+                </div>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'meta_description_ar');?>
+                    <?php echo $form->textArea($model, 'meta_description_ar',$model->getHtmlOptions('meta_description_ar',array('max-length'=>250,'dir'=>'auto'))); ?>
+                    <?php echo $form->error($model, 'meta_description_ar');?>
+                </div>
+                <div class="clearfix">
+                    <!-- -->
+                </div>
                 <?php 
 				$this->endWidget();
 				?>
-                </div>
-            <div class="modal-footer">
-              <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-              <button onclick="" data-loading-text="Please wait, processing..." class="btn btn-primary btn-submit ajax-Smit" type="button">Update Meta Tag</button>
             </div>
-          </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                <button onclick="" data-loading-text="Please wait, processing..."
+                    class="btn btn-primary btn-submit ajax-Smit" type="button">Update Meta Tag</button>
+            </div>
         </div>
     </div>
-<div aria-hidden="false" aria-labelledby="extension-upload-modal2-label" role="dialog" tabindex="-1" id="extension-upload-modal2" class="modal fade in" style="display: none;">
-        <div class="modal-dialog">
-          <div class="modal-content">
+</div>
+<div aria-hidden="false" aria-labelledby="extension-upload-modal2-label" role="dialog" tabindex="-1"
+    id="extension-upload-modal2" class="modal fade in" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
             <div class="modal-header">
-              <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-              <h4 class="modal-title">Update   Tags.</h4>
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">Update Tags.</h4>
             </div>
             <div class="modal-body">
-				
-				
-                     
-				<?php $form=$this->beginWidget('CActiveForm', array(
+
+
+
+                <?php $form=$this->beginWidget('CActiveForm', array(
 				'action'=> Yii::app()->createUrl('place_an_ad/save_tags'),
 				'id'=>'miscellaneous-pages-form2',
 				'enableAjaxValidation'=>false,
 				)); ?>
-				<style>.cbox label { width:50%;float:left; }.cbox input { width:auto; float:left;margin-right: 10px;height:auto;}#PlaceAnAd_tags_list { display: block;
+                <style>
+                .cbox label {
+                    width: 50%;
+                    float: left;
+                }
 
-width: 100%;
+                .cbox input {
+                    width: auto;
+                    float: left;
+                    margin-right: 10px;
+                    height: auto;
+                }
 
-clear: both; }.cbox br { clear:both;}</style>
-				<div id="notify-container-success2" style="display:none;"><div class="alert alert-block alert-success"><button data-dismiss="alert" class="close" type="button">×</button><ul><li>Succesfully updated   tags!</li></ul></div></div>    
-				<div id="notify-container-failure2" style="display:none;"><div class="alert alert-block alert-danger"><button data-dismiss="alert" class="close" type="button">×</button><ul><li>Failted to  Updated   tags!</li></ul></div></div>
-				<div class="form-group cbox">
-				<?php echo $form->labelEx($model, 'tags_list');?>
-				<?php echo $form->checkBoxList($model, 'tags_list',$model->place_ad_tag(),$model->getHtmlOptions('tags_list',array('class'=>'form-control cli'))); ?>
-				<?php echo $form->error($model, 'tags_list');?>
-				<?php echo $form->hiddenField($model, 'id2',$model->getHtmlOptions('id2')); ?>
-				</div>   
-                  
-                <div class="clearfix"><!-- --></div>  
-				 
-                <div class="clearfix"><!-- --></div>  
+                #PlaceAnAd_tags_list {
+                    display: block;
+
+                    width: 100%;
+
+                    clear: both;
+                }
+
+                .cbox br {
+                    clear: both;
+                }
+                </style>
+                <div id="notify-container-success2" style="display:none;">
+                    <div class="alert alert-block alert-success"><button data-dismiss="alert" class="close"
+                            type="button">×</button>
+                        <ul>
+                            <li>Succesfully updated tags!</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="notify-container-failure2" style="display:none;">
+                    <div class="alert alert-block alert-danger"><button data-dismiss="alert" class="close"
+                            type="button">×</button>
+                        <ul>
+                            <li>Failted to Updated tags!</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group cbox">
+                    <?php echo $form->labelEx($model, 'tags_list');?>
+                    <?php echo $form->checkBoxList($model, 'tags_list',$model->place_ad_tag(),$model->getHtmlOptions('tags_list',array('class'=>'form-control cli'))); ?>
+                    <?php echo $form->error($model, 'tags_list');?>
+                    <?php echo $form->hiddenField($model, 'id2',$model->getHtmlOptions('id2')); ?>
+                </div>
+
+                <div class="clearfix">
+                    <!-- -->
+                </div>
+
+                <div class="clearfix">
+                    <!-- -->
+                </div>
                 <?php 
 				$this->endWidget();
 				?>
-                </div>
-            <div class="modal-footer">
-              <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-              <button onclick="" data-loading-text="Please wait, processing..." class="btn btn-primary btn-submit ajax-Smit2" type="button">Update   Tags</button>
             </div>
-          </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                <button onclick="" data-loading-text="Please wait, processing..."
+                    class="btn btn-primary btn-submit ajax-Smit2" type="button">Update Tags</button>
+            </div>
         </div>
     </div>
+</div>
 
 <style>
 .dropdown.open .dropdown-menu {
     display: block;
-}.dropdown-item {
+}
+
+.dropdown-item {
     display: block;
     width: 100%;
     padding: .25rem 1.5rem;
@@ -921,87 +1051,99 @@ clear: both; }.cbox br { clear:both;}</style>
     white-space: nowrap;
     background-color: transparent;
     border: 0;
-}.e-link input {
+}
+
+.e-link input {
     position: absolute;
     left: -1000000px;
 }
-
 </style>
 <script>
-function openeditable(k){
-	$('#myModal9').modal('show');
-	var link1 = $(k).attr('data-link1');
-	var link2 = $(k).attr('data-link2');
-	var phone = $(k).attr('data-phone');
-	$('#link1').html(' <a href="'+link1+'" target="_blank" class="link">'+link1+'</a><input type="text" value="'+link1+'" name="txtarea" id="txtarea"><div class="clearfix"></div><a class="doc-link asa-cpy" onclick="copyTextfnNewlink(this)"><i class="fa  fa-clipboard"></i></a> <a href="https://wa.me/'+phone+'?text='+link1+'" target="_blank"><img src="https://www.rishtapakistan.pk/assets/img/5ae21cc526c97415d3213554.png" style="width:50px"></a>')
-	$('#link2').html('    <a href="'+link2+'" target="_blank" class="link">'+link2+'</a><input type="text" value="'+link2+'" name="txtarea" id="txtarea"><div class="clearfix"></div><a class="doc-link asa-cpy" onclick="copyTextfnNewlink(this)"><i class="fa  fa-clipboard"></i></a> <a href="https://wa.me/'+phone+'?text='+link2+'" target="_blank"><img src="https://www.rishtapakistan.pk/assets/img/5ae21cc526c97415d3213554.png" style="width:50px"></a>');
-	
+function openeditable(k) {
+    $('#myModal9').modal('show');
+    var link1 = $(k).attr('data-link1');
+    var link2 = $(k).attr('data-link2');
+    var phone = $(k).attr('data-phone');
+    $('#link1').html(' <a href="' + link1 + '" target="_blank" class="link">' + link1 +
+        '</a><input type="text" value="' + link1 +
+        '" name="txtarea" id="txtarea"><div class="clearfix"></div><a class="doc-link asa-cpy" onclick="copyTextfnNewlink(this)"><i class="fa  fa-clipboard"></i></a> <a href="https://wa.me/' +
+        phone + '?text=' + link1 +
+        '" target="_blank"><img src="https://www.rishtapakistan.pk/assets/img/5ae21cc526c97415d3213554.png" style="width:50px"></a>'
+        )
+    $('#link2').html('    <a href="' + link2 + '" target="_blank" class="link">' + link2 +
+        '</a><input type="text" value="' + link2 +
+        '" name="txtarea" id="txtarea"><div class="clearfix"></div><a class="doc-link asa-cpy" onclick="copyTextfnNewlink(this)"><i class="fa  fa-clipboard"></i></a> <a href="https://wa.me/' +
+        phone + '?text=' + link2 +
+        '" target="_blank"><img src="https://www.rishtapakistan.pk/assets/img/5ae21cc526c97415d3213554.png" style="width:50px"></a>'
+        );
+
 }
+
 function copyTextfnNewlink(k) {
-  /* Get the text field */
-  var copyText = $(k).closest('.e-link').find('input') ;
- 
-  /* Select the text field */
-  copyText.select();
-  //copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+    /* Get the text field */
+    var copyText = $(k).closest('.e-link').find('input');
 
-  /* Copy the text inside the text field */
-  document.execCommand("copy");
+    /* Select the text field */
+    copyText.select();
+    //copyText.setSelectionRange(0, 99999); /*For mobile devices*/
 
-  /* Alert the copied text */
-  
-} 
+    /* Copy the text inside the text field */
+    document.execCommand("copy");
+
+    /* Alert the copied text */
+
+}
 </script>
 <div id="myModal9" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+    <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header" style="display: block;">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Share Editable Link</h4>
-      </div>
-      
-      
-
-<div class="modal-body">
-   <div id="cpyLik">
-      <div class="e-link">
-         <div class="e-linklabel">Editable Link</div>
-         <div class="clearfix"></div>
-        <span id="link1"></span>
-       </div>
-      <div class="e-link">
-         <div class="e-linklabel">Editable Link - Update Only  Picture</div>
-         <div class="clearfix"></div>
-      
-         <span id="link2"></span>
-     
-       </div>
-   </div>
-</div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="display: block;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Share Editable Link</h4>
+            </div>
 
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
+
+            <div class="modal-body">
+                <div id="cpyLik">
+                    <div class="e-link">
+                        <div class="e-linklabel">Editable Link</div>
+                        <div class="clearfix"></div>
+                        <span id="link1"></span>
+                    </div>
+                    <div class="e-link">
+                        <div class="e-linklabel">Editable Link - Update Only Picture</div>
+                        <div class="clearfix"></div>
+
+                        <span id="link2"></span>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
     </div>
-
-  </div>
 </div>
 <script>
-function sendNotification(k,e){
-	 
-	e.preventDefault();
-	var url_load = $(k).attr('href') ;
-	$(k).find('i').html('<i class="fa fa-spin fa-refresh"></i>');
-	$.get(url_load,function(data){
-		$(k).find('i').html('')
-			if(data=='1'){
-				$(k).find('i').html('<i class="fa fa-check"></i>')
-			}
-		})
-	//alert(url_load)
-	//alert("WERWR")
+function sendNotification(k, e) {
+
+    e.preventDefault();
+    var url_load = $(k).attr('href');
+    $(k).find('i').html('<i class="fa fa-spin fa-refresh"></i>');
+    $.get(url_load, function(data) {
+        $(k).find('i').html('')
+        if (data == '1') {
+            $(k).find('i').html('<i class="fa fa-check"></i>')
+        }
+    })
+    //alert(url_load)
+    //alert("WERWR")
 }
 </script>
