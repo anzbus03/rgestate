@@ -1,5 +1,6 @@
 <?php defined( 'MW_PATH' ) || exit( 'No direct script access allowed' );
 
+// use \extensions\PhpSpreadsheet2\IOFactory;
 class Place_propertyController  extends Controller {
 
     /**
@@ -266,102 +267,102 @@ class Place_propertyController  extends Controller {
 	                              $i++;
 			
 		}
-}
-// Rename worksheet
-$objPHPExcel->getActiveSheet()->setTitle('data');
+        }
+        // Rename worksheet
+        $objPHPExcel->getActiveSheet()->setTitle('data');
 
 
-// Set active sheet index to the first sheet, so Excel opens this as the first sheet
-$objPHPExcel->setActiveSheetIndex(0);
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $objPHPExcel->setActiveSheetIndex(0);
 
 
-// Redirect output to a client’s web browser (Excel2007)
-header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;
-                        filename = "'.$file_name_new.'.xlsx"');
-header('Cache-Control: max-age = 0');
-// If you're serving to IE 9, then the following may be needed
-                        header( 'Cache-Control: max-age=1' );
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;
+                                filename = "'.$file_name_new.'.xlsx"');
+        header('Cache-Control: max-age = 0');
+        // If you're serving to IE 9, then the following may be needed
+                                header( 'Cache-Control: max-age=1' );
 
-                        // If you're serving to IE over SSL, then the following may be needed
-header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-header ('Pragma: public'); // HTTP/1.0
+                                // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
 
-$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-$objWriter->save('php://output');
-}/*else{
-	
- 
-	$delimiter = ",";
-	$filename = $file_name_new. ".csv";
-  	
-	$f = fopen('php://memory', 'w' );
-    
-    //set column headers
- 
-     fputcsv($f, $fields, $delimiter);
-  
-    //output each row of the data, format line as csv and write to file pointer
-		foreach($ad as $k=>$v){
-			
-		//	echo $v->id; echo '<br />';
-		
-		$statistcs = StatisticsPage::model()->pageCount('',$v->id);
-		   $lineData = 
-		   $fields = array(
-		
-		'A'=>$v->id,//Ad_Id
-		'B'=>'-',//Advertiser_character
-		'C'=>$v->OwnerName ,//'Advertiser_name'
-		'D'=>$v->mobile_number,//Advertiser_mobile_number
-		'E'=>$v->SecNewTitle,//The_main_type_of_ad
-		'F'=>$v->AdDescription2,//'Ad_description'
-		'G'=>$v->listing_category.', '.$v->category_name,//Ad_subtype
-		'H'=>$v->dateAdded,//Advertisement_publication_date
-		'I'=>$v->lastUpdated,//'Ad_update_date'
-		'J'=>'-',//Ad_expiration
-		'K'=>$v->status=='A' ? '1' :'0',//'Ad_status'
-		'L'=>	$statistcs->s_count,//Ad_Views
-		'M'=>'-',//District_Name
-		'N'=>$v->state_name,//'City_Name'
-		'O'=>'-',//Neighbourhood_Name
-		'P'=>$v->AreaLocation,//'Street_Name'
-		'Q'=>$v->location_latitude,//Longitude
-		'R'=>$v->location_longitude,//'Lattitude'
-		'S'=>isset($amenieArray['293']) ? 'Yes' : '-',//Furnished
-		'T'=>isset($amenieArray['300']) ? 'Yes' : '-',//Kitchen
-		'U'=>isset($amenieArray['290']) ? 'Yes' : '-',//Air_Condition
-		'V'=>$facilities,//facilities
-		'W'=>'',//Using_For
-		'X'=>$v->category_name,//Property_Type
-		'Y'=>'',//The_Space
-		'Z'=>'',//Land_Number
-		'AA'=>'',//Plan_Number
-		'AB'=>'',//Number_Of_Units
-		'AC'=>'',//Floor_Number
-		'AD'=>'',//Unit_Number
-		'AE'=>'',//Rooms_Number
-		'AF'=>'',//Rooms_Type
-		'AG'=>'',//Real_Estate_Facade
-		'AH'=>'',//Street_Width
-		'AI'=>'',//Construction_Date
-		'AJ'=>$v->section_id=='2' ? $v->PriceTitleSimpleRent: '' ,//Rental_Price
-		'AK'=> $v->section_id=='1' ?$v->PriceTitleSimple:'',//'Selling_Price'
-		'AL'=>$v->selling_price,//Selling_Meter_Price
-		'AM'=>'',//Property limits and lenghts
-		'AN'=>'',//Is there a mortgage or restriction that prevents or limits the use of the property
-		'AO'=>'',//Rights and obligations over real estate that are not documented in the real estate document
-		'AP'=>'',//Information that may affect the property
-		'AQ'=>'',//Property disputes
-		'AR'=>isset($amenieArray['345']) ? 'Yes' : '-',//Availability of elevators
-		'AS'=>isset($amenieArray['345']) ? $amenieArray['345'] : '-',//Number of elevators
-		'AT'=>isset($amenieArray['475']) ? 'Yes' : '-',//Availability of Parking
-		'AU'=>isset($amenieArray['475']) ? $amenieArray['475'] : '-',//Number of parking
-		'AV'=>'',//Advertiser category
-		'AW'=>$v->cr_number,//Advertiser license number
-		'AX'=>$v->user_email,//Advertiser's emailr
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save('php://output');
+        }/*else{
+            
+        
+            $delimiter = ",";
+            $filename = $file_name_new. ".csv";
+            
+            $f = fopen('php://memory', 'w' );
+            
+            //set column headers
+        
+            fputcsv($f, $fields, $delimiter);
+        
+            //output each row of the data, format line as csv and write to file pointer
+                foreach($ad as $k=>$v){
+                    
+                //	echo $v->id; echo '<br />';
+                
+                $statistcs = StatisticsPage::model()->pageCount('',$v->id);
+                $lineData = 
+                $fields = array(
+                
+                'A'=>$v->id,//Ad_Id
+                'B'=>'-',//Advertiser_character
+                'C'=>$v->OwnerName ,//'Advertiser_name'
+                'D'=>$v->mobile_number,//Advertiser_mobile_number
+                'E'=>$v->SecNewTitle,//The_main_type_of_ad
+                'F'=>$v->AdDescription2,//'Ad_description'
+                'G'=>$v->listing_category.', '.$v->category_name,//Ad_subtype
+                'H'=>$v->dateAdded,//Advertisement_publication_date
+                'I'=>$v->lastUpdated,//'Ad_update_date'
+                'J'=>'-',//Ad_expiration
+                'K'=>$v->status=='A' ? '1' :'0',//'Ad_status'
+                'L'=>	$statistcs->s_count,//Ad_Views
+                'M'=>'-',//District_Name
+                'N'=>$v->state_name,//'City_Name'
+                'O'=>'-',//Neighbourhood_Name
+                'P'=>$v->AreaLocation,//'Street_Name'
+                'Q'=>$v->location_latitude,//Longitude
+                'R'=>$v->location_longitude,//'Lattitude'
+                'S'=>isset($amenieArray['293']) ? 'Yes' : '-',//Furnished
+                'T'=>isset($amenieArray['300']) ? 'Yes' : '-',//Kitchen
+                'U'=>isset($amenieArray['290']) ? 'Yes' : '-',//Air_Condition
+                'V'=>$facilities,//facilities
+                'W'=>'',//Using_For
+                'X'=>$v->category_name,//Property_Type
+                'Y'=>'',//The_Space
+                'Z'=>'',//Land_Number
+                'AA'=>'',//Plan_Number
+                'AB'=>'',//Number_Of_Units
+                'AC'=>'',//Floor_Number
+                'AD'=>'',//Unit_Number
+                'AE'=>'',//Rooms_Number
+                'AF'=>'',//Rooms_Type
+                'AG'=>'',//Real_Estate_Facade
+                'AH'=>'',//Street_Width
+                'AI'=>'',//Construction_Date
+                'AJ'=>$v->section_id=='2' ? $v->PriceTitleSimpleRent: '' ,//Rental_Price
+                'AK'=> $v->section_id=='1' ?$v->PriceTitleSimple:'',//'Selling_Price'
+                'AL'=>$v->selling_price,//Selling_Meter_Price
+                'AM'=>'',//Property limits and lenghts
+                'AN'=>'',//Is there a mortgage or restriction that prevents or limits the use of the property
+                'AO'=>'',//Rights and obligations over real estate that are not documented in the real estate document
+                'AP'=>'',//Information that may affect the property
+                'AQ'=>'',//Property disputes
+                'AR'=>isset($amenieArray['345']) ? 'Yes' : '-',//Availability of elevators
+                'AS'=>isset($amenieArray['345']) ? $amenieArray['345'] : '-',//Number of elevators
+                'AT'=>isset($amenieArray['475']) ? 'Yes' : '-',//Availability of Parking
+                'AU'=>isset($amenieArray['475']) ? $amenieArray['475'] : '-',//Number of parking
+                'AV'=>'',//Advertiser category
+                'AW'=>$v->cr_number,//Advertiser license number
+                'AX'=>$v->user_email,//Advertiser's emailr
                         'AY'=>'', //Advertiser registration number
                         'AZ'=>'', //Authorization number
 
@@ -1955,7 +1956,36 @@ $objWriter->save('php://output');
 
         return $LatLng;
     }
-
+    public function actionUploadExcel()
+    {
+        $model = new PlaceAnAd(); // Replace with your actual model name
+        // print_r($_FILES['excelFile']);
+        // exit;
+        if (isset($_FILES['excelFile'])) {
+            $excelFile = $_FILES['excelFile']['tmp_name'];
+            $zipFile = $_FILES['zipFile']['tmp_name'];
+            // Process Excel file
+            if ($excelFile) {
+                $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
+                print_r($excelData);
+                exit;
+                // Handle the $excelData as needed
+            }
+    
+            // Process ZIP file
+            if ($zipFile) {
+                $zipPath = Yii::getAlias('@webroot/uploads/images/') . basename($_FILES['zipFile']['name']);
+                move_uploaded_file($zipFile, $zipPath);
+                // Handle the ZIP file as needed
+            }
+            
+            // Respond with success
+            return $this->asJson(['status' => 'success']);
+        }
+    
+        $this->render('upload'); // Adjust as needed
+    }
+    
     function check_status( $jsondata ) {
         if ( $jsondata[ 'status' ] == 'OK' ) return true;
         return false;

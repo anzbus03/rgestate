@@ -34,9 +34,10 @@ return array(
         'backend.models.*',   
         'backend.models.customer-group.*',
         'common.extensions.yii-easyimage-master.EasyImage',
-         'extensions.YiiMailer.YiiMailer'
+        'extensions.YiiMailer.YiiMailer',
+        'extensions.PhpSpreadsheet2.IOFactory'
+
     ),
-    
     'components' => array(
         
         'request' => array( 

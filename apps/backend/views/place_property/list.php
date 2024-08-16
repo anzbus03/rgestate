@@ -609,7 +609,7 @@ foreach ($categories as $category) {
 <?php $this->endWidget(); ?>
 </div>
 </div>
-<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+ <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -620,33 +620,23 @@ foreach ($categories as $category) {
                 </button>
             </div>
             <div class="modal-body">
-                <?php
-                $form = $this->beginWidget('CActiveForm', array(
-                    'id'        => 'upload-form',
-                    'enableClientValidation' => true,
-                    'action' => Yii::app()->createUrl(Yii::app()->controller->id . '/uploadExcel'), 
-                    'htmlOptions' => array('enctype' => 'multipart/form-data'),
-                ));
-                ?>
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'excelFile'); ?>
-                    <?php echo CHtml::activeFileField($model, 'excelFile'); ?>
-                    <?php echo $form->error($model, 'excelFile'); ?>
-                </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'zipFile'); ?>
-                    <?php echo CHtml::activeFileField($model, 'zipFile'); ?>
-                    <?php echo $form->error($model, 'zipFile'); ?>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <?php echo CHtml::submitButton('Upload', array('class' => 'btn btn-primary')); ?>
-                </div>
-                <?php $this->endWidget(); ?>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="excelFile">Excel File</label>
+                        <input type="file" id="excelFile" name="excelFile" accept=".xlsx,.xls">
+                    </div>
+                    <div class="form-group">
+                        <label for="zipFile">ZIP File</label>
+                        <input type="file" id="zipFile" name="zipFile" accept=".zip">
+                    </div>
+                    <button type="submit">Upload</button>
+                </form>
+                <div id="uploadStatus"></div>
             </div>
         </div>
     </div>
-</div>
+</div> 
+
 <?php 
 }
 /**
@@ -661,9 +651,56 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 )));
 ?>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
 
 <script>
+$(document).ready(function () {
+    $('#uploadForm').on('submit', function (e) {
+        e.preventDefault(); // Prevent default form submission
+        
+        var formData = new FormData(this); // Create FormData object from form
+
+        // Handle Excel file
+        var excelFile = $('#excelFile')[0].files[0];
+        if (excelFile) {
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                var data = new Uint8Array(event.target.result);
+                var workbook = XLSX.read(data, { type: 'array' });
+                var sheetName = workbook.SheetNames[0];
+                var sheet = workbook.Sheets[sheetName];
+                var json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                
+                // Add Excel data to FormData
+                formData.append('excelData', JSON.stringify(json));
+                
+                uploadFiles(formData); // Call function to upload files
+            };
+            reader.readAsArrayBuffer(excelFile);
+        } 
+        // else {
+        //     uploadFiles(formData); // Call function to upload files without Excel data
+        // }
+    });
+
+    function uploadFiles(formData) {
+        $.ajax({
+            url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/uploadExcel'); ?>',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                $('#uploadStatus').text('Upload successful!');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $('#uploadStatus').text('Upload failed: ' + textStatus);
+            }
+        });
+    }
+});
+
 var lilink;
 
 function previewthis(k, e) {
