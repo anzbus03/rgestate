@@ -80,24 +80,23 @@ if ($viewCollection->renderContent) { ?>
                                 <td><?php echo CHtml::decode($data->PropertyDetail); ?></td>
                                 <td><?php echo CHtml::encode($data->IpInfo); ?></td>
                                 <td>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/update')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'View'); ?>" onclick="loadthis(this, event)">
-                                        <span class="fa fa-eye"></span>
-                                    </a>
-                                <?php } ?>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/delete')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
-                                        <span class="fa fa-trash"></span>
-                                    </a>
-                                <?php } ?>
-                            </td>
-
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/update')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'View'); ?>" onclick="loadthis(this, event)">
+                                            <span class="fa fa-eye"></span>
+                                        </a>
+                                    <?php } ?>
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/delete')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
+                                            <span class="fa fa-trash"></span>
+                                        </a>
+                                    <?php } ?>
+                                </td>
                             </tr>
                         <?php } ?>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>Name</th>
+                            <th>Full Name</th>
                             <th>Email</th>
                             <th>Phone</th>
                             <th>AD</th>
@@ -184,7 +183,7 @@ function updateTable(sectionId) {
             $('#enquiries tbody').html(response);
             
         },
-        error: function() {
+        error: function() {enquiries
             alert('Error loading data');
         }
     });

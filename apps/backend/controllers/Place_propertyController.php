@@ -2001,7 +2001,7 @@ $objWriter->save('php://output');
         }
         if ( $condition ) {
             if ( $criteria->condition ) {
-                $criteria->condition .= $condition;
+                $criteyria->condition .= $condition;
             } else {
                 $criteria->condition .= '1 and '.$condition;
 
@@ -2381,7 +2381,7 @@ $objWriter->save('php://output');
 		 }
 		echo json_encode(array('data'=>$html,'size'=>sizeOf($states))) ; 
 	}
-	 public function actionSelect_location($id=null)
+    public function actionSelect_location($id=null)
     {
 		 $html = '<option value = "">Select Location</option>';
 		 $states = City::model()->FindCities((int) $id);
@@ -2425,29 +2425,22 @@ $objWriter->save('php://output');
 	  exit;
 	  exit;
 	}
-	 public function actionSelect_category3($id=null)
+    public function actionSelect_category3($id=null)
     {
 	  $category =    Category::model()->ListDataForJSON_ID_BySEctionNew($id) ;
-		 $html =  CHtml::radioButtonList('listing_type','' ,$category,array( 'onchange'=>'load_via_ajax_main_category( this )','data-url'=>Yii::App()->createUrl($this->id.'/select_category4'),'separator'=>'','labelOptions'=>array('class'=>'')
-				,'template'=>'<div class = "inputGroup"> {
-    input}
-    {
-        label}
-        </div>'));
+	 
+		 $html =  CHtml::radioButtonList('listing_type','' ,$category,array( 'onchange'=>'load_via_ajax_main_category(this)','data-url'=>Yii::App()->createUrl($this->id.'/select_category4'),'separator'=>'','labelOptions'=>array('class'=>'')
+				,'template'=>'<div class="inputGroup">{input}   {label}</div>'));
 		echo json_encode(array('data'=>$html,'size'=>sizeOf($category))) ;
 	  
 	  exit;
 	}
-	 public function actionSelect_category4($id=null)
+    public function actionSelect_category4($id=null)
     {
 	  $category =    Category::model()->ListDataForJSON_ID_ByListingType($id) ;
 	 
 		 $html =  CHtml::radioButtonList('category_id','' ,$category,array( 'onchange'=>'validateInputSector()','separator'=>'','labelOptions'=>array('class'=>'')
-				,'template'=>'<div class = "inputGroup"> {
-            input}
-            {
-                label}
-                </div>'));
+				,'template'=>'<div class="inputGroup">{input}   {label}</div>'));
 		echo json_encode(array('data'=>$html,'size'=>sizeOf($category))) ;
 	  
 	  exit;
