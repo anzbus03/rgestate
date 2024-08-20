@@ -29,7 +29,8 @@ $commonModel = new OptionCommon();
                                         <?php echo $v->title; ?>
                                     </div>
                                     <div class="blog-meta">
-                                        <?php echo date('F j, Y', strtotime($v->last_updated)); 
+                                        <?php 
+                                        echo date('F j, Y', strtotime($v->date_added)); 
                                             $author_id = $v->author_id;
                                             // Find the author by author_id
                                             $author = BlogAuthors::model()->findByPk($author_id);
