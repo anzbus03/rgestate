@@ -26,7 +26,11 @@ $commonModel = new OptionCommon();
                                         <img class="lozad card-img-top" style="object-fit: cover;" alt="<?php echo $v->title; ?>" decoding="async" src="<?php echo is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl; ?>">
                                     </div>
                                     <div class="blog-text">
-                                        <?php echo $v->title; ?>
+                                        <?php 
+                                        $maxLength = 80; // Adjust the max length as needed
+                                        $title = strlen($v->title) > $maxLength ? substr($v->title, 0, $maxLength) . '...' : $v->title;
+                                        echo $title; 
+                                        ?>
                                     </div>
                                     <div class="blog-meta">
                                         <?php 
