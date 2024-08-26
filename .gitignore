@@ -6,3 +6,4 @@ apps/init2.php
 /apps/common/config/main-custom.php 
 /apps/common/runtime/application.log
 uploads/images/*
+backend/assets/cache/*

@@ -609,6 +609,18 @@ foreach ($categories as $category) {
 <?php $this->endWidget(); ?>
 </div>
 </div>
+
+ <!-- This is the upload modal, you have to method to upload by excel
+            1. To use php package which is the common way, however in this project there is no composer
+               So if you know how to install a php package and use it without composer go ahead with this option.
+            2. Using JS which is the method I have already started, where using js package read the excel sheet and 
+               the image file and send it to the backend in the form of array. So in controller you will loop through the 
+               array coming from frontend and save it to db.
+
+
+    Also one more point here is that you need to add download template for user to download template of header column requirements
+    and then fill all the fields and reupload again.
+ -->
  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -651,10 +663,13 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 )));
 ?>
 
+<!-- This is the js package to read excel sheet -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
 
 <script>
+// This is the starting of js method function, analyze it and see which method you can finish it faster and go ahead with it
 $(document).ready(function () {
     $('#uploadForm').on('submit', function (e) {
         e.preventDefault(); // Prevent default form submission
@@ -686,6 +701,8 @@ $(document).ready(function () {
 
     function uploadFiles(formData) {
         $.ajax({
+            // Yii::app()->controller->id here refers to place_propertyController and the function name is uploadExcel, you can also get controller name from url
+            // place_property
             url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/uploadExcel'); ?>',
             type: 'POST',
             data: formData,
@@ -700,7 +717,7 @@ $(document).ready(function () {
         });
     }
 });
-
+// This is the end
 var lilink;
 
 function previewthis(k, e) {

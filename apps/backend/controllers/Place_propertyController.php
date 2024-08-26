@@ -797,7 +797,7 @@ class Place_propertyController  extends Controller {
         }
         *
         */
-
+// This is the create property function, apply the same for uploading excel but read the requirements from excel
         public function actionCreate( $imp = null ) {
 
             $request = Yii::app()->request;
@@ -1956,6 +1956,9 @@ class Place_propertyController  extends Controller {
 
         return $LatLng;
     }
+    // This is the upload excel function
+    // Have a look at it, see create property function and how they are uploading inmages and assigning images to ad id and do the same here.
+
     public function actionUploadExcel()
     {
         $model = new PlaceAnAd(); // Replace with your actual model name
