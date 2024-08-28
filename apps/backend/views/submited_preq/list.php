@@ -61,42 +61,6 @@ if ($viewCollection->renderContent) { ?>
         </div>
     </div>
 
-
-    <!-- Modal Structure -->
-    <!-- <div id="viewModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            Modal content
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Requirement Details</h4>
-                </div>
-                <div class="modal-body" id="modalContent">
-                    <p>Loading...</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- <script>
-        $(document).ready(function() {
-            $('.fancybox-view').on('click', function(e) {
-                e.preventDefault();
-                var href = $(this).attr('href');
-                $('#viewModal').modal('show');
-                $('#modalContent').html('<p>Loading...</p>');
-                $.get(href, function(data) {
-                    $('#modalContent').html(data);
-                }).fail(function() {
-                    $('#modalContent').html('<p>Error loading content.</p>');
-                });
-            });
-        });
-    </script> -->
-
 <?php
 }
 /**

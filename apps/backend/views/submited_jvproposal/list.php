@@ -19,6 +19,7 @@
  * in order to stop rendering the default content.
  * @since 1.3.3.1
  */
+
 $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCollection(array(
     'controller'    => $this,
     'renderContent' => true,
@@ -29,8 +30,8 @@ if ($viewCollection->renderContent) { ?>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title">
-                <span class="fa fa-star"></span> 
-                <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
+                <span class="fa fa-star"></span>
+                <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title . " List"); ?>
             </h3>
             <div>
                 <div class="row">
@@ -47,39 +48,39 @@ if ($viewCollection->renderContent) { ?>
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Phone</th>
+                            <th>mobile</th>
                             <th>Date</th>
                             <th>Options</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($model->search()->getData() as $data) { ?>
-                        <tr>
-                            <td><?php echo CHtml::decode($data->name); ?></td>
-                            <td><?php echo CHtml::decode($data->email); ?></td>
-                            <td><?php echo CHtml::encode($data->phone); ?></td>
-                            <td><?php echo CHtml::encode($data->dateAdded); ?></td>
-                            <td>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/update')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                <?php } ?>
-                            
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/delete')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
-                                        <i class="fa fa-times-circle"></i>
-                                    </a>
-                                <?php } ?>
-                            </td>
-                        </tr>
-                    <?php } ?>
+                        <?php foreach ($model->search()->getData() as $data) { ?>
+                            <tr>
+                                <td><?php echo CHtml::decode($data->name); ?></td>
+                                <td><?php echo CHtml::decode($data->email); ?></td>
+                                <td><?php echo CHtml::encode($data->mobile); ?></td>
+                                <td><?php echo CHtml::encode($data->date_added); ?></td>
+                                <td>
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('jv_id' => $data->jv_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>" onclick="loadthis(this, event)">
+                                            <i class="fa fa-eye" style="margin-right: 5px"></i>
+                                        </a>
+                                    <?php } ?>
+
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('jv_id' => $data->jv_id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
+                                            <i class="fa fa-times-circle"></i>
+                                        </a>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
-            </div>  
+            </div>
         </div>
     </div>
-<?php 
+<?php
 }
 /**
  * This hook gives a chance to append content after the view file default content.
@@ -92,12 +93,12 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'renderedContent'   => $viewCollection->renderContent,
 )));
 ?>
- 
-  
- <script>
+
+
+<script>
     $(document).ready(function() {
         $('#submitedReqList').DataTable({
-            createdRow: function (row, data, index) {
+            createdRow: function(row, data, index) {
                 $(row).addClass('selected');
             },
             language: {
@@ -107,6 +108,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 }
             }
         });
+
         // Initialize the date range picker
         $('#dateRange').daterangepicker({
             locale: {
@@ -136,10 +138,15 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     endDate: endDate
                 },
                 success: function(data) {
-                    $('#<?php echo $model->modelName; ?>-grid').html($(data).find('#<?php echo $model->modelName; ?>-grid').html());
+                    // console.log(data);
+                    $('#submitedReqList').html($(data).find('#submitedReqList').html());
+                },
+                error: function(error) {
+                    console.error("Error fetching data:", error);
                 }
             });
         }
+
         $('#exportExcel').click(function(e) {
             var dateRange = $('#dateRange').data('daterangepicker');
             var startDate = dateRange.startDate.format('YYYY-MM-DD');
@@ -152,28 +159,50 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     exportUrl += "&type=trash";
                 }
             }
-                
 
             // Redirect to the export URL
-            window.location.href = exportUrl;    
+            window.location.href = exportUrl;
         });
     });
+</script>
 
- $("#iframe").fancybox({
-    'width'         : '600px',
-    'title'			:"View",
-    'autoScale'     : false,
-    'transitionIn'  : 'none',
-    'transitionOut' : 'none',
-    'type'          : 'iframe',
-    'titleShow'		: false,
-});
- </script>
 
 <style>
-.grid-filter-cell input, .grid-filter-cell select {
- 
-    max-width: 200px;
-}
+    .grid-filter-cell input,
+    .grid-filter-cell select {
 
+        max-width: 200px;
+    }
 </style>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn close" data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Proposal Details</h4>
+            </div>
+            <div class="modal-body" id="html_content">
+                <p>Loading...</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function loadthis(k, e) {
+        e.preventDefault();
+        var href_url = $(k).attr('href');
+        $('#myModal').modal('show');
+        $('#html_content').html('<p>Loading..</p>');
+        $.get(href_url, function(data) {
+            $('#html_content').html(data);
+        })
+    }
+</script>
