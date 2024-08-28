@@ -29,10 +29,10 @@ if ($viewCollection->renderContent) { ?>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title">
-                <span class="fa fa-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
+                <span class="fa fa-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title . " List"); ?>
             </h3>
             <div>
-            <!-- <input type="text" id="dateRange" class="form-control " style="margin-left: 10px;" /> -->
+                <!-- <input type="text" id="dateRange" class="form-control " style="margin-left: 10px;" /> -->
             </div>
         </div>
         <div class="card-body">
@@ -57,22 +57,22 @@ if ($viewCollection->renderContent) { ?>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($model->search()->getData() as $data) { 
-                            ?>
-                            
+                        <?php foreach ($model->search()->getData() as $data) {
+                        ?>
+
                             <tr>
                                 <td><?php echo CHtml::encode($data->name); ?></td>
                                 <td><?php echo CHtml::encode($data->email); ?></td>
                                 <td><?php echo CHtml::encode($data->phone); ?></td>
                                 <td><?php echo CHtml::encode($data->dateAdded); ?></td>
                                 <td>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/update')) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'View'); ?>" onclick="loadthis(this, event)">
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'View'); ?>" onclick="loadthis(this, event)">
                                             <span class="fa fa-eye"></span>
                                         </a>
                                     <?php } ?>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/delete')) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
                                             <span class="fa fa-trash"></span>
                                         </a>
                                     <?php } ?>
@@ -94,7 +94,7 @@ if ($viewCollection->renderContent) { ?>
         </div>
     </div>
 
-<?php 
+<?php
 }
 /**
  * This hook gives a chance to append content after the view file default content.
@@ -107,14 +107,14 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'renderedContent'   => $viewCollection->renderContent,
 )));
 ?>
- 
- 
 
 
- <script>
+
+
+<script>
     $(document).ready(function() {
         $('#careerList').DataTable({
-            createdRow: function (row, data, index) {
+            createdRow: function(row, data, index) {
                 $(row).addClass('selected');
             },
             language: {
@@ -125,68 +125,76 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             }
         });
     });
-function UpdateEmailReceivers(k){
-	var id = $(k).attr('data-id');
-	if(id !==undefined){
-	$.get('<?php echo Yii::app()->createUrl('dashboard/get_email_receicers');?>/id/'+id,function(data){ 
-					var data = JSON.parse(data);
-					if(data.status=='0'){
-						alert('No Email Template Found');
-						
-					}
-					else if(data.status=='1'){
-						$('#email_receivers').modal('show');
-						$('#email_list').val(data.receiver_list);
-					}
-		})
-	}
-	
-}
-function updateReceiveList(k){
-	var id = $(k).attr('data-id');
-	if($('#email_list').val()==''){ alert('Please enter atleast one email address');$('#email_list').focus(); return false; }
-	if(id !==undefined){
-	$.post('<?php echo Yii::app()->createUrl('dashboard/set_email_receicers');?>/id/'+id,{val:$('#email_list').val()},function(data){ 
-					var data = JSON.parse(data);
-					if(data.status=='0'){
-						alert('No Email Template Found');
-						
-					}
-					else if(data.status=='1'){
-						 alert('Updated email receivers');
-					}
-		})
-	}
-	
-}
+
+    function UpdateEmailReceivers(k) {
+        var id = $(k).attr('data-id');
+        if (id !== undefined) {
+            $.get('<?php echo Yii::app()->createUrl('dashboard/get_email_receicers'); ?>/id/' + id, function(data) {
+                var data = JSON.parse(data);
+                if (data.status == '0') {
+                    alert('No Email Template Found');
+
+                } else if (data.status == '1') {
+                    $('#email_receivers').modal('show');
+                    $('#email_list').val(data.receiver_list);
+                }
+            })
+        }
+
+    }
+
+    function updateReceiveList(k) {
+        var id = $(k).attr('data-id');
+        if ($('#email_list').val() == '') {
+            alert('Please enter atleast one email address');
+            $('#email_list').focus();
+            return false;
+        }
+        if (id !== undefined) {
+            $.post('<?php echo Yii::app()->createUrl('dashboard/set_email_receicers'); ?>/id/' + id, {
+                val: $('#email_list').val()
+            }, function(data) {
+                var data = JSON.parse(data);
+                if (data.status == '0') {
+                    alert('No Email Template Found');
+
+                } else if (data.status == '1') {
+                    alert('Updated email receivers');
+                }
+            })
+        }
+
+    }
 </script>
 
 <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+    <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="btn close" data-bs-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Contact Us</h4>
-      </div>
-      <div class="modal-body" id="html_content">
-        <p>Loading...</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn close" data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Contact Us</h4>
+            </div>
+            <div class="modal-body" id="html_content">
+                <p>Loading...</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+
     </div>
-
-  </div>
 </div>
 
 <script>
-function loadthis(k,e){
-	e.preventDefault();
-	var href_url  = $(k).attr('href');
-	$('#myModal').modal('show');$('#html_content').html('<p>Loading..</p>');
-	$.get(href_url,function(data){ $('#html_content').html(data); })
-}
-
+    function loadthis(k, e) {
+        e.preventDefault();
+        var href_url = $(k).attr('href');
+        $('#myModal').modal('show');
+        $('#html_content').html('<p>Loading..</p>');
+        $.get(href_url, function(data) {
+            $('#html_content').html(data);
+        })
+    }
 </script>
