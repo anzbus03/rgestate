@@ -131,9 +131,9 @@ if ($viewCollection->renderContent) { ?>
                                                 <i class="fa fa-pencil"></i>
                                             </a>
                                         <?php } ?>
-                                        <a href="<?php echo Yii::app()->createUrl('statistics/property_statistics', array('property_id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Statistics'); ?>" target="_blank">
+                                        <!-- <a href="<?php echo Yii::app()->createUrl('statistics/property_statistics', array('property_id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Statistics'); ?>" target="_blank">
                                             <i class="fa fa-bar-chart text-red"></i>
-                                        </a>
+                                        </a> -->
                                         <a href="<?php echo $data->PreviewUrlTrashB; ?>" title="<?php echo Yii::t('app', 'View'); ?>" target="_blank" class="text-green">
                                             <i class="fa fa-eye"></i>
                                         </a>
@@ -169,9 +169,9 @@ if ($viewCollection->renderContent) { ?>
                                         <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Update Meta Tag'); ?>" data-toggle="modal" onclick="openUp(this)">
                                             <i class="fa fa-tags"></i>
                                         </a>
-                                        <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Tag Your Property'); ?>" data-toggle="modal" onclick="openUp2(this)">
+                                        <!-- <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Tag Your Property'); ?>" data-toggle="modal" onclick="openUp2(this)">
                                             <i class="fa fa-tags bg-yellow"></i>
-                                        </a>
+                                        </a> -->
                                     </td>
                                 </tr>
                             <?php } ?>
