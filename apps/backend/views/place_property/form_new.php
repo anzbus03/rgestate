@@ -785,7 +785,7 @@ if ($viewCollection->renderContent) {
 
 		<div class="box box-primary place_ad place-property <?php echo $model->isNewRecord ? 'sector1' : 'sector2'; ?>">
 			<h3 class="box-title hide"><?php echo $model->isNewRecord ? 'Post your Property' : 'Update your Property'; ?></h3>
-			<div class="card-header">
+			<div class="box-header" style="border-bottom: 1px solid #00699e">
 
 
 
@@ -866,7 +866,7 @@ if ($viewCollection->renderContent) {
 					<div class="insidecontent  padding-top-0">
 
 						<h4 class="subheading_font row " style="display: block;"><?php echo $this->tag->gettag('choose_a_category', 'Choose a Category'); ?> <?php if (Yii::app()->isAppName('frontend')) { ?> <a href="<?php $refref = Yii::app()->request->urlReferrer;
-																																																					echo  !empty($refref) ? $refref : Yii::app()->createUrl('site/index'); ?>" class="pull-right margin-right-10"><?php echo $this->tag->getTag('back', 'Back'); ?></a> <?php } ?> </h4>
+																																																						echo  !empty($refref) ? $refref : Yii::app()->createUrl('site/index'); ?>" class="pull-right margin-right-10"><?php echo $this->tag->getTag('back', 'Back'); ?></a> <?php } ?> </h4>
 
 						<div class="col-sm-12 picker_class sect_select ">
 
@@ -888,13 +888,17 @@ if ($viewCollection->renderContent) {
 									$section = array('1' => '<span class="img"></span>' . $this->tag->getTag('for_sale', 'For Sale'), '2' => '<span class="img"></span>' . $this->tag->getTag('for_rent', 'For Rent'), '6' => '<span class="img"></span>' . $this->tag->getTag('business_for_sale', 'Business for sale'));
 								}
 								echo CHtml::radioButtonList('section_id', $model->section_id, $section, array(
-									'data-url' => Yii::App()->createUrl($this->id . '/select_category3'), 'onclick' => 'load_via_ajax_category(this,"category_id")', 'separator' => '', 'labelOptions' => array('class' => ''), 'template' => '<div class="inputGroup" id="sec_{idInput}">   {input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg><div class="clearfix"><!-- --></div></div>'
+									'data-url' => Yii::App()->createUrl($this->id . '/select_category3'),
+									'onclick' => 'load_via_ajax_category(this,"category_id")',
+									'separator' => '',
+									'labelOptions' => array('class' => ''),
+									'template' => '<div class="inputGroup" id="sec_{idInput}">   {input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg><div class="clearfix"><!-- --></div></div>'
 								));
 								?>
 							</div>
 							<div class="clearfix"><!-- --></div>
 
-							<div class="col-sm-12 sector1 picker_class no-padding w_for <?php echo ($model->section_id == '4') ?  '' : 'hide'; ?>">
+							<div class="col-sm-12 sector1 picker_class no-padding w_for" style="<?php echo ($model->section_id == '4') ?  'display: block;' : 'display: none;'; ?>">
 								<div class="clearfix"><!-- --></div>
 
 								<div class="clearfix"><!-- --></div>
@@ -906,7 +910,10 @@ if ($viewCollection->renderContent) {
 									<?php
 
 									echo CHtml::radioButtonList('w_for', $model->w_for, $model->wanted_for(), array(
-										'onclick' => 'openFields2(this)', 'separator' => '', 'labelOptions' => array('class' => ''), 'template' => '<div class="inputGroup">{input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg><div class="clearfix"><!-- --></div></div>'
+										'onclick' => 'openFields2(this)',
+										'separator' => '',
+										'labelOptions' => array('class' => ''),
+										'template' => '<div class="inputGroup">{input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg><div class="clearfix"><!-- --></div></div>'
 									));
 									?>
 
@@ -939,7 +946,12 @@ if ($viewCollection->renderContent) {
 								$list_typeq =    Category::model()->ListDataForJSON_ID_BySEctionNew($model->section_id);
 
 								echo CHtml::radioButtonList('listing_type', $model->listing_type, $list_typeq, array(
-									'separator' => '', 'onclick' => 'load_via_ajax_main_category(this)', 'data-url' => Yii::App()->createUrl($this->id . '/select_category4'), 'separator' => '', 'labelOptions' => array('class' => ''), 'template' => '<div class="inputGroup">{input}   {label} <span class="img"></span> <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg></div>'
+									'separator' => '',
+									'onclick' => 'load_via_ajax_main_category(this)',
+									'data-url' => Yii::App()->createUrl($this->id . '/select_category4'),
+									'separator' => '',
+									'labelOptions' => array('class' => ''),
+									'template' => '<div class="inputGroup">{input}   {label} <span class="img"></span> <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg></div>'
 								));
 								?>
 
@@ -1017,7 +1029,10 @@ if ($viewCollection->renderContent) {
 								<?php
 
 								echo CHtml::radioButtonList('category_id', $model->category_id, $catlist, array(
-									'separator' => '', 'onclick' => 'validateInputSector()', 'labelOptions' => array('class' => ''), 'template' => '<div class="inputGroup">{input}   {label}</div>'
+									'separator' => '',
+									'onclick' => 'validateInputSector()',
+									'labelOptions' => array('class' => ''),
+									'template' => '<div class="inputGroup">{input}   {label}</div>'
 								));
 								?>
 
@@ -1033,7 +1048,7 @@ if ($viewCollection->renderContent) {
 				<div id="moredetails">
 
 					<h4 class="subheading_font row  full-content" style="display:block;"><?php echo $this->tag->getTag('selected_category', 'Selected Category'); ?> <?php if (Yii::app()->isAppName('frontend')) { ?> <a href="<?php $refref = Yii::app()->request->urlReferrer;
-																																																							echo  !empty($refref) ? $refref : Yii::app()->createUrl('site/index'); ?>" class="pull-right margin-right-10"><?php echo $this->tag->getTag('back', 'Back'); ?></a> <?php } ?></h4>
+																																																								echo  !empty($refref) ? $refref : Yii::app()->createUrl('site/index'); ?>" class="pull-right margin-right-10"><?php echo $this->tag->getTag('back', 'Back'); ?></a> <?php } ?></h4>
 					<div class="_1ybgv full-content" data-aut-id="breadcrumb">
 						<div class="rui-3blDo">
 							<ol class="rui-1CmqM" id="textChanger"></ol>
@@ -1117,7 +1132,7 @@ if ($viewCollection->renderContent) {
 										<?php echo $form->textField($model, 'RefNo',   $mer); ?>
 										<?php echo $form->error($model, 'RefNo'); ?>
 									</div>
-									
+
 								</div>
 								<div class="row  form-group  ">
 
