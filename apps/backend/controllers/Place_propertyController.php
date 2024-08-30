@@ -800,8 +800,6 @@ class Place_propertyController  extends Controller
 
         $section = Section::model()->ListDataForJSON_New();
         $list_type = Category::model()->listingTypeArrayMainData();
-
-        $image_array = array();
         $this->setData(array(
             'pageMetaTitle'     =>   Yii::t('app', '{name}   :: {p}', array('{name}' => 'Post your AD ', '{p}' => Yii::app()->options->get('system.common.site_name'))),
             'pageHeading'       => Yii::t(Yii::app()->controller->id, 'List your property'),
@@ -1071,7 +1069,7 @@ class Place_propertyController  extends Controller
 
         $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
         //  print_r( $_POST );
-        exit;
+        // exit;
         if (Yii::app()->request->isAjaxRequest) {
             echo CActiveForm::validate($model);
             Yii::app()->end();
@@ -3022,6 +3020,112 @@ class Place_propertyController  extends Controller
         $model->fieldDecorator->onHtmlOptionsSetup = array($this, '_setupEditorOptions');
         $this->render('root.apps.frontend.new-theme.views.place_property.form_new_business', compact('model', "country", "section", 'list_type', 'image_array'));
     }
+
+    public function actionUploadExcel()
+    {
+        $model = new PlaceAnAd(); // Replace with your actual model name
+        $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
+    
+        $model->scenario = 'new_insert';
+    
+        $image_array = array();
+        $country = Countries::model()->ListDataForJSON();
+        $section = Section::model()->ListDataForJSON_New();
+        $list_type = Category::model()->listingTypeArrayMainData();
+    
+        if (isset($_FILES['excelFile'])) {
+            $zipFile = $_FILES['zipFile']['tmp_name'];
+            $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
+            foreach (array_slice($excelData, 1) as $data) {
+                $model->section_id = $data[0]; 
+                $model->listing_type = $data[1] == 1 ? 151 : 150;
+                $model->RefNo = $data[2];
+                $model->ad_title = $data[3];
+                $model->PropertyID = $data[4];
+                $model->ad_description = $data[5];
+                $model->area_location = $data[6];
+                $model->interior_size = $data[7];
+                $model->price = $data[8];
+                $model->plot_area = $data[9];
+                $model->builtup_area = $data[9];
+                $model->furnished = $data[10];
+                $model->mandate = $data[11];
+                $model->contact_person = $data[12];
+                $model->salesman_email = $data[13];
+                $model->mobile_number = $data[14];
+                $model->category_id = 0;
+                $model->country = 66124;
+                $model->state = 0;
+                $model->user_id = 31988;
+                if (!$model->save()){
+                    $errors = $model->getErrors();
+                    $errorMessage = 'Failed to save model: ' . json_encode($errors);
+                    $this->sendJsonResponse(['status' => 'error', 'message' => $errorMessage]);
+                    return;
+                }
+
+                $room_image = new AdImage;
+                $room_image->deleteAll(array('condition' => 'ad_id=:ad_id', 'params' => array(':ad_id' => $model->id)));
+                $imgArr =  explode(',', $data[15]);
+                if ($imgArr) {
+                    // Extract ZIP file
+                    $zip = new ZipArchive;
+                    if ($zip->open($zipFile) === TRUE) {
+                        $zip->extractTo( Yii::getPathOfAlias('webroot') .'/uploads');
+                        $zip->close();
+                    } else {
+                        return $this->sendJsonResponse(['status' => 'error', 'message' => 'Failed to extract ZIP file.']);
+                    }
+
+                    $img_saved = false;
+                    foreach ($imgArr as $k) {
+                        // Find the image in the extracted folder
+                        $extractedPath =  Yii::getPathOfAlias('webroot') .'/uploads/'; // Same path as above
+                        $imagePath = $extractedPath . $k;
+                        if (file_exists($imagePath)) {
+                            // Construct the upload path based on the current year and month
+                            $year = date('Y');
+                            $month = date('m');
+                            $uploadDir = Yii::getPathOfAlias('webroot') . "/uploads/files/{$year}/{$month}/";
+                            
+                            // Ensure the directory exists
+                            if (!is_dir($uploadDir)) {
+                                if (!mkdir($uploadDir, 0755, true)) {
+                                    // If mkdir fails, return an error message
+                                    $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to create directory: {$uploadDir}"]);
+                                    return;
+                                }                            }
+
+                            $uploadPath = $uploadDir . $k;
+
+                            // Move the image to the upload directory
+                            if (rename($imagePath, $uploadPath)) {
+                                if (!$img_saved && $model->image != '') {
+                                    $model->updateByPk($model->id, array('image' => $k));
+                                    $img_saved = true;
+                                }
+
+                                $room_image->isNewRecord = true;
+                                $room_image->id = '';
+                                $room_image->ad_id = $model->id;
+                                $room_image->image_name = $k;
+                                $room_image->save();
+                            } else {
+                                return $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to move image: {$k}"]);
+                            }
+                        } else {
+                            return $this->sendJsonResponse(['status' => 'error', 'message' => "Image not found: {$k}"]);
+                        }
+                    }
+                }
+            }
+
+            return $this->sendJsonResponse(['status' => 'success']);
+        }
+    
+    }
+    
+
     public function _setupEditorOptions(CEvent $event)
     {
         if (!in_array($event->params['attribute'], array('ad_description'))) {
@@ -3042,5 +3146,11 @@ class Place_propertyController  extends Controller
         }
 
         $event->params['htmlOptions']->add('wysiwyg_editor_options', $options);
+    }
+    private function sendJsonResponse($data)
+    {
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        Yii::app()->end();
     }
 }

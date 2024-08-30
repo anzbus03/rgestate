@@ -35,14 +35,14 @@ if ($viewCollection->renderContent) { ?>
             </h3>
             <div>
                 <div class="row">
-                    <div class="col-md-4 mt-2">
+                    <div class="col-md-3 mt-2">
                         <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id . '/create'), array('class' => 'btn btn-primary btn-sm', 'title' => Yii::t('app', 'Create new'))); ?>
                     </div>
-                    <!-- <div class="col-md-3">
-                        <?php //echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-sm', 'title' => Yii::t('app', 'Refresh')));
-                        ?>
-                    </div> -->
-                    <div class="col-md-8">
+                    <div class="col-md-3 mt-2">
+                        <button type="button" id="exportExcel" class="btn btn-success btn-sm"
+                        style="">Export Excel</button>
+                    </div>
+                    <div class="col-md-6">
                         <input type="text" id="dateRange" class="form-control" style="margin-left: 10px;" />
                     </div>
                 </div>
@@ -85,6 +85,65 @@ if ($viewCollection->renderContent) { ?>
                 <?php if (Yii::app()->request->enableCsrfValidation) { ?>
                     <input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>" />
                 <?php } ?>
+                <div class="card-body">
+                <!-- Checkboxes and Dropdown -->
+                <div class="row" style="margin-bottom: 10px;">
+                    <!-- Checkbox for Featured -->
+                    <div class="col-sm-2">
+        
+                            <button type="button" class="btn btn-secondary btn-xs" data-bs-toggle="modal" style="margin-top: -5px;"
+                                data-bs-target="#uploadModal">
+                                Upload By Excel
+                            </button>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="form-group">
+                            <label for="featured">
+                                Featured
+                            </label>
+                            <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;" id="featured">
+                        </div>
+                    </div>
+                    <!-- Checkbox for Verified -->
+                    <div class="col-sm-1">
+                        <div class="form-group">
+                            <label for="verified">
+                                <input type="checkbox" value="1" id="verified" style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;" >
+                                Verified
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Checkbox for Preleased -->
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="preleased">
+                                <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;" id="preleased" >
+                                Preleased
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Checkbox for Submitted Properties -->
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="f_properties">
+                                <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;" id="f_properties">
+                                Submitted Properties
+                            </label>
+                        </div>
+                    </div>
+                    <style>
+                        .input-xs, select.input-xs {
+                            height: 40px;
+                            line-height: 20px;
+                        }
+                    </style>
+                    <!-- Dropdown for Submitted By -->
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <?php echo CHtml::dropDownList('submited_by', $model->submited_by, $model->getsubmited_by_array(), array('empty'=>'Submitted By', 'class'=>'form-control input-xs')); ?>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="table-responsive">
                     <table id="enquiryTable" class="table table-striped table-bordered">
@@ -166,7 +225,7 @@ if ($viewCollection->renderContent) { ?>
                                                 <i class="fa fa-picture-o"></i>
                                             </a>
                                         <?php } ?>
-                                        <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Update Meta Tag'); ?>" data-toggle="modal" onclick="openUp(this)">
+                                        <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Update Meta Tag'); ?>" data-bs-toggle="modal" onclick="openUp(this)">
                                             <i class="fa fa-tags"></i>
                                         </a>
                                         <!-- <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Tag Your Property'); ?>" data-toggle="modal" onclick="openUp2(this)">
@@ -192,7 +251,33 @@ if ($viewCollection->renderContent) { ?>
             </form>
         </div>
     </div>
-
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLabel">Upload Excel and Images</h5>
+                <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <button id="downloadTemplateBtn" class="btn btn-secondary btn-xs pull-right mb-2">Download Template</button>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="excelFile">Excel File</label>
+                        <input type="file" class="form-control" id="excelFile" name="excelFile" accept=".xlsx,.xls">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="zipFile">ZIP File</label>
+                        <input type="file" class="form-control" id="zipFile" name="zipFile" accept=".zip">
+                    </div>
+                    <button type="submit" class="pull-right btn btn-primary mt-4">Upload</button>
+                </form>
+                <div id="uploadStatus"></div>
+            </div>
+        </div>
+    </div>
+</div> 
 <?php
 }
 /**
@@ -208,7 +293,9 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 ?>
 
 <!-- for button loading text  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
+
     $(document).ready(function() {
         // On form submit, change button text
         $('form').on('submit', function() {
@@ -216,11 +303,128 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             $btn.text($btn.data('loading-text')).prop('disabled', true);
         });
     });
+    $(document).ready(function () {
+        $('#uploadForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+            
+            var formData = new FormData(this); // Create FormData object from form
+
+            // Handle Excel file
+            var excelFile = $('#excelFile')[0].files[0];
+            if (excelFile) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var data = new Uint8Array(event.target.result);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var sheetName = workbook.SheetNames[0];
+                    var sheet = workbook.Sheets[sheetName];
+                    var json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                    
+                    // Add Excel data to FormData
+                    formData.append('excelData', JSON.stringify(json));
+                    
+                    uploadFiles(formData); // Call function to upload files
+                };
+                reader.readAsArrayBuffer(excelFile);
+            } 
+            // else {
+            //     uploadFiles(formData); // Call function to upload files without Excel data
+            // }
+        });
+
+        function uploadFiles(formData) {
+            $.ajax({
+                // Yii::app()->controller->id here refers to place_propertyController and the function name is uploadExcel, you can also get controller name from url
+                // place_property
+                url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/uploadExcel'); ?>',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.status == "success"){
+                        $('#uploadStatus').text("Success");
+                        location.reload();
+                    }else {
+                        $('#uploadStatus').text(response.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $('#uploadStatus').text('Upload failed: ' + textStatus);
+                }
+            });
+        }
+        $('#downloadTemplateBtn').click(function() {
+            // Create a new workbook and add a worksheet
+            var workbook = XLSX.utils.book_new();
+            var worksheet_data = [
+                [
+                    'Category (1 -> For Sale / 2 -> For Rent)', 
+                    'Type (1-> Commercial / 2-> Residential)', 
+                    'Ref No',
+                    'Ad Title',
+                    'Permit Number',
+                    'Description',
+                    'Location',
+                    'Size',
+                    'Price',
+                    'Plot Area',
+                    'Furnished',
+                    'Construction Date',
+                    'Contact Name',
+                    'Contact Email',
+                    'Mobile Number',
+                    "Images (image1.png,image2.png,etc..)" 
+                ]
+            ];
+            var worksheet = XLSX.utils.aoa_to_sheet(worksheet_data);
+            
+            // Add the worksheet to the workbook
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Template');
+            
+            // Write the workbook and download it
+            XLSX.writeFile(workbook, 'template.xlsx');
+        });
+    });
 </script>
 
 
 <script>
+    function reloadTable() {
+        $('#enquiryTable').DataTable().ajax.reload();
+    }
+    function submitFilters() {
+        var selectedFilters = {};
+
+        // Collect selected checkbox values
+        if ($('#featured').is(':checked')) {
+            selectedFilters['PlaceAnAd[featured]'] = $('#featured').val();
+        }
+        if ($('#verified').is(':checked')) {
+            selectedFilters['PlaceAnAd[verified]'] = $('#verified').val();
+        }
+        if ($('#preleased').is(':checked')) {
+            selectedFilters['PlaceAnAd[preleased]'] = $('#preleased').val();
+        }
+        if ($('#f_properties').is(':checked')) {
+            selectedFilters['PlaceAnAd[f_properties]'] = $('#f_properties').val();
+        }
+        var submitedByValue = $('#submited_by').val();
+        if (submitedByValue) {
+            selectedFilters['PlaceAnAd[submited_by]'] = submitedByValue;
+        }
+        // Convert the selected filters to query string parameters
+        var queryString = $.param(selectedFilters, true);
+
+        // Reload the page with the query parameters
+        window.location.href = window.location.pathname + '?' + queryString;
+    }
+
+
+    // Attach the function to the checkboxes' change event
+    $('#featured, #verified, #preleased, #f_properties, #submited_by').change(submitFilters);
     $(document).ready(function() {
+        
         // Initialize the date range picker
         $('#dateRange').daterangepicker({
             locale: {
@@ -275,7 +479,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             // Redirect to the export URL
             window.location.href = exportUrl;
         });
-        $('#enquiryTable').DataTable({
+        var table = $('#enquiryTable').DataTable({
             createdRow: function(row, data, index) {
                 $(row).addClass('selected');
             },
@@ -285,8 +489,10 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     previous: '<i class="fa fa-angle-double-left" style="line-height:40px;" aria-hidden="true"></i>'
                 }
             },
+           
         });
-
+      
+        
         // Handle select all checkbox
         $('#selectAll').on('click', function() {
             var rows = $('#enquiryTable').DataTable().rows({
@@ -315,4 +521,5 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             }
         });
     });
+    
 </script>

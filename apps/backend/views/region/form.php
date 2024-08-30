@@ -58,7 +58,7 @@ if ($viewCollection->renderContent) {
                     <?php } ?>
                     <?php echo CHtml::link(Yii::t('app', 'Cancel'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
                 </div>
-                <div class="clearfix"><!-- --></div>
+                
             </div>
             <div class="card-body">
                 <?php 
@@ -73,93 +73,90 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?>
-              
-               
-                <div class="clearfix"><!-- --></div>
-                
-               
-                  <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php 
-                    if($model->isNewRecord and !Yii::app()->request->isPostRequest){
-                        	//$model->country_id ='66099';
-                    }
-                    if(empty( $model->country_id) and !empty($model->state_id)){
-						$model->country_id = $model->state->country_id;
-					}
+                <div class="row">
                     
-                    echo $form->labelEx($model, 'country_id');?> 
-                    <?php $dropdwn =   array_merge( $model->getHtmlOptions('country_id'),array('empty'=>'Select Country ',"style"=>"1",
-                       'ajax' =>
-                       array('type'=>'GET',
-                       'url'=>$this->createUrl('main_region/LoadStates'), //url to call.
-                       'update'=>'#'.$model->modelName.'_region_id', //selector to update
-                        'data'=>array('country_id'=>'js:this.value'),
-                        'beforeSend' => 'function(){
-							$("#myDiv").addClass("grid-view-loading");}',
-							'complete' => 'function(){
-						    $("#myDiv").removeClass("grid-view-loading");
-						   }',
-							)
-                       )
-                       )
+                    <div class="col-lg-6 mt-2">
+                        <?php 
+                        if($model->isNewRecord and !Yii::app()->request->isPostRequest){
+                                //$model->country_id ='66099';
+                        }
+                        if(empty( $model->country_id) and !empty($model->state_id)){
+                            $model->country_id = $model->state->country_id;
+                        }
+                        
+                        echo $form->labelEx($model, 'country_id');?> 
+                        <?php $dropdwn =   array_merge( $model->getHtmlOptions('country_id'),array('empty'=>'Select Country ',"style"=>"1",
+                           'ajax' =>
+                           array('type'=>'GET',
+                           'url'=>$this->createUrl('main_region/LoadStates'), //url to call.
+                           'update'=>'#'.$model->modelName.'_region_id', //selector to update
+                            'data'=>array('country_id'=>'js:this.value'),
+                            'beforeSend' => 'function(){
+                                $("#myDiv").addClass("grid-view-loading");}',
+                                'complete' => 'function(){
+                                $("#myDiv").removeClass("grid-view-loading");
+                               }',
+                                )
+                           )
+                           )
+                        
+                         ;  ?> 
+                        <span id="myDiv" style="padding-left:20px;"></span>
+                        <?php echo $form->dropDownList($model,'country_id',CHtml::listData(Countries::model()->Countrylist(),"country_id" ,"country_name"), $dropdwn  ); ?> 
+                        <?php echo $form->error($model, 'country_id');?>
+                    </div>
                     
-                     ;  ?> 
-                    <span id="myDiv" style="padding-left:20px;"></span>
-                    <?php echo $form->dropDownList($model,'country_id',CHtml::listData(Countries::model()->Countrylist(),"country_id" ,"country_name"), $dropdwn  ); ?> 
-                    <?php echo $form->error($model, 'country_id');?>
+                    <div class="col-lg-6 mt-2">
+                        <?php echo $form->labelEx($model, 'region_id');?> 
+                        <?php $dropdwn =   array_merge( $model->getHtmlOptions('region_id'),array('empty'=>'Select Region ',"style"=>"1")) ;  ?> 
+                        <?php echo $form->dropDownList($model,'region_id',CHtml::listData(MainRegion::model()->getStateWithCountry_2($model->country_id),"region_id" ,"name"), $dropdwn  ); ?>
+                        <?php echo $form->error($model, 'region_id');?>
+                    </div>      
+                       
+                    <div class="col-lg-6 mt-2">
+                        <?php echo $form->labelEx($model, 'state_name');?>
+                        <?php echo $form->textField($model, 'state_name', $model->getHtmlOptions('state_name')); ?>
+                        <?php echo $form->error($model, 'state_name');?>
+                    </div>        
+                    
+                     <div class="col-lg-6 mt-2">
+                        <?php echo $form->labelEx($model, 'p_name');?>
+                        <?php echo $form->textField($model, 'p_name', $model->getHtmlOptions('p_name')); ?>
+                        <?php echo $form->error($model, 'p_name');?>
+                    </div>  
+                     
+                      <?php
+                    if($model->isNewRecord){ ?> 
+                    <div class="col-lg-6 mt-2">
+                        <?php echo $form->labelEx($model, 'mul_city');?>
+                        <?php echo $form->textArea($model, 'mul_city',$model->getHtmlOptions('mul_city')); ?>
+                        <?php echo $form->error($model, 'mul_city');?>
+                    </div>  
+                    <?php } ?> 
+                    
+                        <div class="col-lg-6 mt-2">
+                            <div class="col-lg-6 no-margin no-padding" style="width:50%;float:left;">
+                            <?php echo $form->labelEx($model, 'icon');?>
+                            </div>
+                            <div class="col-lg-6  no-margin no-padding text-right" style="width:50%;float:left;">
+                            <span id="widthDiv">
+                            <span id="imageWidth">Width : 100px </span>   <span id="imageHeight">Height :100px</span>
+                            </span>
+                            </div>
+                            
+                            <?php echo $form->fileField($model, 'icon',$model->getHtmlOptions('icon')); ?>
+                            <?php echo $form->error($model, 'icon');?>
+                        </div>   
+                        <div class="col-lg-2" style="width:100px;height:100px; background-image:url('<?php echo Yii::App()->apps->getBaseUrl('uploads/default/'.$model->icon);?>');background-size:cover;background-repeat:no-repeat:"></div>	 	
+                              
                 </div>
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'region_id');?> 
-                    <?php $dropdwn =   array_merge( $model->getHtmlOptions('region_id'),array('empty'=>'Select Region ',"style"=>"1")) ;  ?> 
-                    <?php echo $form->dropDownList($model,'region_id',CHtml::listData(MainRegion::model()->getStateWithCountry_2($model->country_id),"region_id" ,"name"), $dropdwn  ); ?>
-                    <?php echo $form->error($model, 'region_id');?>
-                </div>      
-                   <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'state_name');?>
-                    <?php echo $form->textField($model, 'state_name', $model->getHtmlOptions('state_name')); ?>
-                    <?php echo $form->error($model, 'state_name');?>
-                </div>        
-                <div class="clearfix"><!-- --></div>
-                 <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'p_name');?>
-                    <?php echo $form->textField($model, 'p_name', $model->getHtmlOptions('p_name')); ?>
-                    <?php echo $form->error($model, 'p_name');?>
-                </div>  
-                 <div class="clearfix"><!-- --></div>
-                  <?php
-                if($model->isNewRecord){ ?> 
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'mul_city');?>
-                    <?php echo $form->textArea($model, 'mul_city',$model->getHtmlOptions('mul_city')); ?>
-                    <?php echo $form->error($model, 'mul_city');?>
-                </div>  
-                <?php } ?> 
-				<div class="clearfix"><!-- --></div>
-					<div class="form-group col-lg-6">
-						<div class="col-lg-6 no-margin no-padding" style="width:50%;float:left;">
-						<?php echo $form->labelEx($model, 'icon');?>
-						</div>
-						<div class="col-lg-6  no-margin no-padding text-right" style="width:50%;float:left;">
-						<span id="widthDiv">
-						<span id="imageWidth">Width : 100px </span>   <span id="imageHeight">Height :100px</span>
-						</span>
-						</div>
-						
-						<?php echo $form->fileField($model, 'icon',$model->getHtmlOptions('icon')); ?>
-						<?php echo $form->error($model, 'icon');?>
-					</div>   
-					<div class="form-group col-lg-2" style="width:100px;height:100px; background-image:url('<?php echo Yii::App()->apps->getBaseUrl('uploads/default/'.$model->icon);?>');background-size:cover;background-repeat:no-repeat:"></div>	 	
-						  
-                <div class="clearfix"><!-- --></div>
+                
                 <?php /* 
                  <div class="form-group col-lg-6">
 					
                     <?php echo $form->labelEx($model, 'location');?>
                      <?php echo $form->error($model, 'location');?>
-                    <div class="clearfix"><!-- --></div>
+                    
                     
                   <?php
                    echo $form->hiddenField($model, 'location_latitude');
@@ -169,8 +166,8 @@ if ($viewCollection->renderContent) {
                     
                 </div> 
                 <?php /* 
-                <div class="clearfix"><!-- --></div>
-                <div class="clearfix"><!-- --></div>
+                
+                
                 <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<?php echo  Yii::app()->options->get('system.common.google_map_api_keys','AIzaSyBJ2Jo_mnCk9CnTNbTQAcb__elC9cKt6WQ');?>"></script>
  
                <?php
@@ -228,10 +225,10 @@ if ($viewCollection->renderContent) {
 		}
 		$gMap->renderMap(array(), Yii::app()->language);
 					   ?>
-                <div class="clearfix"><!-- --></div>
+                
                 */
                 ?>
-                <div class="clearfix"><!-- --></div>     
+                     
                 <?php 
                 /**
                  * This hook gives a chance to append content after the active form fields.
@@ -244,13 +241,13 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?> 
-                <div class="clearfix"><!-- --></div>
+                
             </div>
             <div class="box-footer">
-                <div class="pull-right">
+                <div class="pull-right m-4">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
-                <div class="clearfix"><!-- --></div>
+                
             </div>
         </div>
         <?php 

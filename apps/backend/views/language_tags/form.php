@@ -1,5 +1,4 @@
 <?php defined('MW_PATH') || exit('No direct script access allowed');
- 
 
 /**
  * This hook gives a chance to prepend content or to replace the default view content with a custom content.
@@ -31,25 +30,19 @@ if ($viewCollection->renderContent) {
     
     // and render if allowed
     if ($collection->renderForm) {
-        $form = $this->beginWidget('CActiveForm',array('focus'=>array($model,Yii::app()->controller->focus))); 
+        $form = $this->beginWidget('CActiveForm', array('focus' => array($model, Yii::app()->controller->focus))); 
         ?>
-        <div class="box box-primary borderless">
-             
-              <div class="card-header">
-                <div class="pull-left">
-                    <h3 class="card-title">
-                    <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id,$pageHeading);?>
+        <div class="card card-primary borderless">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="card-title mb-0">
+                    <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, $pageHeading); ?>
                 </h3>
+                <div class="d-flex">
+                    <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id.'/create'), array('class' => 'btn btn-primary btn-xs me-2', 'title' => Yii::t('app', 'Create new'))); ?>
+                    <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs me-2', 'title' => Yii::t('app', 'Refresh'))); ?>
                 </div>
-                <div class="pull-right">
-                     <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id.'/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
-                <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
-
-                </div>
-                <div class="clearfix"><!-- --></div>
             </div>
-           
-             <div class="card-body">
+            <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
@@ -61,26 +54,12 @@ if ($viewCollection->renderContent) {
                     'controller'    => $this,
                     'form'          => $form    
                 )));
-                 
                 ?>
-                
-               
-				 
-                 <div class="clearfix"><!-- --></div>
-              
-                <div class="clearfix"><!-- --></div>
-                <div class="">
                 <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'conversion_tag');?>
-                    <?php echo $form->textField($model, 'conversion_tag',$model->getHtmlOptions('conversion_tag',array('onchange'=>'generateTag(this)'))); ?>
-                    <?php echo $form->error($model, 'conversion_tag');?>
-                </div>  </div>
-                  <div class="clearfix"><!-- --></div>
-                
-                 
-                <div class="clearfix"><!-- --></div>      
-                
-                 
+                    <?php echo $form->labelEx($model, 'conversion_tag'); ?>
+                    <?php echo $form->textField($model, 'conversion_tag', $model->getHtmlOptions('conversion_tag', array('onchange' => 'generateTag(this)'))); ?>
+                    <?php echo $form->error($model, 'conversion_tag'); ?>
+                </div>
                 <?php 
                 /**
                  * This hook gives a chance to append content after the active form fields.
@@ -93,13 +72,9 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?> 
-                <div class="clearfix"><!-- --></div>
             </div>
-            <div class="box-footer">
-                <div class="pull-right">
-                    <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
-                </div>
-                <div class="clearfix"><!-- --></div>
+            <div class="card-footer d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary btn-submit me-2" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
             </div>
         </div>
         <?php 
@@ -130,22 +105,16 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
 <script>
 function generateTag(k){
-	var val = $(k).val();
-	var res = val.toLowerCase();
-	var return_val = findAndReplace(res,' ','_');
-	$('#CommonTags_conversion_tag').val(return_val);
+    var val = $(k).val();
+    var res = val.toLowerCase();
+    var return_val = findAndReplace(res, ' ', '_');
+    $('#CommonTags_conversion_tag').val(return_val);
 }
 function findAndReplace(string, target, replacement) {
- 
- var i = 0, length = string.length;
- 
- for (i; i < length; i++) {
- 
-   string = string.replace(target, replacement);
- 
- }
- 
- return string;
- 
+    var i = 0, length = string.length;
+    for (i; i < length; i++) {
+        string = string.replace(target, replacement);
+    }
+    return string;
 }
 </script>

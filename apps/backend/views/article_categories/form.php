@@ -43,9 +43,33 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm'); 
         ?>
+          <style>
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .card-header-left {
+                flex: 1;
+            }
+
+            .card-header-right {
+                display: flex;
+                gap: 10px;
+            }
+
+            .card-header-right .btn {
+                margin-left: 5px;
+            }
+            .hide{
+                display: none;
+            }
+        </style>
         <div class="card">
             <div class="card-header">
-                <div class="pull-left">
+                <div class="card-header-left">
                     <h3 class="card-title"><span class="glyphicon glyphicon-book"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
@@ -81,20 +105,23 @@ if ($viewCollection->renderContent) {
                     <?php echo $form->textArea($category, 'description', $category->getHtmlOptions('description', array('rows' => 5))); ?>
                     <?php echo $form->error($category, 'description');?>
                 </div>
-                <div class="form-group col-lg-5">
-                    <?php echo $form->labelEx($category, 'parent_id');?>
-                    <?php echo $form->dropDownList($category, 'parent_id', CMap::mergeArray(array('' => Yii::t('app', 'Choose')), $category->getRelationalCategoriesArrayAll()), $category->getHtmlOptions('name')); ?>
-                    <?php echo $form->error($category, 'parent_id');?>
-                </div>    
-                <div class="form-group col-lg-5 slug-wrapper"<?php if (empty($category->slug)){ echo ' style="display:none"';}?>>
-                    <?php echo $form->labelEx($category, 'slug');?>
-                    <?php echo $form->textField($category, 'slug', $category->getHtmlOptions('slug')); ?>
-                    <?php echo $form->error($category, 'slug');?>
-                </div>
-                <div class="form-group col-lg-2">
-                    <?php echo $form->labelEx($category, 'status');?>
-                    <?php echo $form->dropDownList($category, 'status', $category->getStatusesArray(), $category->getHtmlOptions('status')); ?>
-                    <?php echo $form->error($category, 'status');?>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($category, 'parent_id');?>
+                        <?php echo $form->dropDownList($category, 'parent_id', CMap::mergeArray(array('' => Yii::t('app', 'Choose')), $category->getRelationalCategoriesArrayAll()), $category->getHtmlOptions('name')); ?>
+                        <?php echo $form->error($category, 'parent_id');?>
+                    </div>    
+
+                    <div class="form-group col-lg-6"<?php if (empty($category->slug)){ echo ' style="display:none"';}?>>
+                        <?php echo $form->labelEx($category, 'slug');?>
+                        <?php echo $form->textField($category, 'slug', $category->getHtmlOptions('slug')); ?>
+                        <?php echo $form->error($category, 'slug');?>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($category, 'status');?>
+                        <?php echo $form->dropDownList($category, 'status', $category->getStatusesArray(), $category->getHtmlOptions('status')); ?>
+                        <?php echo $form->error($category, 'status');?>
+                    </div>
                 </div>
                 <div class="clearfix"><!-- --></div>
                 <?php 
@@ -112,7 +139,7 @@ if ($viewCollection->renderContent) {
                 <div class="clearfix"><!-- --></div>
             </div>
             <div class="box-footer">
-                <div class="pull-right">
+                <div class="pull-right" style="margin: 20px;    ">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
                 <div class="clearfix"><!-- --></div>

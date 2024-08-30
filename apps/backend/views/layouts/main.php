@@ -22,6 +22,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <link href="<?php echo Yii::app()->apps->getBaseUrl('theme'); ?>/assets/lib/select2/css/select2.min.css" rel="stylesheet">
     <link href="<?php echo Yii::app()->apps->getBaseUrl('theme'); ?>/assets/lib/slick/slick.css" rel="stylesheet">
+    <link href="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/swiper/css/swiper-bundle.min.css');?>" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->apps->getBaseUrl('theme'); ?>/assets/js/build/css/intlTelInput.min.css" />
 
     <?php
@@ -273,8 +274,43 @@
     <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/dashboard/cms.js');?>" type="text/javascript"></script>
     <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/datatables/js/jquery.dataTables.min.js');?>" type="text/javascript"></script>
     <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/plugins-init/datatables.init.js');?>" type="text/javascript"></script>
+   
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/swiper/js/swiper-bundle.min.js');?>" type="text/javascript"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 5,
+            spaceBetween: 30,
+            
+            breakpoints: {
+                360: {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                },
+                600: {
+                slidesPerView: 2,
+                spaceBetween: 30,
+                },
+                1024: {
+                slidesPerView: 2,
+                spaceBetween: 30,
+                },
+                1200: {
+                slidesPerView: 3,
+                spaceBetween: 30,
+                },
+                1600: {
+                slidesPerView: 4,
+                spaceBetween: 30,
+                },
+                1920: {
+                slidesPerView: 5,
+                spaceBetween: 30,
+                },
+            }
+            });
+        
+    </script>
 </body>
 </html>

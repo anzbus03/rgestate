@@ -49,7 +49,7 @@ if ($viewCollection->renderContent) {
         ?>
         <div class="card">
             <div class="card-header">
-                <div class="pull-left">
+                <div class="card-header-left">
                     <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
@@ -57,7 +57,7 @@ if ($viewCollection->renderContent) {
                      <?php } ?>
                     <?php echo CHtml::link(Yii::t('app', 'Cancel'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
                 </div>
-                <div class="clearfix"><!-- --></div>
+                
             </div>
             <div class="card-body">
                 <?php 
@@ -72,62 +72,65 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?>
-                 <div class="form-group col-lg-4">
-                    <?php echo $form->labelEx($model, 'name');?>
-                    <?php echo $form->textField($model, 'name',$model->getHtmlOptions('name')); ?>
-                    <?php echo $form->error($model, 'name');?>
+                <div class="row">
+
+                    <div class="form-group col-lg-4">
+                        <?php echo $form->labelEx($model, 'name');?>
+                        <?php echo $form->textField($model, 'name',$model->getHtmlOptions('name')); ?>
+                        <?php echo $form->error($model, 'name');?>
+                    </div>
+                    
+                         
+                    <div class="form-group col-lg-2">
+                        <?php $model->f_type = empty($model->f_type)? '1' :$model->f_type;?>
+                        <?php echo $form->labelEx($model, 'f_type');?>
+                        <?php echo $form->dropDownList($model,'f_type',$model->footercategory() ,$model->getHtmlOptions('f_type',array('empty'=>'Select'))); ?>
+                        <?php echo $form->error($model, 'master_category');?>
+                    </div> 
+                    <div class="form-group col-lg-2">
+                        <?php echo $form->labelEx($model, 'parent_id');
+                         
+                        ?>
+                        <?php echo $form->dropDownList($model,'parent_id',$model->getlistParent() ,$model->getHtmlOptions('parent_id',array('empty'=>'Select Parent '))); ?>
+                        <?php echo $form->error($model, 'parent_id');?>
+                    </div>
+                    
+                            
+                    <div class="form-group col-lg-2">
+                        <?php echo $form->labelEx($model, 'country_id');?>
+                        <?php echo $form->dropDownList($model, 'country_id',CHtml::listData(Countries::model()->listingCountries(),'country_id','country_name'), $model->getHtmlOptions('country_id',array('empty'=>'Select','onchange'=>'changeforCity(this)'))); ?>
+                        <?php echo $form->error($model, 'country_id');?>
+                    </div>             
+                    <div class="form-group col-lg-2">
+                        <?php echo $form->labelEx($model, 'city_id');?>
+                        <?php echo $form->dropDownList($model, 'city_id',CHtml::listData(MainRegion::model()->findAllByAttributes(array('country_id'=>(int) $model->country_id)),'region_id','name'), $model->getHtmlOptions('city_id',array('empty'=>'Select','onchange'=>'changeforLocation(this)'))); ?>
+                        <?php echo $form->error($model, 'city_id');?>
+                    </div>            
+                    <div class="form-group col-lg-2">
+                        <?php echo $form->labelEx($model, 'location_id');?>
+                        <?php echo $form->dropDownList($model, 'location_id', CHtml::listData(States::model()->findAllByAttributes(array('region_id'=>(int) $model->city_id)),'state_id','state_name'), $model->getHtmlOptions('location_id',array('empty'=>'Select'))); ?>
+                        <?php echo $form->error($model, 'location_id');?>
+                    </div> 
+                            
+                    <div class="form-group col-lg-2">
+                        <?php echo $form->labelEx($model, 'section_id');?>
+                        <?php echo $form->dropDownList($model, 'section_id',CHtml::listData(Section::model()->listData(),'section_id','section_name'), $model->getHtmlOptions('section_id',array('empty'=>'Select','onchange'=>'changeSEctionthis(this)'))); ?>
+                        <?php echo $form->error($model, 'section_id');?>
+                    </div> 
+                    <div class="form-group col-lg-2">
+                        <?php echo $form->labelEx($model, 'category_id');?>
+                        <?php echo $form->dropDownList($model, 'category_id',CHtml::listData(MainCategory::model()->ListDataForJSON_ID_BySEction($model->section_id,false,$model->country_id),'category_id','category_name'), $model->getHtmlOptions('category_id',array('empty'=>'Select','onchange'=>'changeCategorythis(this)'))); ?>
+                        <?php echo $form->error($model, 'category_id');?>
+                    </div>   
+                      <div class="form-group col-lg-2">
+                        <?php echo $form->labelEx($model, 'type_id');?>
+                        <?php echo $form->dropDownList($model, 'type_id',Category::model()->ListDataForJSON_ID_ByListingType($model->category_id,false,$model->country_id), $model->getHtmlOptions('type_id',array('empty'=>'Select'))); ?>
+                        <?php echo $form->error($model, 'type_id');?>
+                    </div>  
+                    
                 </div>
-                <div class="clearfix"><!-- --></div>
-                     <div class="clearfix"><!-- --></div>
-                  <div class="form-group col-lg-2">
-					  <?php $model->f_type = empty($model->f_type)? '1' :$model->f_type;?>
-                    <?php echo $form->labelEx($model, 'f_type');?>
-                    <?php echo $form->dropDownList($model,'f_type',$model->footercategory() ,$model->getHtmlOptions('f_type',array('empty'=>'Select'))); ?>
-                    <?php echo $form->error($model, 'master_category');?>
-                </div> 
-                  <div class="form-group col-lg-2">
-                    <?php echo $form->labelEx($model, 'parent_id');
-                     
-                    ?>
-                    <?php echo $form->dropDownList($model,'parent_id',$model->getlistParent() ,$model->getHtmlOptions('parent_id',array('empty'=>'Select Parent '))); ?>
-                    <?php echo $form->error($model, 'parent_id');?>
-                </div>
-                
-                <div class="clearfix"><!-- --></div>        
-                <div class="form-group col-lg-2">
-                    <?php echo $form->labelEx($model, 'country_id');?>
-                    <?php echo $form->dropDownList($model, 'country_id',CHtml::listData(Countries::model()->listingCountries(),'country_id','country_name'), $model->getHtmlOptions('country_id',array('empty'=>'Select','onchange'=>'changeforCity(this)'))); ?>
-                    <?php echo $form->error($model, 'country_id');?>
-                </div>             
-                <div class="form-group col-lg-2">
-                    <?php echo $form->labelEx($model, 'city_id');?>
-                    <?php echo $form->dropDownList($model, 'city_id',CHtml::listData(MainRegion::model()->findAllByAttributes(array('country_id'=>(int) $model->country_id)),'region_id','name'), $model->getHtmlOptions('city_id',array('empty'=>'Select','onchange'=>'changeforLocation(this)'))); ?>
-                    <?php echo $form->error($model, 'city_id');?>
-                </div>            
-                <div class="form-group col-lg-2">
-                    <?php echo $form->labelEx($model, 'location_id');?>
-                    <?php echo $form->dropDownList($model, 'location_id', CHtml::listData(States::model()->findAllByAttributes(array('region_id'=>(int) $model->city_id)),'state_id','state_name'), $model->getHtmlOptions('location_id',array('empty'=>'Select'))); ?>
-                    <?php echo $form->error($model, 'location_id');?>
-                </div> 
-                <div class="clearfix"><!-- --></div>        
-                <div class="form-group col-lg-2">
-                    <?php echo $form->labelEx($model, 'section_id');?>
-                    <?php echo $form->dropDownList($model, 'section_id',CHtml::listData(Section::model()->listData(),'section_id','section_name'), $model->getHtmlOptions('section_id',array('empty'=>'Select','onchange'=>'changeSEctionthis(this)'))); ?>
-                    <?php echo $form->error($model, 'section_id');?>
-                </div> 
-                <div class="form-group col-lg-2">
-                    <?php echo $form->labelEx($model, 'category_id');?>
-                    <?php echo $form->dropDownList($model, 'category_id',CHtml::listData(MainCategory::model()->ListDataForJSON_ID_BySEction($model->section_id,false,$model->country_id),'category_id','category_name'), $model->getHtmlOptions('category_id',array('empty'=>'Select','onchange'=>'changeCategorythis(this)'))); ?>
-                    <?php echo $form->error($model, 'category_id');?>
-                </div>   
-                  <div class="form-group col-lg-2">
-                    <?php echo $form->labelEx($model, 'type_id');?>
-                    <?php echo $form->dropDownList($model, 'type_id',Category::model()->ListDataForJSON_ID_ByListingType($model->category_id,false,$model->country_id), $model->getHtmlOptions('type_id',array('empty'=>'Select'))); ?>
-                    <?php echo $form->error($model, 'type_id');?>
-                </div>  
-               <div class="clearfix"><!-- --></div> 
               
-                <div class="clearfix"><!-- --></div>     
+                     
                 <?php 
                 /**
                  * This hook gives a chance to append content after the active form fields.
@@ -140,13 +143,13 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?> 
-                <div class="clearfix"><!-- --></div>
+                
             </div>
             <div class="box-footer">
-                <div class="pull-right">
+                <div class="pull-right m-4">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
-                <div class="clearfix"><!-- --></div>
+                
             </div>
         </div>
         <?php 

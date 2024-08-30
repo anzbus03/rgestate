@@ -315,7 +315,7 @@ if ($viewCollection->renderContent) {
 		</style>
 		<div class="card">
 			<div class="card-header">
-				<div class="pull-left">
+				<div class="card-header-left">
 					<h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading; ?></h3>
 				</div>
 				<div class="pull-right">
@@ -324,7 +324,7 @@ if ($viewCollection->renderContent) {
 					<?php } ?>
 					<?php echo CHtml::link(Yii::t('app', 'Cancel'), array(Yii::app()->controller->id . '/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel'))); ?>
 				</div>
-				<div class="clearfix"><!-- --></div>
+
 			</div>
 			<div class="card-body">
 				<?php
@@ -389,18 +389,18 @@ if ($viewCollection->renderContent) {
 				//	$model->country  = '66099' ; 
 				?>
 
-				<div class="clearfix"><!-- --></div>
 
-				<div class="clearfix"><!-- --></div>
+
+
 				<div class="subhead font_s ros subhead2">Property Type and Location</div>
-
-				<div class="clearfix"><!-- --></div>
+				<div class="row">
 				<div class="form-group col-lg-3 no-front ">
+
 					<?php echo $form->labelEx($model, 'country'); ?>
 					<?php echo $form->dropDownList($model, 'country', Countries::model()->ListData(), $model->getHtmlOptions('country', array('empty' => 'Select Country', 'class' => 'form-control select2', 'data-url' => Yii::App()->createUrl($this->id . '/select_city_new'), 'onchange' => 'load_via_ajax(this,"state")'))); ?>
 					<?php echo $form->error($model, 'country'); ?>
 				</div>
-
+	
 				<?php
 				$cities =  CHtml::listData(States::model()->AllListingStatesOfCountry((int) $model->country), 'state_id', 'state_name');
 				$m_class = empty($cities) ? 'hidden' : '';
@@ -410,19 +410,19 @@ if ($viewCollection->renderContent) {
 					<?php echo $form->dropDownList($model, 'state', $cities, $model->getHtmlOptions('state', array('empty' => 'Select City', 'class' => 'form-control select2 ', 'data-url' => Yii::App()->createUrl($this->id . '/select_location'), 'onchange' => 'load_via_ajax(this,"city")'))); ?>
 					<?php echo $form->error($model, 'state'); ?>
 				</div>
-
+	
 				<?php
 				$locationlist =   CHtml::listData(City::model()->FindCities((int) $model->state), 'city_id', 'city_name');
 				$m_class = empty($locationlist) ? 'hidden' : '';
 				?>
 				<div class="form-group col-lg-3 <?php echo $m_class; ?>">
-
+	
 					<?php echo $form->labelEx($model, 'city'); ?>
 					<?php echo $form->dropDownList($model, 'city', $locationlist, $model->getHtmlOptions('state', array('empty' => 'Select Location', 'class' => 'form-control select2', 'onchange' => 'changeMap()'))); ?>
 					<?php echo $form->error($model, 'city'); ?>
 				</div>
 				<div class="form-group col-lg-3  ">
-
+	
 					<?php echo $form->labelEx($model, 'project_status'); ?>
 					<?php echo $form->dropDownList($model, 'project_status', $model->projectStatus(), $model->getHtmlOptions('state', array('empty' => 'Please Select', 'class' => 'form-control select2'))); ?>
 					<?php echo $form->error($model, 'project_status'); ?>
@@ -432,11 +432,13 @@ if ($viewCollection->renderContent) {
 					<?php echo $form->textField($model, 'PropertyID', $model->getHtmlOptions('Permit No')); ?>
 					<?php echo $form->error($model, 'PropertyID'); ?>
 				</div>
-				<div class="clearfix"><!-- --></div>
-
+	
+	
 				<?php $this->renderPartial('root.apps.backend.views.new_projects._location', compact('form')); ?>
+				</div>
 
-				<div class="clearfix"><!-- --></div>
+
+
 
 				<?php
 				$catlist =  Category::model()->ListDataForJSON_ID_BySEctionNewdevelopment(3);
@@ -454,7 +456,7 @@ if ($viewCollection->renderContent) {
 				</div>
 
 
-				<div class="clearfix"><!-- --></div>
+
 				<div class="subhead font_s ros subhead2">Project Details</div>
 				<div class="form-group col-lg-12">
 					<?php echo $form->labelEx($model, 'ad_title'); ?> <?php
@@ -469,7 +471,7 @@ if ($viewCollection->renderContent) {
 					<?php echo $form->error($model, 'ad_title'); ?>
 				</div>
 
-				<div class="clearfix"><!-- --></div>
+
 
 				<div class="form-group col-lg-12">
 					<?php echo $form->labelEx($model, 'ad_description'); ?><?php
@@ -495,10 +497,10 @@ if ($viewCollection->renderContent) {
 					}
 				</style>
 
-				<div class="clearfix"><!-- --></div>
+
 
 				<div class="form-group col-lg-4" style="max-width: 250px;">
-					<div class="clearfix"><!-- --></div>
+
 					<style>
 						.lab-p {
 							z-index: 22;
@@ -514,7 +516,7 @@ if ($viewCollection->renderContent) {
 				</div>
 
 				<div class="form-group col-lg-4">
-					<div class="clearfix"><!-- --></div>
+
 					<style>
 						.lab-p {
 							z-index: 22;
@@ -533,12 +535,12 @@ if ($viewCollection->renderContent) {
 
 
 
-				<div class="clearfix"></div>
-				<div class="clearfix"><!-- --></div>
-				<div class="subhead font_s ros subhead_img">Amenities</div>
-				<div class="clearfix"><!-- --></div>
+				
 
-				<div class="clearfix"><!-- --></div>
+				<div class="subhead font_s ros subhead_img">Amenities</div>
+
+
+
 
 				<div class="form-group col-lg-12">
 					<div class="">
@@ -551,13 +553,13 @@ if ($viewCollection->renderContent) {
 						</div>
 						<?php echo $form->error($model, 'amenities'); ?>
 					</div>
-					<div class="clearfix"><!-- --></div>
+
 				</div>
 
 
-				<div class="clearfix"></div>
+				
 				<?php $this->renderPartial('root.apps.backend.views.new_projects.add_property_types'); ?>
-				<div class="clearfix"></div>
+				
 				<div class="form-group col-lg-12 margin-top-15 no-front">
 
 					<div class="subhead font_s ros  " style="padding-right:10px;"> Available Units</div>
@@ -578,14 +580,14 @@ if ($viewCollection->renderContent) {
 					<?php echo $form->error($model, 'available_units'); ?>
 				</div>
 
-				<div class="clearfix"></div>
+				
 
-				<div class="clearfix"><!-- --></div>
+
 				<?php $this->renderPartial('root.apps.backend.views.new_projects._image_upload', compact('form')); ?>
 
-				<div class="clearfix"></div>
+				
 
-				<div class="clearfix"><!-- --></div>
+
 				<div class="">
 					<?php
 					$fileField = 'payment_plan';
@@ -596,8 +598,8 @@ if ($viewCollection->renderContent) {
 
 					$this->renderPartial('root.apps.backend.views.new_projects._file_field_browse', compact('form', 'fileField', 'maxFilesize', 'types', 'maxFiles', 'model', 'title_text')); ?>
 				</div>
-				<div class="clearfix"></div>
-				<div class="clearfix"><!-- --></div>
+				
+
 				<div class="col-md-12 col-sm-12">
 					<?php
 					$fileField = 'floor_plan';
@@ -609,7 +611,7 @@ if ($viewCollection->renderContent) {
 					$this->renderPartial('root.apps.backend.views.new_projects._file_field_browse_plan', compact('form', 'fileField', 'maxFilesize', 'types', 'maxFiles', 'model', 'title_text')); ?>
 				</div>
 
-				<div class="clearfix"></div>
+				
 				<div class="subhead font_s ros subhead_img">Contact Details</div>
 
 				<div class="form-group col-lg-3">
@@ -642,15 +644,14 @@ if ($viewCollection->renderContent) {
 					<?php echo $form->error($model, 'user_id'); ?>
 				</div>
 
-				<div class="clearfix"><!-- --></div>
+
 				<?php
 				if (Yii::app()->isAppName('backend')) {
 				?>
-					<div class="clearfix"></div>
+					
 					<div class="subhead font_s ros subhead_img">Admin Settings</div>
 					<h2 class="main_head_purpose"></h2>
-					<h1>hello duniya</h1>
-					<div class="clearfix"></div>
+					
 					<div class=" ">
 						<div class="form-group col-lg-6">
 							<?php echo $form->labelEx($model, 'status'); ?>
@@ -663,16 +664,16 @@ if ($viewCollection->renderContent) {
 							<?php echo $form->error($model, 'featured'); ?>
 						</div>
 					</div>
-					<div class="clearfix"></div>
+					
 				<?php } ?>
-				<div class="clearfix"><!-- --></div>
+
 
 			</div>
 			<div class="box-footer">
 				<div class="pull-right">
 					<button type="submit" id="bb" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', 'Submit'); ?></button>
 				</div>
-				<div class="clearfix"><!-- --></div>
+
 			</div>
 		</div>
 <?php

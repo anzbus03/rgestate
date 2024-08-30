@@ -70,32 +70,34 @@ if ($viewCollection->renderContent) {
                 )));
                 ?>
                 <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($template, 'name');?>
-                    <?php echo $form->textField($template, 'name', $template->getHtmlOptions('name')); ?>
-                    <?php echo $form->error($template, 'name');?>
-                </div>
-                <div class="form-group col-lg-3">
-                    <?php echo $form->labelEx($template, 'inline_css');?>
-                    <?php echo $form->dropDownList($template, 'inline_css', $template->getInlineCssArray(), $template->getHtmlOptions('inline_css')); ?>
-                    <?php echo $form->error($template, 'inline_css');?>
-                </div>
-                <div class="form-group col-lg-3">
-                    <?php echo $form->labelEx($template, 'minify');?>
-                    <?php echo $form->dropDownList($template, 'minify', $template->getYesNoOptions(), $template->getHtmlOptions('minify')); ?>
-                    <?php echo $form->error($template, 'minify');?>
-                </div>
-                <div class="clearfix"><!-- --></div>
-                 <div class="form-group col-lg-12">
-                    <?php echo $form->labelEx($template, 'subject');?><?php echo $template->getTranslateHtml('subject','ar');?>
-                    <?php echo $form->textField($template, 'subject', $template->getHtmlOptions('subject')); ?>
-                    <?php echo $form->error($template, 'subject');?>
-                </div>
-                <hr />
-                <div class="form-group">
-                    <?php echo $form->labelEx($template, 'content');?><?php echo $template->getTranslateHtml('content','ar',false);?>
-                    <?php echo $form->textArea($template, 'content', $template->getHtmlOptions('content', array('rows' => 15))); ?>
-                    <?php echo $form->error($template, 'content');?>
+                <div class="row">
+
+                    <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($template, 'name');?>
+                        <?php echo $form->textField($template, 'name', $template->getHtmlOptions('name')); ?>
+                        <?php echo $form->error($template, 'name');?>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <?php echo $form->labelEx($template, 'inline_css');?>
+                        <?php echo $form->dropDownList($template, 'inline_css', $template->getInlineCssArray(), $template->getHtmlOptions('inline_css')); ?>
+                        <?php echo $form->error($template, 'inline_css');?>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <?php echo $form->labelEx($template, 'minify');?>
+                        <?php echo $form->dropDownList($template, 'minify', $template->getYesNoOptions(), $template->getHtmlOptions('minify')); ?>
+                        <?php echo $form->error($template, 'minify');?>
+                    </div>
+                    <div class="clearfix"><!-- --></div>
+                     <div class="form-group col-lg-12">
+                        <?php echo $form->labelEx($template, 'subject');?><?php echo $template->getTranslateHtml('subject','ar');?>
+                        <?php echo $form->textField($template, 'subject', $template->getHtmlOptions('subject')); ?>
+                        <?php echo $form->error($template, 'subject');?>
+                    </div>
+                    <div class="form-group">
+                        <?php echo $form->labelEx($template, 'content');?><?php echo $template->getTranslateHtml('content','ar',false);?>
+                        <?php echo $form->textArea($template, 'content', $template->getHtmlOptions('content', array('rows' => 15))); ?>
+                        <?php echo $form->error($template, 'content');?>
+                    </div>
                 </div>
                 <div class="clearfix"><!-- --></div>
                 <?php 

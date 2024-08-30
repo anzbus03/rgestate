@@ -43,9 +43,30 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm'); 
         ?>
+          <style>
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .card-header-left {
+                flex: 1;
+            }
+
+            .card-header-right {
+                display: flex;
+                gap: 10px;
+            }
+
+            .card-header-right .btn {
+                margin-left: 5px;
+            }
+        </style>
         <div class="card">
-            <div class="card-header">
-                <div class="pull-left">
+        <div class="card-header">
+            <div class="card-header-left">
                     <h3 class="card-title"><span class="glyphicon glyphicon-book"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
@@ -70,56 +91,59 @@ if ($viewCollection->renderContent) {
                 )));
                 ?>
                 <div class="clearfix"><!-- --></div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($article, 'title');?><?php echo $article->getTranslateHtml('title');?>
-                    <?php echo $form->textField($article, 'title', $article->getHtmlOptions('title', array('data-article-id' => (int)$article->article_id, 'data-slug-url' => $this->createUrl('articles/slug')))); ?>
-                    <?php echo $form->error($article, 'title');?>
-                </div>
-                
-                 <div class="form-group">
-                    <?php echo $form->labelEx($article, 'meta_title');?>
-                    <?php echo $form->textField($article, 'meta_title', $article->getHtmlOptions('meta_title')); ?>
-                    <?php echo $form->error($article, 'meta_title');?>
-                </div>
-               
-               
-                
-                  <div class="form-group">
-                    <?php echo $form->labelEx($article, 'meta_description');?>
-                    <?php echo $form->textArea($article, 'meta_description', $article->getHtmlOptions('meta_description', array('rows' => 4))); ?>
-                    <?php echo $form->error($article, 'meta_description');?>
-                </div>
-                
-                <div class="form-group">
-                    <?php echo $form->labelEx($article, 'content');?><?php echo $article->getTranslateHtml('content','ar',false,'1200px');?>
-                    <?php echo $form->textArea($article, 'content', $article->getHtmlOptions('content', array('rows' => 15))); ?>
-                    <?php echo $form->error($article, 'content');?>
-                </div>
-                <div class="form-group col-lg-8">
-                    <?php echo $form->labelEx($articleToCategory, 'category_id');?>
-                    <div class="article-categories-scrollbox">
-                        <ul class="list-group">
-                        <?php echo CHtml::checkBoxList($articleToCategory->modelName, $article->getSelectedCategoriesArray(), $article->getAvailableCategoriesArray(), $articleToCategory->getHtmlOptions('category_id', array(
-                            'class'        => '',
-                            'template'     => '<li class="list-group-item">{beginLabel}{input} <span>{labelTitle}</span> {endLabel}</li>',
-                            'container'    => '',
-                            'separator'    => '',
-                            'labelOptions' => array('style' => 'margin-right: 10px;')
-                        ))); ?>
-                        </ul>
-                    </div>
-                    <?php echo $form->error($articleToCategory, 'category_id');?>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group slug-wrapper"<?php if (empty($article->slug)){ echo ' style="display:none"';}?>>
-                        <?php echo $form->labelEx($article, 'slug');?>
-                        <?php echo $form->textField($article, 'slug', $article->getHtmlOptions('slug')); ?>
-                        <?php echo $form->error($article, 'slug');?>
-                    </div>
+                <div class="row">
+
                     <div class="form-group">
-                        <?php echo $form->labelEx($article, 'status');?>
-                        <?php echo $form->dropDownList($article, 'status', $article->getStatusesArray(), $article->getHtmlOptions('status')); ?>
-                        <?php echo $form->error($article, 'status');?>
+                        <?php echo $form->labelEx($article, 'title');?><?php echo $article->getTranslateHtml('title');?>
+                        <?php echo $form->textField($article, 'title', $article->getHtmlOptions('title', array('data-article-id' => (int)$article->article_id, 'data-slug-url' => $this->createUrl('articles/slug')))); ?>
+                        <?php echo $form->error($article, 'title');?>
+                    </div>
+                    
+                     <div class="form-group mt-4">
+                        <?php echo $form->labelEx($article, 'meta_title');?>
+                        <?php echo $form->textField($article, 'meta_title', $article->getHtmlOptions('meta_title')); ?>
+                        <?php echo $form->error($article, 'meta_title');?>
+                    </div>
+                   
+                   
+                    
+                      <div class="form-group mt-4">
+                        <?php echo $form->labelEx($article, 'meta_description');?>
+                        <?php echo $form->textArea($article, 'meta_description', $article->getHtmlOptions('meta_description', array('rows' => 4))); ?>
+                        <?php echo $form->error($article, 'meta_description');?>
+                    </div>
+                    
+                    <div class="form-group mt-4">
+                        <?php echo $form->labelEx($article, 'content');?><?php echo $article->getTranslateHtml('content','ar',false,'1200px');?>
+                        <?php echo $form->textArea($article, 'content', $article->getHtmlOptions('content', array('rows' => 15))); ?>
+                        <?php echo $form->error($article, 'content');?>
+                    </div>
+                    <div class="form-group col-lg-8 mt-4">
+                        <?php echo $form->labelEx($articleToCategory, 'category_id');?>
+                        <div class="article-categories-scrollbox">
+                            <ul class="list-group">
+                            <?php echo CHtml::checkBoxList($articleToCategory->modelName, $article->getSelectedCategoriesArray(), $article->getAvailableCategoriesArray(), $articleToCategory->getHtmlOptions('category_id', array(
+                                'class'        => '',
+                                'template'     => '<li class="list-group-item">{beginLabel}{input} <span>{labelTitle}</span> {endLabel}</li>',
+                                'container'    => '',
+                                'separator'    => '',
+                                'labelOptions' => array('style' => 'margin-right: 10px;')
+                            ))); ?>
+                            </ul>
+                        </div>
+                        <?php echo $form->error($articleToCategory, 'category_id');?>
+                    </div>
+                    <div class="col-lg-4 mt-4">
+                        <div class="form-group slug-wrapper"<?php if (empty($article->slug)){ echo ' style="display:none"';}?>>
+                            <?php echo $form->labelEx($article, 'slug');?>
+                            <?php echo $form->textField($article, 'slug', $article->getHtmlOptions('slug')); ?>
+                            <?php echo $form->error($article, 'slug');?>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($article, 'status');?>
+                            <?php echo $form->dropDownList($article, 'status', $article->getStatusesArray(), $article->getHtmlOptions('status')); ?>
+                            <?php echo $form->error($article, 'status');?>
+                        </div>
                     </div>
                 </div>
                 <div class="clearfix"><!-- --></div>

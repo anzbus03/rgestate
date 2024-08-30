@@ -45,7 +45,7 @@ if ($viewCollection->renderContent) {
         ?>
         <div class="card">
             <div class="card-header">
-                <div class="pull-left">
+                <div class="card-header-left">
                     <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
@@ -54,7 +54,6 @@ if ($viewCollection->renderContent) {
                     <?php } ?>
                     <?php echo CHtml::link(Yii::t('app', 'Cancel'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
                 </div>
-                <div class="clearfix"><!-- --></div>
             </div>
             <div class="card-body">
                 <?php 
@@ -69,15 +68,13 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?>
-                <div class="clearfix"><!-- --></div>
                 <div class="form-group col-lg-6">
                     <?php echo $form->labelEx($model, 'category_name');?>
                     <?php echo $form->textField($model, 'category_name',$model->getHtmlOptions('category_name')); ?>
                     <?php echo $form->error($model, 'category_name');?>
                 </div>        
             
-                
-                <div class="clearfix"><!-- --></div>     
+                     
                 <?php 
                 /**
                  * This hook gives a chance to append content after the active form fields.
@@ -90,13 +87,11 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?> 
-                <div class="clearfix"><!-- --></div>
             </div>
             <div class="box-footer">
-                <div class="pull-right">
+                <div class="pull-right m-4">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
-                <div class="clearfix"><!-- --></div>
             </div>
         </div>
         <?php 

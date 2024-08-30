@@ -889,12 +889,12 @@ if ($viewCollection->renderContent) {
 								<?php
 								if (isset($_GET['type']) and !empty($_GET['type'])) {
 									if ($_GET['type'] == 'business') {
-										$section = array('6' => '<span class="img"></span>' . $this->tag->getTag('business_for_sale', 'Business for sale'));
+										$section = array('6' => '<span class="img"></span>' . $this->tag->getTag('business_for_sale', 'Business Opportiunities'));
 									} else {
 										$section = array('1' => '<span class="img"></span>' . $this->tag->getTag('for_sale', 'For Sale'), '2' => '<span class="img"></span>' . $this->tag->getTag('for_rent', 'For Rent'));
 									}
 								} else {
-									$section = array('1' => '<span class="img"></span>' . $this->tag->getTag('for_sale', 'For Sale'), '2' => '<span class="img"></span>' . $this->tag->getTag('for_rent', 'For Rent'), '6' => '<span class="img"></span>' . $this->tag->getTag('business_for_sale', 'Business for sale'));
+									$section = array('1' => '<span class="img"></span>' . $this->tag->getTag('for_sale', 'For Sale'), '2' => '<span class="img"></span>' . $this->tag->getTag('for_rent', 'For Rent'), '6' => '<span class="img"></span>' . $this->tag->getTag('business_for_sale', 'Business Opportiunities'));
 								}
 								echo CHtml::radioButtonList('section_id', $model->section_id, $section, array(
 									'data-url' => Yii::App()->createUrl($this->id . '/select_category3'),

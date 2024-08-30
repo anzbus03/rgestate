@@ -32916,3 +32916,26 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
     [data-theme-version="dark"] .footer .copyright a {
       color: #fff; }
 
+
+      .card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px;
+      }
+
+      .card-header-left {
+          flex: 1;
+      }
+
+      .card-header-right {
+          display: flex;
+          gap: 10px;
+      }
+
+      .card-header-right .btn {
+          margin-left: 5px;
+      }
+      .hide{
+          display: none;
+      }

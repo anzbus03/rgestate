@@ -74,55 +74,61 @@ class LeftSideNavigationWidget extends CWidget {
             ),
 
             'place_an_ad' => array(
-                'name'      => Yii::t( 'app', 'Properties' ),
+                'name'      => Yii::t( 'app', 'Listings Management' ),
                 'icon'      => 'flaticon-043-menu',
                 'active'    => $arSale,
                 'route'     => null,
                 'items'     => array(
-                    array( 'url' => array( 'place_property/index' ), 'label' => Yii::t( 'app', 'List properties' ), 'active' => strpos( $route, 'place_property' ) === 0 ),
-                    array( 'url' => array( 'place_property/unpublished' ), 'label' => Yii::t( 'app', 'Unpublished properties ' ), 'active' => strpos( $route, 'place_property' ) === 0 ),
-                    array( 'url' => array( 'place_property/trash' ), 'label' => Yii::t( 'app', 'Trash properties' ), 'active' => strpos( $route, 'place_property' ) === 0 ),
-                    array( 'url' => array( 'place_property/image_management2' ), 'label' => Yii::t( 'app', 'Manage property image' ), 'active' => strpos( $route, 'image_management2' ) === 0 ),
-                    array( 'url' => array( 'place_property/create' ), 'label' => Yii::t( 'app', 'Create new  property' ), 'active' => strpos( $route, 'place_property' ) === 0 ),
-                ),
-            ),
-            'business' => array(
-                'name'      => Yii::t( 'app', 'Business Opportiunities' ),
-                'icon'      => 'flaticon-013-checkmark',
-                'active'    => 'place_property',
-                'route'     => array( 'place_property/business' ),
-            ),
-            'new_projects' => array(
-                'name'      => Yii::t( 'app', 'New Projects' ),
-                'icon'      => 'flaticon-053-lifebuoy',
-                'active'    =>  array( 'new_projects' ),
-                'route'     => null,
-                'items'     => array(
+                    array( 'url' => array( 'place_property/index' ), 'label' => Yii::t( 'app', 'List properties' ), 'active' => strpos( $route, 'place_property/index' ) === 0 ),
+                    array( 'url' => array( 'place_property/business' ), 'label' => Yii::t( 'app', 'Business Opportiunities' ), 'active' => strpos( $route, 'place_property/business' ) === 0 ),
                     array( 'url' => array( 'new_projects/index' ), 'label' => Yii::t( 'app', 'List New Projects' ), 'active' => strpos( $route, 'new_projects' ) === 0 ),
-                    array( 'url' => array( 'new_projects/trash' ), 'label' => Yii::t( 'app', 'Trash Projects' ), 'active' => strpos( $route, 'new_projects' ) === 0 ),
-                    array( 'url' => array( 'new_projects/create' ), 'label' => Yii::t( 'app', 'Create New  Projects' ), 'active' => strpos( $route, 'new_projects' ) === 0 ),
+                    // array( 'url' => array( 'place_property/unpublished' ), 'label' => Yii::t( 'app', 'Unpublished properties ' ), 'active' => strpos( $route, 'place_property' ) === 0 ),
+                    // array( 'url' => array( 'place_property/trash' ), 'label' => Yii::t( 'app', 'Trash properties' ), 'active' => strpos( $route, 'place_property' ) === 0 ),
+                    // array( 'url' => array( 'place_property/image_management2' ), 'label' => Yii::t( 'app', 'Manage property image' ), 'active' => strpos( $route, 'image_management2' ) === 0 ),
+                    // array( 'url' => array( 'place_property/create' ), 'label' => Yii::t( 'app', 'Create new  property' ), 'active' => strpos( $route, 'place_property' ) === 0 ),
                 ),
             ),
+            // 'business' => array(
+            //     'name'      => Yii::t( 'app', 'Business Opportiunities' ),
+            //     'icon'      => 'flaticon-013-checkmark',
+            //     'active'    => 'place_property',
+            //     'route'     => array( 'place_property/business' ),
+            // ),
+            // 'new_projects' => array(
+            //     'name'      => Yii::t( 'app', 'New Projects' ),
+            //     'icon'      => 'flaticon-053-lifebuoy',
+            //     'active'    =>  array( 'new_projects' ),
+            //     'route'     => null,
+            //     'items'     => array(
+            //         array( 'url' => array( 'new_projects/index' ), 'label' => Yii::t( 'app', 'List New Projects' ), 'active' => strpos( $route, 'new_projects' ) === 0 ),
+            //         array( 'url' => array( 'new_projects/trash' ), 'label' => Yii::t( 'app', 'Trash Projects' ), 'active' => strpos( $route, 'new_projects' ) === 0 ),
+            //         array( 'url' => array( 'new_projects/create' ), 'label' => Yii::t( 'app', 'Create New  Projects' ), 'active' => strpos( $route, 'new_projects' ) === 0 ),
+            //     ),
+            // ),
             'requirement' => array(
-                'name'      => Yii::t( 'app', 'Submited Requirements' ),
+                'name'      => Yii::t( 'app', 'Submissions' ),
                 'icon'      => 'flaticon-039-goal',
                 'active'    => 'submited_preq',
-                'route'     => array( 'submited_preq/index' ),
-            ),
-            'jv' => array(
-                'name'      => Yii::t( 'app', 'Submited JV Proposal' ),
-                'icon'      => 'flaticon-039-goal',
-                'active'    => 'submited_jvproposal',
-                'route'     => array( 'submited_jvproposal/index' ),
-            ),
-            'users' => array(
-                'name'      => Yii::t( 'app', 'Admins' ),
-                'icon'      => 'flaticon-047-home',
-                'active'    =>  array( 'users', 'user_groups' ),
                 'route'     => null,
                 'items'     => array(
-                    array( 'url' => array( 'users/index' ), 'label' => Yii::t( 'app', 'Admins' ), 'active' => strpos( $route, 'users' ) === 0 ),
+                    array( 'url' => array( 'submited_preq/index' ), 'label' => Yii::t( 'app', 'Submitted Requirements' ), 'active' => strpos( $route, 'submited_preq' ) === 0 ),
+                    array( 'url' => array( 'submited_jvproposal/index' ), 'label' => Yii::t( 'app', 'Submited JV Proposal' ), 'active' => strpos( $route, 'submited_jvproposal' ) === 0 ),
                 ),
+            ),
+            // 'jv' => array(
+            //     'name'      => Yii::t( 'app', 'Submited JV Proposal' ),
+            //     'icon'      => 'flaticon-039-goal',
+            //     'active'    => 'submited_jvproposal',
+            //     'route'     => array( 'submited_jvproposal/index' ),
+            // ),
+            'users' => array(
+                'name'      => Yii::t( 'app', 'Users' ),
+                'icon'      => 'flaticon-047-home',
+                'active'    =>  array( 'users', 'user_groups' ),
+                'route'     => array( 'users/index' ),
+                // 'items'     => array(
+                //     array( 'url' => array( 'users/index' ), 'label' => Yii::t( 'app', 'Admins' ), 'active' => strpos( $route, 'users' ) === 0 ),
+                // ),
             ),
 
             'partners' => array(
@@ -181,22 +187,23 @@ class LeftSideNavigationWidget extends CWidget {
 
                 'route'     => array( 'areaguides/index' ),
             ),
-            'sitemap' => array(
-                'name'      => Yii::t( 'app', 'Update Sitemap' ),
-                'icon'      => 'flaticon-085-signal',
-                'active'    => 'dashboard/sitemap',
+            // 'sitemap' => array(
+            //     'name'      => Yii::t( 'app', 'Update Sitemap' ),
+            //     'icon'      => 'flaticon-085-signal',
+            //     'active'    => 'dashboard/sitemap',
 
-                'route'     => array( 'dashboard/sitemap' ),
-            ),
+            //     'route'     => array( 'dashboard/sitemap' ),
+            // ),
 
             'articles' => array(
-                'name'      => Yii::t( 'app', 'Articles' ),
+                'name'      => Yii::t( 'app', 'CMS' ),
                 'icon'      => 'flaticon-093-waving',
                 'active'    => array( 'article', 'blog_articles', 'blog_links', 'advertisement_articles', 'content_pages', 'listing_contents' ),
                 'route'     => null,
                 'items'     => array(
                     array( 'url' => array( 'articles/index' ), 'label' => Yii::t( 'app', 'View all articles' ), 'active' => strpos( $route, 'articles/index' ) === 0 ),
                     array( 'url' => array( 'blog_articles/index' ), 'label' => Yii::t( 'app', 'View all blogs' ), 'active' => strpos( $route, 'blog_articles/index' ) === 0 ),
+                    array('url' => array('blog_articles/index_authors'), 'label' => Yii::t('app', 'View Authors'), 'active' => strpos($route, 'blog_articles/index_authors') === 0),
                     array( 'url' => array( 'advertisement_articles/index' ), 'label' => Yii::t( 'app', 'View all adv articles' ), 'active' => strpos( $route, 'advertisement_articles/index' ) === 0 ),
                     array( 'url' => array( 'content_pages/index' ), 'label' => Yii::t( 'app', 'Content Pages' ), 'active' => strpos( $route, 'content_pages/index' ) === 0 ),
                     array( 'url' => array( 'listing_contents/index' ), 'label' => Yii::t( 'app', 'Listing Contents' ), 'active' => strpos( $route, 'listing_contents/index' ) === 0 ),
@@ -231,6 +238,7 @@ class LeftSideNavigationWidget extends CWidget {
                 'items'     => array(
                     array( 'url' => array( 'settings/index' ), 'label' => Yii::t( 'app', 'Common' ), 'active' => strpos( $route, 'settings/index' ) === 0 ),
                     array( 'url' => array( 'settings/page_titles' ), 'label' => Yii::t( 'app', 'Static Page titles' ), 'active' => strpos( $route, 'settings/page_titles' ) === 0 ),
+                    array('url' => array('settings/menu_management'), 'label' => Yii::t('app', 'Menu Management'), 'active' => strpos($route, 'settings/menu_management') === 0),
                     //array( 'url' => array( 'settings/success_messages' ), 'label' => Yii::t( 'app', 'Success Messages' ), 'active' => strpos( $route, 'settings/success_messages' ) === 0 ),
                     // array( 'url' => array( 'upload_settings/index' ), 'label' => Yii::t( 'app', 'Upload Settings' ), 'active' => strpos( $route, 'upload_settings/index' ) === 0 ),
                     array( 'url' => array( 'settings/email_templates' ), 'label' => Yii::t( 'app', 'Common email template' ), 'active' => strpos( $route, 'settings/email_templates' ) === 0 ),

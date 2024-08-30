@@ -43,9 +43,33 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm'); 
         ?>
+        <style>
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .card-header-left {
+                flex: 1;
+            }
+
+            .card-header-right {
+                display: flex;
+                gap: 10px;
+            }
+
+            .card-header-right .btn {
+                margin-left: 5px;
+            }
+            .hide{
+                display: none;
+            }
+        </style>
         <div class="card">
             <div class="card-header">
-                <div class="pull-left">
+                <div class="card-header-left">
                     <h3 class="card-title"><span class="glyphicon glyphicon-book"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">

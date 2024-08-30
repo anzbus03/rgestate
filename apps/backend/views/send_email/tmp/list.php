@@ -18,7 +18,7 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 if ($viewCollection->renderContent) { ?>
     <div class="card">
         <div class="card-header">
-            <div class="pull-left">
+            <div class="card-header-left">
                 <h3 class="card-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title."  ");?>
                 </h3>
@@ -29,7 +29,7 @@ if ($viewCollection->renderContent) { ?>
             <div class="clearfix"><!-- --></div>
         </div>
         <div class="card-body">
-				<section class=" ">
+            <section class=" ">
 				<div class="row">
 				<?php 
 

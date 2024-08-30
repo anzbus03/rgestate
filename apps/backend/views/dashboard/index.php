@@ -192,6 +192,79 @@ if ($viewCollection->renderContent) {
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-xl-9 col-xxl-8 col-lg-7">
+            <div class="card">	
+                <div class="card-header border-0 pb-0">
+                    <h3 class="card-title">Latest Blogs</h3>
+                    <a href="<?php echo Yii::app()->apps->getBaseUrl('backend/index.php/blog_articles/index'); ?>" class="text-primary font-w500">View more >></a>
+                </div>
+                <div class="card-body">
+                    <div class="swiper mySwiper swiper-container">
+                        <div class="swiper-wrapper">
+                            <?php foreach($articleCategoryFromSlug as $k => $v){
+                                if (!empty($v->featured_image) && !is_null($v->featured_image)){
+                                    $featuredImageUrl = Yii::app()->baseUrl . '/uploads/images/' . $v->featured_image;
+                                } else {
+                                    preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $v->content, $featuredImageUrl);
+                                }
+                                ?>
+                            <div class="swiper-slide">
+                                <div class="text-center">
+                                    <img src="<?php echo is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl; ?>" class="swiper-media" alt="blogImage" >
+                                    <h5 class="fs-16 mb-1 font-w600"><a class="text-black" href="https://dompet.dexignlab.com/xhtml/page-error-404.html">Mr.Hariom</a></h5>
+                                    <p class="fs-12"><?php echo $v->title; ?></p>
+                                    <div class="social-media">
+                                        <a href="<?php echo Yii::app()->apps->getBaseUrl('blog/'.$v->slug); ?>" class="btn btn-primary">
+                                            View Blog
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php } ?>
+                        </div>
+                            
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-xxl-4 col-lg-5">
+            <div class="card border-0 pb-0">
+                <div class="card-header flex-wrap border-0 pb-0">
+                    <h3 class="card-title">Recent Enquiries</h3>
+                    <a href="<?php echo Yii::app()->apps->getBaseUrl('backend/index.php/contact_services/index'); ?>" class="text-primary font-w500">View more >></a>
+                </div>
+                <div class="card-body recent-patient px-0"> 
+                    <div id="DZ_W_Todo2" class="widget-media dlab-scroll px-4 height320">
+                    <ul class="timeline">
+                        <?php 
+                        $counter = 0; 
+                        foreach ($modelContactServices->search()->getData() as $contactSerivce) { 
+                            if ($counter >= 4) break; // Limit loop to 4 iterations
+                            ?>
+                            <li>
+                                <div class="timeline-panel flex-wrap">
+                                    <div class="media-body">
+                                        <h5 class="fs-16 font-w600 mb-0"><a class="text-black"><?php echo $contactSerivce->name; ?></a></h5>
+                                        <span class="fs-12"><?php echo $contactSerivce->email; ?></span>
+                                    </div>
+                                    <a href="javascript:void(0);" class="text-warning mt-2">
+                                        <?php echo date('Y-m-d', strtotime($contactSerivce->date)); ?>
+                                    </a>
+                                </div>
+                            </li>
+                        <?php 
+                            $counter++; 
+                        } 
+                        ?>
+                    </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
  <?php
 }
 ?>

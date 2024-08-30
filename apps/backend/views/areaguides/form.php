@@ -43,9 +43,33 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm', array('htmlOptions'=>array('class'=>'form-horizontal','enctype' => 'multipart/form-data')));
         ?>
+        <style>
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .card-header-left {
+                flex: 1;
+            }
+
+            .card-header-right {
+                display: flex;
+                gap: 10px;
+            }
+
+            .card-header-right .btn {
+                margin-left: 5px;
+            }
+            .hide{
+                display: none;
+            }
+        </style>
         <div class="card">
             <div class="card-header">
-                <div class="pull-left">
+                <div class="card-header-left">
                     <h3 class="card-title"><span class="glyphicon glyphicon-book"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
@@ -71,41 +95,44 @@ if ($viewCollection->renderContent) {
                 ?>
 				
                 <div class="clearfix"><!-- --></div>
-				<div class="col-lg-4">
-                    <?php 
-                    echo $form->labelEx($areaguides, 'city');?> 
-                    <?php $dropdwn =   array_merge( $areaguides->getHtmlOptions('area'),array('empty'=>'Select Region ',"style"=>"1",
-                       'ajax' =>
-                       array('type'=>'POST',
-                       'url'=>$this->createUrl('LoadCities'), //url to call.
-                       'update'=>'#Areaguides_city', //selector to update
-                        'data'=>array('area'=>'js:this.value'),
-                        'beforeSend' => 'function(){
-							$("#myDiv").addClass("grid-view-loading");}',
-							'complete' => 'function(){
-						    $("#myDiv").removeClass("grid-view-loading");
-						   }',
-							)
-                       )
-                       )
-                    
-                     ;  ?> 
-                    <span id="myDiv" style="padding-left:20px;"></span>
-                    <?php echo $form->dropDownList($areaguides,'area',CHtml::listData(MainRegion::model()->getStateWithCountry_2(66124),"region_id" ,"name"), $dropdwn); ?>
-                    <?php echo $form->error($areaguides, 'area');?>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <?php 
+                        echo $form->labelEx($areaguides, 'city');?> 
+                        <?php $dropdwn =   array_merge( $areaguides->getHtmlOptions('area'),array('empty'=>'Select Region ',"style"=>"1",
+                           'ajax' =>
+                           array('type'=>'POST',
+                           'url'=>$this->createUrl('LoadCities'), //url to call.
+                           'update'=>'#Areaguides_city', //selector to update
+                            'data'=>array('area'=>'js:this.value'),
+                            'beforeSend' => 'function(){
+                                $("#myDiv").addClass("grid-view-loading");}',
+                                'complete' => 'function(){
+                                $("#myDiv").removeClass("grid-view-loading");
+                               }',
+                                )
+                           )
+                           )
+                        
+                         ;  ?> 
+                        <span id="myDiv" style="padding-left:20px;"></span>
+                        <?php echo $form->dropDownList($areaguides,'area',CHtml::listData(MainRegion::model()->getStateWithCountry_2(66124),"region_id" ,"name"), $dropdwn); ?>
+                        <?php echo $form->error($areaguides, 'area');?>
+                    </div>
+                    <div class="col-lg-4">
+                        <?php echo $form->labelEx($areaguides, 'area');?> 
+                        <?php $dropdwn =   array_merge( $areaguides->getHtmlOptions('city'),array('empty'=>'Select City ',"style"=>"1")) ;  ?> 
+                        <?php echo $form->dropDownList($areaguides,'city',CHtml::listData(States::model()->getStateWithCountry_2(66124),"state_id" ,"state_name"), $dropdwn  ); ?>
+                        <?php echo $form->error($areaguides, 'city');?>
+                    </div>
+                    <div class="col-lg-4">
+                        
+                        <?php echo $form->labelEx($areaguides, 'image');?>
+                        <?php echo $form->fileField($areaguides, 'image',$areaguides->getHtmlOptions('image')); ?>
+                        <?php echo $form->error($areaguides, 'image');?>
+                    </div>
                 </div>
-                <div class="col-lg-4">
-                    <?php echo $form->labelEx($areaguides, 'area');?> 
-                    <?php $dropdwn =   array_merge( $areaguides->getHtmlOptions('city'),array('empty'=>'Select City ',"style"=>"1")) ;  ?> 
-                    <?php echo $form->dropDownList($areaguides,'city',CHtml::listData(States::model()->getStateWithCountry_2(66124),"state_id" ,"state_name"), $dropdwn  ); ?>
-                    <?php echo $form->error($areaguides, 'city');?>
-                </div>
-                <div class="col-lg-2">
-					
-                    <?php echo $form->labelEx($areaguides, 'image');?>
-                    <?php echo $form->fileField($areaguides, 'image',$areaguides->getHtmlOptions('image')); ?>
-                    <?php echo $form->error($areaguides, 'image');?>
-                </div><div class="col-lg-2"><?php if (!$areaguides->isNewRecord) { echo $areaguides->CategoryImages;}?></div>
+                <div class="col-lg-2"><?php if (!$areaguides->isNewRecord) { echo $areaguides->CategoryImages;}?></div>
                 <div class="clearfix"><!-- --></div>
                 <div class="form-group col-lg-12">
                     <?php echo $form->labelEx($areaguides, 'highlights');?><?php echo $areaguides->getTranslateHtml('highlights','ar',false,'1200px');?>
@@ -140,7 +167,7 @@ if ($viewCollection->renderContent) {
                     <?php echo $form->error($areaguides, 'meta_description');?>
                 </div>
                 
-                <div class="col-lg-4">
+                <div class="row">
                     <div class="form-group slug-wrapper"<?php if (empty($areaguides->slug)){ echo ' style="display:none"';}?>>
                         <?php echo $form->labelEx($areaguides, 'slug');?>
                         <?php echo $form->textField($areaguides, 'slug', $areaguides->getHtmlOptions('slug')); ?>
@@ -168,7 +195,7 @@ if ($viewCollection->renderContent) {
                 <div class="clearfix"><!-- --></div>
             </div>
             <div class="box-footer">
-                <div class="pull-right">
+                <div class="pull-right" style="margin: 20px;">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
                 <div class="clearfix"><!-- --></div>

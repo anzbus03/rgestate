@@ -17,20 +17,18 @@
 		color: #fff;
 	}
 </style>
-<div class="insidecontent">
-
-	<div class="clearfix"><!-- --></div>
+<!-- <div class="insidecontent">
 
 	<div class="form-group col-lg-6 hide">
-		<?php echo $form->hiddenField($model, 'p_url'); ?>
-		<?php echo $form->hiddenField($model, 'p_id'); ?>
-		<?php echo $form->hiddenField($model, 'section_id'); ?>
-		<?php echo $form->error($model, 'section_id'); ?>
-
-		<?php echo $form->hiddenField($model, 'category_id'); ?>
-		<?php echo $form->error($model, 'category_id'); ?>
+		<?php// echo $form->hiddenField($model, 'p_url'); ?>
+		<?php// echo $form->hiddenField($model, 'p_id'); ?>
+		<?php// echo $form->hiddenField($model, 'section_id'); ?>
+		<?php// echo $form->error($model, 'section_id'); ?>
+	
+		<?php// echo $form->hiddenField($model, 'category_id'); ?>
+		<?php// echo $form->error($model, 'category_id'); ?>
 	</div>
-</div>
+</div> -->
 </div>
 <div class="clearfix"><!-- --></div>
 </div>
@@ -42,7 +40,6 @@
 	<h3 class="subHeadh2">Admin Settings</h3>
 	<h2 class="main_head_purpose"></h2>
 	<div class="clearfix"></div>
-	<h1>hello duniya</h1>
 	<div class="row">
 		<div class="form-group col-lg-6">
 			<?php echo $form->labelEx($model, 'status'); ?>

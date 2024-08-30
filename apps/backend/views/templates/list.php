@@ -26,14 +26,39 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
-	<style>
-	
-	.panel-template-box {
-    float: left;
-    margin-right: 10px;
-    max-width: 190px;
-}
-	</style>
+    <style>
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .card-box {
+            flex: 1 1 calc(33.333% - 15px);
+            box-sizing: border-box;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            margin: 0;
+        }
+        .box-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
     <div class="card">
         <div class="card-header">
             <div class="pull-left">
@@ -41,99 +66,98 @@ if ($viewCollection->renderContent) { ?>
                     <span class="glyphicon glyphicon-text-width"></span> <?php echo $pageHeading;?>
                 </h3>
             </div>
-            <div class="pull-right">
+            <div>
                 <?php echo CHtml::link(Yii::t('app', 'Create new'), array('templates/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'New')));?>
                 <?php echo CHtml::link(Yii::t('email_templates', 'Upload template'), '#template-upload-modal', array('class' => 'btn btn-primary btn-xs', 'data-toggle' => 'modal', 'title' => Yii::t('email_templates', 'Upload template')));?>
                 <?php echo CHtml::link(Yii::t('app', 'Refresh'), array('templates/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
             </div>
-            <div class="clearfix"><!-- --></div>
         </div>
         <div class="card-body">
-            <?php foreach ($templates as $model) { ?>
-				<div class="col-sm-4">
-            <div class="box box-primary panel-template-box " style="min-width:100%;"  >
-                <div class="card-header"><h3 class="card-title" style="display: block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"><?php echo $model->name;?></h3></div>
-         
-                <div class="box-footer">
-                    <div class="pull-left">
-                        <a href="<?php echo Yii::app()->createUrl("templates/delete", array("template_uid" => $model->template_uid));?>" class="btn btn-danger btn-xs btn-delete-template" data-confirm-text="<?php echo Yii::t('app', 'Are you sure you want to remove this item?')?>"><span class="fa fa-trash"></span> <?php echo Yii::t('app', 'Delete');?></a>
+            <div class="card-container">
+                <?php foreach ($templates as $model) { ?>
+                    <div class="card-box">
+                        <div class="box box-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"><?php echo $model->name;?></h3>
+                            </div>
+                            <div class="box-footer">
+                                <div>
+                                    <a href="<?php echo Yii::app()->createUrl("templates/delete", array("template_uid" => $model->template_uid));?>" class="btn btn-danger btn-xs btn-delete-template" data-confirm-text="<?php echo Yii::t('app', 'Are you sure you want to remove this item?')?>"><span class="fa fa-trash"></span> <?php echo Yii::t('app', 'Delete');?></a>
+                                </div>
+                                <div>
+                                    <a href="<?php echo Yii::app()->createUrl("templates/update", array("template_uid" => $model->template_uid));?>" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> <?php echo Yii::t('app', 'Update');?></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="pull-right">
-                        <a href="<?php echo Yii::app()->createUrl("templates/update", array("template_uid" => $model->template_uid));?>" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> <?php echo Yii::t('app', 'Update');?></a>
-                    </div>
-                    <div class="clearfix"><!-- --></div>
-                </div>
+                <?php } ?>
             </div>
-            <div class="clearfix"><!-- --></div>
-            </div>
-            <?php } ?>
-          
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="box-footer">
+        <div class="card-footer">
             <div class="pull-right">
-            <?php $this->widget('CLinkPager', array(
-                'pages'         => $pages,
-                'htmlOptions'   => array('id' => 'templates-pagination', 'class' => 'pagination'),
-                'header'        => false,
-                'cssFile'       => false                    
-            )); ?>
+                <?php $this->widget('CLinkPager', array(
+                    'pages'         => $pages,
+                    'htmlOptions'   => array('id' => 'templates-pagination', 'class' => 'pagination'),
+                    'header'        => false,
+                    'cssFile'       => false                    
+                )); ?>
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
     </div>
     <div class="modal fade" id="template-upload-modal" tabindex="-1" role="dialog" aria-labelledby="template-upload-modal-label" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title"><?php echo Yii::t('email_templates',  'Upload template archive');?></h4>
-            </div>
-            <div class="modal-body">
-                 <div class="callout callout-info">
-                    <?php
-                    $text = '
-                    Please see <a href="{templateArchiveHref}">this example archive</a> in order to understand how you should format your uploaded archive!
-                    Also, please note we only accept zip files.';
-                    echo Yii::t('email_templates',  StringHelper::normalizeTranslationString($text), array(
-                        '{templateArchiveHref}' => Yii::app()->apps->getAppUrl('customer', 'assets/files/example-template.zip', false, true),
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><?php echo Yii::t('email_templates',  'Upload template archive');?></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="callout callout-info">
+                        <?php
+                        $text = '
+                        Please see <a href="{templateArchiveHref}">this example archive</a> in order to understand how you should format your uploaded archive!
+                        Also, please note we only accept zip files.';
+                        echo Yii::t('email_templates',  StringHelper::normalizeTranslationString($text), array(
+                            '{templateArchiveHref}' => Yii::app()->apps->getAppUrl('customer', 'assets/files/example-template.zip', false, true),
+                        ));
+                        ?>
+                    </div>
+                    <?php 
+                    $form = $this->beginWidget('CActiveForm', array(
+                        'action'        => array('templates/upload'),
+                        'id'            => $templateUp->modelName.'-upload-form',
+                        'htmlOptions'   => array(
+                            'id'        => 'upload-template-form', 
+                            'enctype'   => 'multipart/form-data'
+                        ),
                     ));
                     ?>
-                 </div>
-                <?php 
-                $form = $this->beginWidget('CActiveForm', array(
-                    'action'        => array('templates/upload'),
-                    'id'            => $templateUp->modelName.'-upload-form',
-                    'htmlOptions'   => array(
-                        'id'        => 'upload-template-form', 
-                        'enctype'   => 'multipart/form-data'
-                    ),
-                ));
-                ?>
-                <div class="form-group">
-                    <?php echo $form->labelEx($templateUp, 'archive');?>
-                    <?php echo $form->fileField($templateUp, 'archive', $templateUp->getHtmlOptions('archive')); ?>
-                    <?php echo $form->error($templateUp, 'archive');?>
+                    <div class="form-group">
+                        <?php echo $form->labelEx($templateUp, 'archive');?>
+                        <?php echo $form->fileField($templateUp, 'archive', $templateUp->getHtmlOptions('archive')); ?>
+                        <?php echo $form->error($templateUp, 'archive');?>
+                    </div>
+                    <div class="form-group">
+                        <?php echo $form->labelEx($templateUp, 'inline_css');?>
+                        <?php echo $form->dropDownList($templateUp, 'inline_css', $templateUp->getInlineCssArray(), $templateUp->getHtmlOptions('inline_css')); ?>
+                        <div class="help-block"><?php echo $templateUp->getAttributeHelpText('inline_css');?></div>
+                        <?php echo $form->error($templateUp, 'inline_css');?>
+                    </div>
+                    <div class="form-group">
+                        <?php echo $form->labelEx($templateUp, 'minify');?>
+                        <?php echo $form->dropDownList($templateUp, 'minify', $templateUp->getYesNoOptions(), $templateUp->getHtmlOptions('minify')); ?>
+                        <div class="help-block"><?php echo $templateUp->getAttributeHelpText('minify');?></div>
+                        <?php echo $form->error($templateUp, 'minify');?>
+                    </div>
+                    <?php $this->endWidget(); ?>
                 </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($templateUp, 'inline_css');?>
-                    <?php echo $form->dropDownList($templateUp, 'inline_css', $templateUp->getInlineCssArray(), $templateUp->getHtmlOptions('inline_css')); ?>
-                    <div class="help-block"><?php echo $templateUp->getAttributeHelpText('inline_css');?></div>
-                    <?php echo $form->error($templateUp, 'inline_css');?>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo Yii::t('app', 'Close');?></button>
+                    <button type="button" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>" onclick="$('#upload-template-form').submit();"><?php echo Yii::t('email_templates',  'Upload archive');?></button>
                 </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($templateUp, 'minify');?>
-                    <?php echo $form->dropDownList($templateUp, 'minify', $templateUp->getYesNoOptions(), $templateUp->getHtmlOptions('minify')); ?>
-                    <div class="help-block"><?php echo $templateUp->getAttributeHelpText('minify');?></div>
-                    <?php echo $form->error($templateUp, 'minify');?>
-                </div>
-                <?php $this->endWidget(); ?>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo Yii::t('app', 'Close');?></button>
-              <button type="button" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>" onclick="$('#upload-template-form').submit();"><?php echo Yii::t('email_templates',  'Upload archive');?></button>
-            </div>
-          </div>
         </div>
     </div>
 <?php 

@@ -85,7 +85,40 @@ if ($viewCollection->renderContent) { ?>
                 <?php if (Yii::app()->request->enableCsrfValidation) { ?>
                     <input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>" />
                 <?php } ?>
+                <div class="row">
 
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="por">
+                                <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;" id="por">
+                                Price On Request
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="featured">
+                                <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;" id="featured">
+                                Featured
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="verified">
+                                <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;" id="verified">
+                                Verified
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .input-xs, select.input-xs {
+                        height: 40px;
+                        line-height: 20px;
+                    }
+                </style>
+               
                 <div class="table-responsive">
                     <table id="enquiryTable" class="table table-striped table-bordered">
                         <thead>
@@ -222,6 +255,29 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
 
 <script>
+     function submitFilters() {
+        var selectedFilters = {};
+
+        // Collect selected checkbox values
+        if ($('#featured').is(':checked')) {
+            selectedFilters['PlaceAnAd[featured]'] = $('#featured').val();
+        }
+        if ($('#verified').is(':checked')) {
+            selectedFilters['PlaceAnAd[verified]'] = $('#verified').val();
+        }
+        if ($('#por').is(':checked')) {
+            selectedFilters['PlaceAnAd[p_o_r]'] = $('#por').val();
+        }
+        // Convert the selected filters to query string parameters
+        var queryString = $.param(selectedFilters, true);
+
+        // Reload the page with the query parameters
+        window.location.href = window.location.pathname + '?' + queryString;
+    }
+
+
+    // Attach the function to the checkboxes' change event
+    $('#featured, #verified, #por').change(submitFilters);
     $(document).ready(function() {
         // Initialize the date range picker
         $('#dateRange').daterangepicker({
