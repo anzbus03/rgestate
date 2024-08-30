@@ -130,11 +130,9 @@ class SiteController extends Controller
 		$model = new ContactPopup;
 		$notify = Yii::app()->notify;
 		if (isset($_POST['ajax'])) {
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
+		echo CActiveForm::validate($model);
+		Yii::app()->end();
 		}
-		print_r(5);
-		exit;
         if (Yii::app()->request->isPostRequest && ($attributes = (array)Yii::app()->request->getPost($model->modelName, array()))) {
 		echo $model->name;
 		$model->attributes = $attributes;
@@ -2016,9 +2014,7 @@ Jq4pd48R
 				'CATEGORY_ID' => 16,
 				'ASSIGNED_BY_ID' => 22,
 				'CONTACT_ID' => $customerId,
-				"EMAIL" => [[ "VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK" ]],
-                "PHONE" => [[ "VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK" ]],
-				'COMMENTS' => 'Name: ' . $requestParms['name'] . ' <br/> Phone: ' . $requestParms['phone'] . ' <br/> Email: ' . $requestParms['email'] . ' <br/> Message: ' . $requestParms['message'],
+				'COMMENTS' => 'Name: ' . $requestParms['name'] . ' <br/> Phone: ' . $requestParms['phone'] . ' <br/> Email: ' . $requestParms['email'],
 				'UF_CRM_1701236145750' => $services[$requestParms['type']],
 			],
 		];
@@ -2050,7 +2046,7 @@ Jq4pd48R
 			if(!$model->save()){
 				echo json_encode(array('status'=>'0','msg'=>'<div class="alert alert-danger1"><strong>Error!</strong> '.CHtml::errorSummary($model).'. </div>'));
 			}else{
-				echo json_encode(array('status'=>'1','name'=>$model->email , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+				echo json_encode(array('status'=>'1','name'=>$model->name , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
 			}
 		}
 	

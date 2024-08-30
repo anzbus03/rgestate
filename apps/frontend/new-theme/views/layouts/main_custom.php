@@ -342,13 +342,12 @@
       var closeButton = document.querySelector(".modal-header .close");
 
       closeButton.addEventListener("click", function() {
-        var modal = document.getElementById("exampleModalBlogMessage");
+        var modal = document.getElementById("exampleModal");
         $(modal).modal("hide");
       });
     });
   </script>
-<div id="dynamicScripts"></div>
-<div class="modal modal-new fade" id="exampleModalBlogMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalBlogMessageLabel" aria-hidden="true">
+<div id="dynamicScripts"></div><div class="modal modal-new fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
       <div class="modal-content position-relative rounded-0">
         <div class="modal-header">
@@ -377,7 +376,7 @@
   </div>
 </div>
 
-        <ul class="rg-hero-contact w-100 position-fixed top-50 end-0 translate-middle-y z-1 text-white">
+<ul class="rg-hero-contact w-100 position-fixed top-50 end-0 translate-middle-y z-1 text-white">
           <li class="pt-4 pb-3">
             <a href="#" class="d-block text-center" data-bs-toggle="modal" data-bs-target="#popupmodal">
               <svg width="16" height="13" class="rg-fill-white mb-1">

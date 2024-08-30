@@ -946,10 +946,10 @@ if ($viewCollection->renderContent) {
 
 								<?php
 								/*
-				echo CHtml::radioButtonList('listing_type',$model->listing_type,$list_type,array('data-url'=>Yii::App()->createUrl($this->id.'/select_category3'),'onchange'=>'load_via_ajax_category(this,"category_id")' ,'separator'=>'','labelOptions'=>array('class'=>'')
-				,'template'=>'<div class="inputGroup" id="l_type_{idInput}"><span class="img"></span> {input}  <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg>  {label}<div class="clearfix"><!-- --></div></div>'));                                              
-				
-				*/
+									echo CHtml::radioButtonList('listing_type',$model->listing_type,$list_type,array('data-url'=>Yii::App()->createUrl($this->id.'/select_category3'),'onchange'=>'load_via_ajax_category(this,"category_id")' ,'separator'=>'','labelOptions'=>array('class'=>'')
+									,'template'=>'<div class="inputGroup" id="l_type_{idInput}"><span class="img"></span> {input}  <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg>  {label}<div class="clearfix"><!-- --></div></div>'));                                              
+									
+									*/
 								?>
 								<?php
 								$list_typeq =    Category::model()->ListDataForJSON_ID_BySEctionNew($model->section_id);
@@ -1203,10 +1203,8 @@ if ($viewCollection->renderContent) {
 											echo $model->getTranslateHtml('ad_description');
 										}
 										?>
-										<?php echo $form->textArea($model, 'ad_description', array_replace($model->getHtmlOptions('ad_description'), array("rows" => "5", 'dir' => 'auto', 'placeholder' => $this->tag->getTag('mention_the_key_feature_of_you', 'Mention the key feature of your property (short description of your property)'), 'style' => 'resize: vertical;'))); ?>
-										<div class="text-warning small hide pull-left">
-											<?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::DESC_MIN, '{max}' => $model::DESC_MAX)); ?>
-										</div>
+										<?php echo $form->textArea($model, 'ad_description', array_replace($model->getHtmlOptions('ad_description'), array("rows" => "5", 'dir' => 'auto', 'placeholder' => $this->tag->getTag('mention_the_key_feature_of_you', 'Mention the key feature of your property (short description of your property)')))); ?>
+										<div class="text-warning small hide pull-left"><?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::DESC_MIN, '{max}' => $model::DESC_MAX));; ?></div>
 										<div class="pull-right text-warning" style="font-size: 12px;"><span id="inputcounter2"></span></div>
 										<div class="clearfix"></div>
 										<?php echo $form->error($model, 'ad_description'); ?>

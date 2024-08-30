@@ -16,65 +16,63 @@ class BloglistController extends Controller
 	 }
  
   
-	public function actionIndex($category='blog', $page="1")
-	{
-		$slug = $category; 
-		$limit = "10";  
-		if ($slug == 'index' || $slug == 'index/page') {
-			$slug = 'blog';
+     public function actionIndex($category='blog',$page="1")
+    {
+        $slug = $category; 
+ 
+       $limit = "24" ;  
+        if($slug=='index' || $slug=='index/page'){ $slug='blog' ; }
+		  
+		$articleCategoryFromSlug = ArticleCategory::model()->findBySlg( $slug );
+		 
+		if(empty($articleCategoryFromSlug))
+		{
+			  throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
 		}
-		
-		$articleCategoryFromSlug = ArticleCategory::model()->findBySlg($slug);
-		
-		if (empty($articleCategoryFromSlug)) {
-			throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+	   
+	    $parentCategory = ArticleCategory::model()->findByAttributes(array('slug'=>'blog'));
+
+		if($parentCategory)
+		{
+		$category = ArticleCategory::model()->getBlogCategories($parentCategory->category_id);
 		}
-	
-		$parentCategory = ArticleCategory::model()->findByAttributes(array('slug' => 'blog'));
-	
-		if ($parentCategory) {
-			$category = ArticleCategory::model()->getBlogCategories($parentCategory->category_id);
-		} else {
-			// No Category
-			$category = array();    
+		else
+		{
+			//No Category
+		 $category = array();	
 		}
-	
+	 
+	 
 		$formData = array_filter((array)$_GET);
-		$formData['parent_id'] = $articleCategoryFromSlug->category_id;
-	
-		// Check if query parameter exists and modify the criteria
-		if (isset($formData['query']) && !empty($formData['query'])) {
-			$query = $formData['query'];
-			$modelCriteria = new CDbCriteria();
-			$modelCriteria->addCondition('tags LIKE :query OR title LIKE :query');
-			$modelCriteria->params = array(':query' => '%' . $query . '%');
-		} else {
-			$modelCriteria = Article::model()->findPosts($formData, $count_future = false, 1, $calculate = false);
-		}
-	
-		$adsCount = Article::model()->count($modelCriteria);
-	
+		 
+		$formData['parent_id'] =  $articleCategoryFromSlug->category_id;
+		 
+		 
+	 
+        $modelCritera=Article::model()->findPosts($formData,$count_future=false,1,$calculate=false);
+$adsCount = Article::model()->count($modelCritera);
+
 		$pages = new CPagination($adsCount);
 		$pages->pageSize = $limit;
-		$pages->applyLimit($modelCriteria);
+		$pages->applyLimit($modelCritera);
+
+        
+        $modelCritera->limit = $limit ; 
+        $ads = Article::model()->findAll($modelCritera);
+        
+		$articleCategoryFromSlug->name =  !empty($articleCategoryFromSlug->name_other) ? $articleCategoryFromSlug->name_other : $articleCategoryFromSlug->name ; 
 	
-		$modelCriteria->limit = $limit;
-		$ads = Article::model()->findAll($modelCriteria);
-	
-		$articleCategoryFromSlug->name = !empty($articleCategoryFromSlug->name_other) ? $articleCategoryFromSlug->name_other : $articleCategoryFromSlug->name;
-	
-		$this->setData(array(
-			'pageTitle' => Yii::t('app', '{title} | {name}', array('{name}' => $this->project_name, '{title}' => ucfirst($articleCategoryFromSlug->name))), 
-			'pageMetaDescription' => Yii::app()->params['description'],
-			'sticky_head' => $articleCategoryFromSlug->name
-		));
-	
-		$category = ArticleCategory::model()->getBlogCategories(20);
-		// $this->getData('pageStyles')->add(array('src' =>  Yii::app()->apps->getBaseUrl('assets/css/new_blog.css?q=8')));
-	
-		$this->render("index_new", compact('articleCategoryFromSlug', 'ads', 'limit', 'formData', 'latest', 'category', 'slug', 'adsCount', 'pages'));
-	}
 	 
+		$this->setData(array(
+		'pageTitle'         => Yii::t('app', '{title} | {name}', array('{name}' =>$this->project_name, '{title}'=> ucfirst($articleCategoryFromSlug->name) )), 
+		'pageMetaDescription'   => Yii::app()->params['description'],
+		'sticky_head'   => $articleCategoryFromSlug->name
+		));
+		 $category = ArticleCategory::model()->getBlogCategories(20);
+	   // $this->getData('pageStyles')->add(array('src' =>  Yii::app()->apps->getBaseUrl('assets/css/new_blog.css?q=8')));
+	
+        $this->render( "index_new" ,compact('articleCategoryFromSlug','ads','limit','formData','latest','category','slug','adsCount','pages'));
+    }
       public function actionFetch_ad($count_future=true,$calculate=true){
 		$request = Yii::app()->request;
 		 

@@ -55,22 +55,22 @@ class PlaceAnAdNew extends PlaceAnAd
 	    $criteria=new CDbCriteria;
 		$criteria->select = 't.ad_title,t.nested_sub_category,t.sub_category_id,t.RefNo,t.project_status, t.verified,t.featured,t.lease_status,t.income,t.roi,t.hot,t.slug_en,t.slug_ar,t.user_id as user_id,t.property_status,t.id,t.slug,t.section_id,t.category_id,t.state,t.listing_type,t.sub_category_id,t.location_latitude,t.location_longitude,from_price_unit,to_price_unit,area_unit,rent_paid,price,p_o_r,bathrooms,bedrooms,t.builtup_area,t.view_360,t.view_video,t.view_floor,t.cron_featured as featured2,   usr.full_number as mobile_number ,  usr.first_name,usr.last_name';
         $criteria->select .= ', t.cron_images  as ad_images_g,t.cron_simage as ad_image2';
-		$criteria->compare('t.isTrash','0');
-
-       	if(isset($formData['preleased']) and !empty($formData['preleased'])){
+        
+       if(isset($formData['preleased']) and !empty($formData['preleased'])){
 			 $criteria->compare('t.property_status','1');
 		}else{
 		    if(!defined('SHOW_ALL_PROP')){
 		     //$criteria->compare('t.property_status!','1');
 		    }
 		}
-        if(isset($formData['status']) and !empty($formData['status'])){
-			$criteria->compare('t.status',$formData['status']);
+       
+        if(isset($formData['sta']) and !empty($formData['sta'])){
+			$criteria->compare('t.status',$formData['sta']);
 		}else{
         	$criteria->compare('t.status','A');
 		}
         if(!empty($user_id)){
-				$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END '; 
+					$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END '; 
 			$criteria->params[':thisusr'] = (int) $user_id;
 	
 			 

@@ -38,6 +38,7 @@ class GuestController extends Controller
         $model = new UserLogin();
         $request = Yii::app()->request;
         // print_r(UserLogin::all());
+      
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
 // 			print_r($attributes);
             $model->attributes = $attributes;

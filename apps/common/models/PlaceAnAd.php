@@ -95,8 +95,6 @@ class PlaceAnAd extends ActiveRecord
 	  public $_notMadatory;
 	  public $dynamicArray;
 	 public $tags_list;
-	 public $excelFile;
-	 public $zipFile;
 	  public $tag_list2;
 	  public $id2;
 	  public $a_number;
@@ -127,9 +125,7 @@ class PlaceAnAd extends ActiveRecord
 				 
 		 }
 		 $rules  =  array(
-			array('excelFile, zipFile', 'file', 'types' => 'xls, xlsx, zip', 'allowEmpty' => true),
-
-            array('section_id, category_id,user_id ,ad_title,ad_description,builtup_area', 'required', 'message'=>$required),
+            array('section_id,state, category_id,user_id ,ad_title,ad_description,builtup_area', 'required', 'message'=>$required),
             //array('city', 'required','on'=>'new_insert', 'message'=>$required),
              array('ad_description', 'required','on'=>'update_content', 'message'=>$required),
             array('country,state,city', 'safe','on'=>'new_insert'),
@@ -582,8 +578,7 @@ class PlaceAnAd extends ActiveRecord
 						'balconies'=>'Total Balconies',
 					//	'state'=>'City',
 						'location_latitude' => 'Select location from list',
-						'city'=>'City',
-						'state'=>'Select Location',
+						'city'=>'Select Location',
 						'contact_person' => $this->mTag()->getTag('contact_name','Contact Name'),'salesman_email' => $this->mTag()->getTag('contact_email','Contact Email'),
 						'year_built'=> $this->section_id=='3' ? 'Completion Year' :'Year Built',
 						'reference_number' =>'Ref. #',
@@ -3293,8 +3288,8 @@ function getMBathroomHtml()
         $criteria->select .= ',(SELECT  group_concat(CASE WHEN img.status="A" THEN `image_name` ELSE "waiting-feeta.jpg" END order by id asc)  FROM {{ad_image}} img  WHERE  img.ad_id = t.id and      img.isTrash="0" and   img.status="A"   )   as ad_images_g';
        
         $criteria->compare('t.isTrash','0');
-        if(isset($formData['status']) and !empty($formData['status'])){
-			$criteria->compare('t.status',$formData['status']);
+        if(isset($formData['sta']) and !empty($formData['sta'])){
+			$criteria->compare('t.status',$formData['sta']);
 		}else{
         	$criteria->compare('t.status','A');
 		}
@@ -3315,7 +3310,7 @@ function getMBathroomHtml()
 		 
 		 $criteria->join  .= ' left join {{area_unit}} au ON au.master_id = t.area_unit ';
         $criteria->join  .=   ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
-		$criteria->condition .= ' and t.isTrash = "0" and usr.status = "A" and usr.isTrash="0"' ; 	
+		$criteria->condition .= ' and usr.status = "A" and usr.isTrash="0"' ; 	
 		if(Yii::app()->user->getId() and !isset($formData['logged_in'])  ){
 			$criteria->select .= ' ,fav.ad_id as fav ';
 			$criteria->join  .= ' left join {{ad_favourite}} fav ON fav.ad_id = t.id and fav.user_id =:user_me';
@@ -3432,23 +3427,12 @@ function getMBathroomHtml()
 			$criteria->condition .= ' and sec.slug=:sec ';$criteria->params[':sec'] = $formData['sec'];
 		}
 		if(isset($formData['minPrice']) and !empty($formData['minPrice'])){
-			if (defined('SYSTEM_CURRENCY') and SYSTEM_CURRENCY == '1') {
-
-				$criteria->condition .= ' and t.price>=:minPrice ';
-				$criteria->params[':minPrice'] =  $formData['minPrice'] * 3.65;
-			}else {
-				$criteria->condition .= ' and t.price>=:minPrice ';
-				$criteria->params[':minPrice'] =  $formData['minPrice'];
-			}
+			 
+			$criteria->condition .= ' and t.price>=:minPrice ';$criteria->params[':minPrice'] = $formData['minPrice'];
 		}
 		if(isset($formData['maxPrice']) and !empty($formData['maxPrice'])){
-			if (defined('SYSTEM_CURRENCY') and SYSTEM_CURRENCY == '1') {
-				$criteria->condition .= ' and t.price<=:maxPrice ';
-				$criteria->params[':maxPrice'] = $formData['maxPrice'] * 3.65;
-			}else {
-				$criteria->condition .= ' and t.price<=:maxPrice ';
-				$criteria->params[':maxPrice'] = $formData['maxPrice'];
-			}
+			 
+			$criteria->condition .= ' and t.price<=:maxPrice ';$criteria->params[':maxPrice'] = $formData['maxPrice'];
 		}
 		if(isset($formData['locality']) and !empty($formData['locality'])){
 			 
@@ -4595,19 +4579,19 @@ function getMBathroomHtml()
 			 $usrl = Yii::App()->createUrl('place_an_ad/view',array('id'=>$this->id)) ; 
 		 switch($this->status){
 			 case 'A':
-			 return '<span class="label  bg-green" title="Active" onclick="previewthis(this,event)"   href="'.$usrl.'">A</span>';
+			 return '<span class="label text-white bg-green" title="Active" onclick="previewthis(this,event)"   href="'.$usrl.'">A</span>';
 			 break;
 			 case 'W':
-			 return '<span class="label  bg-blue" onclick="previewthis(this,event)" title="Waiting" href="'.$usrl.'">W</span>';
+			 return '<span class="label text-white bg-blue" onclick="previewthis(this,event)" title="Waiting" href="'.$usrl.'">W</span>';
 			 break;
 			 case 'I':
-			 return '<span class="label  btn-warning" onclick="previewthis(this,event)" title="Inactive" href="'.$usrl.'"  >I</span>';
+			 return '<span class="label text-white bg-warning" onclick="previewthis(this,event)" title="Inactive" href="'.$usrl.'"  >I</span>';
 			 break;
 			 case 'R':
-			 return '<span class="label   bg-red" onclick="previewthis(this,event)" title="Waiting" href="'.$usrl.'"  title="Rejected">R</span>';
+			 return '<span class="label text-white bg-danger" onclick="previewthis(this,event)" title="Waiting" href="'.$usrl.'"  title="Rejected">R</span>';
 			 break;
 			  case 'C':
-			 return '<span class="label  bg-yellow" title="Active" onclick="previewthis(this,event)"   href="'.$usrl.'">C</span>';
+			 return '<span class="label text-white bg-yellow" title="Active" onclick="previewthis(this,event)"   href="'.$usrl.'">C</span>';
 			 break;
 		 }
 	 }

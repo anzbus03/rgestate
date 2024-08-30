@@ -6122,7 +6122,6 @@ class BusinessForSale extends ActiveRecord
 
 		return $html;
 	}
-	
 	public function getStatisticsCls()
 	{
 		$statistcs = StatisticsPage::model()->pageCount('', $this->id);

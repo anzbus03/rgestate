@@ -34,14 +34,17 @@ if ($viewCollection->renderContent) { ?>
             <div>
                 <!-- <input type="text" id="dateRange" class="form-control " style="margin-left: 10px;" /> -->
             </div>
-            <div class="pull-right">
-                  <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
-            </div>
-            <div class="clearfix"><!-- --></div>
         </div>
-          <div class="clearfix"><!-- --></div>
-      		 <div class="clearfix">
-        <div class="box-body">
+        <div class="card-body">
+            <div class="mb-2">
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-9">
+                        <button type="button" id="exportExcel" class="btn btn-success btn-sm pull-right" style="margin-right: 10px;">Export to Excel</button>
+                    </div>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table id="careerList" class="table table-striped table-bordered" style="width: 100%;">
                     <thead>

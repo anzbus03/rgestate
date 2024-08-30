@@ -8,7 +8,7 @@
             <div class="box-header ui-sortable-handle" style="cursor: move;">
               <i class="fa fa-envelope"></i>
 
-              <h3 class="box-title">Last 12 months active order report</h3>
+              <h3 class="card-title">Last 12 months active order report</h3>
               <!-- tools box -->
               <div class="pull-right box-tools">
                 <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove">
@@ -16,7 +16,7 @@
               </div>
               <!-- /. tools -->
             </div>
-            <div class="box-body">
+            <div class="card-body">
               <div class=" ">
                                     <?php
                                     $net  = array();$total  = array();$discount = array();$profit = array();

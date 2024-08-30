@@ -44,9 +44,9 @@ if ($viewCollection->renderContent) {
         $form = $this->beginWidget('CActiveForm'); 
         ?>
         <div class="box box-primary borderless">
-            <div class="box-header">
+            <div class="card-header">
                 <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-user"></span> <?php echo $pageHeading;?></h3>
+                    <h3 class="card-title"><span class="glyphicon glyphicon-user"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                  <?php if (!$group->isNewRecord) { ?>
@@ -57,7 +57,7 @@ if ($viewCollection->renderContent) {
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
@@ -91,15 +91,15 @@ if ($viewCollection->renderContent) {
                 <hr />
                 <div class="clearfix"><!-- --></div>
                 <div class="box box-primary borderless">
-                    <div class="box-header">
-                        <h3 class="box-title"><?php echo Yii::t('user_groups', 'Access');?></h3>
+                    <div class="card-header">
+                        <h3 class="card-title"><?php echo Yii::t('user_groups', 'Access');?></h3>
                     </div>
-                    <div class="box-body">
+                    <div class="card-body">
                         <?php foreach ($routesAccess as $index => $data) { ?>
                         <div class="box box-primary borderless">
-                            <div class="box-header">
+                            <div class="card-header">
                                 <div class="pull-left">
-                                    <h3 class="box-title"><?php 
+                                    <h3 class="card-title"><?php 
                                     switch(CHtml::encode($data['controller']['name'])){
 										case 'Enquiry':										 
 										$tit = 'Property Enquiries';
@@ -213,7 +213,7 @@ if ($viewCollection->renderContent) {
                                 </div>
                                 <div class="clearfix"><!-- --></div>
                             </div>
-                            <div class="box-body">
+                            <div class="card-body">
                                 <div class="">
                                 <?php foreach ($data['routes'] as $route) { ?>
                                     <div class="col-lg-3">

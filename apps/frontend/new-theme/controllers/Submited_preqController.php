@@ -141,8 +141,6 @@ class Submited_preqController extends Controller
                         'TITLE' => 'Complete CRM form "Post Requirement Form"', 
                         'CONTACT_ID' => $customerId,
                         'ASSIGNED_BY_ID' => 22,
-                        "EMAIL" => [[ "VALUE" => $requestParams['email'], "VALUE_TYPE" => "WORK" ]],
-                        "PHONE" => [[ "VALUE" => $requestParams['phone'], "VALUE_TYPE" => "WORK" ]],
                         'COMMENTS' => 
                             ($requestParams['owner_type'] == 1 ? "Client Type: OWNER" : "Client Type: AGENT").
                             ($requestParams['p_for'] == 1 ? "<br/> Property For: Buy" : "<br/> Property For: Rent").
@@ -186,19 +184,8 @@ class Submited_preqController extends Controller
                 
                 
                 // End CRM
-                $this->setData(array(
-                    'pageMetaTitle'     => Yii::app()->options->get('system.common.site_name') . ' | ' . Yii::t('articles', 'Contact Us'),
-                    'pageBreadcrumbs'   => array()
-                ));
-                $this->setData(array(
-                    'pageTitle'     => 'Submit Your Requirements',
-                    'pageMetaDescription'   => 'Submit Your Requirements',
-                    'metaKeywords'   => 'Submit Your Requirements',
-                ));
-        
-                $this->render("success", compact('model'));
                 //$notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
-                // $this->redirect(Yii::app()->createUrl('submited_preq/success'));
+                $this->redirect(Yii::app()->createUrl('submited_preq/success'));
             }
 
             Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(

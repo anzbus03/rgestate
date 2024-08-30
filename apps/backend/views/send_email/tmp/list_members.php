@@ -16,9 +16,9 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
-    <div class="box box-primary">
+    <div class="card">
         
-        <div class="box-body">
+        <div class="card-body">
 				<section class=" ">
 				<div class="row">
 				<?php 

@@ -24,10 +24,10 @@
 					
 					}'
 					 )));  ?> 
-          <div class="box box-primary">
+          <div class="card">
             <div class="box-header with-border">
 				 <div class="pull-left">
-					<h3 class="box-title">
+					<h3 class="card-title">
 						<span class="glyphicon glyphicon-text-width"></span> <?php echo $pageHeading;?>
 					</h3>
 				</div>
@@ -37,7 +37,7 @@
             </div>
            
             <!-- /.box-header -->
-            <div class="box-body">
+            <div class="card-body">
             
 							<?php  $this->renderPartial('_form',compact('form','model'));?>
 

@@ -183,9 +183,6 @@
                     .furnished.lefticons {
                         background-image: url(../../assets/img/amen_293.svg);
                     }
-                    .permit_no.lefticons {
-                        background-image: url(../../assets/img/amen_295.svg);
-                    }
                     </style>
                     <?php
 			

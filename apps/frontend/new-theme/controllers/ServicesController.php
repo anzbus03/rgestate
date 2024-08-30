@@ -271,8 +271,6 @@ class ServicesController extends Controller
 				'TITLE' => 'RGestate Lead - Service Form',
 				'CATEGORY_ID' => 16,
                 'CONTACT_ID' => $customerId,
-				"EMAIL" => [[ "VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK" ]],
-                "PHONE" => [[ "VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK" ]],
                 'ASSIGNED_BY_ID' => 22,
 				'COMMENTS' => $requestParms['message'],
 				'UF_CRM_6576C6B05945E' => $services[$requestParms['type']],
@@ -311,7 +309,7 @@ class ServicesController extends Controller
 			if(!$model->save()){
 				echo json_encode(array('status'=>'0','msg'=>'<div class="alert alert-danger1"><strong>Error!</strong> '.CHtml::errorSummary($model).'. </div>'));
 			}else{
-				echo json_encode(array('status'=>'1','name'=>$model->email , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+				echo json_encode(array('status'=>'1','name'=>$model->name , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
 			}
 		}
 

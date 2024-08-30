@@ -32,9 +32,9 @@ if ($viewCollection->renderContent) {
     $itemsCount = PricePlanOrder::model()->count();
     ?>
     <div class="box box-primary borderless">
-        <div class="box-header">
+        <div class="card-header">
              <div class="pull-left">
-                <h3 class="box-title">
+                <h3 class="card-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo  $pageHeading;?>
                 </h3>
             </div>
@@ -43,7 +43,7 @@ if ($viewCollection->renderContent) {
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="box-body">
+        <div class="card-body">
              	<form method="get" autocomplete="off">
 			<div class="row">
 		
@@ -217,7 +217,7 @@ if ($viewCollection->renderContent) {
                             'footer'    => $order->paginationOptions->getGridFooterPagination(),
                             'buttons'   => array(
                                 'view' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="fa fa-eye"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("orders/view", array("id" => $data->order_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'View'), 'class' => ''),
@@ -225,7 +225,7 @@ if ($viewCollection->renderContent) {
                                    
                                 ),
                                 'update' => array(
-                                     'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
+                                     'label'     => ' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("orders/update", array("id" => $data->order_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
@@ -233,7 +233,7 @@ if ($viewCollection->renderContent) {
                                
                                 ),
                                 'delete' => array(
-                                     'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp;',  
+                                     'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp;',  
                                     'url'       => 'Yii::app()->createUrl("orders/delete", array("id" => $data->order_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),

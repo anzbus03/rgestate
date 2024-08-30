@@ -32,12 +32,7 @@ class Article extends ActiveRecord
     const STATUS_PUBLISHED = 'published';
     
     const STATUS_UNPUBLISHED = 'unpublished';
-    public $publish_date;
-    public $publish_time;
-    public $tags;
-    public $featured_image;
-    public $author_id;
-
+    
     const PROJECTS = '17';
     const FLOOR_PLAN  = '26';
     const SITE_MAP  = '27';
@@ -64,7 +59,7 @@ class Article extends ActiveRecord
              array('show_all','validateCountries'),
              array('blan', 'safe'),
             array('status', 'in', 'range' => array(self::STATUS_PUBLISHED, self::STATUS_UNPUBLISHED)),
-            array('page_title,tags,featured_image,publish_date, author_id,publish_time,meta_title,meta_keywords,meta_description',  'safe'),
+            array('page_title,meta_title,meta_keywords,meta_description',  'safe'),
             // The following rule is used by search().
             array('title, status,', 'safe', 'on' => 'search'),
         );

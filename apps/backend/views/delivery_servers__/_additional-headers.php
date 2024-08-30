@@ -15,17 +15,17 @@
 
 <div class="clearfix"><!-- --></div>
 
-<div class="box box-primary">
-    <div class="box-header">
+<div class="card">
+    <div class="card-header""">
         <div class="pull-left">
-            <h3 class="box-title"><span class="glyphicon glyphicon-plus-sign"></span> <?php echo Yii::t('servers', 'Additional headers');?></h3>
+            <h3 class="card-title"><span class="glyphicon glyphicon-plus-sign"></span> <?php echo Yii::t('servers', 'Additional headers');?></h3>
         </div>
         <div class="pull-right">
             <a href="javascript:;" class="btn btn-xs btn-primary btn-add-header"><?php echo Yii::t('servers', 'Add new header');?></a>
         </div>
         <div class="clearfix"><!-- --></div>
     </div>
-    <div class="box-body">
+    <div class="card-body">
         <div class="callout callout-info">
             <?php echo Yii::t('servers', 'If your delivery server needs extra headers in order to make the delivery, you can add them here.');?><br />
             <?php echo Yii::t('servers', 'If a header is not in the correct format or if it is part of the restricted headers, it will not be added.');?><br />

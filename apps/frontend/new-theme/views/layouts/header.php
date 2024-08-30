@@ -188,92 +188,57 @@ $languages = OptionCommon::systemLanguages();
           </div>
         </div>
       </div>
-  <nav class="navbar navbar-expand-xl bg-white sticky-top">
+<nav class="navbar navbar-expand-xl bg-white sticky-top">
     <div class="container">
         <a class="navbar-brand" href="<?php echo $this->app->apps->getBaseUrl(); ?>">
             <img src="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/logo.svg" alt="RG Estate">
         </a>
-        <button class="navbar-toggler ms-5" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <button class="navbar-toggler ms-5" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="navbarOffcanvasLgLabel">
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+            aria-labelledby="navbarOffcanvasLgLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title text-uppercase" id="offcanvasNavbarLabel"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body align-items-center">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 rg-fs-14 rg-fw-500">
-                    <?php
-                    $menuItems = Menu::model()->findAll('parent_id IS NULL'); // Get all main menu items (those without a parent)
-                    foreach ($menuItems as $menuItem) {
-                        $submenus = Menu::model()->findAllByAttributes(['parent_id' => $menuItem->id]);
-                        if (!empty($submenus)) {
-                            echo '<li class="nav-item dropdown">';
-                            echo '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">';
-                            echo CHtml::encode($menuItem->name);
-                            echo '</a>';
-                            echo '<ul class="dropdown-menu rg-dropdown">';
-                            foreach ($submenus as $submenu) {
-                                $subSubmenus = Menu::model()->findAllByAttributes(['parent_id' => $submenu->id]);
-                                if (!empty($subSubmenus)) {
-                                    echo '<li class="dropdown-submenu">';
-                                    echo '<a class="dropdown-item dropdown-toggle" href="#">' . CHtml::encode($submenu->name) . '</a>';
-                                    echo '<ul class="dropdown-menu">';
-                                    foreach ($subSubmenus as $subSubmenu) {
-                                        echo '<li><a class="dropdown-item" href="' . CHtml::encode($subSubmenu->url) . '">' . CHtml::encode($subSubmenu->name) . '</a></li>';
-                                    }
-                                    echo '</ul>';
-                                    echo '</li>';
-                                } else {
-                                    echo '<li><a class="dropdown-item" href="' . CHtml::encode($submenu->url) . '">' . CHtml::encode($submenu->name) . '</a></li>';
-                                }
-                            }
-                            echo '</ul>';
-                            echo '</li>';
-                        } else {
-                            echo '<li class="nav-item">';
-                            echo '<a class="nav-link" href="' . CHtml::encode($menuItem->url) . '">' . CHtml::encode($menuItem->name) . '</a>';
-                            echo '</li>';
-                        }
-                    }
-                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="<?php echo Yii::app()->createUrl('property-for-sale').$link_url;?>"><?php echo Yii::app()->tags->getTag('sale','Sale')?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo Yii::app()->createUrl('property-for-rent').$link_url;?>"><?php echo Yii::app()->tags->getTag('rent','Rent')?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo Yii::app()->createUrl('preleased'); ?>"><?php echo Yii::app()->tags->getTag('preleased','Preleased')?></a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo Yii::app()->createUrl('new-development');?>"><?php echo Yii::app()->tags->getTag('new_projects','New Projects')?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo Yii::app()->createUrl('business-opportunities');?>"><?php echo Yii::app()->tags->getTag('businesses_for_sale','Business Opportunities')?></a>
+                    </li>
+                   <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo Yii::app()->tags->getTag('services','Services')?></a>
+                      <ul class="dropdown-menu rg-dropdown">
+                        <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/project_funding');?>"><?php echo Yii::app()->tags->getTag('project_funding','Project Funding')?></a></li>
+                        <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/retail_investments');?>"><?php echo Yii::app()->tags->getTag('retail_investments','Retail Investments')?></a></li>
+                        <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/business_funding');?>"><?php echo Yii::app()->tags->getTag('startup_funding','Business Funding')?></a></li>
+                        <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/project_development');?>"><?php echo Yii::app()->tags->getTag('project_development','Project Development')?></a></li>
+                        <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/project_contracting');?>"><?php echo Yii::app()->tags->getTag('project_contracting','Project Contracting')?></a></li>
+                        <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/interior_fitouts');?>"><?php echo Yii::app()->tags->getTag('interior_fitouts','Interior Fitouts')?></a></li>
+                        <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/building_maintenance');?>"><?php echo Yii::app()->tags->getTag('building_maintenance','Building Maintenance')?></a></li>
+                        <li><a class="dropdown-item" href="<?php echo Yii::app()->createUrl('services/business_buying_selling');?>"><?php echo Yii::app()->tags->getTag('business_buying_&_sell','Business Buying & Selling')?></a></li>
+                      </ul>
+                    </li>
                 </ul>
-                <a href="<?php echo Yii::app()->createUrl('choose-your-option'); ?>" class="btn btn-dark">
-                    <?php echo Yii::app()->tags->getTag('submit_property', 'Submit Property'); ?>
-                    <span class="badge rounded-pill rg-fs-11 rg-fw-500 rounded ms-2"><?php echo Yii::app()->tags->getTag('free', 'Free'); ?></span>
-                </a>
+                <a href="<?php echo Yii::app()->createUrl('choose-your-option'); ?>" class="btn btn-dark"><?php echo Yii::app()->tags->getTag('submit_property','Submit Property')?> <span
+                        class="badge rounded-pill rg-fs-11 rg-fw-500 rounded ms-2"><?php echo Yii::app()->tags->getTag('free','Free')?></span></a>
             </div>
         </div>
     </div>
 </nav>
-
-<script>
-// Handle third-level dropdowns
-document.querySelectorAll('.dropdown-submenu > a').forEach(function(element) {
-    element.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var submenu = this.nextElementSibling;
-        if (submenu) {
-            submenu.classList.toggle('show');
-        }
-    });
-});
-</script>
-
-<style>
-/* Custom styles for third-level dropdown */
-.dropdown-submenu {
-    position: relative;
-}
-
-.dropdown-submenu .dropdown-menu {
-    top: 0;
-    left: 100%;
-    margin-left: 0.1rem;
-    margin-right: 0.1rem;
-}
-</style>
-
-
 <!-- End RG Estate Header -->

@@ -144,7 +144,6 @@ class New_projectsController   extends Controller
                         'TITLE' => 'RGestate Lead - Submit New Project',
                         'CATEGORY_ID' => 10,
                         'CONTACT_ID' => $customerId,
-						"PHONE" => [[ "VALUE" => $requestParms['mobile_number'], "VALUE_TYPE" => "WORK" ]],
                         'ASSIGNED_BY_ID' => 22,
                         'COMMENTS' => 
                             'Title: '.$requestParms['ad_title'].

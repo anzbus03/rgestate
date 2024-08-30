@@ -21,11 +21,11 @@ if (!$server->isNewRecord && $server->status === DeliveryServer::STATUS_INACTIVE
         'id'        => $server->modelName.'-form',
     ));
 ?>
-<div class="box box-primary">
-    <div class="box-header">
-        <h3 class="box-title"><?php echo Yii::t('servers', 'Validate this server');?></h3>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title"><?php echo Yii::t('servers', 'Validate this server');?></h3>
     </div>
-    <div class="box-body">
+    <div class="card-body">
         <div class="callout callout-info">
             <p>
             <?php 

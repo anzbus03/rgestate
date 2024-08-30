@@ -24,7 +24,7 @@ if ($viewCollection->renderContent) {
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="box-body"><div id="google_translate_element" class="pull-right"></div>
+        <div class="card-body"><div id="google_translate_element" class="pull-right"></div>
             <div class="table-responsive">
             <?php 
             $hooks->doAction('before_grid_view', $collection = new CAttributeCollection(array(

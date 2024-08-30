@@ -68,7 +68,7 @@
                                     </div>
                                     <p class="rg-fs-12 rg-fw-300 text-white mt-4">Driving our agency's global reach within the dynamic real estate landscape of Dubai, Girish combines international insights. His strategic acumen and unwavering commitment elevate our services as a premier Real Estate Company in Dubai, offering unmatched investment opportunities in Dubai.</p>
                                     <h2 class="rg-fs-12 rg-fw-600 text-white mt-4">Girish Gurnani</h2>
-                                    <i class="rg-fs-12 rg-fw-400 text-white font-italic">CEO - Global Business Head</i>
+                                    <i class="rg-fs-12 rg-fw-400 text-white font-italic">Global Business Head</i>
                                 </div>
                             </div>
                         </div>
