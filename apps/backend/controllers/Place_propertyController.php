@@ -3084,9 +3084,10 @@ class Place_propertyController  extends Controller
                         $imagePath = $extractedPath . $k;
                         if (file_exists($imagePath)) {
                             // Construct the upload path based on the current year and month
+                            $rootPath = dirname(Yii::getPathOfAlias('webroot')); 
                             $year = date('Y');
                             $month = date('m');
-                            $uploadDir = Yii::getPathOfAlias('webroot') . "/uploads/files/{$year}/{$month}/";
+                            $uploadDir = "{$rootPath}/uploads/files/{$year}/{$month}/";
                             
                             // Ensure the directory exists
                             if (!is_dir($uploadDir)) {
