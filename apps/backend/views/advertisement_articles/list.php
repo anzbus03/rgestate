@@ -60,7 +60,7 @@ if ($viewCollection->renderContent) { ?>
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="box-body">
+        <div class="card-body">
             <div class="table-responsive">
                 <table id="articles-table" class="display table table-bordered table-hover table-striped">
                     <thead>

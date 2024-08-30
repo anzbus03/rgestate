@@ -29,7 +29,7 @@
     background: #fff;
 }
 .f-ull-height { height:100%;position:relative;}
-.f-ull-height .blog-img { height:100%; margin-bottom:15px;}
+.f-ull-height .blog-img { height:250px; margin-bottom:15px;}
 .f-ull-height .blog-img img {
     object-fit: cover !important;
     height: 100%;

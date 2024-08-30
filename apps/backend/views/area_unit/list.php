@@ -21,7 +21,7 @@ if ($viewCollection->renderContent) { ?>
                 <?php echo CHtml::link(Yii::t('app', 'Update Cache'), Yii::app()->createUrl(Yii::app()->controller->id.'/index',array('update_cache'=>'1')), array('class' => 'btn btn-success btn-xs', 'title' => Yii::t('app', 'Update Cache')));?>
             </div>
         </div>
-        <div class="box-body">
+        <div class="card-body">
             <div class="table-responsive">
                 <!-- HTML Table for DataTables -->
                 <table id="dataTable" class="table table-bordered table-hover table-striped">

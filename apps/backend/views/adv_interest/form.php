@@ -1,4 +1,3 @@
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->apps->getBaseUrl('assets/css/bootstrap.min.css');?>" />
 <table class="table table-bordered table-hover table-striped">
 <thead>
 <tr>

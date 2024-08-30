@@ -47,22 +47,6 @@ if ($viewCollection->renderContent) { ?>
                     </div>
                 </div>
             </div>
-            </div>
- 
-    <div class="box box-primary">
-        <div class="box-header">
-            <div class="pull-left">
-                <h3 class="box-title">
-                    <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
-                </h3>
-            </div>
-            <div class="pull-right">
-                 <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
-                 <input type="text" id="dateRange" class="btn btn-default btn-xs" style="margin-left: 10px;" />
-
-
-            </div>
-            <div class="clearfix"><!-- --></div>
         </div>
         <div class="card-body">
 
@@ -315,8 +299,26 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
         });
 
-  /* Copy the text inside the text field */
-  document.execCommand("copy");
+        // Function to fetch filtered data
+        function fetchFilteredData(startDate, endDate) {
+            $.ajax({
+                url: '<?php echo Yii::app()->createUrl($this->route); ?>',
+                type: 'GET',
+                data: {
+                    startDate: startDate,
+                    endDate: endDate
+                },
+                success: function(data) {
+                    $('#<?php echo $model->modelName; ?>-grid').html($(data).find(
+                        '#<?php echo $model->modelName; ?>-grid').html());
+                }
+            });
+        }
+        $('#exportExcel').click(function(e) {
+            var dateRange = $('#dateRange').data('daterangepicker');
+            var startDate = dateRange.startDate.format('YYYY-MM-DD');
+            var endDate = dateRange.endDate.format('YYYY-MM-DD');
+            var exportUrl = '<?php echo Yii::app()->createUrl('place_property/exportExcel'); ?>';
 
             if (startDate && endDate) {
                 exportUrl += '?startDate=' + encodeURIComponent(startDate) + '&endDate=' +

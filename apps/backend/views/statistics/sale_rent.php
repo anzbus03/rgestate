@@ -5,12 +5,12 @@
               if(!empty($property)){
                   ?>
                     <div class="box-header with-border">
-				<h3 class="box-title">Sale - Rent</h3>
+				<h3 class="card-title">Sale - Rent</h3>
 				</div>
                   <?
   }
   ?>
-                <div class="box-body">
+                <div class="card-body">
                   <div class="row">
                     <div class="col-md-12">
                       

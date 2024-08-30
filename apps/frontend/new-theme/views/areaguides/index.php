@@ -19,7 +19,7 @@
     background: #fff;
 }
 .f-ull-height { height:100%;position:relative;}
-.f-ull-height .blog-img { height:100%; margin-bottom:15px;}
+.f-ull-height .blog-img { height:250px; margin-bottom:15px;}
 .f-ull-height .blog-img img {
     object-fit: cover !important;
     height: 100%;
@@ -332,22 +332,24 @@ ul.homepage-main-post li .post-title {
     }
 </style>
 
+
+
 <section class="panel panel-bg banner" style="background-image:url(<?php echo $this->app->apps->getBaseUrl('assets/img/dubai.jpg');?>);">
     <div class="abs-banner">
-        <div class="bloghead container main-search-container">
-            <h1 class="mt-1 section_title">Discover the UAE!</h1>
-            <form role="search" method="get" id="alia-suggested-form-452340" action="<?php echo Yii::app()->createUrl('area-guides'); ?>">
-                <div>
-                    <div class="alia-fieldid-container">
-                        <input type="text" name="search" id="company_works_at" placeholder="Search Area Guides by Name" class="alia-autocomplete-posts" autocomplete="off">
-                    </div>
-                    <button class="btn btn-primary ml-4 alia-suggested-link alia-suggested-link-452340">Search</button>                
-                </div>
-            </form>
-        </div>
+            <div class="bloghead container main-search-container">
+           
+               <h1 class="mt-1 section_title">Discover the UAE!</h1>
+               <form role="search" method="get" id="alia-suggested-form-452340" action="#">
+					<div>
+						<div class="alia-fieldid-container">
+							<input type="text" id="company_works_at" placeholder="Location" class="alia-autocomplete-posts" data-ajax-url="#" data-fieldid="452340" autocomplete="off">
+						</div> 
+						<a href="javascript:void(0);" class="alia-suggested-link alia-suggested-link-452340">Search</a>
+					</div>
+				</form>
+            </div>
     </div>
 </section>
-
 <section id="main-content" class="clearfix">
     <div class="container" id="d_column">
         <?php 
@@ -381,15 +383,17 @@ ul.homepage-main-post li .post-title {
                     $processedStates[] = $area->state_name;
                     ?>
                     <li class="post-list">
-                        <div class="post-thumbnail">
-                            <?php 
-                            $link = $this->app->createUrl('areaguides/view', array('area' => $area->state_slug));
-                            echo CHtml::link(CHtml::image('uploads/category/' . $area['image']), $link);
-                            ?>
-                        </div>
-                        <div class="post-info">
-                            <h3 class="post-title"><?php echo CHtml::link($area->state_name, $link); ?></h3>
-                        </div>
+                        <a class="post-link" href="#">
+                            <div class="post-thumbnail">
+                                <?php 
+                                $link = $this->app->createUrl('areaguides/view', array('area' => $area->state_slug));
+                                echo CHtml::image('uploads/category/' . $area['image']);
+                                ?>
+                            </div>
+                            <div class="post-info">
+                                <h3 class="post-title"><?php echo CHtml::link($area->state_name, $link); ?></h3>
+                            </div>
+                        </a>
                     </li>
                 <?php endforeach; ?>        
                 <div class="clearfix"></div>
@@ -402,31 +406,3 @@ ul.homepage-main-post li .post-title {
         <div class="clearfix"></div>
     </div>
 </section>
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-<script>
-$(document).ready(function() {
-    $("#company_works_at").autocomplete({
-        source: function(request, response) {
-            $.ajax({
-                url: "<?php echo Yii::app()->createUrl('area-guides/suggest'); ?>",
-                dataType: "json",
-                data: {
-                    term: request.term
-                },
-                success: function(data) {
-                    response(data);
-                }
-            });
-        },
-        select: function(event, ui) {
-            window.location.href = ui.item.link;
-        },
-        minLength: 2
-    });
-});
-</script>

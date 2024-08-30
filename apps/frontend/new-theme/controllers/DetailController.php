@@ -697,9 +697,7 @@ class DetailController extends Controller
 						'TITLE' => 'RGestate Lead - Property Listing Form',
 						'CONTACT_ID' => $customerId,
 						'COMMENTS' => $requestParms['meassage'],
-						'ASSIGNED_BY_ID' => 22,
-						"EMAIL" => [["VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK"]],
-						"PHONE" => [["VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK"]]
+						'ASSIGNED_BY_ID' => 22
 					],
 				];
 
@@ -735,7 +733,7 @@ class DetailController extends Controller
 					if (!$model->save()) {
 						echo json_encode(array('status' => '0', 'msg' => '<div class="alert alert-danger1"><strong>Error!</strong> ' . CHtml::errorSummary($model) . '. </div>'));
 					} else {
-						echo json_encode(array('status' => '1', 'name' => $model->email, 'msg' => '<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+						echo json_encode(array('status' => '1', 'name' => $model->name, 'msg' => '<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
 					}
 				}
 

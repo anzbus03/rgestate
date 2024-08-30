@@ -383,8 +383,6 @@ class Place_an_ad_no_loginController extends Controller
                         'TITLE' => 'New Lead - Property Submitted - RGEstate',
                         'CATEGORY_ID' => 10,
                         'CONTACT_ID' => $customerId,
-						"EMAIL" => [[ "VALUE" => $requestParms['salesman_email'], "VALUE_TYPE" => "WORK" ]],
-                        "PHONE" => [[ "VALUE" => $requestParms['mobile_number'], "VALUE_TYPE" => "WORK" ]],
                         'COMMENTS' => 
                             'Description: '.$requestParms['ad_description'].
                             '<br/> Area: '.$requestParms['area_location'].
@@ -1385,8 +1383,6 @@ class Place_an_ad_no_loginController extends Controller
                         'SOURCE_ID' => "WEB",
                         'BEGINDATE' => date("d/m/Y"),
                         "OPENED" => "Y",
-						"EMAIL" => [[ "VALUE" => $requestParms['salesman_email'], "VALUE_TYPE" => "WORK" ]],
-                        "PHONE" => [[ "VALUE" => $requestParms['mobile_number'], "VALUE_TYPE" => "WORK" ]],
                         'CONTACT_ID' => $customerId,
                         'COMMENTS' => 
                         'Title: '. $requestParms['ad_title'].
@@ -1432,7 +1428,7 @@ class Place_an_ad_no_loginController extends Controller
                     if(!$model->save()){
         				echo json_encode(array('status'=>'0','msg'=>'<div class="alert alert-danger1"><strong>Error!</strong> '.CHtml::errorSummary($model).'. </div>'));
         			}else{
-        				echo json_encode(array('status'=>'1','name'=>$model->email , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+        				echo json_encode(array('status'=>'1','name'=>$model->name , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
         		    }
                 }
 

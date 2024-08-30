@@ -42,9 +42,8 @@ if ($viewCollection->renderContent) { ?>
                 <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id.'/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
                 <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
             </div>
-            <div class="clearfix"><!-- --></div>
         </div>
-        <div class="box-body">
+        <div class="card-body">
             <div class="table-responsive">
             <?php 
             $hooks->doAction('before_grid_view', $collection = new CAttributeCollection(array(
