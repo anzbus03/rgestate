@@ -43,10 +43,10 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm',array('htmlOptions'=>array('class'=>'form-horizontal','enctype' => 'multipart/form-data'),'focus'=>array($user,'hotel_name'))); 
         ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$user->isNewRecord) { ?>
@@ -69,54 +69,47 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?>
-                <div class="clearfix"><!-- --></div>
-                
-                   <div class="clearfix"><!-- --></div>
-                <div class="form-group col-sm-6">
-                    <?php echo $form->labelEx($user, 'country_name');?>
-                    <?php echo $form->textField($user, 'country_name', $user->getHtmlOptions('country_name')); ?>
-                    <?php echo $form->error($user, 'country_name');?>
-                </div>        
-                <div class="form-group col-sm-4">
-                    <?php echo $form->labelEx($user, 'cords');?>
-                    <?php echo $form->textField($user, 'cords', $user->getHtmlOptions('cords')); ?>
-                    <?php echo $form->error($user, 'cords');?>
-                </div>        
-                   <div class="clearfix"><!-- --></div>
-                    
-                   <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'desfualt_currency');?>
-                    <?php echo $form->dropDownList($user, 'default_currency', CHtml::listData(Currency::model()->listData(),'currency_id','NameWithCode'), $user->getHtmlOptions('desfualt_currency')); ?>
-                    <?php echo $form->error($user, 'desfualt_currency');?>
-                </div>        
-                   <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'country_code');?>
-                    <?php echo $form->textField($user, 'country_code', $user->getHtmlOptions('country_code')); ?>
-                    <?php echo $form->error($user, 'country_code');?>
-                </div>        
-          <div class="clearfix"><!-- --></div>
-               
-                  <?php
-                if(!$model->isNewRecord){ ?>
-          <div class="clearfix"><!-- --></div>
-                   <div class="form-group col-lg-12">
-                    <?php echo $form->labelEx($user, 'footer_links');?><?php echo $user->getTranslateHtml('footer_links','ar',false,'1200px');?>
-                    <?php echo $form->textArea($user, 'footer_links', $user->getHtmlOptions('footer_links', array('rows' => 15))); ?>
-                    <?php echo $form->error($user, 'footer_links');?>
-                </div>
-                     <div class="clearfix"><!-- --></div>
-                   <div class="form-group col-lg-12">
-                    <?php echo $form->labelEx($user, 'popular_links_sale');?><?php echo $user->getTranslateHtml('popular_links_sale','ar',false,'1200px');?>
-                    <?php echo $form->textArea($user, 'popular_links_sale', $user->getHtmlOptions('popular_links_sale', array('rows' => 8))); ?>
-                    <?php echo $form->error($user, 'popular_links_sale');?>
-                </div>
-          <div class="clearfix"><!-- --></div>
-                   <div class="form-group col-lg-12">
-                    <?php echo $form->labelEx($user, 'popular_links_rent');?><?php echo $user->getTranslateHtml('popular_links_rent','ar',false,'1200px');?>
-                    <?php echo $form->textArea($user, 'popular_links_rent', $user->getHtmlOptions('popular_links_rent', array('rows' => 8))); ?>
-                    <?php echo $form->error($user, 'popular_links_rent');?>
+                <div class="row">
+
+
+                    <div class="form-group col-sm-6">
+                        <?php echo $form->labelEx($user, 'country_name');?>
+                        <?php echo $form->textField($user, 'country_name', $user->getHtmlOptions('country_name')); ?>
+                        <?php echo $form->error($user, 'country_name');?>
+                    </div>        
+                    <div class="form-group col-sm-6">
+                        <?php echo $form->labelEx($user, 'cords');?>
+                        <?php echo $form->textField($user, 'cords', $user->getHtmlOptions('cords')); ?>
+                        <?php echo $form->error($user, 'cords');?>
+                    </div>        
+                    <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($user, 'desfualt_currency');?>
+                        <?php echo $form->dropDownList($user, 'default_currency', CHtml::listData(Currency::model()->listData(),'currency_id','NameWithCode'), $user->getHtmlOptions('desfualt_currency')); ?>
+                        <?php echo $form->error($user, 'desfualt_currency');?>
+                    </div>        
+                    <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($user, 'country_code');?>
+                        <?php echo $form->textField($user, 'country_code', $user->getHtmlOptions('country_code')); ?>
+                        <?php echo $form->error($user, 'country_code');?>
+                    </div>        
+                   
+                      <?php
+                    if(!$model->isNewRecord){ ?>
+                       <div class="form-group col-lg-12">
+                        <?php echo $form->labelEx($user, 'footer_links');?><?php echo $user->getTranslateHtml('footer_links','ar',false,'1200px');?>
+                        <?php echo $form->textArea($user, 'footer_links', $user->getHtmlOptions('footer_links', array('rows' => 15))); ?>
+                        <?php echo $form->error($user, 'footer_links');?>
+                    </div>
+                       <div class="form-group col-lg-12">
+                        <?php echo $form->labelEx($user, 'popular_links_sale');?><?php echo $user->getTranslateHtml('popular_links_sale','ar',false,'1200px');?>
+                        <?php echo $form->textArea($user, 'popular_links_sale', $user->getHtmlOptions('popular_links_sale', array('rows' => 8))); ?>
+                        <?php echo $form->error($user, 'popular_links_sale');?>
+                    </div>
+                       <div class="form-group col-lg-12">
+                        <?php echo $form->labelEx($user, 'popular_links_rent');?><?php echo $user->getTranslateHtml('popular_links_rent','ar',false,'1200px');?>
+                        <?php echo $form->textArea($user, 'popular_links_rent', $user->getHtmlOptions('popular_links_rent', array('rows' => 8))); ?>
+                        <?php echo $form->error($user, 'popular_links_rent');?>
+                    </div>
                 </div>
                 <?php } ?> 
                 <div class="clearfix"><!-- --></div> 
@@ -136,7 +129,7 @@ if ($viewCollection->renderContent) {
                 <div class="clearfix"><!-- --></div>
             </div>
             <div class="box-footer">
-                <div class="pull-right">
+                <div class="pull-right" style="margin: 20px;">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
                 <div class="clearfix"><!-- --></div>

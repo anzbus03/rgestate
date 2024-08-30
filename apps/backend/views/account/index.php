@@ -60,48 +60,51 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'first_name');?>
-                    <?php echo $form->textField($user, 'first_name', $user->getHtmlOptions('first_name')); ?>
-                    <?php echo $form->error($user, 'first_name');?>
-                </div>        
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'last_name');?>
-                    <?php echo $form->textField($user, 'last_name', $user->getHtmlOptions('last_name')); ?>
-                    <?php echo $form->error($user, 'last_name');?>
-                </div>    
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'email');?>
-                    <?php echo $form->textField($user, 'email', $user->getHtmlOptions('email')); ?>
-                    <?php echo $form->error($user, 'email');?>
-                </div>        
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'confirm_email');?>
-                    <?php echo $form->textField($user, 'confirm_email', $user->getHtmlOptions('confirm_email')); ?>
-                    <?php echo $form->error($user, 'confirm_email');?>
-                </div>        
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'fake_password');?>
-                    <?php echo $form->textField($user, 'fake_password', $user->getHtmlOptions('password')); ?>
-                    <?php echo $form->error($user, 'fake_password');?>
-                </div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'confirm_password');?>
-                    <?php echo $form->textField($user, 'confirm_password', $user->getHtmlOptions('confirm_password')); ?>
-                    <?php echo $form->error($user, 'confirm_password');?>
-                </div>
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'timezone');?>
-                    <?php echo $form->dropDownList($user, 'timezone', $user->getTimeZonesArray(), $user->getHtmlOptions('timezone')); ?>
-                    <?php echo $form->error($user, 'timezone');?>
-                </div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'language_id');?>
-                    <?php echo $form->dropDownList($user, 'language_id', CMap::mergeArray(array('' => Yii::t('app', 'Application default')), Language::getLanguagesArray()), $user->getHtmlOptions('language_id')); ?>
-                    <?php echo $form->error($user, 'language_id');?>
+                <div class="row">
+
+                    <div class="form-group col-md-6">
+                        <?php echo $form->labelEx($user, 'first_name');?>
+                        <?php echo $form->textField($user, 'first_name', $user->getHtmlOptions('first_name')); ?>
+                        <?php echo $form->error($user, 'first_name');?>
+                    </div>        
+                    <div class="form-group col-md-6">
+                        <?php echo $form->labelEx($user, 'last_name');?>
+                        <?php echo $form->textField($user, 'last_name', $user->getHtmlOptions('last_name')); ?>
+                        <?php echo $form->error($user, 'last_name');?>
+                    </div>    
+                    <div class="clearfix"><!-- --></div>
+                    <div class="form-group col-md-6">
+                        <?php echo $form->labelEx($user, 'email');?>
+                        <?php echo $form->textField($user, 'email', $user->getHtmlOptions('email')); ?>
+                        <?php echo $form->error($user, 'email');?>
+                    </div>        
+                    <div class="form-group col-md-6">
+                        <?php echo $form->labelEx($user, 'confirm_email');?>
+                        <?php echo $form->textField($user, 'confirm_email', $user->getHtmlOptions('confirm_email')); ?>
+                        <?php echo $form->error($user, 'confirm_email');?>
+                    </div>        
+                    <div class="clearfix"><!-- --></div>
+                    <div class="form-group col-md-6">
+                        <?php echo $form->labelEx($user, 'fake_password');?>
+                        <?php echo $form->textField($user, 'fake_password', $user->getHtmlOptions('password')); ?>
+                        <?php echo $form->error($user, 'fake_password');?>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <?php echo $form->labelEx($user, 'confirm_password');?>
+                        <?php echo $form->textField($user, 'confirm_password', $user->getHtmlOptions('confirm_password')); ?>
+                        <?php echo $form->error($user, 'confirm_password');?>
+                    </div>
+                    <div class="clearfix"><!-- --></div>
+                    <div class="form-group col-md-6">
+                        <?php echo $form->labelEx($user, 'timezone');?>
+                        <?php echo $form->dropDownList($user, 'timezone', $user->getTimeZonesArray(), $user->getHtmlOptions('timezone')); ?>
+                        <?php echo $form->error($user, 'timezone');?>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <?php echo $form->labelEx($user, 'language_id');?>
+                        <?php echo $form->dropDownList($user, 'language_id', CMap::mergeArray(array('' => Yii::t('app', 'Application default')), Language::getLanguagesArray()), $user->getHtmlOptions('language_id')); ?>
+                        <?php echo $form->error($user, 'language_id');?>
+                    </div>
                 </div>
                 <div class="clearfix"><!-- --></div>
                 <?php 
@@ -119,7 +122,7 @@ if ($viewCollection->renderContent) {
                 <div class="clearfix"><!-- --></div>
             </div>
             <div class="box-footer">
-                <div class="pull-right">
+                <div class="pull-right mb-4" style="margin-right: 30px;">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
                 <div class="clearfix"><!-- --></div>

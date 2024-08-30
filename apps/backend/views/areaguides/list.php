@@ -11,28 +11,45 @@
  * @since 1.0
  */
 
-/**
- * This hook gives a chance to prepend content or to replace the default view content with a custom content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderContent} to false 
- * in order to stop rendering the default content.
- * @since 1.3.3.1
- */
+// Include DataTables CSS and JS
+Yii::app()->clientScript->registerCssFile('//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css');
+Yii::app()->clientScript->registerScriptFile('//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js', CClientScript::POS_END);
+
 $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCollection(array(
     'controller'    => $this,
     'renderContent' => true,
 )));
 
-// and render if allowed
 if ($viewCollection->renderContent) { 
-// print_r($viewCollection);
 ?>
+    <style>
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
 
-    <div class="box box-primary">
-        <div class="box-header">
-            <div class="pull-left">
-                <h3 class="box-title">
+        .card-header-left {
+            flex: 1;
+        }
+
+        .card-header-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .card-header-right .btn {
+            margin-left: 5px;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+    <div class="card">
+        <div class="card-header">
+            <div class="card-header-left">
+                <h3 class="card-title">
                     <span class="glyphicon glyphicon-book"></span> <?php echo Yii::t('areaguides', 'Area Guides');?>
                 </h3>
             </div>
@@ -44,135 +61,68 @@ if ($viewCollection->renderContent) {
         </div>
         <div class="box-body">
             <div class="table-responsive">
-            <?php 
-            /**
-             * This hook gives a chance to prepend content or to replace the default grid view content with a custom content.
-             * Please note that from inside the action callback you can access all the controller view
-             * variables via {@CAttributeCollection $collection->controller->data}
-             * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderGrid} to false 
-             * in order to stop rendering the default content.
-             * @since 1.3.3.1
-             */
-            $hooks->doAction('before_grid_view', $collection = new CAttributeCollection(array(
-                'controller'   => $this,
-                'renderGrid'   => true,
-            )));
-            // echo "<pre>";print_r($collection);exit;
-            // and render if allowed
-            if ($collection->renderGrid) {
-                $this->widget('zii.widgets.grid.CGridView', $hooks->applyFilters('grid_view_properties', array(
-                    'ajaxUrl'           => $this->createUrl($this->route),
-                    'id'                => $areaguide->modelName.'-grid',
-                    'dataProvider'      => $areaguide->search(),
-                    'filter'            => $areaguide,
-                    'filterPosition'    => 'body',
-                    'filterCssClass'    => 'grid-filter-cell',
-                    'itemsCssClass'     => 'table table-bordered table-hover table-striped',
-                    'selectableRows'    => 0,
-                    'enableSorting'     => false,
-                    'cssFile'           => false,
-                    'pagerCssClass'     => 'pagination pull-right',
-                    'pager'             => array(
-                        'class'         => 'CLinkPager',
-                        'cssFile'       => false,
-                        'header'        => false,
-                        'htmlOptions'   => array('class' => 'pagination')
-                    ),
-                    'columns' => $hooks->applyFilters('grid_view_columns', array(
-                        array(
-                            'name'  => 'city',
-                            'value' => function($s){
-                                return $s->getAreaText();
-                            },
-                        ),
-                        array(
-                            'name'  => 'area',
-                            'value' => function($s){
-                                return $s->getCityText();
-                            },
-                        ),
-                        array(
-                            'name'  => 'image',
-                            'value' => '$data->CategoryImages',
-                            'type'=>'raw',
-                            'filter'=>false,
-
-                        ),
-                       
-                        array(
-                            'name'      => 'status',
-                            'value'     => '$data->statusText',
-                            'filter'    => $areaguide->getStatusesArray(),
-                        ),
-                        array(
-                            'name'      => 'date_added',
-                            'value'     => '$data->dateAdded',
-                            'filter'    => false,
-                        ),
-                        array(
-                            'name'      => 'last_updated',
-                            'value'     => '$data->lastUpdated',
-                            'filter'    => false,
-                        ),
-                        array(
-                            'class'     => 'CButtonColumn',
-                            'header'    => Yii::t('app', 'Options'),
-                            'footer'    => $areaguide->paginationOptions->getGridFooterPagination(),
-                            'buttons'   => array(
-                                'view' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
-                                    'url'       => '$data->permalink',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'View'), 'class' => '', 'target' => '_blank'),
-                                        'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/view")',
-                                ),
-                                'update' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
-                                    'url'       => 'Yii::app()->createUrl("areaguides/update", array("id" => $data->areaguides_id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
-                                      'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/update")',
-                                ),
-                                'delete' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
-                                    'url'       => 'Yii::app()->createUrl("areaguides/delete", array("id" => $data->areaguides_id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
-                                      'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/delete")',
-                                ),    
-                            ),
-                            'htmlOptions' => array(
-                                'style' => 'width:110px;',
-                            ),
-                            'template' => '  {view}{update} {delete}'
-                        ),
-                    ), $this),
-                ), $this));  
-            }
-            /**
-             * This hook gives a chance to append content after the grid view content.
-             * Please note that from inside the action callback you can access all the controller view
-             * variables via {@CAttributeCollection $collection->controller->data}
-             * @since 1.3.3.1
-             */
-            $hooks->doAction('after_grid_view', new CAttributeCollection(array(
-                'controller'   => $this,
-                'renderedGrid' => $collection->renderGrid,
-            )));
-            ?>
-            <div class="clearfix"><!-- --></div>
+                <table id="area-guides-table" class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th><?php echo Yii::t('app', 'City'); ?></th>
+                            <th><?php echo Yii::t('app', 'Area'); ?></th>
+                            <th><?php echo Yii::t('app', 'Image'); ?></th>
+                            <th><?php echo Yii::t('app', 'Status'); ?></th>
+                            <th><?php echo Yii::t('app', 'Date Added'); ?></th>
+                            <th><?php echo Yii::t('app', 'Last Updated'); ?></th>
+                            <th><?php echo Yii::t('app', 'Options'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($areaguide->search()->getData() as $data) { ?>
+                            <tr>
+                                <td><?php echo $data->getAreaText(); ?></td>
+                                <td><?php echo $data->getCityText(); ?></td>
+                                <td><?php echo $data->CategoryImages; ?></td>
+                                <td><?php echo $data->statusText; ?></td>
+                                <td><?php echo $data->dateAdded; ?></td>
+                                <td><?php echo $data->lastUpdated; ?></td>
+                                <td>
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/view')) { ?>
+                                        <a href="<?php echo $data->permalink; ?>" title="<?php echo Yii::t('app', 'View'); ?>" target="_blank" class="btn btn-xs btn-secondary">
+                                            <span class="fa fa-eye"></span>
+                                        </a>
+                                    <?php } ?>
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl('areaguides/update', array('id' => $data->areaguides_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>" class="btn btn-xs btn-primary">
+                                            <span class="fa fa-pencil"></span>
+                                        </a>
+                                    <?php } ?>
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl('areaguides/delete', array('id' => $data->areaguides_id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="btn btn-xs btn-danger delete">
+                                            <span class="fa fa-trash"></span>
+                                        </a>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
             </div>    
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#area-guides-table').DataTable({
+                language: {
+                    paginate: {
+                        next: '<i class=\"fa fa-angle-double-right\" aria-hidden=\"true\"></i>',
+                        previous: '<i class=\"fa fa-angle-double-left\" aria-hidden=\"true\"></i>'
+                    }
+                }
+            });
+        });
+    </script>
 <?php 
 }
-/**
- * This hook gives a chance to append content after the view file default content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * @since 1.3.3.1
- */
+
 $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'controller'        => $this,
     'renderedContent'   => $viewCollection->renderContent,
 )));
+?>

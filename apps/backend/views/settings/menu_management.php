@@ -3,11 +3,11 @@
 $form = $this->beginWidget('CActiveForm'); 
 ?>
 
-<div class="box box-primary">
-    <div class="box-header">
-        <h3 class="box-title"><?php echo Yii::t('settings', 'Manage Menu')?></h3>
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title"><?php echo Yii::t('settings', 'Manage Menu')?></h3>
     </div>
-    <div class="box-body">
+    <div class="card-body">
         <?php 
         $hooks->doAction('before_active_form_fields', new CAttributeCollection(array(
             'controller'    => $this,
@@ -73,7 +73,7 @@ $form = $this->beginWidget('CActiveForm');
                     <?php echo $form->error($commonModel, 'name'); ?>
                 </div>
                 <div class="form-group col-md-12">
-                    <button type="button" class="btn btn-primary btn-add-menu-item"><?php echo Yii::t('app', 'Add Menu Item'); ?></button>
+                    <button type="button" class="btn btn-sm btn-primary btn-add-menu-item"><?php echo Yii::t('app', 'Add Menu Item'); ?></button>
                 </div>
             </div>
             <div class="col-md-8">
@@ -84,9 +84,9 @@ $form = $this->beginWidget('CActiveForm');
                             <span class="menu-name"><?php echo CHtml::encode($menuItem['name']); ?></span>
                             <span class="menu-url">URL: <?php echo CHtml::encode($menuItem['url']); ?></span>
                             <div class="menu-actions">
-                                <button type="button" class="btn btn-danger btn-remove-menu-item"><?php echo Yii::t('app', 'Remove'); ?></button>
-                                <button type="button" class="btn btn-secondary btn-add-submenu"><?php echo Yii::t('app', 'Add Submenu'); ?></button>
-                                <button type="button" class="btn btn-primary btn-edit-menu-item"><?php echo Yii::t('app', 'Edit'); ?></button>
+                                <button type="button" class="btn btn-sm btn-danger btn-remove-menu-item"><?php echo Yii::t('app', 'Remove'); ?></button>
+                                <button type="button" class="btn btn-sm btn-secondary btn-add-submenu"><?php echo Yii::t('app', 'Add Submenu'); ?></button>
+                                <button type="button" class="btn btn-sm btn-primary btn-edit-menu-item"><?php echo Yii::t('app', 'Edit'); ?></button>
                             </div>
                             <div class="submenu">
                                 <?php if (!empty($menuItem['submenus'])) { ?>
@@ -95,9 +95,9 @@ $form = $this->beginWidget('CActiveForm');
                                             <span class="menu-name"><?php echo CHtml::encode($submenuItem['name']); ?></span>
                                             <span class="menu-url">URL: <?php echo CHtml::encode($submenuItem['url']); ?></span>
                                             <div class="menu-actions">
-                                                <button type="button" class="btn btn-danger btn-remove-menu-item"><?php echo Yii::t('app', 'Remove'); ?></button>
-                                                <button type="button" class="btn btn-secondary btn-add-submenu"><?php echo Yii::t('app', 'Add Submenu'); ?></button>
-                                                <button type="button" class="btn btn-primary btn-edit-menu-item"><?php echo Yii::t('app', 'Edit'); ?></button>
+                                                <button type="button" class="btn btn-sm btn-danger btn-remove-menu-item"><?php echo Yii::t('app', 'Remove'); ?></button>
+                                                <button type="button" class="btn btn-sm btn-secondary btn-add-submenu"><?php echo Yii::t('app', 'Add Submenu'); ?></button>
+                                                <button type="button" class="btn btn-sm btn-primary btn-edit-menu-item"><?php echo Yii::t('app', 'Edit'); ?></button>
                                             </div>
                                             <div class="submenu">
                                                 <?php if (!empty($submenuItem['submenus'])) { ?>
@@ -106,8 +106,8 @@ $form = $this->beginWidget('CActiveForm');
                                                             <span class="menu-name"><?php echo CHtml::encode($subSubmenuItem['name']); ?></span>
                                                             <span class="menu-url">URL: <?php echo CHtml::encode($subSubmenuItem['url']); ?></span>
                                                             <div class="menu-actions">
-                                                                <button type="button" class="btn btn-danger btn-remove-menu-item"><?php echo Yii::t('app', 'Remove'); ?></button>
-                                                                <button type="button" class="btn btn-primary btn-edit-menu-item"><?php echo Yii::t('app', 'Edit'); ?></button>
+                                                                <button type="button" class="btn btn-sm btn-danger btn-remove-menu-item"><?php echo Yii::t('app', 'Remove'); ?></button>
+                                                                <button type="button" class="btn btn-sm btn-primary btn-edit-menu-item"><?php echo Yii::t('app', 'Edit'); ?></button>
                                                             </div>
                                                         </div>
                                                     <?php } ?>
@@ -132,8 +132,8 @@ $form = $this->beginWidget('CActiveForm');
         <div class="clearfix"><!-- --></div>
     </div>
     <div class="box-footer">
-        <div class="pull-right">
-            <button type="submit" id="submitForm" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>">
+        <div class="pull-right m-4">
+            <button type="submit" id="submitForm" class="btn btn-sm btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>">
                 <?php echo Yii::t('app', 'Save Changes');?>
             </button>
         </div>
@@ -151,7 +151,7 @@ $this->endWidget();
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="submenuModalLabel"><?php echo Yii::t('app', 'Add Submenu Item'); ?></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -166,7 +166,7 @@ $this->endWidget();
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo Yii::t('app', 'Close'); ?></button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo Yii::t('app', 'Close'); ?></button>
                 <button type="button" id="saveSubmenu" class="btn btn-primary"><?php echo Yii::t('app', 'Save'); ?></button>
             </div>
         </div>
@@ -179,7 +179,7 @@ $this->endWidget();
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editMenuItemModalLabel"><?php echo Yii::t('app', 'Edit Menu Item'); ?></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -194,7 +194,7 @@ $this->endWidget();
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo Yii::t('app', 'Close'); ?></button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo Yii::t('app', 'Close'); ?></button>
                 <button type="button" id="saveEditMenuItem" class="btn btn-primary"><?php echo Yii::t('app', 'Save'); ?></button>
             </div>
         </div>

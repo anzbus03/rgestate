@@ -1,35 +1,40 @@
-<?php defined('MW_PATH') || exit('No direct script access allowed');
+<?php defined('MW_PATH') || exit('No direct script access allowed'); ?>
 
-/**
- * This file is part of the MailWizz EMA application.
- * 
- * @package MailWizz EMA
- * @author Serban George Cristian <cristian.serban@mailwizz.com> 
- * @link http://www.mailwizz.com/
- * @copyright 2013-2014 MailWizz EMA (http://www.mailwizz.com)
- * @license http://www.mailwizz.com/license/
- * @since 1.0
- */
-
-/**
- * This hook gives a chance to prepend content or to replace the default view content with a custom content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderContent} to false 
- * in order to stop rendering the default content.
- * @since 1.3.3.1
- */
+<?php
 $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCollection(array(
     'controller'    => $this,
     'renderContent' => true,
 )));
 
-// and render if allowed
 if ($viewCollection->renderContent) { ?>
-    <div class="box box-primary">
-        <div class="box-header">
-            <div class="pull-left">
-                <h3 class="box-title">
+    <style>
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card-header-left {
+            flex: 1;
+        }
+
+        .card-header-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .card-header-right .btn {
+            margin-left: 5px;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+    <div class="card">
+        <div class="card-header">
+            <div class="card-header-left">
+                <h3 class="card-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
                 </h3>
             </div>
@@ -42,149 +47,78 @@ if ($viewCollection->renderContent) { ?>
         <div class="box-body">
             <div class="table-responsive">
             <?php 
-            /**
-             * This hook gives a chance to prepend content or to replace the default grid view content with a custom content.
-             * Please note that from inside the action callback you can access all the controller view
-             * variables via {@CAttributeCollection $collection->controller->data}
-             * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderGrid} to false 
-             * in order to stop rendering the default content.
-             * @since 1.3.3.1
-             */
             $hooks->doAction('before_grid_view', $collection = new CAttributeCollection(array(
                 'controller'    => $this,
                 'renderGrid'    => true,
             )));
-           
-             $form=$this->beginWidget('CActiveForm', array( 
-			 'enableAjaxValidation'=>true,
-			 ));  
-			 
-			
-            // and render if allowed
-            if ($collection->renderGrid) {
-                $this->widget('zii.widgets.grid.CGridView', $hooks->applyFilters('grid_view_properties', array(
-                    'ajaxUrl'           => $this->createUrl($this->route),
-                    'id'                => $model->modelName.'-grid',
-                    'dataProvider'      => $model->search(),
-                    'filter'            => $model,
-                    'filterPosition'    => 'body',
-                    'filterCssClass'    => 'grid-filter-cell',
-                    'itemsCssClass'     => 'table table-bordered table-hover table-striped',
-                    'selectableRows'    => 0,
-                    'enableSorting'     => false,
-                    'cssFile'           => false,
-                    'pagerCssClass'     => 'pagination pull-right',
-                    'pager'             => array(
-                        'class'         => 'CLinkPager',
-                        'cssFile'       => false,
-                        'header'        => false,
-                        'htmlOptions'   => array('class' => 'pagination')
-                    ),
-                    'columns' => $hooks->applyFilters('grid_view_columns', array(
-                        
-                        array(
-                            'name'  => 'category_id',
-                            'value' => '@$data->category->category_name' ,
-                            'filter'=>Category::model()->getCategory(),
-                        ),
-                        array(
-                            'name'  => 'sub_category_name',
-                            'value' => '@$data->sub_category_name' ,
-                            'filter' => $data->sub_category_name
-                        ),
-                        array(
-                            'name'  => 'parent_id',
-                            'header' => "Parent Name",
-                            'value'  => function($data) {
-                                $subcategory = Subcategory::model()->findByPk($data->parent_id);
-                                return $subcategory ? $subcategory->sub_category_name : '';
-                            },
-                        ),
-                        array(
-                            'filter'=>false,
-                            'name'  => 'date_added',
-                            'value' => '@$data->dateAdded' ,
-                            'htmlOptions'=>array("width"=>"150px","style"=>"text-align:right;"),
-                        ),
-                        array(
-                            'name'  => 'last_updated',
-                            'value' => '@$data->lastUpdated' ,
-                            'htmlOptions'=>array("width"=>"150px","style"=>"text-align:right;"),
-                            'filter'=>false,
-                        ),
-                             array(
-            'name'=>'priority',
-            'type'=>'raw',
-             'filter'=>false,
-            'value'=>'CHtml::textField("priority[$data->sub_category_id]",$data->priority,array("style"=>"width:50px;text-align:center","class"=>"form-controll"))',
-            'htmlOptions'=>array("style"=>"width:50px;text-align:center","class"=>"form-controll"),
-        ),
-                      
-                       
-                        array(
-                            'class'     => 'CButtonColumn',
-                            'header'    => Yii::t('app', 'Options'),
-                            'footer'    => $model->paginationOptions->getGridFooterPagination(),
-                            'buttons'   => array(
-                                'update' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
-                                    'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/update", array("id" => $data->sub_category_id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
-                                ),
-                                'delete' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
-                                    'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/delete", array("id" => $data->sub_category_id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
-                                   // 'visible'   => '$data->removable === User::TEXT_YES',
-                                ),    
-                            ),
-                            'htmlOptions' => array(
-                                'style' => 'width:70px;',
-                            ),
-                            'template' => '{update} {delete}'
-                        ),
-                    ), $this),
-                ), $this)); 
-            }
-            /**
-             * This hook gives a chance to append content after the grid view content.
-             * Please note that from inside the action callback you can access all the controller view
-             * variables via {@CAttributeCollection $collection->controller->data}
-             * @since 1.3.3.1
-             */
-            $hooks->doAction('after_grid_view', new CAttributeCollection(array(
-                'controller'    => $this,
-                'renderedGrid'  => $collection->renderGrid,
-            )));
-            ?>
-            <div class="clearfix"><!-- --></div>
+
+            $form=$this->beginWidget('CActiveForm', array( 
+                'enableAjaxValidation'=>true,
+            ));  
+            
+            if ($collection->renderGrid) { ?>
+                <table id="datatable" class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th><?php echo Yii::t('app', 'Category'); ?></th>
+                            <th><?php echo Yii::t('app', 'Sub Category'); ?></th>
+                            <th><?php echo Yii::t('app', 'Parent Name'); ?></th>
+                            <th style="text-align:right; width:150px;"><?php echo Yii::t('app', 'Date Added'); ?></th>
+                            <th style="text-align:right; width:150px;"><?php echo Yii::t('app', 'Last Updated'); ?></th>
+                            <th style="width:50px; text-align:center;"><?php echo Yii::t('app', 'Priority'); ?></th>
+                            <th style="width:70px;"><?php echo Yii::t('app', 'Options'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($model->search()->getData() as $data) { ?>
+                            <tr>
+                                <td><?php echo @$data->category->category_name; ?></td>
+                                <td><?php echo @$data->sub_category_name; ?></td>
+                                <td><?php 
+                                    $subcategory = Subcategory::model()->findByPk($data->parent_id);
+                                    echo $subcategory ? $subcategory->sub_category_name : '';
+                                ?></td>
+                                <td style="text-align:right;"><?php echo @$data->dateAdded; ?></td>
+                                <td style="text-align:right;"><?php echo @$data->lastUpdated; ?></td>
+                                <td style="text-align:center;"><?php echo CHtml::textField("priority[$data->sub_category_id]", $data->priority, array("style"=>"width:50px;text-align:center","class"=>"form-controll")); ?></td>
+                                <td>
+                                    <?php echo CHtml::link('<span class="fa fa-pencil"></span>', Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->sub_category_id)), array('title' => Yii::t('app', 'Update'), 'class' => 'btn btn-xs btn-primary')); ?>
+                                    <?php echo CHtml::link('<span class="fa fa-trash"></span>', Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->sub_category_id)), array('title' => Yii::t('app', 'Delete'), 'class' => 'btn btn-xs btn-danger delete')); ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+                <script>
+                    $(document).ready(function() {
+                        $('#datatable').DataTable({
+                            language: {
+                                paginate: {
+                                    next: '<i class=\"fa fa-angle-double-right\" aria-hidden=\"true\"></i>',
+                                    previous: '<i class=\"fa fa-angle-double-left\" aria-hidden=\"true\"></i>'
+                                }
+                            }
+                        });
+                    });
+                </script>
+            <?php } ?>
+            <div class="clearfix"></div>
             </div>    
             
-			<div class="box-footer">
-			<div class="pull-right">
-			<button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Update');?></button>
-			</div>
-			<div class="clearfix"><!-- --></div>
-			</div>
-			</div>
+            <div class="box-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Update');?></button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
           <?php $this->endWidget(); ?>
         </div>
     </div>
 <?php 
 }
-/**
- * This hook gives a chance to append content after the view file default content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * @since 1.3.3.1
- */
+
 $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'controller'        => $this,
     'renderedContent'   => $viewCollection->renderContent,
 )));
 ?>
- 
- 
-

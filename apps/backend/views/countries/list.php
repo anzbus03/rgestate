@@ -11,14 +11,6 @@
  * @since 1.0
  */
 
-/**
- * This hook gives a chance to prepend content or to replace the default view content with a custom content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderContent} to false 
- * in order to stop rendering the default content.
- * @since 1.3.3.1
- */
 $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCollection(array(
     'controller'    => $this,
     'renderContent' => true,
@@ -31,10 +23,10 @@ if ($viewCollection->renderContent) {
 			 'enableAjaxValidation'=>true,
 			 ));  
 	?>
-    <div class="box box-primary">
-        <div class="box-header">
-            <div class="pull-left">
-                <h3 class="box-title">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-header-left">
+                <h3 class="card-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t('hotel', 'Country List');?>
                 </h3>
             </div>
@@ -50,116 +42,58 @@ if ($viewCollection->renderContent) {
         <div class="box-body"><div id="google_translate_element" class="pull-right"></div>
             <div class="table-responsive">
             <?php 
-            /**
-             * This hook gives a chance to prepend content or to replace the default grid view content with a custom content.
-             * Please note that from inside the action callback you can access all the controller view
-             * variables via {@CAttributeCollection $collection->controller->data}
-             * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderGrid} to false 
-             * in order to stop rendering the default content.
-             * @since 1.3.3.1
-             */
             $hooks->doAction('before_grid_view', $collection = new CAttributeCollection(array(
                 'controller'    => $this,
                 'renderGrid'    => true,
             )));
             
-            // and render if allowed
             if ($collection->renderGrid) {
-                $this->widget('zii.widgets.grid.CGridView', $hooks->applyFilters('grid_view_properties', array(
-                    'ajaxUrl'           => $this->createUrl($this->route),
-                    'id'                => $user->modelName.'-grid',
-                    'dataProvider'      => $user->search(),
-                    'filter'            => $user,
-                    'filterPosition'    => 'body',
-                    'filterCssClass'    => 'grid-filter-cell',
-                    'itemsCssClass'     => 'table table-bordered table-hover table-striped',
-                    'selectableRows'    => 0,
-                    'enableSorting'     => false,
-                    'cssFile'           => false,
-                    'pagerCssClass'     => 'pagination pull-right',
-                    'pager'             => array(
-                        'class'         => 'CLinkPager',
-                        'cssFile'       => false,
-                        'header'        => false,
-                        'htmlOptions'   => array('class' => 'pagination')
-                    ),
-                    'columns' => $hooks->applyFilters('grid_view_columns', array(
-                       array(
-                            'name'  => 'country_name',
-                            'value' => '"<span>".$data->country_name."</span>&nbsp;".$data->getTranslateHtml("country_name")',
-                            'type'=>'raw'
-                             
-                        ),
-						array(
-						'name'=>'bulk_update',
-						'type'=>'raw',
-						'filter'=> '<input type="checkbox" class="select_all" checked="true"  onchange="checkAllFunction(this,event)" /> Click to check / uncheck all <a href="javascript:void(0)" class="btn btn-xs btn-primary" title="All Checked inputs with google translate values" onclick="applyTanslation()" >Apply Translation</a> ' ,
-						'value'=>'$data->BulkUpdateText',
-						'htmlOptions'=>array("style"=>"width:250px;text-align:center","class"=>"form-controll"),
-						  'visible' => $user->BulkcanVisibleBulk
-						),
-                    
-                             array(
-                            'name'  => 'country_id',
-                            'value' => '$data->country_id',
-                             
-                        ),
-                        array(
-                            'name'  => 'default_currency',
-                            'value' => '$data->DefaultCurrencyTitle',
-                            'filter' => false , 
-                             
-                        ),
-                      
-                        array(
-                            'name'  => 'show_on_listing',
-                            'value' => '$data->show_on_listingHtml',
-                            'type' => 'raw',
-                                 'filter' => false , 
-                        ),
-                        
-						array(
-						'name'=>'priority',
-						'type'=>'raw',
-						'filter'=>false,
-						'value'=>'CHtml::textField("priority[$data->country_id]",$data->priority,array("style"=>"width:50px;text-align:center","class"=>"form-controll"))',
-						'htmlOptions'=>array("style"=>"width:50px;text-align:center","class"=>"form-controll"),
-						),
-                        array(
-                            'class'     => 'CButtonColumn',
-                            'header'    => Yii::t('app', 'Options'),
-                            'footer'    => $user->paginationOptions->getGridFooterPagination(),
-                            'buttons'   => array(
-                                'update' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
-                                    'url'       => 'Yii::app()->createUrl("countries/update", array("id" => $data->country_id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
-                                    'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/update")',
-                                ),
-                                'delete' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
-                                    'url'       => 'Yii::app()->createUrl("countries/delete", array("id" => $data->country_id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
-                                    'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/delete")',
-                                   // 'visible'   => '$data->removable === User::TEXT_YES',
-                                ),    
-                            ),
-                            'htmlOptions' => array(
-                                'style' => 'width:70px;',
-                            ),
-                            'template' => '{update} {delete}'
-                        ),
-                    ), $this),
-                ), $this)); 
+                ?>
+                <table id="country-list" class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th><?php echo Yii::t('hotel', 'Country Name');?></th>
+                            <th><?php echo Yii::t('hotel', 'Bulk Update');?></th>
+                            <th><?php echo Yii::t('hotel', 'Country ID');?></th>
+                            <th><?php echo Yii::t('hotel', 'Default Currency');?></th>
+                            <th><?php echo Yii::t('hotel', 'Show on Listing');?></th>
+                            <th><?php echo Yii::t('hotel', 'Priority');?></th>
+                            <th><?php echo Yii::t('hotel', 'Options');?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($user->search()->data as $data) { ?>
+                            <tr>
+                                <td><?php echo $data->country_name; ?>&nbsp;<?php echo $data->getTranslateHtml("country_name"); ?></td>
+                                <td>
+                                    <input type="checkbox" class="select_all" checked="true" onchange="checkAllFunction(this, event)" />
+                                    <?php echo Yii::t('app', 'Click to check / uncheck all'); ?>
+                                    <a href="javascript:void(0)" class="btn btn-xs btn-primary" title="<?php echo Yii::t('app', 'All Checked inputs with google translate values'); ?>" onclick="applyTanslation()" ><?php echo Yii::t('app', 'Apply Translation'); ?></a>
+                                </td>
+                                <td><?php echo $data->country_id; ?></td>
+                                <td><?php echo $data->DefaultCurrencyTitle; ?></td>
+                                <td><?php echo $data->show_on_listingHtml; ?></td>
+                                <td>
+                                    <?php echo CHtml::textField("priority[$data->country_id]", $data->priority, array("style" => "width:50px;text-align:center", "class" => "form-control")); ?>
+                                </td>
+                                <td>
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/update')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl("countries/update", array("id" => $data->country_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                    <?php } ?>
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/delete')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl("countries/delete", array("id" => $data->country_id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="btn btn-sm btn-danger delete">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+                <?php
             }
-            /**
-             * This hook gives a chance to append content after the grid view content.
-             * Please note that from inside the action callback you can access all the controller view
-             * variables via {@CAttributeCollection $collection->controller->data}
-             * @since 1.3.3.1
-             */
             $hooks->doAction('after_grid_view', new CAttributeCollection(array(
                 'controller'    => $this,
                 'renderedGrid'  => $collection->renderGrid,
@@ -170,7 +104,7 @@ if ($viewCollection->renderContent) {
         </div>
    
    	<div class="box-footer">
-			<div class="pull-right">
+			<div class="pull-right m-4" >
 			<button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Update Priority');?></button>
 			</div>
 			<div class="clearfix"><!-- --></div>
@@ -181,32 +115,35 @@ if ($viewCollection->renderContent) {
 	 <?php $this->endWidget(); ?>
 <?php 
 }
-/**
- * This hook gives a chance to append content after the view file default content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * @since 1.3.3.1
- */
 $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'controller'        => $this,
     'renderedContent'   => $viewCollection->renderContent,
 )));
 ?>
 <script>
+$(document).ready(function() {
+    $('#country-list').DataTable({
+        language: {
+            paginate: {
+                next: '<i class=\"fa fa-angle-double-right\" aria-hidden=\"true\"></i>',
+                previous: '<i class=\"fa fa-angle-double-left\" aria-hidden=\"true\"></i>'
+            }
+        }
+    });
+});
+
 function ChangeListing(k){
 	if($(k).is(':checked')){
 		show_on_listing = 1;
 	}
 	else{
-		show_on_listing =0;
+		show_on_listing = 0;
 	}
-	$.get('<?php echo Yii::app()->createUrl('countries/show_on_listing');?>/id/'+$(k).val()+'/show_on_listing/'+show_on_listing,function(data){
+	$.get('<?php echo Yii::app()->createUrl('countries/show_on_listing');?>/id/'+$(k).val()+'/show_on_listing/'+show_on_listing, function(data){
 		var data = JSON.parse(data);
-		if(data.status=='1'){
+		if(data.status == '1'){
 			alert(data.msg);
 		}
-		
-		 })
+	});
 }
-
 </script>

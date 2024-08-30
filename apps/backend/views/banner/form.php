@@ -48,16 +48,37 @@ if ($viewCollection->renderContent) {
         'enableAjaxValidation'=>false,
 'htmlOptions'=>array('enctype'=>'multipart/form-data'),
 )); ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+<style>
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .card-header-left {
+        flex: 1;
+    }
+
+    .card-header-right {
+        display: flex;
+        gap: 10px;
+    }
+
+    .card-header-right .btn {
+        margin-left: 5px;
+    }
+</style>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3 class="card-title">
+                        <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, "Banner");?>
+                    </h3>
                 </div>
-                <div class="pull-right">
-                    <?php if (!$model->isNewRecord) { ?>
+                <div class="card-header-right">
                     <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id.'/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
-                    <?php } ?>
-                    <?php echo CHtml::link(Yii::t('app', 'Cancel'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
+                    <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
@@ -94,7 +115,7 @@ if ($viewCollection->renderContent) {
 				?>
                 <div class="clearfix"><!-- --></div>   
 
-				<div class="form-group col-lg-6 hidden">
+				<div class="form-group col-lg-6 hide" style="display: none;">
 				<?php echo $form->labelEx($model,'ad_type'); ?>
 				<br />
 				<?php echo $form->radioButton($model,'ad_type',array('value'=>'adSense','uncheckValue'=>null, 'onClick'=> "$('.forImage').hide();$('.forScript').show();")) . ' Script'; ?>
@@ -104,11 +125,11 @@ if ($viewCollection->renderContent) {
 				
 				
                 <div class="clearfix"><!-- --></div>
-				<div class="form-group col-lg-12">
-				<?php echo $form->labelEx($model, 'title');?>
-				<?php echo $form->textField($model, 'title',$model->getHtmlOptions('title')); ?>
-				<?php echo $form->error($model, 'title');?>
-				</div>  
+                    <div class="form-group col-lg-12">
+                    <?php echo $form->labelEx($model, 'title');?>
+                    <?php echo $form->textField($model, 'title',$model->getHtmlOptions('title', array('class' => "form-control"))); ?>
+                    <?php echo $form->error($model, 'title');?>
+                    </div>  
                 <div class="clearfix"><!-- --></div>
 				<div class="form-group col-lg-12">
 				<?php echo $form->labelEx($model, 'description');?>
@@ -116,59 +137,61 @@ if ($viewCollection->renderContent) {
 				<?php echo $form->error($model, 'description');?>
 				</div>  
                 <div class="clearfix"><!-- --></div>
+                    <div class="row">
+
+                        <div class="clearfix"><!-- --></div>
+                            <div class="form-group col-lg-3">
+                            <?php echo $form->labelEx($model, 'status');?>
+                            <?php 
+                            if(!Yii::App()->request->isPostRequest and $model->isNewRecord){  $model->status="A";  }?>
+                            <?php echo $form->dropDownList($model, 'status',$model->statusArray(),$model->getHtmlOptions('status')); ?>
+                            <?php echo $form->error($model, 'status');?>
+                            </div> 
+                        
+                        <div class="form-group col-lg-6">
+                            <?php echo $form->labelEx($model, 'position_id');?> <span id="banner_size" class="pull-right text-green">
+                            <?php
+                            if($model->position_id){
+                                $banner = BannerPosition::model()->findByPk($model->position_id);
+                                if (!empty($banner)) {
+                                   echo 'Width '.$banner->banner_width.'px <span class="text-red">X</span> Height  '.$banner->banner_height.'px';
+                                }
+                            }
+                            ?>
+                            </span>
+                              <?php $dropdwn =   array_merge( $model->getHtmlOptions('position_id'),array('empty'=>'Select Position ',"style"=>"1" ,'onchange'=>'findSize(this)')) ;  ?> 
+                            <?php echo $form->dropDownList($model,'position_id',CHtml::listData(BannerPosition::model()->listData(),"position_id" ,"position_name"), $dropdwn  ); ?>
+                           
+                                     <?php echo $form->error($model, 'position_id');?>
+                        </div>   
+                            <div class="clearfix"><!-- --></div>
+                        <div class="forImage" style="<?php echo  ($model->ad_type=='adImage') ? '' : 'display:none;' ;  ?>" >    
+                            <div class="clearfix"><!-- --></div>
+                            <div class="form-group col-lg-6">
+                                <?php echo $form->labelEx($model, 'image');?>
+                                <?php echo $form->fileField($model, 'image',$model->getHtmlOptions('image')); ?>
+                                <?php echo $form->error($model, 'image');?>
+                            </div>   
+                               <?php
+                            if(!Yii::App()->request->isPostRequest and !empty($model->image)){ ?>
+                            <div class="form-group col-lg-2">
+                                <img src="<?php echo Yii::App()->apps->getBaseUrl('uploads/banner/'.$model->image);?>" alt="image" style="max-height: 250px;max-width: 250px;"/>
+                            </div>   
+                            <?php } 
+                            ?>
+                            <div class="clearfix"><!-- --></div>        
+                            
+                            <div class="clearfix"><!-- --></div>     
+                        </div>   
+                        <div class="forScript"  style="<?php echo   ($model->ad_type=='adSense') ? '' : 'display:none;' ;  ?>">    
+                        <div class="clearfix"><!-- --></div>
+                        <div class="form-group col-lg-6">
+                            <?php echo $form->labelEx($model, 'script');?>
+                            <?php echo $form->textArea($model, 'script',array_merge($model->getHtmlOptions('script'),array("rows"=>"6"))); ?>
+                            <?php echo $form->error($model, 'script');?>
+                        </div>   
                     
-                <div class="clearfix"><!-- --></div>
-                	<div class="form-group col-lg-3">
-					<?php echo $form->labelEx($model, 'status');?>
-					<?php 
-					if(!Yii::App()->request->isPostRequest and $model->isNewRecord){  $model->status="A";  }?>
-					<?php echo $form->dropDownList($model, 'status',$model->statusArray(),$model->getHtmlOptions('status')); ?>
-					<?php echo $form->error($model, 'status');?>
-					</div> 
-				
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'position_id');?> <span id="banner_size" class="pull-right text-green">
-                    <?php
-                    if($model->position_id){
-						$banner = BannerPosition::model()->findByPk($model->position_id);
-						if (!empty($banner)) {
-						   echo 'Width '.$banner->banner_width.'px <span class="text-red">X</span> Height  '.$banner->banner_height.'px';
-						}
-					}
-					?>
-                    </span>
-                      <?php $dropdwn =   array_merge( $model->getHtmlOptions('position_id'),array('empty'=>'Select Position ',"style"=>"1" ,'onchange'=>'findSize(this)')) ;  ?> 
-                    <?php echo $form->dropDownList($model,'position_id',CHtml::listData(BannerPosition::model()->listData(),"position_id" ,"position_name"), $dropdwn  ); ?>
-                   
-                             <?php echo $form->error($model, 'position_id');?>
-                </div>   
-                    <div class="clearfix"><!-- --></div>
-                <div class="forImage" style="<?php echo  ($model->ad_type=='adImage') ? '' : 'display:none;' ;  ?>" >    
-					<div class="clearfix"><!-- --></div>
-					<div class="form-group col-lg-6">
-						<?php echo $form->labelEx($model, 'image');?>
-						<?php echo $form->fileField($model, 'image',$model->getHtmlOptions('image')); ?>
-						<?php echo $form->error($model, 'image');?>
-					</div>   
-				   	<?php
-					if(!Yii::App()->request->isPostRequest and !empty($model->image)){ ?>
-					<div class="form-group col-lg-2">
-						<img src="<?php echo Yii::App()->apps->getBaseUrl('uploads/banner/'.$model->image);?>" alt="image" style="max-height: 250px;max-width: 250px;"/>
-					</div>   
-					<?php } 
-					?>
-					<div class="clearfix"><!-- --></div>        
-					
-					<div class="clearfix"><!-- --></div>     
-                </div>   
-                <div class="forScript"  style="<?php echo   ($model->ad_type=='adSense') ? '' : 'display:none;' ;  ?>">    
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'script');?>
-                    <?php echo $form->textArea($model, 'script',array_merge($model->getHtmlOptions('script'),array("rows"=>"6"))); ?>
-                    <?php echo $form->error($model, 'script');?>
-                </div>   
-               
+                                
                 <div class="clearfix"><!-- --></div>        
                </div>
  <div class="form-group col-lg-6">
@@ -246,7 +269,8 @@ if ($viewCollection->renderContent) {
 										</div>
 				
              
-                <div class="clearfix"><!-- --></div>     
+                <div class="clearfix"><!-- --></div>  
+                </div>   
                 <?php 
                 /**
                  * This hook gives a chance to append content after the active form fields.
@@ -299,7 +323,17 @@ function findSize(k){
 					$.get('<?php echo Yii::app()->createUrl('banner/banner_size');?>/id/'+$(k).val(),function(data){ $('#banner_size').html(data); })
 				}
 </script>
+<style>
+    .hide{
+        display: none;
+    }
+</style>
  <script>
+    function makeNull(k,id){
+	if($(k).is(':checked')){
+		$('#Banner_'+id).val('');
+	}
+}
 		function showCountries(k){
 			if($(k).val()=='1'){
 				$('.amn').removeClass('hide')

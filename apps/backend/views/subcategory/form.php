@@ -43,10 +43,34 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
          $form = $this->beginWidget('CActiveForm',array('htmlOptions'=>array('class'=>'form-horizontal','enctype' => 'multipart/form-data'),'focus'=>array($model,'sub_category_name')));  
         ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+         <style>
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card-header-left {
+            flex: 1;
+        }
+
+        .card-header-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .card-header-right .btn {
+            margin-left: 5px;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$model->isNewRecord) { ?>
@@ -76,45 +100,46 @@ if ($viewCollection->renderContent) {
                  <div class="clearfix"><!-- --></div>
              
                 <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'category_id');?> 
-                    <?php $dropdwn =   array_merge( $model->getHtmlOptions('category_id'),array('empty'=>'Select Category ',"style"=>"1")) ;  
-						$category =    Category::model()->ListDataForJSON_ID_BySEctionNew(6);
-                    ?> 
-                    
-					<?php echo $form->dropDownList($model, 'category_id', $category, $dropdwn); ?>
-                    <?php echo $form->error($model, 'category_id');?>
+                <div class="row">
+
+                    <div class=" col-lg-6">
+                        <?php echo $form->labelEx($model, 'category_id');?> 
+                        <?php $dropdwn =   array_merge( $model->getHtmlOptions('category_id'),array('empty'=>'Select Category ',"style"=>"1")) ;  
+                            $category =    Category::model()->ListDataForJSON_ID_BySEctionNew(6);
+                        ?> 
+                        
+                        <?php echo $form->dropDownList($model, 'category_id', $category, $dropdwn); ?>
+                        <?php echo $form->error($model, 'category_id');?>
+                    </div>
+                    <div class=" col-lg-6">
+                        <?php echo $form->labelEx($model, 'sub_category_name');?>
+                        <?php echo $form->textField($model, 'sub_category_name',$model->getHtmlOptions('sub_category_name')); ?>
+                        <?php echo $form->error($model, 'sub_category_name');?>
+                    </div>        
+                    <div class=" col-lg-6">
+                        <?php echo $form->labelEx($model, 'main_sub_category');?>
+                        <?php $subDropdwn = array_merge( $model->getHtmlOptions('category_id'),array('empty'=>'Select Main Sub Category ',"style"=>"1")) ;  ?> 
+                        <?php echo $form->dropDownList($model,'parent_id',CHtml::listData(Subcategory::model()->findAllByAttributes(array('parent_id' => null)),"sub_category_id" ,"sub_category_name"), $subDropdwn  ); ?>
+                        <?php echo $form->error($model, 'main_sub_category');?>
+                    </div>        
+                     
+                    <div class=" col-lg-6">
+                        <?php echo $form->labelEx($model, 'image');?>
+                        <?php echo $form->fileField($model, 'image',$model->getHtmlOptions('image')); ?>
+                        <?php echo $form->error($model, 'image');?>
+                        <div class=" col-lg-2" style="width:100px;height:100px; background-image:url('<?php echo Yii::App()->apps->getBaseUrl('uploads/default/'.$model->image);?>');background-size:contain;background-position:center;background-repeat:no-repeat;"></div>	 	
+                    </div>   
+                
+                     
+                    <div class=" col-lg-6">
+                        <?php echo $form->labelEx($model, 'active_image');?>
+                        <?php echo $form->fileField($model, 'active_image',$model->getHtmlOptions('active_image')); ?>
+                        <?php echo $form->error($model, 'active_image');?>
+                        <div class=" col-lg-2" style="width:100px;height:100px; background-image:url('<?php echo Yii::App()->apps->getBaseUrl('uploads/default/'.$model->active_image);?>');background-size:contain;background-position:center;background-repeat:no-repeat;"></div>	 	
+                    </div>   
                 </div>
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'sub_category_name');?>
-                    <?php echo $form->textField($model, 'sub_category_name',$model->getHtmlOptions('sub_category_name')); ?>
-                    <?php echo $form->error($model, 'sub_category_name');?>
-                </div>        
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'main_sub_category');?>
-                    <?php $subDropdwn = array_merge( $model->getHtmlOptions('category_id'),array('empty'=>'Select Main Sub Category ',"style"=>"1")) ;  ?> 
-                    <?php echo $form->dropDownList($model,'parent_id',CHtml::listData(Subcategory::model()->findAllByAttributes(array('parent_id' => null)),"sub_category_id" ,"sub_category_name"), $subDropdwn  ); ?>
-                    <?php echo $form->error($model, 'main_sub_category');?>
-                </div>        
-                <div class="clearfix"><!-- --></div>  
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'image');?>
-                    <?php echo $form->fileField($model, 'image',$model->getHtmlOptions('image')); ?>
-                    <?php echo $form->error($model, 'image');?>
-                </div>   
-                		<div class="form-group col-lg-2" style="width:100px;height:100px; background-image:url('<?php echo Yii::App()->apps->getBaseUrl('uploads/default/'.$model->image);?>');background-size:contain;background-position:center;background-repeat:no-repeat;"></div>	 	
 			
-                <div class="clearfix"><!-- --></div>  
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'active_image');?>
-                    <?php echo $form->fileField($model, 'active_image',$model->getHtmlOptions('active_image')); ?>
-                    <?php echo $form->error($model, 'active_image');?>
-                </div>   
-                	<div class="form-group col-lg-2" style="width:100px;height:100px; background-image:url('<?php echo Yii::App()->apps->getBaseUrl('uploads/default/'.$model->active_image);?>');background-size:contain;background-position:center;background-repeat:no-repeat;"></div>	 	
-			
-                 <div class="clearfix"><!-- --></div>  
+                  
                 <?php 
                 /**
                  * This hook gives a chance to append content after the active form fields.

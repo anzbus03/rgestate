@@ -43,10 +43,10 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm',array('focus'=>array($model,Yii::app()->controller->focus))); 
         ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$model->isNewRecord) { ?>
@@ -54,7 +54,6 @@ if ($viewCollection->renderContent) {
                     <?php } ?>
                     <?php echo CHtml::link(Yii::t('app', 'Cancel'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
                 </div>
-                <div class="clearfix"><!-- --></div>
             </div>
             <div class="box-body">
                 <?php 
@@ -69,38 +68,37 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?>
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'master_id');?>
-                    <?php echo $form->dropDownList($model, 'master_id',CHtml::listData(Master::model()-> listData(2),'master_id','master_name'),$model->getHtmlOptions('master_id',array('empty'=>'Select'))); ?>
-                    <?php echo $form->error($model, 'master_id');?>
-                </div>   
-               
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'amenities_name');?>
-                    <?php echo $form->textField($model, 'amenities_name',$model->getHtmlOptions('amenities_name')); ?>
-                    <?php echo $form->error($model, 'amenities_name');?>
-                </div>   
-                   <div class="form-group col-lg-3">
-                    <?php echo $form->labelEx($model, 'dy');?>
-                    <?php echo $form->dropDownList($model, 'dy',array('1'=>'Not Approved','0'=>'Approved'),$model->getHtmlOptions('dy')); ?>
-                    <?php echo $form->error($model, 'dy');?>
-                </div>   
-                 <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'f_type');?>
-                    <?php echo $form->dropDownList($model, 'f_type',array('0'=>'checkbox','1'=>'Dropdown','2'=>'Input'),$model->getHtmlOptions('f_type')); ?>
-                    <?php echo $form->error($model, 'f_type');?>
-                </div>     <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'i_o');?>
-                    <?php echo $form->dropDownList($model, 'i_o',array(''=>'No','1'=>'Yes' ),$model->getHtmlOptions('i_o')); ?>
-                    <?php echo $form->error($model, 'i_o');?>
+                <div class="row">
+
+                    <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($model, 'master_id');?>
+                        <?php echo $form->dropDownList($model, 'master_id',CHtml::listData(Master::model()-> listData(2),'master_id','master_name'),$model->getHtmlOptions('master_id',array('empty'=>'Select'))); ?>
+                        <?php echo $form->error($model, 'master_id');?>
+                    </div>   
+                   
+                    <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($model, 'amenities_name');?>
+                        <?php echo $form->textField($model, 'amenities_name',$model->getHtmlOptions('amenities_name')); ?>
+                        <?php echo $form->error($model, 'amenities_name');?>
+                    </div>   
+                       <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($model, 'dy');?>
+                        <?php echo $form->dropDownList($model, 'dy',array('1'=>'Not Approved','0'=>'Approved'),$model->getHtmlOptions('dy')); ?>
+                        <?php echo $form->error($model, 'dy');?>
+                    </div>   
+                    <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($model, 'f_type');?>
+                        <?php echo $form->dropDownList($model, 'f_type',array('0'=>'checkbox','1'=>'Dropdown','2'=>'Input'),$model->getHtmlOptions('f_type')); ?>
+                        <?php echo $form->error($model, 'f_type');?>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($model, 'i_o');?>
+                        <?php echo $form->dropDownList($model, 'i_o',array(''=>'No','1'=>'Yes' ),$model->getHtmlOptions('i_o')); ?>
+                        <?php echo $form->error($model, 'i_o');?>
+                    </div>
                 </div>
                 
                   	<div class="">
-							   	    	<div class="clearfix"><!-- --></div>
 									   <div class="amn1">
 										<div class="amn">
 										  <?php
@@ -131,14 +129,12 @@ if ($viewCollection->renderContent) {
 										<div class="expandDiv hide" onclick="toggleClassExpand()"></div>
 										<div class="clearfix"></div>
 										<?php echo $form->error($model, 'amenities_available_for');?>
-									</div>    
-									<div class="clearfix"><!-- --></div>    
+									</div>        
 									</div>  
 									
 					
                  
-                
-                <div class="clearfix"><!-- --></div>     
+                     
                 <?php 
                 /**
                  * This hook gives a chance to append content after the active form fields.
@@ -151,13 +147,11 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?> 
-                <div class="clearfix"><!-- --></div>
             </div>
             <div class="box-footer">
-                <div class="pull-right">
+                <div class="pull-right m-4">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
-                <div class="clearfix"><!-- --></div>
             </div>
         </div>
         <?php 

@@ -45,15 +45,42 @@ if ($viewCollection->renderContent) {
             'htmlOptions' => array('enctype' => 'multipart/form-data'), // Ensure form supports file uploads
         ));
         ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title">
+        <script src="https://cdn.ckeditor.com/4.25.0-lts/standard/ckeditor.js"></script>
+
+        <style>
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .card-header-left {
+                flex: 1;
+            }
+
+            .card-header-right {
+                display: flex;
+                gap: 10px;
+            }
+
+            .card-header-right .btn {
+                margin-left: 5px;
+            }
+
+            .hide {
+                display: none;
+            }
+        </style>
+        <div class="card card-primary">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3 class="card-title">
                         <span class="glyphicon glyphicon-book"></span> 
                         <?php echo $pageHeading;?>
                     </h3>
                 </div>
-                <div class="pull-right">
+                <div class="pull-sright d-flex">
                     <?php if (!$article->isNewRecord) { ?>
                     <?php echo CHtml::link(Yii::t('app', 'Create new'), array('blog_articles/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
                     <?php } ?>
@@ -61,7 +88,7 @@ if ($viewCollection->renderContent) {
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
@@ -180,7 +207,7 @@ if ($viewCollection->renderContent) {
                                 <div class="box-body">
                                     <div class="form-group">
                                         <?php echo $form->labelEx($article, 'featured_image');?>
-                                        <?php echo $form->fileField($article, 'featured_image'); ?>
+                                        <?php echo $form->fileField($article, 'featured_image', array('class'=>'form-control')); ?>
                                         <?php echo $form->error($article, 'featured_image');?>
                                     </div>
                                     <div class="form-group">
@@ -247,4 +274,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             $('.amn').addClass('hide')
         }
     }
+   
+    CKEDITOR.replace( 'BlogArticle[content]' );
+
 </script>

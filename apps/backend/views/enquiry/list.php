@@ -129,70 +129,39 @@ if ($viewCollection->renderContent) { ?>
                             'name'  => 'phone',
                             'value' => '@$data->phone' ,
                             
-                        ),
-                         
-                        array(
-                            'name'  => 'ad_id',
-                            'value' => '@$data->PropertyDetail ' ,
-                            'type' => 'raw' ,
-                             'filter'=>false,
-                        ),
-                          array(
-                            'name'  => 'ip_address',
-                            'value' => '@$data->IpInfo' ,
-                             'filter'=>false,
-                        ),
-                        
-                          
-                       
-                        array(
-                            'class'     => 'CButtonColumn',
-                            'header'    => Yii::t('app', 'Options'),
-                              'footer'    => $model->paginationOptions->getGridFooterPagination(),
-                            'buttons'   => array(
-                                'update' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
-                                    'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/update", array("id" => $data->id))',
-                                    'imageUrl'  => null,
-                                   'options'   => array('title' => Yii::t('app', 'View'), 'id' => 'iframe1','onclick'=>'loadthis(this,event)'),
-                                ),
-                                'delete' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
-                                    'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/delete", array("id" => $data->id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
-                                   'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/delete")',
-                                ),    
-                            ),
-                            'htmlOptions' => array(
-                                'style' => 'width:70px;',
-                            ),
-                            'template' => ' {update}{delete}'
-                        ),
-                    ), $this),
-                ), $this)); 
-            }
-            /**
-             * This hook gives a chance to append content after the grid view content.
-             * Please note that from inside the action callback you can access all the controller view
-             * variables via {@CAttributeCollection $collection->controller->data}
-             * @since 1.3.3.1
-             */
-            $hooks->doAction('after_grid_view', new CAttributeCollection(array(
-                'controller'    => $this,
-                'renderedGrid'  => $collection->renderGrid,
-            )));
-            ?>
-            <div class="clearfix"><!-- --></div>
-            </div>    
-            
-			<div class="box-footer">
-			<div class="pull-right">
-			</div>
-			<div class="clearfix"><!-- --></div>
-			</div>
-			</div>
-         
+                            <tr>
+                                <td><?php echo CHtml::encode($data->name); ?></td>
+                                <td><?php echo CHtml::encode($data->email); ?></td>
+                                <td><?php echo CHtml::encode($data->phone); ?></td>
+                                <td><?php echo CHtml::decode($data->PropertyDetail); ?></td>
+                                <td><?php echo CHtml::encode($data->IpInfo); ?></td>
+                                <td>
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/update')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'View'); ?>" onclick="loadthis(this, event)">
+                                            <span class="fa fa-eye"></span>
+                                        </a>
+                                    <?php } ?>
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/delete')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
+                                            <span class="fa fa-trash"></span>
+                                        </a>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>AD</th>
+                            <th>IP Address</th>
+                            <th>Options</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
 <?php 
@@ -245,6 +214,29 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 </div>
 
 <script>
+function openUrlFUll(k){
+    $('#myModal-details').modal('show');
+    
+    $('#m_frame').html('<iframe id="ifrm" src="" style="width:100%;height:100%;border:0px;min-height:100vh;background-image:url(<?php echo Yii::App()->apps->getBaseUrl('assets/img/Ring-Preloader.gif');?>)" ></iframe>')
+    var el = document.getElementById('ifrm');
+    el.src = $(k).attr('data-url');
+}
+function updateTable(sectionId) {
+    $.ajax({
+        url: '<?php echo Yii::app()->createUrl('enquiry/updateTable'); ?>', // Update with your actual URL
+        type: 'GET',
+        data: { section_id: sectionId },
+        success: function(response) {
+            
+            $('#enquiries').DataTable().clear();
+            $('#enquiries tbody').html(response);
+            
+        },
+        error: function() {enquiries
+            alert('Error loading data');
+        }
+    });
+}
 $(document).ready(function() {
   // Initialize the date range picker
   $('#dateRange').daterangepicker({

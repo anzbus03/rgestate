@@ -90,15 +90,29 @@ class DashboardController extends Controller
 		$general_enquiry  = ContactUs::model()->findAll($criteria);
 		$criteria->compare('is_read','0');
 		$general_enquiry_unread  = ContactUs::model()->count($criteria);
-         
-         
+
+        
+
+        $modelCriteraBlog=Article::model()->findPosts([],$count_future=false,1,$calculate=false);
+        $adsCount = Article::model()->count($modelCriteraBlog);
+        $pages = new CPagination($adsCount);
+        $pages->pageSize = $limit;
+        $pages->applyLimit($modelCriteraBlog);
+
+        
+        $modelCriteraBlog->limit = $limit ;
+        $articleCategoryFromSlug = Article::model()->findAll($modelCriteraBlog);
+
         $criteria =  ContactAgent::model()->findEnquiry(array(),false,1);
         $criteria->limit = $limit;
 		$agent_enquiry  = ContactAgent::model()->findAll($criteria);
 		$criteria->compare('is_read','0');
 		$agent_enquiry_unread  = ContactUs::model()->count($criteria);
         
-        $this->render('index', compact('checkVersionUpdate','ads','usr','limit','pro_enquiry','general_enquiry','pro_enquiry_unread','general_enquiry_unread','agent_enquiry','agent_enquiry_unread'));
+
+        $modelContactServices = new ContactPopup();       
+        $modelContactServices->unsetAttributes();
+        $this->render('index', compact('checkVersionUpdate', 'modelContactServices','articleCategoryFromSlug','ads', 'adsBusiness','enquiries', 'preLeasedProperties', 'newProjects','adsRent','usr','limit','pro_enquiry','general_enquiry','pro_enquiry_unread','general_enquiry_unread','agent_enquiry','agent_enquiry_unread'));
     }
        public function actionSitemap()
     {

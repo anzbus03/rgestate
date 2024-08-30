@@ -15,16 +15,28 @@
 <!DOCTYPE html>
 <html dir="<?php echo Yii::app()->locale->orientation;?>">
 <head>
-    <meta charset="<?php echo Yii::app()->charset;?>">
-    <title><?php echo ucfirst($this->getUniqueId());?>&nbsp;| &nbsp; <?php echo   Yii::app()->options->get('system.common.site_name');?></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?php echo CHtml::encode($pageMetaDescription);?>">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo  Yii::app()->apps->getBaseUrl('new_assets/images/favicon.png');?>">
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
- <?php
+    <!-- PAGE TITLE HERE -->
+    <title><?php echo ucfirst($this->getUniqueId());?>&nbsp;| <?php echo   Yii::app()->options->get('system.common.site_name');?></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/images/favicon.png') ?>">
+
+    <link href="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/nouislider/nouislider.min.css');?>"
+        rel="stylesheet" type="text/css" />
+    <link href="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/jquery-nice-select/css/nice-select.css');?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/css/style.css');?>" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/datatables/css/jquery.dataTables.min.css');?>" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link href="<?php echo Yii::app()->apps->getBaseUrl('theme'); ?>/assets/lib/select2/css/select2.min.css" rel="stylesheet">
+    <link href="<?php echo Yii::app()->apps->getBaseUrl('theme'); ?>/assets/lib/slick/slick.css" rel="stylesheet">
+    <link href="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/swiper/css/swiper-bundle.min.css');?>" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->apps->getBaseUrl('theme'); ?>/assets/js/build/css/intlTelInput.min.css" />
+
+    <?php
     if($this->id=='place_property' or $this->id=='listingusers'){ ?> 
     <script>  function iniFrame() { if(window.self !== window.top) {   $('html').addClass("isOnFram");   }  }  iniFrame();</script>
     <style>html.isOnFram ul.breadcrumb {display:none; } html.isOnFram .closepopu {display:block !important; position: fixed;top: 0px;z-index: 1;right: 0;display: block;background: #fafafa;padding: 5px;text-align: center;} html.isOnFram aside.left-side,html.isOnFram header{display:none}html.isOnFram aside.right-side{width:100%;margin-left:0}html.isOnFram textarea.form-control{height:400px}html.isOnFram .col-sm-5{width:41.66666667%;float:left}html.isOnFram .col-sm-7{width:58.33333333%;float:left}html.isOnFram .box-header{display:none}html.isOnFram .box-footer{border:0;padding-top:0;position:fixed;z-index:11111;bottom:0;width:100%;left:0;padding:10px!important;background:#eee}html.isOnFram .col-sm-2{width:16.66666667%;float:left}html.isOnFram .col-lg-9{width:75%;float:left}html.isOnFram .col-lg-3{width:25%;float:left}html.isOnFram .col-sm-6{width:50%;float:left}html.isOnFram .box-danger .col-sm-2{width:25%;float:left}html.isOnFram .col-sm-3{width:25%;float:left} </style>
@@ -166,43 +178,58 @@
     <div class="modal-dialog" style="width:800px;">
         <div class="modal-content">
 
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Translate Content</h4>
-            </div>
-            <div class="modal-body" style="min-height:300px;">
-				<div style="padding: 0px 16px;display:none;" ><p style="font-size:13px;font-weight:bold;">Translate Text</p><p id="text" style="max-height:100px; overflow-y:auto;"></p></div>
-                <div id="modelContent"><span style="padding: 0px 16px;">Content is loading...</span></div>
-            </div>
-			 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                <button type="button" onclick="$('#SubmitClick').click(); " class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div> 
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/global/global.min.js');?>" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/jquery-nice-select/js/jquery.nice-select.min.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/chart-js/chart.bundle.min.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/apexchart/apexchart.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/nouislider/nouislider.min.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/wnumb/wNumb.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/dashboard/dashboard-1.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/custom.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/dlabnav-init.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/demo.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/styleSwitcher.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/dashboard/cms.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/datatables/js/jquery.dataTables.min.js');?>" type="text/javascript"></script>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/plugins-init/datatables.init.js');?>" type="text/javascript"></script>
    
-      
-<script> baseUrl = '<?php echo Yii::app()->createUrl('');?>'</script>
-	<?php
-	if(Yii::app()->request->getQuery('bulk_update','')=='1'){
-	?>
-	<script type="text/javascript">
-	function googleTranslateElementInit() {
-	new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-	}
-	</script>
-	<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-	<?
-	}
-	?>
-	<style>
-	    .grid-filter-cell input ,  .grid-filter-cell select{ height: 32px;text-indent: 0px;font-size: 16px;width: 100% !important;line-height: 1.2; }
-	    
-	</style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
-
-    </body>
+    <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/swiper/js/swiper-bundle.min.js');?>" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 5,
+            spaceBetween: 30,
+            
+            breakpoints: {
+                360: {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                },
+                600: {
+                slidesPerView: 2,
+                spaceBetween: 30,
+                },
+                1024: {
+                slidesPerView: 2,
+                spaceBetween: 30,
+                },
+                1200: {
+                slidesPerView: 3,
+                spaceBetween: 30,
+                },
+                1600: {
+                slidesPerView: 4,
+                spaceBetween: 30,
+                },
+                1920: {
+                slidesPerView: 5,
+                spaceBetween: 30,
+                },
+            }
+            });
+        
+    </script>
+</body>
 </html>
-

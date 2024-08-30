@@ -28,7 +28,7 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 if ($viewCollection->renderContent) { ?>
     <ul class="nav nav-tabs" style="border-bottom: 0px;">
         <?php foreach ($types as $typeName) {?>
-        <li class="<?php echo $typeName == $type ? 'active' : 'inactive';?>"><a href="<?php echo $this->createUrl('settings/email_templates', array('type' => $typeName))?>"><?php echo CHtml::encode(Yii::t('settings', ucfirst($typeName)));?></a></li>
+        <!-- <li class="<?php // echo $typeName == $type ? 'active' : 'inactive';?>"><a href="<?php  // echo $this->createUrl('settings/email_templates', array('type' => $typeName))?>"><?php echo CHtml::encode(Yii::t('settings', ucfirst($typeName)));?></a></li> -->
         <?php } ?>
     </ul>
     <?php 
@@ -49,15 +49,16 @@ if ($viewCollection->renderContent) { ?>
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm'); 
         ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title"><?php echo Yii::t('settings', 'Email templates - {type}', array('{type}' => CHtml::encode(ucfirst($type))));?></h3>
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h3 class="card-title">
+                        <?php echo Yii::t('settings', 'Email templates - {type}', array('{type}' => CHtml::encode(ucfirst($type))));?>
+                    </h3>
                 </div>
-                <div class="pull-right">
+                <div>
                     <?php echo CHtml::link(Yii::t('app', 'Cancel'), array('settings/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
                 </div>
-                <div class="clearfix"><!-- --></div>
             </div>
             <div class="box-body">
                 <?php 

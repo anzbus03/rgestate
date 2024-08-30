@@ -76,42 +76,44 @@ if ($viewCollection->renderContent) {
         ?>
         <div class="clearfix"><!-- --></div>
         <h1>Home Page</h1>
-        <div class="form-group col-lg-12">
-            <?php echo $form->labelEx($commonModel, 'banner_heading_h1');?><?php echo $commonModel->createTransLink('banner_heading_h1');?>
-            <?php echo $form->textField($commonModel, 'banner_heading_h1', $commonModel->getHtmlOptions('banner_heading_h1')); ?>
-            <?php echo $form->error($commonModel, 'banner_heading_h1');?>
+        <div class="row">
+            <div class="form-group col-lg-12 mt-2">
+                <?php echo $form->labelEx($commonModel, 'banner_heading_h1');?><?php echo $commonModel->createTransLink('banner_heading_h1');?>
+                <?php echo $form->textField($commonModel, 'banner_heading_h1', $commonModel->getHtmlOptions('banner_heading_h1')); ?>
+                <?php echo $form->error($commonModel, 'banner_heading_h1');?>
+            </div>
+               <div class="clearfix"><!-- --></div>
+            <div class="clearfix"><!-- --></div>
+            <div class="form-group col-lg-12 mt-2">
+                <?php echo $form->labelEx($commonModel, 'banner_heading_h2');?><?php echo $commonModel->createTransLink('banner_heading_h2');?>
+                <?php echo $form->textField($commonModel, 'banner_heading_h2', $commonModel->getHtmlOptions('banner_heading_h2')); ?>
+                <?php echo $form->error($commonModel, 'banner_heading_h2');?>
+            </div>
+             <div class="clearfix"><!-- --></div>
+            <div class="form-group col-lg-12 mt-2">
+                <?php echo $form->labelEx($commonModel, 'banner_heading_p');?><?php echo $commonModel->createTransLink('banner_heading_p');?>
+                <?php echo $form->textField($commonModel, 'banner_heading_p', $commonModel->getHtmlOptions('banner_heading_p')); ?>
+                <?php echo $form->error($commonModel, 'banner_heading_p');?>
+            </div>
+            
         </div>
-           <div class="clearfix"><!-- --></div>
-        <div class="clearfix"><!-- --></div>
-        <div class="form-group col-lg-12">
-            <?php echo $form->labelEx($commonModel, 'banner_heading_h2');?><?php echo $commonModel->createTransLink('banner_heading_h2');?>
-            <?php echo $form->textField($commonModel, 'banner_heading_h2', $commonModel->getHtmlOptions('banner_heading_h2')); ?>
-            <?php echo $form->error($commonModel, 'banner_heading_h2');?>
-        </div>
-         <div class="clearfix"><!-- --></div>
-        <div class="form-group col-lg-12">
-            <?php echo $form->labelEx($commonModel, 'banner_heading_p');?><?php echo $commonModel->createTransLink('banner_heading_p');?>
-            <?php echo $form->textField($commonModel, 'banner_heading_p', $commonModel->getHtmlOptions('banner_heading_p')); ?>
-            <?php echo $form->error($commonModel, 'banner_heading_p');?>
-        </div>
-        
         <hr />
          <div class="clearfix"><!-- --></div>
         <h1>About Us Page</h1>
-        <div class="form-group col-lg-12">
+        <div class="form-group col-lg-12 mt-2">
             <?php echo $form->labelEx($commonModel, 'about_banner_heading_h1');?><?php echo $commonModel->createTransLink('about_banner_heading_h1');?>
             <?php echo $form->textField($commonModel, 'about_banner_heading_h1', $commonModel->getHtmlOptions('about_banner_heading_h1')); ?>
             <?php echo $form->error($commonModel, 'about_banner_heading_h1');?>
         </div>
            <div class="clearfix"><!-- --></div>
         <div class="clearfix"><!-- --></div>
-        <div class="form-group col-lg-12">
+        <div class="form-group col-lg-12 mt-2">
             <?php echo $form->labelEx($commonModel, 'about_banner_heading_h2');?><?php echo $commonModel->createTransLink('about_banner_heading_h2');?>
             <?php echo $form->textField($commonModel, 'about_banner_heading_h2', $commonModel->getHtmlOptions('about_banner_heading_h2')); ?>
             <?php echo $form->error($commonModel, 'about_banner_heading_h2');?>
         </div>
          <div class="clearfix"><!-- --></div>
-        <div class="form-group col-lg-12">
+        <div class="form-group col-lg-12 mt-2">
             <?php echo $form->labelEx($commonModel, 'about_banner_heading_p');?><?php echo $commonModel->createTransLink('about_banner_heading_p');?>
             <?php echo $form->textField($commonModel, 'about_banner_heading_p', $commonModel->getHtmlOptions('about_banner_heading_p')); ?>
             <?php echo $form->error($commonModel, 'about_banner_heading_p');?>

@@ -31,7 +31,9 @@ if ($viewCollection->renderContent) {
       
         <div class="box-body">
             <div class="clearfix"><!-- --></div>
+
             <div class="col-lg-2 col-xs-6">
+                <h2>demo</h2>
                 <div class="small-box bg-red">
                     <div class="inner">
                         <h3 data-bind="text: glance.subscribersCount"></h3>

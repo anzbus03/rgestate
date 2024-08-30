@@ -79,6 +79,72 @@ class Blog_articlesController extends Controller
         
         $this->render('list_authors', compact('authors'));
     }
+    public function actionDelete_author($id)
+    {
+        $article = BlogAuthors::model()->findByPk((int)$id);
+        
+        if (empty($article)) {
+            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+        }
+        
+        $article->delete();
+        
+        $request    = Yii::app()->request;
+        $notify     = Yii::app()->notify;
+        
+        if (!$request->getQuery('ajax')) {
+            $notify->addSuccess(Yii::t('app', 'The author has been successfully deleted!'));
+            $this->redirect($request->getPost('returnUrl', array('blog_articles/index_authors')));
+        }
+    }
+    public function actionUpdate_author($id)
+    {
+        $article = BlogAuthors::model()->findByPk((int)$id);
+        
+        if (empty($article)) {
+            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+        }
+        
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+       
+        if ($request->isPostRequest && ($attributes = (array)$request->getPost($article->modelName, array()))) {
+            if (isset($_FILES['BlogAuthors']['name']['image']) && !empty($_FILES['BlogAuthors']['name']['image']) && $_FILES['BlogAuthors']['error']['image'] == UPLOAD_ERR_OK) {
+                $imageName = $this->uploadImage($_FILES['BlogAuthors']);
+                if ($imageName) {
+                    $attributes['image'] = $imageName;
+                }
+            }
+            
+            $article->attributes = $attributes;
+            if (!$article->save()) {
+                $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
+            } else {
+                $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
+            }
+            
+            Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
+                'controller'=> $this,
+                'success'   => $notify->hasSuccess,
+                'article'   => $article,
+            )));
+            
+            if ($collection->success) {
+                $this->redirect(array('blog_articles/index_authors'));
+            }
+        }
+        
+        $this->setData(array(
+            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t('articles', 'Update Author'), 
+            'pageHeading'       => Yii::t('articles', 'Update Author'),
+            'pageBreadcrumbs'   => array(
+                Yii::t('articles', 'Blogs') => $this->createUrl('blog_articles/index'),
+                Yii::t('app', 'Update'),
+            )
+        ));
+        
+        $this->render('form_authors', compact('article', 'articleToCategory'));
+    }
     
     /**
      * Create a new article
@@ -238,7 +304,6 @@ class Blog_articlesController extends Controller
             $article->save(false); // Set to true if you want to trigger validation
         }
     }
-    
     /**
      * Update existing article
      */
@@ -313,54 +378,54 @@ class Blog_articlesController extends Controller
         
         $this->render('form', compact('article', 'articleToCategory'));
     }
-    public function actionUpdate_author($id)
-    {
-        $article = BlogAuthors::model()->findByPk((int)$id);
+    // public function actionUpdate_author($id)
+    // {
+    //     $article = BlogAuthors::model()->findByPk((int)$id);
         
-        if (empty($article)) {
-            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
-        }
+    //     if (empty($article)) {
+    //         throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+    //     }
         
-        $request = Yii::app()->request;
-        $notify = Yii::app()->notify;
+    //     $request = Yii::app()->request;
+    //     $notify = Yii::app()->notify;
        
-        if ($request->isPostRequest && ($attributes = (array)$request->getPost($article->modelName, array()))) {
-            if (isset($_FILES['BlogAuthors']['name']['image']) && !empty($_FILES['BlogAuthors']['name']['image']) && $_FILES['BlogAuthors']['error']['image'] == UPLOAD_ERR_OK) {
-                $imageName = $this->uploadImage($_FILES['BlogAuthors']);
-                if ($imageName) {
-                    $attributes['image'] = $imageName;
-                }
-            }
+    //     if ($request->isPostRequest && ($attributes = (array)$request->getPost($article->modelName, array()))) {
+    //         if (isset($_FILES['BlogAuthors']['name']['image']) && !empty($_FILES['BlogAuthors']['name']['image']) && $_FILES['BlogAuthors']['error']['image'] == UPLOAD_ERR_OK) {
+    //             $imageName = $this->uploadImage($_FILES['BlogAuthors']);
+    //             if ($imageName) {
+    //                 $attributes['image'] = $imageName;
+    //             }
+    //         }
             
-            $article->attributes = $attributes;
-            if (!$article->save()) {
-                $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
-            } else {
-                $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
-            }
+    //         $article->attributes = $attributes;
+    //         if (!$article->save()) {
+    //             $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
+    //         } else {
+    //             $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
+    //         }
             
-            Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
-                'controller'=> $this,
-                'success'   => $notify->hasSuccess,
-                'article'   => $article,
-            )));
+    //         Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
+    //             'controller'=> $this,
+    //             'success'   => $notify->hasSuccess,
+    //             'article'   => $article,
+    //         )));
             
-            if ($collection->success) {
-                $this->redirect(array('blog_articles/index_authors'));
-            }
-        }
+    //         if ($collection->success) {
+    //             $this->redirect(array('blog_articles/index_authors'));
+    //         }
+    //     }
         
-        $this->setData(array(
-            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t('articles', 'Update blog'), 
-            'pageHeading'       => Yii::t('articles', 'Update blog'),
-            'pageBreadcrumbs'   => array(
-                Yii::t('articles', 'Blogs') => $this->createUrl('blog_articles/index'),
-                Yii::t('app', 'Update'),
-            )
-        ));
+    //     $this->setData(array(
+    //         'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t('articles', 'Update blog'), 
+    //         'pageHeading'       => Yii::t('articles', 'Update blog'),
+    //         'pageBreadcrumbs'   => array(
+    //             Yii::t('articles', 'Blogs') => $this->createUrl('blog_articles/index'),
+    //             Yii::t('app', 'Update'),
+    //         )
+    //     ));
         
-        $this->render('form_authors', compact('article', 'articleToCategory'));
-    }
+    //     $this->render('form_authors', compact('article', 'articleToCategory'));
+    // }
     
     /**
      * Delete an existing article
@@ -384,24 +449,24 @@ class Blog_articlesController extends Controller
         }
     }
     
-    public function actionDelete_author($id)
-    {
-        $article = BlogAuthors::model()->findByPk((int)$id);
+    // public function actionDelete_author($id)
+    // {
+    //     $article = BlogAuthors::model()->findByPk((int)$id);
         
-        if (empty($article)) {
-            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
-        }
+    //     if (empty($article)) {
+    //         throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+    //     }
         
-        $article->delete();
+    //     $article->delete();
         
-        $request    = Yii::app()->request;
-        $notify     = Yii::app()->notify;
+    //     $request    = Yii::app()->request;
+    //     $notify     = Yii::app()->notify;
         
-        if (!$request->getQuery('ajax')) {
-            $notify->addSuccess(Yii::t('app', 'The author has been successfully deleted!'));
-            $this->redirect($request->getPost('returnUrl', array('blog_articles/index_authors')));
-        }
-    }
+    //     if (!$request->getQuery('ajax')) {
+    //         $notify->addSuccess(Yii::t('app', 'The author has been successfully deleted!'));
+    //         $this->redirect($request->getPost('returnUrl', array('blog_articles/index_authors')));
+    //     }
+    // }
     
     /**
      * generate the slug for an article based on the article title

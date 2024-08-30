@@ -44,10 +44,10 @@ if ($viewCollection->renderContent) {
           $form = $this->beginWidget('CActiveForm',array('htmlOptions'=>array('class'=>'form-horizontal','enctype' => 'multipart/form-data'),'focus'=>array($model,'category_name'))); 
       
         ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$model->isNewRecord) { ?>
@@ -80,152 +80,137 @@ if ($viewCollection->renderContent) {
 				
 					</ul>
 				</div>
-				   
-                 <div class="clearfix"><!-- --></div>
-               
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'category_name');?>
-                    <?php echo $form->textField($model, 'category_name',$model->getHtmlOptions('category_name')); ?>
-                    <?php echo $form->error($model, 'category_name');?>
-                </div> 
-                  <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'plural');?>
-                    <?php echo $form->textField($model, 'plural',$model->getHtmlOptions('plural')); ?>
-                    <?php echo $form->error($model, 'plural');?>
-                </div> 
-            <div class="clearfix"><!-- --></div>  
-                  <div class="clearfix"><!-- --></div>  
-                <div class="form-group col-lg-6">
-					<?php 
-					if(!$model->isNewRecord and !Yii::app()->request->isPostRequest){
-						$model->used_in = CHtml::listData($model->listTypes,'listing_type','listing_type');
-						 
-					}
-					;?>
-                    <?php echo $form->labelEx($model, 'used_in');?>
-                    <?php echo $form->dropDownList($model, 'used_in',CHtml::listData(MainCategory::model()->ListData(),'category_id','category_name'),$model->getHtmlOptions('used_in',array('empty'=>'Select','multiple'=>true))); ?>
-                    <?php echo $form->error($model, 'used_in');?>
-                </div>  
-                 <div class="clearfix"><!-- --></div>  
-                      <div class="clearfix"><!-- --></div>  
-                <div class="form-group col-lg-6 ">
-                    <?php echo $form->labelEx($model, 'image');?>
-                    <?php echo $form->fileField($model, 'image',$model->getHtmlOptions('image')); ?>
-                    <?php echo $form->error($model, 'image');?>
-                </div>   
-                		<div class="form-group col-lg-2  " style="width:100px;height:100px;background-color:#eee; background-image:url('<?php echo Yii::App()->apps->getBaseUrl('uploads/category/'.$model->image);?>');background-size:contain;background-position:center;background-repeat:no-repeat;"></div>	 	
-			
-                <div class="clearfix"><!-- --></div>  
-                <div class="form-group col-lg-6 ">
-                    <?php echo $form->labelEx($model, 'active_image');?>
-                    <?php echo $form->fileField($model, 'active_image',$model->getHtmlOptions('active_image')); ?>
-                    <?php echo $form->error($model, 'active_image');?>
-                </div>   
-                	<div class="form-group col-lg-2  " style="width:100px;height:100px;background-color:#eee; background-image:url('<?php echo Yii::App()->apps->getBaseUrl('uploads/category/'.$model->active_image);?>');background-size:contain;background-position:center;background-repeat:no-repeat;"></div>	 	
-			
-                 <div class="clearfix"><!-- --></div>  
-                        <div class="clearfix"><!-- --></div>  
-                       <div class="form-group col-lg-12 hide">
+				   <div class="row">
+                        <div class="col-lg-6">
+                           <?php echo $form->labelEx($model, 'category_name');?>
+                           <?php echo $form->textField($model, 'category_name',$model->getHtmlOptions('category_name')); ?>
+                           <?php echo $form->error($model, 'category_name');?>
+                        </div> 
+                        <div class="col-lg-6">
+                           <?php echo $form->labelEx($model, 'plural');?>
+                           <?php echo $form->textField($model, 'plural',$model->getHtmlOptions('plural')); ?>
+                           <?php echo $form->error($model, 'plural');?>
+                        </div> 
+                        <div class="col-lg-6">
+                            <?php 
+                            if(!$model->isNewRecord and !Yii::app()->request->isPostRequest){
+                                $model->used_in = CHtml::listData($model->listTypes,'listing_type','listing_type');
+                                 
+                            }
+                            ;?>
+                            <?php echo $form->labelEx($model, 'used_in');?>
+                            <?php echo $form->dropDownList($model, 'used_in',CHtml::listData(MainCategory::model()->ListData(),'category_id','category_name'),$model->getHtmlOptions('used_in',array('empty'=>'Select','multiple'=>true))); ?>
+                            <?php echo $form->error($model, 'used_in');?>
+                        </div>  
+                        <div class="col-lg-6 ">
+                            <?php echo $form->labelEx($model, 'image');?>
+                            <?php echo $form->fileField($model, 'image',$model->getHtmlOptions('image')); ?>
+                            <?php echo $form->error($model, 'image');?>
+                            <div class="col-lg-2  " style="width:100px;height:100px;background-color:#eee; background-image:url('<?php echo Yii::App()->apps->getBaseUrl('uploads/category/'.$model->image);?>');background-size:contain;background-position:center;background-repeat:no-repeat;"></div>	 	
+                        </div>   
+                        
+                        <div class="col-lg-6 ">
+                            <?php echo $form->labelEx($model, 'active_image');?>
+                            <?php echo $form->fileField($model, 'active_image',$model->getHtmlOptions('active_image')); ?>
+                            <?php echo $form->error($model, 'active_image');?>
+                            <div class="col-lg-2  " style="width:100px;height:100px;background-color:#eee; background-image:url('<?php echo Yii::App()->apps->getBaseUrl('uploads/category/'.$model->active_image);?>');background-size:contain;background-position:center;background-repeat:no-repeat;"></div>	 	
+                        </div>   
+                   </div> 
+                            
+                <div class="form-group col-lg-12 hide">
                     <?php echo $form->labelEx($model, 'search_keyword');?>
                     <?php echo $form->textArea($model, 'search_keyword',$model->getHtmlOptions('search_keyword')); ?>
                     <?php echo $form->error($model, 'search_keyword');?>
                 </div>    
-                 <div class="clearfix"><!-- --></div>  
-                 <div class="form-group col-lg-3">
-                    <?php echo $form->labelEx($model, 'use_dev');?>
-                    <?php echo $form->checkbox($model, 'use_dev',$model->getHtmlOptions('use_dev',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'use_dev');?>
-                </div>
-                      <div class="clearfix"><!-- --></div>  
-                <div class="form-group col-lg-3">
-                    <?php echo $form->labelEx($model, 'h_bd');?>
-                    <?php echo $form->checkbox($model, 'h_bd',$model->getHtmlOptions('h_bd',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_bd');?>
-                </div>   
-                <div class="form-group col-lg-3">
-                    <?php echo $form->labelEx($model, 'h_bth');?>
-                    <?php echo $form->checkbox($model, 'h_bth',$model->getHtmlOptions('h_bth',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_bth');?>
-                </div>   
-                <div class="form-group col-lg-3">
-                    <?php echo $form->labelEx($model, 'h_in');?>
-                    <?php echo $form->checkbox($model, 'h_in',$model->getHtmlOptions('h_in',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_in');?>
-                </div>   
-                <div class="clearfix"><!-- --></div>   
+                <div class="row">
+
+                    <div class="form-group col-lg-6">
+                       <?php echo $form->labelEx($model, 'use_dev');?>
+                       <?php echo $form->checkbox($model, 'use_dev',$model->getHtmlOptions('use_dev',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'use_dev');?>
+                   </div>
+                   <div class="form-group col-lg-6">
+                       <?php echo $form->labelEx($model, 'h_bd');?>
+                       <?php echo $form->checkbox($model, 'h_bd',$model->getHtmlOptions('h_bd',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_bd');?>
+                   </div>   
+                   <div class="form-group col-lg-6">
+                       <?php echo $form->labelEx($model, 'h_bth');?>
+                       <?php echo $form->checkbox($model, 'h_bth',$model->getHtmlOptions('h_bth',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_bth');?>
+                   </div>   
+                   <div class="form-group col-lg-6">
+                       <?php echo $form->labelEx($model, 'h_in');?>
+                       <?php echo $form->checkbox($model, 'h_in',$model->getHtmlOptions('h_in',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_in');?>
+                   </div>     
+                   <div class="form-group col-lg-6 hide">
+                       <?php echo $form->labelEx($model, 'h_is_mor');?>
+                       <?php echo $form->checkbox($model, 'h_is_mor',$model->getHtmlOptions('h_is_mor',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_is_mor');?>
+                   </div>   
+                   <div class="form-group col-lg-6 hide">
+                       <?php echo $form->labelEx($model, 'h_r_facade');?>
+                       <?php echo $form->checkbox($model, 'h_r_facade',$model->getHtmlOptions('h_r_facade',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_r_facade');?>
+                   </div>   
+                   <div class="form-group col-lg-6 hide">
+                       <?php echo $form->labelEx($model, 'h_rights');?>
+                       <?php echo $form->checkbox($model, 'h_rights',$model->getHtmlOptions('h_rights',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_rights');?>
+                   </div>   
+                   <div class="form-group col-lg-6 hide">
+                       <?php echo $form->labelEx($model, 'h_may_affect');?>
+                       <?php echo $form->checkbox($model, 'h_may_affect',$model->getHtmlOptions('h_may_affect',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_may_affect');?>
+                   </div>  
+                   <div class=" col-lg-6">
+                       <?php echo $form->labelEx($model, 'h_disputes');?>
+                       <?php echo $form->checkbox($model, 'h_disputes',$model->getHtmlOptions('h_disputes',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_disputes');?>
+                   </div>   
+                   <div class="form-group col-lg-6">
+                       <?php echo $form->labelEx($model, 'h_expiry_date');?>
+                       <?php echo $form->checkbox($model, 'h_expiry_date',$model->getHtmlOptions('h_expiry_date',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_expiry_date');?>
+                   </div>      
+                   <div class="form-group col-lg-6">
+                       <?php echo $form->labelEx($model, 'h_l_no');?>
+                       <?php echo $form->checkbox($model, 'h_l_no',$model->getHtmlOptions('h_l_no',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_l_no');?>
+                   </div>   
+                   <div class="form-group col-lg-6">
+                       <?php echo $form->labelEx($model, 'h_plan_no');?>
+                       <?php echo $form->checkbox($model, 'h_plan_no',$model->getHtmlOptions('h_plan_no',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_plan_no');?>
+                   </div>    
+                   <div class="form-group col-lg-6">
+                       <?php echo $form->labelEx($model, 'h_no_of_u');?>
+                       <?php echo $form->checkbox($model, 'h_no_of_u',$model->getHtmlOptions('h_no_of_u',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_no_of_u');?>
+                   </div>   
+                   <div class="form-group col-lg-6">
+                       <?php echo $form->labelEx($model, 'h_floor_no');?>
+                       <?php echo $form->checkbox($model, 'h_floor_no',$model->getHtmlOptions('h_floor_no',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_floor_no');?>
+                   </div>   
                    <div class="clearfix"><!-- --></div>     
-                <div class="form-group col-lg-6 hide">
-                    <?php echo $form->labelEx($model, 'h_is_mor');?>
-                    <?php echo $form->checkbox($model, 'h_is_mor',$model->getHtmlOptions('h_is_mor',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_is_mor');?>
-                </div>   
-                <div class="form-group col-lg-6 hide">
-                    <?php echo $form->labelEx($model, 'h_r_facade');?>
-                    <?php echo $form->checkbox($model, 'h_r_facade',$model->getHtmlOptions('h_r_facade',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_r_facade');?>
-                </div>   
-                  <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6 hide">
-                    <?php echo $form->labelEx($model, 'h_rights');?>
-                    <?php echo $form->checkbox($model, 'h_rights',$model->getHtmlOptions('h_rights',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_rights');?>
-                </div>   
-                <div class="form-group col-lg-6 hide">
-                    <?php echo $form->labelEx($model, 'h_may_affect');?>
-                    <?php echo $form->checkbox($model, 'h_may_affect',$model->getHtmlOptions('h_may_affect',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_may_affect');?>
-                </div>  
-                  <div class="clearfix"><!-- --></div> 
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'h_disputes');?>
-                    <?php echo $form->checkbox($model, 'h_disputes',$model->getHtmlOptions('h_disputes',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_disputes');?>
-                </div>   
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'h_expiry_date');?>
-                    <?php echo $form->checkbox($model, 'h_expiry_date',$model->getHtmlOptions('h_expiry_date',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_expiry_date');?>
-                </div>   
-                <div class="clearfix"><!-- --></div>     
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'h_l_no');?>
-                    <?php echo $form->checkbox($model, 'h_l_no',$model->getHtmlOptions('h_l_no',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_l_no');?>
-                </div>   
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'h_plan_no');?>
-                    <?php echo $form->checkbox($model, 'h_plan_no',$model->getHtmlOptions('h_plan_no',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_plan_no');?>
-                </div>   
-                <div class="clearfix"><!-- --></div>     
-                <div class="clearfix"><!-- --></div>     
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'h_no_of_u');?>
-                    <?php echo $form->checkbox($model, 'h_no_of_u',$model->getHtmlOptions('h_no_of_u',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_no_of_u');?>
-                </div>   
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'h_floor_no');?>
-                    <?php echo $form->checkbox($model, 'h_floor_no',$model->getHtmlOptions('h_floor_no',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_floor_no');?>
-                </div>   
-                <div class="clearfix"><!-- --></div>     
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'h_unit_no');?>
-                    <?php echo $form->checkbox($model, 'h_unit_no',$model->getHtmlOptions('h_unit_no',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_unit_no');?>
-                </div>   
-                      <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'h_selling_price');?>
-                    <?php echo $form->checkbox($model, 'h_selling_price',$model->getHtmlOptions('h_selling_price',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_selling_price');?>
-                </div>   
-                <div class="clearfix"><!-- --></div>  
+                   <div class="form-group col-lg-6">
+                       <?php echo $form->labelEx($model, 'h_unit_no');?>
+                       <?php echo $form->checkbox($model, 'h_unit_no',$model->getHtmlOptions('h_unit_no',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_unit_no');?>
+                   </div>   
                          <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'h_p_limits');?>
-                    <?php echo $form->checkbox($model, 'h_p_limits',$model->getHtmlOptions('h_p_limits',array('style'=>'width:auto'))); ?>
-                    <?php echo $form->error($model, 'h_p_limits');?>
+                       <?php echo $form->labelEx($model, 'h_selling_price');?>
+                       <?php echo $form->checkbox($model, 'h_selling_price',$model->getHtmlOptions('h_selling_price',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_selling_price');?>
+                   </div>   
+                   <div class="clearfix"><!-- --></div>  
+                            <div class="form-group col-lg-6">
+                       <?php echo $form->labelEx($model, 'h_p_limits');?>
+                       <?php echo $form->checkbox($model, 'h_p_limits',$model->getHtmlOptions('h_p_limits',array('style'=>'width:auto', "class" => ""))); ?>
+                       <?php echo $form->error($model, 'h_p_limits');?>
+                   </div>
                 </div>
                 <?php 
                 /**

@@ -42,10 +42,10 @@ if ($viewCollection->renderContent) {
     // and render if allowed
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm'); ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-usd"></span> <?php echo $pageHeading;?></h3>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3 class="card-title"><span class="glyphicon glyphicon-usd"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$currency->isNewRecord) { ?>
@@ -53,7 +53,7 @@ if ($viewCollection->renderContent) {
                     <?php } ?>
                     <?php echo CHtml::link(Yii::t('app', 'Cancel'), array('currencies/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
                 </div>
-                <div class="clearfix"><!-- --></div>
+                
             </div>
             <div class="box-body">
                 <?php 
@@ -68,30 +68,32 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?>
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($currency, 'name');?>
-                    <?php echo $form->textField($currency, 'name', $currency->getHtmlOptions('name')); ?>
-                    <?php echo $form->error($currency, 'name');?>
-                </div>        
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($currency, 'code');?>
-                    <?php echo $form->textField($currency, 'code', $currency->getHtmlOptions('code')); ?>
-                    <?php echo $form->error($currency, 'code');?>
-                </div>    
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($currency, 'is_default');?>
-                    <?php echo $form->dropDownList($currency, 'is_default', $currency->getYesNoOptions(), $currency->getHtmlOptions('is_default')); ?>
-                    <?php echo $form->error($currency, 'is_default');?>
-                </div> 
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($currency, 'status');?>
-                    <?php echo $form->dropDownList($currency, 'status', $currency->getStatusesList(), $currency->getHtmlOptions('status')); ?>
-                    <?php echo $form->error($currency, 'status');?>
-                </div> 
+                <div class="row">
+
+                    <div class=" col-lg-6">
+                        <?php echo $form->labelEx($currency, 'name');?>
+                        <?php echo $form->textField($currency, 'name', $currency->getHtmlOptions('name')); ?>
+                        <?php echo $form->error($currency, 'name');?>
+                    </div>        
+                    <div class=" col-lg-6">
+                        <?php echo $form->labelEx($currency, 'code');?>
+                        <?php echo $form->textField($currency, 'code', $currency->getHtmlOptions('code')); ?>
+                        <?php echo $form->error($currency, 'code');?>
+                    </div>    
+                    
+                    <div class=" col-lg-6">
+                        <?php echo $form->labelEx($currency, 'is_default');?>
+                        <?php echo $form->dropDownList($currency, 'is_default', $currency->getYesNoOptions(), $currency->getHtmlOptions('is_default')); ?>
+                        <?php echo $form->error($currency, 'is_default');?>
+                    </div> 
+                    <div class=" col-lg-6">
+                        <?php echo $form->labelEx($currency, 'status');?>
+                        <?php echo $form->dropDownList($currency, 'status', $currency->getStatusesList(), $currency->getHtmlOptions('status')); ?>
+                        <?php echo $form->error($currency, 'status');?>
+                    </div> 
+                </div>
                 
-                <div class="clearfix"><!-- --></div>   
+                   
                 <?php 
                 /**
                  * This hook gives a chance to append content after the active form fields.
@@ -104,13 +106,13 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?>
-                <div class="clearfix"><!-- --></div>    
+                    
             </div>
             <div class="box-footer">
-                <div class="pull-right">
+                <div class="pull-right m-4">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
-                <div class="clearfix"><!-- --></div>
+                
             </div>
         </div>
         <?php 
