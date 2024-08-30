@@ -55,7 +55,7 @@ if ($viewCollection->renderContent) {
                     <?php echo CHtml::link(Yii::t('app', 'Cancel'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="box-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.

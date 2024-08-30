@@ -13,9 +13,9 @@
  
 ?>
 
-<div class="card">
-    <div class="card-header"><h3 class="card-title"><?php echo Yii::t('app', 'Error {code}!', array('{code}' => $code));?></h3></div>
-    <div class="card-body">
+<div class="box box-primary">
+    <div class="box-header"><h3 class="box-title"><?php echo Yii::t('app', 'Error {code}!', array('{code}' => $code));?></h3></div>
+    <div class="box-body">
         <p class="info"><?php echo $message;?></p>
     </div>
     <div class="box-footer">

@@ -16,16 +16,16 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
-    <div class="card">
-        <div class="card-header">
+    <div class="box box-primary">
+        <div class="box-header">
             <div class="pull-left">
-                <h3 class="card-title">
+                <h3 class="box-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t('hotel', $pageHeading);?>
                 </h3>
             </div>
               <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
 		 
             <a href="javascript:void(0)" data-href="<?php echo Yii::app()->createUrl($this->id.'/delete_call',array('opt'=>'all','type'=>$user->type));?>" onclick="deletefunction(this)" class="btn btn-danger">Delete All</a>
 		 <a href="javascript:void(0)" class="btn btn-warning" data-href="<?php echo Yii::app()->createUrl($this->id.'/delete_call',array('opt'=>'30','type'=>$user->type));?>" onclick="deletefunction(this)">Keep 30 days Delete All</a>

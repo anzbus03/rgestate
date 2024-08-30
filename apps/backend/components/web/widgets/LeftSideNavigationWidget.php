@@ -1,76 +1,118 @@
-<?php defined( 'MW_PATH' ) || exit( 'No direct script access allowed' );
+<?php defined('MW_PATH') || exit('No direct script access allowed');
 
 /**
-* LeftSideNavigationWidget
-*
-* @package MailWizz EMA
-* @author Serban George Cristian <cristian.serban@mailwizz.com>
-* @link http://www.mailwizz.com/
-* @copyright 2013-2014 MailWizz EMA ( http://www.mailwizz.com )
-* @license http://www.mailwizz.com/license/
-* @since 1.0
-*/
-
-class LeftSideNavigationWidget extends CWidget {
-    public function getMenuItems() {
+ * LeftSideNavigationWidget
+ * 
+ * @package MailWizz EMA
+ * @author Serban George Cristian <cristian.serban@mailwizz.com> 
+ * @link http://www.mailwizz.com/
+ * @copyright 2013-2014 MailWizz EMA (http://www.mailwizz.com)
+ * @license http://www.mailwizz.com/license/
+ * @since 1.0
+ */
+ 
+class LeftSideNavigationWidget extends CWidget
+{
+    public function run()
+    {
         $sections   = array();
         $hooks      = Yii::app()->hooks;
         $controller = $this->controller;
-
-        $action_id = $controller->action->id ;
-
-        if ( $action_id == 'created_by_me' or  $action_id == 'assigned_to_me' ) {
-
-            $team_management =  array( 'listingusers', 'subscribe_package', 'orders', 'agencies', 'change_contact_request', 'create_import', 'login_history', 'developer_gallery', 'created_by_me', 'promo_codes' );
-            $main_customer   = array();
-        } else {
-            $team_management =    array();
-            $main_customer   = array( 'agent_reviews', 'agents', 'developers', 'listingusers', 'agencies', 'change_contact_request', 'create_import', 'login_history', 'developer_gallery', 'promo_codes' );
+        
+        $action_id = $controller->action->id ;  
+        if( $action_id=='created_by_me' or  $action_id=='assigned_to_me'  ){
+           
+           $team_management =  array('listingusers','subscribe_package','orders','agencies','change_contact_request','create_import','login_history','developer_gallery','created_by_me','promo_codes');
+           $main_customer   = array();
         }
-
+        else{
+             $team_management =    array();
+           $main_customer   = array('agent_reviews','agents','developers','listingusers','agencies','change_contact_request','create_import','login_history','developer_gallery' ,'promo_codes' );
+        }
+        
         $route      = $controller->route;
-        $user       = Yii::app()->user->getModel();
+         $user       = Yii::app()->user->getModel();
         $priority   = 0;
         $request    = Yii::app()->request;
-        $arSale = array( 'place_an_ad', 'place_property', 'property_import', 'price_trends_import', 'import_stats' );
-        if ( in_array( $action_id, array( 'create', 'business', 'update' ) ) ) {
-            $arSale = array();
-
+        $arSale = array('place_an_ad','place_property','property_import','price_trends_import','import_stats');
+        if(in_array($action_id,array('create','business','update'))) {
+             $arSale = array(); 
         }
-        Yii::import( 'zii.widgets.CMenu' );
-
-        $menuItems = array(
+        Yii::import('zii.widgets.CMenu');
+        
+        
+        
+         $menuItems = array(
             'dashboard' => array(
-                'name'      => Yii::t( 'app', 'Dashboard' ),
-                'icon'      => 'flaticon-025-dashboard',
+                'name'      => Yii::t('app', 'Dashboard'),
+                'icon'      => 'glyphicon-dashboard',
                 'active'    => 'dashboard',
-                'route'     => array( 'dashboard/index' ),
+                'route'     => array('dashboard/index'),
             ),
-
-            'enquiries' => array(
-                'name'      => Yii::t( 'app', 'Enquiries' ),
+       
+             'enquiries' => array(
+                'name'      => Yii::t('app', 'Enquiries'),
                 'icon'      => 'fa fa-envelope',
-                'active'    =>  array( 'contact_us', 'agent_enquiry', 'enquiry', 'adv_interest' ),
+                'active'    =>  array('contact_us','agent_enquiry' ,'enquiry','adv_interest'   ), 
                 'route'     => null,
-                'items'     => array(
-                    array( 'url' => array( 'contact_us/index' ), 'label' => Yii::t( 'app', 'Contact Us' ), 'active' => strpos( $route, 'contact_us' ) === 0 ),
-                    array( 'url' => array( 'contact_services/index' ), 'label' => Yii::t( 'app', 'Contact Service' ), 'active' => strpos( $route, 'contact_services' ) === 0 ),
-                    array( 'url' => array( 'enquiry/index' ), 'label' => Yii::t( 'app', 'ALL Enquiries' ), 'active' => strpos( $route, 'enquiry' ) === 0 ),
-                    array( 'url' => array( 'adv_interest/index' ), 'label' => Yii::t( 'app', 'Advertisement Enquiry' ), 'active' => strpos( $route, 'adv_interest' ) === 0 ),
+                 'items'     => array(
+                    array('url' => array('contact_us/index'), 'label' => Yii::t('app', 'Contact Us'), 'active' => strpos($route, 'contact_us') === 0), 
+                    array('url' => array('contact_services/index'), 'label' => Yii::t('app', 'Contact Service'), 'active' => strpos($route, 'contact_services') === 0), 
+                    //array('url' => array('agent_enquiry/index'), 'label' => Yii::t('app', 'Agent Enquiry'), 'active' => strpos($route, 'agent_enquiry') === 0),
+                    array('url' => array('enquiry/index'), 'label' => Yii::t('app', 'ALL Enquiries'), 'active' => strpos($route, 'enquiry') === 0),
+                    array('url' => array('adv_interest/index'), 'label' => Yii::t('app', 'Advertisement Enquiry'), 'active' => strpos($route, 'adv_interest') === 0),
+					
+					// array('url' => array('submited_preq/index'), 'label' => Yii::t('app', 'Submited Requirements'), 'active' => strpos($route, 'submited_preq') === 0),
+				//	 array('url' => array('submited_jvproposal/index'), 'label' => Yii::t('app', 'Submited JV Proposal'), 'active' => strpos($route, 'submited_jvproposal') === 0),
+            
                 ),
             ),
-            'career' => array(
-                'name'      => Yii::t( 'app', 'Careers' ),
+            /*
+             'loan_application' => array(
+                'name'      => Yii::t('app', 'Mortgage Application'),
+                'icon'      => 'fa fa-wpforms',
+                'active'    =>  array('loan_application','bank' ), 
+                'route'     => null,
+                 'items'     => array(
+                    array('url' => array('loan_application/index'), 'label' => Yii::t('app', 'Applications'), 'active' => strpos($route, 'loan_application') === 0), 
+                    array('url' => array('bank/index'), 'label' => Yii::t('app', 'Bank'), 'active' => strpos($route, 'bank') === 0),
+                ),
+            ),
+            
+             'home_insurance' => array(
+                'name'      => Yii::t('app', 'Home Insurance'),
+                'icon'      => 'fa fa-home',
+                'active'    =>  array('home_insurance','home_insurance_company' ), 
+                'route'     => null,
+                 'items'     => array(
+                    array('url' => array('home_insurance/index'), 'label' => Yii::t('app', 'Applications'), 'active' => strpos($route, 'home_insurance') === 0), 
+                    array('url' => array('home_insurance_company/index'), 'label' => Yii::t('app', 'Insurance Company'), 'active' => strpos($route, 'home_insurance_company') === 0),
+                ),
+            ),
+             'property_valuation' => array(
+                'name'      => Yii::t('app', 'Property Valuation'),
+                'icon'      => 'fa fa-money',
+                'active'    =>  array('property_valuation','valuation_company'), 
+                'route'     => null,
+                 'items'     => array(
+                    array('url' => array('property_valuation/index'), 'label' => Yii::t('app', 'Property Valuation'), 'active' => strpos($route, 'property_valuation') === 0), 
+					array('url' => array('valuation_company/index'), 'label' => Yii::t('app', 'Valuation Company'), 'active' => strpos($route, 'valuation_company') === 0),
+           
+                ),
+            ),
+            */
+              'career' => array(
+                'name'      => Yii::t('app', 'Careers'),
                 'icon'      => 'fa fa-briefcase',
                 'active'    => 'spam_report',
-                'route'     => array( 'career/index' ),
+                'route'     => array('career/index'),
             ),
-
+      
             'spam_report1' => array(
-                'name'      => Yii::t( 'app', 'Report AD' ),
+                'name'      => Yii::t('app', 'Report AD'),
                 'icon'      => 'fa fa-bug',
                 'active'    => 'spam_report',
-                'route'     => array( 'spam_report/index' ),
+                'route'     => array('spam_report/index'),
             ),
 
             'place_an_ad' => array(
@@ -135,54 +177,65 @@ class LeftSideNavigationWidget extends CWidget {
                 'name'      => Yii::t( 'app', 'Partners' ),
                 'icon'      => 'flaticon-085-signal',
                 'active'    => 'partners/index',
-                'route'     => array( 'partners/index' ),
+                'route'     => array('partners/index'),
+            ), 
+                    'spam_report' => array(
+                'name'      => Yii::t('app', 'Prospace CRM Import'),
+                'icon'      => 'fa fa-plus',
+                'active'    => 'xml_insert',
+                'route'     => array('xml_insert/index'),
             ),
-            // 'spam_report' => array(
-            //     'name'      => Yii::t( 'app', 'Prospace CRM Import' ),
-            //     'icon'      => 'flaticon-068-plus',
-            //     'active'    => 'xml_insert',
-            //     'route'     => array( 'xml_insert/index' ),
-            // ),
-            // 'BrokerPAD' => array(
-            //     'name'      => Yii::t( 'app', 'BrokerPAD CRM Import' ),
-            //     'icon'      => 'flaticon-068-plus',
-            //     'active'    => 'xml_insert',
-            //     'route'     => array( 'xml_insert/brokerpad' ),
-            // ),
-            'Mastersd' => array(
-                'name'      => Yii::t( 'app', 'Master' ),
-                'icon'      => 'flaticon-044-menu',
-                'active'    => array( 'category', 'main_category', 'links', 'main_region', 'area_unit', 'currencies', 'Prospace_categories', 'employment_type', 'languages', 'master_category', 'master', 'footer_sub_category', 'footer_links', 'amenities', 'engine_size', 'language', 'community', 'sub_community', 'experience_level', 'countries', 'city', 'district', 'region', 'nearby_location', 'city', 'marital_status', 'religion', 'occupation', 'color', 'door', 'bodycondition', 'mechanicalcondition', 'fueltype', 'currencies' ),
+                'BrokerPAD' => array(
+                'name'      => Yii::t('app', 'BrokerPAD CRM Import'),
+                'icon'      => 'fa fa-plus',
+                'active'    => 'xml_insert',
+                'route'     => array('xml_insert/brokerpad'),
+            ),
+                'Mastersd' => array(
+                'name'      => Yii::t('app', 'Master'),
+                'icon'      => 'glyphicon-list-alt',
+                'active'    => array('category','main_category','links' ,'main_region','area_unit','currencies','Prospace_categories','employment_type','languages','master_category','master','footer_sub_category','footer_links','amenities','engine_size','language','community','sub_community','experience_level','countries','city','district','region','nearby_location','city','marital_status','religion','occupation','color','door','bodycondition','mechanicalcondition','fueltype','currencies'),
                 'route'     => null,
                 'items'     => array(
-                    array( 'url' => array( 'main_category/index' ), 'label' => Yii::t( 'app', 'Category' ), 'active' => strpos( $route, 'main_category' ) === 0 ),
-                    array( 'url' => array( 'subcategory/index' ), 'label' => Yii::t( 'app', 'Sub Category' ), 'active' => strpos( $route, 'subcategory' ) === 0 ),
-                    array( 'url' => array( 'category/index' ), 'label' => Yii::t( 'app', 'Property Type' ), 'active' => strpos( $route, 'category' ) === 0 ),
-
-                    array( 'url' => array( 'countries/index' ), 'label' => Yii::t( 'app', 'Country' ), 'active' => strpos( $route, 'countries' ) === 0 ),
-                    array( 'url' => array( 'main_region/index' ), 'label' => Yii::t( 'app', 'Region' ), 'active' => strpos( $route, 'main_region' ) === 0 ),
-                    array( 'url' => array( 'region/index' ), 'label' => Yii::t( 'app', 'City' ), 'active' => strpos( $route, 'region' ) === 0 ),
-                    array( 'url' => array( 'currencies/index' ), 'label' => Yii::t( 'app', 'Currency' ), 'active' => strpos( $route, 'currencies' ) === 0 ),
-                    array( 'url' => array( 'amenities/index' ), 'label' => Yii::t( 'app', 'Amenities' ), 'active' => strpos( $route, 'amenities' ) === 0 ),
-                    array( 'url' => array( 'master_category/index' ), 'label' => Yii::t( 'app', 'Master Category' ), 'active' => strpos( $route, 'master_category' ) === 0 ),
-                    array( 'url' => array( 'master/index' ), 'label' => Yii::t( 'app', 'Master' ), 'active' => strpos( $route, 'master' ) === 0 ),
-                    array( 'url' => array( 'area_unit/index' ), 'label' => Yii::t( 'app', 'Area Unit' ), 'active' => strpos( $route, 'area_unit' ) === 0 ),
-                    array( 'url' => array( 'price_unit/index' ), 'label' => Yii::t( 'app', 'Price Unit' ), 'active' => strpos( $route, 'price_unit' ) === 0 ),
-                    array( 'url' => array( 'links/index' ), 'label' => Yii::t( 'app', 'Footer Links' ), 'active' => strpos( $route, 'links' ) === 0 ),
-                    array( 'url' => array( 'Prospace_categories/index' ), 'label' => Yii::t( 'app', 'Prospace Categories' ), 'active' => strpos( $route, 'Prospace_categories' ) === 0 ),
-
+                    array('url' => array('main_category/index'), 'label' => Yii::t('app', 'Category'), 'active' => strpos($route, 'main_category') === 0),
+                    array('url' => array('subcategory/index'), 'label' => Yii::t('app', 'Sub Category'), 'active' => strpos($route, 'subcategory') === 0),
+                    array('url' => array('category/index'), 'label' => Yii::t('app', 'Property Type'), 'active' => strpos($route, 'category') === 0),
+                  
+                         array('url' => array('countries/index'), 'label' => Yii::t('app', 'Country'), 'active' => strpos($route, 'countries') === 0),
+                    array('url' => array('main_region/index'), 'label' => Yii::t('app', 'Region'), 'active' => strpos($route, 'main_region') === 0),
+                    array('url' => array('region/index'), 'label' => Yii::t('app', 'City'), 'active' => strpos($route, 'region') === 0),
+					
+					
+					
+					
+                    // array('url' => array('bank/index'), 'label' => Yii::t('app', 'Bank'), 'active' => strpos($route, 'bank') === 0),
+                  //  array('url' => array('home_insurance_company/index'), 'label' => Yii::t('app', 'Home Insurance Company'), 'active' => strpos($route, 'home_insurance_company') === 0),
+                array('url' => array('currencies/index'), 'label' => Yii::t('app', 'Currency'), 'active' => strpos($route, 'currencies') === 0),
+                   // array('url' => array('community/index'), 'label' => Yii::t('app', 'Community'), 'active' => strpos($route, 'community') === 0),
+				    //array('url' => array('languages/index'), 'label' => Yii::t('app', 'Languages'), 'active' => strpos($route, 'languages') === 0),
+                    array('url' => array('amenities/index'), 'label' => Yii::t('app', 'Amenities'), 'active' => strpos($route, 'amenities') === 0),
+                    array('url' => array('master_category/index'), 'label' => Yii::t('app', 'Master Category'), 'active' => strpos($route, 'master_category') === 0),
+                    array('url' => array('master/index'), 'label' => Yii::t('app', 'Master'), 'active' => strpos($route, 'master') === 0),
+                    array('url' => array('area_unit/index'), 'label' => Yii::t('app', 'Area Unit'), 'active' => strpos($route, 'area_unit') === 0),
+                    array('url' => array('price_unit/index'), 'label' => Yii::t('app', 'Price Unit'), 'active' => strpos($route, 'price_unit') === 0),
+                  //  array('url' => array('footer_sub_category/index'), 'label' => Yii::t('app', 'Footer Subcategory'), 'active' => strpos($route, 'footer_sub_category') === 0),
+                   //   array('url' => array('currencies/index'), 'label' => Yii::t('app', 'Currencies'), 'active' => strpos($route, 'currencies') === 0),
+                 
+                    array('url' => array('links/index'), 'label' => Yii::t('app', 'Footer Links'), 'active' => strpos($route, 'links') === 0),
+                   array('url' => array('Prospace_categories/index'), 'label' => Yii::t('app', 'Prospace Categories'), 'active' => strpos($route, 'Prospace_categories') === 0),
+                  
                 ),
             ),
-            'mail' => array(
-                'name'      => Yii::t( 'app', 'Emails' ),
-                'icon'      => 'flaticon-071-print',
+             'mail' => array(
+                'name'      => Yii::t('app', 'Emails'),
+                'icon'      => 'glyphicon glyphicon-envelope',
                 'active'    => 'send_email/index',
-
-                'route'     => array( 'send_email/index' ),
-            ),
-            'guides' => array(
-                'name'      => Yii::t( 'app', 'Area Guides' ),
-                'icon'      => 'flaticon-085-signal',
+                  
+                'route'     => array('send_email/index'),
+            ),  
+			 'guides' => array(
+                'name'      => Yii::t('app', 'Area Guides'),
+                'icon'      => 'glyphicon glyphicon-map-marker',
                 'active'    => 'areaguides/index',
 
                 'route'     => array( 'areaguides/index' ),
@@ -210,30 +263,45 @@ class LeftSideNavigationWidget extends CWidget {
                     array( 'url' => array( 'article_categories/index' ), 'label' => Yii::t( 'app', 'View all categories' ), 'active' => strpos( $route, 'article_categories' ) === 0 ),
                 ),
             ),
-
-            'bannerpos' => array(
-                'name'      => Yii::t( 'app', 'Banner' ),
-                'icon'      => 'flaticon-035-flag',
-                'active'    => array( 'banner', 'banner_position', 'home_banner', 'developer_banner', 'agent_banner' ),
+           
+               'bannerpos' => array(
+                'name'      => Yii::t('app', 'Banner'),
+                'icon'      => 'fa fa-flag',
+                'active'    => array('banner','banner_position','home_banner','developer_banner','agent_banner'),
                 'route'     => null,
                 'items'     => array(
-                    array( 'url' => array( 'banner/index' ), 'label' => Yii::t( 'app', 'Adv. Banner' ), 'active' => strpos( $route, 'banner/index' ) === 0 ),
-                    array( 'url' => array( 'home_banner/index' ), 'label' => Yii::t( 'app', 'Page Banner' ), 'active' => strpos( $route, 'home_banner/index' ) === 0 ),
+                    //array('url' => array('banner_position/index'), 'label' => Yii::t('app', 'Banner position'), 'active' => strpos($route, 'banner_position/index') === 0),
+                    array('url' => array('banner/index'), 'label' => Yii::t('app', 'Adv. Banner'), 'active' => strpos($route, 'banner/index') === 0),
+                    array('url' => array('home_banner/index'), 'label' => Yii::t('app', 'Page Banner'), 'active' => strpos($route, 'home_banner/index') === 0),
+                   // array('url' => array('agent_banner/index'), 'label' => Yii::t('app', 'Agents Banner'), 'active' => strpos($route, 'agent_banner/index') === 0),
+                    //array('url' => array('developer_banner/index'), 'label' => Yii::t('app', 'Developer Banner'), 'active' => strpos($route, 'developer_banner/index') === 0),
                 ),
             ),
-            'language' => array(
-                'name'      => Yii::t( 'app', 'Language' ),
-                'icon'      => 'flaticon-091-warning',
-                'active'    => array( 'language_tags' ),
+            /*
+              'library' => array(
+                'name'      => Yii::t('app', 'Library'),
+                'icon'      => 'fa fa-image',
+                'active'    => array('default_image'),
                 'route'     => null,
                 'items'     => array(
-                    array( 'url' => array( 'language_tags/index' ), 'label' => Yii::t( 'app', 'Tags and Translation' ), 'active' =>  ( $route == 'language_tags/index' ) ? 1 : 0 ),
+					array('url' => array('default_image/index'), 'label' => Yii::t('app', 'Profile/Cover Images'), 'active' => strpos($route, 'default_image/index') === 0),
+             
                 ),
             ),
-            'settings' => array(
-                'name'      => Yii::t( 'app', 'Settings' ),
-                'icon'      => 'flaticon-007-bulleye',
-                'active'    => array( 'settings', 'templates', 'delivery_servers', 'upload_settings' ),
+            */
+               'language' => array(
+                'name'      => Yii::t('app', 'Language'),
+                'icon'      => 'glyphicon fa fa-keyboard-o',
+                'active'    => array('language_tags'  ),
+                'route'     => null,
+                  'items'     => array(
+                    array('url' => array('language_tags/index'), 'label' => Yii::t('app', 'Tags and Translation') , 'active' =>  ( $route == 'language_tags/index' ) ? 1 : 0  ),
+                ),
+            ),
+           'settings' => array(
+                'name'      => Yii::t('app', 'Settings'),
+                'icon'      => 'glyphicon-cog',
+                'active'    => array('settings','templates','delivery_servers','upload_settings'),
                 'route'     => null,
                 'items'     => array(
                     array( 'url' => array( 'settings/index' ), 'label' => Yii::t( 'app', 'Common' ), 'active' => strpos( $route, 'settings/index' ) === 0 ),
@@ -246,16 +314,82 @@ class LeftSideNavigationWidget extends CWidget {
                     array( 'url' => array( 'delivery_servers/index' ), 'label' => Yii::t( 'app', 'Delivery Servers' ), 'active' => strpos( $route, 'delivery_servers/index' ) === 0 ),
                 ),
             ),
-
+        
+           
+            
         );
+        
+        
+        $menuItems = (array)Yii::app()->hooks->applyFilters('backend_left_navigation_menu_items', $menuItems);
+        foreach ($menuItems as $key => $data) {
+			
+			
+		
+			
+            if (!empty($data['route']) && !$user->hasRouteAccess($data['route'])) {
+				
+			
+                unset($menuItems[$key]);
+                continue;
+            }
+            if (isset($data['items']) && is_array($data['items'])) {
+				
+				
+                foreach ($data['items'] as $index => $item) { 
+					if(strpos($item['url'][0],  'property_import') !== false){
+						 $uri = 'property_import/create_import';
+					}else {
+						$uri = $item['url'];
+					}
+                    if (isset($item['url']) && !$user->hasRouteAccess($uri)) {
+						
+							
+                        unset($menuItems[$key]['items'][$index], $data['items'][$index]);
+                    }
+                }
+            }
+            if (empty($data['route']) && empty($data['items'])) {	 
+                unset($menuItems[$key]);
+            }
+        }
+        $menu = new CMenu();
+        $menu->htmlOptions          = array('class' => 'sidebar-menu');
+        $menu->submenuHtmlOptions   = array('class' => 'treeview-menu');
+        
+        foreach ($menuItems as $key => $data) {
+            $_route  = !empty($data['route']) ? $data['route'] : 'javascript:;';
+            $active  = false;
+            
+            if (is_string($data['active']) && strpos($route, $data['active']) === 0) {
+                $active = true;
+            } elseif (is_array($data['active'])) {
+                foreach ($data['active'] as $in) {
+                    if (strpos($route, $in) === 0) {
+                        $active = true;
+                        break;
+                    }
+                }
+            }
+            
+            $item = array(
+                'url'       => $_route, 
+                'label'     => '<i class="glyphicon '.$data['icon'].'"></i> <span>'.$data['name'].'</span>' . (!empty($data['items']) ? '<i class="fa fa-angle-left pull-right"></i>' : ''), 
+                'active'    => $active
+            );
+            
+            if (!empty($data['items'])) {
+                foreach ($data['items'] as $index => $i) {
+                    if (isset($i['label'])) {
+                        $data['items'][$index]['label'] = '<i class="fa fa-angle-double-right"></i>' . $i['label'];
+                    }
+                }
+                $item['items']       = $data['items'];
+                $item['itemOptions'] = array('class' => 'treeview');
+            }
+            
+            $menu->items[] = $item;
+        }
 
-        return $menuItems;
-
-    }
-    public function run()
-    {
-        // Get the menu items
-        $menuItems = $this->getMenuItems();
-        return $menuItems;
+        $menu->run();
     }
 }

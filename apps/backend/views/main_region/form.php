@@ -56,7 +56,7 @@ if ($viewCollection->renderContent) {
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="card-body">
+            <div class="box-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.

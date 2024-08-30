@@ -23,7 +23,7 @@ if ($viewCollection->renderContent) { ?>
                 }
             </style>
         </div>
-        <div class="card-body">
+        <div class="box-body">
             <div class="table-responsive">
                 <table id="dataTable" class="display" style="width:100%">
                     <thead>

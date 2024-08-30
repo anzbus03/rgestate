@@ -56,9 +56,9 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
          ?>
         <div class="box box-primary borderless">
-            <div class="card-header">
+            <div class="box-header">
                 <div class="pull-left">
-                    <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                    
@@ -66,7 +66,7 @@ if ($viewCollection->renderContent) {
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="card-body">
+            <div class="box-body">
 			
 			
 			<div class="row">
@@ -77,7 +77,7 @@ if ($viewCollection->renderContent) {
             <div class="box-header ui-sortable-handle" style="cursor: move;">
 				<div class="col-sm-4">
 				    
-              <h3 class="card-title">Order Summary</h3>
+              <h3 class="box-title">Order Summary</h3>
 				</div>
 				<div class="col-sm-8">
 					<form method="get" autocomplete="off">
@@ -137,7 +137,7 @@ if ($viewCollection->renderContent) {
             
               <!-- /. tools -->
             </div>
-            <div class="card-body">
+            <div class="box-body">
             		<div class="row">
 					<div class="col-sm-12">
         <div class="col-lg-3 col-xs-6">

@@ -244,14 +244,15 @@ class ContactController extends Controller
 				echo json_encode(array('status'=>'0','msg'=>'<div class="alert alert-danger1"><strong>Error!</strong> '.CHtml::errorSummary($e->getMessage()).'. </div>'));
         }
 		
-		$crmUrl = 'https://crm.rgestate.com/rest/88/x0g9p2hpse2h48si/crm.lead.add.json';
+		$crmUrl = 'https://crm.rgestate.com/rest/158/x0g9p2hpse2h48si/crm.lead.add.json';
 
         // Prepare data for the request
         $crmData = [
             'FIELDS' => [
                 'TITLE' => 'RGestate Lead - Contact Form',
                 'CATEGORY_ID' => 16,
-                'LEAD_PHONE' => $requestParms['phone'],
+                'PHONE' => [[ "VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK" ]],
+                "EMAIL" => [[ "VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK" ]],
                 'LEAD_LAST_NAME' => $lastName,
                 'LEAD_NAME' => $firstName,
                 'LEAD_EMAIL' => $requestParms['email'],
@@ -287,14 +288,13 @@ class ContactController extends Controller
           
 				echo json_encode(array('status'=>'0','msg'=>'<div class="alert alert-danger1"><strong>Error!</strong> '.CHtml::errorSummary($e->getMessage()).'. </div>'));
         }
-
         if ($model->hasErrors()) {
 			echo json_encode(array('status'=>'0','msg'=>'<div class="alert alert-danger1"><strong>Error!</strong> '.CHtml::errorSummary($model).'. </div>'));
         } else {
             if(!$model->save()){
 				echo json_encode(array('status'=>'0','msg'=>'<div class="alert alert-danger1"><strong>Error!</strong> '.CHtml::errorSummary($model).'. </div>'));
 			}else{
-				echo json_encode(array('status'=>'1','name'=>$model->name , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+				echo json_encode(array('status'=>'1','name'=>$model->email , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
 		    }
         }
 

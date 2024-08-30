@@ -17,7 +17,7 @@
     background: #fff;
 }
 .f-ull-height { height:100%;position:relative;}
-.f-ull-height .blog-img { height:250px; margin-bottom:15px;}
+.f-ull-height .blog-img { height:100%; margin-bottom:15px;}
 .f-ull-height .blog-img img {
     object-fit: cover !important;
     height: 100%;
@@ -38,7 +38,7 @@
 #blogheader #main-menu {
   
     box-shadow: unset; 
-}nav#main-menu ul#menu-main-menu li a {
+}nav#main-menu ul#menu-main-menu2 li a {
     color: #484848;
     text-transform: none;
     font-style: normal;
@@ -55,7 +55,7 @@
 }nav#main-menu ul.j-main-menu {
    
     justify-content: flex-start; 
-}nav#main-menu ul#menu-main-menu li a:hover, nav#main-menu ul#menu-main-menu li.active a {
+}nav#main-menu ul#menu-main-menu2 li a:hover, nav#main-menu ul#menu-main-menu2 li.active a {
   
     background: #fafafa;
 }.banner{
@@ -151,20 +151,66 @@
 
 <section id="main-content" class="clearfix">
 	<div class="container" id="d_column">
-	 
-            <div id="blogheader">
-	<nav id="main-menu" class="default" style="position:relative;top: 6px;">
-		<ul id="menu-main-menu" class="main j-main-menu sf-js-enabled sticky1">
-		    <li   class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4252 <?php echo $slug=='blog' ? 'active':'';?>"><a href="<?php echo Yii::app()->createUrl('bloglist/index');?>"><?php echo $this->tag->getTag('blog','Blog')  ;?> </a>
-			</li> 
-			<?php
-			foreach($category as $k=>$v){ ?> 
-			<li   class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4252 <?php echo $slug==$v->slug ? 'active':'';?>"><a href="<?php echo Yii::app()->createUrl('bloglist/index',array('category'=>$v->slug));?>"><?php echo ucfirst($v->name)  ;?> </a>
-			</li> 
-			<?php } ?> 
-		</ul>
-	</nav>
-</div>
+        <style>
+            /* Mobile view adjustments */
+@media (max-width: 767px) {
+        /* #menu-main-menu2 {
+            flex-direction: row;
+            justify-content: space-evenly;
+        } */
+
+        #menu-main-menu2 li {
+            /* flex: 1;
+            text-align: center; */
+            /* margin: 0 5px; */
+            margin-right: 0px !important;
+            margin-bottom: 25px !important;
+        }
+
+        #menu-main-menu2 .menu-item-search {
+            width: 100%;
+            margin-right: 20px !important;
+            margin-bottom: 0px !important;
+        }
+
+        #menu-main-menu2 .menu-item-search .search-form {
+            display: flex;
+            justify-content: center;
+        }
+
+        #menu-main-menu2 .menu-item-search input[type="text"] {
+            width: 100%;
+            max-width: 300px;
+            margin-right: 5px;
+        }
+
+        #menu-main-menu2 .menu-item-search button {
+            flex-shrink: 0;
+        }
+    }
+        </style>
+        <div id="blogheader" >
+            <nav id="main-menu" class="default" style="position:relative;top: 6px;">
+                <ul id="menu-main-menu2" class="main j-main-menu sf-js-enabled sticky1">
+                    <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4252 <?php echo $slug=='blog' ? 'active':'';?>">
+                        <a href="<?php echo Yii::app()->createUrl('bloglist/index');?>"><?php echo $this->tag->getTag('blog','Blog');?></a>
+                    </li>
+                    <?php foreach($category as $k=>$v){ ?> 
+                    <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4252 <?php echo $slug==$v->slug ? 'active':'';?>">
+                        <a href="<?php echo Yii::app()->createUrl('bloglist/index',array('category'=>$v->slug));?>"><?php echo ucfirst($v->name);?></a>
+                    </li> 
+                    <?php } ?>
+                    <li class="menu-item menu-item-search">
+                        <form action="<?php echo Yii::app()->createUrl('bloglist/index');?>" method="GET" class="search-form">
+                            <input type="text" name="query" placeholder="Search..." aria-label="Search">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+            
 		<div class="box">
 		 
 				<?php
@@ -216,6 +262,50 @@
           
  
  	<style>
+        /* #main-menu {
+            display: flex;
+    justify-content: space-between;
+    align-items: center;
+} */
+
+#menu-main-menu2 {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%; /* Ensure it takes full width */
+    align-items: center;
+
+}
+
+#menu-main-menu2 li {
+    margin-right: 15px;
+}
+
+.menu-item-search {
+    margin-left: auto; /* Pushes the search form to the right */
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+}
+
+.search-form input[type="text"] {
+    border: 1px solid #ccc;
+    border-radius: 22px;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.search-form button {
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 22px;
+    background-color: var(--logo-color);
+    color: #fff;
+    /* padding: 5px 10px; */
+    font-size: 14px;
+}
+
 	    .sticky1 {
   transition: ease .3s;
    padding-top: 15px !important;
@@ -264,7 +354,7 @@ $(document).ready(function(){
   stickyElement.after('<div class="jumps-prevent"></div>');
   function jumpsPrevent() {
     stickyHeight = stickyElement.innerHeight();
-    stickyElement.css({"margin-bottom":"-" + stickyHeight + "px"});
+    stickyElement.css({"margin-bottom":"-" + (stickyHeight) + "px"});
     stickyElement.next().css({"padding-top": + stickyHeight + "px"}); 
   };
   jumpsPrevent(); //Run.
@@ -293,5 +383,5 @@ $(document).ready(function(){
 });
 </script>
 <div class="container text-center margin-bottom-50">
-		 <button type="button" class="btn btn-primary sb-btn  " style="max-width:300px;" data-toggle="modal" data-target="#exampleModal"><?php echo  $this->tag->getTag('subscribe_to_our_free_newslett','Subscribe to our free newsletter');?></button>
+		 <button type="button" class="btn btn-primary sb-btn  " style="max-width:300px;" data-toggle="modal" data-target="#exampleModalBlogMessage"><?php echo  $this->tag->getTag('subscribe_to_our_free_newslett','Subscribe to our free newsletter');?></button>
 </div>

@@ -149,6 +149,11 @@
 	?>
 	<?php echo $form->error($model, 'location_latitude'); ?>
 
+function initAutocomplete34() {
+    console.log(3);
+    console.log('<?php echo COUNTRY_CODE;?>');
+    var input = document.getElementById('PlaceAnAd_area_location');
+    var options = {
 
 	<script type="text/javascript" src="<?php echo  'https://maps.googleapis.com/maps/api/js?libraries=places&key=' . Yii::app()->options->get('system.common.google_map_api_key', 'AIzaSyBJ2Jo_mnCk9CnTNbTQAcb__elC9cKt6WQ'); ?>&language=<?php echo LANGUAGE; ?>"></script>
 	<script>

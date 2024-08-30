@@ -12,11 +12,11 @@
  */
  
 ?>
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title"><?php echo Yii::t('settings', 'Settings for processing feedback loop servers')?></h3>
+<div class="box box-primary">
+    <div class="box-header">
+        <h3 class="box-title"><?php echo Yii::t('settings', 'Settings for processing feedback loop servers')?></h3>
     </div>
-    <div class="card-body">
+    <div class="box-body">
         <?php 
         /**
          * This hook gives a chance to prepend content before the active form fields.

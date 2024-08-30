@@ -32,9 +32,9 @@ if ($viewCollection->renderContent) {
     $itemsCount = PricePlanPromoCode::model()->count();
     ?>
     <div class="box box-primary borderless">
-        <div class="card-header">
+        <div class="box-header">
     		<div class="pull-left">
-                 <h3 class="card-title">
+                 <h3 class="box-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo  $pageHeading;?>
                 </h3>
             </div>
@@ -45,7 +45,7 @@ if ($viewCollection->renderContent) {
     		</div>
             <div class="clearfix"><!-- --></div>
     	</div>
-        <div class="card-body">
+        <div class="box-body">
             <div class="table-responsive">
             <?php 
             /**
@@ -164,14 +164,14 @@ if ($viewCollection->renderContent) {
                             'footer'    => $promoCode->paginationOptions->getGridFooterPagination(),
                             'buttons'   => array(
                                 'update' => array(
-                                        'label'     => ' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', 
+                                        'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("promo_codes/update", array("id" => $data->promo_code_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
                                     'visible'   => 'AccessHelper::hasRouteAccess("promo_codes/update")',
                                 ),
                                 'delete' => array(
-                                     'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp;',
+                                     'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp;',
                                     'url'       => 'Yii::app()->createUrl("promo_codes/delete", array("id" => $data->promo_code_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),

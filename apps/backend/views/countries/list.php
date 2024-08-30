@@ -31,13 +31,15 @@ if ($viewCollection->renderContent) {
                 </h3>
             </div>
             <div class="pull-right">
-                <?php echo CHtml::link(Yii::t('app', '<i class="fa fa-keyboard-o"></i> Arabic Bulk Update'), Yii::app()->createUrl('countries/index',array('bulk_update'=>'1','lan'=>'ar')), array('class' => 'btn btn-default btn-xs' , 'title' => Yii::t('app', 'Goole Translate Arabic')));?>
+                    <?php echo CHtml::link(Yii::t('app', '<i class="fa fa-keyboard-o"></i> Arabic Bulk Update'), Yii::app()->createUrl('countries/index',array('bulk_update'=>'1','lan'=>'ar')), array('class' => 'btn btn-default btn-xs' , 'title' => Yii::t('app', 'Goole Translate Arabic')));?>
+           
                 <?php echo CHtml::link(Yii::t('app', 'Create new'), array('countries/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
                 <?php echo CHtml::link(Yii::t('app', 'Refresh'), array('countries/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
+				      
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body"><div id="google_translate_element" class="pull-right"></div>
+        <div class="box-body"><div id="google_translate_element" class="pull-right"></div>
             <div class="table-responsive">
             <?php 
             $hooks->doAction('before_grid_view', $collection = new CAttributeCollection(array(

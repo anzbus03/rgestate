@@ -8,10 +8,10 @@ function changeVal(k){
 </script> 
 <div class="col-sm-7">
          <div class="box box-success">
-            <div class="card-header">
-              <h3 class="card-title">Property Valuation -  <?php echo $model->reference;?> </h3>
+            <div class="box-header">
+              <h3 class="box-title">Property Valuation -  <?php echo $model->reference;?> </h3>
             </div>
-            <div class="card-body">
+            <div class="box-body">
               <!-- Minimal style -->
 
               <!-- checkbox -->
@@ -125,10 +125,10 @@ if($this->action->id=='view'){
 
           <!-- iCheck -->
           <div class="box box-success">
-            <div class="card-header">
-              <h3 class="card-title">Update Feedback</h3>
+            <div class="box-header">
+              <h3 class="box-title">Update Feedback</h3>
             </div>
-            <div class="card-body">
+            <div class="box-body">
               <!-- Minimal style -->
 
               <!-- checkbox -->
@@ -199,10 +199,10 @@ if($this->action->id=='view'){
                 )));
                 ?>
                       <div class="box box-success">
-            <div class="card-header">
-              <h3 class="card-title">Followup</h3>
+            <div class="box-header">
+              <h3 class="box-title">Followup</h3>
             </div>
-            <div class="card-body">
+            <div class="box-body">
               <!-- Minimal style -->
 
               <!-- checkbox -->
@@ -247,7 +247,7 @@ if($this->action->id=='view'){
                                         'footer'    => $note2->paginationOptions->getGridFooterPagination(),
                                         'buttons'   => array(
                                             'delete' => array(
-                                                 'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp;', 
+                                                 'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp;', 
                                                 'url'       => 'Yii::app()->createUrl("loan_application/delete_followup", array("id" => $data->primaryKey))',
                                                 'imageUrl'  => null,
                                                 'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'btn btn-danger btn-flat delete'),

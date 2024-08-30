@@ -40,7 +40,7 @@ if ($viewCollection->renderContent) { ?>
           
             
         </div>
-        <div class="card-body">
+        <div class="box-body">
             <div id="google_translate_element" class="pull-right"></div>
             <div class="table-responsive">
                 <table id="dataTable" class="table table-bordered table-hover table-striped">

@@ -43,10 +43,17 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm',array('focus'=>array($model,Yii::app()->controller->focus))); 
         ?>
+<<<<<<< HEAD
         <div class="card">
             <div class="card-header">
                 <div class="card-header-left">
                     <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+=======
+        <div class="box box-primary">
+            <div class="box-header">
+                <div class="pull-left">
+                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+>>>>>>> development
                 </div>
                 <div class="pull-right">
                     <?php if (!$model->isNewRecord) { ?>
@@ -55,7 +62,7 @@ if ($viewCollection->renderContent) {
                     <?php echo CHtml::link(Yii::t('app', 'Cancel'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="box-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.

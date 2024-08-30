@@ -148,9 +148,7 @@ class SendEnquiry  extends ContactUs
 			$criteria->params[':startDate'] = $this->startDate;
 			$criteria->params[':endDate'] = $this->endDate;
 		}
-		if ($this->section_id) {
-			$criteria->compare('section_id', $this->section_id);
-		}
+		
 
        // $criteria->compare('usr2.user_id',$this->user_id );
         $criteria->compare('contact_type','ENQUIRY');

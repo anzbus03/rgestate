@@ -60,7 +60,7 @@ if ($viewCollection->renderContent) { ?>
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
             <div class="table-responsive">
                 <?php 
                 // Begin HTML Table

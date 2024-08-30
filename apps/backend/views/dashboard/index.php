@@ -267,4 +267,124 @@ if ($viewCollection->renderContent) {
    
  <?php
 }
+/**
+ * This hook gives a chance to append content after the view file default content.
+ * Please note that from inside the action callback you can access all the controller view
+ * variables via {@CAttributeCollection $collection->controller->data}
+ * @since 1.3.3.1
+ */
+$hooks->doAction('after_view_file_content', new CAttributeCollection(array(
+    'controller'        => $this,
+    'renderedContent'   => $viewCollection->renderContent,
+)));
 ?>
+ <script>
+	 function OpenAddTagOption(k,e){
+		e.preventDefault();
+		var url_d = $(k).attr('href') ;
+		$('#myModal2').modal('show');
+		$('#preview_body2').html('loading...');
+	 	$.get(url_d,function(data){ if(data){ $('#preview_body2').html(data); } })
+	 }
+	 var lilink  ;
+ function previewthis(k,e)
+{
+    
+	e.preventDefault();lilink  = $(k) ;
+
+	var url_d = $(k).attr('href') ;
+	$('#myModal').modal('show');
+	$('#preview_body').html('loading...');
+	$.get(url_d,function(data){ if(data){ $('#preview_body').html(data); } })
+}
+function updateStatus(k)
+{
+	 
+	var url_d = $(k).attr('data-url') ;
+	var id =  $(k).attr('data-id')
+	var shorts =  $(k).attr('data-short')
+	var clas =  $(k).attr('class');
+	 
+	
+	$.get(url_d,function(data){ var data = JSON.parse(data);  lilink.closest('td').html(data.html);alert("Succesfully Updated");$('#myModal').modal('hide');   })
+} 
+function  saveFormFunction_grid_update_new(form, data, hasError ,Url )
+{ if(!hasError) { $.ajax({  "type":"POST",
+									"url": Url,
+                                    "data":form.serialize(),
+                                    "success":function(data){
+										if(data==1){ 
+											alert('Successfuly updated');
+											$('#myModal').modal('hide');
+				  
+										}
+										else{
+										    
+										 	
+											$('#messager').html('<div class="alert alert-warning"><strong>Warning!</strong>  '+data+'.</div>');
+										}
+                                     },
+
+                                  });
+     }
+      else
+    { 
+		form.find("button.btn-submit").button("reset");
+        alert('error');
+     }
+ }
+ </script>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+
+                </button>
+                 <h4 class="modal-title" id="myModalLabel"> Approval</h4>
+
+            </div>
+            <div id="preview_body">
+            
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+
+                </button>
+                 <h4 class="modal-title" id="myModalLabel"> Update Tags</h4>
+
+            </div>
+            <div id="preview_body2">
+            
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+a.strike , a.covr { text-decoration: line-through; }
+
+</style>
+ <style>
+     
+     thead, tbody tr {
+    
+}ul.yiiPager {
+    font-size: 11px;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    line-height: 100%;
+    display: inline-block;
+    overflow: hidden;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+.legendColorBox > div { display:none; }
+     </style>

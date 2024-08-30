@@ -20,7 +20,7 @@ if ($viewCollection->renderContent) { ?>
                 <?php echo CHtml::link(Yii::t('app', 'Refresh'), array('currencies/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
             </div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
             <div class="table-responsive">
                 <table id="currencies-table" class="table table-bordered table-hover table-striped">
                     <thead>

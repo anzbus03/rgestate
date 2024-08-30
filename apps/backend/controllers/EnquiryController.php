@@ -50,9 +50,7 @@ class EnquiryController extends Controller
             $model->startDate = $_GET['startDate'];
             $model->endDate = $_GET['endDate'];
         }
-        if (isset($_GET['section_id'])) {
-            $model->section_id = $_GET['section_id'];
-        }
+        
          $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"), 
             'pageHeading'       => Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
@@ -62,18 +60,6 @@ class EnquiryController extends Controller
             )
          ));
         $this->render('list', compact('model'));
-    }
-
-    public function actionUpdateTable($section_id) {
-        $model = new SendEnquiry('search');
-        if (isset($_GET['section_id'])) {
-            $model->section_id = $_GET['section_id'];
-        }
-    
-        $dataProvider = $model->search();
-        $data = $dataProvider->getData();
-    
-        $this->renderPartial('_tableRows', array('data' => $data));
     }
     
     public function actionExportExcel() {

@@ -20,7 +20,7 @@ if ($viewCollection->renderContent) { ?>
                 <?php echo CHtml::link(Yii::t('app', '<i class="fa fa-keyboard-o"></i> Arabic Bulk Update'), Yii::app()->createUrl($this->id . '/index', array('bulk_update' => '1', 'lan' => 'ar')), array('class' => 'btn btn-default btn-flat', 'title' => Yii::t('app', 'Google Translate Arabic'))); ?>
             </div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
             <div id="google_translate_element" class="pull-right"></div>
             <div class="table-responsive">
                 <table id="dataTable" class="table table-bordered table-hover table-striped">

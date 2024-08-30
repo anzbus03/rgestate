@@ -18,7 +18,7 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 if ($viewCollection->renderContent) { ?>
     <div class="box " style="border:0px;">
         
-        <div class="card-body">
+        <div class="box-body">
 				<section class=" ">
 				<div class="row">
 				<?php 

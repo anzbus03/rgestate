@@ -26,6 +26,9 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
+<style>
+.grid-filter-cell input,
+.grid-filter-cell select {
 
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">

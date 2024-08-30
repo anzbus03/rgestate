@@ -43,9 +43,9 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm'); ?>
         <div class="box box-primary borderless">
-            <div class="card-header">
+            <div class="box-header">
                 <div class="pull-left">
-                    <?php echo '<h3 class="card-title">' .  $pageHeading . '</h3>' ; 
+                    <?php echo '<h3 class="box-title">' .  $pageHeading . '</h3>' ; 
                     ?>
                 </div>
                       <div class="pull-right">
@@ -55,7 +55,7 @@ if ($viewCollection->renderContent) {
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="card-body">
+            <div class="box-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.

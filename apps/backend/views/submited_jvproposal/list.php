@@ -40,8 +40,12 @@ if ($viewCollection->renderContent) { ?>
                     </div>
                 </div>
             </div>
+            <div class="pull-right">
+                  <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
+            </div>
+            <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
             <div class="table-responsive">
                 <table id="submitedReqList" class="table table-striped table-bordered">
                     <thead>

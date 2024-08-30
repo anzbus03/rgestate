@@ -7,7 +7,7 @@ class Business_listingController extends Controller
 
 	public function actionIndex($country = null, $state = null, $city = null, $sub_category = null, $type = null, $community = null, $sec = null, $category = null, $dealer = null, $loc = null)
 	{
-	   //// exit;
+	   	//// exit;
 	    define('ITS_LIST_PAGE', '1');
 		$criteriaState=new CDbCriteria;
 		$criteriaState->select = 't.state_id,t.country_id';
@@ -26,12 +26,13 @@ class Business_listingController extends Controller
     	   }
 	    }
         if (isset($_GET["sub_category_old"])) {
-            if (!Subcategory::model()->findByAttributes(['slug' => $_GET['sub_category']])){
-                $subCategoryOld = $_GET["sub_category_old"];
+			if (!Subcategory::model()->findByAttributes(['slug' => $_GET['sub_category']])){
+				$subCategoryOld = $_GET["sub_category_old"];
                 $state = $_GET['sub_category'];
                 $_GET['state'] = $state;
                 $_GET['sub_category'] = $subCategoryOld;
-                unset($_GET["sub_category_old"]);
+				// print_r($_GET);
+				// exit;
             }
            
         }
@@ -39,10 +40,14 @@ class Business_listingController extends Controller
         if (isset($_GET["nested_sub_category_old"])) {
             $nestedSubCategoryOld = $_GET["nested_sub_category_old"];
             $_GET['nested_sub_category'] = $nestedSubCategoryOld;
-            unset($_GET['nested_sub_category_old']);
-           
         }
-        
+        if (isset($_GET["sub_category_old"]) || isset($_GET["nested_sub_category_old"])) {
+			unset($_GET["sub_category_old"]);	
+			unset($_GET['nested_sub_category_old']);
+			$queryString = http_build_query($_GET);
+			$redirectUrl = Yii::app()->createUrl($this->route, $_GET);
+			$this->redirect($redirectUrl);
+		}
         if (isset($_GET['type_of'])) {
             $subCategory = $_GET['type_of'];
             $subCategoryModel = Subcategory::model()->findByAttributes(['slug' => $subCategory]);
@@ -157,12 +162,12 @@ class Business_listingController extends Controller
 		}
 
 		/*
-    $regions = 	MainRegion::model()->getStateWithCountry_2datas(COUNTRY_ID);
-    $region_with_slug = 	MainRegion::model()->getStateWithCountry_2dataslug(COUNTRY_ID);
-    $statesData = States::model()->AllListingStatesOfCountry(COUNTRY_ID); 
-    $cityDats = CHtml::listData($statesData,'slug' , 'state_name'); 
-    $region_list = CHtml::listData($statesData,'slug' , 'region_id');
-    */
+		$regions = 	MainRegion::model()->getStateWithCountry_2datas(COUNTRY_ID);
+		$region_with_slug = 	MainRegion::model()->getStateWithCountry_2dataslug(COUNTRY_ID);
+		$statesData = States::model()->AllListingStatesOfCountry(COUNTRY_ID); 
+		$cityDats = CHtml::listData($statesData,'slug' , 'state_name'); 
+		$region_list = CHtml::listData($statesData,'slug' , 'region_id');
+		*/
 
 		$apps = $this->app->apps;
 		//$this->getData('pageStyles')->add(array('src' => $apps->getBaseUrl('assets/js/multiselect/jquery.dropdown.css'), 'priority' => -100));
@@ -186,10 +191,10 @@ class Business_listingController extends Controller
 
 		$search_url = $url_request;
 		/*
-	 if(Yii::app()->user->getId()){
-		$found_search = UserSearches::model()->findByAttributes(array('url'=>$search_url,'user_id'=>Yii::app()->user->getId()));
-	 }
-	 * */
+		if(Yii::app()->user->getId()){
+			$found_search = UserSearches::model()->findByAttributes(array('url'=>$search_url,'user_id'=>Yii::app()->user->getId()));
+		}
+		* */
 		$load_location = array();
 		$active_state  = false;
 		$active_city  = false;
@@ -197,8 +202,8 @@ class Business_listingController extends Controller
 		$state_id = null;
 		
 		$formData = array_filter((array)$_GET);
-// 		echo "<pre>";
-// 		print_r($formData);
+		// 		echo "<pre>";
+		// 		print_r($formData);
 		
 		if (isset($formData['reg']) and !isset($formData['state'])) {
 			$formData['reg_id'] =  @$region_with_slug[$formData['reg']]['id'];
@@ -215,9 +220,9 @@ class Business_listingController extends Controller
 		/*keyword end*/
 		$sub = '';
 		$main = '';
-// 		echo "<pre>";
-// 		print_r($formData);
-// 		exit;
+		// 		echo "<pre>";
+		// 		print_r($formData);
+		// 		exit;
 		if (!empty($category)) {
 
 			$categoryModelm =   Category::model()->categoryIdLan($category);
@@ -275,8 +280,8 @@ class Business_listingController extends Controller
 
 		$placead = new BusinessForSale();
 		$criteria =  $placead->findAds($formData, false, 1);
-    //  print_r($formData);
-	   // exit;
+    	//  print_r($formData);
+	   	// exit;
 		if ($l_view  == 'map') {
 
 
@@ -389,11 +394,11 @@ class Business_listingController extends Controller
 			$m_title .= $this->tag->getTag('business_for_sale', 'Businesses Opportunities');
 		} else {
             
-// 			switch ($filterModel->section_id) {
-// 				case 'business-opportunities':
-// 					$m_title .= ' ' . $this->tag->getTag('business_for_sale', 'Businesses Opportunities');
-// 					break;
-// 			}
+		// 			switch ($filterModel->section_id) {
+		// 				case 'business-opportunities':
+		// 					$m_title .= ' ' . $this->tag->getTag('business_for_sale', 'Businesses Opportunities');
+		// 					break;
+		// 			}
 		}
 
 
@@ -421,8 +426,8 @@ class Business_listingController extends Controller
 		define('sell_url', $this->app->createUrl('place_an_ad_no_login/create', array('type' => 'business')));
 			$cat_i = isset($formData['type_of']) ? $formData['type_of'] : $formData['category'];
 		$pageContentsListing =  ListingContents::model()->getListingContent($formData['sec'], $cat_i, $formData['state'], $formData['sub_category'], $formData['nested_sub_category']);
-// 		print_r($pageContentsListing);
-// 		exit;
+		// 		print_r($pageContentsListing);
+		// 		exit;
 		$this->setData(array(
             'pageMetaTitle'         =>  !empty($pageContentsListing->meta_title) ? $pageContentsListing->meta_title :  Yii::t('app',  'Properties Listing' . '  | {project} ', array('{project}' => $this->project_name)),
 			'noFooter'     =>  $file_view == 'index_map' ? '1' : false,

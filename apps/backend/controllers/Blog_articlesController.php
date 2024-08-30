@@ -1,5 +1,7 @@
 <?php defined('MW_PATH') || exit('No direct script access allowed');
 
+use DateTime;
+
 /**
  * ArticlesController
  * 
@@ -155,11 +157,18 @@ class Blog_articlesController extends Controller
         $articleToCategory = new ArticleToCategory();
         
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($article->modelName, array()))) {
-            $article->attributes = $attributes;
-            $article->listing_countries = Yii::app()->request->getPost("listing_countries");
             if (isset(Yii::app()->params['POST'][$article->modelName]['content'])) {
                 $article->content = Yii::app()->ioFilter->purify(Yii::app()->params['POST'][$article->modelName]['content']);
             }
+            if (isset($_FILES['BlogArticle']['name']['featured_image']) && !empty($_FILES['BlogArticle']['name']['featured_image']) && $_FILES['BlogArticle']['error']['featured_image'] == UPLOAD_ERR_OK) {
+                $imageName = $this->uploadImage($_FILES['BlogArticle']);
+                if ($imageName) {
+                    $attributes['featured_image'] = $imageName;
+                }
+            }
+            
+            $article->attributes = $attributes;
+            $article->listing_countries = Yii::app()->request->getPost("listing_countries");
             if (!$article->save()) {
                 $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
             } else {
@@ -311,6 +320,19 @@ class Blog_articlesController extends Controller
         $articleToCategory = new ArticleToCategory();
        
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($article->modelName, array()))) {
+            // print_r($article->featured_image);
+            // exit;
+            if (isset($_FILES['BlogArticle']['name']['featured_image']) && !empty($_FILES['BlogArticle']['name']['featured_image']) && $_FILES['BlogArticle']['error']['featured_image'] == UPLOAD_ERR_OK) {
+                if ($_FILES['BlogArticle']['size']['featured_image'] > 0) {
+                    $imageName = $this->uploadImage($_FILES['BlogArticle']);
+                    if ($imageName) {
+                        $attributes['featured_image'] = $imageName;
+                    }
+                }
+            }else {
+                $attributes['featured_image'] = $article->featured_image;
+            }
+            
             $article->attributes = $attributes;
             if (isset(Yii::app()->params['POST'][$article->modelName]['content'])) {
                 $article->content = Yii::app()->ioFilter->purify(Yii::app()->params['POST'][$article->modelName]['content']);
@@ -356,6 +378,54 @@ class Blog_articlesController extends Controller
         
         $this->render('form', compact('article', 'articleToCategory'));
     }
+    // public function actionUpdate_author($id)
+    // {
+    //     $article = BlogAuthors::model()->findByPk((int)$id);
+        
+    //     if (empty($article)) {
+    //         throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+    //     }
+        
+    //     $request = Yii::app()->request;
+    //     $notify = Yii::app()->notify;
+       
+    //     if ($request->isPostRequest && ($attributes = (array)$request->getPost($article->modelName, array()))) {
+    //         if (isset($_FILES['BlogAuthors']['name']['image']) && !empty($_FILES['BlogAuthors']['name']['image']) && $_FILES['BlogAuthors']['error']['image'] == UPLOAD_ERR_OK) {
+    //             $imageName = $this->uploadImage($_FILES['BlogAuthors']);
+    //             if ($imageName) {
+    //                 $attributes['image'] = $imageName;
+    //             }
+    //         }
+            
+    //         $article->attributes = $attributes;
+    //         if (!$article->save()) {
+    //             $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
+    //         } else {
+    //             $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
+    //         }
+            
+    //         Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
+    //             'controller'=> $this,
+    //             'success'   => $notify->hasSuccess,
+    //             'article'   => $article,
+    //         )));
+            
+    //         if ($collection->success) {
+    //             $this->redirect(array('blog_articles/index_authors'));
+    //         }
+    //     }
+        
+    //     $this->setData(array(
+    //         'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t('articles', 'Update blog'), 
+    //         'pageHeading'       => Yii::t('articles', 'Update blog'),
+    //         'pageBreadcrumbs'   => array(
+    //             Yii::t('articles', 'Blogs') => $this->createUrl('blog_articles/index'),
+    //             Yii::t('app', 'Update'),
+    //         )
+    //     ));
+        
+    //     $this->render('form_authors', compact('article', 'articleToCategory'));
+    // }
     
     /**
      * Delete an existing article
@@ -378,6 +448,25 @@ class Blog_articlesController extends Controller
             $this->redirect($request->getPost('returnUrl', array('blog_articles/index')));
         }
     }
+    
+    // public function actionDelete_author($id)
+    // {
+    //     $article = BlogAuthors::model()->findByPk((int)$id);
+        
+    //     if (empty($article)) {
+    //         throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+    //     }
+        
+    //     $article->delete();
+        
+    //     $request    = Yii::app()->request;
+    //     $notify     = Yii::app()->notify;
+        
+    //     if (!$request->getQuery('ajax')) {
+    //         $notify->addSuccess(Yii::t('app', 'The author has been successfully deleted!'));
+    //         $this->redirect($request->getPost('returnUrl', array('blog_articles/index_authors')));
+    //     }
+    // }
     
     /**
      * generate the slug for an article based on the article title

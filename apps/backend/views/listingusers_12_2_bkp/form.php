@@ -37,10 +37,10 @@ if ($viewCollection->renderContent) {
         <style>label{ display:block; }</style>
                   <link rel="stylesheet" href="<?php echo Yii::app()->apps->getBaseUrl('assets/js/build/css/intlTelInput.css');?>">
                           <script src="<?php echo Yii::app()->apps->getBaseUrl('assets/js/build/js/intlTelInput.js');?>"></script>
-        <div class="card">
-            <div class="card-header">
+        <div class="box box-primary">
+            <div class="box-header">
                 <div class="pull-left">
-                    <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$user->isNewRecord) { ?>
@@ -50,7 +50,7 @@ if ($viewCollection->renderContent) {
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="card-body">
+            <div class="box-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
@@ -69,7 +69,7 @@ if ($viewCollection->renderContent) {
                 <div class="col-sm-12">
                 <div class="box box-danger">
            
-            <div class="card-body">
+            <div class="box-body">
               <div class="row">
                     <div class="form-group col-sm-2">
 							<?php echo $form->labelEx($user, 'super_user');?>

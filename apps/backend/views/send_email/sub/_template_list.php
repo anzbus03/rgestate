@@ -1,8 +1,8 @@
      <div class="col-md-9  no-padding-left">
-		  <div class="card">
-        <div class="card-header">
+		  <div class="box box-primary">
+        <div class="box-header">
             <div class="pull-left">
-                <h3 class="card-title">
+                <h3 class="box-title">
                     <span class="glyphicon glyphicon-flag"></span> Email Templates
                 </h3>
             </div>
@@ -11,7 +11,7 @@
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="card-body">
+        <div class="box-body">
     <div class="table-responsive">
             <?php 
             /**
@@ -75,20 +75,20 @@
                             'footer'    => $model->paginationOptions->getGridFooterPagination(),
                             'buttons'   => array(
                                 'update' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/templateUpdate", array("template_uid" => $data->template_uid))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
                                 ),
                                 'delete' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
                                     'url'       => 'Yii::app()->createUrl("templates/delete", array("template_uid" => $data->template_uid))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
                                    // 'visible'   => '$data->removable === User::TEXT_YES',
                                 ),    
                                 'view' => array(
-                                    'label'     => ' &nbsp; <span class="fa fa-eye"></span> &nbsp; ', 
+                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp; ', 
                                     
                                    
                                     'url'       => 'Yii::app()->createUrl("templates/preview", array("template_uid" => $data->template_uid))',
