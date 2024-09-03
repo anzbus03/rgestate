@@ -29,12 +29,16 @@ if ($viewCollection->renderContent) { ?>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title">
-                <span class="fa fa-star"></span> 
-                <?php echo ("Users List");?>
+                <span class="fa fa-star"></span>
+                <?php echo ("Users List"); ?>
             </h3>
+
             <div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
+                        <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id . '/create'), array('class' => 'btn btn-primary', 'title' => Yii::t('app', 'Create new'))); ?>
+                    </div>
+                    <div class="col-md-6">
                         <input type="text" id="dateRange" class="form-control" style="margin-left: 10px;" />
                     </div>
                 </div>
@@ -57,41 +61,41 @@ if ($viewCollection->renderContent) { ?>
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($user->search()->getData() as $data) { ?>
-                        <tr>
-                            <td><?php echo CHtml::decode($data->first_name); ?></td>
-                            <td><?php echo CHtml::decode($data->last_name); ?></td>
-                            <td><?php echo CHtml::encode($data->email); ?></td>
-                            <td><?php echo CHtml::encode($data->group->name); ?></td>
-                            <td><?php echo CHtml::encode($data->status); ?></td>
-                            <td><?php echo CHtml::encode($data->dateAdded); ?></td>
-                            <td><?php echo CHtml::encode($data->lastUpdated); ?></td>
-                            <td>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/impersonate')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/impersonate', array('id' => $data->user_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
-                                        <i class="fa fa-bar-chart"></i>
-                                    </a>
-                                <?php } ?>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/update')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->user_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                <?php } ?>
-                            
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/delete')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->user_id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
-                                        <i class="fa fa-times-circle"></i>
-                                    </a>
-                                <?php } ?>
-                            </td>
-                        </tr>
-                    <?php } ?>
+                        <?php foreach ($user->search()->getData() as $data) { ?>
+                            <tr>
+                                <td><?php echo CHtml::decode($data->first_name); ?></td>
+                                <td><?php echo CHtml::decode($data->last_name); ?></td>
+                                <td><?php echo CHtml::encode($data->email); ?></td>
+                                <td><?php echo CHtml::encode($data->group->name); ?></td>
+                                <td><?php echo CHtml::encode($data->status); ?></td>
+                                <td><?php echo CHtml::encode($data->dateAdded); ?></td>
+                                <td><?php echo CHtml::encode($data->lastUpdated); ?></td>
+                                <td>
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/impersonate')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/impersonate', array('id' => $data->user_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
+                                            <i class="fa fa-bar-chart"></i>
+                                        </a>
+                                    <?php } ?>
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('id' => $data->user_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                    <?php } ?>
+
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->user_id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
+                                            <i class="fa fa-times-circle"></i>
+                                        </a>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
-            </div>    
+            </div>
         </div>
     </div>
-<?php 
+<?php
 }
 /**
  * This hook gives a chance to append content after the view file default content.
@@ -105,9 +109,9 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 )));
 ?>
 <script>
- $(document).ready(function() {
+    $(document).ready(function() {
         $('#usersList').DataTable({
-            createdRow: function (row, data, index) {
+            createdRow: function(row, data, index) {
                 $(row).addClass('selected');
             },
             language: {
@@ -162,10 +166,10 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     exportUrl += "&type=trash";
                 }
             }
-                
+
 
             // Redirect to the export URL
-            window.location.href = exportUrl;    
+            window.location.href = exportUrl;
         });
     });
 </script>
