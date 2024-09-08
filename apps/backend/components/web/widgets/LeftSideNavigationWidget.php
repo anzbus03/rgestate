@@ -206,8 +206,18 @@ class LeftSideNavigationWidget extends CWidget {
                     array('url' => array('blog_articles/index_authors'), 'label' => Yii::t('app', 'View Authors'), 'active' => strpos($route, 'blog_articles/index_authors') === 0),
                     array( 'url' => array( 'advertisement_articles/index' ), 'label' => Yii::t( 'app', 'View all adv articles' ), 'active' => strpos( $route, 'advertisement_articles/index' ) === 0 ),
                     array( 'url' => array( 'content_pages/index' ), 'label' => Yii::t( 'app', 'Content Pages' ), 'active' => strpos( $route, 'content_pages/index' ) === 0 ),
-                    array( 'url' => array( 'listing_contents/index' ), 'label' => Yii::t( 'app', 'Listing Contents' ), 'active' => strpos( $route, 'listing_contents/index' ) === 0 ),
                     array( 'url' => array( 'article_categories/index' ), 'label' => Yii::t( 'app', 'View all categories' ), 'active' => strpos( $route, 'article_categories' ) === 0 ),
+                ),
+            ),
+            'seo' => array(
+                'name'      => Yii::t( 'app', 'SEO' ),
+                'icon'      => 'flaticon-050-info',
+                'active'    => array('listing_contents' ),
+                'route'     => null,
+                'items'     => array(
+                    array( 'url' => array( 'listing_contents/index' ), 'label' => Yii::t( 'app', 'Listing Contents' ), 'active' => strpos( $route, 'listing_contents/index' ) === 0 ),
+                    array( 'url' => array( 'settings/index/view/meta' ), 'label' => Yii::t( 'app', 'SEO Meta Details' ), 'active' => strpos( $route, 'settings/index' ) === 0 ),
+                    
                 ),
             ),
 
