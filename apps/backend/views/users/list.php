@@ -33,7 +33,7 @@ if ($viewCollection->renderContent) { ?>
                 <?php echo ("Users List"); ?>
             </h3>
 
-            <div>
+            <div> 
                 <div class="row">
                     <div class="col-md-6">
                         <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id . '/create'), array('class' => 'btn btn-primary', 'title' => Yii::t('app', 'Create new'))); ?>
@@ -53,6 +53,7 @@ if ($viewCollection->renderContent) { ?>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Email</th>
+                            <th>Phone</th>
                             <th>User Group</th>
                             <th>Status</th>
                             <th>Date Added</th>
@@ -66,16 +67,17 @@ if ($viewCollection->renderContent) { ?>
                                 <td><?php echo CHtml::decode($data->first_name); ?></td>
                                 <td><?php echo CHtml::decode($data->last_name); ?></td>
                                 <td><?php echo CHtml::encode($data->email); ?></td>
+                                <td><?php echo CHtml::encode($data->phone_number); ?></td>
                                 <td><?php echo CHtml::encode($data->group->name); ?></td>
                                 <td><?php echo CHtml::encode($data->status); ?></td>
                                 <td><?php echo CHtml::encode($data->dateAdded); ?></td>
                                 <td><?php echo CHtml::encode($data->lastUpdated); ?></td>
                                 <td>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/impersonate')) { ?>
+                                    <!-- <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/impersonate')) { ?>
                                         <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/impersonate', array('id' => $data->user_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
                                             <i class="fa fa-bar-chart"></i>
                                         </a>
-                                    <?php } ?>
+                                    <?php } ?> -->
                                     <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
                                         <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('id' => $data->user_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
                                             <i class="fa fa-pencil"></i>
@@ -83,10 +85,23 @@ if ($viewCollection->renderContent) { ?>
                                     <?php } ?>
 
                                     <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->user_id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
-                                            <i class="fa fa-times-circle"></i>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->user_id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>">
+                                            <i class="fa fa-trash"></i>
                                         </a>
                                     <?php } ?>
+                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
+                                            <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->user_id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
+                                                <i class="fa fa-times-circle"></i>
+                                            </a>
+                                        <?php } ?>
+
+                                    <!-- <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
+                                        <a href="javascript:void(0);" data-id="<?php echo $data->user_id; ?>" class="delete" title="<?php echo Yii::t('app', 'Delete'); ?>">
+                                            <i class="fa fa-times-circle"></i>
+                                        </a>
+                                    <?php } ?> -->
+
+
                                 </td>
                             </tr>
                         <?php } ?>
@@ -108,6 +123,35 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'renderedContent'   => $viewCollection->renderContent,
 )));
 ?>
+
+<!-- delete method  -->
+<!-- <script>
+    $(document).on('click', '.delete', function(e) {
+    e.preventDefault();
+    var userId = $(this).data('id');
+    if (confirm('<?php echo Yii::t('app', 'Are you sure you want to delete this item?'); ?>')) {
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . "/delete"); ?>',
+            data: {
+                id: userId,
+                YII_CSRF_TOKEN: '<?php echo Yii::app()->request->csrfToken; ?>'
+            },
+            success: function(response) {
+                alert('<?php echo Yii::t('app', 'The item has been successfully deleted!'); ?>');
+                location.reload(); // or redirect as needed
+            },
+            error: function(xhr) {
+                alert('<?php echo Yii::t('app', 'An error occurred while trying to delete the item.'); ?>');
+            }
+        });
+    }
+});
+
+</script> -->
+
+
+
 <script>
     $(document).ready(function() {
         $('#usersList').DataTable({

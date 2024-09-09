@@ -67,8 +67,9 @@ class UsersController extends Controller
             $user->attributes = $attributes;
             //    print_r($user->attributes);exit;
             if (!$user->save()) {
-                $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
-            } else {
+                $errors = CHtml::errorSummary($user);
+                $notify->addError(Yii::t('app', 'There were errors: ' . $errors));
+            }else {
                 $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
             }
 
@@ -126,7 +127,7 @@ class UsersController extends Controller
             if (!$user->save()) {
                 $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
             } else {
-                $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
+                $notify->addSuccess(Yii::t('app', 'Your form has been successfully updated!'));
             }
 
             Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
@@ -158,27 +159,26 @@ class UsersController extends Controller
      * Delete existing user
      */
     public function actionDelete($id)
-    {
-        $user = User::model()->findByPk((int)$id);
-
-        if (empty($user)) {
-            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
-        }
-
-        if ($user->removable == User::TEXT_YES) {
-            $user->delete();
-
-            // PlaceAnAd::model()->deleteAll(array('user_id'=>$id));
-        }
-
-        $request = Yii::app()->request;
-        $notify = Yii::app()->notify;
-
-        if (!$request->getQuery('ajax')) {
-            $notify->addSuccess(Yii::t('app', 'The item has been successfully deleted!'));
-            $this->redirect($request->getPost('returnUrl', array('users/index')));
-        }
+{
+    if (!Yii::app()->request->isPostRequest) {
+        throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
+
+    $user = User::model()->findByPk((int)$id);
+    if ($user === null) {
+        throw new CHttpException(404, 'The requested page does not exist.');
+    }
+
+    if ($user->removable == User::TEXT_YES) {
+        $user->delete();
+    }
+
+    if (!Yii::app()->request->getQuery('ajax')) {
+        Yii::app()->notify->addSuccess('The item has been successfully deleted!');
+        $this->redirect(array('users/index'));
+    }
+}
+
     public function actionImpersonate($id)
     {
         $customer = User::model()->findByPk((int)$id);
@@ -188,7 +188,7 @@ class UsersController extends Controller
         }
 
         $request = Yii::app()->request;
-        $notify = Yii::app()->notify;
+        $notify = Yii::app()->notify; 
 
         Yii::import('backend.components.web.auth.*');
         $identity = new UserIdentity($customer->email, null);
