@@ -881,9 +881,10 @@
 
 
 @media (max-width: 768px) {
-    .blog-container{
+    .blog-container {
         gap: 50px;
     }
+
     /* blog content  */
     .blog-content {
         width: 100%;
@@ -895,10 +896,11 @@
         margin-left: 0px;
     }
 
-    .sidebar-search{
+    .sidebar-search {
         flex-direction: row !important;
     }
-    .recent-post div{
+
+    .recent-post div {
         /* align-items: start; */
     }
 }
@@ -934,9 +936,9 @@
                 </div>
             </div>
 
-             <!-- recent posts -->
+            <!-- recent posts -->
             <h3 class="sidebar-title mt-4"><span class="sidebar-title custom-underline">Recent</span> Post</h3>
-            <div class="mt-3 recent-post" >
+            <div class="mt-3 recent-post">
                 <!-- Dynamic part (Example for 1 post) -->
                 <div class="d-flex align-items-center mt-5 custom-spacing-y-4">
 
@@ -986,13 +988,148 @@
             </div>
 
             <!-- recent category -->
-             <div></div>
+            <div class="recent-posts">
+                <h3 class="sidebar-title mt-4"><span class="sidebar-title custom-underline">Recent</span> Post</h3>
+                <div class="post-categories">
+                    <p class="category">Business</p>
+                    <p class="category ml">Consulting</p>
+                    <p class="category ml">Management</p>
+                    <p class="category">Business</p>
+                    <p class="category ml">Consulting</p>
+                </div>
+                <div class="business-platform">
+                    <!-- Keep your photo here -->
+                    <!-- <div class="business-photo"><img src="/Rgstate/Picture/owercontact.jpg" alt=""> -->
+                    <p class="business-text">Find An Best <br>Business <br>Platform</p>
+                    <button class="contact-us-button">Contact Us</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <div class="clearfix"></div>
 </div>
 </section>
+
+<!-- recent category style  -->
+<style>
+.recent-posts {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    margin-top: 50px;
+}
+
+.recent-posts-title {
+    font-size: 1.125rem;
+    /* text-lg */
+    font-weight: 600;
+    /* font-semibold */
+    margin-top: 1.25rem;
+    /* mt-5 */
+}
+
+.recent-posts-underline {
+    width: 63px;
+    border-bottom: 2px solid #070707;
+}
+
+.post-categories {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 12px;
+    gap: 10px;
+}
+
+.category {
+    width: 30%;
+    height: 30px;
+    /* margin-top: 1rem; */
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid rgba(166, 166, 166, 0.3);
+    /* border-[#A6A6A64D] */
+    /* margin-right: 5px; */
+}
+
+.business-platform {
+    width: 100%;
+    max-width: 295px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #0E4F70;
+    margin-top: 2rem;
+    /* mt-8 */
+    color: white;
+    padding: 1rem;
+}
+
+.business-text {
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+    /* mb-5 */
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.75rem;
+    /* leading-7 */
+}
+
+.contact-us-button {
+    width: 100%;
+    max-width: 121px;
+    height: 43px;
+    background-color: #39A0D4;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .recent-posts {
+        top: auto;
+        right: auto;
+        position: relative;
+        margin: 1rem 0;
+    }
+
+    .business-platform {
+        max-width: 100%;
+        padding: 2rem;
+    }
+
+    .category {
+        width: 45%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .business-text {
+        font-size: 16px;
+        line-height: 1.5rem;
+    }
+
+    .category {
+        width: 100%;
+    }
+
+    .recent-posts-title {
+        font-size: 1rem;
+        /* text-lg */
+    }
+
+    .contact-us-button {
+        width: 100%;
+    }
+}
+</style>
 
 
 
