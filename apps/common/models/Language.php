@@ -21,7 +21,7 @@
  * @property string $region_code
  * @property string $is_default
  * @property string $date_added
- * @property string $last_updated
+ * @property string $last_updated 
  *
  * The followings are the available model relations:
  * @property Customer[] $customers

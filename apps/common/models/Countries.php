@@ -67,6 +67,7 @@ class Countries extends ActiveRecord
         // class name for the relations automatically generated below.
         return array(
           'statelist'=>array(self::HAS_MANY, 'States', 'country_id','on'=>'statelist.isTrash=0'),
+		  'users' => array(self::HAS_MANY, 'User', 'country_id'),
           'currency'=>array(self::BELONGS_TO, 'Currency', 'default_currency' ),
           
         );

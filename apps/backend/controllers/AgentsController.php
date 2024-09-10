@@ -35,7 +35,7 @@ class AgentsController extends Controller
 		
  
         $request = Yii::app()->request; $notify = Yii::app()->notify;
-        $user = new Agents('search');
+        $user = new user('search');
             if($request->isPostRequest) {
                 $sortOrderAll = $_POST['priority'];
 				if(count($sortOrderAll)>0)
@@ -69,6 +69,31 @@ class AgentsController extends Controller
         $tags = CHtml::listData($tagModel,'tag_id','tag_name');
         $tags_short = CHtml::listData($tagModel,'tag_id','tagCodeWithColor');
         $this->render('list', compact('user','tags','tags_short'));
+    }
+
+      /**
+     * List of  users
+     */
+    public function actionList(){
+        $request = Yii::app()->request; 
+        $notify = Yii::app()->notify;
+        $users = new user();
+
+        $users->unsetAttributes();
+
+        // for filters.
+        $users->attributes = (array)$request->getQuery($users->modelName, array());
+
+        $this->setData(array(
+            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'View users'),
+            'pageHeading'       => Yii::t('users', 'View users'),
+            'pageBreadcrumbs'   => array(
+                Yii::t('users', 'Users') => $this->createUrl('users/index'),
+                Yii::t('app', 'View all')
+            )
+        ));
+
+        $this->render('list', compact('users'));
     }
     
     /**

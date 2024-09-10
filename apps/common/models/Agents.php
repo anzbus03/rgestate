@@ -57,7 +57,7 @@ class Agents extends ListingUsers
             array('user_type', 'in', 'range' => array_keys($this->getUserType()),  'message'=>'Please enter a value for {attribute_value}.'),
             array('zip', 'length', 'max'=>7),
             array('phone', 'length', 'max'=>15),
-            array('old_password','checkOldPassword', 'on'=>'updatepassword'),
+            array('old_password','checkOldPassword', 'on'=>'updatepassword'), 
                 array('password', 'required' , 'on'=>'update-new-password'),
 			array('password', 'length', 'min'=>5,'on'=>'update-new-password'),
 			
