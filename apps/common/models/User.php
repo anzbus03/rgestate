@@ -18,18 +18,29 @@
  * @property integer $user_id
  * @property string $user_uid
  * @property integer $language_id
+ * @property integer $service_id
+ * @property integer $country_id
+ * @property integer $state_id
  * @property string $first_name
  * @property string $last_name
+ * @property string $phone_number
  * @property string $email
  * @property string $password
+ * @property string $description
+ * @property string $city
+ * @property string $address
  * @property string $timezone
  * @property string $removable
- * @property string $status
+ * @property string $status 
+ * @property string $is_agent
  * @property string $date_added
  * @property string $last_updated
  *
  * The followings are the available model relations:
  * @property Language $language
+ * @property Services $services
+ * @property Countries $countries
+ * @property States $states
  * @property UserAutoLoginToken[] $autoLoginTokens
  */
 class User extends ActiveRecord
@@ -59,20 +70,37 @@ class User extends ActiveRecord
             // when a user is updated
             array('first_name, last_name, email, confirm_email, timezone, status', 'required', 'on' => 'update'),
             //
+            array(
+                'phone_number', 
+                'match', 
+                'pattern' => '/^[0-9\-\(\)\s]+$/', 
+                'message' => 'Phone number can only contain numbers, spaces, hyphens, and parentheses.', 
+                'on' => 'insert'
+            ),
             array('language_id', 'numerical', 'integerOnly' => true),
             array('language_id', 'exist', 'className' => 'Language'),
+            array('state_id', 'numerical', 'integerOnly' => true),
+            array('state_id', 'exist', 'className' => 'States'),
+            array('country_id', 'numerical', 'integerOnly' => true),
+            array('country_id', 'exist', 'className' => 'Countries'),
+            array('service_id', 'numerical', 'integerOnly' => true),
+            array('service_id', 'exist', 'className' => 'Services'),
             array('first_name, last_name', 'length', 'min' => 2, 'max' => 100),
             array('email, confirm_email', 'length', 'min' => 4, 'max' => 100),
             array('email, confirm_email,alt_email', 'email'),
+            array('description', 'length', 'max'=>3000),
+            array('city', 'length', 'max' => 100),
+            array('address', 'length', 'max' => 255),
             array('group_id,previousPassword,bank_id', 'safe'),
             array('timezone', 'in', 'range' => array_keys(DateTimeHelper::getTimeZones())),
             array('fake_password, confirm_password', 'length', 'min' => 6, 'max' => 100),
             array('confirm_password', 'compare', 'compareAttribute' => 'fake_password'),
             array('confirm_email', 'compare', 'compareAttribute' => 'email'),
+            array('is_agent', 'in', 'range' => array(0, 1), 'message' => 'The value of is_agent must be either 0 (user) or 1 (agent).'),
             array('email', 'unique', 'criteria' => array('condition' => 'user_id != :uid', 'params' => array(':uid' => (int)$this->user_id) )),
-
+        
             // mark them as safe for search
-            array('first_name, last_name, email, status', 'safe', 'on' => 'search'),
+            array('first_name, last_name, email, status, is_agent', 'safe', 'on' => 'search'),
         );
         
         return CMap::mergeArray($rules, parent::rules());
@@ -86,6 +114,9 @@ class User extends ActiveRecord
         $relations = array(
             'language' => array(self::BELONGS_TO, 'Language', 'language_id'),
              'group'                 => array(self::BELONGS_TO, 'UserGroup', 'group_id'),
+             'services'                 => array(self::BELONGS_TO, 'Services', 'service_id'),
+             'countries'                 => array(self::BELONGS_TO, 'Countries', 'country_id'),
+             'states'                 => array(self::BELONGS_TO, 'States', 'state_id'),
             'autoLoginTokens' => array(self::HAS_MANY, 'UserAutoLoginToken', 'user_id'),
         );
         
@@ -101,12 +132,20 @@ class User extends ActiveRecord
             'user_id'       => Yii::t('users', 'User'),
             'group_id'       => Yii::t('users', 'User Group'),
             'language_id'   => Yii::t('users', 'Language'),
+            'country_id'   => Yii::t('users', 'Countries'),
+            'state_id'   => Yii::t('users', 'State/Region'),
+            'service_id'   => Yii::t('users', 'Designation'),
             'first_name'    => Yii::t('users', 'First name'),
             'last_name'     => Yii::t('users', 'Last name'),
+            'phone_number'     => Yii::t('users', 'Phone number'),
             'email'         => Yii::t('users', $this->mTag()->gettag('email','Email')),
             'password'      => Yii::t('users', $this->mTag()->gettag('password','Password')),
             'timezone'      => Yii::t('users', 'Timezone'),
             'removable'     => Yii::t('users', 'Removable'),
+            'is_agent'     => Yii::t('users', 'Is Agent'),
+            'description'     => Yii::t('users', 'Description'),
+            'address'     => Yii::t('users', 'Address'),
+            'city'     => Yii::t('users', 'City'),
             
             'confirm_email'     => Yii::t('users', 'Confirm email'),
             'fake_password'     => Yii::t('users', 'Password'),
@@ -129,7 +168,12 @@ class User extends ActiveRecord
         $criteria->compare('first_name', $this->first_name, true);
         $criteria->compare('last_name', $this->last_name, true);
         $criteria->compare('email', $this->email, true);
+        $criteria->compare('is_agent', $this->is_agent, true);
         $criteria->compare('group_id', $this->group_id);
+        $criteria->compare('service_id', $this->service_id);
+        $criteria->compare('country_id', $this->country_id);
+        $criteria->compare('state_id', $this->state_id);
+        $criteria->compare('city', $this->city, true);
         $criteria->compare('status', $this->status);
          $criteria->compare('status!', 'deleted');
         return new CActiveDataProvider(get_class($this), array(
@@ -168,23 +212,27 @@ class User extends ActiveRecord
         if (!parent::beforeSave()) {
             return false;
         }
-        
+    
+        // Check if this is a new record
         if ($this->isNewRecord) {
             $this->user_uid = $this->generateUid();
             $this->previousPassword = $this->fake_password;
             $this->sendEmailNotification();
         }
-        
+    
+        // Hash the password if fake_password is not empty
         if (!empty($this->fake_password)) {
             $this->password = Yii::app()->passwordHasher->hash($this->fake_password);
         }
-        
+    
+        // If the removable flag is set to TEXT_NO, ensure the status is active
         if ($this->removable === self::TEXT_NO) {
             $this->status = self::STATUS_ACTIVE;
         }
-        
+    
         return true;
     }
+    
     public $previousPassword;
      public function sendEmailNotification(){
 			$emailTemplate =  CustomerEmailTemplate::model()->getTemplateByUid('tn482sx22n40f');

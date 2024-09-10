@@ -48,14 +48,14 @@ class LeftSideNavigationWidget extends CWidget
                 'route'     => array('dashboard/index'),
             ),
             'agent_management' => array(
-                'name'      => Yii::t('app', 'Agent Management'),
+                'name'      => Yii::t('app', 'Agent Management'), 
                 'icon'      => 'flaticon-041-graph',
                 'active'    =>  array('agents', 'agent_groups'),
                 'route'     => array('agents/index'),
                 'items'     => array(
-                    array('url' => array('agents/index'), 'label' => Yii::t('app', 'Agent Dashboard'), 'active' => strpos($route, 'agents') === 0),
-                    array('url' => array('agents/list'), 'label' => Yii::t('app', 'Agents List'), 'active' => strpos($route, 'agents') === 0),
-                    array('url' => array('agents/create'), 'label' => Yii::t('app', 'Create Agent'), 'active' => strpos($route, 'agents') === 0),
+                    array('url' => array('agents/index'), 'label' => Yii::t('app', 'Agent Dashboard'), 'active' => strpos($route, 'agents/index') === 0),
+                    array('url' => array('agents/list'), 'label' => Yii::t('app', 'Agents List'), 'active' => strpos($route, 'agents/list') === 0),
+                    array('url' => array('agents/create'), 'label' => Yii::t('app', 'Create Agent'), 'active' => strpos($route, 'agents/create') === 0),
                 ),
             ),
 

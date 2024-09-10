@@ -78,18 +78,15 @@ class AgentsController extends Controller
     {
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
-        $user = new Agents();
-        $user->scenario = 'agent_insert';
+        $user = new User();
+        // $user->scenario = 'agent_insert';
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($user->modelName, array()))) {
             $user->attributes = $attributes;
         
-           
             if (!$user->save()) {
-                $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
-                
-            } else {
-				 
-				 
+                $errors = CHtml::errorSummary($user);
+                $notify->addError(Yii::t('app', 'There were errors: ' . $errors));
+            }else {
                 $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
             }
             
@@ -120,6 +117,7 @@ class AgentsController extends Controller
         $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/select2.min.js')));
 		$this->getData('pageScripts')->add(array('src' => AssetsUrl::js('dropzone.min.js')));
 		$this->getData('pageStyles')->add(array('src' => AssetsUrl::css('dropzone.css')));
+
         $this->render('form', compact('user'));
     }
     
