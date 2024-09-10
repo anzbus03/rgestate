@@ -69,7 +69,7 @@ class UsersController extends Controller
             if (!$user->save()) {
                 $errors = CHtml::errorSummary($user);
                 $notify->addError(Yii::t('app', 'There were errors: ' . $errors));
-            }else {
+            } else {
                 $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
             }
 
@@ -159,25 +159,25 @@ class UsersController extends Controller
      * Delete existing user
      */
     public function actionDelete($id)
-{
-    if (!Yii::app()->request->isPostRequest) {
-        throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-    }
+    {
+        if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
 
-    $user = User::model()->findByPk((int)$id);
-    if ($user === null) {
-        throw new CHttpException(404, 'The requested page does not exist.');
-    }
+        $user = User::model()->findByPk((int)$id);
+        if ($user === null) {
+            throw new CHttpException(404, 'The requested page does not exist.');
+        }
 
-    if ($user->removable == User::TEXT_YES) {
-        $user->delete();
-    }
+        if ($user->removable == User::TEXT_YES) {
+            $user->delete();
+        }
 
-    if (!Yii::app()->request->getQuery('ajax')) {
-        Yii::app()->notify->addSuccess('The item has been successfully deleted!');
-        $this->redirect(array('users/index'));
+        if (!Yii::app()->request->getQuery('ajax')) {
+            Yii::app()->notify->addSuccess('The item has been successfully deleted!');
+            $this->redirect(array('users/index'));
+        }
     }
-}
 
     public function actionImpersonate($id)
     {
@@ -188,7 +188,7 @@ class UsersController extends Controller
         }
 
         $request = Yii::app()->request;
-        $notify = Yii::app()->notify; 
+        $notify = Yii::app()->notify;
 
         Yii::import('backend.components.web.auth.*');
         $identity = new UserIdentity($customer->email, null);

@@ -90,9 +90,6 @@ if ($viewCollection->renderContent) {
             <div class="clearfix">
                 <!-- -->
             </div>
-
-
-
             <div class="form-group col-lg-6">
                 <?php 
                    
@@ -110,7 +107,7 @@ if ($viewCollection->renderContent) {
 						   }',
 							)
                        ));  ?>
-					   
+
                 <span id="myDiv" style="padding-left:20px;"></span>
                 <?php echo $form->dropDownList($user,'country_id',CHtml::listData(Countries::model()->Countrylist(),"country_id" ,"country_name"), $dropdwn  ); ?>
                 <?php echo $form->error($user, 'country_id');?>
