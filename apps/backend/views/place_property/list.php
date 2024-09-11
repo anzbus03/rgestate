@@ -278,19 +278,6 @@ if ($viewCollection->renderContent) { ?>
         </div>
     </div>
 </div> 
-<?php
-}
-/**
- * This hook gives a chance to append content after the view file default content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * @since 1.3.3.1
- */
-$hooks->doAction('after_view_file_content', new CAttributeCollection(array(
-    'controller'        => $this,
-    'renderedContent'   => $viewCollection->renderContent,
-)));
-?>
 
 <!-- for button loading text  -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -359,7 +346,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             var workbook = XLSX.utils.book_new();
             var worksheet_data = [
                 [
-                    'Category (1 -> For Sale / 2 -> For Rent)', 
+                    'Category (For Sale / For Rent)', 
                     'Type (1-> Commercial / 2-> Residential)', 
                     'Ref No',
                     'Ad Title',
@@ -377,14 +364,30 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     "Images (image1.png,image2.png,etc..)" 
                 ]
             ];
-            var worksheet = XLSX.utils.aoa_to_sheet(worksheet_data);
             
+            // Create worksheet from the data
+            var worksheet = XLSX.utils.aoa_to_sheet(worksheet_data);
+
+            // Define data validation for the 'Category' column ('For Sale' or 'For Rent')
+            worksheet['A2'] = { v: '', t: 's' };
+            worksheet['!ref'] = 'A1:P100'; // Define the range of the sheet
+            worksheet['!dataValidations'] = [
+                {
+                    type: 'list',            // Set type to "list" for dropdowns
+                    sqref: 'A2:A100',        // Apply the validation to the cells in column A (rows 2-100)
+                    formulas: ['"For Sale,For Rent"'], // Only allow these two options
+                    showDropDown: true       // Enable dropdown menu in Excel
+                }
+            ];
+
             // Add the worksheet to the workbook
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Template');
-            
-            // Write the workbook and download it
+
+            // Write the workbook and download the Excel file
             XLSX.writeFile(workbook, 'template.xlsx');
         });
+
+
     });
 </script>
 
@@ -523,3 +526,16 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     });
     
 </script>
+<?php
+}
+/**
+ * This hook gives a chance to append content after the view file default content.
+ * Please note that from inside the action callback you can access all the controller view
+ * variables via {@CAttributeCollection $collection->controller->data}
+ * @since 1.3.3.1
+ */
+$hooks->doAction('after_view_file_content', new CAttributeCollection(array(
+    'controller'        => $this,
+    'renderedContent'   => $viewCollection->renderContent,
+)));
+?>
