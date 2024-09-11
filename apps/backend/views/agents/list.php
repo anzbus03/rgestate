@@ -147,7 +147,7 @@ if ($viewCollection->renderContent) {
             .image-container {
                 display: flex;
                 align-items: center;
-                gap: 10px;
+                gap: 4px;
                 margin-bottom: 15px;
             }
 
