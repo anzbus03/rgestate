@@ -132,7 +132,7 @@ if ($viewCollection->renderContent) {
                                 <div class="card">
                                     <div class="card-info">
                                         <div class="card-detail">
-                                            <h3>2345</h3>
+                                            <h3><?php echo $user->target_for_sale ?></h3>
                                             <p>For Sale</p>
                                             <p>
                                                 <? echo 'Target: ' . $user->target_for_sale . '/' . $user->target_period ?>
@@ -155,7 +155,7 @@ if ($viewCollection->renderContent) {
                                 <div class="card">
                                     <div class="card-info">
                                         <div class="card-detail">
-                                            <h3>2206</h3>
+                                            <h3><?php echo $user->target_for_rent ?></h3>
                                             <p>For Rent</p>
                                             <p>
                                                 <? echo 'Target: ' . $user->target_for_rent . '/' . $user->target_period ?>
@@ -239,7 +239,7 @@ if ($viewCollection->renderContent) {
                     </div>
                 </div>
             </div>
-            <pre><?php echo $soldProperties ?></pre>
+            <!-- <pre><?php echo $soldProperties ?></pre> -->
         </div>
         <style>
             hr {
