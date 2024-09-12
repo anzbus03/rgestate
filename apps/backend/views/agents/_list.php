@@ -16,38 +16,38 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
-    <div class="card">
-        <div class="card-header">
-            <div class="pull-left">
-                <h3 class="card-title">
-                    <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t('hotel', 'Agents List'); ?>
-                </h3>
-            </div>
-            <div class="pull-right">
-                <?php echo CHtml::link(Yii::t('app', 'Create new'), array($this->id . '/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new'))); ?>
-                <?php echo CHtml::link(Yii::t('app', 'Refresh'), array($this->id . '/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh'))); ?>
-            </div>
-            <div class="clearfix">
-                <!-- -->
-            </div>
+<div class="card">
+    <div class="card-header">
+        <div class="pull-left">
+            <h3 class="card-title">
+                <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t('hotel', 'Agents List'); ?>
+            </h3>
         </div>
-        <div class="card-body">
-            <div class="col-sm-4" style="padding-left:0px;">
-                <label>Listing Tags</label>
-                <?php echo CHtml::dropDownList('tags', '', $tags, array('class' => 'form-control', 'empty' => 'Select Tag', 'onchange' => 'setTagThis(this)'));
+        <div class="pull-right">
+            <?php echo CHtml::link(Yii::t('app', 'Create new'), array($this->id . '/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new'))); ?>
+            <?php echo CHtml::link(Yii::t('app', 'Refresh'), array($this->id . '/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh'))); ?>
+        </div>
+        <div class="clearfix">
+            <!-- -->
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="col-sm-4" style="padding-left:0px;">
+            <label>Listing Tags</label>
+            <?php echo CHtml::dropDownList('tags', '', $tags, array('class' => 'form-control', 'empty' => 'Select Tag', 'onchange' => 'setTagThis(this)'));
                 foreach ($tags_short as $k => $v) {
                     $v_code = explode('|', $v);
                     echo '<style>.tag_short_' . $k . '{ display:inline-block;background:' . @$v_code[1] . '; padding:2px 5px; margin-right:2px; }.tag_short_' . $k . ':before{ content:"' . @$v_code[0] . '"; color:#fff; } </style>';
                 }
                 ?>
-                <script>
-                    function setTagThis(k) {
-                        $('#tag_list2').val($(k).val()).change()
-                    }
-                </script>
-            </div>
-            <div class="table-responsive">
-                <?php
+            <script>
+            function setTagThis(k) {
+                $('#tag_list2').val($(k).val()).change()
+            }
+            </script>
+        </div>
+        <div class="table-responsive">
+            <?php
                 /**
                  * This hook gives a chance to prepend content or to replace the default grid view content with a custom content.
                  * Please note that from inside the action callback you can access all the controller view
@@ -200,24 +200,24 @@ if ($viewCollection->renderContent) { ?>
                     'renderedGrid'  => $collection->renderGrid,
                 )));
                 ?>
-                <div class="clearfix">
-                    <!-- -->
-                </div>
-            </div>
-
-            <div class="box-footer">
-                <div class="pull-right">
-                    <button type="submit" class="btn btn-primary btn-submit"
-                        data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', 'Update Priority'); ?></button>
-                </div>
-                <div class="clearfix">
-                    <!-- -->
-                </div>
+            <div class="clearfix">
+                <!-- -->
             </div>
         </div>
-        <?php $this->endWidget(); ?>
+
+        <div class="box-footer">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary btn-submit"
+                    data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', 'Update Priority'); ?></button>
+            </div>
+            <div class="clearfix">
+                <!-- -->
+            </div>
+        </div>
     </div>
-    </div>
+    <?php $this->endWidget(); ?>
+</div>
+</div>
 <?php
 }
 /**
@@ -232,115 +232,115 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 )));
 ?>
 <script>
-    function resentEmail(k) {
-        var ID = $(k).attr('data-id');
-        if (ID !== undefined) {
-            $(k).button('loading');
-            $.get('<?php echo Yii::App()->createUrl('listingusers/resentEmail'); ?>/id/' + ID, function(data) {
-                var data = JSON.parse(data);
-                if (data.status == 'success') {
-                    $(k).text('Sent');
+function resentEmail(k) {
+    var ID = $(k).attr('data-id');
+    if (ID !== undefined) {
+        $(k).button('loading');
+        $.get('<?php echo Yii::App()->createUrl('listingusers/resentEmail'); ?>/id/' + ID, function(data) {
+            var data = JSON.parse(data);
+            if (data.status == 'success') {
+                $(k).text('Sent');
+            } else {
+                alert(data.message);
+            }
+        })
+    }
+}
+
+function previewthis(k, e) {
+    e.preventDefault();
+    var url_d = $(k).attr('href');
+    $('#myModal').modal('show');
+    $('#preview_body').html('loading...');
+    $.get(url_d, function(data) {
+        if (data) {
+            $('#preview_body').html(data);
+        }
+    })
+}
+
+function updateStatus(k) {
+
+    var url_d = $(k).attr('data-url');
+    $.get(url_d, function(data) {
+        if (data == '1') {
+            alert("Succesfully Updated");
+            $('#myModal').modal('hide');
+        }
+    })
+}
+
+function openUp2(k) {
+    var property_id = $(k).parent().parent().find('.propertyId').val();
+
+
+    if (property_id != undefined) {
+        $('.cli').prop('checked', false);
+        $.get('<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/get_tag_list2"); ?>', {
+            id: property_id,
+            listing_type: 'A'
+        }, function(data) {
+            var data = JSON.parse(data);
+            //  alert(data.enabled)
+            $('.cli').prop('disabled', 'disabled');
+            if (data.enabled !== undefined) {
+                $.each(data.enabled, function(v) {
+                    $("input[type=checkbox][value=" + v + "]").prop("disabled", false);
+                })
+            }
+            if (data.items !== undefined) {
+
+                $.each(data.items, function(v) {
+                    $("input[type=checkbox][value=" + v + "]").prop("checked", true);;
+                })
+
+            }
+            $('#<?php echo $user->modelName; ?>_id2').val(property_id);
+            $('#extension-upload-modal2').modal();
+        })
+
+
+    }
+
+
+}
+$(function() {
+    $('.ajax-Smit2').click(function() {
+
+        var data = $("#miscellaneous-pages-form2").serialize();
+
+
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/savetaglist2", array('model' => $user->modelName)); ?>',
+            data: data,
+            success: function(data) {
+
+                $(".ajax-Smit2").removeClass("disabled");
+                $(".ajax-Smit2").removeAttr("disabled");
+                $(".ajax-Smit2").text("Update   Tag");
+                if (parseInt(data) > 0) {
+                    $("#notify-container-success2").show();
+                    setTimeout(function() {
+                        $("#notify-container-success2").hide();
+                        $('#extension-upload-modal2').modal('hide');
+                    }, 2000);
+
                 } else {
-                    alert(data.message);
+                    $("#notify-container-failure2").show();
                 }
-            })
-        }
-    }
+            },
+            error: function(data) { // if error occured
+                alert("Error occured.please try again");
+                alert(data);
+            },
 
-    function previewthis(k, e) {
-        e.preventDefault();
-        var url_d = $(k).attr('href');
-        $('#myModal').modal('show');
-        $('#preview_body').html('loading...');
-        $.get(url_d, function(data) {
-            if (data) {
-                $('#preview_body').html(data);
-            }
-        })
-    }
-
-    function updateStatus(k) {
-
-        var url_d = $(k).attr('data-url');
-        $.get(url_d, function(data) {
-            if (data == '1') {
-                alert("Succesfully Updated");
-                $('#myModal').modal('hide');
-            }
-        })
-    }
-
-    function openUp2(k) {
-        var property_id = $(k).parent().parent().find('.propertyId').val();
-
-
-        if (property_id != undefined) {
-            $('.cli').prop('checked', false);
-            $.get('<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/get_tag_list2"); ?>', {
-                id: property_id,
-                listing_type: 'A'
-            }, function(data) {
-                var data = JSON.parse(data);
-                //  alert(data.enabled)
-                $('.cli').prop('disabled', 'disabled');
-                if (data.enabled !== undefined) {
-                    $.each(data.enabled, function(v) {
-                        $("input[type=checkbox][value=" + v + "]").prop("disabled", false);
-                    })
-                }
-                if (data.items !== undefined) {
-
-                    $.each(data.items, function(v) {
-                        $("input[type=checkbox][value=" + v + "]").prop("checked", true);;
-                    })
-
-                }
-                $('#<?php echo $user->modelName; ?>_id2').val(property_id);
-                $('#extension-upload-modal2').modal();
-            })
-
-
-        }
-
-
-    }
-    $(function() {
-        $('.ajax-Smit2').click(function() {
-
-            var data = $("#miscellaneous-pages-form2").serialize();
-
-
-            $.ajax({
-                type: 'POST',
-                url: '<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/savetaglist2", array('model' => $user->modelName)); ?>',
-                data: data,
-                success: function(data) {
-
-                    $(".ajax-Smit2").removeClass("disabled");
-                    $(".ajax-Smit2").removeAttr("disabled");
-                    $(".ajax-Smit2").text("Update   Tag");
-                    if (parseInt(data) > 0) {
-                        $("#notify-container-success2").show();
-                        setTimeout(function() {
-                            $("#notify-container-success2").hide();
-                            $('#extension-upload-modal2').modal('hide');
-                        }, 2000);
-
-                    } else {
-                        $("#notify-container-failure2").show();
-                    }
-                },
-                error: function(data) { // if error occured
-                    alert("Error occured.please try again");
-                    alert(data);
-                },
-
-                dataType: 'html'
-            });
-
-        })
+            dataType: 'html'
+        });
 
     })
+
+})
 </script>
 <!-- Button trigger modal -->
 <!-- Modal -->
@@ -379,29 +379,29 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     'enableAjaxValidation' => false,
                 )); ?>
                 <style>
-                    .cbox label {
-                        width: 50%;
-                        float: left;
-                    }
+                .cbox label {
+                    width: 50%;
+                    float: left;
+                }
 
-                    .cbox input {
-                        width: auto;
-                        float: left;
-                        margin-right: 10px;
-                        height: auto;
-                    }
+                .cbox input {
+                    width: auto;
+                    float: left;
+                    margin-right: 10px;
+                    height: auto;
+                }
 
-                    #PlaceAnAd_tags_list {
-                        display: block;
+                #PlaceAnAd_tags_list {
+                    display: block;
 
-                        width: 100%;
+                    width: 100%;
 
-                        clear: both;
-                    }
+                    clear: both;
+                }
 
-                    .cbox br {
-                        clear: both;
-                    }
+                .cbox br {
+                    clear: both;
+                }
                 </style>
                 <div id="notify-container-success2" style="display:none;">
                     <div class="alert alert-block alert-success"><button data-dismiss="alert" class="close"
@@ -448,27 +448,27 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 </div>
 
 <style>
-    .cbox label {
-        width: 50%;
-        float: left;
-    }
+.cbox label {
+    width: 50%;
+    float: left;
+}
 
-    .cbox input {
-        width: auto;
-        float: left;
-        margin-right: 10px;
-        height: auto;
-    }
+.cbox input {
+    width: auto;
+    float: left;
+    margin-right: 10px;
+    height: auto;
+}
 
-    #PlaceAnAd_tags_list {
-        display: block;
+#PlaceAnAd_tags_list {
+    display: block;
 
-        width: 100%;
+    width: 100%;
 
-        clear: both;
-    }
+    clear: both;
+}
 
-    .cbox br {
-        clear: both;
-    }
+.cbox br {
+    clear: both;
+}
 </style>

@@ -11,6 +11,11 @@
  */
 class SoldProperty extends ActiveRecord
 {
+    // Declare virtual properties
+    public $full_name;
+    public $email;
+    public $property_count;
+
     /**
      * @return string the associated database table name
      */
@@ -41,7 +46,7 @@ class SoldProperty extends ActiveRecord
         // class name for the relations automatically generated below.
         $relations = array(
             'user' => array(self::BELONGS_TO, 'User', 'user_id'),
-            'property' => array(self::BELONGS_TO, 'Property', 'property_id'),
+            'placeAnAd' => array(self::BELONGS_TO, 'PlaceAnAd', 'property_id'),
         );
 
         // Merges the defined relations with the parent relations (if any).
@@ -157,6 +162,72 @@ class SoldProperty extends ActiveRecord
         return $this->findByPk($soldId, 'isTrash = :isTrash', ['isTrash' => '0']);
     }
 
+    // Get the most recent sold property for a specific user
+    public function getRevenueForUser()
+    {
+        $userId = Yii::app()->user->id;
+
+        $criteria = new \CDbCriteria;
+        $criteria->compare('user_id', $userId);
+        $criteria->compare('isTrash', '0'); // Ensure non-deleted properties
+        $criteria->order = 't.created_at DESC'; // Order by most recent sale
+
+        // Fetch the latest sold property for the logged-in user
+        $latestProperty = SoldProperty::model()->find($criteria);
+
+        if ($latestProperty) {
+            return $latestProperty->sold_price;  // Get the sold price of the latest property
+        }
+        return null;
+    }
+
+    // Get the total number of properties sold by a user
+    public function getTotalPropertiesSoldForUser()
+    {
+        $userId = Yii::app()->user->id;
+
+        $criteria = new \CDbCriteria;
+        $criteria->compare('user_id', $userId);
+        $criteria->compare('isTrash', '0'); // Ensure non-deleted properties
+
+        return $this->count($criteria);
+    }
+
+    // Get the number of properties sold by a user in the current month
+    public function getSalesThisMonthForUser()
+    {
+        $userId = Yii::app()->user->id; // Get the logged-in user's ID
+
+        // Using PHP's DateTime to get start and end of the current month
+        $startOfMonth = (new \DateTime('first day of this month'))->format('Y-m-d H:i:s');
+        $endOfMonth = (new \DateTime('last day of this month 23:59:59'))->format('Y-m-d H:i:s');
+
+        $criteria = new \CDbCriteria;
+        $criteria->compare('user_id', $userId);
+        $criteria->compare('isTrash', '0'); // Ensure non-deleted properties
+        $criteria->addBetweenCondition('created_at', $startOfMonth, $endOfMonth);
+
+        return $this->count($criteria);
+    }
+
+    // Method to get the top 5 active agents with the highest number of sold properties
+    public function getTop5ActiveAgents()
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = [
+            't.user_id',
+            'COUNT(t.property_id) AS property_count',
+            'CONCAT(u.first_name, " ", u.last_name) AS full_name', // Concatenate first_name and last_name as full_name
+            'u.email' // Select email
+        ];
+        $criteria->join = 'INNER JOIN mw_user u ON u.user_id = t.user_id';
+        $criteria->condition = 'u.is_agent = 1'; // Add condition to filter only agents
+        $criteria->group = 't.user_id';
+        $criteria->order = 'property_count DESC';
+        $criteria->limit = 5;
+
+        return SoldProperty::model()->findAll($criteria);
+    }
 
     public function beforeSave()
     {

@@ -488,7 +488,7 @@ class Place_propertyController  extends Controller
         $tagModel = Tag::model()->findAll($criteria);
         $tags = CHtml::listData($tagModel, 'tag_id', 'tag_name');
         $tags_short =  $model->place_ad_tag_code();;
-        $this->render('list', compact('model','soldPropertyIds', 'tags', 'tags_short'));
+        $this->render('list', compact('model', 'soldPropertyIds', 'tags', 'tags_short'));
     }
 
     public function actionExportExcel()

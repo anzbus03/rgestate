@@ -23,10 +23,13 @@
  * @property integer $state_id
  * @property string $first_name
  * @property string $last_name
+ * @property string $age
+ * @property string $gender
  * @property string $phone_number
  * @property string $email
  * @property string $password
  * @property string $description
+ * @property string $licence_no
  * @property string $city
  * @property string $address
  * @property string $timezone
@@ -91,6 +94,9 @@ class User extends ActiveRecord
             array('description', 'length', 'max' => 3000),
             array('city', 'length', 'max' => 100),
             array('address', 'length', 'max' => 255),
+            array('age', 'numerical', 'integerOnly' => true, 'min' => 1, 'max' => 120),
+            array('gender', 'in', 'range' => array('Male', 'Female', 'Other')),
+            array('licence_no', 'length', 'max' => 255),
             array('group_id,previousPassword,bank_id', 'safe'),
             array('timezone', 'in', 'range' => array_keys(DateTimeHelper::getTimeZones())),
             array('fake_password, confirm_password', 'length', 'min' => 6, 'max' => 100),
@@ -98,6 +104,11 @@ class User extends ActiveRecord
             array('confirm_email', 'compare', 'compareAttribute' => 'email'),
             array('is_agent', 'in', 'range' => array(0, 1), 'message' => 'The value of is_agent must be either 0 (user) or 1 (agent).'),
             array('email', 'unique', 'criteria' => array('condition' => 'user_id != :uid', 'params' => array(':uid' => (int)$this->user_id))),
+
+            array('target_for_sale, target_for_rent', 'numerical', 'integerOnly' => true),
+            array('target_for_sale, target_for_rent ', 'safe'),
+            array('target_period', 'in', 'range' => array('yearly', 'monthly', 'weekly'), 'message' => 'Please select a valid target period.'),
+            array('target_period', 'safe'),
 
             // mark them as safe for search
             array('first_name, last_name, email, status, is_agent', 'safe', 'on' => 'search'),
@@ -138,6 +149,9 @@ class User extends ActiveRecord
             'service_id'   => Yii::t('users', 'Designation'),
             'first_name'    => Yii::t('users', 'First name'),
             'last_name'     => Yii::t('users', 'Last name'),
+            'age'     => Yii::t('users', 'Age'),
+            'gender'     => Yii::t('users', 'Gender'),
+            'licence_no'     => Yii::t('users', 'Licence No'),
             'phone_number'     => Yii::t('users', 'Phone number'),
             'email'         => Yii::t('users', $this->mTag()->gettag('email', 'Email')),
             'password'      => Yii::t('users', $this->mTag()->gettag('password', 'Password')),
@@ -147,6 +161,9 @@ class User extends ActiveRecord
             'description'     => Yii::t('users', 'Description'),
             'address'     => Yii::t('users', 'Address'),
             'city'     => Yii::t('users', 'City'),
+            'target_for_sale'      => Yii::t('users', 'Target for Sale'),
+            'target_for_rent'      => Yii::t('users', 'Target for Rent'),
+            'target_period' => Yii::t('app', 'Target Period'),
 
             'confirm_email'     => Yii::t('users', 'Confirm email'),
             'fake_password'     => Yii::t('users', 'Password'),
@@ -296,6 +313,14 @@ class User extends ActiveRecord
     public function getTimeZonesArray()
     {
         return DateTimeHelper::getTimeZones();
+    }
+
+    public function getNumberOfAgents()
+    {
+        $criteria = new \CDbCriteria;
+        $criteria->compare('is_agent', 1); // Find all users where is_agent is 1
+
+        return $this->count($criteria);
     }
 
     public function findByUid($user_uid)

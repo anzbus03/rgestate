@@ -31,31 +31,26 @@ class AgentsController extends Controller
      */
     public function actionIndex()
     {
-
-
-
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         $user = new user('search');
-        if ($request->isPostRequest) {
-            $sortOrderAll = $_POST['priority'];
-            if (count($sortOrderAll) > 0) {
-                foreach ($sortOrderAll as $menuId => $sortOrder) {
-                    $user->isNewRecord = true;
-                    $user->updateByPk($menuId, array('priority' => $sortOrder));
-                }
-            }
-            $notify->addSuccess(Yii::t('app', 'Priority successfully updated!'));
-            $this->redirect(Yii::app()->request->urlReferrer);
-        }
-        $user->unsetAttributes();
 
         // for filters.
         $user->attributes = (array)$request->getQuery($user->modelName, array());
 
+        $revenue = SoldProperty::model()->getRevenueForUser();
+        $totalPropertiesSold = SoldProperty::model()->getTotalPropertiesSoldForUser();
+        $salesThisMonth = SoldProperty::model()->getSalesThisMonthForUser();
+
+        // Get number of agents
+        $numberOfAgents = User::model()->getNumberOfAgents();
+
+        // Get top 5 active agents
+        $topAgents = SoldProperty::model()->getTop5ActiveAgents();
+
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Agents List'),
-            'pageHeading'       => Yii::t('agent', 'Agents List'),
+            'pageHeading'       => Yii::t('agent', 'Agent Dashboard'),
             'pageBreadcrumbs'   => array(
                 Yii::t('capacity', 'Agents') => $this->createUrl('agents/index'),
                 Yii::t('app', 'View all')
@@ -67,7 +62,7 @@ class AgentsController extends Controller
         $tagModel = Tag::model()->findAll($criteria);
         $tags = CHtml::listData($tagModel, 'tag_id', 'tag_name');
         $tags_short = CHtml::listData($tagModel, 'tag_id', 'tagCodeWithColor');
-        $this->render('list', compact('user', 'tags', 'tags_short'));
+        $this->render('index', compact('user',  'revenue', 'totalPropertiesSold', 'salesThisMonth', 'numberOfAgents', 'topAgents', 'tags', 'tags_short'));
     }
 
     /**
@@ -103,6 +98,41 @@ class AgentsController extends Controller
         $this->render('list', compact('users'));
     }
 
+    /**
+     * view details of a user
+     */
+
+    public function actionView($id)
+    {
+        $user = User::model()->findByPk((int)$id);
+
+        if (empty($user)) {
+            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+        }
+
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+
+        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/cropper/dist/cropper.min.js')));
+        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/_imageCrop.js?q=1')));
+        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/cropper/dist/cropper.min.css')));
+
+        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/select2.min.css')));
+        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/select2.min.js')));
+        $this->getData('pageScripts')->add(array('src' => AssetsUrl::js('dropzone.min.js')));
+        $this->getData('pageStyles')->add(array('src' => AssetsUrl::css('dropzone.css')));
+
+        $this->setData(array(
+            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Agent Details'),
+            'pageHeading'       => Yii::t('users', 'Agent Details'),
+            'pageBreadcrumbs'   => array(
+                Yii::t('users', 'Agents') => $this->createUrl('agents/list'),
+                Yii::t('app', 'View all')
+            )
+        ));
+
+        $this->render('details', compact('user'));
+    }
 
     /**
      * Create a new user
@@ -222,7 +252,7 @@ class AgentsController extends Controller
      */
     public function actionDelete($id)
     {
-        $user = Agents::model()->findByPk((int)$id);
+        $user = User::model()->findByPk((int)$id);
 
         if (empty($user)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
@@ -246,9 +276,6 @@ class AgentsController extends Controller
     }
     public function actionLoadCity()
     {
-
-
-
         $limit = 30;
         $request = Yii::app()->request;
         $criteria = new CDbCriteria;
@@ -299,9 +326,6 @@ class AgentsController extends Controller
     }
     public function actionloadArea($country_id = null)
     {
-
-
-
         $limit = 30;
         $request = Yii::app()->request;
         $criteria = new CDbCriteria;
