@@ -511,7 +511,7 @@ class PlaceAnAd extends ActiveRecord
 			'BodyTypes' => array(self::BELONGS_TO, 'BodyType', 'body_type'),
 			'favCount' => array(self::STAT, 'AdFavourite', 'ad_id'),
 
-			'soldProperties' => array(self::HAS_MANY, 'SoldProperty', 'property_id'),
+			'soldProperty' => array(self::HAS_ONE, 'SoldProperty', 'property_id'),
 		);
 	}
 

@@ -27,829 +27,830 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 // and render if allowed
 if ($viewCollection->renderContent) {
 ?>
-<div>
-    <div class="agent-details">
-        <!-- header  -->
-        <div class="profile-navbar">
-            <div>
-                <span class="textgray fontMd sizeSm">Agents</span>
-                <span>/</span>
-                <span class="textprimary  sizeSm">Profile</span>
-            </div>
-            <!-- <?php echo CHtml::link(Yii::t('app', 'Create new'), array($this->id . '/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new'))); ?> -->
-        </div>
-
-        <div class="dashboard-row">
-            <!-- User Profile Section -->
-            <div class="user-profile">
-                <div class="profile-header">
-                    <div class="banner-overlay"></div>
-                    <img src="./img/person2.jpg" alt="User Image" class="profile-img">
-                    <h3>Deangol Sean</h3>
-                    <p>Junior Developer</p>
+    <div>
+        <div class="agent-details">
+            <!-- header  -->
+            <div class="profile-navbar">
+                <div>
+                    <span class="textgray fontMd sizeSm">Agents</span>
+                    <span>/</span>
+                    <span class="textprimary  sizeSm">Profile</span>
                 </div>
-
-                <div class="profile-details">
-                    <p><span>Age :</span> <strong><?php echo $user->age ?></strong></p>
-                    <hr>
-                    <p><span>Gender :</span> <strong><?php echo $user->gender ?></strong></p>
-                    <hr>
-                    <p><span>City :</span> <strong><?php echo $user->city ?></strong> </p>
-                    <hr>
-                    <p><span>State :</span> <strong><?php echo $user->state_id ?></strong></p>
-                    <hr>
-                    <p><span>Country :</span> <strong><?php echo $user->country_id ?></strong></p>
-                    <hr>
-                    <!-- <p><span>Postcode :</span> <strong>10001</strong></p> -->
-                    <!-- <hr> -->
-                    <p><span>Email :</span> <strong><?php echo $user->email ?></strong>
-                    </p>
-                </div>
-                <hr>
-                <div class="icon-section">
-                    <div class="icon">
-                        <i class="fa-brands fa-instagram"></i>
-                    </div>
-                    <div class="icon">
-                        <i class="fa-brands fa-facebook-f"></i>
-                    </div>
-                    <div class="icon">
-                        <i class="fa-brands fa-twitter"></i>
-                    </div>
-                </div>
+                <!-- <?php echo CHtml::link(Yii::t('app', 'Create new'), array($this->id . '/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new'))); ?> -->
             </div>
 
+            <div class="dashboard-row">
+                <!-- User Profile Section -->
+                <div class="user-profile">
+                    <div class="profile-header">
+                        <div class="banner-overlay"></div>
+                        <img src="./img/person2.jpg" alt="User Image" class="profile-img">
+                        <h3>Deangol Sean</h3>
+                        <p>Junior Developer</p>
+                    </div>
 
-
-            <!-- Dashboard Detail Section -->
-            <div class="dashboard-detail">
-                <div class="headerTitle">
-                    <h4>Agent Detail</h4>
+                    <div class="profile-details">
+                        <p><span>Age :</span> <strong><?php echo $user->age ?></strong></p>
+                        <hr>
+                        <p><span>Gender :</span> <strong><?php echo $user->gender ?></strong></p>
+                        <hr>
+                        <p><span>City :</span> <strong><?php echo $user->city ?></strong> </p>
+                        <hr>
+                        <p><span>State :</span> <strong><?php echo $user->states->state_name ?></strong></p>
+                        <hr>
+                        <p><span>Country :</span> <strong><?php echo $user->countries->country_name ?></strong></p>
+                        <hr>
+                        <!-- <p><span>Postcode :</span> <strong>10001</strong></p> -->
+                        <!-- <hr> -->
+                        <p><span>Email :</span> <strong><?php echo $user->email ?></strong>
+                        </p>
+                    </div>
+                    <hr>
+                    <div class="icon-section">
+                        <div class="icon">
+                            <i class="fa-brands fa-instagram"></i>
+                        </div>
+                        <div class="icon">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </div>
+                        <div class="icon">
+                            <i class="fa-brands fa-twitter"></i>
+                        </div>
+                    </div>
                 </div>
-                <hr>
 
-                <div class="container">
-                    <p><?php echo $user->description ?></p>
-                    <table class="agent-table">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <i class="fa-regular fa-circle-check"></i>Agent Name:
-                                </td>
-                                <td class="agentName"><?php echo $user->first_name . " " . $user->last_name  ?></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <i class="fa-regular fa-circle-check"></i>Agency:
-                                </td>
-                                <td class="agentName"><?php echo $user->first_name  ?></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <i class="fa-regular fa-circle-check"></i>Agent License
-                                </td>
-                                <td class="agentName"><?php echo $user->licence_no  ?></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <i class="fa-regular fa-circle-check"></i> Agent City
-                                </td>
-                                <td class="agentName"><?php echo $user->city  ?></td>
-                            </tr>
-                            <!-- <tr>
+
+
+                <!-- Dashboard Detail Section -->
+                <div class="dashboard-detail">
+                    <div class="headerTitle">
+                        <h4>Agent Detail</h4>
+                    </div>
+                    <hr>
+
+                    <div class="container">
+                        <p><?php echo $user->description ?></p>
+                        <table class="agent-table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <i class="fa-regular fa-circle-check"></i>Agent Name:
+                                    </td>
+                                    <td class="agentName"><?php echo $user->first_name . " " . $user->last_name  ?></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <i class="fa-regular fa-circle-check"></i>Group:
+                                    </td>
+                                    <td class="agentName"><?php echo $user->group->name  ?></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <i class="fa-regular fa-circle-check"></i>Agent License
+                                    </td>
+                                    <td class="agentName"><?php echo $user->licence_no  ?></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <i class="fa-regular fa-circle-check"></i> Agent City
+                                    </td>
+                                    <td class="agentName"><?php echo $user->city  ?></td>
+                                </tr>
+                                <!-- <tr>
                                 <td>
                                     <i class="fa-regular fa-circle-check"></i> Agent Name:
                                 </td>
                                 <td class="agentName">John Doe</td>
                             </tr> -->
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
 
+                        <hr>
+                        <div>
+                            <h4 class="property-title">Property status</h4>
+                            <div class="progress-section">
+                                <div class="card">
+                                    <div class="card-info">
+                                        <div class="card-detail">
+                                            <h3>2345</h3>
+                                            <p>For Sale</p>
+                                            <p>
+                                                <? echo 'Target: ' . $user->target_for_sale . '/' . $user->target_period ?>
+                                            </p>
+                                        </div>
+                                        <div class="progress-container">
+                                            <div class="progress-ring" id="progress1">
+                                                <svg class="progress-ring__svg" width="100" height="100">
+                                                    <circle class="progress-ring__background" stroke="#e0e0e0"
+                                                        stroke-width="10" fill="transparent" r="40" cx="50" cy="50">
+                                                    </circle>
+                                                    <circle class="progress-ring__circle" stroke="#4e73df" stroke-width="10"
+                                                        fill="transparent" r="40" cx="50" cy="50"></circle>
+                                                </svg>
+                                                <div class="progress-text">0%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-info">
+                                        <div class="card-detail">
+                                            <h3>2206</h3>
+                                            <p>For Rent</p>
+                                            <p>
+                                                <? echo 'Target: ' . $user->target_for_rent . '/' . $user->target_period ?>
+                                            </p>
+                                        </div>
+                                        <div class="progress-container">
+                                            <div class="progress-ring green" id="progress2">
+                                                <svg class="progress-ring__svg" width="100" height="100">
+                                                    <circle class="progress-ring__background" stroke="#e0e0e0"
+                                                        stroke-width="10" fill="transparent" r="40" cx="50" cy="50">
+                                                    </circle>
+                                                    <circle class="progress-ring__circle" stroke="#28a745" stroke-width="10"
+                                                        fill="transparent" r="40" cx="50" cy="50"></circle>
+                                                </svg>
+                                                <div class="progress-text-green">0%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Files Section -->
+                <div class="my-files">
+                    <div class="header-container">
+                        <h4>MyFile</h4>
+                        <button class="myfile-button">Add New</button>
+                    </div>
                     <hr>
-                    <div>
-                        <h4 class="property-title">Property status</h4>
-                        <div class="progress-section">
-                            <div class="card">
-                                <div class="card-info">
-                                    <div class="card-detail">
-                                        <h3>2345</h3>
-                                        <p>For Sale</p>
-                                        <p>
-                                            <? echo 'Target: ' . $user->target_for_sale . '/' . $user->target_period ?>
-                                        </p>
-                                    </div>
-                                    <div class="progress-container">
-                                        <div class="progress-ring" id="progress1">
-                                            <svg class="progress-ring__svg" width="100" height="100">
-                                                <circle class="progress-ring__background" stroke="#e0e0e0"
-                                                    stroke-width="10" fill="transparent" r="40" cx="50" cy="50">
-                                                </circle>
-                                                <circle class="progress-ring__circle" stroke="#4e73df" stroke-width="10"
-                                                    fill="transparent" r="40" cx="50" cy="50"></circle>
-                                            </svg>
-                                            <div class="progress-text">0%</div>
-                                        </div>
-                                    </div>
+                    <div class="fileCards">
+                        <div class="fileCard">
+                            <div class="align">
+                                <div class="fileIcon">
+                                    <i class="fa-regular fa-user"></i>
+                                </div>
+                                <div>
+                                    <p class="agentP">Agents</p>
+                                    <h3>124</h3>
                                 </div>
                             </div>
-                            <div class="card">
-                                <div class="card-info">
-                                    <div class="card-detail">
-                                        <h3>2206</h3>
-                                        <p>For Rent</p>
-                                        <p>
-                                            <? echo 'Target: ' . $user->target_for_rent . '/' . $user->target_period ?>
-                                        </p>
-                                    </div>
-                                    <div class="progress-container">
-                                        <div class="progress-ring green" id="progress2">
-                                            <svg class="progress-ring__svg" width="100" height="100">
-                                                <circle class="progress-ring__background" stroke="#e0e0e0"
-                                                    stroke-width="10" fill="transparent" r="40" cx="50" cy="50">
-                                                </circle>
-                                                <circle class="progress-ring__circle" stroke="#28a745" stroke-width="10"
-                                                    fill="transparent" r="40" cx="50" cy="50"></circle>
-                                            </svg>
-                                            <div class="progress-text-green">0%</div>
-                                        </div>
-                                    </div>
+                            <div class="parsent">3.5%</div>
+                        </div>
+                        <div class="fileCard">
+                            <div class="align">
+                                <div class="billIcon">
+                                    <i class="fa-solid fa-money-bill"></i>
+                                </div>
+                                <div>
+                                    <p class="agentP">Bills</p>
+                                    <h3>124</h3>
                                 </div>
                             </div>
+                            <div class="billparsent">3.5%</div>
+                        </div>
+                        <div class="fileCard">
+                            <div class="align">
+                                <div class="dollerIcon">
+                                    <i class="fa-solid fa-dollar-sign"></i>
+                                </div>
+                                <div>
+                                    <p class="agentP">Revenue</p>
+                                    <h3>124</h3>
+                                </div>
+                            </div>
+                            <div class="dollerparsent">3.5%</div>
+                        </div>
+                        <div class="fileCard">
+                            <div class="align">
+                                <div class="dataIcon">
+                                    <i class="fa-solid fa-database"></i>
+                                </div>
+                                <div>
+                                    <p class="agentP">Patient</p>
+                                    <h3>124</h3>
+                                </div>
+                            </div>
+                            <div class="dataparsent">3.5%</div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- My Files Section -->
-            <div class="my-files">
-                <div class="header-container">
-                    <h4>MyFile</h4>
-                    <button class="myfile-button">Add New</button>
-                </div>
-                <hr>
-                <div class="fileCards">
-                    <div class="fileCard">
-                        <div class="align">
-                            <div class="fileIcon">
-                                <i class="fa-regular fa-user"></i>
-                            </div>
-                            <div>
-                                <p class="agentP">Agents</p>
-                                <h3>124</h3>
-                            </div>
-                        </div>
-                        <div class="parsent">3.5%</div>
-                    </div>
-                    <div class="fileCard">
-                        <div class="align">
-                            <div class="billIcon">
-                                <i class="fa-solid fa-money-bill"></i>
-                            </div>
-                            <div>
-                                <p class="agentP">Bills</p>
-                                <h3>124</h3>
-                            </div>
-                        </div>
-                        <div class="billparsent">3.5%</div>
-                    </div>
-                    <div class="fileCard">
-                        <div class="align">
-                            <div class="dollerIcon">
-                                <i class="fa-solid fa-dollar-sign"></i>
-                            </div>
-                            <div>
-                                <p class="agentP">Revenue</p>
-                                <h3>124</h3>
-                            </div>
-                        </div>
-                        <div class="dollerparsent">3.5%</div>
-                    </div>
-                    <div class="fileCard">
-                        <div class="align">
-                            <div class="dataIcon">
-                                <i class="fa-solid fa-database"></i>
-                            </div>
-                            <div>
-                                <p class="agentP">Patient</p>
-                                <h3>124</h3>
-                            </div>
-                        </div>
-                        <div class="dataparsent">3.5%</div>
-                    </div>
-                </div>
-            </div>
+            <pre><?php echo $soldProperties ?></pre>
         </div>
+        <style>
+            hr {
+                margin: 0;
+            }
+
+            p {
+                margin-bottom: 0;
+            }
+
+            /* navbar section start  */
+            .profile-navbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 20px 20px;
+                background-color: white;
+                box-shadow: rgba(245, 246, 247, 0.2) 0px 8px 24px;
+                margin: 20px 0px;
+                border-radius: 10px;
+                font-family: 'Roboto', 'Open Sans', sans-serif;
+            }
+
+            .textprimary {
+                color: #1991eb;
+            }
+
+            .addButton {
+                color: white;
+                border: none;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                padding: 10px 15px;
+            }
+
+            .sizeSm {
+                font-size: 14px;
+            }
+
+            .textgray {
+                color: gray;
+            }
+
+            .fontMd {
+                font-weight: 600;
+            }
+
+            /* navbar section end */
+
+            /* dashbord start */
+
+            .dashboard-row {
+                display: flex;
+                flex-wrap: wrap;
+                /* margin: 10px; */
+                gap: 1.3rem;
+                font-family: 'Roboto', 'Open Sans', sans-serif;
+            }
+
+            .user-profile {
+                width: 40%;
+                background-color: white;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                padding-bottom: 10px;
+            }
+
+            .profile-header {
+                position: relative;
+                width: 100%;
+                padding: 1rem;
+                background-image: url('./img/img1.jpg');
+                background-size: cover;
+                background-position: center;
+                display: flex;
+                border-radius: 12px 12px 0 0;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                color: white;
+                overflow: hidden;
+            }
+
+            .profile-header .banner-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #3B4CB8;
+                opacity: 0.85;
+                z-index: 1;
+            }
+
+            .profile-header .profile-img {
+                position: relative;
+                z-index: 2;
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                border: 3px solid white;
+                margin-bottom: 10px;
+            }
+
+            .profile-header h3 {
+                position: relative;
+                margin-top: 1rem;
+                z-index: 2;
+                color: white;
+                font-family: 'Roboto', 'Open Sans', sans-serif;
+            }
+
+            .profile-header p {
+                position: relative;
+                z-index: 2;
+                font-style: 12px;
+                font-family: 'Roboto', 'Open Sans', sans-serif;
+            }
+
+            .user-profile {
+                width: 35%;
+                box-sizing: border-box;
+                border-radius: 12px;
+                /* margin: 10px; */
+            }
+
+            .user-profile .profile-img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                margin-bottom: 15px;
+            }
+
+            .user-profile .profile-details p {
+                padding: 14px 21px;
+                font-size: 16px;
+            }
+
+            .icon-section {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                margin: 10px 0;
+            }
+
+            .icon-section .icon {
+                height: 40px;
+                width: 40px;
+                border-radius: 100%;
+                background-color: #D9D1F2;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .icon-section .icon i {
+                color: #4B19B4;
+            }
+
+            .container {
+                padding: 1.8rem;
+                margin-top: 0 !important;
+            }
+
+            .headerTitle {
+                padding: 1.5rem 1.875rem 1.25rem;
+            }
+
+            .dashboard-detail {
+                background-color: #fff;
+                width: 62%;
+                box-sizing: border-box;
+                border-radius: 8px;
+                /* margin: 10px; */
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .dashboard-detail h4 {
+                font-weight: 500;
+                font-size: 20px;
+                color: black;
+                text-transform: capitalize;
+            }
+
+            .dashboard-detail p {
+                font-size: 16px;
+                margin-bottom: 10px;
+
+                color: gray;
+
+            }
+
+            .profile-details p {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 20px;
+            }
+
+            .profile-details p span {
+                color: gray;
+            }
+
+
+            .card {
+                display: flex;
+                width: 400px;
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            }
+
+            .card-info {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+            }
+
+            .card-detail {
+                padding: 20px;
+                width: 50%;
+            }
+
+            .card-detail h3 {
+                margin: 0;
+                font-size: 24px;
+                color: #333;
+            }
+
+            .card-detail p {
+                margin: 5px 0;
+                color: #666;
+            }
+
+            .card {
+                display: flex;
+                width: 100%;
+                max-width: 500px;
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            }
+
+            .card-info {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+            }
+
+            .card-detail {
+                padding: 20px;
+                width: 50%;
+            }
+
+            .card-detail h3 {
+                margin: 0;
+                font-size: 24px;
+                color: #333;
+            }
+
+            .card-detail p {
+                margin: 5px 0;
+                color: #666;
+            }
+
+            .progress-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 50%;
+                padding: 20px;
+            }
+
+            .progress-ring {
+                position: relative;
+                width: 100px;
+                height: 100px;
+            }
+
+            .progress-ring__svg {
+                transform: rotate(-90deg);
+            }
+
+            .progress-ring__background {
+                stroke-dasharray: 251.2;
+                stroke-dashoffset: 0;
+            }
+
+            .progress-ring__circle {
+                stroke-dasharray: 251.2;
+                stroke-dashoffset: 251.2;
+                /* Start from 0% */
+                transition: stroke-dashoffset 0.35s;
+            }
+
+            .progress-text,
+            .progress-text-green {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 20px;
+                font-weight: bold;
+                height: 60px;
+                width: 60px;
+                border-radius: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .progress-text {
+                color: #5D5399;
+                background-color: #DCDBF1;
+            }
+
+            .progress-text-green {
+                color: #58E893;
+                background-color: #C2F7DB;
+            }
+
+            .progress-section {
+                display: flex;
+                gap: 10px;
+            }
+
+            .progress-ring.green .progress-ring__circle {
+                stroke: #28a745;
+            }
+
+
+            td i {
+                color: #3B4CB8;
+            }
+
+            .property-title {
+                margin: 1rem 0;
+            }
+
+            .agent-table {
+                width: 100%;
+                border-collapse: collapse;
+                color: #7e7e7e7e;
+                font-size: 14px;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+
+            .agent-table th,
+            .agent-table td {
+                padding: 8px;
+                text-align: left;
+                vertical-align: middle;
+            }
+
+            .agent-table th {
+                background-color: #f2f2f2;
+            }
+
+            .agent-table td i {
+                margin-right: 10px;
+            }
+
+            .myfile-button {
+                background-color: #4B19B4;
+                color: white;
+                border: none;
+                padding: 0.579rem 1rem;
+                border-radius: 5px;
+                font-size: 14px;
+                cursor: pointer;
+            }
+
+            .my-files {
+                width: 100%;
+                background-color: #fff;
+                box-sizing: border-box;
+                border-radius: 8px;
+                /* margin: 10px; */
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .fileCard {
+                display: flex;
+                align-items: center;
+                margin: 10px 0;
+                justify-content: space-between;
+                border: 1px solid rgb(226, 226, 226);
+                padding: 14px;
+                width: 23%;
+                border-radius: 10px;
+            }
+
+            .billIcon {
+                height: 60px;
+                background-color: #FDEDCA;
+                margin: 0 10px;
+                border-radius: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 60px;
+                font-size: 25px;
+            }
+
+            .fileIcon {
+                height: 60px;
+                background-color: #5D5399;
+                margin: 0 10px;
+                border-radius: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 60px;
+                font-size: 25px;
+            }
+
+            .dollerIcon {
+                height: 60px;
+                background-color: #DE957C;
+                margin: 0 10px;
+                border-radius: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 60px;
+                font-size: 25px;
+            }
+
+            .dataIcon {
+                height: 60px;
+                background-color: #C6F9DB;
+                margin: 0 10px;
+                border-radius: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 60px;
+                font-size: 25px;
+            }
+
+            .align {
+                display: flex;
+            }
+
+            .fileIcon i {
+                color: #c5beec;
+            }
+
+            .billIcon i {
+                color: #E8B541;
+            }
+
+            .dataIcon i {
+                color: #4BD18A;
+            }
+
+            .dollerIcon i {
+                color: #FA492E;
+            }
+
+            .a {
+                color: gray;
+            }
+
+            .parsent {
+                background: #4B19B4;
+                color: white;
+                padding: 0 10px;
+                border-radius: 10px;
+            }
+
+            .dollerparsent {
+                background: #FA492E;
+                color: white;
+                padding: 0 10px;
+                border-radius: 10px;
+            }
+
+            .billparsent {
+                background: #FD9801;
+                color: white;
+                padding: 0 10px;
+                border-radius: 10px;
+            }
+
+            .dataparsent {
+                background: #03DF61;
+                color: white;
+                padding: 0 10px;
+                border-radius: 10px;
+            }
+
+            .fileCards {
+                width: 100%;
+                padding: 1.875rem;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1.8rem;
+            }
+
+            .header-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.5rem 1.875rem 1.25rem;
+            }
+
+            .header-container h4 {
+                font-size: 20px;
+                font-weight: 500;
+            }
+
+            .progress-ring__circle {
+                stroke-dasharray: 251.2;
+                /* This should match the circumference */
+                stroke-dashoffset: 251.2;
+                /* Start from full circumference (0%) */
+                transition: stroke-dashoffset 1s ease;
+            }
+
+            .progress-text,
+            .progress-text-green {
+                font-size: 1.2rem;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-weight: bold;
+            }
+
+            .progress-text {
+                color: #4e73df;
+            }
+
+            .progress-text-green {
+                color: #28a745;
+            }
+
+
+            @media (max-width: 520px) {
+                .fileCards {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .fileCard {
+                    width: 100%;
+                }
+            }
+
+            @media (max-width: 992px) {
+                .card-info {
+                    flex-direction: column;
+                }
+
+                .card-detail,
+                .progress-container {
+                    width: 100%;
+                }
+            }
+
+
+
+            @media (max-width: 768px) {
+                .card {
+                    width: 100%;
+                }
+
+                .fileCards {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .fileCard {
+                    width: 48%;
+                }
+
+                .progress-section {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    text-align: center;
+                }
+            }
+
+
+            @media (max-width: 768px) {
+
+                .user-profile,
+                .dashboard-detail,
+                .my-files {
+                    width: 100%;
+                }
+            }
+
+            @media (max-width: 1024px) {
+
+                .user-profile,
+                .dashboard-detail,
+                .my-files {
+                    width: 100%;
+                }
+            }
+
+            /* dashbord end */
+        </style>
     </div>
-    <style>
-    hr {
-        margin: 0;
-    }
-
-    p {
-        margin-bottom: 0;
-    }
-
-    /* navbar section start  */
-    .profile-navbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px 20px;
-        background-color: white;
-        box-shadow: rgba(245, 246, 247, 0.2) 0px 8px 24px;
-        margin: 20px 0px;
-        border-radius: 10px;
-        font-family: 'Roboto', 'Open Sans', sans-serif;
-    }
-
-    .textprimary {
-        color: #1991eb;
-    }
-
-    .addButton {
-        color: white;
-        border: none;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        padding: 10px 15px;
-    }
-
-    .sizeSm {
-        font-size: 14px;
-    }
-
-    .textgray {
-        color: gray;
-    }
-
-    .fontMd {
-        font-weight: 600;
-    }
-
-    /* navbar section end */
-
-    /* dashbord start */
-
-    .dashboard-row {
-        display: flex;
-        flex-wrap: wrap;
-        /* margin: 10px; */
-        gap: 1.3rem;
-        font-family: 'Roboto', 'Open Sans', sans-serif;
-    }
-
-    .user-profile {
-        width: 40%;
-        background-color: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding-bottom: 10px;
-    }
-
-    .profile-header {
-        position: relative;
-        width: 100%;
-        padding: 1rem;
-        background-image: url('./img/img1.jpg');
-        background-size: cover;
-        background-position: center;
-        display: flex;
-        border-radius: 12px 12px 0 0;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        color: white;
-        overflow: hidden;
-    }
-
-    .profile-header .banner-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #3B4CB8;
-        opacity: 0.85;
-        z-index: 1;
-    }
-
-    .profile-header .profile-img {
-        position: relative;
-        z-index: 2;
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        border: 3px solid white;
-        margin-bottom: 10px;
-    }
-
-    .profile-header h3 {
-        position: relative;
-        margin-top: 1rem;
-        z-index: 2;
-        color: white;
-        font-family: 'Roboto', 'Open Sans', sans-serif;
-    }
-
-    .profile-header p {
-        position: relative;
-        z-index: 2;
-        font-style: 12px;
-        font-family: 'Roboto', 'Open Sans', sans-serif;
-    }
-
-    .user-profile {
-        width: 35%;
-        box-sizing: border-box;
-        border-radius: 12px;
-        /* margin: 10px; */
-    }
-
-    .user-profile .profile-img {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        margin-bottom: 15px;
-    }
-
-    .user-profile .profile-details p {
-        padding: 14px 21px;
-        font-size: 16px;
-    }
-
-    .icon-section {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        margin: 10px 0;
-    }
-
-    .icon-section .icon {
-        height: 40px;
-        width: 40px;
-        border-radius: 100%;
-        background-color: #D9D1F2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .icon-section .icon i {
-        color: #4B19B4;
-    }
-
-    .container {
-        padding: 1.8rem;
-        margin-top: 0 !important;
-    }
-
-    .headerTitle {
-        padding: 1.5rem 1.875rem 1.25rem;
-    }
-
-    .dashboard-detail {
-        background-color: #fff;
-        width: 62%;
-        box-sizing: border-box;
-        border-radius: 8px;
-        /* margin: 10px; */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .dashboard-detail h4 {
-        font-weight: 500;
-        font-size: 20px;
-        color: black;
-        text-transform: capitalize;
-    }
-
-    .dashboard-detail p {
-        font-size: 16px;
-        margin-bottom: 10px;
-
-        color: gray;
-
-    }
-
-    .profile-details p {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 20px;
-    }
-
-    .profile-details p span {
-        color: gray;
-    }
-
-
-    .card {
-        display: flex;
-        width: 400px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
-
-    .card-info {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-    }
-
-    .card-detail {
-        padding: 20px;
-        width: 50%;
-    }
-
-    .card-detail h3 {
-        margin: 0;
-        font-size: 24px;
-        color: #333;
-    }
-
-    .card-detail p {
-        margin: 5px 0;
-        color: #666;
-    }
-
-    .card {
-        display: flex;
-        width: 100%;
-        max-width: 500px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
-
-    .card-info {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-    }
-
-    .card-detail {
-        padding: 20px;
-        width: 50%;
-    }
-
-    .card-detail h3 {
-        margin: 0;
-        font-size: 24px;
-        color: #333;
-    }
-
-    .card-detail p {
-        margin: 5px 0;
-        color: #666;
-    }
-
-    .progress-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 50%;
-        padding: 20px;
-    }
-
-    .progress-ring {
-        position: relative;
-        width: 100px;
-        height: 100px;
-    }
-
-    .progress-ring__svg {
-        transform: rotate(-90deg);
-    }
-
-    .progress-ring__background {
-        stroke-dasharray: 251.2;
-        stroke-dashoffset: 0;
-    }
-
-    .progress-ring__circle {
-        stroke-dasharray: 251.2;
-        stroke-dashoffset: 251.2;
-        /* Start from 0% */
-        transition: stroke-dashoffset 0.35s;
-    }
-
-    .progress-text,
-    .progress-text-green {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 20px;
-        font-weight: bold;
-        height: 60px;
-        width: 60px;
-        border-radius: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .progress-text {
-        color: #5D5399;
-        background-color: #DCDBF1;
-    }
-
-    .progress-text-green {
-        color: #58E893;
-        background-color: #C2F7DB;
-    }
-
-    .progress-section {
-        display: flex;
-        gap: 10px;
-    }
-
-    .progress-ring.green .progress-ring__circle {
-        stroke: #28a745;
-    }
-
-
-    td i {
-        color: #3B4CB8;
-    }
-
-    .property-title {
-        margin: 1rem 0;
-    }
-
-    .agent-table {
-        width: 100%;
-        border-collapse: collapse;
-        color: #7e7e7e7e;
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 10px;
-    }
-
-    .agent-table th,
-    .agent-table td {
-        padding: 8px;
-        text-align: left;
-        vertical-align: middle;
-    }
-
-    .agent-table th {
-        background-color: #f2f2f2;
-    }
-
-    .agent-table td i {
-        margin-right: 10px;
-    }
-
-    .myfile-button {
-        background-color: #4B19B4;
-        color: white;
-        border: none;
-        padding: 0.579rem 1rem;
-        border-radius: 5px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-
-    .my-files {
-        width: 100%;
-        background-color: #fff;
-        box-sizing: border-box;
-        border-radius: 8px;
-        /* margin: 10px; */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .fileCard {
-        display: flex;
-        align-items: center;
-        margin: 10px 0;
-        justify-content: space-between;
-        border: 1px solid rgb(226, 226, 226);
-        padding: 14px;
-        width: 23%;
-        border-radius: 10px;
-    }
-
-    .billIcon {
-        height: 60px;
-        background-color: #FDEDCA;
-        margin: 0 10px;
-        border-radius: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 60px;
-        font-size: 25px;
-    }
-
-    .fileIcon {
-        height: 60px;
-        background-color: #5D5399;
-        margin: 0 10px;
-        border-radius: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 60px;
-        font-size: 25px;
-    }
-
-    .dollerIcon {
-        height: 60px;
-        background-color: #DE957C;
-        margin: 0 10px;
-        border-radius: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 60px;
-        font-size: 25px;
-    }
-
-    .dataIcon {
-        height: 60px;
-        background-color: #C6F9DB;
-        margin: 0 10px;
-        border-radius: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 60px;
-        font-size: 25px;
-    }
-
-    .align {
-        display: flex;
-    }
-
-    .fileIcon i {
-        color: #c5beec;
-    }
-
-    .billIcon i {
-        color: #E8B541;
-    }
-
-    .dataIcon i {
-        color: #4BD18A;
-    }
-
-    .dollerIcon i {
-        color: #FA492E;
-    }
-
-    .a {
-        color: gray;
-    }
-
-    .parsent {
-        background: #4B19B4;
-        color: white;
-        padding: 0 10px;
-        border-radius: 10px;
-    }
-
-    .dollerparsent {
-        background: #FA492E;
-        color: white;
-        padding: 0 10px;
-        border-radius: 10px;
-    }
-
-    .billparsent {
-        background: #FD9801;
-        color: white;
-        padding: 0 10px;
-        border-radius: 10px;
-    }
-
-    .dataparsent {
-        background: #03DF61;
-        color: white;
-        padding: 0 10px;
-        border-radius: 10px;
-    }
-
-    .fileCards {
-        width: 100%;
-        padding: 1.875rem;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.8rem;
-    }
-
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.5rem 1.875rem 1.25rem;
-    }
-
-    .header-container h4 {
-        font-size: 20px;
-        font-weight: 500;
-    }
-
-    .progress-ring__circle {
-        stroke-dasharray: 251.2;
-        /* This should match the circumference */
-        stroke-dashoffset: 251.2;
-        /* Start from full circumference (0%) */
-        transition: stroke-dashoffset 1s ease;
-    }
-
-    .progress-text,
-    .progress-text-green {
-        font-size: 1.2rem;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-weight: bold;
-    }
-
-    .progress-text {
-        color: #4e73df;
-    }
-
-    .progress-text-green {
-        color: #28a745;
-    }
-
-
-    @media (max-width: 520px) {
-        .fileCards {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .fileCard {
-            width: 100%;
-        }
-    }
-
-    @media (max-width: 992px) {
-        .card-info {
-            flex-direction: column;
-        }
-
-        .card-detail,
-        .progress-container {
-            width: 100%;
-        }
-    }
-
-
-
-    @media (max-width: 768px) {
-        .card {
-            width: 100%;
-        }
-
-        .fileCards {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .fileCard {
-            width: 48%;
-        }
-
-        .progress-section {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-        }
-    }
-
-
-    @media (max-width: 768px) {
-
-        .user-profile,
-        .dashboard-detail,
-        .my-files {
-            width: 100%;
-        }
-    }
-
-    @media (max-width: 1024px) {
-
-        .user-profile,
-        .dashboard-detail,
-        .my-files {
-            width: 100%;
-        }
-    }
-
-    /* dashbord end */
-    </style>
-</div>
 
 
 <?php
@@ -867,53 +868,53 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 ?>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const progress1 = document.getElementById('progress1');
-    const progress2 = document.getElementById('progress2');
+    document.addEventListener('DOMContentLoaded', function() {
+        const progress1 = document.getElementById('progress1');
+        const progress2 = document.getElementById('progress2');
 
-    function setProgress(element, percent) {
-        const radius = 40; // Adjust based on your SVG
-        const circumference = 2 * Math.PI * radius;
-        const offset = circumference - (percent / 100) * circumference;
-        const circle = element.querySelector('.progress-ring__circle');
-        circle.style.strokeDasharray = `${circumference}`;
-        circle.style.strokeDashoffset = offset;
-        const text = element.querySelector('.progress-text') || element.querySelector('.progress-text-green');
-        text.textContent = `${Math.round(percent)}%`; // Round to nearest integer
-    }
-
-    function animateProgress(element, percent) {
-        const duration = 1000; // animation duration in milliseconds
-        const start = 0;
-        const stepCount = 100; // Number of steps for smooth animation
-        const increment = percent / stepCount;
-        let currentPercent = start;
-
-        function step() {
-            if (currentPercent < percent) {
-                currentPercent += increment;
-                setProgress(element, Math.min(currentPercent, percent));
-                requestAnimationFrame(step);
-            } else {
-                setProgress(element, percent);
-            }
+        function setProgress(element, percent) {
+            const radius = 40; // Adjust based on your SVG
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (percent / 100) * circumference;
+            const circle = element.querySelector('.progress-ring__circle');
+            circle.style.strokeDasharray = `${circumference}`;
+            circle.style.strokeDashoffset = offset;
+            const text = element.querySelector('.progress-text') || element.querySelector('.progress-text-green');
+            text.textContent = `${Math.round(percent)}%`; // Round to nearest integer
         }
 
-        step();
-    }
+        function animateProgress(element, percent) {
+            const duration = 1000; // animation duration in milliseconds
+            const start = 0;
+            const stepCount = 100; // Number of steps for smooth animation
+            const increment = percent / stepCount;
+            let currentPercent = start;
 
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const element = entry.target;
-                const percent = element.id === 'progress1' ? 71 : 91;
-                animateProgress(element, percent);
-                observer.unobserve(element); // Stop observing once animation is triggered
+            function step() {
+                if (currentPercent < percent) {
+                    currentPercent += increment;
+                    setProgress(element, Math.min(currentPercent, percent));
+                    requestAnimationFrame(step);
+                } else {
+                    setProgress(element, percent);
+                }
             }
-        });
-    });
 
-    observer.observe(progress1);
-    observer.observe(progress2);
-});
+            step();
+        }
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const element = entry.target;
+                    const percent = element.id === 'progress1' ? 71 : 91;
+                    animateProgress(element, percent);
+                    observer.unobserve(element); // Stop observing once animation is triggered
+                }
+            });
+        });
+
+        observer.observe(progress1);
+        observer.observe(progress2);
+    });
 </script>

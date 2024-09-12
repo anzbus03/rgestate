@@ -33,7 +33,9 @@ class AgentsController extends Controller
     {
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
-        $user = new user('search');
+        // $user = new user('search');
+        $user = User::model()->findByPk(Yii::app()->user->id);
+
 
         // for filters.
         $user->attributes = (array)$request->getQuery($user->modelName, array());
@@ -104,15 +106,48 @@ class AgentsController extends Controller
 
     public function actionView($id)
     {
+        // Fetch the user by primary key (user ID)
         $user = User::model()->findByPk((int)$id);
 
+        // Check if the user exists, if not throw a 404 error
         if (empty($user)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         }
+        if ($user !== null) {
+            // $countryName = $user->country ? $user->country->name : 'Country not set';
+        } else {
+            throw new CHttpException(404, 'User not found');
+        }
 
-        $request = Yii::app()->request;
-        $notify = Yii::app()->notify;
+        // SQL query to get sold properties for the user
+        $sql = "
+             SELECT sp.sold_id, sp.property_id, sp.user_id, pa.*
+             FROM mw_sold_property sp
+             JOIN mw_place_an_ad pa ON sp.property_id = pa.id
+             WHERE sp.user_id = :user_id
+         ";
 
+        // Execute the query using Yii's createCommand
+        $command = Yii::app()->db->createCommand($sql);
+
+        // Bind the :user_id parameter to the actual $id of the user
+        $command->bindParam(":user_id", $id, PDO::PARAM_INT);
+
+        // Fetch all sold properties
+        $soldProperties = $command->queryAll();
+
+        // Debugging or displaying the results
+        if (!empty($soldProperties)) {
+            foreach ($soldProperties as $property) {
+                echo "Sold ID: " . $property['sold_id'] . "<br>";
+                echo "Property ID: " . $property['property_id'] . "<br>";
+                echo "Property Name: " . $property['property_name'] . "<br>";  // Replace with actual field names
+            }
+        } else {
+            echo "No sold properties found for the user.";
+        }
+
+        // Adding styles and scripts
         $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/cropper/dist/cropper.min.js')));
         $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/_imageCrop.js?q=1')));
         $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/cropper/dist/cropper.min.css')));
@@ -122,6 +157,7 @@ class AgentsController extends Controller
         $this->getData('pageScripts')->add(array('src' => AssetsUrl::js('dropzone.min.js')));
         $this->getData('pageStyles')->add(array('src' => AssetsUrl::css('dropzone.css')));
 
+        // Set page metadata and render the view
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Agent Details'),
             'pageHeading'       => Yii::t('users', 'Agent Details'),
@@ -131,8 +167,10 @@ class AgentsController extends Controller
             )
         ));
 
-        $this->render('details', compact('user'));
+        // Render the 'details' view, passing both 'user' and 'soldProperties'
+        $this->render('details', compact('user', 'soldProperties', 'countryName'));
     }
+
 
     /**
      * Create a new user
