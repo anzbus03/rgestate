@@ -182,12 +182,12 @@ class SoldProperty extends ActiveRecord
     }
 
     // Get the total number of properties sold by a user
-    public function getTotalPropertiesSoldForUser()
+    public function getTotalPropertiesSoldForUser($id)
     {
-        $userId = Yii::app()->user->id;
+        $user = User::model()->findByPk((int)$id);
 
         $criteria = new \CDbCriteria;
-        $criteria->compare('user_id', $userId);
+        $criteria->compare('user_id', $user->user_id);
         $criteria->compare('isTrash', '0'); // Ensure non-deleted properties
 
         return $this->count($criteria);

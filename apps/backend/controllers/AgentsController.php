@@ -114,7 +114,7 @@ class AgentsController extends Controller
         }
 
         $revenue = SoldProperty::model()->getRevenueForUser();
-        $totalPropertiesSold = SoldProperty::model()->getTotalPropertiesSoldForUser();
+        $totalPropertiesSold = SoldProperty::model()->getTotalPropertiesSoldForUser($user->user_id);
         $numberOfAgents = User::model()->getNumberOfAgents();
 
         // Calculate percentage for "For Sale" target
