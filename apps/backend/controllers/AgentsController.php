@@ -64,6 +64,7 @@ class AgentsController extends Controller
         $tagModel = Tag::model()->findAll($criteria);
         $tags = CHtml::listData($tagModel, 'tag_id', 'tag_name');
         $tags_short = CHtml::listData($tagModel, 'tag_id', 'tagCodeWithColor');
+
         $this->render('index', compact('user',  'revenue', 'totalPropertiesSold', 'salesThisMonth', 'numberOfAgents', 'topAgents', 'tags', 'tags_short'));
     }
 
@@ -73,32 +74,39 @@ class AgentsController extends Controller
     public function actionList()
     {
         $request = Yii::app()->request;
-        $notify = Yii::app()->notify;
 
         $model = new User('search');
-        $model->unsetAttributes();
+        $model->unsetAttributes(); // clear any default values
 
         if ($request->getQuery('User')) {
             $model->attributes = $request->getQuery('User');
         }
 
-        // Only filter users where is_agent = 1
+        // Only show users where `is_agent = 1`
         $model->is_agent = 1;
 
-        $users = $model->search();
+        // Set the pagination for 12 items per page
+        $users = new CActiveDataProvider('User', array(
+            'criteria' => $model->search()->getCriteria(),
+            'pagination' => array(
+                'pageSize' => 12, // Set the number of items per page
+            ),
+        ));
 
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'View users'),
-            'pageHeading'       => Yii::t('users', 'View agents'),
+            'pageHeading'       => Yii::t('users', 'Agents List'),
             'pageBreadcrumbs'   => array(
                 Yii::t('users', 'Users') => $this->createUrl('users/index'),
                 Yii::t('app', 'View all')
             )
         ));
 
-        // Pass the data provider to the view
+        // Render the list view
         $this->render('list', compact('users'));
     }
+
+
 
     /**
      * view details of a user

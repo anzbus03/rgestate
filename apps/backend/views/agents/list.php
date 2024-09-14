@@ -23,7 +23,7 @@ if ($viewCollection->renderContent) {
     <!-- header  -->
     <div class="profile-navbar">
         <div>
-            <h3 class="textprimary">Agent Card View</h3>
+            <!-- <h3 class="textprimary">Agents List</h3> -->
             <span class="textprimary fontMd sizeSm">All Agents</span>
             <span>/</span>
             <span class="textgray sizeSm">All agents listing</span>
@@ -72,16 +72,79 @@ if ($viewCollection->renderContent) {
                 <hr class="hr">
 
                 <div class="px">
-                    <!-- Button to send a message -->
-                    <!-- <button style="margin: 0 0 5px" class="forth-btn">Details</button> -->
-
+                    <!-- Button to view details -->
                     <?php echo CHtml::link(Yii::t('app', 'Details'), array($this->id . '/view', 'id' => $user->user_id), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Details'))); ?>
                 </div>
             </div>
         </div>
         <?php } ?>
     </div>
+
+    <!-- Pagination Section -->
+    <div class="pagination-container">
+        <?php
+            $this->widget('CLinkPager', array(
+                'pages' => $users->pagination, // Using pagination from data provider
+                'cssFile' => false, // Disable default CSS
+                'header' => '', // Remove header
+                'firstPageLabel' => '<i class="fa fa-angle-double-left" aria-hidden="true"></i>', // Custom icon
+                'lastPageLabel' => '<i class="fa fa-angle-double-right" aria-hidden="true"></i>', // Custom icon
+                'prevPageLabel' => '<i class="fa fa-chevron-left"></i>', // Custom icon
+                'nextPageLabel' => '<i class="fa fa-chevron-right"></i>', // Custom icon
+                'htmlOptions' => array('class' => 'pagination'), // Custom CSS class
+                'selectedPageCssClass' => 'active', // Highlight active page
+                'hiddenPageCssClass' => 'hidden', // Hide unnecessary links
+            ));
+            ?>
+    </div>
+
     <style>
+    /* custom pagination css  */
+    .pagination-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .pagination li.hidden,
+    .pagination li.disabled {
+        display: none;
+    }
+
+    .pagination {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .pagination li {
+        display: inline-block;
+    }
+
+    .pagination a {
+        display: inline-block;
+        padding: 8px;
+        margin: 5px;
+        border-radius: 4px;
+        background-color: #f0f0f0;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .pagination a:hover {
+        background-color: #e0e0e0;
+    }
+
+    .pagination .active a {
+        background-color: #4285F4;
+        color: white;
+    }
+
+    /* custom pagination css end */
+
+
     /* navbar section start  */
     .profile-navbar {
         display: flex;
