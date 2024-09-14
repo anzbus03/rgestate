@@ -46,7 +46,7 @@ class SoldProperty extends ActiveRecord
         // class name for the relations automatically generated below.
         $relations = array(
             'user' => array(self::BELONGS_TO, 'User', 'user_id'),
-            'placeAnAd' => array(self::BELONGS_TO, 'PlaceAnAd', 'property_id'),
+            'property' => array(self::BELONGS_TO, 'PlaceAnAd', 'property_id'),
         );
 
         // Merges the defined relations with the parent relations (if any).

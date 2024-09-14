@@ -89,7 +89,7 @@ class AgentsController extends Controller
 
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'View users'),
-            'pageHeading'       => Yii::t('users', 'View users'),
+            'pageHeading'       => Yii::t('users', 'View agents'),
             'pageBreadcrumbs'   => array(
                 Yii::t('users', 'Users') => $this->createUrl('users/index'),
                 Yii::t('app', 'View all')
@@ -103,7 +103,6 @@ class AgentsController extends Controller
     /**
      * view details of a user
      */
-
     public function actionView($id)
     {
         // Fetch the user by primary key (user ID)
@@ -113,63 +112,57 @@ class AgentsController extends Controller
         if (empty($user)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         }
-        // if ($user !== null) {
-        //     // $countryName = $user->country ? $user->country->name : 'Country not set';
-        // } else {
-        //     throw new CHttpException(404, 'User not found');
-        // }
 
-        // // SQL query to get sold properties for the user
-        // $sql = "
-        //      SELECT sp.sold_id, sp.property_id, sp.user_id, pa.*
-        //      FROM mw_sold_property sp
-        //      JOIN mw_place_an_ad pa ON sp.property_id = pa.id
-        //      WHERE sp.user_id = :user_id
-        //  ";
+        $revenue = SoldProperty::model()->getRevenueForUser();
+        $totalPropertiesSold = SoldProperty::model()->getTotalPropertiesSoldForUser();
+        $numberOfAgents = User::model()->getNumberOfAgents();
 
-        // // Execute the query using Yii's createCommand
-        // $command = Yii::app()->db->createCommand($sql);
+        // Calculate percentage for "For Sale" target
+        if ($user->target_for_sale > 0) {
+            $completionPercentage = ($totalPropertiesSold / $user->target_for_sale) * 100;
+            if ($completionPercentage > 100) {
+                $completionPercentage = 100; // Cap the percentage at 100%
+            }
+        } else {
+            $completionPercentage = 0;
+        }
 
-        // // Bind the :user_id parameter to the actual $id of the user
-        // $command->bindParam(":user_id", $id, PDO::PARAM_INT);
+        // Calculate percentage for "For Rent" target
+        if ($user->target_for_rent > 0) {
+            $completionPercentageForRent = ($user->target_for_rent / $user->target_for_rent) * 100;
+            if ($completionPercentageForRent > 100) {
+                $completionPercentageForRent = 100; // Cap the percentage at 100%
+            }
+        } else {
+            $completionPercentageForRent = 0;
+        }
 
-        // // Fetch all sold properties
-        // $soldProperties = $command->queryAll();
+        // Use CActiveDataProvider to fetch sold properties for the user, with pagination
+        $dataProvider = new CActiveDataProvider('SoldProperty', array(
+            'criteria' => array(
+                'condition' => 't.user_id = :user_id',
+                'params' => array(':user_id' => $user->user_id),
+                'with' => array('property'),
+            ),
+            'pagination' => array(
+                'pageSize' => 9,
+            ),
+        ));
 
-        // // Debugging or displaying the results
-        // if (!empty($soldProperties)) {
-        //     foreach ($soldProperties as $property) {
-        //         echo "Sold ID: " . $property['sold_id'] . "<br>";
-        //         echo "Property ID: " . $property['property_id'] . "<br>";
-        //         echo "Property Name: " . $property['property_name'] . "<br>";  // Replace with actual field names
-        //     }
-        // } else {
-        //     echo "No sold properties found for the user.";
-        // }
-
-        // Adding styles and scripts
-        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/cropper/dist/cropper.min.js')));
-        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/_imageCrop.js?q=1')));
-        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/cropper/dist/cropper.min.css')));
-
-        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/select2.min.css')));
-        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/select2.min.js')));
-        $this->getData('pageScripts')->add(array('src' => AssetsUrl::js('dropzone.min.js')));
-        $this->getData('pageStyles')->add(array('src' => AssetsUrl::css('dropzone.css')));
-
-        // Set page metadata and render the view
         $this->setData(array(
-            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Agent Details'),
+            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'View users'),
             'pageHeading'       => Yii::t('users', 'Agent Details'),
             'pageBreadcrumbs'   => array(
-                Yii::t('users', 'Agents') => $this->createUrl('agents/list'),
+                Yii::t('users', 'Users') => $this->createUrl('users/index'),
                 Yii::t('app', 'View all')
             )
         ));
 
-        // Render the 'details' view, passing both 'user' and 'soldProperties'
-        $this->render('details', compact('user', 'soldProperties'));
+        // Render the 'details' view, passing 'user', 'completionPercentage', and 'completionPercentageForRent'
+        $this->render('details', compact('user', 'dataProvider', 'revenue', 'numberOfAgents', 'totalPropertiesSold', 'completionPercentage', 'completionPercentageForRent'));
     }
+
+
 
 
     /**

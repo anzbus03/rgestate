@@ -160,6 +160,7 @@ class UsersController extends Controller
      */
     public function actionDelete($id)
     {
+
         if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
@@ -173,11 +174,12 @@ class UsersController extends Controller
             $user->delete();
         }
 
-        if (!Yii::app()->request->getQuery('ajax')) {
-            Yii::app()->notify->addSuccess('The item has been successfully deleted!');
+        if (!Yii::app()->request->isAjaxRequest) {
+            Yii::app()->notify->addSuccess('The user has been successfully deleted!');
             $this->redirect(array('users/index'));
         }
     }
+
 
     public function actionImpersonate($id)
     {
