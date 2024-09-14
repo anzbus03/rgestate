@@ -41,7 +41,7 @@ class AgentsController extends Controller
         $user->attributes = (array)$request->getQuery($user->modelName, array());
 
         $revenue = SoldProperty::model()->getRevenueForUser();
-        $totalPropertiesSold = SoldProperty::model()->getTotalPropertiesSoldForUser();
+        $totalPropertiesSold = SoldProperty::model()->getTotalPropertiesSoldForUser($user->user_id);
         $salesThisMonth = SoldProperty::model()->getSalesThisMonthForUser();
 
         // Get number of agents
