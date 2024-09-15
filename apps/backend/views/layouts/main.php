@@ -24,7 +24,6 @@
     <link href="<?php echo Yii::app()->apps->getBaseUrl('theme'); ?>/assets/lib/slick/slick.css" rel="stylesheet">
     <link href="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/swiper/css/swiper-bundle.min.css');?>" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->apps->getBaseUrl('theme'); ?>/assets/js/build/css/intlTelInput.min.css" />
-
     <?php
     if($this->id=='place_property' or $this->id=='listingusers'){ ?> 
     <script>  function iniFrame() { if(window.self !== window.top) {   $('html').addClass("isOnFram");   }  }  iniFrame();</script>
@@ -231,6 +230,8 @@
                 <div id="notify-container">
                     <?php echo Yii::app()->notify->show();?>
                 </div>
+                <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/global/global.min.js');?>" type="text/javascript"></script>
+
                 <?php echo $content;?>
             </section>
             

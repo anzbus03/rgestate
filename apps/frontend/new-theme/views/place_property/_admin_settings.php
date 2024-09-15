@@ -72,7 +72,7 @@
 			}
 			?>
 
-			<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(ListingUsers::model()->findAllByPk($model->user_id), 'user_id', 'fullName'), $model->getHtmlOptions('user_id')); ?>
+			<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(User::model()->findAll(), 'user_id', 'fullName'), $model->getHtmlOptions('user_id')); ?>
 			<?php echo $form->error($model, 'user_id'); ?>
 		</div>
 

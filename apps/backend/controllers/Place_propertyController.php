@@ -474,12 +474,21 @@ class Place_propertyController  extends Controller
                 Yii::t('app', 'View all')
             )
         ));
+
+        // Fetch all SoldProperty records that match the list of property IDs
+        $soldProperties = SoldProperty::model()->findAll();
+
+        // Extract property_id from each SoldProperty record
+        $soldPropertyIds = array_map(function ($soldProperty) {
+            return $soldProperty->property_id;
+        }, $soldProperties);
+
         $criteria = new CDbCriteria;
         $criteria->compare('tag_type', 'L');
         $tagModel = Tag::model()->findAll($criteria);
         $tags = CHtml::listData($tagModel, 'tag_id', 'tag_name');
         $tags_short =  $model->place_ad_tag_code();;
-        $this->render('list', compact('model', 'tags', 'tags_short'));
+        $this->render('list', compact('model', 'soldPropertyIds', 'tags', 'tags_short'));
     }
 
     public function actionExportExcel()
@@ -3025,19 +3034,19 @@ class Place_propertyController  extends Controller
     {
         $model = new PlaceAnAd(); // Replace with your actual model name
         $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
-    
+
         $model->scenario = 'new_insert';
-    
+
         $image_array = array();
         $country = Countries::model()->ListDataForJSON();
         $section = Section::model()->ListDataForJSON_New();
         $list_type = Category::model()->listingTypeArrayMainData();
-    
+
         if (isset($_FILES['excelFile'])) {
             $zipFile = $_FILES['zipFile']['tmp_name'];
             $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
             foreach (array_slice($excelData, 1) as $data) {
-                $model->section_id = $data[0]; 
+                $model->section_id = $data[0];
                 $model->listing_type = $data[1] == 1 ? 151 : 150;
                 $model->RefNo = $data[2];
                 $model->ad_title = $data[3];
@@ -3057,7 +3066,7 @@ class Place_propertyController  extends Controller
                 $model->country = 66124;
                 $model->state = 0;
                 $model->user_id = 31988;
-                if (!$model->save()){
+                if (!$model->save()) {
                     $errors = $model->getErrors();
                     $errorMessage = 'Failed to save model: ' . json_encode($errors);
                     $this->sendJsonResponse(['status' => 'error', 'message' => $errorMessage]);
@@ -3071,7 +3080,7 @@ class Place_propertyController  extends Controller
                     // Extract ZIP file
                     $zip = new ZipArchive;
                     if ($zip->open($zipFile) === TRUE) {
-                        $zip->extractTo( Yii::getPathOfAlias('webroot') .'/uploads');
+                        $zip->extractTo(Yii::getPathOfAlias('webroot') . '/uploads');
                         $zip->close();
                     } else {
                         return $this->sendJsonResponse(['status' => 'error', 'message' => 'Failed to extract ZIP file.']);
@@ -3080,22 +3089,23 @@ class Place_propertyController  extends Controller
                     $img_saved = false;
                     foreach ($imgArr as $k) {
                         // Find the image in the extracted folder
-                        $extractedPath =  Yii::getPathOfAlias('webroot') .'/uploads/'; // Same path as above
+                        $extractedPath =  Yii::getPathOfAlias('webroot') . '/uploads/'; // Same path as above
                         $imagePath = $extractedPath . $k;
                         if (file_exists($imagePath)) {
                             // Construct the upload path based on the current year and month
-                            $rootPath = dirname(Yii::getPathOfAlias('webroot')); 
+                            $rootPath = dirname(Yii::getPathOfAlias('webroot'));
                             $year = date('Y');
                             $month = date('m');
                             $uploadDir = "{$rootPath}/uploads/files/{$year}/{$month}/";
-                            
+
                             // Ensure the directory exists
                             if (!is_dir($uploadDir)) {
                                 if (!mkdir($uploadDir, 0755, true)) {
                                     // If mkdir fails, return an error message
                                     $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to create directory: {$uploadDir}"]);
                                     return;
-                                }                            }
+                                }
+                            }
 
                             $uploadPath = $uploadDir . $k;
 
@@ -3123,9 +3133,8 @@ class Place_propertyController  extends Controller
 
             return $this->sendJsonResponse(['status' => 'success']);
         }
-    
     }
-    
+
 
     public function _setupEditorOptions(CEvent $event)
     {
@@ -3153,5 +3162,48 @@ class Place_propertyController  extends Controller
         header('Content-Type: application/json');
         echo json_encode($data);
         Yii::app()->end();
+    }
+
+    public function actionMarkAsSold()
+    {
+
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+        $model = new SoldProperty();
+
+        
+        if ($request->isPostRequest && isset($_POST['SoldProperty'])) {
+            // Set the attributes from the POST data
+            $placeAd = PlaceAnAd::model()->findByPk($model->property_id); // Find the record by property_id
+            $model->attributes = $_POST['SoldProperty'];
+            $model->user_id = $placeAd->user_id; // Assign the current logged-in user's ID
+            $model->isTrash = 0; // Default value for non-deleted records
+            // Save the new record
+            if ($placeAd !== null) {
+                $placeAd->status = 'S'; // Update the status to 'S' (sold)
+                if ($placeAd->save()) {
+                    // Notify success message
+                    $notify->addSuccess(Yii::t('app', 'Property marked as sold and status updated successfully!'));
+                } else {
+                    // Notify error message if the status update fails
+                    $notify->addError(Yii::t('app', 'Failed to update the property status.'));
+                }
+            } 
+            if ($model->save()) {
+                // Notify success message
+                $notify->addSuccess(Yii::t('app', 'Property marked as sold successfully!'));
+
+                // Redirect to place_property/index
+                $this->redirect(Yii::app()->createUrl('place_property/index'));
+            } else {
+                // Notify error message
+                $notify->addError(Yii::t('app', 'Failed to mark the property as sold.'));
+            }
+        }
+
+        // If validation fails, render the create form again with errors
+        $this->render('create', array(
+            'model' => $model,
+        ));
     }
 }
