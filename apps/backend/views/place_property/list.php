@@ -327,10 +327,10 @@ if ($viewCollection->renderContent) { ?>
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Sold Property</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="btn close" data-bs-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="soldPropertyForm">
+                <form id="soldPropertyForm" method="POST">
                     <!-- Hidden input to store property_id -->
                     <input type="hidden" id="propertyIdInput" name="SoldProperty[property_id]">
                     <div class="form-group">
@@ -338,7 +338,7 @@ if ($viewCollection->renderContent) { ?>
                         <input type="text" id="soldPriceInput" name="SoldProperty[sold_price]" class="form-control"
                             required>
                     </div>
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" class="btn btn-success mt-2">Submit</button>
                 </form>
             </div>
         </div>
@@ -350,7 +350,6 @@ if ($viewCollection->renderContent) { ?>
 function openUp2(propertyId) {
     // Set the property ID in the hidden input field of the form
     $('#propertyIdInput').val(propertyId);
-
     // Show the modal
     $('#soldPropertyModal').modal('show');
 }

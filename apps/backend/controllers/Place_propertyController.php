@@ -3166,17 +3166,29 @@ class Place_propertyController  extends Controller
 
     public function actionMarkAsSold()
     {
+
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         $model = new SoldProperty();
 
+        
         if ($request->isPostRequest && isset($_POST['SoldProperty'])) {
             // Set the attributes from the POST data
+            $placeAd = PlaceAnAd::model()->findByPk($model->property_id); // Find the record by property_id
             $model->attributes = $_POST['SoldProperty'];
-            $model->user_id = Yii::app()->user->id; // Assign the current logged-in user's ID
+            $model->user_id = $placeAd->user_id; // Assign the current logged-in user's ID
             $model->isTrash = 0; // Default value for non-deleted records
-
             // Save the new record
+            if ($placeAd !== null) {
+                $placeAd->status = 'S'; // Update the status to 'S' (sold)
+                if ($placeAd->save()) {
+                    // Notify success message
+                    $notify->addSuccess(Yii::t('app', 'Property marked as sold and status updated successfully!'));
+                } else {
+                    // Notify error message if the status update fails
+                    $notify->addError(Yii::t('app', 'Failed to update the property status.'));
+                }
+            } 
             if ($model->save()) {
                 // Notify success message
                 $notify->addSuccess(Yii::t('app', 'Property marked as sold successfully!'));

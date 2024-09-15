@@ -939,7 +939,7 @@ class PlaceAnAd extends ActiveRecord
 
 		$criteria = new CDbCriteria;
 		$criteria->condition = '1';
-		$criteria->select = 't.*,lstype.category_name as listing_category ,cat.category_name as  category_name,' . $this->FetauredQuery . 'TIMESTAMPDIFF(DAY,(CASE WHEN t.extended_on IS NOT NULL THEN t.extended_on ELSE  t.date_added END),NOW()) as days_active ,usr.first_name,usr.email as user_email,usr.full_number as mob,usr.email_verified,usr.o_verified,usr.last_name,usr.slug as u_slug,cn.country_name,st.state_name, (SELECT CONCAT(image_name, "||F||", status)  FROM {{ad_image}} img  WHERE  img.ad_id = t.id   and  img.isTrash="0" order by img.status="A" desc  limit 1 )   as ad_image2';
+		$criteria->select = 't.*,lstype.category_name as listing_category ,cat.category_name as  category_name,' . $this->FetauredQuery . 'TIMESTAMPDIFF(DAY,(CASE WHEN t.extended_on IS NOT NULL THEN t.extended_on ELSE  t.date_added END),NOW()) as days_active ,cn.country_name,st.state_name, (SELECT CONCAT(image_name, "||F||", status)  FROM {{ad_image}} img  WHERE  img.ad_id = t.id   and  img.isTrash="0" order by img.status="A" desc  limit 1 )   as ad_image2';
 		if ($this->startDate && $this->endDate) {
 			$criteria->addCondition('t.date_added >= :startDate AND t.date_added <= :endDate');
 			$criteria->params[':startDate'] = $this->startDate;
@@ -955,10 +955,10 @@ class PlaceAnAd extends ActiveRecord
 		}
 		$criteria->compare('t.section_id', $this->section_id);
 		$criteria->compare('t.p_o_r', $this->p_o_r);
-		if (!empty($this->user_id)) {
-			$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END ';
-			$criteria->params[':thisusr'] = (int) $this->user_id;
-		}
+		// if (!empty($this->user_id)) {
+		// 	$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END ';
+		// 	$criteria->params[':thisusr'] = (int) $this->user_id;
+		// }
 		if (!empty($this->f_properties)) {
 			$criteria->condition .= ' and  t.xml_inserted="0" ';
 		}
@@ -984,11 +984,11 @@ class PlaceAnAd extends ActiveRecord
 		$criteria->compare('t.site', $this->site);
 		$criteria->compare('t.listing_type', $this->listing_type);
 		$criteria->compare('DATE(t.date_added)', $this->date_added);
-		if ($this->CanShowDeletedUserAds) {
-			$criteria->join  = ' INNER JOIN {{listing_users}} usr on t.user_id = usr.user_id';
-		} else {
-			$criteria->join  = ' INNER JOIN {{listing_users}} usr on t.user_id = usr.user_id and usr.isTrash="0"';
-		}
+		// if ($this->CanShowDeletedUserAds) {
+			// $criteria->join  = ' INNER JOIN {{user}} usr on t.user_id = usr.user_id';
+		// } else {
+		// 	$criteria->join  = ' INNER JOIN {{user}} usr on t.user_id = usr.user_id';
+		// }
 		if (!empty($this->tag_list2)) {
 			$criteria->join  .= ' INNER JOIN {{place_ad_tags}} tg on tg.ad_id = t.id and tg.tag_id = :tag_id';
 			$criteria->params[':tag_id'] = $this->tag_list2;
@@ -1012,12 +1012,12 @@ class PlaceAnAd extends ActiveRecord
 		if (defined('ONLY_BUSINESS')) {
 			$criteria->condition .= ' and t.section_id  = "6" ';
 		}
-		if (!empty($this->team_manager)) {
-			$criteria->join  .=   ' LEFT JOIN {{listing_users}} pusr2 on pusr2.user_id = usr.parent_user ';
-			$criteria->condition .=  ' and (CASE WHEN usr.parent_user is NOT NULL THEN pusr2.created_by ELSE usr.created_by END) = :team_manager  ';
-			$criteria->select .= ',CASE WHEN pusr2.user_id  is NOT NULL THEN pusr2.company_name ELSE usr.company_name END as company_name ';
-			$criteria->params[':team_manager'] = (int) $this->team_manager;
-		}
+		// if (!empty($this->team_manager)) {
+		// 	$criteria->join  .=   ' LEFT JOIN {{listing_users}} pusr2 on pusr2.user_id = usr.parent_user ';
+		// 	$criteria->condition .=  ' and (CASE WHEN usr.parent_user is NOT NULL THEN pusr2.created_by ELSE usr.created_by END) = :team_manager  ';
+		// 	$criteria->select .= ',CASE WHEN pusr2.user_id  is NOT NULL THEN pusr2.company_name ELSE usr.company_name END as company_name ';
+		// 	$criteria->params[':team_manager'] = (int) $this->team_manager;
+		// }
 		if (!empty($this->country_name)) {
 			$criteria->compare('lower(st.state_name)', $this->country_name, true);
 
@@ -2016,11 +2016,11 @@ class PlaceAnAd extends ActiveRecord
 			$paramsArray[":list4"] =  $list;
 		}
 		//user ID
-		if (isset($search["user_id"]) and !empty($search["user_id"])) {
+		// if (isset($search["user_id"]) and !empty($search["user_id"])) {
 
-			$condition  .= " and  t.user_id in (:usr)";
-			$paramsArray[":usr"] = $search["user_id"];
-		}
+		// 	$condition  .= " and  t.user_id in (:usr)";
+		// 	$paramsArray[":usr"] = $search["user_id"];
+		// }
 		//fuel_id
 		if (isset($search["fuel_id"]) and !empty($search["fuel_id"])) {
 			$list =  implode(',', $search["fuel_id"]);
@@ -3191,7 +3191,7 @@ class PlaceAnAd extends ActiveRecord
 		//$criteria->join  .= ' left join {{category}} cat ON cat.category_id = t.category_id ';
 		$criteria->join  .= ' left join {{community}} com ON com.community_id = t.community_id ';
 		$criteria->join  .= ' left join {{area_unit}} au ON au.master_id = t.area_unit ';
-		$criteria->select = 't.*,ct.image as location_image,usr.full_number as mobile_number ,  cat.category_name as  category_name,ct.city_name, st.state_name as state_name,com.community_name, (SELECT CONCAT(image_name, "||F||", status) FROM {{ad_image}} img  WHERE  img.ad_id = t.id   and  img.isTrash="0" order by img.status="A" desc  limit 1  )     as ad_image2  ,usr.image as user_image,usr.first_name,usr.last_name';
+		$criteria->select = 't.*,ct.image as location_image,usr.phone_number as mobile_number ,  cat.category_name as  category_name,ct.city_name, st.state_name as state_name,com.community_name, (SELECT CONCAT(image_name, "||F||", status) FROM {{ad_image}} img  WHERE  img.ad_id = t.id   and  img.isTrash="0" order by img.status="A" desc  limit 1  )     as ad_image2  ,usr.image as user_image,usr.first_name,usr.last_name';
 		$criteria->select .= ',(SELECT  group_concat(CASE WHEN img.status="A" THEN `image_name` ELSE "waiting-feeta.jpg" END)  FROM {{ad_image}} img  WHERE  img.ad_id = t.id   and  img.isTrash="0"    )   as ad_images_g';
 
 		$criteria->select .= ',  (t.builtup_area*(1/au.value))   as converted_unit ,au.master_name as atitle';
@@ -4630,6 +4630,9 @@ class PlaceAnAd extends ActiveRecord
 				break;
 			case 'C':
 				return '<span class="label text-white bg-yellow" title="Active" onclick="previewthis(this,event)"   href="' . $usrl . '">C</span>';
+				break;
+			case 'S':
+				return '<span class="label text-white bg-success" title="Active" onclick="previewthis(this,event)"   href="' . $usrl . '">S</span>';
 				break;
 		}
 	}

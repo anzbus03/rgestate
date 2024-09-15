@@ -147,7 +147,7 @@ class User extends ActiveRecord
             'user_id'       => Yii::t('users', 'User'),
             'group_id'       => Yii::t('users', 'User Group'),
             'language_id'   => Yii::t('users', 'Language'),
-            'country_id'   => Yii::t('users', 'Countries'),
+            'country_id'   => Yii::t('users', 'Country'),
             'state_id'   => Yii::t('users', 'State/Region'),
             'service_id'   => Yii::t('users', 'Designation'),
             'first_name'    => Yii::t('users', 'First name'),

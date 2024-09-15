@@ -50,7 +50,7 @@ if ($viewCollection->renderContent) {
 ?>
 <div class="card">
     <div class="card-header">
-        <div class="pull-left">
+        <div class="card-header-left">
             <h3 class="card-title"><span class="glyphicon glyphicon-user"></span> <?php echo $pageHeading; ?></h3>
         </div>
         <div class="pull-right">
@@ -86,105 +86,87 @@ if ($viewCollection->renderContent) {
             <?php echo $form->hiddenField($user, 'is_agent', array_merge($user->getHtmlOptions('is_agent'), ['value' => 1])); ?>
         </div>
         <div class="row">
-
-
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'first_name'); ?>
                 <?php echo $form->textField($user, 'first_name', $user->getHtmlOptions('first_name')); ?>
                 <?php echo $form->error($user, 'first_name'); ?>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'last_name'); ?>
                 <?php echo $form->textField($user, 'last_name', $user->getHtmlOptions('last_name')); ?>
                 <?php echo $form->error($user, 'last_name'); ?>
             </div>
 
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'profile_image'); ?>
                 <?php echo CHtml::activeFileField($user, 'profile_image', $user->getHtmlOptions('profile_image')); ?>
                 <?php echo $form->error($user, 'profile_image'); ?>
             </div>
-            <div class="clearfix">
-                <!-- -->
-            </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'phone_number'); ?>
                 <?php echo $form->textField($user, 'phone_number', $user->getHtmlOptions('phone_number')); ?>
                 <?php echo $form->error($user, 'phone_number'); ?>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'age'); ?>
                 <?php echo $form->textField($user, 'age', $user->getHtmlOptions('age')); ?>
                 <?php echo $form->error($user, 'age'); ?>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'gender'); ?>
                 <?php echo $form->dropDownList($user, 'gender', array('Male' => 'Male', 'Female' => 'Female', 'Other' => 'Other'), $user->getHtmlOptions('gender')); ?>
                 <?php echo $form->error($user, 'gender'); ?>
             </div>
-
-            <!-- <div class="clearfix">
-          
-        </div> -->
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'email'); ?>
                 <?php echo $form->textField($user, 'email', $user->getHtmlOptions('email')); ?>
                 <?php echo $form->error($user, 'email'); ?>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'confirm_email'); ?>
                 <?php echo $form->textField($user, 'confirm_email', $user->getHtmlOptions('confirm_email')); ?>
                 <?php echo $form->error($user, 'confirm_email'); ?>
             </div>
-            <!-- <div class="clearfix">
-           
-        </div> -->
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'alt_email'); ?>
                 <?php echo $form->textField($user, 'alt_email', $user->getHtmlOptions('alt_email')); ?>
                 <?php echo $form->error($user, 'alt_email'); ?>
             </div>
-            <!-- <div class="clearfix">
-           
-        </div> -->
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'fake_password'); ?>
                 <?php echo $form->textField($user, 'fake_password', $user->getHtmlOptions('password')); ?>
                 <?php echo $form->error($user, 'fake_password'); ?>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'confirm_password'); ?>
                 <?php echo $form->textField($user, 'confirm_password', $user->getHtmlOptions('confirm_password')); ?>
                 <?php echo $form->error($user, 'confirm_password'); ?>
             </div>
-            <!-- <div class="clearfix">
-   
-        </div> -->
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'description'); ?>
                 <?php echo $form->textField($user, 'description', $user->getHtmlOptions('description')); ?>
                 <?php echo $form->error($user, 'description'); ?>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'service_id'); ?>
                 <?php echo $form->dropDownList($user, 'service_id', Chtml::listData(AgentRole::model()->listData(), 'service_id', 'service_name'), $user->getHtmlOptions('service_id', array('empty' => 'Select Designation'))); ?>
                 <?php echo $form->error($user, 'service_id'); ?>
             </div>
             <!-- Target for Sale field -->
-            <div class="form-group col-lg-6 target-fields" style="display:none;">
+            <div class="form-group col-lg-6 mb-2 target-fields">
                 <?php echo $form->labelEx($user, 'target_for_sale'); ?>
                 <?php echo $form->textField($user, 'target_for_sale', $user->getHtmlOptions('target_for_sale')); ?>
                 <?php echo $form->error($user, 'target_for_sale'); ?>
             </div>
 
             <!-- Target for Rent field -->
-            <div class="form-group col-lg-6 target-fields" style="display:none;">
+            <div class="form-group col-lg-6 mb-2 target-fields">
                 <?php echo $form->labelEx($user, 'target_for_rent'); ?>
                 <?php echo $form->textField($user, 'target_for_rent', $user->getHtmlOptions('target_for_rent')); ?>
                 <?php echo $form->error($user, 'target_for_rent'); ?>
             </div>
 
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'target_period'); ?>
                 <?php
                         echo $form->dropDownList(
@@ -200,23 +182,17 @@ if ($viewCollection->renderContent) {
                         ?>
                 <?php echo $form->error($user, 'target_period'); ?>
             </div>
-
-
-
-            <!-- <div class="clearfix">
-           
-        </div> -->
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'licence_no'); ?>
                 <?php echo $form->textField($user, 'licence_no', $user->getHtmlOptions('licence_no', array('class' => '  form-control'))); ?>
                 <?php echo $form->error($user, 'licence_no'); ?>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'timezone'); ?>
                 <?php echo $form->dropDownList($user, 'timezone', $user->getTimeZonesArray(), $user->getHtmlOptions('timezone')); ?>
                 <?php echo $form->error($user, 'timezone'); ?>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php
 
                         echo $form->labelEx($user, 'country_id'); ?>
@@ -241,58 +217,44 @@ if ($viewCollection->renderContent) {
                 <?php echo $form->dropDownList($user, 'country_id', CHtml::listData(Countries::model()->Countrylist(), "country_id", "country_name"), $dropdwn); ?>
                 <?php echo $form->error($user, 'country_id'); ?>
             </div>
-            <div class="form-group col-lg-6">
-                <?php echo $form->labelEx($user, 'state_id'); ?>
-                <?php $dropdwn =   array_merge($user->getHtmlOptions('state_id'), array('empty' => 'Select Region ', "style" => "1"));  ?>
-                <?php echo $form->dropDownList($user, 'state_id', CHtml::listData(States::model()->getStateWithCountry_2($user->country_id), "state_id", "state_name"), $dropdwn); ?>
-                <?php echo $form->error($user, 'state_id'); ?>
-            </div>
-            <div class="form-group col-lg-6">
+           
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'city'); ?>
                 <?php echo $form->textField($user, 'city', $user->getHtmlOptions('city')); ?>
                 <?php echo $form->error($user, 'city'); ?>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'language_id'); ?>
                 <?php echo $form->dropDownList($user, 'language_id', CMap::mergeArray(array('' => Yii::t('app', 'Application default')), Language::getLanguagesArray()), $user->getHtmlOptions('language_id')); ?>
                 <?php echo $form->error($user, 'language_id'); ?>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'status'); ?>
                 <?php echo $form->dropDownList($user, 'status', $user->getStatusesArray(), $user->getHtmlOptions('status')); ?>
                 <?php echo $form->error($user, 'status'); ?>
             </div>
-            <div class="form-group col-lg-12">
+            <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'address'); ?>
                 <?php echo $form->textField($user, 'address', $user->getHtmlOptions('address')); ?>
                 <?php echo $form->error($user, 'address'); ?>
             </div>
 
-
-            <!-- <div class="clearfix">
-            
-        </div> -->
-            <div class="row">
                 <?php if ($user->removable == User::TEXT_YES && ($options = UserGroup::getAllAsOptions())) { ?>
-                <div class="form-group col-lg-6">
+                <div class="form-group col-lg-6 mb-2">
                     <div class="">
                         <?php echo $form->labelEx($user, 'group_id'); ?>
-                        <?php echo $form->dropDownList($user, 'group_id', CMap::mergeArray(array('' => ''), $options), $user->getHtmlOptions('group_id')); ?>
+                        <?php echo $form->dropDownList($user, 'group_id', CMap::mergeArray(array('' => 'Select User Group'), $options), $user->getHtmlOptions('group_id')); ?>
                         <?php echo $form->error($user, 'group_id'); ?>
                     </div>
                 </div>
-                <div class="form-group col-lg-6">
+                <!-- <div class="form-group col-lg-6 mb-2">
                     <div class="">
                         <?php echo $form->labelEx($user, 'bank_id'); ?>
                         <?php echo $form->dropDownList($user, 'bank_id', Bank::model()->ListDataAll(), $user->getHtmlOptions('bank_id', array('empty' => 'Select All'))); ?>
                         <?php echo $form->error($user, 'bank_id'); ?>
                     </div>
-                </div>
+                </div> -->
                 <?php } ?>
-            </div>
-        </div>
-        <div class="clearfix">
-            <!-- -->
         </div>
         <?php
                 /**
@@ -306,14 +268,11 @@ if ($viewCollection->renderContent) {
                     'form'          => $form
                 )));
                 ?>
-        <div class="clearfix">
-            <!-- -->
-        </div>
     </div>
     <div class="box-footer">
-        <div class="pull-right">
+        <div class="pull-right mb-4 mr-2" style="margin-right: 30px;">
             <button type="submit" class="btn btn-primary btn-submit"
-                data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', 'Save changes'); ?></button>
+                data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', 'Create Agent'); ?></button>
         </div>
         <div class="clearfix">
             <!-- -->
@@ -358,21 +317,21 @@ $(function() {
 <!-- jQuery script to show/hide fields based on service_id -->
 <script type="text/javascript">
 $(document).ready(function() {
-    function toggleTargetFields() {
-        var selectedService = $('#User_service_id').val();
-        if (selectedService == '9') {
-            $('.target-fields').show();
-        } else {
-            $('.target-fields').hide();
-        }
-    }
+    // function toggleTargetFields() {
+    //     var selectedService = $('#User_service_id').val();
+    //     if (selectedService == '9') {
+    //         $('.target-fields').show();
+    //     } else {
+    //         $('.target-fields').hide();
+    //     }
+    // }
 
     // Initial check on page load
-    toggleTargetFields();
+    // toggleTargetFields();
 
-    $('#User_service_id').on('change', function() {
-        console.log('Service ID changed');
-        toggleTargetFields();
-    });
+    // $('#User_service_id').on('change', function() {
+    //     console.log('Service ID changed');
+    //     toggleTargetFields();
+    // });
 });
 </script>

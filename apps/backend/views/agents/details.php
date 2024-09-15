@@ -68,8 +68,6 @@ if ($viewCollection->renderContent) {
                         <hr>
                         <p><span>City :</span> <strong><?php echo $user->city ?></strong> </p>
                         <hr>
-                        <p><span>State :</span> <strong><?php echo $user->states->state_name ?></strong></p>
-                        <hr>
                         <p><span>Country :</span> <strong><?php echo $user->countries->country_name ?></strong></p>
                         <hr>
                         <!-- <p><span>Postcode :</span> <strong>10001</strong></p> -->
@@ -78,7 +76,7 @@ if ($viewCollection->renderContent) {
                         </p>
                     </div>
                     <hr>
-                    <div class="icon-section">
+                    <!-- <div class="icon-section">
                         <div class="icon">
                             <i class="fa-brands fa-instagram"></i>
                         </div>
@@ -88,7 +86,7 @@ if ($viewCollection->renderContent) {
                         <div class="icon">
                             <i class="fa-brands fa-twitter"></i>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
 
@@ -144,7 +142,7 @@ if ($viewCollection->renderContent) {
                                 <div class="card">
                                     <div class="card-info">
                                         <div class="card-detail">
-                                            <h3><?php echo $totalPropertiesSold ?></h3>
+                                            <h3><?php echo $revenueForSale ?></h3>
                                             <p>For Sale</p>
                                             <p><?php echo 'Target: ' . $user->target_for_sale . '/' . $user->target_period ?>
                                             </p>
@@ -161,16 +159,16 @@ if ($viewCollection->renderContent) {
                                                     </circle>
                                                 </svg>
                                                 <div class="progress-text">
-                                                    <?php echo round($completionPercentage, 2) . '%' ?></div>
+                                                    <?php echo round($completionPercentage) . '%' ?></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- <div class="card">
+                                <div class="card">
                                 <div class="card-info">
                                     <div class="card-detail">
-                                        <h3><?php echo $user->target_for_rent ?></h3>
+                                        <h3><?php echo $revenueForRent ?></h3>
                                         <p>For Rent</p>
                                         <p><?php echo 'Target: ' . $user->target_for_rent . '/' . $user->target_period ?>
                                         </p>
@@ -187,11 +185,11 @@ if ($viewCollection->renderContent) {
                                                 </circle>
                                             </svg>
                                             <div class="progress-text-green">
-                                                <?php echo round($completionPercentageForRent, 2) . '%' ?></div>
+                                                <?php echo round($completionPercentageRent) . '%' ?></div>
                                         </div>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div> 
 
                             </div>
                         </div>
@@ -202,106 +200,72 @@ if ($viewCollection->renderContent) {
 
 
                 <!-- house rent start -->
-
-                <div class="houses-container">
-                    <div class="houseRent">
-                        <?php if ($dataProvider->totalItemCount > 0): ?>
-                            <?php foreach ($dataProvider->data as $soldProperty):
-
-                                $locationParts = array_filter(array(
-                                    CHtml::encode($soldProperty->property->city),
-                                    CHtml::encode($soldProperty->property->stateLocation->state_name),
-                                    CHtml::encode($soldProperty->property->country0->country_name)
-                                ));
-
-                                $propertyImageUrl = !empty($soldProperty->property->image)
-                                    ? $soldProperty->property->image
-                                    : Yii::app()->baseUrl . '/assets/img/default_house.jpg';
-
-                                $userImageUrl = !empty(false)
-                                    ? $soldProperty->property->image
-                                    : Yii::app()->baseUrl . '/assets/img/defaul_user.png';
-                            ?>
-                                <!-- <pre><?php print_r($soldProperty) ?></pre> -->
-                                <div class="house-card">
-                                    <!-- Image Section -->
-                                    <div class="house-img">
-                                        <!-- <img src="./img/house.jpg" class="img-fluid" alt="House Image"> -->
-                                        <?php echo CHtml::image($propertyImageUrl, 'Property Image', array(
-                                            // 'width' => 200,
-                                            // 'height' => 150,
-                                            'class' => 'img-fluid',
-                                        )); ?>
-                                        <div class="imgInfo">
-                                            <span class="rent">
-                                                <i class="fa-solid fa-location-dot"></i>
-                                                <?php echo implode(', ', $locationParts); ?>
-                                            </span>
-                                            <span class="location">For Rent</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Details Section -->
-                                    <div class="card-body">
-                                        <h3 class="price">$<?php echo CHtml::encode($soldProperty->property->price); ?></h3>
-                                        <div class="iconContainer">
-                                            <div class="me-3">
-                                                <i class="fa-solid fa-bed"></i> <span
-                                                    class="fac"><?php echo CHtml::encode($soldProperty->property->bedrooms); ?>
-                                                    Beds</span>
-                                            </div>
-                                            <div class="me-3">
-                                                <i class="fa-solid fa-bath"></i><span class="fac">
-                                                    <?php echo CHtml::encode($soldProperty->property->bathrooms); ?>
-                                                    Baths</span>
-                                            </div>
-                                            <div>
-                                                <i class="fa-regular fa-square"></i>
-                                                <span class="fac">1500 sqft</span>
+                
+            </div>
+            <div class="mt-4 " style="margin-bottom: 20px;">
+                <h3>Agent Properties</h3>
+                <div class="shouseRent">
+                    <?php if (!empty($userProperties)): ?>
+                        <div class="row">
+                            <?php foreach ($userProperties as $property): ?>
+                                <div class="col-md-4">
+                                    <?php
+                                    $locationParts = array_filter(array(
+                                        CHtml::encode($property->city),
+                                        CHtml::encode($property->stateLocation->state_name),
+                                        CHtml::encode($property->country0->country_name)
+                                    ));
+    
+                                    $propertyImageUrl = !empty($property->image)
+                                        ? $property->image
+                                        : Yii::app()->baseUrl . '/assets/img/default_house.jpg';
+    
+                                    $userImageUrl = !empty($property->user->profile_image)
+                                        ? $property->user->profile_image
+                                        : Yii::app()->baseUrl . '/assets/img/default_user.png';
+                                    ?>
+                                    <div class="card">
+                                        <!-- Image Section -->
+                                        <div class="house-img mb-5">
+                                            <div class="imgInfo">
+                                                <span class="rent" style="width: 65%;">
+                                                    <i class="fa-solid fa-location-dot"></i>
+                                                    <?php echo implode(', ', $locationParts); ?>
+                                                </span>
+                                                <span class="location">For <?php echo $property->section_id == 1 ? 'Sale' : 'Rent'; ?></span>
+                                                <span class="location"><?php echo $property->status; ?></span>
                                             </div>
                                         </div>
-                                        <p class="description"><?php echo CHtml::encode($soldProperty->property->ad_title); ?></p>
-                                        <hr>
-                                        <!-- User and Icon Section -->
-                                        <div class="user-Container">
-                                            <div class="userInfo">
-                                                <!-- <img src="./img/person.avif" class="user-img" alt="User Image"> -->
-                                                <?php echo CHtml::image($userImageUrl, 'User Profile Image', array(
-                                                    // 'width' => 200,
-                                                    // 'height' => 150,
-                                                    'class' => 'user-img',
-                                                )); ?>
-                                                <h6><?php echo CHtml::encode($soldProperty->user->getFullName()); ?></h6>
+    
+                                        <!-- Details Section -->
+                                        <div class="card-body">
+                                            <h3 class="price">AED <?php echo CHtml::encode($property->price); ?></h3>
+                                            <div class="iconContainer">
+                                                <div class="me-3">
+                                                    <i class="fa-solid fa-bed"></i> 
+                                                    <span class="fac"><?php echo CHtml::encode($property->bedrooms); ?> Beds</span>
+                                                </div>
+                                                <div class="me-3">
+                                                    <i class="fa-solid fa-bath"></i>
+                                                    <span class="fac"><?php echo CHtml::encode($property->bathrooms); ?> Baths</span>
+                                                </div>
+                                                <div>
+                                                    <i class="fa-regular fa-square"></i>
+                                                    <span class="fac"><?php echo CHtml::encode($property->area_unit_1); ?> sqft</span>
+                                                </div>
                                             </div>
-                                            <div class="userIcon">
-                                                <i class="fa-regular fa-heart"></i>
-                                                <i class="fa-solid fa-share-nodes"></i>
-                                                <i class="fa-solid fa-plus"></i>
-                                            </div>
+                                            <p class="description"><?php echo CHtml::encode($property->ad_title); ?></p>
+                                            <hr>
+    
+                                          
                                         </div>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
-                    </div>
-                    <!-- Pagination Links -->
-                    <?php
-                            $this->widget('CLinkPager', array(
-                                'pages' => $dataProvider->pagination,
-                                'cssFile' => false,
-                                'header' => '',
-                                'firstPageLabel' => '<i class="fa fa-angle-double-left"  aria-hidden="true"></i>',
-                                'lastPageLabel' => '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
-                                'prevPageLabel' => '<i class="fa fa-chevron-left"></i>',
-                                'nextPageLabel' => '<i class="fa fa-chevron-right"></i>',
-                                'htmlOptions' => array('class' => 'pagination'),
-                                'selectedPageCssClass' => 'active',
-                                'hiddenPageCssClass' => 'hidden' // Hide unnecessary links
-                            ));
-
-                    ?>
-                <?php else: ?>
-                    <p>No properties sold by this user.</p>
-                <?php endif; ?>
+                        </div>
+                    <?php else: ?>
+                        <p>No properties listed by this user.</p>
+                    <?php endif; ?>
                 </div>
             </div>
 

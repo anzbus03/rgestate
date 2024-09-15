@@ -294,7 +294,7 @@ background:
 												 
 										<?php echo $form->labelEx($model, 'user_id');?>
 										<?php $mer =  array_merge($model->getHtmlOptions('user_id'),array('empty'=>"Select Customer",'class'=>"  form-control")); ?>
-										<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(ListingUsers::model()->findAllByPk($model->user_id),'user_id','fullName')   , $mer ); ?>
+										<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(User::model()->findAll(),'user_id','fullName')   , $mer ); ?>
 										<?php echo $form->error($model, 'user_id');?>
 									</div>
 							 

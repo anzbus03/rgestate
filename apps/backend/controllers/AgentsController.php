@@ -29,27 +29,71 @@ class AgentsController extends Controller
     /**
      * List all available users
      */
+    private function calculatePercentageDifference($current, $previous) {
+        if ($previous == 0) {
+            return $current > 0 ? 100 : 0;
+        }
+        return (($current - $previous) / $previous) * 100;
+    }
     public function actionIndex()
     {
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
-        // $user = new user('search');
-        $user = User::model()->findByPk(Yii::app()->user->id);
-
-
         // for filters.
         $user->attributes = (array)$request->getQuery($user->modelName, array());
+        $salesThisMonth = SoldProperty::model()->getSalesThisMonth();
+        $salesTotal = SoldProperty::model()->getSalesTotal();
 
-        $revenue = SoldProperty::model()->getRevenueForUser();
-        $totalPropertiesSold = SoldProperty::model()->getTotalPropertiesSoldForUser($user->user_id);
-        $salesThisMonth = SoldProperty::model()->getSalesThisMonthForUser();
+        // Get total properties sold this year
+        $startDateYear = date('Y-01-01');
+        $endDateYear = date('Y-m-d', strtotime('+1 day'));
+        $totalPropertiesSoldYear = SoldProperty::model()->getRevenueForAll($startDateYear, $endDateYear);
+
+        // Get total properties sold last year
+        $startDateLastYear = date('Y-01-01', strtotime('-1 year'));
+        $endDateLastYear = date('Y-12-31', strtotime('-1 year'));
+        $totalPropertiesSoldLastYear = SoldProperty::model()->getRevenueForAll($startDateLastYear, $endDateLastYear);
+
+        // Calculate percentage change between this year and last year
+        $percentageChangeYear = $this->calculatePercentageDifference($totalPropertiesSoldYear, $totalPropertiesSoldLastYear);
+
+        // Get total properties sold this month
+        $startDateMonth = date('Y-m-01');
+        $endDateMonth = date('Y-m-t', strtotime('+1 day'));
+        $totalPropertiesSoldMonth = SoldProperty::model()->getRevenueForAll($startDateMonth, $endDateMonth);
+
+        // Get total properties sold last month
+        $startDateLastMonth = date('Y-m-01', strtotime('-1 month'));
+        $endDateLastMonth = date('Y-m-t', strtotime('-1 month'));
+        $totalPropertiesSoldLastMonth = SoldProperty::model()->getRevenueForAll($startDateLastMonth, $endDateLastMonth);
+
+        // Calculate percentage change between this month and last month
+        $percentageChangeMonth = $this->calculatePercentageDifference($totalPropertiesSoldMonth, $totalPropertiesSoldLastMonth);
+
+        // Get total properties sold this week
+        $startDateWeek = date('Y-m-d', strtotime('monday this week'));
+        $endDateWeek = date('Y-m-d', strtotime('sunday this week'. ' +1 day'));
+        
+        $totalPropertiesSoldWeek = SoldProperty::model()->getRevenueForAll($startDateWeek, $endDateWeek);
+        $dailySalesData = SoldProperty::model()->getDailySalesData($startDateWeek, $endDateWeek);
+        $monthlySalesData = SoldProperty::model()->getMonthlySalesData(date('Y'));
+        $weeklySalesData = SoldProperty::model()->getWeeklySalesData(date('Y'), date('m'));
+        // Get total properties sold last week
+        $startDateLastWeek = date('Y-m-d', strtotime('monday last week'));
+        $endDateLastWeek = date('Y-m-d', strtotime('sunday last week'. ' +1 day'));
+        $totalPropertiesSoldLastWeek = SoldProperty::model()->getRevenueForAll($startDateLastWeek, $endDateLastWeek);
+
+        // Calculate percentage change between this week and last week
+        $percentageChangeWeek = $this->calculatePercentageDifference($totalPropertiesSoldWeek, $totalPropertiesSoldLastWeek);
+
 
         // Get number of agents
         $numberOfAgents = User::model()->getNumberOfAgents();
 
         // Get top 5 active agents
         $topAgents = SoldProperty::model()->getTop5ActiveAgents();
-
+        // print_r($topAgents);
+        // exit;
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Agents List'),
             'pageHeading'       => Yii::t('agent', 'Agent Dashboard'),
@@ -58,14 +102,19 @@ class AgentsController extends Controller
                 Yii::t('app', 'View all')
             )
         ));
-
+        // echo "<pre>";
+        // print_r($dailySalesData);
+        // exit;
         $criteria = new CDbCriteria;
         $criteria->compare('tag_type', 'C');
         $tagModel = Tag::model()->findAll($criteria);
         $tags = CHtml::listData($tagModel, 'tag_id', 'tag_name');
         $tags_short = CHtml::listData($tagModel, 'tag_id', 'tagCodeWithColor');
 
-        $this->render('index', compact('user',  'revenue', 'totalPropertiesSold', 'salesThisMonth', 'numberOfAgents', 'topAgents', 'tags', 'tags_short'));
+        $this->render('index', compact('user',  'revenue',  'salesThisMonth','salesTotal', 'totalPropertiesSoldYear', 'totalPropertiesSoldLastYear', 'percentageChangeYear',
+            'totalPropertiesSoldMonth', 'totalPropertiesSoldLastMonth', 'percentageChangeMonth',
+            'totalPropertiesSoldWeek', 'totalPropertiesSoldLastWeek', 'percentageChangeWeek'
+        , 'salesThisMonth', 'monthlySalesData', 'weeklySalesData', 'dailySalesData', 'numberOfAgents', 'topAgents', 'tags', 'tags_short'));
     }
 
     /**
@@ -120,43 +169,43 @@ class AgentsController extends Controller
         if (empty($user)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         }
-
-        $revenue = SoldProperty::model()->getRevenueForUser();
-        $totalPropertiesSold = SoldProperty::model()->getTotalPropertiesSoldForUser($user->user_id);
-        $numberOfAgents = User::model()->getNumberOfAgents();
+        $startDate = '';
+        $endDate = date('Y-m-d', strtotime('+1 day'));
+    
+        switch ($user->target_period) {
+            case 'yearly':
+                $startDate = date('Y-01-01'); // Start from the beginning of the current year
+                break;
+            case 'monthly':
+                $startDate = date('Y-m-01'); // Start from the beginning of the current month
+                break;
+            case 'weekly':
+                $startDate = date('Y-m-d', strtotime('monday this week')); // Start from the beginning of the current week
+                break;
+            default:
+                $startDate = date('Y-01-01'); // Default to the beginning of the year
+                break;
+        }
+    
+        // Fetch the total revenue for the user within the calculated date range
+        $revenueForSale = SoldProperty::model()->getRevenueForUser($user->user_id, $startDate, $endDate, 1);   
+        $revenueForRent = SoldProperty::model()->getRevenueForUser($user->user_id, $startDate, $endDate, 2);   
+        
 
         // Calculate percentage for "For Sale" target
         if ($user->target_for_sale > 0) {
-            $completionPercentage = ($totalPropertiesSold / $user->target_for_sale) * 100;
-            if ($completionPercentage > 100) {
-                $completionPercentage = 100; // Cap the percentage at 100%
-            }
+            $completionPercentage = ($revenueForSale / $user->target_for_sale) * 100;
         } else {
             $completionPercentage = 0;
         }
-
-        // Calculate percentage for "For Rent" target
         if ($user->target_for_rent > 0) {
-            $completionPercentageForRent = ($user->target_for_rent / $user->target_for_rent) * 100;
-            if ($completionPercentageForRent > 100) {
-                $completionPercentageForRent = 100; // Cap the percentage at 100%
-            }
+            $completionPercentageRent = ($revenueForRent / $user->target_for_rent) * 100;
         } else {
-            $completionPercentageForRent = 0;
+            $completionPercentageRent = 0;
         }
-
-        // Use CActiveDataProvider to fetch sold properties for the user, with pagination
-        $dataProvider = new CActiveDataProvider('SoldProperty', array(
-            'criteria' => array(
-                'condition' => 't.user_id = :user_id',
-                'params' => array(':user_id' => $user->user_id),
-                'with' => array('property'),
-            ),
-            'pagination' => array(
-                'pageSize' => 9,
-            ),
+        $userProperties = PlaceAnAd::model()->findAllByAttributes(array(
+            'user_id' => $user->user_id,
         ));
-
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'View users'),
             'pageHeading'       => Yii::t('users', 'Agent Details'),
@@ -167,7 +216,7 @@ class AgentsController extends Controller
         ));
 
         // Render the 'details' view, passing 'user', 'completionPercentage', and 'completionPercentageForRent'
-        $this->render('details', compact('user', 'dataProvider', 'revenue', 'numberOfAgents', 'totalPropertiesSold', 'completionPercentage', 'completionPercentageForRent'));
+        $this->render('details', compact('user', 'userProperties', 'revenue', 'numberOfAgents', 'revenueForSale', 'revenueForRent', 'completionPercentage', 'completionPercentageRent'));
     }
 
 
@@ -192,13 +241,12 @@ class AgentsController extends Controller
                 $fileName = uniqid() . '_' . $uploadedFile->getName();
                 $user->profile_image = $fileName;
             }
-
             if ($user->save()) {
                 if ($uploadedFile !== null) {
                     $uploadedFile->saveAs(Yii::getPathOfAlias('webroot') . '/uploads/profile_images/' . $fileName);
                 }
                 $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
-                $this->redirect(array('agents/index'));
+                $this->redirect(array('agents/list'));
             } else {
                 $errors = CHtml::errorSummary($user);
                 $notify->addError(Yii::t('app', 'There were errors: ' . $errors));

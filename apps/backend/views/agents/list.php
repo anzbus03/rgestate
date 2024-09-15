@@ -24,9 +24,9 @@ if ($viewCollection->renderContent) {
         <div class="profile-navbar">
             <div>
                 <!-- <h3 class="textprimary">Agents List</h3> -->
-                <span class="textprimary fontMd sizeSm">All Agents</span>
+                <span class="textprimary fontMd sizeSm">Agents Management</span>
                 <span>/</span>
-                <span class="textgray sizeSm">All agents listing</span>
+                <span class="textgray sizeSm">Agents List</span>
             </div>
             <?php echo CHtml::link(Yii::t('app', 'Create new'), array($this->id . '/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new'))); ?>
         </div>
@@ -59,10 +59,9 @@ if ($viewCollection->renderContent) {
                         </div>
                     </div>
                     <div class="profile-content">
-                        <div class="px">
-                            <!-- Short bio -->
+                        <!-- <div class="px">
                             <p class="twobio"><?php echo CHtml::encode($user->description); ?></p>
-                        </div>
+                        </div> -->
 
                         <!-- Display user's email -->
                         <p class="info">Email: <span><?php echo CHtml::encode($user->email); ?></span></p>
