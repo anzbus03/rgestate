@@ -27,8 +27,8 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 // and render if allowed
 if ($viewCollection->renderContent) {
 
-    $profileImageUrl = !empty(false)
-        ? $user->image
+    $profileImageUrl = !empty($user->profile_image)
+        ? $user->profile_image
         : Yii::app()->baseUrl . '/assets/img/defaul_user.png';
 ?>
     <div>
@@ -48,13 +48,15 @@ if ($viewCollection->renderContent) {
                 <div class="user-profile">
                     <div class="profile-header">
                         <div class="banner-overlay"></div>
-                        <!-- <img src="./img/person2.jpg" alt="User Image" class="profile-img"> -->
-                        <?php echo CHtml::image($profileImageUrl, 'Property Image', array(
-                            // 'width' => 200,
-                            // 'height' => 150,
-                            'class' => 'profile-img',
-                        )); ?>
-
+                        <div class="profile-img">
+                            <?php if (!empty($user->profile_image)): ?>
+                                <img src="<?php echo Yii::app()->baseUrl . '/uploads/profile_images/' . $user->profile_image; ?>"
+                                    alt="Profile Image" />
+                            <?php else: ?>
+                                <img src="<?php echo Yii::app()->baseUrl . '/uploads/profile_images/defaul_user.png'; ?>"
+                                    alt="Default Profile Image" />
+                            <?php endif; ?>
+                        </div>
                         <h3><?php echo $user->getFullName() ?></h3>
                         <p><?php echo $user->services->service_name ?></p>
                     </div>
@@ -447,6 +449,15 @@ if ($viewCollection->renderContent) {
             border-radius: 50%;
             border: 3px solid white;
             margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .profile-header .profile-img img {
+            height: 100%;
+            border-radius: 50%;
         }
 
         .profile-header h3 {

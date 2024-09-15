@@ -155,7 +155,7 @@ if ($viewCollection->renderContent) {
                 <?php echo $form->labelEx($user, 'fax');?>
                 <?php echo $form->textField($user, 'fax', $user->getHtmlOptions('fax')); ?>
                 <?php echo $form->error($user, 'fax');?>
-            </div>
+            </div> 
             <div class="form-group col-lg-3">
                 <?php echo $form->labelEx($user, 'webstie');?>
                 <?php echo $form->textField($user, 'website', $user->getHtmlOptions('webiste')); ?>

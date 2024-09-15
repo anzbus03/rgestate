@@ -54,6 +54,8 @@ class User extends ActiveRecord
 
     public $confirm_email;
 
+    public $profile_image;
+
     /**
      * @return string the associated database table name
      */
@@ -91,6 +93,7 @@ class User extends ActiveRecord
             array('first_name, last_name', 'length', 'min' => 2, 'max' => 100),
             array('email, confirm_email', 'length', 'min' => 4, 'max' => 100),
             array('email, confirm_email,alt_email', 'email'),
+            array('profile_image', 'file', 'types' => 'jpg, png, jpeg', 'allowEmpty' => true, 'safe' => true),
             array('description', 'length', 'max' => 3000),
             array('city', 'length', 'max' => 100),
             array('address', 'length', 'max' => 255),
@@ -149,6 +152,7 @@ class User extends ActiveRecord
             'service_id'   => Yii::t('users', 'Designation'),
             'first_name'    => Yii::t('users', 'First name'),
             'last_name'     => Yii::t('users', 'Last name'),
+            'profile_image' => Yii::t('users', 'Profile Image'),
             'age'     => Yii::t('users', 'Age'),
             'gender'     => Yii::t('users', 'Gender'),
             'licence_no'     => Yii::t('users', 'Licence No'),

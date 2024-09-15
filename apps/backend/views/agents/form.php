@@ -41,7 +41,12 @@ if ($viewCollection->renderContent) {
 
     // and render if allowed
     if ($collection->renderForm) {
-        $form = $this->beginWidget('CActiveForm');
+        // Modify this beginWidget to include htmlOptions
+        $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'user-form',
+            'enableClientValidation' => true,
+            'htmlOptions' => array('enctype' => 'multipart/form-data'), // Important for file uploads
+        ));
 ?>
 <div class="card">
     <div class="card-header">
@@ -92,6 +97,12 @@ if ($viewCollection->renderContent) {
                 <?php echo $form->labelEx($user, 'last_name'); ?>
                 <?php echo $form->textField($user, 'last_name', $user->getHtmlOptions('last_name')); ?>
                 <?php echo $form->error($user, 'last_name'); ?>
+            </div>
+
+            <div class="form-group col-lg-6">
+                <?php echo $form->labelEx($user, 'profile_image'); ?>
+                <?php echo CHtml::activeFileField($user, 'profile_image', $user->getHtmlOptions('profile_image')); ?>
+                <?php echo $form->error($user, 'profile_image'); ?>
             </div>
             <div class="clearfix">
                 <!-- -->

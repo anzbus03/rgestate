@@ -181,28 +181,31 @@ class AgentsController extends Controller
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         $user = new User();
-        // $user->scenario = 'agent_insert';
+        // $user->scenario = 'agent_insert'; // Uncomment if you need to apply specific validation rules for this scenario.
+
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($user->modelName, array()))) {
             $user->attributes = $attributes;
 
-            if (!$user->save()) {
-                $errors = CHtml::errorSummary($user);
-                $notify->addError(Yii::t('app', 'There were errors: ' . $errors));
-            } else {
-                $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
+            // Handle the file upload
+            $uploadedFile = CUploadedFile::getInstance($user, 'profile_image');
+            if ($uploadedFile !== null) {
+                $fileName = uniqid() . '_' . $uploadedFile->getName();
+                $user->profile_image = $fileName;
             }
 
-            Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
-                'controller' => $this,
-                'success'    => $notify->hasSuccess,
-                'user'       => $user,
-            )));
-
-            if ($collection->success) {
+            if ($user->save()) {
+                if ($uploadedFile !== null) {
+                    $uploadedFile->saveAs(Yii::getPathOfAlias('webroot') . '/uploads/profile_images/' . $fileName);
+                }
+                $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
                 $this->redirect(array('agents/index'));
+            } else {
+                $errors = CHtml::errorSummary($user);
+                $notify->addError(Yii::t('app', 'There were errors: ' . $errors));
             }
         }
 
+        // Set up page metadata, scripts, and styles for the view
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Create Agent'),
             'pageHeading'       => Yii::t('agent', 'Create Agent'),
@@ -211,6 +214,8 @@ class AgentsController extends Controller
                 Yii::t('app', 'Create new'),
             )
         ));
+
+        // Add necessary scripts and styles for the page
         $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/cropper/dist/cropper.min.js')));
         $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/_imageCrop.js?q=1')));
         $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/cropper/dist/cropper.min.css')));
@@ -220,8 +225,10 @@ class AgentsController extends Controller
         $this->getData('pageScripts')->add(array('src' => AssetsUrl::js('dropzone.min.js')));
         $this->getData('pageStyles')->add(array('src' => AssetsUrl::css('dropzone.css')));
 
+        // Render the form
         $this->render('form', compact('user'));
     }
+
 
     /**
      * Update existing user
