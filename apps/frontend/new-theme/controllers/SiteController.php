@@ -1783,14 +1783,13 @@ Jq4pd48R
 			}
 		}
 	}
-
+	public function actionSitemap()
+	{
+		return $this->renderPartial('root.apps.frontend.new-theme.views.sitemap');
+	}
+	
 	public function actionGenerate_sitemap()
 	{
-
-
-
-
-
 		$time_format = date('Y-m-d');
 		$path = ASKAAN_PATH;
 		$path2  = ASKAAN_PATH_CONTSTANT;

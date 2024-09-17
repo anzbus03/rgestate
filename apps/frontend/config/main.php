@@ -102,7 +102,7 @@ return array(
                     'showScriptName'=>'false',
             'rules' => array(
                 array('site/index', 'pattern' => ''),
-               
+                'sitemap.xml' => 'site/sitemap',
                 array('site/index', 'pattern' => 'home'),
              
                 array('hybridauth/endpoint', 'pattern' => 'hybridauth/endpoint?hauth.done'),

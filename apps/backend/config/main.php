@@ -56,7 +56,7 @@ return array(
       
                     
             'rules' => array(
-               
+               'sitemap.xml' => 'site/sitemap',
             ),
         ),
         	'log'=>array(
