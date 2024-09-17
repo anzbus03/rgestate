@@ -521,14 +521,14 @@ class Place_propertyController  extends Controller
 
             // Set headers to force download
             header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="ExportedData_' . date('YmdHis') . '.xls"');
+            header('Content-Disposition: attachment;filename="ExportedData_' . date('YmdHis') . '.csv"');
             header('Cache-Control: max-age=0');
             // Open output stream
             $output = fopen('php://output', 'w');
 
             // Write column headers
-            $header = array('RefNo', 'Permit No', 'Title', 'Description', 'Section', 'Country', 'City', 'Date Created', 'Type', 'Price', 'Rent', 'Status', 'Category', 'Featured');
-            fputcsv($output, $header, '>>>');
+            $header = array('RefNo', 'Permit No', 'Title', 'Section', 'Country', 'City', 'Date Created', 'Type', 'Price', 'Rent', 'Status', 'Category', 'Featured');
+            fputcsv($output, $header, ',');
 
             // Write data rows
             foreach ($data as $item) {
@@ -536,7 +536,6 @@ class Place_propertyController  extends Controller
                     $item->RefNo,
                     $item->PropertyID,
                     $item->ad_title,
-                    $item->ad_description,
                     Section::model()->findByPk($item->section_id)->section_name,
                     $item->country_name,
                     States::model()->findByPk($item->state)->state_name,
@@ -548,7 +547,7 @@ class Place_propertyController  extends Controller
                     Category::model()->findByPk($item->category_id)->category_name,
                     $item->featured,
                 );
-                fputcsv($output, $row, '\t');
+                fputcsv($output, $row, ',');
             }
 
             // Close output stream
