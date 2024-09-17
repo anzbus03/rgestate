@@ -139,8 +139,8 @@ class LeftSideNavigationWidget extends CWidget
                 'active'    =>  array('users', 'user_groups'),
                 'route'     => array('users/index'),
                 'items'     => array(
-                    array( 'url' => array( 'users/index' ), 'label' => Yii::t( 'app', 'Admins' ), 'active' => strpos( $route, 'users' ) === 0 ),
-                     array('url' => array('user_groups/index'), 'label' => Yii::t('app', 'User Group'), 'active' => strpos($route, 'user_groups') === 0),
+                    array( 'url' => array( 'users/index' ), 'label' => Yii::t( 'app', 'Users List' ), 'active' => strpos( $route, 'users' ) === 0 ),
+                    // array('url' => array('user_groups/index'), 'label' => Yii::t('app', 'User Group'), 'active' => strpos($route, 'user_groups') === 0),
                 ),
             ),
 

@@ -221,7 +221,6 @@
         <!--**********************************
             Content body start
         ***********************************-->
-        <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/global/global.min.js');?>" type="text/javascript"></script>
 
         <div class="content-body">
             <!-- row -->
@@ -231,6 +230,7 @@
                     <?php echo Yii::app()->notify->show();?>
                 </div>
                 <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/global/global.min.js');?>" type="text/javascript"></script>
+                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
                 <?php echo $content;?>
             </section>
@@ -262,7 +262,6 @@
 
    
 
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/jquery-nice-select/js/jquery.nice-select.min.js');?>" type="text/javascript"></script>
     <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/chart-js/chart.bundle.min.js');?>" type="text/javascript"></script>
     <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/apexchart/apexchart.js');?>" type="text/javascript"></script>

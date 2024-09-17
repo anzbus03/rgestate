@@ -1,5 +1,6 @@
 <?php defined('MW_PATH') || exit('No direct script access allowed');
 
+// require('apps/common/framework/YiiBase.php');
 /**
  * User_groupsController
  *
@@ -67,9 +68,8 @@ class User_groupsController extends Controller
         $request = Yii::app()->request;
         $notify  = Yii::app()->notify;
         $group   = new UserGroup('search');
- 
+        
         $routesAccess = $group->getAllRoutesAccess();
-
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($group->modelName, array()))) {
             $group->attributes = $attributes;
             if (!$group->save()) {
@@ -128,11 +128,14 @@ class User_groupsController extends Controller
         if (empty($group)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         }
-
+        
         $request = Yii::app()->request;
         $notify  = Yii::app()->notify;
-
+        
         $routesAccess = $group->getAllRoutesAccess();
+        echo "<pre>";
+        print_r($routesAccess);
+        exit;
 
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($group->modelName, array()))) {
             $group->attributes = $attributes;

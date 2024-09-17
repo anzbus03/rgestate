@@ -109,9 +109,9 @@ class UsersController extends Controller
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         }
 
-        if ($user->user_id == Yii::app()->user->getId()) {
-            $this->redirect(array('account/index'));
-        }
+        // if ($user->user_id == Yii::app()->user->getId()) {
+        //     $this->redirect(array('account/index'));
+        // }
 
         if ($user->removable === User::TEXT_NO && $user->user_id != Yii::app()->user->getId()) {
             Yii::app()->notify->addWarning(Yii::t('users', 'You are not allowed to update the master administrator!'));
@@ -125,21 +125,36 @@ class UsersController extends Controller
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($user->modelName, array()))) {
             $user->attributes = $attributes;
             if (!$user->save()) {
-                $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
+                $errors = $user->getErrors();
+                $errorMessage = "Your form has a few errors, please fix them and try again!";
+                
+                // Format the error messages
+                if (!empty($errors)) {
+                    $errorMessage .= "<ul>";
+                    foreach ($errors as $attribute => $errorMessages) {
+                        foreach ($errorMessages as $error) {
+                            $errorMessage .= "<li>{$error}</li>";
+                        }
+                    }
+                    $errorMessage .= "</ul>";
+                }
+        
+                $notify->addError(Yii::t('app', $errorMessage));
             } else {
                 $notify->addSuccess(Yii::t('app', 'Your form has been successfully updated!'));
             }
-
+        
             Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
                 'controller' => $this,
                 'success'    => $notify->hasSuccess,
                 'user'       => $user,
             )));
-
+        
             if ($collection->success) {
                 $this->redirect(array('users/index'));
             }
         }
+        
 
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Update user'),

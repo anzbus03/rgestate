@@ -61,7 +61,6 @@ if ($viewCollection->renderContent) {
                 )));
                 ?>
                 <div class="row">
-
                     <div class="form-group col-md-6">
                         <?php echo $form->labelEx($user, 'first_name');?>
                         <?php echo $form->textField($user, 'first_name', $user->getHtmlOptions('first_name')); ?>
@@ -72,41 +71,63 @@ if ($viewCollection->renderContent) {
                         <?php echo $form->textField($user, 'last_name', $user->getHtmlOptions('last_name')); ?>
                         <?php echo $form->error($user, 'last_name');?>
                     </div>    
-                    <div class="clearfix"><!-- --></div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-6 mt-4">
                         <?php echo $form->labelEx($user, 'email');?>
                         <?php echo $form->textField($user, 'email', $user->getHtmlOptions('email')); ?>
                         <?php echo $form->error($user, 'email');?>
                     </div>        
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-6 mt-4">
                         <?php echo $form->labelEx($user, 'confirm_email');?>
                         <?php echo $form->textField($user, 'confirm_email', $user->getHtmlOptions('confirm_email')); ?>
                         <?php echo $form->error($user, 'confirm_email');?>
                     </div>        
-                    <div class="clearfix"><!-- --></div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'phone_number');?>
+                        <?php echo $form->textField($user, 'phone_number', $user->getHtmlOptions('phone_number')); ?>
+                        <?php echo $form->error($user, 'phone_number');?>
+                    </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'alt_email');?>
+                        <?php echo $form->textField($user, 'alt_email', $user->getHtmlOptions('alt_email')); ?>
+                        <?php echo $form->error($user, 'alt_email');?>
+                    </div>
+                    <div class="form-group col-md-6 mt-4">
                         <?php echo $form->labelEx($user, 'fake_password');?>
                         <?php echo $form->textField($user, 'fake_password', $user->getHtmlOptions('password')); ?>
                         <?php echo $form->error($user, 'fake_password');?>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-6 mt-4">
                         <?php echo $form->labelEx($user, 'confirm_password');?>
                         <?php echo $form->textField($user, 'confirm_password', $user->getHtmlOptions('confirm_password')); ?>
                         <?php echo $form->error($user, 'confirm_password');?>
                     </div>
-                    <div class="clearfix"><!-- --></div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-6 mt-4">
                         <?php echo $form->labelEx($user, 'timezone');?>
                         <?php echo $form->dropDownList($user, 'timezone', $user->getTimeZonesArray(), $user->getHtmlOptions('timezone')); ?>
                         <?php echo $form->error($user, 'timezone');?>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-6 mt-4">
                         <?php echo $form->labelEx($user, 'language_id');?>
                         <?php echo $form->dropDownList($user, 'language_id', CMap::mergeArray(array('' => Yii::t('app', 'Application default')), Language::getLanguagesArray()), $user->getHtmlOptions('language_id')); ?>
                         <?php echo $form->error($user, 'language_id');?>
                     </div>
+                    <?php if ($user->removable == User::TEXT_YES && ($options = UserGroup::getAllAsOptions())) { ?>
+                        <div class="form-group col-lg-6 mt-4">
+                            <div class="">
+                                <?php echo $form->labelEx($user, 'group_id');?>
+                                <?php echo $form->dropDownList($user, 'group_id', CMap::mergeArray(array('' => 'Select User Group'), $options), $user->getHtmlOptions('group_id')); ?>
+                                <?php echo $form->error($user, 'group_id');?>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6 mt-4">
+                            <div class="">
+                                <?php echo $form->labelEx($user, 'bank_id');?>
+                                <?php echo $form->dropDownList($user, 'bank_id', Bank::model()->ListDataAll() , $user->getHtmlOptions('bank_id',array('empty'=>'Select All'))); ?>
+                                <?php echo $form->error($user, 'bank_id');?>
+                            </div>
+                        </div>
+                    <?php } ?>
                 </div>
-                <div class="clearfix"><!-- --></div>
                 <?php 
                 /**
                  * This hook gives a chance to append content after the active form fields.
@@ -119,13 +140,11 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?>
-                <div class="clearfix"><!-- --></div>
             </div>
             <div class="box-footer">
                 <div class="pull-right mb-4" style="margin-right: 30px;">
-                    <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
+                    <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Update changes');?></button>
                 </div>
-                <div class="clearfix"><!-- --></div>
             </div>
         </div>
         <?php 

@@ -80,7 +80,7 @@ class User extends ActiveRecord
                 'match',
                 'pattern' => '/^[0-9\-\(\)\s]+$/',
                 'message' => 'Phone number can only contain numbers, spaces, hyphens, and parentheses.',
-                'on' => 'insert'
+                'safe' => true
             ),
             array('language_id', 'numerical', 'integerOnly' => true),
             array('language_id', 'exist', 'className' => 'Language'),
