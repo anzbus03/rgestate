@@ -180,7 +180,7 @@ if ($viewCollection->renderContent) { ?>
                             <tr>
                                 <td><?php echo CHtml::decode($data->ReferenceNumberTitleP); ?></td>
                                 <td>
-                                    <?php echo CHtml::encode($data->AdTitleWithIcons2, Yii::app()->createUrl("place_property/update", array("id" => $data->id))); ?>
+                                    <?php echo CHtml::decode($data->AdTitleWithIcons2, Yii::app()->createUrl("place_property/update", array("id" => $data->id))); ?>
                                     <div><?php echo $data->Tags; ?></div>
                                     <input type="hidden" class="propertyId" value="<?php echo $data->id; ?>">
                                     <input type="hidden" class="sId" value="<?php echo $data->section_id; ?>">
@@ -518,6 +518,7 @@ $(document).ready(function() {
             [
                 'Category (1 -> For Sale / 2 -> For Rent)',
                 'Type (1-> Commercial / 2-> Residential)',
+                'Sub Category',
                 'Ref No',
                 'Ad Title',
                 'Permit Number',
@@ -605,18 +606,20 @@ $(document).ready(function() {
 
     // Function to fetch filtered data
     function fetchFilteredData(startDate, endDate) {
-        $.ajax({
-            url: '<?php echo Yii::app()->createUrl($this->route); ?>',
-            type: 'GET',
-            data: {
-                startDate: startDate,
-                endDate: endDate
-            },
-            success: function(data) {
-                $('#<?php echo $model->modelName; ?>-grid').html($(data).find(
-                    '#<?php echo $model->modelName; ?>-grid').html());
-            }
-        });
+        $('#enquiryTable').DataTable().ajax.url('<?php echo Yii::app()->createUrl($this->route); ?>?startDate=' + startDate + '&endDate=' + endDate).load();
+
+        // $.ajax({
+        //     url: '<?php echo Yii::app()->createUrl($this->route); ?>',
+        //     type: 'GET',
+        //     data: {
+        //         startDate: startDate,
+        //         endDate: endDate
+        //     },
+        //     success: function(data) {
+        //         $('#enquiryTable').DataTable().ajax.reload();
+
+        //     }
+        // });
     }
     $('#exportExcel').click(function(e) {
         var dateRange = $('#dateRange').data('daterangepicker');
@@ -647,6 +650,7 @@ $(document).ready(function() {
                 previous: '<i class="fa fa-angle-double-left" style="line-height:40px;" aria-hidden="true"></i>'
             }
         },
+        
 
     });
 

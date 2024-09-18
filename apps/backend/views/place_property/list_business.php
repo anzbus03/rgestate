@@ -86,6 +86,13 @@ if ($viewCollection->renderContent) { ?>
                     <input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>" />
                 <?php } ?>
                     <div class="row">
+                        <div class="col-sm-2" style="margin-bottom: 15px;">
+
+                            <button type="button" class="btn btn-secondary btn-xs" data-bs-toggle="modal"
+                                style="margin-top: -5px;" data-bs-target="#uploadModal">
+                                Upload By Excel
+                            </button>
+                        </div>
                         <div class="col-sm-2">
                             <div class="form-group">
                                 <label for="featured">
@@ -210,6 +217,35 @@ if ($viewCollection->renderContent) { ?>
             </form>
         </div>
     </div>
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+    aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalLabel">Upload Excel and Images</h5>
+                    <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button id="downloadTemplateBtn" class="btn btn-secondary btn-xs pull-right mb-2">Download
+                        Template</button>
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="excelFile">Excel File</label>
+                            <input type="file" class="form-control" id="excelFile" name="excelFile" accept=".xlsx,.xls">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="zipFile">ZIP File</label>
+                            <input type="file" class="form-control" id="zipFile" name="zipFile" accept=".zip">
+                        </div>
+                        <button type="submit" class="pull-right btn btn-primary mt-4">Upload</button>
+                    </form>
+                    <div id="uploadStatus"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <?php
 }
@@ -257,6 +293,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     });
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -313,6 +350,56 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
             // Redirect to the export URL
             window.location.href = exportUrl;
+        });
+        $('#downloadTemplateBtn').click(function() {
+            // Create a new workbook and add a worksheet
+            var workbook = XLSX.utils.book_new();
+            var worksheet_data = [
+                [ 
+                    'Category', 
+                    'Sub Category', 
+                    'Nested Sub Category', 
+                    'Property Type',
+                    'Ref No',
+                    'Ad Title',
+                    'Permit Number',
+                    'Description',
+                    'Location',
+                    'Size',
+                    'Asking Price',
+                    'Revenue',
+                    'Business Cash Flow',
+                    'Business Valuation',
+                    'Plot Area',
+                    'Furnished',
+                    'Construction Date',
+                    'Contact Name',
+                    'Contact Email',
+                    'Mobile Number',
+                    "Images (image1.png,image2.png,etc..)" 
+                ]
+            ];
+            
+            // Create worksheet from the data
+            var worksheet = XLSX.utils.aoa_to_sheet(worksheet_data);
+
+            // Define data validation for the 'Category' column ('For Sale' or 'For Rent')
+            worksheet['A2'] = { v: '', t: 's' };
+            worksheet['!ref'] = 'A1:P100'; // Define the range of the sheet
+            worksheet['!dataValidations'] = [
+                {
+                    type: 'list',            // Set type to "list" for dropdowns
+                    sqref: 'A2:A100',        // Apply the validation to the cells in column A (rows 2-100)
+                    formulas: ['"For Sale,For Rent"'], // Only allow these two options
+                    showDropDown: true       // Enable dropdown menu in Excel
+                }
+            ];
+
+            // Add the worksheet to the workbook
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Template');
+
+            // Write the workbook and download the Excel file
+            XLSX.writeFile(workbook, 'template.xlsx');
         });
         $('#enquiryTable').DataTable({
             createdRow: function(row, data, index) {

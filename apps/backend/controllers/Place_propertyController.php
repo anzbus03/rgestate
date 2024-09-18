@@ -3045,25 +3045,36 @@ class Place_propertyController  extends Controller
             $zipFile = $_FILES['zipFile']['tmp_name'];
             $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
             foreach (array_slice($excelData, 1) as $data) {
+                	 
+		 
+                $criteria=new CDbCriteria;
+                $criteria->condition = "t.isTrash='0' and status='A'" ;
+                $criteria->select = "t.category_id,t.category_name "; 
+                $criteria->params[':name'] = $data[2];
+                $criteria->condition .= ' and category_name LIKE :name';
+                    
+                $subCategory = Category::model()->find($criteria);
+                
                 $model->section_id = $data[0];
                 $model->listing_type = $data[1] == 1 ? 151 : 150;
-                $model->RefNo = $data[2];
-                $model->ad_title = $data[3];
-                $model->PropertyID = $data[4];
-                $model->ad_description = $data[5];
-                $model->area_location = $data[6];
-                $model->interior_size = $data[7];
-                $model->price = $data[8];
-                $model->plot_area = $data[9];
-                $model->builtup_area = $data[9];
-                $model->furnished = $data[10];
-                $model->mandate = $data[11];
-                $model->contact_person = $data[12];
-                $model->salesman_email = $data[13];
-                $model->mobile_number = $data[14];
-                $model->category_id = 0;
+                $model->category_id = $subCategory->category_id;
+                $model->RefNo = $data[3];
+                $model->ad_title = $data[4];
+                $model->PropertyID = $data[5];
+                $model->ad_description = $data[6];
+                $model->area_location = $data[7];
+                $model->interior_size = $data[8];
+                $model->price = $data[9];
+                $model->plot_area = $data[10];
+                $model->builtup_area = $data[10];
+                $model->furnished = $data[11];
+                $model->mandate = $data[12];
+                $model->contact_person = $data[13];
+                $model->salesman_email = $data[14];
+                $model->mobile_number = $data[15];
                 $model->country = 66124;
                 $model->state = 0;
+                $model->status = "W";
                 $model->user_id = 31988;
                 if (!$model->save()) {
                     $errors = $model->getErrors();
@@ -3074,7 +3085,7 @@ class Place_propertyController  extends Controller
 
                 $room_image = new AdImage;
                 $room_image->deleteAll(array('condition' => 'ad_id=:ad_id', 'params' => array(':ad_id' => $model->id)));
-                $imgArr =  explode(',', $data[15]);
+                $imgArr =  explode(',', $data[16]);
                 if ($imgArr) {
                     // Extract ZIP file
                     $zip = new ZipArchive;
