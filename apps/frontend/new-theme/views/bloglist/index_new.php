@@ -491,13 +491,11 @@
     color: #EF7D28 !important;
 }
 
-/* Category menu container spacing */
 .custom-category-menu {
     margin-left: 100px;
     margin-right: 100px;
 }
 
-/* Responsive margin adjustments */
 @media (max-width: 992px) {
     .custom-category-menu {
         margin-left: 30px;
@@ -512,14 +510,12 @@
     }
 }
 
-/* Custom link styles matching Tailwind */
 .custom-link {
     position: relative;
     padding-bottom: 0.7rem;
     margin-right: 50px;
     text-decoration: none;
     font-size: 1.125rem;
-    /* Text size equivalent to text-lg */
     color: inherit;
     border-bottom: 2px solid transparent;
 }
@@ -529,7 +525,6 @@
     color: #00699E;
 }
 
-/* Divider for search input */
 .custom-rotate-divider {
     border-top: 2px solid #A3ABA3;
     width: 25px;
@@ -537,7 +532,6 @@
     background-color: #A3ABA3;
 }
 
-/* Custom input styles */
 .custom-input {
     padding: 0.375rem 0;
     border: none;
@@ -548,7 +542,6 @@
     color: #A3ABA3;
 }
 
-/* Search icon styles */
 .search-icon-wrapper {
     width: 36px;
     height: 36px;
@@ -1201,7 +1194,7 @@
     <div class="container">
         <div class="position-relative rounded w-100 bg-cover bg-center custom-bg "
             style="background-image: url(<?php echo $this->app->apps->getBaseUrl('assets/img/blog/subscription.jpeg'); ?>);">
-            <div class="position-absolute w-100 h-100 rounded bg-black" style="width: 100%; height: 100%;opacity: 0.5;">
+            <div class="position-absolute w-100 h-100 rounded bg-black" style="width: 100%; height: 100%;">
             </div>
 
             <!-- Content Wrapper -->
@@ -1222,7 +1215,7 @@
                 </div> -->
                 <form class="subscription-form w-40">
                     <i class="fa fa-envelope position-absolute"
-                        style="left: 18px; top: 50%; transform: translateY(-50%); color: #007bff;"></i>
+                        style="left: 20px; top: 50%; transform: translateY(-50%); color: #00699E;"></i>
                     <input type="email" placeholder="Email Address">
                     <button type="submit">Subscribe</button>
                 </form>
@@ -1233,7 +1226,8 @@
 
 <style>
 .bg-black {
-    background-color: rgba(0, 0, 0, .5);
+    background-color: #06364E80;
+    border-radius: 10px;
 }
 
 .subscription-form {
@@ -1247,7 +1241,7 @@
 
 .subscription-form input[type="email"] {
     border: none;
-    padding: 10px 15px 10px 50px;
+    padding: 10px 15px 10px 40px;
     width: 100%;
     border-radius: 4px 0 0 4px;
     /* Rounded left corners */

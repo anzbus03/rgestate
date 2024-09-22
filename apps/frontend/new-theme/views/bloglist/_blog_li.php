@@ -1,16 +1,16 @@
 <!-- <?php
-		// $timthumb =  Yii::app()->apps->getBaseUrl('timthumb.php');
-		// $read_more =  'Read more';
-		// $last_updated_on = 'Last updated on';
-		// $langaugae = 'en';
-		// $commonModel = new OptionCommon();
+        // $timthumb =  Yii::app()->apps->getBaseUrl('timthumb.php');
+        // $read_more =  'Read more';
+        // $last_updated_on = 'Last updated on';
+        // $langaugae = 'en';
+        // $commonModel = new OptionCommon();
 
-		// foreach ($ads as $k => $v) {
-		// 	preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $v->content, $imges);
+        // foreach ($ads as $k => $v) {
+        // 	preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $v->content, $imges);
 
 
-		// 
-		?>
+        // 
+        ?>
 		<li aria-hidden="false" class="mb-15 col-sm-4 brkr "  >
 		    <div class="f-ull-height">
 		        <a href="<?php echo $this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>"     class="_xvt7x" aria-busy="false"></a>
@@ -33,16 +33,19 @@
 <!-- new design  -->
 <?php foreach ($ads as $k => $v): ?>
 <?php
-	preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $v->content, $imges);
-	$imageSrc = !empty($imges[1]) ? $imges[1] : '/assets/img/blog/default.png';
-	$postDate = !empty($v->created_at) ? date('M j, Y', strtotime($v->created_at)) : 'N/A';
-	$excerpt = strip_tags($v->content);
-	?>
+    preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $v->content, $imges);
+    $imageSrc = !empty($imges[1]) ? $imges[1] : '/assets/img/blog/default.png';
+    $postDate = !empty($v->created_at) ? date('M j, Y', strtotime($v->created_at)) : 'N/A';
+    $excerpt = strip_tags($v->content);
+    ?>
 <div class="card mb-4">
+
     <div class="no-gutters">
         <div class="card-img">
-            <img src="<?php echo $imageSrc; ?>" class="custom-rounded-img"
-                alt="<?php echo CHtml::encode($v->title); ?>">
+            <a href="<?php echo $this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>" class="_xvt7x"
+                aria-busy="false">
+                <img src="<?php echo $imageSrc; ?>" class="custom-rounded-img"
+                    alt="<?php echo CHtml::encode($v->title); ?>"></a>
         </div>
 
         <div class="card-body">
@@ -99,7 +102,8 @@
                 </div>
             </div>
             <h5 class="card-title custom-text-blue">
-                <?php echo CHtml::encode($v->title); ?>
+                <a href="<?php echo $this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>"
+                    class="_xvt7x" aria-busy="false"><?php echo CHtml::encode($v->title); ?></a>
             </h5>
             <p class="card-text custom-text-gray">
                 <?php echo CHtml::encode(strlen($excerpt) > 120 ? substr($excerpt, 0, 120) . '...' : $excerpt); ?>
@@ -209,10 +213,12 @@
     .card-header div>span {
         margin-right: 10px;
     }
-    .card-footer a{
+
+    .card-footer a {
         display: block;
     }
-    .card-footer{
+
+    .card-footer {
         flex-direction: row !important;
         align-items: center;
     }

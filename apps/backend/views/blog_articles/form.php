@@ -38,13 +38,13 @@ if ($viewCollection->renderContent) {
         'controller'    => $this,
         'renderForm'    => true,
     )));
-    
+
     // and render if allowed
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm', array(
             'htmlOptions' => array('enctype' => 'multipart/form-data'), // Ensure form supports file uploads
         ));
-        ?>
+?>
         <script src="https://cdn.ckeditor.com/4.25.0-lts/standard/ckeditor.js"></script>
 
         <style>
@@ -76,20 +76,22 @@ if ($viewCollection->renderContent) {
             <div class="card-header">
                 <div class="card-header-left">
                     <h3 class="card-title">
-                        <span class="glyphicon glyphicon-book"></span> 
-                        <?php echo $pageHeading;?>
+                        <span class="glyphicon glyphicon-book"></span>
+                        <?php echo $pageHeading; ?>
                     </h3>
                 </div>
                 <div class="pull-sright d-flex">
                     <?php if (!$article->isNewRecord) { ?>
-                    <?php echo CHtml::link(Yii::t('app', 'Create new'), array('blog_articles/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
+                        <?php echo CHtml::link(Yii::t('app', 'Create new'), array('blog_articles/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new'))); ?>
                     <?php } ?>
-                    <?php echo CHtml::link(Yii::t('app', 'Cancel'), array('blog_articles/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
+                    <?php echo CHtml::link(Yii::t('app', 'Cancel'), array('blog_articles/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel'))); ?>
                 </div>
-                <div class="clearfix"><!-- --></div>
+                <div class="clearfix">
+                    <!-- -->
+                </div>
             </div>
             <div class="card-body">
-                <?php 
+                <?php
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
                  * Please note that from inside the action callback you can access all the controller view variables 
@@ -98,53 +100,60 @@ if ($viewCollection->renderContent) {
                  */
                 $hooks->doAction('before_active_form_fields', new CAttributeCollection(array(
                     'controller'    => $this,
-                    'form'          => $form    
+                    'form'          => $form
                 )));
                 ?>
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <?php echo $form->labelEx($article, 'title');?><?php echo $article->getTranslateHtml('title');?>
+                            <?php echo $form->labelEx($article, 'title'); ?><?php echo $article->getTranslateHtml('title'); ?>
                             <?php echo $form->textField($article, 'title', $article->getHtmlOptions('title', array('data-article-id' => (int)$article->article_id, 'data-slug-url' => $this->createUrl('articles/slug')))); ?>
-                            <?php echo $form->error($article, 'title');?>
+                            <?php echo $form->error($article, 'title'); ?>
                         </div>
                         <div class="form-group">
-                            <?php echo $form->labelEx($article, 'content');?><?php echo $article->getTranslateHtml('content','ar',false,'1200px');?>
+                            <?php echo $form->labelEx($article, 'content'); ?><?php echo $article->getTranslateHtml('content', 'ar', false, '1200px'); ?>
                             <?php echo $form->textArea($article, 'content', $article->getHtmlOptions('content', array('rows' => 15))); ?>
-                            <?php echo $form->error($article, 'content');?>
+                            <?php echo $form->error($article, 'content'); ?>
                         </div>
                         <div class="form-group">
-                            <?php echo $form->labelEx($article, 'meta_title');?>
+                            <?php echo $form->labelEx($article, 'meta_title'); ?>
                             <?php echo $form->textField($article, 'meta_title', $article->getHtmlOptions('meta_title')); ?>
-                            <?php echo $form->error($article, 'meta_title');?>
+                            <?php echo $form->error($article, 'meta_title'); ?>
                         </div>
                         <div class="form-group">
-                            <?php echo $form->labelEx($article, 'meta_description');?>
+                            <?php echo $form->labelEx($article, 'meta_description'); ?>
                             <?php echo $form->textArea($article, 'meta_description', $article->getHtmlOptions('meta_description', array('rows' => 4))); ?>
-                            <?php echo $form->error($article, 'meta_description');?>
+                            <?php echo $form->error($article, 'meta_description'); ?>
                         </div>
                         <div class="form-group">
-                            <?php echo $form->labelEx($articleToCategory, 'category_id');?>
+                            <?php echo $form->labelEx($articleToCategory, 'category_id'); ?>
                             <div class="article-categories-scrollbox">
                                 <style>
-                                    .article-categories-scrollbox .list-group-item:first-child  { display: none; }
+                                    .article-categories-scrollbox .list-group-item:first-child {
+                                        display: none;
+                                    }
                                 </style>
                                 <script>
-                                    $(function(){ $('.list-group-item:first-child').find('input').prop('checked', true) })
+                                    $(function() {
+                                        $('.list-group-item:first-child').find('input').prop('checked', true)
+                                    })
                                 </script>
                                 <ul class="list-group">
-                                <?php echo CHtml::checkBoxList($articleToCategory->modelName, $article->getSelectedCategoriesArray(), $article->getAvailableCategoriesArray(), $articleToCategory->getHtmlOptions('category_id', array(
-                                    'class'        => '',
-                                    'template'     => '<li class="list-group-item">{beginLabel}{input} <span>{labelTitle}</span> {endLabel}</li>',
-                                    'container'    => '',
-                                    'separator'    => '',
-                                    'labelOptions' => array('style' => 'margin-right: 10px;')
-                                ))); ?>
+                                    <?php echo CHtml::checkBoxList($articleToCategory->modelName, $article->getSelectedCategoriesArray(), $article->getAvailableCategoriesArray(), $articleToCategory->getHtmlOptions('category_id', array(
+                                        'class'        => '',
+                                        'template'     => '<li class="list-group-item">{beginLabel}{input} <span>{labelTitle}</span> {endLabel}</li>',
+                                        'container'    => '',
+                                        'separator'    => '',
+                                        'labelOptions' => array('style' => 'margin-right: 10px;')
+                                    ))); ?>
                                 </ul>
                             </div>
-                            <?php echo $form->error($articleToCategory, 'category_id');?>
+                            <?php echo $form->error($articleToCategory, 'category_id'); ?>
                         </div>
-                        <div class="form-group slug-wrapper"<?php if (empty($article->slug)) { echo ' style="display: none"'; } ?>>
+                        <div class="form-group slug-wrapper"
+                            <?php if (empty($article->slug)) {
+                                echo ' style="display: none"';
+                            } ?>>
                             <?php echo $form->labelEx($article, 'slug'); ?>
                             <?php echo $form->textField($article, 'slug', array('class' => 'form-control', 'maxlength' => 1100)); ?>
                             <?php echo $form->error($article, 'slug'); ?>
@@ -157,28 +166,31 @@ if ($viewCollection->renderContent) {
                             </div>
                             <div class="box-body">
                                 <div class="form-group">
-                                    <?php echo $form->labelEx($article, 'status');?>
+                                    <?php echo $form->labelEx($article, 'status'); ?>
                                     <?php echo $form->dropDownList($article, 'status', $article->getStatusesArray(), $article->getHtmlOptions('status')); ?>
-                                    <?php echo $form->error($article, 'status');?>
+                                    <?php echo $form->error($article, 'status'); ?>
                                 </div>
                                 <div class="form-group">
-                                    <?php echo $form->labelEx($article, 'blan');?>
-                                    <?php echo $form->dropDownList($article,'blan',$article->blanArray(), $article->getHtmlOptions('blan')); ?>
-                                    <?php echo $form->error($article, 'blan');?>
-                                </div> 
+                                    <?php echo $form->labelEx($article, 'blan'); ?>
+                                    <?php echo $form->dropDownList($article, 'blan', $article->blanArray(), $article->getHtmlOptions('blan')); ?>
+                                    <?php echo $form->error($article, 'blan'); ?>
+                                </div>
                                 <div class="form-group">
-                                    <?php echo $form->labelEx($article, 'show_all');?>
-                                    <?php echo $form->dropDownList($article,'show_all',$article->countryOption(), $article->getHtmlOptions('show_all',array('onchange'=>'showCountries(this)'))); ?>
-                                    <?php echo $form->error($article, 'show_all');?>
-                                </div> 
-                                <div class="amn row <?php echo $article->show_all=='1' ? '' : 'hide';?>" style="margin-left: 0px; margin-right: 0px;">
+                                    <?php echo $form->labelEx($article, 'show_all'); ?>
+                                    <?php echo $form->dropDownList($article, 'show_all', $article->countryOption(), $article->getHtmlOptions('show_all', array('onchange' => 'showCountries(this)'))); ?>
+                                    <?php echo $form->error($article, 'show_all'); ?>
+                                </div>
+                                <div class="amn row <?php echo $article->show_all == '1' ? '' : 'hide'; ?>"
+                                    style="margin-left: 0px; margin-right: 0px;">
                                     <?php
-                                        $categoris = CHtml::listData(Countries::model()->listingCountries(),'country_id','country_name');
-                                        foreach($categoris as $k => $v) {
-                                            echo '<div class="col-sm-2" style="">';
-                                            echo '<div class="form-check form-check-flat"><label class="form-check-label"><input value="'.$k.'" id="amenities_'.$k.'" '; echo in_array($k, (array) $article->listing_countries) ? 'checked' : ''; echo ' type="checkbox" name="listing_countries[]" > '.$v.' <i class="input-helper"></i></label></div>';
-                                            echo '</div>';
-                                        }
+                                    $categoris = CHtml::listData(Countries::model()->listingCountries(), 'country_id', 'country_name');
+                                    foreach ($categoris as $k => $v) {
+                                        echo '<div class="col-sm-2" style="">';
+                                        echo '<div class="form-check form-check-flat"><label class="form-check-label"><input value="' . $k . '" id="amenities_' . $k . '" ';
+                                        echo in_array($k, (array) $article->listing_countries) ? 'checked' : '';
+                                        echo ' type="checkbox" name="listing_countries[]" > ' . $v . ' <i class="input-helper"></i></label></div>';
+                                        echo '</div>';
+                                    }
                                     ?>
                                 </div>
                                 <div class="form-group">
@@ -193,10 +205,10 @@ if ($viewCollection->renderContent) {
                                 </div>
                                 <div class="form-group">
                                     <?php
-                                        $authors = CHtml::listData(BlogAuthors::model()->findAll(),'author_id','name');
-                                        echo $form->labelEx($article, 'author_id'); 
-                                        echo $form->dropDownList($article, 'author_id', $authors, $article->getHtmlOptions('author_id'));
-                                        echo $form->error($article, 'author_id');
+                                    $authors = CHtml::listData(BlogAuthors::model()->findAll(), 'author_id', 'name');
+                                    echo $form->labelEx($article, 'author_id');
+                                    echo $form->dropDownList($article, 'author_id', $authors, $article->getHtmlOptions('author_id'));
+                                    echo $form->error($article, 'author_id');
                                     ?>
                                 </div>
                             </div>
@@ -206,21 +218,21 @@ if ($viewCollection->renderContent) {
                                 </div>
                                 <div class="box-body">
                                     <div class="form-group">
-                                        <?php echo $form->labelEx($article, 'featured_image');?>
-                                        <?php echo $form->fileField($article, 'featured_image', array('class'=>'form-control')); ?>
-                                        <?php echo $form->error($article, 'featured_image');?>
+                                        <?php echo $form->labelEx($article, 'featured_image'); ?>
+                                        <?php echo $form->fileField($article, 'featured_image', array('class' => 'form-control')); ?>
+                                        <?php echo $form->error($article, 'featured_image'); ?>
                                     </div>
                                     <div class="form-group">
-                                        <?php echo $form->labelEx($article, 'tags');?>
+                                        <?php echo $form->labelEx($article, 'tags'); ?>
                                         <?php echo $form->textField($article, 'tags', array('class' => 'form-control', 'placeholder' => 'Enter tags separated by commas')); ?>
-                                        <?php echo $form->error($article, 'tags');?>
+                                        <?php echo $form->error($article, 'tags'); ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <?php 
+                <?php
                 /**
                  * This hook gives a chance to append content after the active form fields.
                  * Please note that from inside the action callback you can access all the controller view variables 
@@ -229,19 +241,22 @@ if ($viewCollection->renderContent) {
                  */
                 $hooks->doAction('after_active_form_fields', new CAttributeCollection(array(
                     'controller'    => $this,
-                    'form'          => $form    
+                    'form'          => $form
                 )));
                 ?>
             </div>
             <div class="box-footer">
                 <div class="pull-right">
-                    <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
+                    <button type="submit" class="btn btn-primary btn-submit"
+                        data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', 'Save changes'); ?></button>
                 </div>
-                <div class="clearfix"><!-- --></div>
+                <div class="clearfix">
+                    <!-- -->
+                </div>
             </div>
         </div>
-        <?php 
-        $this->endWidget(); 
+<?php
+        $this->endWidget();
     }
     /**
      * This hook gives a chance to append content after the active form.
@@ -266,15 +281,13 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 )));
 ?>
 <script>
-    function showCountries(k){
-        if($(k).val()=='1'){
+    function showCountries(k) {
+        if ($(k).val() == '1') {
             $('.amn').removeClass('hide')
-        }
-        else{
+        } else {
             $('.amn').addClass('hide')
         }
     }
-   
-    CKEDITOR.replace( 'BlogArticle[content]' );
 
+    CKEDITOR.replace('BlogArticle[content]');
 </script>
