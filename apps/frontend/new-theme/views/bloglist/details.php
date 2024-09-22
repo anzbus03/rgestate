@@ -1,130 +1,130 @@
 <!-- Hero Section -->
 <style>
-    .blog-hero h1,
-    .blog-hero p {
-        font-family: 'Roboto', 'Open Sans', sans-serif;
-    }
+.blog-hero h1,
+.blog-hero p {
+    font-family: 'Roboto', 'Open Sans', sans-serif;
+}
 
-    .blog-hero h1 {
-        font-family: Poppins;
-        font-size: 40px;
-        font-weight: 600;
-        line-height: 25px;
-        text-align: left;
-    }
+.blog-hero h1 {
+    font-family: Poppins;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 25px;
+    text-align: left;
+}
 
-    .blog-hero p {
-        font-family: Poppins;
-        font-size: 16px;
-        font-weight: 300;
-        line-height: 25px;
-        text-align: left;
-        max-width: 35rem;
-    }
+.blog-hero p {
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 25px;
+    text-align: left;
+    max-width: 35rem;
+}
 
-    .bg-black {
-        background-color: rgba(0, 0, 0, .5);
-    }
+.bg-black {
+    background-color: rgba(0, 0, 0, .5);
+}
 
-    .bg-cover {
-        background-size: cover;
-    }
+.bg-cover {
+    background-size: cover;
+}
 
-    .opacity-50 {
-        opacity: 0.5;
-    }
+.opacity-50 {
+    opacity: 0.5;
+}
 
-    .custom-rounded {
-        border-radius: 30px !important;
-    }
+.custom-rounded {
+    border-radius: 30px !important;
+}
 
-    .hover-underline:hover {
-        text-decoration: underline;
-    }
+.hover-underline:hover {
+    text-decoration: underline;
+}
 
-    .text-warning {
-        color: #EF7D28 !important;
-    }
+.text-warning {
+    color: #EF7D28 !important;
+}
 
-    /* Category menu container spacing */
+/* Category menu container spacing */
+.custom-category-menu {
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+/* Responsive margin adjustments */
+@media (max-width: 992px) {
     .custom-category-menu {
-        margin-left: 100px;
-        margin-right: 100px;
+        margin-left: 30px;
+        margin-right: 30px;
     }
+}
 
-    /* Responsive margin adjustments */
-    @media (max-width: 992px) {
-        .custom-category-menu {
-            margin-left: 30px;
-            margin-right: 30px;
-        }
+@media (max-width: 768px) {
+    .custom-category-menu {
+        margin-left: 15px;
+        margin-right: 15px;
     }
+}
 
-    @media (max-width: 768px) {
-        .custom-category-menu {
-            margin-left: 15px;
-            margin-right: 15px;
-        }
-    }
+/* Custom link styles matching Tailwind */
+.custom-link {
+    position: relative;
+    padding-bottom: 0.7rem;
+    margin-right: 50px;
+    text-decoration: none;
+    font-size: 1.125rem;
+    /* Text size equivalent to text-lg */
+    color: inherit;
+    border-bottom: 2px solid transparent;
+}
 
-    /* Custom link styles matching Tailwind */
-    .custom-link {
-        position: relative;
-        padding-bottom: 0.7rem;
-        margin-right: 50px;
-        text-decoration: none;
-        font-size: 1.125rem;
-        /* Text size equivalent to text-lg */
-        color: inherit;
-        border-bottom: 2px solid transparent;
-    }
+.custom-link:hover {
+    border-bottom: 2px solid #EF7D28;
+    color: #00699E;
+}
 
-    .custom-link:hover {
-        border-bottom: 2px solid #EF7D28;
-        color: #00699E;
-    }
+/* Divider for search input */
+.custom-rotate-divider {
+    border-top: 2px solid #A3ABA3;
+    width: 25px;
+    transform: rotate(-90deg);
+    background-color: #A3ABA3;
+}
 
-    /* Divider for search input */
-    .custom-rotate-divider {
-        border-top: 2px solid #A3ABA3;
-        width: 25px;
-        transform: rotate(-90deg);
-        background-color: #A3ABA3;
-    }
+/* Custom input styles */
+.custom-input {
+    padding: 0.375rem 0;
+    border: none;
+    outline: none;
+}
 
-    /* Custom input styles */
-    .custom-input {
-        padding: 0.375rem 0;
-        border: none;
-        outline: none;
-    }
+.custom-input::placeholder {
+    color: #A3ABA3;
+}
 
-    .custom-input::placeholder {
-        color: #A3ABA3;
-    }
+/* Search icon styles */
+.search-icon-wrapper {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #00699E;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    color: #00699E;
+    transform: rotate(90deg);
+}
 
-    /* Search icon styles */
-    .search-icon-wrapper {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: white;
-        border: 1px solid #00699E;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        color: #00699E;
-        transform: rotate(90deg);
-    }
+.form-control:focus {
+    outline: none !important;
+}
 
-    .form-control:focus {
-        outline: none !important;
-    }
-
-    .category-menu {
-        border-bottom: 1px solid #A6A6A633;
-    }
+.category-menu {
+    border-bottom: 1px solid #A6A6A633;
+}
 </style>
 
 <!-- hero section  -->
@@ -158,44 +158,44 @@
 
 <!-- Category Menu -->
 <style>
-    .category-section {
-        padding-top: 20px;
+.category-section {
+    padding-top: 20px;
+}
+
+.sub-container {
+    cursor: pointer;
+}
+
+.sub-container input:focus {
+    border: none;
+    box-shadow: none;
+}
+
+@media (max-width: 768px) {
+    .category-section div div div {
+        gap: 20px;
     }
 
-    .sub-container {
-        cursor: pointer;
+    .category-section ul {
+        flex-direction: row;
+        justify-content: center;
     }
 
-    .sub-container input:focus {
-        border: none;
-        box-shadow: none;
+    .category-search {
+        flex-direction: row !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .category-section ul {
+        flex-direction: column;
+        justify-content: center;
     }
 
-    @media (max-width: 768px) {
-        .category-section div div div {
-            gap: 20px;
-        }
-
-        .category-section ul {
-            flex-direction: row;
-            justify-content: center;
-        }
-
-        .category-search {
-            flex-direction: row !important;
-        }
+    .category-section ul li {
+        margin-bottom: 15px;
     }
-
-    @media (max-width: 640px) {
-        .category-section ul {
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .category-section ul li {
-            margin-bottom: 15px;
-        }
-    }
+}
 </style>
 <section class="category-section">
     <div class="container">
@@ -213,12 +213,12 @@
 
                     <!-- Dynamic Category Links -->
                     <?php foreach ($category as $k => $v) { ?>
-                        <li class="mr-4">
-                            <a href="<?php echo Yii::app()->createUrl('bloglist/index', array('category' => $v->slug)); ?>"
-                                class="custom-link <?php echo $slug == $v->slug ? 'active' : ''; ?>">
-                                <?php echo ucfirst($v->name); ?>
-                            </a>
-                        </li>
+                    <li class="mr-4">
+                        <a href="<?php echo Yii::app()->createUrl('bloglist/index', array('category' => $v->slug)); ?>"
+                            class="custom-link <?php echo $slug == $v->slug ? 'active' : ''; ?>">
+                            <?php echo ucfirst($v->name); ?>
+                        </a>
+                    </li>
                     <?php } ?>
                 </ul>
 
@@ -234,26 +234,26 @@
     </div>
 </section>
 
-<pre><?php print_r($model) ?></pre>
+<!-- <pre><?php print_r($model) ?></pre> -->
 <!-- main content  -->
 <section class="expertSection">
     <?php
     if (isset($model)) {
         $timthumb =  Yii::app()->apps->getBaseUrl('timthumb.php');
     ?>
-        <!-- <img style="object-fit: contain;margin-top:10px;display:block;" src="<?php echo @$imageUrl; ?>"
+    <!-- <img style="object-fit: contain;margin-top:10px;display:block;" src="<?php echo @$imageUrl; ?>"
         class="attachment-blog-image size-blog-image wp-post-image" alt="<?php echo $model->title; ?>"
         srcset="<?php echo $imageUrl; ?> 2200w,<?php echo $timthumb . '?src=' . @$imageUrl . '&h=167&w=300&zc=1'; ?> 300w,<?php echo $timthumb . '?src=' . @$imageUrl . '&h=427&w=768&zc=1'; ?> 768w,<?php echo $timthumb . '?src=' . @$imageUrl . '&h=569&w=1024&zc=1'; ?> 1024w"
         sizes="(max-width: 2200px) 100vw, 2200px" width="2200" height="1222"> -->
     <?php } ?>
     <?php if (!empty($model->featured_image)) { ?>
-        <img src="<?php $model->featured_image ?>" class="img-fluid" style="object-fit: cover;" alt="">
+    <img src="<?php echo Yii::app()->apps->getBaseUrl() . "uploads/images/" . $model->featured_image ?>"
+        class="img-fluid" style="object-fit: cover;" alt="<?php echo $model->title ?>">
     <?php } ?>
     <div class="tlText">
         <h3 class="text-primary mt-5 mb-5"><?php echo $model->title ?></h3>
         <p class="dtlParagrap"><?php echo $model->content ?></p>
-        <div class="row blog-service-list">
-            <!-- Point 1 -->
+        <!-- <div class="row blog-service-list">
             <div class="col-12 col-md-6 col-lg-4 mb-4">
                 <div class="d-flex align-items-center">
                     <span class="dtlIcon m-2"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"
@@ -363,20 +363,28 @@
                     <span>Best Business Agency</span>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
-        <p class="dtlParagrap">Accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae abillo
+        <!-- <p class="dtlParagrap">Accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae abillo
             inventore veritatis et quasi
             architecto beatae vitae dicta sunt explicabo. Nemo enim epsam voluptatem quia voluptas sit aspernature
-        </p>
+        </p> -->
         <div class="d-flex align-items-center tag-and-postin"
             style="justify-content: space-between; margin-top:33px; margin-bottom:27px;">
             <div class="d-flex">
                 <h4 class="mb-1" style="font-size: 18px;font-weight: 600;line-height: 32px;text-align: left;">Tags:</h4>
-                <span class="border border-secondary text-muted px-2">Business</span>
-                <span class="border border-secondary text-muted px-2">Consulting</span>
-                <span class="border border-secondary text-muted px-2">Management</span>
+                <?php
+                if (!empty($model->tags)) {
+                    $tagdata = $model->tags;
+                    $tags = explode(',', $tagdata);
+                } else {
+                    $tags = [];
+                }
+                ?>
+                <?php foreach ($tags as $tag) { ?>
+                <span class="border border-secondary text-muted px-2"><?php echo htmlspecialchars(trim($tag)); ?></span>
+                <?php } ?>
             </div>
             <div class="d-flex" style="font-size: 18px;font-weight: 600;line-height: 32px;text-align: left;">
                 <span class="h5 fw-bold">Posted In</span>
@@ -412,9 +420,10 @@
                     </svg>
 
                 </a>
-                <a href="#" class="share-icon rounded-circle p-2">
-                    <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>"
+                    class="share-icon rounded-circle p-2">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
                             d="M3.63223 15V4.87902H0.20274V14.9999H3.63223V15ZM1.91784 3.49769C3.1134 3.49769 3.85814 2.71986 3.85814 1.74866C3.83553 0.755866 3.1134 0 1.94026 0C0.766937 3.071e-05 0 0.755896 0 1.74869C0 2.71989 0.74433 3.49772 1.89527 3.49772L1.91784 3.49769ZM5.53031 15C5.53031 15 5.57531 5.82864 5.53031 4.87905H8.96033V6.34681H8.93757C9.38857 5.65614 10.2011 4.64139 12.0512 4.64139C14.3082 4.64139 16 6.08792 16 9.1967V15H12.5705V9.58558C12.5705 8.22509 12.0743 7.29673 10.8329 7.29673C9.88558 7.29673 9.32104 7.9226 9.07311 8.52759C8.98241 8.74293 8.96033 9.04539 8.96033 9.34788V15H5.53031Z"
                             fill="white" />
                     </svg>
@@ -424,18 +433,18 @@
         </div>
         <hr class="my-4 mx-auto custom-hr" style="color: #A6A6A633;">
         <div class="d-flex gap-3 revies">
-            <img class="manImage" src="./img/images 3.png" alt="">
+            <!-- <img class="manImage" src="./img/images 3.png" alt=""> -->
+            <?php if (!empty($model->author->image)) { ?>
+            <img src="<?php echo Yii::app()->apps->getBaseUrl() . "uploads/images/" . $model->author->image ?>"
+                class="manImage" alt="<?php echo $model->author->name ?>">
+            <?php } ?>
             <div class="">
-                <h5>Bradley R Gra</h5>
-                <h5><?php ?></h5>
-                <p>Accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae abillo inventore
-                    veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim epsam voluptatem
-                    quia voluptas sit aspernature</p>
+                <h5><?php echo $model->author->name ?></h5>
+                <p><?php echo $model->author->description ?></p>
                 <div class="user" style="margin-top:20px;">
                     <button class="customPost">Read all Post</button>
                     <div class="d-flex">
-                        <a href="https://www.facebook.com/sharer.php?u=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>"
-                            class="share-icon rounded-circle p-2">
+                        <a href="#" class="share-icon rounded-circle p-2">
                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -443,8 +452,7 @@
                                     fill="white" />
                             </svg>
                         </a>
-                        <a href="https://twitter.com/intent/tweet?original_referer=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>&amp;url=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>&amp;text=<?php echo urlencode($model->title); ?>"
-                            class="share-icon rounded-circle p-2">
+                        <a href="#" class="share-icon rounded-circle p-2">
                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -711,938 +719,938 @@
 
 
 <style>
-    :root {
-        --blog-font-color: #656865;
-        --custom-gray: #f5f5f5;
-        --blog-primary: #00699E;
-        --blog-secondary-font: #A3ABA3;
-        --background1: #333333;
-        --bordersec: #A6A6A6;
-    }
+:root {
+    --blog-font-color: #656865;
+    --custom-gray: #f5f5f5;
+    --blog-primary: #00699E;
+    --blog-secondary-font: #A3ABA3;
+    --background1: #333333;
+    --bordersec: #A6A6A6;
+}
 
-    /* subscription-form */
-    .subscription-section {
-        width: 100%;
-        padding: 70px 0 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+/* subscription-form */
+.subscription-section {
+    width: 100%;
+    padding: 70px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    .position-relative {
-        position: relative;
-    }
+.position-relative {
+    position: relative;
+}
 
-    .subscription-bg {
-        background-image: url('<?php echo $this->app->apps->getBaseUrl('assets/img/blog/subscription.jpeg'); ?>');
-        background-size: cover;
-        background-position: center;
-        width: 100%;
-        height: 400px;
-        border-radius: 10px;
-    }
+.subscription-bg {
+    background-image: url('<?php echo $this->app->apps->getBaseUrl('assets/img/blog/subscription.jpeg'); ?>');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 400px;
+    border-radius: 10px;
+}
 
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(6, 54, 78, 0.5);
-        border-radius: 10px;
-    }
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(6, 54, 78, 0.5);
+    border-radius: 10px;
+}
 
-    .content-wrapper {
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 100%;
-        padding: 0 60px;
-        width: 100%;
-        z-index: 2;
-    }
+.content-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 60px;
+    width: 100%;
+    z-index: 2;
+}
 
-    .text-content {
-        color: white;
-        max-width: 60%;
-    }
+.text-content {
+    color: white;
+    max-width: 60%;
+}
 
-    .text-content h2 {
-        font-size: 2.5rem;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
+.text-content h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
 
-    .text-content p {
-        font-size: 1.2rem;
-        margin-bottom: 0;
-        color: white;
-        line-height: 0px;
-    }
+.text-content p {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+    color: white;
+    line-height: 0px;
+}
 
-    /* Subscription Form */
+/* Subscription Form */
 
-    .subscription-form {
-        position: relative;
-        display: flex;
-        align-items: center;
-        max-width: 40%;
-        width: 100%;
-    }
+.subscription-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 40%;
+    width: 100%;
+}
 
-    .subscription-form input[type="email"] {
-        width: 100%;
-        padding: 15px 20px 15px 65px;
-        border: none;
-        border-radius: 5px;
-        font-size: 1rem;
-        outline: none;
-    }
+.subscription-form input[type="email"] {
+    width: 100%;
+    padding: 15px 20px 15px 65px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+}
 
-    .subscription-form button {
-        padding: 15px 20px;
-        /* margin-left: 10px; */
-        background-color: #00699E;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-    }
+.subscription-form button {
+    padding: 15px 20px;
+    /* margin-left: 10px; */
+    background-color: #00699E;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
 
-    .subscription-form i.fa-envelope {
-        position: absolute;
-        left: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #00699E;
-        font-size: 1.2rem;
-    }
+.subscription-form i.fa-envelope {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #00699E;
+    font-size: 1.2rem;
+}
 
-    /* subscription-form */
-
-
-
-    .subscription-section div {
-        height: 275px;
-        width: 100%;
-    }
-
-    .bg-black {
-        background-color: #06364E80;
-        border-radius: 10px;
-    }
-
-    .subscription-form {
-        position: relative;
-        display: flex;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    .subscription-form input[type="email"] {
-        border: none;
-        padding: 10px 15px 10px 40px;
-        width: 100%;
-        border-radius: 4px 0 0 4px;
-    }
-
-    .subscription-form button {
-        border: none;
-        background-color: #EF7D28;
-        color: black;
-        font-weight: 500;
-        padding: 10px 20px;
-        cursor: pointer;
-        border-radius: 0 4px 4px 0;
-        transition: background-color 0.3s;
-    }
-
-    .subscription-form button:hover {
-        background-color: #e69500;
-        /* Darker orange on hover */
-    }
-
-    .share-this {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-    }
-
-    .share-this span {
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 32px;
-        text-align: left;
-        color: #313131;
-    }
-
-    .share-this div {
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .social-icons {
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        gap: 15px;
-        margin-top: 30px;
-    }
-
-    .share-this div .share-icon,
-    .social-icons .share-icon {
-        background-color: #00699E;
-        border-radius: 100% !important;
-        height: 32px;
-        width: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .user {
-        display: flex;
-        justify-content: start;
-        align-items: center;
-    }
-
-    .user div {
-        gap: 12px;
-    }
-
-    .user .share-icon {
-        background-color: #7B7B7B80;
-        border-radius: 100% !important;
-        height: 32px;
-        width: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .insures-section {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .insures-section h6 {
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 20px;
-        text-align: left;
-        color: #231F20;
-        margin-bottom: 10px;
-    }
-
-    .insures-section span {
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 26px;
-        text-align: left;
-        color: #656865;
-    }
-
-    .insures-section span svg {
-        margin-right: 6.15px;
-    }
+/* subscription-form */
 
 
-    .insures-section .right div {
-        display: flex;
-        flex-direction: column;
-        align-items: end;
 
-    }
+.subscription-section div {
+    height: 275px;
+    width: 100%;
+}
 
-    .get-touch {
-        position: relative;
-    }
+.bg-black {
+    background-color: #06364E80;
+    border-radius: 10px;
+}
 
-    .form-section {
-        background-color: transparent !important;
-        width: 60%;
-        position: relative;
-    }
+.subscription-form {
+    position: relative;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
-    .form-fiels {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
+.subscription-form input[type="email"] {
+    border: none;
+    padding: 10px 15px 10px 40px;
+    width: 100%;
+    border-radius: 4px 0 0 4px;
+}
 
-    .form-section .border-secondary {
-        border-color: #A6A6A64D
-    }
+.subscription-form button {
+    border: none;
+    background-color: #EF7D28;
+    color: black;
+    font-weight: 500;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 0 4px 4px 0;
+    transition: background-color 0.3s;
+}
 
-    .contact-input {
-        display: flex;
-        align-items: center;
-        justify-content: start;
-        gap: 10px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 2px 2px 29px 0 #00000014;
-        padding: 10px 20px;
-        width: 48.5%;
-        /* margin: 0 20px 20px 0; */
-    }
+.subscription-form button:hover {
+    background-color: #e69500;
+    /* Darker orange on hover */
+}
 
-    .contact-textarea {
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 2px 2px 29px 0 #00000014;
-        margin-bottom: 40px;
-    }
+.share-this {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-    .contact-input input {
-        border: none;
-    }
+}
 
-    .contact-input input:focus {
-        border: none;
-        outline: none;
-        box-shadow: none;
-    }
+.share-this span {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 32px;
+    text-align: left;
+    color: #313131;
+}
 
-    .form-section textarea {
-        border: none !important;
-        outline: none !important;
-        border-radius: 8px;
-    }
+.share-this div {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+}
 
-    .form-section textarea:focus {
-        border: none;
-        outline: none;
-        box-shadow: none;
-    }
+.social-icons {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
+}
 
-    .inquiry-btn {
-        font-size: 16px;
-        font-weight: 600;
-        line-height: 35px;
-        text-align: left;
-        padding: 22px;
-        border-radius: 86px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+.share-this div .share-icon,
+.social-icons .share-icon {
+    background-color: #00699E;
+    border-radius: 100% !important;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    }
+.user {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
 
-    .text-muted {
-        color: #6c757d !important;
-    }
+.user div {
+    gap: 12px;
+}
 
-    .postsIn {
-        background-color: #00699E;
-        padding: 10px 19px;
-        border-radius: 0.25rem;
-        color: white;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 20px;
-        text-align: left;
-        margin-left: 7px;
+.user .share-icon {
+    background-color: #7B7B7B80;
+    border-radius: 100% !important;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    }
+.insures-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.insures-section h6 {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: left;
+    color: #231F20;
+    margin-bottom: 10px;
+}
+
+.insures-section span {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+    text-align: left;
+    color: #656865;
+}
+
+.insures-section span svg {
+    margin-right: 6.15px;
+}
+
+
+.insures-section .right div {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+
+}
+
+.get-touch {
+    position: relative;
+}
+
+.form-section {
+    background-color: transparent !important;
+    width: 60%;
+    position: relative;
+}
+
+.form-fiels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.form-section .border-secondary {
+    border-color: #A6A6A64D
+}
+
+.contact-input {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px 29px 0 #00000014;
+    padding: 10px 20px;
+    width: 48.5%;
+    /* margin: 0 20px 20px 0; */
+}
+
+.contact-textarea {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px 29px 0 #00000014;
+    margin-bottom: 40px;
+}
+
+.contact-input input {
+    border: none;
+}
+
+.contact-input input:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-section textarea {
+    border: none !important;
+    outline: none !important;
+    border-radius: 8px;
+}
+
+.form-section textarea:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.inquiry-btn {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 35px;
+    text-align: left;
+    padding: 22px;
+    border-radius: 86px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.postsIn {
+    background-color: #00699E;
+    padding: 10px 19px;
+    border-radius: 0.25rem;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+    margin-left: 7px;
+
+}
+
+.flex-column.flex-lg-row {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 992px) {
     .flex-column.flex-lg-row {
-        display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
     }
+}
 
-    @media (min-width: 992px) {
-        .flex-column.flex-lg-row {
-            flex-direction: row;
-            justify-content: space-between;
-        }
-    }
+.flex-wrap.flex-md-row {
+    display: flex;
+    flex-wrap: wrap;
+}
 
+@media (min-width: 768px) {
     .flex-wrap.flex-md-row {
-        display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
     }
+}
 
-    @media (min-width: 768px) {
-        .flex-wrap.flex-md-row {
-            flex-wrap: nowrap;
-        }
+.gap-1 {
+    margin-right: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.gap-2 {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.mb-1 {
+    margin-bottom: 0.25rem;
+    color: var(--blog-primary);
+    margin-right: 10px;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    .mb-md-0 {
+        margin-bottom: 0;
     }
+}
 
-    .gap-1 {
-        margin-right: 0.25rem;
-        margin-bottom: 0.25rem;
-    }
-
-    .gap-2 {
-        margin-right: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .mb-1 {
-        margin-bottom: 0.25rem;
-        color: var(--blog-primary);
-        margin-right: 10px;
-    }
-
-    .mb-2 {
-        margin-bottom: 0.5rem;
-    }
-
-    @media (max-width: 576px) {
-        .mb-md-0 {
-            margin-bottom: 0;
-        }
-    }
-
-    .my-5 {
-        margin-top: 3rem;
-        margin-bottom: 3rem;
-    }
+.my-5 {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
 
 
 
-    .text-primary {
-        color: #007bff !important;
-    }
+.text-primary {
+    color: #007bff !important;
+}
 
-    .fw-bold {
-        font-weight: bold;
-    }
+.fw-bold {
+    font-weight: bold;
+}
 
+.h5 {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--blog-primary);
+    margin-right: 3px;
+}
+
+@media (max-width: 992px) {
     .h5 {
-        font-size: 18px;
-        font-weight: 500;
-        color: var(--blog-primary);
-        margin-right: 3px;
+        font-size: 1.1rem;
     }
+}
 
-    @media (max-width: 992px) {
-        .h5 {
-            font-size: 1.1rem;
+.border {
+    border: 1px solid;
+    border-radius: 3px;
+    padding: 2px 9px;
+    margin-right: 10px;
+}
+
+
+.blog-service-list {
+    margin-top: 30px;
+    margin-top: 30px;
+}
+
+.blog-service-list span {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+    text-align: left;
+
+}
+
+.blog-service-list>div {
+    margin-bottom: 20px;
+}
+
+.background {
+    background-color: #F5F5F5;
+}
+
+.customNavbar {
+    padding: 40px 100px;
+}
+
+.textPrimary {
+    color: #00699E;
+}
+
+.text-primary {
+    font-size: 28px;
+}
+
+.txt .postsIn {
+    background-color: #00699E;
+    padding: 20px 10px;
+}
+
+.margin {
+    margin: 0 100px;
+}
+
+.customButton {
+    background-color: #333333;
+}
+
+.banner-image {
+    height: 450px;
+}
+
+.bannerOverFlow {
+    height: 450px;
+}
+
+.fontSize {
+    font-size: 40px;
+}
+
+.userNav {
+    margin: 70px 0;
+}
+
+.iconSize {
+    height: 36px;
+    width: 36px;
+}
+
+.custom-input {
+    background-color: transparent;
+    border-left: 1px solid #656865;
+    border-radius: 0;
+}
+
+.custom-input::placeholder {
+    color: #656865;
+}
+
+.custom-input:focus {
+    outline: none;
+}
+
+.custom-overlay {
+    background-color: #06364E;
+    opacity: 0.8;
+}
+
+.custom-input {
+    padding-left: 2.5rem;
+}
+
+.custom-button {
+    background-color: #EF7D28;
+    color: white;
+}
+
+.custom-button:hover {
+    background-color: #005ea1;
+}
+
+.custom-icon {
+    position: absolute;
+    left: 0.75rem;
+    color: #00699E;
+}
+
+.icon-button {
+    background-color: var(--blog-primary);
+    height: 36px;
+    width: 36px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.link {
+    text-decoration: none;
+    color: var(--blog-font-color);
+    margin-top: 10px;
+}
+
+.custom-hr {
+    background-color: #A6A6A633;
+    border: none;
+    height: 1px;
+}
+
+.custom-bg {
+    background-color: #ffffff;
+}
+
+.custom-text-blog-primary {
+    color: #00699E;
+}
+
+.custom-text-fontColor {
+    color: #656865;
+}
+
+.custom-button:hover {
+    background-color: #005ea1;
+}
+
+.custom-divider {
+    background-color: #656865;
+}
+
+.emailInput {
+    width: 50%;
+}
+
+.textContent {
+    width: 50%;
+}
+
+.dtlText {
+    padding: 0 40px;
+}
+
+.dtlParagrap {
+    font-size: 16px;
+    line-height: 26px;
+}
+
+.dtlIcon {
+    background: #005ea1;
+    border-radius: 100%;
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 13px;
+    padding: 4px;
+}
+
+
+.customPost {
+    background: var(--blog-primary);
+    padding: 8px 20px;
+    color: white;
+    border-radius: 30px;
+    border: none;
+    margin-right: 20px;
+}
+
+.readIcon {
+    height: 32px;
+    width: 32px;
+    background-color: #7B7B7B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.manImage {
+    height: 85px;
+    width: 85px;
+}
+
+.revies {
+    margin-top: 40px;
+    gap: 17px;
+}
+
+.revies h5 {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 26px;
+    text-align: left;
+    color: #00699E;
+    margin-bottom: 10px;
+}
+
+.col-lg-40 {
+    flex: 0 0 auto;
+    width: 40%;
+}
+
+.col-lg-60 {
+    flex: 0 0 auto;
+    width: 60%;
+}
+
+.input-group-icon {
+    position: relative;
+}
+
+.input-group-icon .fa {
+    position: absolute;
+    left: 10px;
+    top: 0;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.formIcon {
+    position: absolute;
+    left: 10px;
+    top: 16px;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.input-group-icon input {
+    padding-left: 35px;
+}
+
+.socalForm {
+    height: 36px;
+    width: 36px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00699E;
+    color: white;
+}
+
+.bg-Color {
+    background-color: #00699E;
+}
+
+.background-image {
+    background-image: url('<?php echo $this->app->apps->getBaseUrl('assets/img/blog/bg-waves.png'); ?>');
+    background-size: 55%;
+    background-position: bottom left;
+    background-repeat: no-repeat;
+    /* padding: 20px; */
+    /* background: #00699E0D; */
+}
+
+.magIcon {
+    transform: rotate(90deg);
+}
+
+.mtb50 {
+    margin: 50px 0;
+}
+
+.extraMargin {
+    padding: 70px 100px;
+    margin: 70px 0;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.formIcon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+}
+
+.form-control {
+    padding: 10px 0px 10px 30px;
+    background-color: transparent !important;
+
+}
+
+.form-control::placeholder {
+    color: #888;
+}
+
+.contact-box {
+    display: flex;
+    gap: 44px;
+    /* position: absolute; */
+    width: 100%;
+    position: relative;
+    margin-top: 40px;
+    padding: 70px 0;
+}
+
+.contact-box .contact-overlay {
+    background-color: rgba(0, 105, 158, 0.05);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.getTouch {
+    /* padding: 0 50px; */
+    width: 40%;
+}
+
+.getTouch h2 {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26px;
+    text-align: left;
+    color: #00699E;
+}
+
+.getTouch h1 {
+    font-size: 46px;
+    font-weight: 600;
+    line-height: 61px;
+    text-align: left;
+    color: #383939;
+}
+
+.getTouch p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+    text-align: left;
+    color: #656865;
+}
+
+.expertSection {
+    margin: 0 57px;
+}
+
+.subBtn {
+    border: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.subInput {
+    border: none;
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+/* Media queries */
+@media only screen and (max-width: 1200px) {
+    body {
+        .nav-link {
+            font-size: 12px;
+        }
+
+        .dtlText {
+            padding: 0 50px;
+        }
+
+        .customButton {
+            font-size: 13px;
+        }
+
+        .margin {
+            margin: 0 50px;
+        }
+
+        .customNavbar {
+            padding: 20px 50px;
+        }
+
+        .subBtn {
+            border: none;
+        }
+
+        .subInput {
+            border: none;
+            width: 100%;
         }
     }
-
-    .border {
-        border: 1px solid;
-        border-radius: 3px;
-        padding: 2px 9px;
-        margin-right: 10px;
-    }
-
-
-    .blog-service-list {
-        margin-top: 30px;
-        margin-top: 30px;
-    }
-
-    .blog-service-list span {
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 26px;
-        text-align: left;
-
-    }
-
-    .blog-service-list>div {
-        margin-bottom: 20px;
-    }
-
-    .background {
-        background-color: #F5F5F5;
-    }
-
-    .customNavbar {
-        padding: 40px 100px;
-    }
-
-    .textPrimary {
-        color: #00699E;
-    }
-
-    .text-primary {
-        font-size: 28px;
-    }
-
-    .txt .postsIn {
-        background-color: #00699E;
-        padding: 20px 10px;
-    }
-
-    .margin {
-        margin: 0 100px;
-    }
-
-    .customButton {
-        background-color: #333333;
-    }
-
-    .banner-image {
-        height: 450px;
-    }
-
-    .bannerOverFlow {
-        height: 450px;
-    }
-
-    .fontSize {
-        font-size: 40px;
-    }
-
-    .userNav {
-        margin: 70px 0;
-    }
-
-    .iconSize {
-        height: 36px;
-        width: 36px;
-    }
-
-    .custom-input {
-        background-color: transparent;
-        border-left: 1px solid #656865;
-        border-radius: 0;
-    }
-
-    .custom-input::placeholder {
-        color: #656865;
-    }
-
-    .custom-input:focus {
-        outline: none;
-    }
-
-    .custom-overlay {
-        background-color: #06364E;
-        opacity: 0.8;
-    }
-
-    .custom-input {
-        padding-left: 2.5rem;
-    }
-
-    .custom-button {
-        background-color: #EF7D28;
-        color: white;
-    }
-
-    .custom-button:hover {
-        background-color: #005ea1;
-    }
-
-    .custom-icon {
-        position: absolute;
-        left: 0.75rem;
-        color: #00699E;
-    }
-
-    .icon-button {
-        background-color: var(--blog-primary);
-        height: 36px;
-        width: 36px;
-        border-radius: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-    }
-
-    .link {
-        text-decoration: none;
-        color: var(--blog-font-color);
-        margin-top: 10px;
-    }
-
-    .custom-hr {
-        background-color: #A6A6A633;
-        border: none;
-        height: 1px;
-    }
-
-    .custom-bg {
-        background-color: #ffffff;
-    }
-
-    .custom-text-blog-primary {
-        color: #00699E;
-    }
-
-    .custom-text-fontColor {
-        color: #656865;
-    }
-
-    .custom-button:hover {
-        background-color: #005ea1;
-    }
-
-    .custom-divider {
-        background-color: #656865;
-    }
-
-    .emailInput {
-        width: 50%;
-    }
-
-    .textContent {
-        width: 50%;
-    }
-
-    .dtlText {
-        padding: 0 40px;
-    }
-
-    .dtlParagrap {
-        font-size: 16px;
-        line-height: 26px;
-    }
-
-    .dtlIcon {
-        background: #005ea1;
-        border-radius: 100%;
-        height: 20px;
-        width: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        margin-right: 13px;
-        padding: 4px;
-    }
-
-
-    .customPost {
-        background: var(--blog-primary);
-        padding: 8px 20px;
-        color: white;
-        border-radius: 30px;
-        border: none;
-        margin-right: 20px;
-    }
-
-    .readIcon {
-        height: 32px;
-        width: 32px;
-        background-color: #7B7B7B;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-    }
-
-    .manImage {
-        height: 85px;
-        width: 85px;
-    }
-
-    .revies {
-        margin-top: 40px;
-        gap: 17px;
-    }
-
-    .revies h5 {
-        font-size: 20px;
-        font-weight: 600;
-        line-height: 26px;
-        text-align: left;
-        color: #00699E;
-        margin-bottom: 10px;
-    }
-
-    .col-lg-40 {
-        flex: 0 0 auto;
-        width: 40%;
-    }
-
-    .col-lg-60 {
-        flex: 0 0 auto;
-        width: 60%;
-    }
-
-    .input-group-icon {
-        position: relative;
-    }
-
-    .input-group-icon .fa {
-        position: absolute;
-        left: 10px;
-        top: 0;
-        transform: translateY(-50%);
-        color: #999;
-    }
-
-    .formIcon {
-        position: absolute;
-        left: 10px;
-        top: 16px;
-        transform: translateY(-50%);
-        color: #999;
-    }
-
-    .input-group-icon input {
-        padding-left: 35px;
-    }
-
-    .socalForm {
-        height: 36px;
-        width: 36px;
-        border-radius: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #00699E;
-        color: white;
-    }
-
-    .bg-Color {
-        background-color: #00699E;
-    }
-
-    .background-image {
-        background-image: url('<?php echo $this->app->apps->getBaseUrl('assets/img/blog/bg-waves.png'); ?>');
-        background-size: 55%;
-        background-position: bottom left;
-        background-repeat: no-repeat;
-        /* padding: 20px; */
-        /* background: #00699E0D; */
-    }
-
-    .magIcon {
-        transform: rotate(90deg);
-    }
-
-    .mtb50 {
-        margin: 50px 0;
-    }
-
-    .extraMargin {
-        padding: 70px 100px;
-        margin: 70px 0;
-    }
-
-    .position-relative {
-        position: relative;
-    }
-
-    .formIcon {
-        position: absolute;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #555;
-    }
-
-    .form-control {
-        padding: 10px 0px 10px 30px;
-        background-color: transparent !important;
-
-    }
-
-    .form-control::placeholder {
-        color: #888;
-    }
-
-    .contact-box {
-        display: flex;
-        gap: 44px;
-        /* position: absolute; */
-        width: 100%;
-        position: relative;
-        margin-top: 40px;
-        padding: 70px 0;
-    }
-
-    .contact-box .contact-overlay {
-        background-color: rgba(0, 105, 158, 0.05);
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-    }
-
-    .getTouch {
-        /* padding: 0 50px; */
-        width: 40%;
-    }
-
-    .getTouch h2 {
-        font-size: 20px;
-        font-weight: 400;
-        line-height: 26px;
-        text-align: left;
-        color: #00699E;
-    }
-
-    .getTouch h1 {
-        font-size: 46px;
-        font-weight: 600;
-        line-height: 61px;
-        text-align: left;
-        color: #383939;
-    }
-
-    .getTouch p {
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 26px;
-        text-align: left;
-        color: #656865;
-    }
-
-    .expertSection {
-        margin: 0 57px;
-    }
-
-    .subBtn {
-        border: none;
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
-    }
-
-    .subInput {
-        border: none;
-        width: 100%;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-    }
-
-    /* Media queries */
-    @media only screen and (max-width: 1200px) {
-        body {
-            .nav-link {
-                font-size: 12px;
-            }
-
-            .dtlText {
-                padding: 0 50px;
-            }
-
-            .customButton {
-                font-size: 13px;
-            }
-
-            .margin {
-                margin: 0 50px;
-            }
-
-            .customNavbar {
-                padding: 20px 50px;
-            }
-
-            .subBtn {
-                border: none;
-            }
-
-            .subInput {
-                border: none;
-                width: 100%;
-            }
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        .customNavbar {
+            padding: 10px 0px;
+        }
+
+        .subBtn {
+            border: none;
+        }
+
+        .subInput {
+            border: none;
+            width: 100%;
+        }
+
+        .dtlText {
+            padding: 0 40px;
+        }
+
+        .textContent {
+            width: 100%;
+        }
+
+        .margin {
+            margin: 0 20px;
+        }
+
+        .banner-image {
+            height: 350px;
+        }
+
+        .bannerOverFlow {
+            height: 350px;
+        }
+
+        .user-li {
+            font-size: 13px;
         }
     }
+}
 
-    @media only screen and (max-width: 600px) {
-        body {
-            .customNavbar {
-                padding: 10px 0px;
-            }
+@media only screen and (max-width: 576px) {
+    body {
+        .dtlText {
+            padding: 0 30px;
+        }
 
-            .subBtn {
-                border: none;
-            }
+        .margin {
+            margin: 0 5px;
+        }
 
-            .subInput {
-                border: none;
-                width: 100%;
-            }
+        .expertSection {
+            margin: 0 0px;
+        }
 
-            .dtlText {
-                padding: 0 40px;
-            }
+        .extraMargin {
+            padding: 0px 10px;
+            margin: 30px 0;
+        }
 
-            .textContent {
-                width: 100%;
-            }
+        .subBtn {
+            border: none;
+        }
 
-            .margin {
-                margin: 0 20px;
-            }
-
-            .banner-image {
-                height: 350px;
-            }
-
-            .bannerOverFlow {
-                height: 350px;
-            }
-
-            .user-li {
-                font-size: 13px;
-            }
+        .subInput {
+            border: none;
+            width: 100%;
         }
     }
+}
 
-    @media only screen and (max-width: 576px) {
-        body {
-            .dtlText {
-                padding: 0 30px;
-            }
+@media only screen and (max-width: 768px) {
+    body {
+        .dtlText {
+            padding: 0 0;
+        }
 
-            .margin {
-                margin: 0 5px;
-            }
+        .postsIn {
+            font-size: 11px;
+        }
 
-            .expertSection {
-                margin: 0 0px;
-            }
+        .subBtn {
+            border: none;
+        }
 
-            .extraMargin {
-                padding: 0px 10px;
-                margin: 30px 0;
-            }
+        .subInput {
+            border: none;
+            width: 100%;
+        }
 
-            .subBtn {
-                border: none;
-            }
-
-            .subInput {
-                border: none;
-                width: 100%;
-            }
+        .tag-and-postin {
+            flex-direction: column;
+            gap: 10px;
+            align-items: start;
         }
     }
-
-    @media only screen and (max-width: 768px) {
-        body {
-            .dtlText {
-                padding: 0 0;
-            }
-
-            .postsIn {
-                font-size: 11px;
-            }
-
-            .subBtn {
-                border: none;
-            }
-
-            .subInput {
-                border: none;
-                width: 100%;
-            }
-
-            .tag-and-postin {
-                flex-direction: column;
-                gap: 10px;
-                align-items: start;
-            }
-        }
-    }
+}
 </style>

@@ -124,7 +124,6 @@ class BloglistController extends Controller
 		$popular = Article::model()->popular(20, 20);
 
 
-
 		$cat = $model->categories;
 		$this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/blogs.css')));
 

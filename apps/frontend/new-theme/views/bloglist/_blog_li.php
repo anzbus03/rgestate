@@ -44,8 +44,14 @@
         <div class="card-img">
             <a href="<?php echo $this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>" class="_xvt7x"
                 aria-busy="false">
+                <?php if (!empty($v->featured_image)) { ?>
+                <img src="<?php echo Yii::app()->apps->getBaseUrl() . "uploads/images/" . $v->featured_image ?>"
+                    class="custom-rounded-img" alt="<?php echo CHtml::encode($v->title); ?>">
+                <?php } else { ?>
                 <img src="<?php echo $imageSrc; ?>" class="custom-rounded-img"
-                    alt="<?php echo CHtml::encode($v->title); ?>"></a>
+                    alt="<?php echo CHtml::encode($v->title); ?>">
+                <?php } ?>
+            </a>
         </div>
 
         <div class="card-body">
@@ -110,7 +116,8 @@
             </p>
             <div style="justify-content: space-between;"
                 class="d-flex justify-content-between align-items-center mt-auto card-footer">
-                <a href="#" class="custom-text-blue text-decoration-none">Read more <svg width="14" height="11"
+                <a href="<?php echo $this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>"
+                    class="custom-text-blue text-decoration-none">Read more <svg width="14" height="11"
                         viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M12.9892 5.14489L12.9886 5.14527C13.0539 5.25536 13.097 5.36646 13.0999 5.4872C13.1027 5.60869 13.0645 5.72814 12.9882 5.85465L12.9822 5.86455L12.9817 5.86415L9.87072 9.89117L9.87057 9.89136C9.68898 10.1252 9.33072 10.1795 9.09608 9.96713L9.09606 9.96711C8.98529 9.8668 8.92435 9.72234 8.91135 9.5785C8.89836 9.43465 8.9324 9.28116 9.02508 9.16186C9.02511 9.16182 9.02514 9.16178 9.02517 9.16174L11.4075 6.07337H1.4444C1.1379 6.07337 0.9 5.81051 0.9 5.49964C0.9 5.18899 1.13769 4.92591 1.4444 4.92591H11.4075L9.02514 1.8375C9.02511 1.83746 9.02508 1.83742 9.02505 1.83738C8.93257 1.71821 8.898 1.56428 8.91069 1.42013C8.92339 1.27599 8.98433 1.13085 9.09698 1.03134L12.9892 5.14489ZM12.9892 5.14489L12.9817 5.13513M12.9892 5.14489L12.9817 5.13513M12.9817 5.13513L9.87072 1.10811L9.87075 1.10809M12.9817 5.13513L9.87075 1.10809M9.87075 1.10809L9.86922 1.10622M9.87075 1.10809L9.86922 1.10622M9.86922 1.10622C9.66856 0.859064 9.32041 0.833985 9.09698 1.03134L9.86922 1.10622Z"
