@@ -71,9 +71,9 @@ class User extends ActiveRecord
     {
         $rules = array(
             // when new user is created .
-            array('first_name, last_name, email, confirm_email, fake_password, confirm_password, timezone, status', 'required', 'on' => 'insert'),
+            array('first_name, rules, agents, last_name, email, confirm_email, fake_password, confirm_password, timezone, status', 'required', 'on' => 'insert'),
             // when a user is updated
-            array('first_name, last_name, email, confirm_email, timezone, status', 'required', 'on' => 'update'),
+            array('first_name, last_name, email, agents, confirm_email, timezone, status', 'required', 'on' => 'update'),
             //
             array(
                 'phone_number',
@@ -87,6 +87,7 @@ class User extends ActiveRecord
             array('state_id', 'numerical', 'integerOnly' => true),
             array('state_id', 'exist', 'className' => 'States'),
             array('country_id', 'numerical', 'integerOnly' => true),
+            array('rules', 'numerical', 'integerOnly' => true),
             array('country_id', 'exist', 'className' => 'Countries'),
             array('service_id', 'numerical', 'integerOnly' => true),
             array('service_id', 'exist', 'className' => 'Services'),
@@ -97,6 +98,7 @@ class User extends ActiveRecord
             array('description', 'length', 'max' => 3000),
             array('city', 'length', 'max' => 100),
             array('address', 'length', 'max' => 255),
+            array('agents', 'length', 'max' => 255),
             array('age', 'numerical', 'integerOnly' => true, 'min' => 1, 'max' => 120),
             array('gender', 'in', 'range' => array('Male', 'Female', 'Other')),
             array('licence_no', 'length', 'max' => 255),
@@ -114,7 +116,7 @@ class User extends ActiveRecord
             array('target_period', 'safe'),
 
             // mark them as safe for search
-            array('first_name, last_name, email, status, is_agent', 'safe', 'on' => 'search'),
+            array('first_name, last_name, email, status, is_agent, agents, rules', 'safe', 'on' => 'search'),
         );
 
         return CMap::mergeArray($rules, parent::rules());
@@ -311,6 +313,14 @@ class User extends ActiveRecord
         return array(
             self::STATUS_ACTIVE     => Yii::t('app', 'Active'),
             self::STATUS_INACTIVE   => Yii::t('app', 'Inactive'),
+        );
+    }
+    public function getRulesArray()
+    {
+        return array(
+            1       => Yii::t('app', 'Admin'),
+            2       => Yii::t('app', 'Agency'),
+            3       => Yii::t('app', 'Agent'),
         );
     }
 

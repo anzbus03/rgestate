@@ -65,6 +65,13 @@ class UsersController extends Controller
 
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($user->modelName, array()))) {
             $user->attributes = $attributes;
+            if (isset($attributes['agents'])) {
+                // Convert the array of agent IDs to a comma-separated string
+                $user->agents = implode(',', $attributes['agents']);
+            } else {
+                // If no agents selected, save it as an empty string or null
+                $user->agents = null;
+            }
             //    print_r($user->attributes);exit;
             if (!$user->save()) {
                 $errors = CHtml::errorSummary($user);
@@ -124,6 +131,14 @@ class UsersController extends Controller
 
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($user->modelName, array()))) {
             $user->attributes = $attributes;
+           
+            if (isset($attributes['agents'])) {
+                // Convert the array of agent IDs to a comma-separated string
+                $user->agents = implode(',', $attributes['agents']);
+            } else {
+                // If no agents selected, save it as an empty string or null
+                $user->agents = null;
+            }
             if (!$user->save()) {
                 $errors = $user->getErrors();
                 $errorMessage = "Your form has a few errors, please fix them and try again!";

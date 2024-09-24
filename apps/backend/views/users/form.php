@@ -132,23 +132,75 @@ if ($viewCollection->renderContent) {
                 <?php echo $form->dropDownList($user, 'status', $user->getStatusesArray(), $user->getHtmlOptions('status')); ?>
                 <?php echo $form->error($user, 'status');?>
             </div>
-            <?php if ($user->removable == User::TEXT_YES && ($options = UserGroup::getAllAsOptions())) { ?>
-                <div class="form-group col-lg-6 mt-4">
-                    <div class="">
-                        <?php echo $form->labelEx($user, 'group_id');?>
-                        <?php echo $form->dropDownList($user, 'group_id', CMap::mergeArray(array('' => 'Select User Group'), $options), $user->getHtmlOptions('group_id')); ?>
-                        <?php echo $form->error($user, 'group_id');?>
-                    </div>
+            <div class="form-group col-lg-6 mb-2 mt-4">
+                <div class="">
+                    <?php $options = [2=>"Agency", 3=>"Agent"] ?>
+                    <?php echo $form->labelEx($user, 'rules'); ?>
+                    <?php echo $form->dropDownList($user, 'rules', CMap::mergeArray(array('' => 'Select Role'), $options), $user->getHtmlOptions('rules')); ?>
+                    <?php echo $form->error($user, 'rules'); ?>
                 </div>
-                <div class="form-group col-lg-6 mt-4">
-                    <div class="">
-                        <?php echo $form->labelEx($user, 'bank_id');?>
-                        <?php echo $form->dropDownList($user, 'bank_id', Bank::model()->ListDataAll() , $user->getHtmlOptions('bank_id',array('empty'=>'Select All'))); ?>
-                        <?php echo $form->error($user, 'bank_id');?>
-                    </div>
+            </div>
+
+            <!-- Multi-select form for agents, initially hidden -->
+            <div class="form-group col-lg-6 mb-2 mt-4" id="agent-select-group" style="display:none;">
+                <div class="">
+                    <?php echo $form->labelEx($user, 'agents'); ?>
+
+                    <?php
+                        // Fetch all agents where rules == 3
+                        $agents = User::model()->findAllByAttributes(['rules' => 3]);
+                        
+                        // Generate the agent list with first_name and last_name
+                        $agentList = CHtml::listData($agents, 'user_id', function($agent) {
+                            return $agent->first_name . ' ' . $agent->last_name;
+                        });
+
+                        // If this is an update, get the selected agents from the database
+                        $selectedAgents = explode(',', $user->agents); // Assuming agents are stored as a comma-separated string
+
+                        // Render the multi-select dropdown with the selected agents
+                        echo $form->dropDownList($user, 'agents', $agentList, [
+                            'multiple' => 'multiple',
+                            'class' => 'form-control',
+                            'options' => array_combine($selectedAgents, array_fill(0, count($selectedAgents), ['selected' => true])) // Pre-select the saved agents
+                        ]);
+                    ?>                
                 </div>
-            <?php } ?>
+            </div>
+
         </div>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"  />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+        <script>
+            $(function () {
+                $("#User_agents").select2({
+                    placeholder: "Select Agent"
+                });
+            })
+            document.getElementById('User_rules').addEventListener('change', function() {
+                var selectedRole = this.value;
+                var agentSelectGroup = document.getElementById('agent-select-group');
+                
+                if (selectedRole == 2) {
+                    // Show multi-select for agents when "Agency" is selected
+                    agentSelectGroup.style.display = 'block';
+                } else {
+                    // Hide multi-select when any other role is selected
+                    agentSelectGroup.style.display = 'none';
+                }
+            });
+            var selectedRole = document.getElementById('User_rules').value;
+            var agentSelectGroup = document.getElementById('agent-select-group');
+            
+            if (selectedRole == 2) {
+                // Show multi-select for agents when "Agency" is selected
+                agentSelectGroup.style.display = 'block';
+            } else {
+                // Hide multi-select when any other role is selected
+                agentSelectGroup.style.display = 'none';
+            }
+
+        </script>
         <?php 
             /**
              * This hook gives a chance to append content after the active form fields.
@@ -197,9 +249,3 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'renderedContent'   => $viewCollection->renderContent,
 )));
 ?>
-
-<script>
-$(function() {
-    $('#User_timezone').select2();
-})
-</script>

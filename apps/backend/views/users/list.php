@@ -74,8 +74,13 @@ if ($viewCollection->renderContent) { ?>
                         <td><?php echo CHtml::decode($data->last_name); ?></td>
                         <td><?php echo CHtml::encode($data->email); ?></td>
                         <td><?php echo CHtml::encode($data->phone_number); ?></td>
-                        <td><?php echo CHtml::encode($data->group->name); ?></td>
-                        <td><?php echo CHtml::encode($data->status); ?></td>
+                        <td>
+                            <?php 
+                                $groupNames = $user->getRulesArray();
+                                $groupId = $data->rules;
+                                echo CHtml::encode($groupNames[$groupId]); 
+                            ?>
+                        </td>                        <td><?php echo CHtml::encode($data->status); ?></td>
                         <td><?php echo CHtml::encode($data->dateAdded); ?></td>
                         <td><?php echo CHtml::encode($data->lastUpdated); ?></td>
                         <td>

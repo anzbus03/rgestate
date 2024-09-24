@@ -238,23 +238,7 @@ if ($viewCollection->renderContent) {
                 <?php echo $form->textField($user, 'address', $user->getHtmlOptions('address')); ?>
                 <?php echo $form->error($user, 'address'); ?>
             </div>
-
-                <?php if ($user->removable == User::TEXT_YES && ($options = UserGroup::getAllAsOptions())) { ?>
-                <div class="form-group col-lg-6 mb-2">
-                    <div class="">
-                        <?php echo $form->labelEx($user, 'group_id'); ?>
-                        <?php echo $form->dropDownList($user, 'group_id', CMap::mergeArray(array('' => 'Select User Group'), $options), $user->getHtmlOptions('group_id')); ?>
-                        <?php echo $form->error($user, 'group_id'); ?>
-                    </div>
-                </div>
-                <!-- <div class="form-group col-lg-6 mb-2">
-                    <div class="">
-                        <?php echo $form->labelEx($user, 'bank_id'); ?>
-                        <?php echo $form->dropDownList($user, 'bank_id', Bank::model()->ListDataAll(), $user->getHtmlOptions('bank_id', array('empty' => 'Select All'))); ?>
-                        <?php echo $form->error($user, 'bank_id'); ?>
-                    </div>
-                </div> -->
-                <?php } ?>
+           
         </div>
         <?php
                 /**

@@ -233,8 +233,8 @@ class AgentsController extends Controller
         // $user->scenario = 'agent_insert'; // Uncomment if you need to apply specific validation rules for this scenario.
 
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($user->modelName, array()))) {
-            $user->attributes = $attributes;
-
+            $user->attributes = $attributes;    
+            $user->rules = 3;
             // Handle the file upload
             $uploadedFile = CUploadedFile::getInstance($user, 'profile_image');
             if ($uploadedFile !== null) {

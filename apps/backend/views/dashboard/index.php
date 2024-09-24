@@ -217,8 +217,6 @@ if ($viewCollection->renderContent) {
                             <div class="text-center">
                                 <img src="<?php echo is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl; ?>"
                                     class="swiper-media" alt="blogImage">
-                                <h5 class="fs-16 mb-1 font-w600"><a class="text-black"
-                                        href="https://dompet.dexignlab.com/xhtml/page-error-404.html">Mr.Hariom</a></h5>
                                 <p class="fs-12"><?php echo $v->title; ?></p>
                                 <div class="social-media">
                                     <a href="<?php echo Yii::app()->apps->getBaseUrl('blog/' . $v->slug); ?>"
