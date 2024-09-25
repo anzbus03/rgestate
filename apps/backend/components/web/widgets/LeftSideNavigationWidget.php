@@ -59,7 +59,12 @@ class LeftSideNavigationWidget extends CWidget
                         array('url' => array('agents/create'), 'label' => Yii::t('app', 'Create Agent'), 'active' => strpos($route, 'agents/create') === 0),
                     ),
                 ),
-
+                'image_library' => array(
+                    'name'      => Yii::t('app', 'Image Library'),
+                    'icon'      => 'flaticon-043-menu',
+                    'active'    => 'image_library',
+                    'route'     => array('image_library/index'),
+                ),
                 'enquiries' => array(
                     'name'      => Yii::t('app', 'Enquiries'),
                     'icon'      => 'fa fa-envelope',
@@ -202,6 +207,14 @@ class LeftSideNavigationWidget extends CWidget
 
                     'route'     => array('areaguides/index'),
                 ),
+            
+                'guides' => array(
+                    'name'      => Yii::t('app', 'Area Guides'),
+                    'icon'      => 'flaticon-085-signal',
+                    'active'    => 'areaguides/index',
+
+                    'route'     => array('areaguides/index'),
+                ),
                 // 'sitemap' => array(
                 //     'name'      => Yii::t( 'app', 'Update Sitemap' ),
                 //     'icon'      => 'flaticon-085-signal',
@@ -302,6 +315,14 @@ class LeftSideNavigationWidget extends CWidget
                         array('url' => array('agents/list'), 'label' => Yii::t('app', 'Agents List'), 'active' => strpos($route, 'agents/list') === 0),
                     ),
                 )
+            );
+
+            $menuItems['image_library'] = array(
+                'name'      => Yii::t('app', 'Image Library'),
+                'icon'      => 'flaticon-043-menu',
+                'active'    => array('image_library'),
+                'route'     => null,
+                'items'     => array(),
             );
             $menuItems['place_an_ad'] = array(
                 'name'      => Yii::t('app', 'Listings Management'),

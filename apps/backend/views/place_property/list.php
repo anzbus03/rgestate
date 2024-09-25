@@ -246,12 +246,7 @@ if ($viewCollection->renderContent) { ?>
                                         <i class="fa fa-check-circle"></i>
                                     </a>
                                     <?php } ?>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/image_management')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/image_management', array('id' => $data->id)); ?>"
-                                        title="<?php echo Yii::t('app', 'Image Management'); ?>">
-                                        <i class="fa fa-picture-o"></i>
-                                    </a>
-                                    <?php } ?>
+                                  
                                     <a href="javascript:void(0);"
                                         title="<?php echo Yii::t('app', 'Update Meta Tag'); ?>" data-bs-toggle="modal"
                                         onclick="openUp(this)">
@@ -282,9 +277,6 @@ if ($viewCollection->renderContent) { ?>
                         <button type="submit" class="btn btn-primary btn-submit"
                             data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', 'Update Priority'); ?></button>
                     </div>
-                    <div class="clearfix">
-                        <!-- -->
-                    </div>
                 </div>
         </form>
     </div>
@@ -296,22 +288,16 @@ if ($viewCollection->renderContent) { ?>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="uploadModalLabel">Upload Excel and Images</h5>
+                <h5 class="modal-title" id="uploadModalLabel">Upload Excel</h5>
                 <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <button id="downloadTemplateBtn" class="btn btn-secondary btn-xs pull-right mb-2">Download
-                    Template</button>
                 <form id="uploadForm" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="excelFile">Excel File</label>
                         <input type="file" class="form-control" id="excelFile" name="excelFile" accept=".xlsx,.xls">
-                    </div>
-                    <div class="form-group mt-2">
-                        <label for="zipFile">ZIP File</label>
-                        <input type="file" class="form-control" id="zipFile" name="zipFile" accept=".zip">
                     </div>
                     <button type="submit" class="pull-right btn btn-primary mt-4">Upload</button>
                 </form>

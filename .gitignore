@@ -7,3 +7,4 @@ apps/init2.php
 /apps/common/runtime/application.log
 uploads/images/*
 backend/assets/cache/*
+uploads/

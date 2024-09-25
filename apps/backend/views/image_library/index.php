@@ -1,0 +1,198 @@
+<?php defined('MW_PATH') || exit('No direct script access allowed');
+
+/**
+ * This file is part of the MailWizz EMA application.
+ * 
+ * @package MailWizz EMA
+ * @author Serban George Cristian <cristian.serban@mailwizz.com> 
+ * @link http://www.mailwizz.com/
+ * @copyright 2013-2014 MailWizz EMA (http://www.mailwizz.com)
+ * @license http://www.mailwizz.com/license/
+ * @since 1.0
+ */
+
+$hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCollection(array(
+    'controller'    => $this,
+    'renderContent' => true,
+)));
+
+if ($viewCollection->renderContent) { ?>
+<style>
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .card-header-left {
+        flex: 1;
+    }
+
+    .card-header-right {
+        display: flex;
+        gap: 10px;
+    }
+
+    .card-header-right .btn {
+        margin-left: 5px;
+    }
+</style>
+    <div class="card">
+        <div class="card-header">
+            <div class="card-header-left">
+                <h3 class="card-title">
+                    <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, "Image Library");?>
+                </h3>
+            </div>
+            <div class="pull-right">
+            <?php echo CHtml::link(Yii::t('app', 'Upload new'), '#', array(
+                'class' => 'btn btn-primary btn-xs',
+                'title' => Yii::t('app', 'Create new'),
+                'data-bs-toggle' => 'modal',
+                'data-bs-target' => '#uploadModal'
+            )); ?>
+                <?php echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
+            </div>
+            <div class="clearfix"><!-- --></div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="home-banner-table" class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Image Path</th>
+                            <th>Property</th>
+                            <th>Status</th>
+                            <!-- <th>Options</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+            <div class="box-footer">
+               
+            </div>
+        </div>
+    </div>
+    <style>
+        .modal {
+            z-index: 1050; /* Bootstrap default for modal */
+        }
+
+        .select2-container--default .select2-selection--single {
+            z-index: 1060; /* Set this higher than the modal */
+        }
+    </style>
+    <!-- Modal -->
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalLabel">Upload New Images</h5>
+                    <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <?php echo CHtml::hiddenField(Yii::app()->request->csrfTokenName, Yii::app()->request->csrfToken); ?>
+                        <div class="form-group">
+                            <label for="fileUpload">Choose files</label>
+                            <input type="file" class="form-control" id="fileUpload" name="files[]" multiple>
+                        </div>
+                        <div id="uploadedFiles" class="uploaded-files-box" style="border: 1px solid #ccc; padding: 10px; margin-top: 10px;"></div>
+                        <div class="form-group mt-4">
+                            <!-- <label for="propertySelect">Select Property (optional)</label> -->
+                            <select class="form-control" id="propertySelect" name="property_id">
+                                <?php foreach ($properties as $property): ?>
+                                    <option value="<?php echo $property->id; ?>"><?php echo $property->ad_title; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="uploadFilesButton">Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Handle file input change event
+        $('#propertySelect').select2({
+            placeholder: 'Select Property (optional)',
+            allowClear: true,
+            dropdownParent: $('#uploadModal') 
+        });        
+        $('#fileUpload').on('change', function() {
+            var files = $(this).get(0).files; // Get the files
+            $('#uploadedFiles').empty(); // Clear the previous entries
+
+            // Loop through selected files and append to the box
+            for (var i = 0; i < files.length; i++) {
+                $('#uploadedFiles').append('<div>' + files[i].name + '</div>');
+            }
+        });
+
+        // Handle upload button click
+        $('#uploadFilesButton').on('click', function() {
+            var formData = new FormData($('#uploadForm')[0]); // Create form data from the form
+
+            // Optionally: Add any additional parameters here
+            $.ajax({
+                url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . "/uploadFiles"); ?>', // Your upload URL
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    // Handle success (e.g., refresh the table)
+                    $('#home-banner-table').DataTable().ajax.reload();
+                    $('#uploadModal').modal('hide'); // Hide the modal
+                },
+                error: function() {
+                    alert('Error uploading files');
+                }
+            });
+        });
+    });
+</script>
+    <?php 
+        Yii::app()->clientScript->registerScript('initialize-dataTables', "
+            $(document).ready(function() {
+                $('#home-banner-table').DataTable({
+                    serverSide: true,
+                    processing: true,
+                    ajax: {
+                        url: '" . Yii::app()->createUrl(Yii::app()->controller->id . '/ajaxData') . "',
+                        type: 'GET',
+                        data: function (d) {
+                            // Add any additional parameters you might want to send here
+                        }
+                    },
+                    language: {
+                        paginate: {
+                            next: '<i class=\"fa fa-angle-double-right\" aria-hidden=\"true\"></i>',
+                            previous: '<i class=\"fa fa-angle-double-left\" aria-hidden=\"true\"></i>'
+                        }
+                    }
+                });
+            });
+        ");
+
+    }
+
+$hooks->doAction('after_view_file_content', new CAttributeCollection(array(
+    'controller'        => $this,
+    'renderedContent'   => $viewCollection->renderContent,
+)));
+?>

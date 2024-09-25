@@ -164,7 +164,10 @@ class AgentsController extends Controller
     {
         // Fetch the user by primary key (user ID)
         $user = User::model()->findByPk((int)$id);
-
+        $locationId = Yii::app()->request->getParam('location');
+        $propertyTypeId = Yii::app()->request->getParam('property_type');
+        $propertyCategoryId = Yii::app()->request->getParam('property_category');
+        $status = Yii::app()->request->getParam('property_status');
         // Check if the user exists, if not throw a 404 error
         if (empty($user)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
@@ -203,9 +206,32 @@ class AgentsController extends Controller
         } else {
             $completionPercentageRent = 0;
         }
-        $userProperties = PlaceAnAd::model()->findAllByAttributes(array(
-            'user_id' => $user->user_id,
-        ));
+        
+        $criteria = new CDbCriteria();
+        $criteria->compare('user_id', $user->user_id);
+    
+        // Apply location filter if present
+        if (!empty($locationId)) {
+            $criteria->compare('state', (int)$locationId);
+        }
+    
+        // Apply property type filter if present
+        if (!empty($propertyTypeId)) {
+            $criteria->compare('section_id', (int)$propertyTypeId);
+        }
+    
+        // Apply property category filter if present
+        if (!empty($propertyCategoryId)) {
+            $criteria->compare('category_id', (int)$propertyCategoryId);
+        }
+    
+        // Apply status filter if present
+        if (!empty($status)) {
+            $criteria->compare('status', $status);
+        }
+    
+        // Fetch filtered user properties
+        $userProperties = PlaceAnAd::model()->findAll($criteria);
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'View users'),
             'pageHeading'       => Yii::t('users', 'Agent Details'),

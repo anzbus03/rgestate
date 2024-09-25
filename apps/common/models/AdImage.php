@@ -36,7 +36,7 @@ class AdImage extends ActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('ad_id, image_name', 'required'),
+            array('image_name', 'required'),
             array('ad_id, priority', 'numerical', 'integerOnly'=>true),
             array('image_name', 'length', 'max'=>250),
             array('isTrash,status', 'length', 'max'=>1),
@@ -100,7 +100,10 @@ class AdImage extends ActiveRecord
         $criteria->compare('isTrash','0',true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => 10,
+            ),
         ));
     }
 
@@ -202,7 +205,6 @@ class AdImage extends ActiveRecord
 		 
 		 if($return){ return $criteria; }
 		 
-			$criteria->limit  = Yii::app()->request->getQuery('limit','10');
 			$criteria->offset = Yii::app()->request->getQuery('offset','0');
 			
 			if(!empty($count_future)){
@@ -210,7 +212,7 @@ class AdImage extends ActiveRecord
 				$Result = self::model()->findAll($criteria);
 				$criteria->offset = $criteria->limit+$criteria->offset   ;
 				$criteria->select = 't.id'; 
-				$criteria->limit = '1'; 
+				// $criteria->limit = '1'; 
 				 
 				$future_count = self::model()->find($criteria);
 				return array('result'=>$Result,'future_count'=>$future_count);

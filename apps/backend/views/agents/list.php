@@ -76,7 +76,6 @@ if ($viewCollection->renderContent) {
                         <hr class="hr">
 
                         <div class="px">
-                            <!-- Button to view details -->
                             <?php echo CHtml::link(Yii::t('app', 'Details'), array($this->id . '/view', 'id' => $user->user_id), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Details'))); ?>
                         </div>
                     </div>
@@ -84,7 +83,6 @@ if ($viewCollection->renderContent) {
             <?php } ?>
         </div>
 
-        <!-- Pagination Section -->
         <div class="pagination-container">
             <?php
             $this->widget('CLinkPager', array(

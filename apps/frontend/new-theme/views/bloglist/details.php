@@ -238,7 +238,7 @@
         style="width: 100%;"
         src="<?php echo is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl; ?>"
         class="img-fluid" style="object-fit: cover;" alt="<?php echo $model->title ?>">
-    <div class="tlText">
+    <div class="tlText" style="margin-top: 40px;">
         <p class="dtlParagrap">
             <?php echo $cleanedContent ?>
         </p>
