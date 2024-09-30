@@ -20,9 +20,14 @@ class Image_libraryController extends Controller
         $request = Yii::app()->request;
         $model = new AdImage('search');
         $model->isTrash = '0';
-
-        $properties = PlaceAnAd::model()->findAll();
-
+    
+        // Find only 50 properties ordered by `id` in descending order
+        $criteria = new CDbCriteria();
+        $criteria->limit = 50; // Limit to 50 records
+        $criteria->order = 'id DESC'; // Order by `id` in descending order
+        
+        // Get only 50 records with the defined criteria
+        $properties = PlaceAnAd::model()->findAll($criteria);
     
         if ($request->isAjaxRequest) {
             $dataProvider = $model->search(); // This should return a CActiveDataProvider instance
@@ -64,8 +69,9 @@ class Image_libraryController extends Controller
             ],
         ]);
     
-        $this->render('index', compact('model','properties'));
+        $this->render('index', compact('model', 'properties'));
     }
+    
     public function actionAjaxData()
     {
         $model = new AdImage('search');

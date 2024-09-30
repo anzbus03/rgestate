@@ -294,6 +294,9 @@ class AgentsController extends Controller
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($user->modelName, array()))) {
             $user->attributes = $attributes;    
             $user->rules = 3;
+            $loggedInUser = Yii::app()->user->model;
+
+                      
             // Handle the file upload
             $uploadedFile = CUploadedFile::getInstance($user, 'profile_image');
             if ($uploadedFile !== null) {
@@ -301,6 +304,27 @@ class AgentsController extends Controller
                 $user->profile_image = $fileName;
             }
             if ($user->save()) {
+                if ($loggedInUser->rules == 2) {
+                    // If rules equal to 2, get the assigned agent IDs from the 'agents' column
+                    $userAgents = explode(",", $loggedInUser->agents);
+
+                    if (!in_array($user->user_id, $userAgents)) {
+                        $userAgents[] = $user->user_id;
+                    }
+                    $imploded = implode(",", $userAgents);
+
+                    $userModel = User::model()->findByPk($loggedInUser->user_id);
+                 
+                   // exit;
+                    if ($userModel) {
+                        $userModel->agents = $imploded;
+                        $userModel->save();
+                        if (!$userModel->save()) {
+                            $errors = $userModel->getErrors();
+                            Yii::app()->notify->addError(Yii::t('app', 'Failed to update agent list: ' . print_r($errors, true)));
+                        }
+                    }
+                }    
                 if ($uploadedFile !== null) {
                     $uploadedFile->saveAs(Yii::getPathOfAlias('webroot') . '/uploads/profile_images/' . $fileName);
                 }

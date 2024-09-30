@@ -73,7 +73,7 @@ class User extends ActiveRecord
             // when new user is created .
             array('first_name, rules, last_name, email, confirm_email, fake_password, confirm_password, timezone, status', 'required', 'on' => 'insert'),
             // when a user is updated
-            array('first_name, last_name, email, confirm_email, timezone, status', 'required', 'on' => 'update'),
+            array('first_name, last_name, email,confirm_email, timezone, status', 'required', 'on' => 'update'),
             //
             array(
                 'phone_number',
