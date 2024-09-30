@@ -247,39 +247,28 @@ if ($viewCollection->renderContent) {
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Apply Filter</button>
                         <button type="submit" class="btn btn-secondary btn-sm">Reset</button>
                     </div>
                 </div>
             </form>
-
-                <div class="shouseRent mt-4">
+           
+                <div class="shouseRent mt-4" id="propertyList">
                     <?php if (!empty($userProperties)): ?>
-                        <div class="row">
+                        <div class="row" id="propertiesContainer">
                             <?php foreach ($userProperties as $property): ?>
-                                <div class="col-md-4">
-                                    <?php
-                                    $locationParts = array_filter(array(
-                                        CHtml::encode($property->city),
-                                        CHtml::encode($property->stateLocation->state_name),
-                                        CHtml::encode($property->country0->country_name)
-                                    ));
-
-                                    $propertyImageUrl = !empty($property->image)
-                                        ? $property->image
-                                        : Yii::app()->baseUrl . '/assets/img/default_house.jpg';
-
-                                    $userImageUrl = !empty($property->user->profile_image)
-                                        ? $property->user->profile_image
-                                        : Yii::app()->baseUrl . '/assets/img/default_user.png';
-                                    ?>
+                                <div class="col-md-4 property-item" data-category-id="<?php echo $property->category_id; ?>">
                                     <div class="card">
                                         <!-- Image Section -->
                                         <div class="house-img mb-5">
                                             <div class="imgInfo">
                                                 <span class="rent" style="width: 65%;">
                                                     <i class="fa-solid fa-location-dot"></i>
-                                                    <?php echo implode(', ', $locationParts); ?>
+                                                    <?php echo implode(', ', array_filter(array(
+                                                        CHtml::encode($property->city),
+                                                        CHtml::encode($property->stateLocation->state_name),
+                                                        CHtml::encode($property->country0->country_name)
+                                                    ))); ?>
                                                 </span>
                                                 <span class="location">For <?php echo $property->section_id == 1 ? 'Sale' : 'Rent'; ?></span>
                                                 <span class="location"><?php echo $property->status; ?></span>
@@ -1197,6 +1186,31 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
+     function filterProperties(categoryId) {
+        const properties = document.querySelectorAll('.property-item');
+        
+        properties.forEach(property => {
+            if (categoryId === 'all' || property.dataset.categoryId == categoryId) {
+                property.style.display = 'block';
+            } else {
+                property.style.display = 'none';
+            }
+        });
+        
+        // Activate the clicked tab
+        const tabs = document.querySelectorAll('#propertyTabs .nav-link');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        
+        const clickedTab = Array.from(tabs).find(tab => tab.innerText.includes(categoryId));
+        if (clickedTab) {
+            clickedTab.classList.add('active');
+        }
+    }
+
+    function resetFilters() {
+        document.getElementById('filterForm').reset();
+        filterProperties('all'); // Show all properties again
+    }
     $(document).ready(function() {
         $('#locationSelect').select2({
             placeholder: 'Select Location',

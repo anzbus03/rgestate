@@ -285,11 +285,16 @@ class LeftSideNavigationWidget extends CWidget
                     'active'    => array('agents', 'agent_groups'),
                     'route'     => array('agents/index'),
                     'items'     => array(
-                        array('url' => array('agents/index'), 'label' => Yii::t('app', 'Agent Dashboard'), 'active' => strpos($route, 'agents/index') === 0),
                         array('url' => array('agents/list'), 'label' => Yii::t('app', 'Agents List'), 'active' => strpos($route, 'agents/list') === 0),
                         array('url' => array('agents/create'), 'label' => Yii::t('app', 'Create Agent'), 'active' => strpos($route, 'agents/create') === 0),
                     ),
                 )
+            );
+            $menuItems['image_library'] = array(
+                'name'      => Yii::t('app', 'Image Library'),
+                'icon'      => 'flaticon-043-menu',
+                'active'    => array('image_library'),
+                'route'     => array('image_library/index'),
             );
             $menuItems['place_an_ad'] = array(
                 'name'      => Yii::t('app', 'Listings Management'),
@@ -311,7 +316,6 @@ class LeftSideNavigationWidget extends CWidget
                     'active'    => array('agents', 'agent_groups'),
                     'route'     => array('agents/index'),
                     'items'     => array(
-                        array('url' => array('agents/index'), 'label' => Yii::t('app', 'Agent Dashboard'), 'active' => strpos($route, 'agents/index') === 0),
                         array('url' => array('agents/list'), 'label' => Yii::t('app', 'Agents List'), 'active' => strpos($route, 'agents/list') === 0),
                     ),
                 )
@@ -321,8 +325,7 @@ class LeftSideNavigationWidget extends CWidget
                 'name'      => Yii::t('app', 'Image Library'),
                 'icon'      => 'flaticon-043-menu',
                 'active'    => array('image_library'),
-                'route'     => null,
-                'items'     => array(),
+                'route'     => array('image_library/index'),
             );
             $menuItems['place_an_ad'] = array(
                 'name'      => Yii::t('app', 'Listings Management'),

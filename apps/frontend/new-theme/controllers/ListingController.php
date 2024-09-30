@@ -13,7 +13,6 @@ class ListingController extends Controller
 
 	public function actionIndex($country = null, $state = null, $city = null, $type = null, $community = null, $sec = null, $category = null, $dealer = null, $loc = null)
 	{
-		
 		define('ITS_LIST_PAGE', '1');
 		if (isset($_GET['reg'])) {
 			if (!isset($_GET['state'])) {
@@ -504,13 +503,13 @@ class ListingController extends Controller
 
 
 		$this->setData(array(
-			'pageMetaTitle'     =>  Yii::t('app',  'Properties Listing' . '  | {project} ', array('{project}' => $this->project_name)),
-			'noFooter'     =>  $file_view == 'index_map' ? '1' : false,
-			'newMetaTitle' => $m_title,
-			'pageTitle' => $m_title . '  | ' . BRAND_TITLE,
-			'meta_keyword' => $newMetaKeywords,
-			'pageMetaDescription' => $newMetaDescription,
-			'schema'            =>  !empty($pageContent->neighborhood) ? $pageContent->neighborhood : ''
+			'pageMetaTitle'     => Yii::t('app',  'Properties Listing' . '  | {project} ', array('{project}' => $this->project_name)),
+			'noFooter'     		=> $file_view == 'index_map' ? '1' : false,
+			'newMetaTitle' 		=> $m_title,
+			'pageTitle' 		=> $m_title . '  | ' . BRAND_TITLE,
+			'meta_keyword' 		=> $newMetaKeywords,
+			'pageMetaDescription' 	=> $newMetaDescription,
+			'schema'            	=>  !empty($pageContent->neighborhood) ? $pageContent->neighborhood : ''
 		));
 		if ($pageContent) {
 			$p_title = $pageContent->meta_title;

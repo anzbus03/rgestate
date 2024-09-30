@@ -468,7 +468,9 @@ public function beforeSave(){
 		 $criteria->order="-t.priority desc , category_name";
 		 return  $this->findAll($criteria);
 	}
-	
+	public function getPropertyCount() {
+		return PlaceAnAd::model()->count('category_id=:category_id', [':category_id' => $this->category_id]);
+	}
 	
 	public function  ListDataForJSON_ID_BySEctionNewdevelopment($section,$slug=false)
     {

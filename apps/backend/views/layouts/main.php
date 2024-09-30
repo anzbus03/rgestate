@@ -152,7 +152,7 @@
                 <ul class="metismenu" id="menu">
                     <li class="dropdown header-profile">
                         <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
-                            <img src="<?php echo Yii::app()->user->getModel()->getGravatarUrl(90);?>" width="20" alt="">
+                            <img src="<?php echo '/uploads/images/'.Yii::app()->user->getModel()->profile_image;?>" width="20" alt="">
                             <div class="header-info ms-3">
                                 <span class="font-w600 ">
                                     <?php echo ($fullName = Yii::app()->user->getModel()->getFullName()) ? "Hi, <b>" . CHtml::encode($fullName) . "</b>" : Yii::t('app', 'Welcome');?>

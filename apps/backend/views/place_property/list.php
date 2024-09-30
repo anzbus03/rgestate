@@ -41,19 +41,20 @@ if ($viewCollection->renderContent) { ?>
         </h3>
         <div>
             <div class="row">
-                <div class="col-md-3 mt-2">
+                <div class="col-md-7 mt-2">
                     <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id . '/create'), array('class' => 'btn btn-primary btn-sm', 'title' => Yii::t('app', 'Create new'))); ?>
-                </div>
-                <div class="col-md-3 mt-2">
                     <button type="button" id="exportExcel" class="btn btn-success btn-sm" style="">Export Excel</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                        Excel Upload
+                    </button>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <input type="text" id="dateRange" class="form-control" style="margin-left: 10px;" />
                 </div>
             </div>
         </div>
     </div>
-    <div class="card-body">
+    <div class="card-body" style="padding-top: 0px;">
 
         <?php
             function getCategoryName($categoryId, $categoriesArray)
@@ -84,193 +85,227 @@ if ($viewCollection->renderContent) { ?>
             ?>
 
         <!-- Form to wrap the table and submit the priority updates -->
-        <form method="post" action="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/index'); ?>">
-
-            <!-- CSRF Protection -->
-            <?php if (Yii::app()->request->enableCsrfValidation) { ?>
-            <input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>" />
-            <?php } ?>
             <div class="card-body">
                 <!-- Checkboxes and Dropdown -->
-                <div class="row" style="margin-bottom: 10px;">
-                    <!-- Checkbox for Featured -->
-                    <div class="col-sm-2">
+                <form method="GET" action="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/index'); ?>">
+                   
+                    <div class="row" style="margin-bottom: 10px;margin-top: 10px;">
+                        <!-- Upload by Excel Button -->
 
-                        <button type="button" class="btn btn-secondary btn-xs" data-bs-toggle="modal"
-                            style="margin-top: -5px;" data-bs-target="#uploadModal">
-                            Upload By Excel
-                        </button>
-                    </div>
-                    <div class="col-sm-1">
-                        <div class="form-group">
-                            <label for="featured">
-                                Featured
-                            </label>
-                            <input type="checkbox" value="1"
-                                style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;"
-                                id="featured">
+                        <!-- Select for Featured -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="featuredSelect">Featured</label>
+                                <select name="featured" id="featuredSelect" class="form-control input-xs">
+                                    <option value="">Select Featured</option>
+                                    <option value="Y">Yes</option>
+                                    <option value="N">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select for Verified -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="verifiedSelect">Verified</label>
+                                <select name="verified" id="verifiedSelect" class="form-control input-xs">
+                                    <option value="">Select Verified</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select for Preleased -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="preleasedSelect">Preleased</label>
+                                <select name="preleased" id="preleasedSelect" class="form-control input-xs">
+                                    <option value="">Select Preleased</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Dropdown for Submitted Properties -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="f_properties">Submitted By</label>
+                                <?php echo CHtml::dropDownList('submited_by',$model->submited_by,$model->getsubmited_by_array(), array('empty'=>'Please select','class'=>'form-control')); ?>
+
+                            </div>
+                        </div>
+
+                        <!-- Select for Category -->
+                        <div class="col-sm-3 mt-2">
+                            <div class="form-group">
+                                <label for="categorySelect">Category</label>
+                                <select class="form-control" name="property_category" id="propertyCategorySelect">
+                                    <option value="">Select Property Category</option>
+                                    <?php foreach ($categories as $category): ?>
+                                        <option value="<?php echo $category->category_id; ?>"><?php echo ($category->category_name); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <?php $locations = States::model()->AllListingStatesOfCountry(66124); ?>
+                        <!-- Select for Location -->
+                        <div class="col-sm-3 mt-2">
+                            <div class="form-group">
+                                <label for="locationSelect">Location</label>
+                                <select class="form-control" name="location" id="locationSelect">
+                                    <option value="">Select Location</option>
+                                    <?php foreach ($locations as $location): ?>
+                                        <option value="<?php echo $location->state_id; ?>"><?php echo CHtml::encode($location->state_name); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 text-right mt-4">
+                            <!-- Submit button for form submission -->
+                            <button type="submit" class="btn btn-primary btn-sm" style="margin-top: 20px;">Apply Filters</button>
+                            <button type="submit" class="btn btn-secondary btn-sm" style="margin-top: 20px;" onclick="resetFilters()">Reset</button>
                         </div>
                     </div>
-                    <!-- Checkbox for Verified -->
-                    <div class="col-sm-1">
-                        <div class="form-group">
-                            <label for="verified">
-                                <input type="checkbox" value="1" id="verified"
-                                    style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;">
-                                Verified
-                            </label>
-                        </div>
-                    </div>
-                    <!-- Checkbox for Preleased -->
-                    <div class="col-sm-2">
-                        <div class="form-group">
-                            <label for="preleased">
-                                <input type="checkbox" value="1"
-                                    style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;"
-                                    id="preleased">
-                                Preleased
-                            </label>
-                        </div>
-                    </div>
-                    <!-- Checkbox for Submitted Properties -->
-                    <div class="col-sm-2">
-                        <div class="form-group">
-                            <label for="f_properties">
-                                <input type="checkbox" value="1"
-                                    style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;"
-                                    id="f_properties">
-                                Submitted Properties
-                            </label>
-                        </div>
-                    </div>
-                    <style>
-                    .input-xs,
-                    select.input-xs {
-                        height: 40px;
-                        line-height: 20px;
-                    }
-                    </style>
-                    <!-- Dropdown for Submitted By -->
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <?php echo CHtml::dropDownList('submited_by', $model->submited_by, $model->getsubmited_by_array(), array('empty' => 'Submitted By', 'class' => 'form-control input-xs')); ?>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="table-responsive">
-                    <table id="enquiryTable" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Reference Number</th>
-                                <th>Ad Title</th>
-                                <th>Country Name</th>
-                                <th>Section</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>Status</th>
-                                <th>Priority</th>
-                                <th>Date Added</th>
-                                <th>Options</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($model->search()->getData() as $data) {
-                                    $isSold = in_array($data->id, $soldPropertyIds); ?>
-                            <tr>
-                                <td><?php echo CHtml::decode($data->ReferenceNumberTitleP); ?></td>
-                                <td>
-                                    <?php echo CHtml::decode($data->AdTitleWithIcons2, Yii::app()->createUrl("place_property/update", array("id" => $data->id))); ?>
-                                    <div><?php echo $data->Tags; ?></div>
-                                    <input type="hidden" class="propertyId" value="<?php echo $data->id; ?>">
-                                    <input type="hidden" class="sId" value="<?php echo $data->section_id; ?>">
-                                    <input type="hidden" class="cId" value="<?php echo $data->category_id; ?>">
-                                    <input type="hidden" class="lId" value="<?php echo $data->listing_type; ?>">
-                                    <input type="hidden" id="meta_title-<?php echo $data->id; ?>" class="meta_title"
-                                        value="<?php echo $data->metaTitleEnglish; ?>">
-                                    <input type="hidden" id="meta_title-ar-<?php echo $data->id; ?>"
-                                        class="meta_title_ar" value="<?php echo $data->MetaTitleArabic; ?>">
-                                    <input type="hidden" id="meta_description-<?php echo $data->id; ?>"
-                                        class="meta_description" value="<?php echo $data->MetaDescriptionEnglish; ?>">
-                                    <input type="hidden" id="meta_description-ar-<?php echo $data->id; ?>"
-                                        class="meta_description_ar" value="<?php echo $data->MetaDescriptionArabic; ?>">
-                                </td>
-                                <td><?php echo CHtml::decode($data->CountryNameSection2); ?></td>
-                                <td><?php echo CHtml::encode($data->section->section_name); ?></td>
-                                <td><?php echo CHtml::encode($data->price); ?></td>
-                                <td><?php echo getCategoryName($data->category_id, $categoriesArray); ?></td>
-                                <td style="text-align:center;"><?php echo $data->statusLink; ?></td>
-                                <td><?php echo CHtml::textField("priority[$data->id]", $data->priority, array("style" => "width:50px; text-align:center; display:block; margin:auto;", "class" => "form-controll")); ?>
-                                </td>
-                                <td><?php echo CHtml::encode($data->Sdate); ?></td>
-                                <td>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('id' => $data->id)); ?>"
-                                        title="<?php echo Yii::t('app', 'Update'); ?>">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                    <?php } ?>
-                                    <!-- <a href="<?php echo Yii::app()->createUrl('statistics/property_statistics', array('property_id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Statistics'); ?>" target="_blank">
-                                            <i class="fa fa-bar-chart text-red"></i>
-                                        </a> -->
-                                    <a href="<?php echo $data->PreviewUrlTrashB; ?>"
-                                        title="<?php echo Yii::t('app', 'View'); ?>" target="_blank" class="text-green">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->id)); ?>"
-                                        title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
-                                        <i class="fa fa-times-circle"></i>
-                                    </a>
-                                    <?php } ?>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/featured')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/featured', array('id' => $data->id, 'featured' => $data->featured)); ?>"
-                                        title="<?php echo Yii::t('app', 'Featured'); ?>">
-                                        <i class="fa fa-star"></i>
-                                    </a>
-                                    <?php } ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/verified', array('id' => $data->id, 'verified' => $data->verified)); ?>"
-                                        title="<?php echo Yii::t('app', 'Verified'); ?>">
-                                        <i class="fa fa-check-circle"></i>
-                                    </a>
-                                    <?php if ($data->status === "A") { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status', array('id' => $data->id, 'status' => $data->status)); ?>"
-                                        title="<?php echo Yii::t('app', 'Inactive AD'); ?>" class="Block">
-                                        <i class="fa fa-ban"></i>
-                                    </a>
-                                    <?php } ?>
-                                    <?php if ($data->status === "I") { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status', array('id' => $data->id, 'status' => $data->status)); ?>"
-                                        title="<?php echo Yii::t('app', 'Activate AD'); ?>" class="Enable"
-                                        onclick="event.preventDefault(); $.ajax({type:'POST', url:$(this).attr('href'), success: function() {$.fn.yiiGridView.update('<?php echo $model->modelName; ?>-grid');}});">
-                                        <i class="fa fa-check-circle"></i>
-                                    </a>
-                                    <?php } ?>
-                                  
-                                    <a href="javascript:void(0);"
-                                        title="<?php echo Yii::t('app', 'Update Meta Tag'); ?>" data-bs-toggle="modal"
-                                        onclick="openUp(this)">
-                                        <i class="fa fa-tags"></i>
-                                    </a>
-                                    <?php if ($isSold): ?>
-                                    <a href="#" class="text-green"><i class='fas fa-check'
-                                            title="This property is already sold"></i></a>
+                </form>
 
-                                    <?php else: ?>
-                                    <!-- If the property is not sold, show the clickable icon -->
-                                    <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Sold property'); ?>"
-                                        onclick="openUp2(<?php echo $data->id; ?>)">
-                                        <i class='far fa-handshake'></i>
-                                    </a>
+            
+                <form method="post" action="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/index'); ?>">
 
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
+                    <!-- CSRF Protection -->
+                    <?php if (Yii::app()->request->enableCsrfValidation) { ?>
+                    <input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>" />
+                    <?php } ?>
 
+                    <div class="table-responsive">
+                        <div class="bulk-actions pull-right mb-4" style="">
+                            <select id="bulk-action-select" class="form-control-sm" style="width: 200px; display: inline-block;">
+                                <option value="">Select Action</option>
+                                <option value="trash">Trash</option>
+                                <option value="restore">Restore</option>
+                                <option value="unpublish">Unpublish</option>
+                                <option value="publish">Publish</option>
+                                <option value="delete">Delete</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                            <button id="apply-bulk-action" type="button" class="btn btn-primary btn-sm">Apply</button>
+                        </div>
+                        <table id="enquiryTable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="select-all"></th> 
+                                    <th>Reference Number</th>
+                                    <th>Ad Title</th>
+                                    <th>Country Name</th>
+                                    <th>Section</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Date Added</th>
+                                    <th>Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($filteredData as $data) {
+                                        $isSold = in_array($data->id, $soldPropertyIds); ?>
+                                <tr>
+                                <td><input type="checkbox" class="bulk-item" value="<?php echo $data->id; ?>"></td>
+                                    <td><?php echo CHtml::decode($data->ReferenceNumberTitleP); ?></td>
+                                    <td>
+                                        <?php echo CHtml::decode($data->AdTitleWithIcons2, Yii::app()->createUrl("place_property/update", array("id" => $data->id))); ?>
+                                        <div><?php echo $data->Tags; ?></div>
+                                        <input type="hidden" class="propertyId" value="<?php echo $data->id; ?>">
+                                        <input type="hidden" class="sId" value="<?php echo $data->section_id; ?>">
+                                        <input type="hidden" class="cId" value="<?php echo $data->category_id; ?>">
+                                        <input type="hidden" class="lId" value="<?php echo $data->listing_type; ?>">
+                                        <input type="hidden" id="meta_title-<?php echo $data->id; ?>" class="meta_title"
+                                            value="<?php echo $data->metaTitleEnglish; ?>">
+                                        <input type="hidden" id="meta_title-ar-<?php echo $data->id; ?>"
+                                            class="meta_title_ar" value="<?php echo $data->MetaTitleArabic; ?>">
+                                        <input type="hidden" id="meta_description-<?php echo $data->id; ?>"
+                                            class="meta_description" value="<?php echo $data->MetaDescriptionEnglish; ?>">
+                                        <input type="hidden" id="meta_description-ar-<?php echo $data->id; ?>"
+                                            class="meta_description_ar" value="<?php echo $data->MetaDescriptionArabic; ?>">
+                                    </td>
+                                    <td><?php echo CHtml::decode($data->CountryNameSection2); ?></td>
+                                    <td><?php echo CHtml::encode($data->section->section_name); ?></td>
+                                    <td><?php echo CHtml::encode($data->price); ?></td>
+                                    <td><?php echo getCategoryName($data->category_id, $categoriesArray); ?></td>
+                                    <td style="text-align:center;"><?php echo $data->statusLink; ?></td>
+                                    <td><?php echo CHtml::textField("priority[$data->id]", $data->priority, array("style" => "width:50px; text-align:center; display:block; margin:auto;", "class" => "form-controll")); ?>
+                                    </td>
+                                    <td><?php echo CHtml::encode($data->Sdate); ?></td>
+                                    <td>
+                                        <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('id' => $data->id)); ?>"
+                                            title="<?php echo Yii::t('app', 'Update'); ?>">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                        <?php } ?>
+                                        <!-- <a href="<?php echo Yii::app()->createUrl('statistics/property_statistics', array('property_id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Statistics'); ?>" target="_blank">
+                                                <i class="fa fa-bar-chart text-red"></i>
+                                            </a> -->
+                                        <a href="<?php echo $data->PreviewUrlTrashB; ?>"
+                                            title="<?php echo Yii::t('app', 'View'); ?>" target="_blank" class="text-green">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->id)); ?>"
+                                            title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
+                                            <i class="fa fa-times-circle"></i>
+                                        </a>
+                                        <?php } ?>
+                                        <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/featured')) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/featured', array('id' => $data->id, 'featured' => $data->featured)); ?>"
+                                            title="<?php echo Yii::t('app', 'Featured'); ?>">
+                                            <i class="fa fa-star"></i>
+                                        </a>
+                                        <?php } ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/verified', array('id' => $data->id, 'verified' => $data->verified)); ?>"
+                                            title="<?php echo Yii::t('app', 'Verified'); ?>">
+                                            <i class="fa fa-check-circle"></i>
+                                        </a>
+                                        <?php if ($data->status === "A") { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status', array('id' => $data->id, 'status' => $data->status)); ?>"
+                                            title="<?php echo Yii::t('app', 'Inactive AD'); ?>" class="Block">
+                                            <i class="fa fa-ban"></i>
+                                        </a>
+                                        <?php } ?>
+                                        <?php if ($data->status === "I") { ?>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status', array('id' => $data->id, 'status' => $data->status)); ?>"
+                                            title="<?php echo Yii::t('app', 'Activate AD'); ?>" class="Enable"
+                                            onclick="event.preventDefault(); $.ajax({type:'POST', url:$(this).attr('href'), success: function() {$.fn.yiiGridView.update('<?php echo $model->modelName; ?>-grid');}});">
+                                            <i class="fa fa-check-circle"></i>
+                                        </a>
+                                        <?php } ?>
+                                    
+                                        <a href="javascript:void(0);"
+                                            title="<?php echo Yii::t('app', 'Update Meta Tag'); ?>" data-bs-toggle="modal"
+                                            onclick="openUp(this)">
+                                            <i class="fa fa-tags"></i>
+                                        </a>
+                                        <?php if ($isSold): ?>
+                                        <a href="#" class="text-green"><i class='fas fa-check'
+                                                title="This property is already sold"></i></a>
+
+                                        <?php else: ?>
+                                        <!-- If the property is not sold, show the clickable icon -->
+                                        <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Sold property'); ?>"
+                                            onclick="openUp2(<?php echo $data->id; ?>)">
+                                            <i class='far fa-handshake'></i>
+                                        </a>
+
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
                 <!-- priority update button  -->
                 <div class="box-footer">
                     <div class="pull-right">
@@ -278,7 +313,7 @@ if ($viewCollection->renderContent) { ?>
                             data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', 'Update Priority'); ?></button>
                     </div>
                 </div>
-        </form>
+     
     </div>
 </div>
 
@@ -331,8 +366,106 @@ if ($viewCollection->renderContent) { ?>
     </div>
 </div>
 
+<style>
+    /* Select2 Container Styles */
+    .select2-selection--single {
+        background-color: #ffffff !important;  /* White background */
+        border: 1px solid #ced4da !important; /* Light border color */
+        border-radius: 4px !important; /* Rounded corners */
+        height: 40px !important; /* Height of the select box */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important; /* Subtle shadow */
+        transition: border-color 0.2s !important; 
+    }
 
+    /* Focus and Hover Styles */
+    .select2-container--default .select2-selection--single:focus,
+    .select2-container--default .select2-selection--single:hover {
+        border-color: #007bff; /* Border color on focus/hover */
+    }
+
+    /* Selected Item Styles */
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #495057; /* Text color */
+        line-height: 38px; /* Vertically center the text */
+    }
+
+    /* Placeholder Styles */
+    .select2-container--default .select2-selection--single .select2-selection__placeholder {
+        color: #6c757d; /* Placeholder color */
+        line-height: 38px; /* Vertically center the placeholder */
+    }
+
+    /* Dropdown Arrow Styles */
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 38px; /* Adjust height of arrow */
+    }
+
+    /* Dropdown Menu Styles */
+    .select2-container--default .select2-results__option {
+        color: #495057; /* Text color for dropdown options */
+        padding: 10px 15px; /* Padding for options */
+        cursor: pointer; /* Pointer cursor on options */
+    }
+
+    /* Hover Effect on Dropdown Options */
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #007bff; /* Highlight background color */
+        color: #ffffff; /* Highlight text color */
+    }
+
+    /* Disabled State Styles */
+    .select2-container--default .select2-selection--single .select2-selection__clear {
+        display: none; /* Hide clear option for single selection */
+    }
+    
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
+
+    $(document).ready(function() {
+        $('#select-all').on('change', function() {
+            $('.bulk-item').prop('checked', this.checked);
+        });
+
+        $('#apply-bulk-action').on('click', function() {
+            const action = $('#bulk-action-select').val();
+            const selectedItems = $('.bulk-item:checked').map(function() {
+                return $(this).val();
+            }).get();
+            var csrfToken = '<?php echo Yii::app()->request->csrfToken; ?>';
+            if (action && selectedItems.length) {
+                // Perform an AJAX request to the backend
+                $.ajax({
+                    url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/bulk_action'); ?>', // Update with your action URL
+                    type: 'GET',
+                    data: {
+                        bulk_action: action,
+                        bulk_item: selectedItems,
+                        YII_CSRF: csrfToken 
+                    },
+                    success: function(response) {
+                        // Handle successful response
+                        // window.location.reload(); // Reload the page to reflect changes
+                    },
+                    error: function(xhr) {
+                        // Handle error
+                        alert('An error occurred while processing your request. Please try again.');
+                    }
+                });
+            } else {
+                alert('Please select an action and at least one item.');
+            }
+        });
+        $('#locationSelect').select2({
+            placeholder: 'Select Location',
+            allowClear: true
+        });
+    });
+    function resetFilters() {
+        document.getElementById('filterForm').reset();
+        filterProperties('all'); // Show all properties again
+    }
 function openUp2(propertyId) {
     // Set the property ID in the hidden input field of the form
     $('#propertyIdInput').val(propertyId);
@@ -592,20 +725,8 @@ $(document).ready(function() {
 
     // Function to fetch filtered data
     function fetchFilteredData(startDate, endDate) {
-        $('#enquiryTable').DataTable().ajax.url('<?php echo Yii::app()->createUrl($this->route); ?>?startDate=' + startDate + '&endDate=' + endDate).load();
+        window.location.href = '<?php echo Yii::app()->createUrl($this->route); ?>?startDate=' + startDate + '&endDate=' + endDate;
 
-        // $.ajax({
-        //     url: '<?php echo Yii::app()->createUrl($this->route); ?>',
-        //     type: 'GET',
-        //     data: {
-        //         startDate: startDate,
-        //         endDate: endDate
-        //     },
-        //     success: function(data) {
-        //         $('#enquiryTable').DataTable().ajax.reload();
-
-        //     }
-        // });
     }
     $('#exportExcel').click(function(e) {
         var dateRange = $('#dateRange').data('daterangepicker');
@@ -627,6 +748,13 @@ $(document).ready(function() {
         window.location.href = exportUrl;
     });
     var table = $('#enquiryTable').DataTable({
+        "paging": true,         // Enable pagination
+        "lengthChange": true,   // Allow users to change page length
+        "searching": true,      // Enable searching
+        "ordering": true,       // Enable sorting on columns
+        "info": true,           // Display table information
+        "autoWidth": false,     // Disable auto column width calculation
+        "pageLength": 10,      
         createdRow: function(row, data, index) {
             $(row).addClass('selected');
         },

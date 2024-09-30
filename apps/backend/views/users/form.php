@@ -41,8 +41,11 @@ if ($viewCollection->renderContent) {
     
     // and render if allowed
     if ($collection->renderForm) {
-        $form = $this->beginWidget('CActiveForm'); 
-        ?>
+        $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'user-form',
+            'enableAjaxValidation' => false,
+            'htmlOptions' => array('enctype' => 'multipart/form-data'), // This is necessary for file uploads
+        ));        ?>
 <div class="card">
     <div class="card-header">
         <div class="card-header-left">
@@ -111,6 +114,11 @@ if ($viewCollection->renderContent) {
                 <?php echo $form->labelEx($user, 'fake_password');?>
                 <?php echo $form->textField($user, 'fake_password', $user->getHtmlOptions('password')); ?>
                 <?php echo $form->error($user, 'fake_password');?>
+            </div>
+            <div class="form-group col-lg-6 mt-4">
+                <?php echo $form->labelEx($user, 'profile_image'); ?>
+                <?php echo CHtml::activeFileField($user, 'profile_image', $user->getHtmlOptions('profile_image')); ?>
+                <?php echo $form->error($user, 'profile_image'); ?>
             </div>
             <div class="form-group col-lg-6 mt-4">
                 <?php echo $form->labelEx($user, 'confirm_password');?>

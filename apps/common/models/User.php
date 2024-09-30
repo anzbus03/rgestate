@@ -71,9 +71,9 @@ class User extends ActiveRecord
     {
         $rules = array(
             // when new user is created .
-            array('first_name, rules, agents, last_name, email, confirm_email, fake_password, confirm_password, timezone, status', 'required', 'on' => 'insert'),
+            array('first_name, rules, last_name, email, confirm_email, fake_password, confirm_password, timezone, status', 'required', 'on' => 'insert'),
             // when a user is updated
-            array('first_name, last_name, email, agents, confirm_email, timezone, status', 'required', 'on' => 'update'),
+            array('first_name, last_name, email, confirm_email, timezone, status', 'required', 'on' => 'update'),
             //
             array(
                 'phone_number',
@@ -99,7 +99,6 @@ class User extends ActiveRecord
             array('city', 'length', 'max' => 100),
             array('address', 'length', 'max' => 255),
             array('agents', 'length', 'max' => 255),
-            array('age', 'numerical', 'integerOnly' => true, 'min' => 1, 'max' => 120),
             array('gender', 'in', 'range' => array('Male', 'Female', 'Other')),
             array('licence_no', 'length', 'max' => 255),
             array('group_id,previousPassword,bank_id', 'safe'),
@@ -134,6 +133,7 @@ class User extends ActiveRecord
             'countries'                 => array(self::BELONGS_TO, 'Countries', 'country_id'),
             'states'                 => array(self::BELONGS_TO, 'States', 'state_id'),
             'soldProperties' => array(self::HAS_MANY, 'SoldProperty', 'user_id'),
+            'property'          => array(self::HAS_MANY, 'PlaceAnAd', 'user_id'),
             'autoLoginTokens' => array(self::HAS_MANY, 'UserAutoLoginToken', 'user_id'),
         );
 
@@ -331,10 +331,59 @@ class User extends ActiveRecord
 
     public function getNumberOfAgents()
     {
+        $locationId = Yii::app()->request->getParam('location');
+        $propertyTypeId = Yii::app()->request->getParam('property_type');
+        $propertyCategoryId = Yii::app()->request->getParam('property_category');
+        $status = Yii::app()->request->getParam('property_status');
+    
         $criteria = new \CDbCriteria;
-        $criteria->compare('is_agent', 1); // Find all users where is_agent is 1
-
+        $criteria->with = array('property');
+        $criteria->compare('t.is_agent', 1);
+        if (!empty($locationId)) {
+            $criteria->compare('property.state', (int)$locationId);
+        }
+    
+        if (!empty($propertyTypeId)) {
+            $criteria->compare('property.section_id', (int)$propertyTypeId);
+        }
+    
+        if (!empty($propertyCategoryId)) {
+            $criteria->compare('property.category_id', (int)$propertyCategoryId);
+        }
+    
+        if (!empty($status)) {
+            $criteria->compare('property.status', $status);
+        }
         return $this->count($criteria);
+    }
+    public function getAllAgents()
+    {
+        $criteria = new \CDbCriteria;
+        $criteria->compare('t.is_agent', 1);
+        $agentsArr = User::model()->findAll($criteria);
+        $agentsRes = [];
+        foreach ($agentsArr as $agent) {
+            $agentsRes[] = $agent->first_name; // Adjust 'name' to the correct field in your model
+        }
+        return $agentsRes;
+    }
+    public function getAllAgentsProperties()
+    {
+        $criteria = new \CDbCriteria;
+        $criteria->compare('t.is_agent', 1); // Only agents
+
+        $criteria->with = array('property'); // Assuming 'property' is the relation defined in your User model
+
+        $agents = User::model()->findAll($criteria);
+
+        $agentPropertyCount = [];
+
+        foreach ($agents as $agent) {
+            $propertyCount = count($agent->property); // Get the count of properties for the agent
+            $agentPropertyCount[] = $propertyCount; // Replace 'name' with the field for agent's name
+        }
+
+        return $agentPropertyCount;
     }
 
     public function findByUid($user_uid)

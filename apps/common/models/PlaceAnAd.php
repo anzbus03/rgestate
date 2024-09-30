@@ -69,6 +69,7 @@ class PlaceAnAd extends ActiveRecord
 	public $licence_no;
 	public $unpublished;
 	public $featured_date;
+	public $featured;
 	public $enter_city;
 	public $whatsapp;
 	public $f_properties;
@@ -175,7 +176,7 @@ class PlaceAnAd extends ActiveRecord
 			array('modified_date, xml_listing_date, xml_update_date, expiry_date,property_overview,LocalAreaAmenitiesDesc,RecommendedProperties,PropertyID,status,rent_paid,name,unsubmited,amenities_fields', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, section_id, category_id, sub_category_id, ad_title, ad_description, price, country, state, city, district, mobile_number, bathrooms, bedrooms, user_id, added_date, modified_date, priority, isTrash, status,occupant_status, slug, image, dynamic, dynamicArray, location_latitude, location_longitude, featured, area_location, xml_inserted, xml_pk, xml_type, xml_reference, xml_listing_date, xml_update_date, code, RefNo, community_id, sub_community_id, property_name, builtup_area, PrimaryUnitView,     FloorNo, HandoverDate,     parking,   salesman_email, expiry_date,       mandate, currency_abr, area_measurement, PDFBrochureLink,property_overview,ReraStrNo,preleased,PropertyID', 'safe', 'on' => 'search'),
+			array('id, section_id, category_id, sub_category_id, ad_title, ad_description, price, country, state, city, district, mobile_number, bathrooms, bedrooms, user_id, added_date, modified_date, priority, isTrash, status,occupant_status, slug, image, dynamic, dynamicArray, location_latitude, location_longitude, area_location, xml_inserted, xml_pk, xml_type, xml_reference, xml_listing_date, xml_update_date, code, RefNo, community_id, sub_community_id, property_name, builtup_area, PrimaryUnitView,     FloorNo, HandoverDate,     parking,   salesman_email, expiry_date,       mandate, currency_abr, area_measurement, PDFBrochureLink,property_overview,ReraStrNo,preleased,PropertyID,featured', 'safe', 'on' => 'search'),
 		);
 		return array_merge($rules1, $rules);
 	}
@@ -945,6 +946,14 @@ class PlaceAnAd extends ActiveRecord
 			$criteria->params[':startDate'] = $this->startDate;
 			$criteria->params[':endDate'] = $this->endDate;
 		}
+		if ($this->location) {
+			$criteria->addCondition('t.state = :state');
+			$criteria->params[':state'] = $this->location;
+		}
+		if ($this->featured) {
+			$criteria->addCondition('t.featured = :featured');
+			$criteria->params[':featured'] = $this->featured;
+		}
 		$criteria->compare('id', $this->id);
 		if (!empty($this->reference_number)) {
 			$criteria->condition .=  ' and t.id like :reference_number or t.RefNo like :reference_number ';
@@ -964,7 +973,7 @@ class PlaceAnAd extends ActiveRecord
 		}
 		// $criteria->compare('t.user_id',$this->user_id);$preleased
 		$criteria->compare('t.category_id', $this->category_id);
-		$criteria->compare('t.property_status', $this->preleased);
+		$criteria->compare('t.lease_status', $this->preleased);
 		$criteria->compare('t.price', $this->custom_price);
 		$criteria->compare('t.sub_category_id', $this->sub_category_id);
 		$criteria->compare('t.ad_title', $this->ad_title, true);
@@ -1072,9 +1081,9 @@ class PlaceAnAd extends ActiveRecord
 				$criteria->distinct   = 't.id';
 			}
 		}
-		$criteria->order = " (CASE WHEN t.user_updated IS NOT NULL THEN  t.user_updated ELSE t.date_added END)  desc";
+		$criteria->order = " t.id DESC";
 		if (Yii::app()->isAppName('backend')) {
-			$criteria->order = "t.status='W' desc , t.id desc";
+			$criteria->order = "t.id desc";
 		}
 		if (!empty($this->unpublished)) {
 			$criteria->order = " (CASE WHEN HandoverDate IS NOT NULL THEN HandoverDate WHEN t.user_updated IS NOT NULL THEN  t.user_updated ELSE t.last_updated END)   desc";
@@ -4960,8 +4969,39 @@ class PlaceAnAd extends ActiveRecord
 		$share_u_abs = $this->DetailUrlAbs;
 		$text_message = Yii::t('app', $this->mTag()->getTag('i_would_like_to_inquire_about', 'I would like to inquire about your property {1} - {2}. Please contact me at your earliest convenience. {3}'), array('{1}' => '', '{2}' => $model->ReferenceNumberTitle, '{3}' => '%0a' . $this->mTag()->getTag('property_link', 'Property Link'))) . ' %0a' .   urlencode($share_u_abs);
 		$w_share_url = Yii::t('app', 'https://wa.me/{number}?text={text}', array('{number}' => Yii::t('app', !empty($this->whatsapp) ? $this->whatsapp : $this->mobile_number, array('+' => '', ' ' => '')), '{text}' => $text_message));
+		$user = User::model()->findByPk($this->user_id);
+		$html = '';
 
-		$html  = '<div class="d-flex footer-contact"><button type="button"    onclick="OpenCallNewlatest(this)"  data-prop="' . $this->id . '" data-agent="' . $this->OwnerName . '"  data-ref="' . $this->ReferenceNumberTitle . '" data-phone="' . $this->mobile_number . '"  class="btn btnnc btn-transparent"><i class="fa fa-phone"></i> ' . $call . '</button>
+		if ($user) {
+			// Step 2: Check if user is admin
+			if ($user->rules == 1) { // Assuming 1 is the role for admin
+				// Display profile_image for admin
+				$profileImage = !empty($user->profile_image) ? $user->profile_image : '/new_assets/images/logoo.svg';
+				$html .= '<div class="admin-profile"><img style="width: 100px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image"></div>';
+			}
+			// Step 3: Check if user is an agent
+			elseif ($user->is_agent == 1) {
+				// Find all users where rule is agency (rule = 2)
+				$agencyUsers = User::model()->findAllByAttributes(['rules' => 2]);
+	
+				// Loop through each agency user
+				foreach ($agencyUsers as $agencyUser) {
+					// Check if the agent's ID exists in the agency's 'agents' column (comma-separated values)
+					$agents = explode(',', $agencyUser->agents); // Split comma-separated agent IDs into an array
+					if (in_array($user->user_id, $agents)) {
+						// Display profile_image for the agent (if available)
+						$agentProfileImage = !empty($agencyUser->profile_image) ? $agencyUser->profile_image : 'default_agent_image.jpg';
+						$html .= '<div class="agent-profile"><img style="width: 100px;height:50px;float: right;" src="/uploads/images/' . $agentProfileImage . '" alt="Agent Profile Image"></div>';
+						break; // Exit loop after finding the match
+					}
+				}
+			}
+		}else if ($this->user_id == 31988){
+			$profileImage = !empty($user->profile_image) ? $user->profile_image : '/new_assets/images/logoo.svg';
+			$html .= '<div class="admin-profile"><img style="width: 100px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image"></div>';
+		}
+	
+		$html  .= '<div class="d-flex footer-contact"><button type="button"    onclick="OpenCallNewlatest(this)"  data-prop="' . $this->id . '" data-agent="' . $this->OwnerName . '"  data-ref="' . $this->ReferenceNumberTitle . '" data-phone="' . $this->mobile_number . '"  class="btn btnnc btn-transparent"><i class="fa fa-phone"></i> ' . $call . '</button>
                   <button type="button" data-reactid="' . $this->id . '" onclick="OpenFormClickNew(this)"    class="btn btnnc btn-transparent"><i class="fa fa-envelope"></i> ' . $email . '</button>
                       <a type="button" id="fav_button_' . $this->id . '"  class="';
 		$html .= !empty($this->fav) ?  'active' : '';

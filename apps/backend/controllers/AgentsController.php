@@ -90,6 +90,8 @@ class AgentsController extends Controller
         // Get number of agents
         $numberOfAgents = User::model()->getNumberOfAgents();
 
+        $agents = User::model()->getAllAgents();
+        $agentProperties = User::model()->getAllAgentsProperties();
         // Get top 5 active agents
         $topAgents = SoldProperty::model()->getTop5ActiveAgents();
         // print_r($topAgents);
@@ -111,7 +113,7 @@ class AgentsController extends Controller
         $tags = CHtml::listData($tagModel, 'tag_id', 'tag_name');
         $tags_short = CHtml::listData($tagModel, 'tag_id', 'tagCodeWithColor');
 
-        $this->render('index', compact('user',  'revenue',  'salesThisMonth','salesTotal', 'totalPropertiesSoldYear', 'totalPropertiesSoldLastYear', 'percentageChangeYear',
+        $this->render('index', compact('user', 'agentProperties','agents',  'revenue',  'salesThisMonth','salesTotal', 'totalPropertiesSoldYear', 'totalPropertiesSoldLastYear', 'percentageChangeYear',
             'totalPropertiesSoldMonth', 'totalPropertiesSoldLastMonth', 'percentageChangeMonth',
             'totalPropertiesSoldWeek', 'totalPropertiesSoldLastWeek', 'percentageChangeWeek'
         , 'salesThisMonth', 'monthlySalesData', 'weeklySalesData', 'dailySalesData', 'numberOfAgents', 'topAgents', 'tags', 'tags_short'));
@@ -123,25 +125,54 @@ class AgentsController extends Controller
     public function actionList()
     {
         $request = Yii::app()->request;
-
         $model = new User('search');
-        $model->unsetAttributes(); // clear any default values
-
+        $model->unsetAttributes(); // Clear any default values
+    
         if ($request->getQuery('User')) {
             $model->attributes = $request->getQuery('User');
         }
-
-        // Only show users where `is_agent = 1`
-        $model->is_agent = 1;
-
+    
+        // Get the logged-in user model
+        $loggedInUser = Yii::app()->user->model;
+    
+        // Set up the criteria for the user search
+        $criteria = $model->search()->getCriteria();
+    
+        if ($loggedInUser->rules == 2) {
+            // If rules equal to 2, get the assigned agent IDs from the 'agents' column
+            $userAgents = explode(",", $loggedInUser->agents);
+            $userAgents = array_map('trim', $userAgents); // Trim whitespace
+    
+            // Filter users to include only those with IDs in the userAgents array
+            $criteria->addInCondition('user_id', $userAgents);
+        } elseif ($loggedInUser->rules == 3) {
+            // If rules equal to 3, check user_id in users with rules = 2
+            $agencyUsers = User::model()->findAll(array(
+                'condition' => 'rules = 2',
+            ));
+            $agencyUserIds = [];
+            foreach ($agencyUsers as $agency){
+                $agentsIds = explode(",", $agency->agents);
+                if (in_array($loggedInUser->user_id, $agentsIds)){
+                    $agencyUserIds = $agentsIds;
+                }
+            }
+            // Filter users to include only those with IDs in the agencyUserIds array
+            $criteria->addInCondition('user_id', $agencyUserIds);
+        } else {
+            // Default case: only show users where `is_agent = 1`
+            $model->is_agent = 1;
+            $criteria->addCondition('is_agent = 1');
+        }
+    
         // Set the pagination for 12 items per page
         $users = new CActiveDataProvider('User', array(
-            'criteria' => $model->search()->getCriteria(),
+            'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => 12, // Set the number of items per page
             ),
         ));
-
+    
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'View users'),
             'pageHeading'       => Yii::t('users', 'Agents List'),
@@ -150,10 +181,12 @@ class AgentsController extends Controller
                 Yii::t('app', 'View all')
             )
         ));
-
+    
         // Render the list view
         $this->render('list', compact('users'));
     }
+    
+
 
 
 

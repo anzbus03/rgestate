@@ -207,7 +207,9 @@ $(document).ready(function() {
 
   // Function to fetch filtered data
   function fetchFilteredData(startDate, endDate) {
-      $.ajax({
+        window.location.href = '<?php echo Yii::app()->createUrl($this->route); ?>?startDate=' + startDate + '&endDate=' + endDate;
+
+        $.ajax({
           url: '<?php echo Yii::app()->createUrl($this->route); ?>',
           type: 'GET',
           data: {

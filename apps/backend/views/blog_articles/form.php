@@ -45,32 +45,32 @@ if ($viewCollection->renderContent) {
             'htmlOptions' => array('enctype' => 'multipart/form-data'), // Ensure form supports file uploads
         ));
 ?>
-<script src="https://cdn.ckeditor.com/4.25.0-lts/standard/ckeditor.js"></script>
+
 
 <style>
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-}
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
 
-.card-header-left {
-    flex: 1;
-}
+    .card-header-left {
+        flex: 1;
+    }
 
-.card-header-right {
-    display: flex;
-    gap: 10px;
-}
+    .card-header-right {
+        display: flex;
+        gap: 10px;
+    }
 
-.card-header-right .btn {
-    margin-left: 5px;
-}
+    .card-header-right .btn {
+        margin-left: 5px;
+    }
 
-.hide {
-    display: none;
-}
+    .hide {
+        display: none;
+    }
 </style>
 <div class="card card-primary">
     <div class="card-header">
@@ -103,6 +103,7 @@ if ($viewCollection->renderContent) {
                     'form'          => $form
                 )));
                 ?>
+                
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
@@ -255,6 +256,8 @@ if ($viewCollection->renderContent) {
     </div>
 </div>
 <?php
+
+// use controller;
         $this->endWidget();
     }
     /**
@@ -279,6 +282,9 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'renderedContent'   => $viewCollection->renderContent,
 )));
 ?>
+<script  type="text/javascript" src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/ckeditor.js');?>"></script>
+<script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/js/jqueryAdapter.js');?>" type="text/javascript"></script>
+
 <script>
 function showCountries(k) {
     if ($(k).val() == '1') {
@@ -287,6 +293,9 @@ function showCountries(k) {
         $('.amn').addClass('hide')
     }
 }
+$(document).ready(function() {
 
-CKEDITOR.replace('BlogArticle[content]');
+    $("#BlogArticle_content").ckeditor({versionCheck: false})
+    // CKEDITOR.replace('BlogArticle[content]');
+})
 </script>

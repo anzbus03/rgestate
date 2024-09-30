@@ -48,7 +48,7 @@ class GuestController extends Controller
                 if ($user) {
                     // Redirect based on the user's role (rules)
                     if ($user->rules == 2) {
-                        $this->redirect(array('agents/index')); // Redirect to agents/index for agency users
+                        $this->redirect(array('account/index')); // Redirect to agents/index for agency users
                     } elseif ($user->rules == 3) {
                         $this->redirect(array('account/index')); // Redirect to profile/index for agents
                     } else {

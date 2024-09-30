@@ -41,8 +41,12 @@ if ($viewCollection->renderContent) {
     
     // and render if allowed
     if ($collection->renderForm) {
-        $form = $this->beginWidget('CActiveForm'); 
-        ?>
+        $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'user-form',
+            'enableAjaxValidation' => false,
+            'htmlOptions' => array('enctype' => 'multipart/form-data'), // This is necessary for file uploads
+        ));
+                ?>
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title"><span class="glyphicon glyphicon-user"></span> <?php echo Yii::t('users', 'Update your account data.');?></h3>
@@ -91,6 +95,13 @@ if ($viewCollection->renderContent) {
                         <?php echo $form->textField($user, 'alt_email', $user->getHtmlOptions('alt_email')); ?>
                         <?php echo $form->error($user, 'alt_email');?>
                     </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'profile_image'); ?>
+                        <?php echo CHtml::activeFileField($user, 'profile_image', $user->getHtmlOptions('profile_image')); ?>
+                        <?php echo $form->error($user, 'profile_image'); ?>
+                    </div>
+
+
                     <div class="form-group col-md-6 mt-4">
                         <?php echo $form->labelEx($user, 'fake_password');?>
                         <?php echo $form->textField($user, 'fake_password', $user->getHtmlOptions('password')); ?>
@@ -111,22 +122,6 @@ if ($viewCollection->renderContent) {
                         <?php echo $form->dropDownList($user, 'language_id', CMap::mergeArray(array('' => Yii::t('app', 'Application default')), Language::getLanguagesArray()), $user->getHtmlOptions('language_id')); ?>
                         <?php echo $form->error($user, 'language_id');?>
                     </div>
-                    <?php if ($user->removable == User::TEXT_YES && ($options = UserGroup::getAllAsOptions())) { ?>
-                        <div class="form-group col-lg-6 mt-4">
-                            <div class="">
-                                <?php echo $form->labelEx($user, 'group_id');?>
-                                <?php echo $form->dropDownList($user, 'group_id', CMap::mergeArray(array('' => 'Select User Group'), $options), $user->getHtmlOptions('group_id')); ?>
-                                <?php echo $form->error($user, 'group_id');?>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-6 mt-4">
-                            <div class="">
-                                <?php echo $form->labelEx($user, 'bank_id');?>
-                                <?php echo $form->dropDownList($user, 'bank_id', Bank::model()->ListDataAll() , $user->getHtmlOptions('bank_id',array('empty'=>'Select All'))); ?>
-                                <?php echo $form->error($user, 'bank_id');?>
-                            </div>
-                        </div>
-                    <?php } ?>
                 </div>
                 <?php 
                 /**

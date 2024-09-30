@@ -1,24 +1,4 @@
 <?php defined('MW_PATH') || exit('No direct script access allowed');
-
-/**
- * This file is part of the MailWizz EMA application.
- * 
- * @package MailWizz EMA
- * @author Serban George Cristian <cristian.serban@mailwizz.com> 
- * @link http://www.mailwizz.com/
- * @copyright 2013-2014 MailWizz EMA (http://www.mailwizz.com)
- * @license http://www.mailwizz.com/license/
- * @since 1.0
- */
-
-/**
- * This hook gives a chance to prepend content or to replace the default view content with a custom content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderContent} to false 
- * in order to stop rendering the default content.
- * @since 1.3.3.1
- */
 $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCollection(array(
     'controller'    => $this,
     'renderContent' => true,
@@ -27,6 +7,53 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 // and render if allowed
 if ($viewCollection->renderContent) {
 ?>
+                 
+    <form id="filterForm" class="mb-4" method="GET" action="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/index'); ?>">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+                <?php
+                $locations = States::model()->AllListingStatesOfCountry(66124);
+                $categories = Category::model()->findAll();
+                ?>
+                <select class="form-control" name="location" id="locationSelect">
+                    <option value="">Select Location</option>
+                    <?php foreach ($locations as $location): ?>
+                        <option value="<?php echo $location->state_id; ?>"><?php echo CHtml::encode($location->state_name); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" name="property_type" id="propertyTypeSelect">
+                    <option value="">Select Property Type</option>
+                    <option value="1">For Sale</option>
+                    <option value="2">For Rent</option>
+                    <option value="3">Business Opportiunities</option>
+                    
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" name="property_category" id="propertyCategorySelect">
+                    <option value="">Select Property Category</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?php echo $category->category_id; ?>"><?php echo ($category->category_name); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" name="property_status" id="propertyStatusSelect">
+                    <option value="">Select Property Status</option>
+                    <option value="S">Sold</option>
+                    <option value="A">Active</option>
+                    <option value="I">Inactive</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary btn-sm">Apply Filter</button>
+                <button type="submit" class="btn btn-secondary btn-sm">Reset</button>
+            </div>
+        </div>
+    </form>
     <div class="row invoice-card-row" data-source="<?php echo $this->createUrl('dashboard/glance'); ?>">
 
         <div class="col-xl-4 col-xxl-4 col-sm-6">
@@ -191,14 +218,14 @@ if ($viewCollection->renderContent) {
                     
                 </div>
             </div>
-            <div class="col-xl-3 col-xxl-4 col-lg-5">
+            <div class="col-xl-3 col-xxl-4 col-lg-5" >
                 <div class="card border-0 pb-0">
                     <div class="card-header flex-wrap border-0 pb-0">
                         <h3 class="card-title">Top 5 Active Agents</h3>
                         <a href="<?php echo Yii::app()->apps->getBaseUrl('backend/index.php/agents/list'); ?>"
-                            class="text-primary font-w500">View All Agents >></a>
+                            class="text-primary font-w500">All Agents</a>
                     </div>
-                    <div class="card-body recent-patient px-0">
+                    <div class="card-body recent-patient px-0" style="height:325px;">
                         <div id="DZ_W_Todo2" class="widget-media dlab-scroll px-4 height320">
                             <ul class="timeline">
                                 <?php
@@ -218,7 +245,7 @@ if ($viewCollection->renderContent) {
                                                     <?php echo $agent['property_count'] . " Properties"; ?>
                                                 </a>
                                                 <a href="javascript:void(0);" class="text-success mt-2">
-                                                    <?php echo $agent['sold_price'] . " AED"; ?>
+                                                    <?php echo $agent['totalPrice'] . " AED"; ?>
                                                 </a>
                                             </div>
                                         </div>
@@ -236,15 +263,261 @@ if ($viewCollection->renderContent) {
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-12 wow fadeInUp" data-wow-delay="1.5s">
+                <!--card-->
+                <div class="card statistic">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card-header border-0 flex-wrap pb-2">
+                                <div class="chart-title mb-2 ">
+                                    <h2 class="card-title text-white">Agents Properties / Sales Statistic</h2>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0 custome-tooltip pe-0">
+                                <div id="chartBarRunning"></div>	
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/card-->
+            </div>
+            <!--column-->
+            
+            <!--/column-->
+        </div>
     </div>
     <style>
         .links-container a {
             display: block; 
             margin-top: 5px; 
         }
+        /* Select2 Container Styles */
+        .select2-selection--single {
+            background-color: #ffffff !important;  /* White background */
+            border: 1px solid #ced4da !important; /* Light border color */
+            border-radius: 4px !important; /* Rounded corners */
+            height: 40px !important; /* Height of the select box */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important; /* Subtle shadow */
+            transition: border-color 0.2s !important; 
+        }
+
+        /* Focus and Hover Styles */
+        .select2-container--default .select2-selection--single:focus,
+        .select2-container--default .select2-selection--single:hover {
+            border-color: #007bff; /* Border color on focus/hover */
+        }
+
+        /* Selected Item Styles */
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #495057; /* Text color */
+            line-height: 38px; /* Vertically center the text */
+        }
+
+        /* Placeholder Styles */
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: #6c757d; /* Placeholder color */
+            line-height: 38px; /* Vertically center the placeholder */
+        }
+
+        /* Dropdown Arrow Styles */
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 38px; /* Adjust height of arrow */
+        }
+
+        /* Dropdown Menu Styles */
+        .select2-container--default .select2-results__option {
+            color: #495057; /* Text color for dropdown options */
+            padding: 10px 15px; /* Padding for options */
+            cursor: pointer; /* Pointer cursor on options */
+        }
+
+        /* Hover Effect on Dropdown Options */
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: #007bff; /* Highlight background color */
+            color: #ffffff; /* Highlight text color */
+        }
+
+        /* Disabled State Styles */
+        .select2-container--default .select2-selection--single .select2-selection__clear {
+            display: none; /* Hide clear option for single selection */
+        }
     </style>
         <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/apexchart/apexchart.js');?>" type="text/javascript"></script>
 
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+        <script>
+            var chartBarRunning = function(){
+                var options  = {
+                    series: [
+                        {
+                            name: 'No. of Properties',
+                            data: <?php echo json_encode($agentProperties); ?>
+                        }, 
+                        
+                    ],
+                    chart: {
+                    type: 'bar',
+                    height: 350,
+                    
+                    
+                    toolbar: {
+                        show: false,
+                    },
+                    
+                },
+                plotOptions: {
+                bar: {
+                    horizontal: false,
+                    endingShape:'rounded',
+                    columnWidth: '45%',
+                    borderRadius: 5,
+                    
+                },
+                },
+                colors:['#', '#77248B'],
+                dataLabels: {
+                enabled: false,
+                },
+                markers: {
+                    shape: "circle",
+                },
+                legend: {
+                    show: false,
+                    fontSize: '12px',
+                    labels: {
+                        colors: '#000000',
+                        
+                        },
+                    markers: {
+                    width: 30,
+                    height: 30,
+                    strokeWidth: 0,
+                    strokeColor: '#fff',
+                    fillColors: undefined,
+                    radius: 35,	
+                    }
+                },
+                stroke: {
+                show: true,
+                width: 6,
+                colors: ['transparent']
+                },
+                grid: {
+                    borderColor: 'rgba(252, 252, 252,0.2)',
+                },
+                xaxis: {
+                categories: <?php echo json_encode($agents); ?>,
+                labels: {
+                    style: {
+                        colors: '#ffffff',
+                        fontSize: '13px',
+                        fontFamily: 'poppins',
+                        fontWeight: 100,
+                        cssClass: 'apexcharts-xaxis-label',
+                    },		
+                },
+                axisBorder: {
+                    show: false,
+                },
+                axisTicks: {
+                    show: false,
+                    borderType: 'solid',
+                    color: '#78909C',
+                    height: 6,
+                    offsetX: 0,
+                    offsetY: 0
+                },
+                crosshairs: {
+                show: false,
+                }
+                },
+                yaxis: {
+                    labels: {
+                        offsetX:-16,
+                    style: {
+                        colors: '#ffffff',
+                        fontSize: '13px',
+                        fontFamily: 'poppins',
+                        fontWeight: 100,
+                        cssClass: 'apexcharts-xaxis-label',
+                    },
+                },
+                },
+                fill: {
+                opacity: 1,
+                colors:['#ffffff', '#FFD125'],
+                },
+                tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return " " + val + ""
+                    }
+                }
+                },
+                responsive: [{
+                    breakpoint: 575,
+                    options: {
+                        plotOptions: {
+                        bar: {
+                            columnWidth: '1%',
+                            borderRadius: -1,
+                        },
+                        },
+                        chart:{
+                            height:250,
+                        },
+                        series: [
+                            {
+                                name: 'Number Of Properties',
+                                data: <?php echo json_encode($agentProperties); ?>
+                            }, 
+                            
+                        ],
+                    }
+                }]
+                };
+
+                if(jQuery("#chartBarRunning").length > 0){
+
+                    var chart = new ApexCharts(document.querySelector("#chartBarRunning"), options);
+                    chart.render();
+                    
+                    jQuery('#dzIncomeSeries').on('change',function(){
+                        jQuery(this).toggleClass('disabled');
+                        chart.toggleSeries('Income');
+                    });
+                    
+                    jQuery('#dzExpenseSeries').on('change',function(){
+                        jQuery(this).toggleClass('disabled');
+                        chart.toggleSeries('Expense');
+                    });
+                    
+                }
+                    
+            }
+            chartBarRunning()
+            $(document).ready(function() {
+                $('#locationSelect').select2({
+                    placeholder: 'Select Location',
+                    allowClear: true
+                });
+                $('#propertyTypeSelect').select2({
+                    placeholder: 'Select Property Type',
+                    allowClear: true
+                });
+                $('#propertyCategorySelect').select2({
+                    placeholder: 'Select Property Category',
+                    allowClear: true
+                });
+                $('#propertyStatusSelect').select2({
+                    placeholder: 'Select Property Status',
+                    allowClear: true
+                });
+
+            });
+        </script>
     <script>
         var chartTimeline = function(){
             
@@ -303,6 +576,7 @@ if ($viewCollection->renderContent) {
         var chartTimeline1 = function(){
             
             var weeklySalesData = <?php echo json_encode($weeklySalesData); ?>;
+            console.log(weeklySalesData)
             var categories = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
 
             var optionsTimeline = {
@@ -457,12 +731,6 @@ if ($viewCollection->renderContent) {
     </script>
 <?php
 }
-/**
- * This hook gives a chance to append content after the view file default content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * @since 1.3.3.1
- */
 $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'controller'        => $this,
     'renderedContent'   => $viewCollection->renderContent,

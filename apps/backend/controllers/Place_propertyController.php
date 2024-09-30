@@ -407,45 +407,11 @@ class Place_propertyController  extends Controller
 
     public function actionIndex()
     {
-        /*
-            $criteria			 	 = 	new CDbCriteria;
-
-            $criteria->condition = 't.site="P" and t.package_used is null ';
-            $criteria->select = 't.user_id,t.id,t.site';
-            $ads = 	PlaceAnAd::model()->findAll( $criteria );
-            foreach ( $ads as $k=>$v ) {
-                $userMo = ListingUsers::model()->findByPk( $v->user_id );
-                if ( $userMo ) {
-                    $useridd  = !empty( $userMo->parent_user )?$userMo->parent_user :$userMo->user_id;
-
-                    $packagemodel = PricePlanOrder::model()->userActivePackageId( $useridd );
-                }
-                $package = '';
-
-                if ( $packagemodel ) {
-                    $package  = $packagemodel->order_id;
-                }
-                if ( !empty( $package ) ) {
-                    PlaceAnAd::model()->updateByPk( $v->id, array( 'package_used'=>$package ) );
-                }
-                echo $v->id;
-                echo $v->site;
-                echo $v->user_id;
-                echo $package;
-                echo '<br />';
-            }
-            exit;
-
-            */
-
         echo '<script>function iniFrame() {   if(window.self !== window.top) {   parent.closeBackendIFrame();  }  }  iniFrame();  </script> ';
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         $model = new PlaceAnAd('serach');
-        if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
-            $model->startDate = $_GET['startDate'];
-            $model->endDate = $_GET['endDate'];
-        }
+       
         if ($request->isPostRequest) {
             $sortOrderAll = $_POST['priority'];
             if (count($sortOrderAll) > 0) {
@@ -464,6 +430,51 @@ class Place_propertyController  extends Controller
 
         $model->attributes = (array)$request->getQuery($model->modelName, array());
         $model->isTrash = '0';
+        // Create a new CDbCriteria object
+        $criteria = new CDbCriteria();
+
+        // Add condition for 'featured'
+        if (isset($_GET['featured']) && $_GET['featured'] !== '') {
+            $criteria->compare('t.featured', $_GET['featured']);
+        }
+
+        // Add condition for 'verified'
+        if (isset($_GET['verified']) && $_GET['verified'] !== '') {
+            $criteria->compare('t.verified', $_GET['verified']);
+        }
+
+        // Add condition for 'preleased'
+        if (isset($_GET['preleased']) && $_GET['preleased'] !== '') {
+            $criteria->compare('t.preleased', $_GET['preleased']);
+        }
+
+        // Add condition for 'submitted_properties'
+        if (isset($_GET['submitted_properties']) && $_GET['submitted_properties'] !== '') {
+            $criteria->compare('t.submitted_properties', $_GET['submitted_properties']);
+        }
+
+        // Add conditions for any other filters (e.g., category, location)
+        if (isset($_GET['category']) && $_GET['category'] !== '') {
+            $criteria->compare('t.category', $_GET['category']);
+        }
+
+        if (isset($_GET['location']) && $_GET['location'] !== '') {
+            $criteria->compare('t.state', $_GET['location']);
+        }
+        $criteria->limit = 1200;
+        $criteria->order = ("t.id DESC");
+        $loggedInUser = Yii::app()->user->model; // Assuming you have a method to get the logged-in user model
+        if ($loggedInUser->is_agent == 1) {
+            // Filter properties where user_id matches the logged-in user's ID
+            $criteria->compare('t.user_id', $loggedInUser->user_id);
+        }else if ($loggedInUser->rules == 2){
+            $userAgents = explode(",", $loggedInUser->agents);
+            $criteria->addInCondition('t.user_id', $userAgents);
+
+        }
+        // Fetch the filtered data directly with criteria
+        $filteredData = PlaceAnAd::model()->findAll($criteria);
+
         define('NO_BUSINESS', '1');
         // $model->listing_type = 'C';
         $this->setData(array(
@@ -488,7 +499,7 @@ class Place_propertyController  extends Controller
         $tagModel = Tag::model()->findAll($criteria);
         $tags = CHtml::listData($tagModel, 'tag_id', 'tag_name');
         $tags_short =  $model->place_ad_tag_code();;
-        $this->render('list', compact('model', 'soldPropertyIds', 'tags', 'tags_short'));
+        $this->render('list', compact('model', 'filteredData','soldPropertyIds', 'tags', 'tags_short'));
     }
 
     public function actionExportExcel()
@@ -2420,14 +2431,12 @@ class Place_propertyController  extends Controller
     }
     public function actionBulk_action()
     {
-
-
         $request = Yii::app()->request;
         $notify  = Yii::app()->notify;
 
-        $action = $request->getPost('bulk_action');
-
-        $items  = array_unique((array)$request->getPost('bulk_item', array()));
+        $action = $_GET['bulk_action'];
+        $items  = $_GET['bulk_item'];
+       
         if ($action == PlaceAnAd::BULK_ACTION_TRASH && count($items)) {
             $affected = 0;
             $customerModel = new  PlaceAnAd();
@@ -2668,7 +2677,7 @@ class Place_propertyController  extends Controller
 
         if ($request->isPostRequest) {
             $sortOrderAll = $_POST['select_action'];
-
+            
             if (count($sortOrderAll) > 0 and isset($_POST['module']) and in_array($_POST['module'], array('1', '2', '3'))) {
                 $module = $_POST['module'];
                 $customerModel = new  AdImage();
@@ -3031,119 +3040,126 @@ class Place_propertyController  extends Controller
 
     public function actionUploadExcel()
     {
-        $model = new PlaceAnAd(); // Replace with your actual model name
         $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
-
-        $model->scenario = 'new_insert';
-
-        $image_array = array();
-        $country = Countries::model()->ListDataForJSON();
-        $section = Section::model()->ListDataForJSON_New();
-        $list_type = Category::model()->listingTypeArrayMainData();
-
+    
         if (isset($_FILES['excelFile'])) {
-            $zipFile = $_FILES['zipFile']['tmp_name'];
-            $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
             foreach (array_slice($excelData, 1) as $data) {
-                	 
-		 
-                $criteria=new CDbCriteria;
-                $criteria->condition = "t.isTrash='0' and status='A'" ;
-                $criteria->select = "t.category_id,t.category_name "; 
-                $criteria->params[':name'] = $data[2];
-                $criteria->condition .= ' and category_name LIKE :name';
-                    
-                $subCategory = Category::model()->find($criteria);
-                
-                $model->section_id = $data[0];
-                $model->listing_type = $data[1] == 1 ? 151 : 150;
+                // Check if the ad already exists by RefNo
+                $criteria = new CDbCriteria;
+                $criteria->condition = "RefNo = :refNo";
+                $criteria->params = [':refNo' => $data[4]];
+    
+                // Find the ad based on the RefNo
+                $model = PlaceAnAd::model()->find($criteria);
+    
+                if ($model) {
+                    // Ad exists - update scenario
+                    $model->scenario = 'update_content';
+                } else {
+                    // Ad does not exist - create a new one
+                    $model = new PlaceAnAd();
+                    $model->scenario = 'new_insert';
+                }
+    
+                // Set the model attributes from the Excel data
+                $subCategoryCriteria = new CDbCriteria;
+                $subCategoryCriteria->condition = "t.isTrash='0' AND status='A' AND category_name LIKE :name";
+                $subCategoryCriteria->params = [':name' => $data[8]];
+                $subCategory = Category::model()->find($subCategoryCriteria);
+    
+                $sectionId = $data[6] == "Sale" ? 1 : 2;
+                $location = explode($data[12], ", ");
+                $lat = $location[0];
+                $long = $location[1];
+    
+                // Find state
+                $stateCriteria = new CDbCriteria;
+                $stateCriteria->condition = "t.isTrash='0' AND state_name LIKE :name";
+                $stateCriteria->params = [':name' => $data[11]];
+                $stateModel = States::model()->find($stateCriteria);
+                $state = $stateModel->state_id ?? 0;
+    
+                // Find User
+                $userCriteria = new CDbCriteria;
+                $userCriteria->condition = "email LIKE :email";
+                $userCriteria->params = [':email' => $data[39]];
+                $userModel = User::model()->find($userCriteria);
+                $userId = $userModel->id ?? 31988;
+    
+                // Set model attributes from the Excel data
+                $model->section_id = $sectionId;
+                $model->listing_type = $data[7] == "Commercial" ? 151 : 150;
                 $model->category_id = $subCategory->category_id;
-                $model->RefNo = $data[3];
-                $model->ad_title = $data[4];
+                $model->RefNo = $data[4];
+                $model->ad_title = $data[13];
                 $model->PropertyID = $data[5];
-                $model->ad_description = $data[6];
-                $model->area_location = $data[7];
-                $model->interior_size = $data[8];
-                $model->price = $data[9];
+                $model->ad_description = $data[14];
+                $model->area_location = $data[11];
+                $model->interior_size = $data[22];
+    
+                // Handle price conversion based on the frequency
+                if ($data[24] == "Yearly") {
+                    $model->price = $data[23];
+                } elseif ($data[24] == "Monthly") {
+                    $model->price = $data[23] * 12;
+                } elseif ($data[24] == "Quarterly") {
+                    $model->price = $data[23] * 4;
+                } elseif ($data[24] == "half-yearly") {
+                    $model->price = $data[23] * 2;
+                } elseif ($data[24] == "Weekly") {
+                    $model->price = $data[23] * 52;
+                }else {
+                    $model->price = $data[23] * 52;
+                }
+    
+                $model->lease_status = $data[25] == "Yes" ? 1 : 0;
+                $model->income = $data[27];
+                $model->roi = (int)$data[28];
                 $model->plot_area = $data[10];
-                $model->builtup_area = $data[10];
-                $model->furnished = $data[11];
-                $model->mandate = $data[12];
-                $model->contact_person = $data[13];
-                $model->salesman_email = $data[14];
-                $model->mobile_number = $data[15];
+                $model->bedrooms = $data[17];
+                $model->bathrooms = $data[18];
+                $model->FloorNo = $data[20];
+                $model->plot_area = $data[21];
+                $model->builtup_area = $data[22];
+                $model->furnished = $data[16] == "Yes" ? "Y" : "N";
+                $model->featured = $data[32] == "Yes" ? "Y" : "N";
+                $model->hot = $data[33] == "Yes" ? 1 : 0;
+                $model->verified = $data[34] == "Yes" ? 1 : 0;
+                $model->mandate = $data[2];
+                $model->contact_person = $data[38];
+                $model->salesman_email = $data[39];
+                $model->mobile_number = $data[40];
                 $model->country = 66124;
-                $model->state = 0;
-                $model->status = "W";
-                $model->user_id = 31988;
+                $model->state = $state;
+                $model->status = $data[36] == "Active" ? "A" : "I";
+                $model->user_id = $userId;
+    
+                // Save the model (insert or update based on existence)
                 if (!$model->save()) {
                     $errors = $model->getErrors();
                     $errorMessage = 'Failed to save model: ' . json_encode($errors);
                     $this->sendJsonResponse(['status' => 'error', 'message' => $errorMessage]);
                     return;
                 }
-
-                $room_image = new AdImage;
-                $room_image->deleteAll(array('condition' => 'ad_id=:ad_id', 'params' => array(':ad_id' => $model->id)));
-                $imgArr =  explode(',', $data[16]);
-                if ($imgArr) {
-                    // Extract ZIP file
-                    $zip = new ZipArchive;
-                    if ($zip->open($zipFile) === TRUE) {
-                        $zip->extractTo(Yii::getPathOfAlias('webroot') . '/uploads');
-                        $zip->close();
-                    } else {
-                        return $this->sendJsonResponse(['status' => 'error', 'message' => 'Failed to extract ZIP file.']);
-                    }
-
-                    $img_saved = false;
-                    foreach ($imgArr as $k) {
-                        // Find the image in the extracted folder
-                        $extractedPath =  Yii::getPathOfAlias('webroot') . '/uploads/'; // Same path as above
-                        $imagePath = $extractedPath . $k;
-                        if (file_exists($imagePath)) {
-                            // Construct the upload path based on the current year and month
-                            $rootPath = dirname(Yii::getPathOfAlias('webroot'));
-                            $year = date('Y');
-                            $month = date('m');
-                            $uploadDir = "{$rootPath}/uploads/files/{$year}/{$month}/";
-
-                            // Ensure the directory exists
-                            if (!is_dir($uploadDir)) {
-                                if (!mkdir($uploadDir, 0755, true)) {
-                                    // If mkdir fails, return an error message
-                                    $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to create directory: {$uploadDir}"]);
-                                    return;
-                                }
-                            }
-
-                            $uploadPath = $uploadDir . $k;
-
-                            // Move the image to the upload directory
-                            if (rename($imagePath, $uploadPath)) {
-                                if (!$img_saved && $model->image != '') {
-                                    $model->updateByPk($model->id, array('image' => $k));
-                                    $img_saved = true;
-                                }
-
-                                $room_image->isNewRecord = true;
-                                $room_image->id = '';
-                                $room_image->ad_id = $model->id;
-                                $room_image->image_name = $k;
-                                $room_image->save();
-                            } else {
-                                return $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to move image: {$k}"]);
-                            }
-                        } else {
-                            return $this->sendJsonResponse(['status' => 'error', 'message' => "Image not found: {$k}"]);
+    
+                // Handle the image processing
+                $existingImage = AdImage::model()->findByAttributes(['image_name' => $data[29]]);
+                if ($existingImage) {
+                    $existingImage->ad_id = $model->id;
+                    if ($existingImage->save()) {
+                        if ($model->image == '') {
+                            $model->updateByPk($model->id, ['image' => $existingImage->image_name]);
                         }
+                    } else {
+                        return $this->sendJsonResponse(['status' => 'error', 'message' => 'Failed to update the image property_id.']);
                     }
                 }
             }
-
+    
             return $this->sendJsonResponse(['status' => 'success']);
         }
     }
+    
 
 
     public function _setupEditorOptions(CEvent $event)
