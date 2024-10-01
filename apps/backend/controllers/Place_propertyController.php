@@ -449,19 +449,19 @@ class Place_propertyController  extends Controller
         }
 
         // Add condition for 'submitted_properties'
-        if (isset($_GET['submitted_properties']) && $_GET['submitted_properties'] !== '') {
-            $criteria->compare('t.submitted_properties', $_GET['submitted_properties']);
+        if (isset($_GET['submited_by']) && $_GET['submited_by'] !== '') {
+            $criteria->compare('t.submited_by', $_GET['submited_by']);
         }
 
         // Add conditions for any other filters (e.g., category, location)
-        if (isset($_GET['category']) && $_GET['category'] !== '') {
-            $criteria->compare('t.category', $_GET['category']);
+        if (isset($_GET['property_category']) && $_GET['property_category'] !== '') {
+            $criteria->compare('t.category_id', $_GET['property_category']);
         }
 
         if (isset($_GET['location']) && $_GET['location'] !== '') {
             $criteria->compare('t.state', $_GET['location']);
         }
-        $criteria->limit = 1200;
+        $criteria->limit = 500;
         $criteria->order = ("t.id DESC");
         $loggedInUser = Yii::app()->user->model; // Assuming you have a method to get the logged-in user model
         if ($loggedInUser->is_agent == 1) {

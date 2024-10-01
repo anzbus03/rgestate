@@ -569,13 +569,13 @@
 <section class="blog-hero">
     <div class="container mx-auto">
         <div class="position-relative text-white d-flex align-items-center justify-content-center bg-cover custom-rounded"
-            style="height: 416px; background-image: url(<?php echo $this->app->apps->getBaseUrl('assets/img/blog/subscription.jpeg'); ?>); background-position: center;">
+            style="height: 250px; background-image: url(<?php echo $this->app->apps->getBaseUrl('assets/img/blog/subscription.jpeg'); ?>); background-position: center;">
             <div style="background-color: rgba(0, 0, 0, 0.5); width:100%; height:100%;"
                 class="position-absolute w-100 h-100 custom-rounded"></div>
             <div class="position-absolute text-white z-10 text-left"
                 style="left: 1rem; left: 4rem; /* Adjust left padding */">
                 <!-- Dynamic content from Yii -->
-                <h1 class="display-4 text-white font-weight-bold">
+                <h1 class="display-4 text-white font-weight-bold" style="font-size: 32px;">
                     <?php echo $this->tag->getTag('blog', 'Blog'); ?>
                 </h1>
                 <p class="lead mt-4 text-white">

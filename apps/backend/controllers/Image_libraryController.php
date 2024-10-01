@@ -43,8 +43,15 @@ class Image_libraryController extends Controller
                 ];
     
                 foreach ($data as $item) {
+                    // Define the path to the image file
+                    $imagePath = Yii::getPathOfAlias('webroot') . '/uploads/' . $item->image_name;
+    
+                    // Check if the image file exists on the server
+                    $imageExists = file_exists($imagePath);
+    
+                    // Prepare the row data including the image existence check
                     $response['data'][] = [
-                        $item->image_name,
+                        $imageExists ? CHtml::image(Yii::app()->request->baseUrl . '/uploads/' . $item->image_name, $item->image_name, ['width' => '50']) : 'Image not found',
                         $item->ad->ad_title,
                         $item->status,
                         CHtml::link('<span class="fa fa-pencil"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/update', ['id' => $item->id]), ['class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Update')]) .
@@ -71,6 +78,7 @@ class Image_libraryController extends Controller
     
         $this->render('index', compact('model', 'properties'));
     }
+    
     
     public function actionAjaxData()
     {

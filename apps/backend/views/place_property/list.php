@@ -198,13 +198,13 @@ if ($viewCollection->renderContent) { ?>
                                     <th><input type="checkbox" id="select-all"></th> 
                                     <th>Reference Number</th>
                                     <th>Ad Title</th>
-                                    <th>Country Name</th>
+                                    <!-- <th>Country Name</th> -->
                                     <th>Section</th>
                                     <th>Price</th>
                                     <th>Category</th>
                                     <th>Status</th>
                                     <th>Priority</th>
-                                    <th>Date Added</th>
+                                    <th>Refresh Date</th>
                                     <th>Options</th>
                                 </tr>
                             </thead>
@@ -230,7 +230,7 @@ if ($viewCollection->renderContent) { ?>
                                         <input type="hidden" id="meta_description-ar-<?php echo $data->id; ?>"
                                             class="meta_description_ar" value="<?php echo $data->MetaDescriptionArabic; ?>">
                                     </td>
-                                    <td><?php echo CHtml::decode($data->CountryNameSection2); ?></td>
+                                    <!-- <td><?php // echo CHtml::decode($data->CountryNameSection2); ?></td> -->
                                     <td><?php echo CHtml::encode($data->section->section_name); ?></td>
                                     <td><?php echo CHtml::encode($data->price); ?></td>
                                     <td><?php echo getCategoryName($data->category_id, $categoriesArray); ?></td>
@@ -446,7 +446,7 @@ if ($viewCollection->renderContent) { ?>
                     },
                     success: function(response) {
                         // Handle successful response
-                        // window.location.reload(); // Reload the page to reflect changes
+                        window.location.reload(); // Reload the page to reflect changes
                     },
                     error: function(xhr) {
                         // Handle error
@@ -671,36 +671,36 @@ function reloadTable() {
     $('#enquiryTable').DataTable().ajax.reload();
 }
 
-function submitFilters() {
-    var selectedFilters = {};
+// function submitFilters() {
+//     var selectedFilters = {};
 
-    // Collect selected checkbox values
-    if ($('#featured').is(':checked')) {
-        selectedFilters['PlaceAnAd[featured]'] = $('#featured').val();
-    }
-    if ($('#verified').is(':checked')) {
-        selectedFilters['PlaceAnAd[verified]'] = $('#verified').val();
-    }
-    if ($('#preleased').is(':checked')) {
-        selectedFilters['PlaceAnAd[preleased]'] = $('#preleased').val();
-    }
-    if ($('#f_properties').is(':checked')) {
-        selectedFilters['PlaceAnAd[f_properties]'] = $('#f_properties').val();
-    }
-    var submitedByValue = $('#submited_by').val();
-    if (submitedByValue) {
-        selectedFilters['PlaceAnAd[submited_by]'] = submitedByValue;
-    }
-    // Convert the selected filters to query string parameters
-    var queryString = $.param(selectedFilters, true);
+//     // Collect selected checkbox values
+//     if ($('#featured').is(':checked')) {
+//         selectedFilters['PlaceAnAd[featured]'] = $('#featured').val();
+//     }
+//     if ($('#verified').is(':checked')) {
+//         selectedFilters['PlaceAnAd[verified]'] = $('#verified').val();
+//     }
+//     if ($('#preleased').is(':checked')) {
+//         selectedFilters['PlaceAnAd[preleased]'] = $('#preleased').val();
+//     }
+//     if ($('#f_properties').is(':checked')) {
+//         selectedFilters['PlaceAnAd[f_properties]'] = $('#f_properties').val();
+//     }
+//     var submitedByValue = $('#submited_by').val();
+//     if (submitedByValue) {
+//         selectedFilters['PlaceAnAd[submited_by]'] = submitedByValue;
+//     }
+//     // Convert the selected filters to query string parameters
+//     var queryString = $.param(selectedFilters, true);
 
-    // Reload the page with the query parameters
-    window.location.href = window.location.pathname + '?' + queryString;
-}
+//     // Reload the page with the query parameters
+//     window.location.href = window.location.pathname + '?' + queryString;
+// }
 
 
 // Attach the function to the checkboxes' change event
-$('#featured, #verified, #preleased, #f_properties, #submited_by').change(submitFilters);
+// $('#featured, #verified, #preleased, #f_properties, #submited_by').change(submitFilters);
 $(document).ready(function() {
 
     // Initialize the date range picker

@@ -108,12 +108,7 @@ if ($viewCollection->renderContent) {
                                     </td>
                                     <td class="agentName"><?php echo $user->first_name . " " . $user->last_name  ?></td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <i class="fa-regular fa-circle-check"></i>Group:
-                                    </td>
-                                    <td class="agentName"><?php echo $user->group->name  ?></td>
-                                </tr>
+                               
                                 <tr>
                                     <td>
                                         <i class="fa-regular fa-circle-check"></i>Agent License

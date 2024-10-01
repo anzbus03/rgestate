@@ -901,6 +901,7 @@ class PlaceAnAd extends ActiveRecord
 		if (!empty($this->city_location_latitude) and empty($this->city_location_image)) {
 			$download_image =     CHtml::link('<i class="fa fa-photo"></i>', Yii::app()->createUrl('city/generate_image', array('id' => $this->city)));
 		}
+		
 		$html =   $this->city_name . CHtml::link($loc_latitude, Yii::App()->createUrl('city/update', array('id' => $this->city)), array('target' => '_blank')) . $download_image . '<br /><small>' . $this->state_name . '</small>';
 		return  $html;
 	}
