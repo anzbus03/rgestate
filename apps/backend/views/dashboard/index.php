@@ -256,7 +256,7 @@ if ($viewCollection->renderContent) {
                                     <span class="fs-12"><?php echo $contactSerivce->email; ?></span>
                                 </div>
                                 <a href="javascript:void(0);" class="text-warning mt-2">
-                                    <?php echo date('Y-m-d', strtotime($contactSerivce->date)); ?>
+                                    <?php echo date('Y-m-d', strtotime($contactSerivce->date_added)); ?>
                                 </a>
                             </div>
                         </li>
