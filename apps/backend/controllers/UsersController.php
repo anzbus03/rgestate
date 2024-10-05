@@ -72,6 +72,33 @@ class UsersController extends Controller
                 // If no agents selected, save it as an empty string or null
                 $user->agents = null;
             }
+
+            // Handle profile image upload
+            $uploadedFile = CUploadedFile::getInstance($user, 'profile_image');
+            if ($uploadedFile !== null) {
+                $uploadDir = Yii::app()->basePath . '/../../uploads/images/';
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                // Generate a unique file name
+                $fileName = 'user_' . $user->user_id . '_' . time() . '.' . $uploadedFile->getExtensionName();
+                $filePath = $uploadDir . $fileName;
+
+                // Save the file to the server
+                if ($uploadedFile->saveAs($filePath)) {
+                    // If there's already a profile image, remove the old file
+                    if (!empty($user->profile_image) && file_exists($uploadDir . $user->profile_image)) {
+                        unlink($uploadDir . $user->profile_image);
+                    }
+
+                    // Save the new file name in the database
+                    $user->profile_image = $fileName;
+                } else {
+                    $notify->addError(Yii::t('app', 'Error while uploading the profile image.'));
+                }
+            }
+
             //    print_r($user->attributes);exit;
             if (!$user->save()) {
                 $errors = CHtml::errorSummary($user);
@@ -111,59 +138,59 @@ class UsersController extends Controller
     public function actionUpdate($id)
     {
         $user = User::model()->findByPk((int)$id);
-    
+
         if (empty($user)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         }
-    
+
         if ($user->removable === User::TEXT_NO && $user->user_id != Yii::app()->user->getId()) {
             Yii::app()->notify->addWarning(Yii::t('users', 'You are not allowed to update the master administrator!'));
             $this->redirect(array('users/index'));
         }
-    
+
         $user->confirm_email = $user->email;
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
-    
+
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($user->modelName, array()))) {
             $user->attributes = $attributes;
-    
+
             if (isset($attributes['agents'])) {
                 $user->agents = implode(',', $attributes['agents']);
             } else {
                 $user->agents = null;
             }
-    
+
             // Handle profile image upload
             $uploadedFile = CUploadedFile::getInstance($user, 'profile_image');
             if ($uploadedFile !== null) {
-                $uploadDir =Yii::app()->basePath . '/../../uploads/images/';
+                $uploadDir = Yii::app()->basePath . '/../../uploads/images/';
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
-    
+
                 // Generate a unique file name
                 $fileName = 'user_' . $user->user_id . '_' . time() . '.' . $uploadedFile->getExtensionName();
                 $filePath = $uploadDir . $fileName;
-    
+
                 // Save the file to the server
                 if ($uploadedFile->saveAs($filePath)) {
                     // If there's already a profile image, remove the old file
                     if (!empty($user->profile_image) && file_exists($uploadDir . $user->profile_image)) {
                         unlink($uploadDir . $user->profile_image);
                     }
-    
+
                     // Save the new file name in the database
                     $user->profile_image = $fileName;
                 } else {
                     $notify->addError(Yii::t('app', 'Error while uploading the profile image.'));
                 }
             }
-    
+
             if (!$user->save()) {
                 $errors = $user->getErrors();
                 $errorMessage = "Your form has a few errors, please fix them and try again!";
-                
+
                 if (!empty($errors)) {
                     $errorMessage .= "<ul>";
                     foreach ($errors as $attribute => $errorMessages) {
@@ -173,23 +200,23 @@ class UsersController extends Controller
                     }
                     $errorMessage .= "</ul>";
                 }
-    
+
                 $notify->addError(Yii::t('app', $errorMessage));
             } else {
                 $notify->addSuccess(Yii::t('app', 'Your form has been successfully updated!'));
             }
-    
+
             Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
                 'controller' => $this,
                 'success'    => $notify->hasSuccess,
                 'user'       => $user,
             )));
-    
+
             if ($collection->success) {
                 $this->redirect(array('users/index'));
             }
         }
-    
+
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Update user'),
             'pageHeading'       => Yii::t('users', 'Update user'),
@@ -198,13 +225,13 @@ class UsersController extends Controller
                 Yii::t('app', 'Update'),
             )
         ));
-        
+
         $apps = Yii::app()->apps;
         $this->getData('pageStyles')->add(array('src' => $apps->getBaseUrl('assets/css/select2.min.css')));
         $this->getData('pageScripts')->add(array('src' => $apps->getBaseUrl('assets/js/select2.min.js')));
         $this->render('form', compact('user'));
     }
-    
+
 
     /**
      * Delete existing user

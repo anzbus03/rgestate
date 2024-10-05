@@ -48,7 +48,7 @@ class User_groupsController extends Controller
         $group->attributes = (array)$request->getQuery($group->modelName, array());
 
         $this->setData(array(
-            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t('user_groups', 'View user groups'),
+            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('user_groups', 'View user groups'),
             'pageHeading'       => Yii::t('user_groups', 'View user groups'),
             'pageBreadcrumbs'   => array(
                 Yii::t('users', 'Users') => $this->createUrl('users/index'),
@@ -68,7 +68,7 @@ class User_groupsController extends Controller
         $request = Yii::app()->request;
         $notify  = Yii::app()->notify;
         $group   = new UserGroup('search');
-        
+
         $routesAccess = $group->getAllRoutesAccess();
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($group->modelName, array()))) {
             $group->attributes = $attributes;
@@ -106,7 +106,7 @@ class User_groupsController extends Controller
         }
 
         $this->setData(array(
-            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t('user_groups', 'Create new user group'),
+            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('user_groups', 'Create new user group'),
             'pageHeading'       => Yii::t('user_groups', 'Create new user group'),
             'pageBreadcrumbs'   => array(
                 Yii::t('users', 'Users') => $this->createUrl('users/index'),
@@ -128,10 +128,10 @@ class User_groupsController extends Controller
         if (empty($group)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         }
-        
+
         $request = Yii::app()->request;
         $notify  = Yii::app()->notify;
-        
+
         $routesAccess = $group->getAllRoutesAccess();
         echo "<pre>";
         print_r($routesAccess);
@@ -173,7 +173,7 @@ class User_groupsController extends Controller
         }
 
         $this->setData(array(
-            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t('users', 'Update user group'),
+            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Update user group'),
             'pageHeading'       => Yii::t('users', 'Update user group'),
             'pageBreadcrumbs'   => array(
                 Yii::t('users', 'Users') => $this->createUrl('users/index'),
@@ -218,5 +218,4 @@ class User_groupsController extends Controller
             $this->redirect($collection->redirect);
         }
     }
-
 }
