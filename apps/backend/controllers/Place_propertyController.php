@@ -504,7 +504,7 @@ class Place_propertyController  extends Controller
 
     public function actionExportExcel()
     {
-        try {
+        try { 
 
             $model = new PlaceAnAd('search');
             $model->unsetAttributes();

@@ -4580,7 +4580,7 @@ class PlaceAnAd extends ActiveRecord
 		}
 		return  Yii::app()->apps->getAppUrl('backend', '/place_an_ad/update_status_i', true);
 	}
-
+ 
 
 	public function getStatusUrlDeleteBack()
 	{

@@ -125,7 +125,7 @@ class Place_an_adController extends Controller
 			$model->category_id = $attributes["category_id"];
 			$model->section_id = $attributes["section_id"];
 
-
+ 
 			if (isset($attributes['ad_title'])) {
 				$model->attributes = $attributes;
 				if (isset(Yii::app()->params['POST'][$model->modelName]['ad_description'])) {
