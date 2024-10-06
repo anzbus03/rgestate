@@ -33,7 +33,7 @@
  * @property string $isTrash
  * @property string $status
  * @property string $slug
- */
+ */ 
 class PlaceAnAd extends ActiveRecord
 {
 	public $amenities;
@@ -6488,6 +6488,10 @@ class PlaceAnAd extends ActiveRecord
 	public function getSdate()
 	{
 		return date('d/m/Y', strtotime($this->date_added));
+	}
+	public function getLdate()
+	{
+		return date('d/m/Y', strtotime($this->last_updated));
 	}
 	public function getComparisonSignsList()
 	{

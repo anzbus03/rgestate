@@ -276,7 +276,15 @@ if ($viewCollection->renderContent) { ?>
                                 <td style="text-align:center;"><?php echo $data->statusLink; ?></td>
                                 <td><?php echo CHtml::textField("priority[$data->id]", $data->priority, array("style" => "width:50px; text-align:center; display:block; margin:auto;", "class" => "form-controll")); ?>
                                 </td>
-                                <td><?php echo CHtml::encode($data->Sdate); ?></td>
+                                <td>
+                                    <span class="date-display"
+                                        style="margin-right: 3px;"><?php echo CHtml::encode($data->Sdate); ?></span>
+                                    <a href="#" class="refresh-date" data-id="<?php echo $data->id; ?>"
+                                        data-ldate="<?php echo CHtml::encode($data->Ldate); ?>"
+                                        style="text-decoration: none; color: blue; cursor: pointer;">
+                                        <i class="fa fa-refresh"></i>
+                                    </a>
+                                </td>
                                 <td>
                                     <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
                                     <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('id' => $data->id)); ?>"
@@ -339,8 +347,8 @@ if ($viewCollection->renderContent) { ?>
                                         <i class="fa fa-tags"></i>
                                     </a>
                                     <?php if ($isSold): ?>
-                                    <a href="#" class="sold-property"><i class='fas fa-check'
-                                            title="This property is already sold"></i></a>
+                                    <a href="#" class="sold-property">
+                                        <i class='fas fa-check' title="This property is already sold"></i></a>
 
                                     <?php else: ?>
                                     <!-- If the property is not sold, show the clickable icon -->
@@ -912,6 +920,22 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     elFoot.indeterminate = true;
                 }
             }
+        });
+    });
+    </script>
+
+
+    <!-- update latest date -->
+    <script>
+    $(document).ready(function() {
+        $('.refresh-date').on('click', function(e) {
+            e.preventDefault(); // Prevent the default action of the anchor tag
+
+            // Get the new date from the data attribute
+            var newDate = $(this).data('ldate');
+
+            // Update the displayed date
+            $(this).closest('td').find('.date-display').text(newDate);
         });
     });
     </script>

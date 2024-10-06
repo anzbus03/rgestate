@@ -500,6 +500,7 @@ class Place_propertyController  extends Controller
         $tags_short =  $model->place_ad_tag_code();;
         $this->render('list', compact('model', 'filteredData', 'soldPropertyIds', 'tags', 'tags_short'));
     }
+    
 
     public function actionExportExcel()
     {
@@ -3105,6 +3106,7 @@ class Place_propertyController  extends Controller
                 $userModel = User::model()->find($userCriteria);
                 $userId = $userModel->id ?? 31988;
 
+
                 // Set model attributes from the Excel data
                 $model->section_id = $sectionId;
                 $model->listing_type = $data[7] == "Commercial" ? 151 : 150;
@@ -3131,10 +3133,10 @@ class Place_propertyController  extends Controller
                     $model->price = $data[23] * 52;
                 }
 
-                $model->lease_status = $data[25] == "Yes" ? 1 : 0;
+                $model->lease_status = isset($data[25]) && $data[25] == "Yes" ? 1 : 0;
                 $model->income = $data[27];
                 $model->roi = (int)$data[28];
-                $model->plot_area = $data[10];
+                // $model->plot_area = $data[10];
                 $model->bedrooms = $data[17];
                 $model->bathrooms = $data[18];
                 $model->FloorNo = $data[20];
@@ -3152,6 +3154,8 @@ class Place_propertyController  extends Controller
                 $model->state = $state;
                 $model->status = $data[36] == "Active" ? "A" : "I";
                 $model->user_id = $userId;
+                print_r($data);
+
 
                 // Save the model (insert or update based on existence)
                 if (!$model->save()) {
@@ -3211,44 +3215,44 @@ class Place_propertyController  extends Controller
 
     public function actionMarkAsSold()
     {
-
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         $model = new SoldProperty();
 
-
         if ($request->isPostRequest && isset($_POST['SoldProperty'])) {
-            // Set the attributes from the POST data
-            $placeAd = PlaceAnAd::model()->findByPk($model->property_id); // Find the record by property_id
-            $model->attributes = $_POST['SoldProperty'];
-            $model->user_id = $placeAd->user_id; // Assign the current logged-in user's ID
-            $model->isTrash = 0; // Default value for non-deleted records
-            // Save the new record
+            $model->attributes = $_POST['SoldProperty']; // Set the attributes from the POST data
+
+            // Ensure the property_id is set before searching for the related record
+            $placeAd = PlaceAnAd::model()->findByPk($model->property_id);
+            var_dump($placeAd);
+            exit;
             if ($placeAd !== null) {
+                $model->user_id = $placeAd->user_id; // Assign the current logged-in user's ID
+                $model->isTrash = 0; // Default value for non-deleted records
+
                 $placeAd->status = 'S'; // Update the status to 'S' (sold)
                 if ($placeAd->save()) {
-                    // Notify success message
                     $notify->addSuccess(Yii::t('app', 'Property marked as sold and status updated successfully!'));
                 } else {
-                    // Notify error message if the status update fails
                     $notify->addError(Yii::t('app', 'Failed to update the property status.'));
                 }
-            }
-            if ($model->save()) {
-                // Notify success message
-                $notify->addSuccess(Yii::t('app', 'Property marked as sold successfully!'));
 
-                // Redirect to place_property/index
-                $this->redirect(Yii::app()->createUrl('place_property/index'));
+                // Save the new SoldProperty record
+                if ($model->save()) {
+                    $notify->addSuccess(Yii::t('app', 'Property marked as sold successfully!'));
+                    $this->redirect($this->createUrl('index')); // Redirect to the index page
+                } else {
+                    $errors = $model->getErrors(); // Log validation errors
+                    foreach ($errors as $error) {
+                        $notify->addError(Yii::t('app', implode(', ', $error)));
+                    }
+                }
             } else {
-                // Notify error message
-                $notify->addError(Yii::t('app', 'Failed to mark the property as sold.'));
+                $notify->addError(Yii::t('app', 'Property not found.'));
             }
         }
 
         // If validation fails, render the create form again with errors
-        $this->render('create', array(
-            'model' => $model,
-        ));
+        $this->render('create', array('model' => $model));
     }
 }
