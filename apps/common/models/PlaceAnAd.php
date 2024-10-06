@@ -826,8 +826,10 @@ class PlaceAnAd extends ActiveRecord
 	}
 	public function getReferenceNumberTitleP()
 	{
-		$html =  $this->ReferenceNumberTitle . " " . $this->JavascriptPreview . $this->Sharable . "<span style='display:block;color: #888;'>" . $this->SmallDateAdded . "</span>";
-		return  $html . '  ' . $this->IsExpiredAd . ' ' . $this->SoldStatusH;
+		// $html =  $this->ReferenceNumberTitle . " " . $this->JavascriptPreview . $this->Sharable . "<span style='display:block;color: #888;'>" . $this->SmallDateAdded . "</span>";
+		// return  $html . '  ' . $this->IsExpiredAd . ' ' . $this->SoldStatusH;
+		$html =  $this->ReferenceNumberTitle . " " . $this->JavascriptPreview . $this->Sharable;
+		return  $html;
 	}
 	public function getJavascriptPreview()
 	{
@@ -901,7 +903,7 @@ class PlaceAnAd extends ActiveRecord
 		if (!empty($this->city_location_latitude) and empty($this->city_location_image)) {
 			$download_image =     CHtml::link('<i class="fa fa-photo"></i>', Yii::app()->createUrl('city/generate_image', array('id' => $this->city)));
 		}
-		
+
 		$html =   $this->city_name . CHtml::link($loc_latitude, Yii::App()->createUrl('city/update', array('id' => $this->city)), array('target' => '_blank')) . $download_image . '<br /><small>' . $this->state_name . '</small>';
 		return  $html;
 	}
@@ -995,7 +997,7 @@ class PlaceAnAd extends ActiveRecord
 		$criteria->compare('t.listing_type', $this->listing_type);
 		$criteria->compare('DATE(t.date_added)', $this->date_added);
 		// if ($this->CanShowDeletedUserAds) {
-			// $criteria->join  = ' INNER JOIN {{user}} usr on t.user_id = usr.user_id';
+		// $criteria->join  = ' INNER JOIN {{user}} usr on t.user_id = usr.user_id';
 		// } else {
 		// 	$criteria->join  = ' INNER JOIN {{user}} usr on t.user_id = usr.user_id';
 		// }
@@ -4580,7 +4582,7 @@ class PlaceAnAd extends ActiveRecord
 		}
 		return  Yii::app()->apps->getAppUrl('backend', '/place_an_ad/update_status_i', true);
 	}
- 
+
 
 	public function getStatusUrlDeleteBack()
 	{
@@ -4984,7 +4986,7 @@ class PlaceAnAd extends ActiveRecord
 			elseif ($user->is_agent == 1) {
 				// Find all users where rule is agency (rule = 2)
 				$agencyUsers = User::model()->findAllByAttributes(['rules' => 2]);
-	
+
 				// Loop through each agency user
 				foreach ($agencyUsers as $agencyUser) {
 					// Check if the agent's ID exists in the agency's 'agents' column (comma-separated values)
@@ -4997,11 +4999,11 @@ class PlaceAnAd extends ActiveRecord
 					}
 				}
 			}
-		}else if ($this->user_id == 31988){
+		} else if ($this->user_id == 31988) {
 			$profileImage = !empty($user->profile_image) ? $user->profile_image : '/new_assets/images/logoo.svg';
 			$html .= '<div class="admin-profile"><img style="width: 100px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image"></div>';
 		}
-	
+
 		$html  .= '<div class="d-flex footer-contact"><button type="button"    onclick="OpenCallNewlatest(this)"  data-prop="' . $this->id . '" data-agent="' . $this->OwnerName . '"  data-ref="' . $this->ReferenceNumberTitle . '" data-phone="' . $this->mobile_number . '"  class="btn btnnc btn-transparent"><i class="fa fa-phone"></i> ' . $call . '</button>
                   <button type="button" data-reactid="' . $this->id . '" onclick="OpenFormClickNew(this)"    class="btn btnnc btn-transparent"><i class="fa fa-envelope"></i> ' . $email . '</button>
                       <a type="button" id="fav_button_' . $this->id . '"  class="';

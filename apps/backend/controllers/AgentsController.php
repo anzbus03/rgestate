@@ -29,7 +29,8 @@ class AgentsController extends Controller
     /**
      * List all available users
      */
-    private function calculatePercentageDifference($current, $previous) {
+    private function calculatePercentageDifference($current, $previous)
+    {
         if ($previous == 0) {
             return $current > 0 ? 100 : 0;
         }
@@ -72,15 +73,15 @@ class AgentsController extends Controller
 
         // Get total properties sold this week
         $startDateWeek = date('Y-m-d', strtotime('monday this week'));
-        $endDateWeek = date('Y-m-d', strtotime('sunday this week'. ' +1 day'));
-        
+        $endDateWeek = date('Y-m-d', strtotime('sunday this week' . ' +1 day'));
+
         $totalPropertiesSoldWeek = SoldProperty::model()->getRevenueForAll($startDateWeek, $endDateWeek);
         $dailySalesData = SoldProperty::model()->getDailySalesData($startDateWeek, $endDateWeek);
         $monthlySalesData = SoldProperty::model()->getMonthlySalesData(date('Y'));
         $weeklySalesData = SoldProperty::model()->getWeeklySalesData(date('Y'), date('m'));
         // Get total properties sold last week
         $startDateLastWeek = date('Y-m-d', strtotime('monday last week'));
-        $endDateLastWeek = date('Y-m-d', strtotime('sunday last week'. ' +1 day'));
+        $endDateLastWeek = date('Y-m-d', strtotime('sunday last week' . ' +1 day'));
         $totalPropertiesSoldLastWeek = SoldProperty::model()->getRevenueForAll($startDateLastWeek, $endDateLastWeek);
 
         // Calculate percentage change between this week and last week
@@ -113,10 +114,31 @@ class AgentsController extends Controller
         $tags = CHtml::listData($tagModel, 'tag_id', 'tag_name');
         $tags_short = CHtml::listData($tagModel, 'tag_id', 'tagCodeWithColor');
 
-        $this->render('index', compact('user', 'agentProperties','agents',  'revenue',  'salesThisMonth','salesTotal', 'totalPropertiesSoldYear', 'totalPropertiesSoldLastYear', 'percentageChangeYear',
-            'totalPropertiesSoldMonth', 'totalPropertiesSoldLastMonth', 'percentageChangeMonth',
-            'totalPropertiesSoldWeek', 'totalPropertiesSoldLastWeek', 'percentageChangeWeek'
-        , 'salesThisMonth', 'monthlySalesData', 'weeklySalesData', 'dailySalesData', 'numberOfAgents', 'topAgents', 'tags', 'tags_short'));
+        $this->render('index', compact(
+            'user',
+            'agentProperties',
+            'agents',
+            'revenue',
+            'salesThisMonth',
+            'salesTotal',
+            'totalPropertiesSoldYear',
+            'totalPropertiesSoldLastYear',
+            'percentageChangeYear',
+            'totalPropertiesSoldMonth',
+            'totalPropertiesSoldLastMonth',
+            'percentageChangeMonth',
+            'totalPropertiesSoldWeek',
+            'totalPropertiesSoldLastWeek',
+            'percentageChangeWeek',
+            'salesThisMonth',
+            'monthlySalesData',
+            'weeklySalesData',
+            'dailySalesData',
+            'numberOfAgents',
+            'topAgents',
+            'tags',
+            'tags_short'
+        ));
     }
 
     /**
@@ -127,22 +149,22 @@ class AgentsController extends Controller
         $request = Yii::app()->request;
         $model = new User('search');
         $model->unsetAttributes(); // Clear any default values
-    
+
         if ($request->getQuery('User')) {
             $model->attributes = $request->getQuery('User');
         }
-    
+
         // Get the logged-in user model
         $loggedInUser = Yii::app()->user->model;
-    
+
         // Set up the criteria for the user search
         $criteria = $model->search()->getCriteria();
-    
+
         if ($loggedInUser->rules == 2) {
             // If rules equal to 2, get the assigned agent IDs from the 'agents' column
             $userAgents = explode(",", $loggedInUser->agents);
             $userAgents = array_map('trim', $userAgents); // Trim whitespace
-    
+
             // Filter users to include only those with IDs in the userAgents array
             $criteria->addInCondition('user_id', $userAgents);
         } elseif ($loggedInUser->rules == 3) {
@@ -151,9 +173,9 @@ class AgentsController extends Controller
                 'condition' => 'rules = 2',
             ));
             $agencyUserIds = [];
-            foreach ($agencyUsers as $agency){
+            foreach ($agencyUsers as $agency) {
                 $agentsIds = explode(",", $agency->agents);
-                if (in_array($loggedInUser->user_id, $agentsIds)){
+                if (in_array($loggedInUser->user_id, $agentsIds)) {
                     $agencyUserIds = $agentsIds;
                 }
             }
@@ -164,7 +186,7 @@ class AgentsController extends Controller
             $model->is_agent = 1;
             $criteria->addCondition('is_agent = 1');
         }
-    
+
         // Set the pagination for 12 items per page
         $users = new CActiveDataProvider('User', array(
             'criteria' => $criteria,
@@ -172,7 +194,7 @@ class AgentsController extends Controller
                 'pageSize' => 12, // Set the number of items per page
             ),
         ));
-    
+
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'View users'),
             'pageHeading'       => Yii::t('users', 'Agents List'),
@@ -181,11 +203,11 @@ class AgentsController extends Controller
                 Yii::t('app', 'View all')
             )
         ));
-    
+
         // Render the list view
         $this->render('list', compact('users'));
     }
-    
+
 
 
 
@@ -207,7 +229,7 @@ class AgentsController extends Controller
         }
         $startDate = '';
         $endDate = date('Y-m-d', strtotime('+1 day'));
-    
+
         switch ($user->target_period) {
             case 'yearly':
                 $startDate = date('Y-01-01'); // Start from the beginning of the current year
@@ -222,11 +244,11 @@ class AgentsController extends Controller
                 $startDate = date('Y-01-01'); // Default to the beginning of the year
                 break;
         }
-    
+
         // Fetch the total revenue for the user within the calculated date range
-        $revenueForSale = SoldProperty::model()->getRevenueForUser($user->user_id, $startDate, $endDate, 1);   
-        $revenueForRent = SoldProperty::model()->getRevenueForUser($user->user_id, $startDate, $endDate, 2);   
-        
+        $revenueForSale = SoldProperty::model()->getRevenueForUser($user->user_id, $startDate, $endDate, 1);
+        $revenueForRent = SoldProperty::model()->getRevenueForUser($user->user_id, $startDate, $endDate, 2);
+
 
         // Calculate percentage for "For Sale" target
         if ($user->target_for_sale > 0) {
@@ -239,30 +261,30 @@ class AgentsController extends Controller
         } else {
             $completionPercentageRent = 0;
         }
-        
+
         $criteria = new CDbCriteria();
         $criteria->compare('user_id', $user->user_id);
-    
+
         // Apply location filter if present
         if (!empty($locationId)) {
             $criteria->compare('state', (int)$locationId);
         }
-    
+
         // Apply property type filter if present
         if (!empty($propertyTypeId)) {
             $criteria->compare('section_id', (int)$propertyTypeId);
         }
-    
+
         // Apply property category filter if present
         if (!empty($propertyCategoryId)) {
             $criteria->compare('category_id', (int)$propertyCategoryId);
         }
-    
+
         // Apply status filter if present
         if (!empty($status)) {
             $criteria->compare('status', $status);
         }
-    
+
         // Fetch filtered user properties
         $userProperties = PlaceAnAd::model()->findAll($criteria);
         $this->setData(array(
@@ -292,17 +314,17 @@ class AgentsController extends Controller
         // $user->scenario = 'agent_insert'; // Uncomment if you need to apply specific validation rules for this scenario.
 
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($user->modelName, array()))) {
-            $user->attributes = $attributes;    
+            $user->attributes = $attributes;
             $user->rules = 3;
             $loggedInUser = Yii::app()->user->model;
 
-                      
             // Handle the file upload
             $uploadedFile = CUploadedFile::getInstance($user, 'profile_image');
             if ($uploadedFile !== null) {
                 $fileName = uniqid() . '_' . $uploadedFile->getName();
                 $user->profile_image = $fileName;
             }
+
             if ($user->save()) {
                 if ($loggedInUser->rules == 2) {
                     // If rules equal to 2, get the assigned agent IDs from the 'agents' column
@@ -314,17 +336,18 @@ class AgentsController extends Controller
                     $imploded = implode(",", $userAgents);
 
                     $userModel = User::model()->findByPk($loggedInUser->user_id);
-                 
-                   // exit;
+
                     if ($userModel) {
                         $userModel->agents = $imploded;
+                        $userModel->confirm_email = $userModel->email;
                         $userModel->save();
+
                         if (!$userModel->save()) {
                             $errors = $userModel->getErrors();
                             Yii::app()->notify->addError(Yii::t('app', 'Failed to update agent list: ' . print_r($errors, true)));
                         }
                     }
-                }    
+                }
                 if ($uploadedFile !== null) {
                     $uploadedFile->saveAs(Yii::getPathOfAlias('webroot') . '/uploads/profile_images/' . $fileName);
                 }

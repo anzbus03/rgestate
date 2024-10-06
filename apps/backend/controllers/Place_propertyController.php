@@ -411,7 +411,7 @@ class Place_propertyController  extends Controller
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         $model = new PlaceAnAd('serach');
-       
+
         if ($request->isPostRequest) {
             $sortOrderAll = $_POST['priority'];
             if (count($sortOrderAll) > 0) {
@@ -467,10 +467,9 @@ class Place_propertyController  extends Controller
         if ($loggedInUser->is_agent == 1) {
             // Filter properties where user_id matches the logged-in user's ID
             $criteria->compare('t.user_id', $loggedInUser->user_id);
-        }else if ($loggedInUser->rules == 2){
+        } else if ($loggedInUser->rules == 2) {
             $userAgents = explode(",", $loggedInUser->agents);
             $criteria->addInCondition('t.user_id', $userAgents);
-
         }
         // Fetch the filtered data directly with criteria
         $filteredData = PlaceAnAd::model()->findAll($criteria);
@@ -499,12 +498,12 @@ class Place_propertyController  extends Controller
         $tagModel = Tag::model()->findAll($criteria);
         $tags = CHtml::listData($tagModel, 'tag_id', 'tag_name');
         $tags_short =  $model->place_ad_tag_code();;
-        $this->render('list', compact('model', 'filteredData','soldPropertyIds', 'tags', 'tags_short'));
+        $this->render('list', compact('model', 'filteredData', 'soldPropertyIds', 'tags', 'tags_short'));
     }
 
     public function actionExportExcel()
     {
-        try { 
+        try {
 
             $model = new PlaceAnAd('search');
             $model->unsetAttributes();
@@ -1451,6 +1450,26 @@ class Place_propertyController  extends Controller
 
         $featured = ($featured == 'N') ? 'Y' : 'N';
         $model->updateByPk($id, array('featured' => $featured, 'last_updated' => date('Y-m-d h:i:s')));
+
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+
+        if (!$request->getQuery('ajax')) {
+            $notify->addSuccess(Yii::t('app', 'The item has been successfully updated!'));
+            $this->redirect($request->getPost('returnUrl', array(Yii::app()->controller->id . '/index')));
+        }
+    }
+
+    public function actionHot($id, $hot)
+    {
+        $model = PlaceAnAd::model()->findByPk((int)$id);
+
+        if (empty($model)) {
+            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+        }
+
+        $hot = (is_null($hot) || $hot == '0') ? '1' : '0';
+        $model->updateByPk($id, array('hot' => $hot, 'last_updated' => date('Y-m-d h:i:s')));
 
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
@@ -2436,7 +2455,7 @@ class Place_propertyController  extends Controller
 
         $action = $_GET['bulk_action'];
         $items  = $_GET['bulk_item'];
-       
+
         if ($action == PlaceAnAd::BULK_ACTION_TRASH && count($items)) {
             $affected = 0;
             $customerModel = new  PlaceAnAd();
@@ -2677,7 +2696,7 @@ class Place_propertyController  extends Controller
 
         if ($request->isPostRequest) {
             $sortOrderAll = $_POST['select_action'];
-            
+
             if (count($sortOrderAll) > 0 and isset($_POST['module']) and in_array($_POST['module'], array('1', '2', '3'))) {
                 $module = $_POST['module'];
                 $customerModel = new  AdImage();
@@ -3041,17 +3060,17 @@ class Place_propertyController  extends Controller
     public function actionUploadExcel()
     {
         $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
-    
+
         if (isset($_FILES['excelFile'])) {
             foreach (array_slice($excelData, 1) as $data) {
                 // Check if the ad already exists by RefNo
                 $criteria = new CDbCriteria;
                 $criteria->condition = "RefNo = :refNo";
                 $criteria->params = [':refNo' => $data[4]];
-    
+
                 // Find the ad based on the RefNo
                 $model = PlaceAnAd::model()->find($criteria);
-    
+
                 if ($model) {
                     // Ad exists - update scenario
                     $model->scenario = 'update_content';
@@ -3060,32 +3079,32 @@ class Place_propertyController  extends Controller
                     $model = new PlaceAnAd();
                     $model->scenario = 'new_insert';
                 }
-    
+
                 // Set the model attributes from the Excel data
                 $subCategoryCriteria = new CDbCriteria;
                 $subCategoryCriteria->condition = "t.isTrash='0' AND status='A' AND category_name LIKE :name";
                 $subCategoryCriteria->params = [':name' => $data[8]];
                 $subCategory = Category::model()->find($subCategoryCriteria);
-    
+
                 $sectionId = $data[6] == "Sale" ? 1 : 2;
                 $location = explode($data[12], ", ");
                 $lat = $location[0];
                 $long = $location[1];
-    
+
                 // Find state
                 $stateCriteria = new CDbCriteria;
                 $stateCriteria->condition = "t.isTrash='0' AND state_name LIKE :name";
                 $stateCriteria->params = [':name' => $data[11]];
                 $stateModel = States::model()->find($stateCriteria);
                 $state = $stateModel->state_id ?? 0;
-    
+
                 // Find User
                 $userCriteria = new CDbCriteria;
                 $userCriteria->condition = "email LIKE :email";
                 $userCriteria->params = [':email' => $data[39]];
                 $userModel = User::model()->find($userCriteria);
                 $userId = $userModel->id ?? 31988;
-    
+
                 // Set model attributes from the Excel data
                 $model->section_id = $sectionId;
                 $model->listing_type = $data[7] == "Commercial" ? 151 : 150;
@@ -3096,7 +3115,7 @@ class Place_propertyController  extends Controller
                 $model->ad_description = $data[14];
                 $model->area_location = $data[11];
                 $model->interior_size = $data[22];
-    
+
                 // Handle price conversion based on the frequency
                 if ($data[24] == "Yearly") {
                     $model->price = $data[23];
@@ -3108,10 +3127,10 @@ class Place_propertyController  extends Controller
                     $model->price = $data[23] * 2;
                 } elseif ($data[24] == "Weekly") {
                     $model->price = $data[23] * 52;
-                }else {
+                } else {
                     $model->price = $data[23] * 52;
                 }
-    
+
                 $model->lease_status = $data[25] == "Yes" ? 1 : 0;
                 $model->income = $data[27];
                 $model->roi = (int)$data[28];
@@ -3133,7 +3152,7 @@ class Place_propertyController  extends Controller
                 $model->state = $state;
                 $model->status = $data[36] == "Active" ? "A" : "I";
                 $model->user_id = $userId;
-    
+
                 // Save the model (insert or update based on existence)
                 if (!$model->save()) {
                     $errors = $model->getErrors();
@@ -3141,7 +3160,7 @@ class Place_propertyController  extends Controller
                     $this->sendJsonResponse(['status' => 'error', 'message' => $errorMessage]);
                     return;
                 }
-    
+
                 // Handle the image processing
                 $existingImage = AdImage::model()->findByAttributes(['image_name' => $data[29]]);
                 if ($existingImage) {
@@ -3155,11 +3174,11 @@ class Place_propertyController  extends Controller
                     }
                 }
             }
-    
+
             return $this->sendJsonResponse(['status' => 'success']);
         }
     }
-    
+
 
 
     public function _setupEditorOptions(CEvent $event)
@@ -3197,7 +3216,7 @@ class Place_propertyController  extends Controller
         $notify = Yii::app()->notify;
         $model = new SoldProperty();
 
-        
+
         if ($request->isPostRequest && isset($_POST['SoldProperty'])) {
             // Set the attributes from the POST data
             $placeAd = PlaceAnAd::model()->findByPk($model->property_id); // Find the record by property_id
@@ -3214,7 +3233,7 @@ class Place_propertyController  extends Controller
                     // Notify error message if the status update fails
                     $notify->addError(Yii::t('app', 'Failed to update the property status.'));
                 }
-            } 
+            }
             if ($model->save()) {
                 // Notify success message
                 $notify->addSuccess(Yii::t('app', 'Property marked as sold successfully!'));

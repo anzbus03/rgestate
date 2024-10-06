@@ -217,7 +217,7 @@ if ($viewCollection->renderContent) {
                 <?php echo $form->dropDownList($user, 'country_id', CHtml::listData(Countries::model()->Countrylist(), "country_id", "country_name"), $dropdwn); ?>
                 <?php echo $form->error($user, 'country_id'); ?>
             </div>
-           
+
             <div class="form-group col-lg-6 mb-2">
                 <?php echo $form->labelEx($user, 'city'); ?>
                 <?php echo $form->textField($user, 'city', $user->getHtmlOptions('city')); ?>
@@ -238,7 +238,7 @@ if ($viewCollection->renderContent) {
                 <?php echo $form->textField($user, 'address', $user->getHtmlOptions('address')); ?>
                 <?php echo $form->error($user, 'address'); ?>
             </div>
-           
+
         </div>
         <?php
                 /**
