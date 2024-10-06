@@ -445,124 +445,124 @@
 </section> -->
 <!-- Hero Section -->
 <style>
-.blog-hero h1,
-.blog-hero p {
-    font-family: 'Roboto', 'Open Sans', sans-serif;
-}
-
-.blog-hero h1 {
-    font-family: Poppins;
-    font-size: 40px;
-    font-weight: 600;
-    line-height: 25px;
-    text-align: left;
-}
-
-.blog-hero p {
-    font-family: Poppins;
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 25px;
-    text-align: left;
-    max-width: 35rem;
-}
-
-.bg-black {
-    background-color: rgba(0, 0, 0, .5);
-}
-
-.bg-cover {
-    background-size: cover;
-}
-
-.opacity-50 {
-    opacity: 0.5;
-}
-
-.custom-rounded {
-    border-radius: 30px !important;
-}
-
-.hover-underline:hover {
-    text-decoration: underline;
-}
-
-.text-warning {
-    color: #EF7D28 !important;
-}
-
-.custom-category-menu {
-    margin-left: 100px;
-    margin-right: 100px;
-}
-
-@media (max-width: 992px) {
-    .custom-category-menu {
-        margin-left: 30px;
-        margin-right: 30px;
+    .blog-hero h1,
+    .blog-hero p {
+        font-family: 'Roboto', 'Open Sans', sans-serif;
     }
-}
 
-@media (max-width: 768px) {
-    .custom-category-menu {
-        margin-left: 15px;
-        margin-right: 15px;
+    .blog-hero h1 {
+        font-family: Poppins;
+        font-size: 40px;
+        font-weight: 600;
+        line-height: 25px;
+        text-align: left;
     }
-}
 
-.custom-link {
-    position: relative;
-    padding-bottom: 0.7rem;
-    margin-right: 50px;
-    text-decoration: none;
-    font-size: 1.125rem;
-    color: inherit;
-    border-bottom: 2px solid transparent;
-}
+    .blog-hero p {
+        font-family: Poppins;
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 25px;
+        text-align: left;
+        max-width: 35rem;
+    }
 
-.custom-link:hover {
-    border-bottom: 2px solid #EF7D28;
-    color: #00699E;
-}
+    .bg-black {
+        background-color: rgba(0, 0, 0, .5);
+    }
 
-.custom-rotate-divider {
-    border-top: 2px solid #A3ABA3;
-    width: 25px;
-    transform: rotate(-90deg);
-    background-color: #A3ABA3;
-}
+    .bg-cover {
+        background-size: cover;
+    }
 
-.custom-input {
-    padding: 0.375rem 0;
-    border: none;
-    outline: none;
-}
+    .opacity-50 {
+        opacity: 0.5;
+    }
 
-.custom-input::placeholder {
-    color: #A3ABA3;
-}
+    .custom-rounded {
+        border-radius: 30px !important;
+    }
 
-.search-icon-wrapper {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    border: 1px solid #00699E;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    color: #00699E;
-    transform: rotate(90deg);
-}
+    .hover-underline:hover {
+        text-decoration: underline;
+    }
 
-.form-control:focus {
-    outline: none !important;
-}
+    .text-warning {
+        color: #EF7D28 !important;
+    }
 
-.category-menu {
-    border-bottom: 1px solid #A6A6A633;
-}
+    .custom-category-menu {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+
+    @media (max-width: 992px) {
+        .custom-category-menu {
+            margin-left: 30px;
+            margin-right: 30px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .custom-category-menu {
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+    }
+
+    .custom-link {
+        position: relative;
+        padding-bottom: 0.7rem;
+        margin-right: 50px;
+        text-decoration: none;
+        font-size: 1.125rem;
+        color: inherit;
+        border-bottom: 2px solid transparent;
+    }
+
+    .custom-link:hover {
+        border-bottom: 2px solid #EF7D28;
+        color: #00699E;
+    }
+
+    .custom-rotate-divider {
+        border-top: 2px solid #A3ABA3;
+        width: 25px;
+        transform: rotate(-90deg);
+        background-color: #A3ABA3;
+    }
+
+    .custom-input {
+        padding: 0.375rem 0;
+        border: none;
+        outline: none;
+    }
+
+    .custom-input::placeholder {
+        color: #A3ABA3;
+    }
+
+    .search-icon-wrapper {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        border: 1px solid #00699E;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        color: #00699E;
+        transform: rotate(90deg);
+    }
+
+    .form-control:focus {
+        outline: none !important;
+    }
+
+    .category-menu {
+        border-bottom: 1px solid #A6A6A633;
+    }
 </style>
 
 <!-- hero section  -->
@@ -596,44 +596,44 @@
 
 <!-- Category Menu -->
 <style>
-.category-section {
-    padding-top: 20px;
-}
-
-.sub-container {
-    cursor: pointer;
-}
-
-.sub-container input:focus {
-    border: none;
-    box-shadow: none;
-}
-
-@media (max-width: 768px) {
-    .category-section div div div {
-        gap: 20px;
+    .category-section {
+        padding-top: 20px;
     }
 
-    .category-section ul {
-        flex-direction: row;
-        justify-content: center;
+    .sub-container {
+        cursor: pointer;
     }
 
-    .category-search {
-        flex-direction: row !important;
-    }
-}
-
-@media (max-width: 640px) {
-    .category-section ul {
-        flex-direction: column;
-        justify-content: center;
+    .sub-container input:focus {
+        border: none;
+        box-shadow: none;
     }
 
-    .category-section ul li {
-        margin-bottom: 15px;
+    @media (max-width: 768px) {
+        .category-section div div div {
+            gap: 20px;
+        }
+
+        .category-section ul {
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .category-search {
+            flex-direction: row !important;
+        }
     }
-}
+
+    @media (max-width: 640px) {
+        .category-section ul {
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .category-section ul li {
+            margin-bottom: 15px;
+        }
+    }
 </style>
 <section class="category-section">
     <div class="container">
@@ -651,12 +651,12 @@
 
                     <!-- Dynamic Category Links -->
                     <?php foreach ($category as $k => $v) { ?>
-                    <li class="mr-4 mb-4" style="margin-bottom: 10px;">
-                        <a href="<?php echo Yii::app()->createUrl('bloglist/index', array('category' => $v->slug)); ?>"
-                            class="custom-link <?php echo $slug == $v->slug ? 'active' : ''; ?>">
-                            <?php echo ucfirst($v->name); ?>
-                        </a>
-                    </li>
+                        <li class="mr-4 mb-4" style="margin-bottom: 10px;">
+                            <a href="<?php echo Yii::app()->createUrl('bloglist/index', array('category' => $v->slug)); ?>"
+                                class="custom-link <?php echo $slug == $v->slug ? 'active' : ''; ?>">
+                                <?php echo ucfirst($v->name); ?>
+                            </a>
+                        </li>
                     <?php } ?>
                 </ul>
 
@@ -710,192 +710,191 @@
 
 <!-- blogs box -->
 <style>
-.blog-content {
-    width: 73%;
-    display: flex;
-    align-items: start;
-    /* justify-content: space-between; */
-    flex-wrap: wrap;
-    gap: 2.5rem;
-}
-
-
-
-.w-3-4 {
-    /* width: 75%; */
-}
-
-.bog-content {
-    display: flex
-}
-
-.space-y-8>*+* {
-    margin-top: 32px;
-
-}
-
-.space-x-10>*+* {
-    margin-left: 40px;
-
-}
-
-.custom-rounded-lg {
-    border-radius: 0.5rem;
-}
-
-.custom-bg-blue {
-    background-color: #00699E;
-}
-
-.custom-text-blue {
-    color: #00699E;
-}
-
-.custom-border-gray {
-    border-color: #A6A6A633;
-}
-
-.custom-underline {
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 10px;
-}
-
-.custom-rotate-90 {
-    transform: rotate(90deg);
-}
-
-.custom-spacing-y-4 {
-    margin-top: 16px;
-    /* Assuming 4 spacing units = 16px */
-}
-
-.custom-spacing-t-2 {
-    border-top: 2px solid #A6A6A633;
-    margin: 10px 0;
-}
-
-.custom-bg-dark-blue {
-    background-color: #0E4F70;
-}
-
-.custom-bg-light-blue {
-    background-color: #39A0D4;
-}
-
-.custom-rounded-small {
-    border-radius: 3px;
-}
-
-.custom-rounded-md {
-    border-radius: 6px;
-}
-
-.custom-rounded-btn {
-    border-radius: 10px;
-}
-
-/* sidebar  */
-.blog-sidebar {
-    width: 33%;
-}
-
-.blog-sidebar a {
-    font-family: 'Inter';
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 20px;
-    text-align: left;
-    color: #231F20;
-}
-
-.blog-sidebar .recent-post-date {
-    font-family: 'Poppins';
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 26px;
-    text-align: left;
-    color: #656865;
-    margin-top: 15px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.blog-sidebar .flex-column {
-    flex-direction: column;
-}
-
-.sidebar-title {
-    /* font-family: Inter; */
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 32px;
-    text-align: left;
-    color: #00699E;
-}
-
-.sidebar-search {
-    height: 52px;
-    margin-bottom: 20px;
-    border: 1px solid #A6A6A633
-}
-
-.sidebar-search input {
-    padding-left: 15px;
-    border-radius: 6px;
-}
-
-.sidebar-search input:focus {
-    outline: none;
-    border: none;
-    box-shadow: none;
-}
-
-.sidebar-search .sidebar-search-icon {
-    width: 60px;
-    height: 50px;
-    font-size: 17px;
-    text-align: center;
-}
-
-.form-control:focus {
-    outline: none;
-    box-shadow: none;
-    border-color: #007bff;
-}
-
-
-@media (max-width: 768px) {
-    .blog-container {
-        gap: 50px;
-    }
-
-    /* blog content  */
     .blog-content {
         width: 100%;
+        display: flex;
+        align-items: start;
+        /* justify-content: space-between; */
+        flex-wrap: wrap;
+        gap: 2.5rem;
+    }
+
+
+
+    .w-3-4 {
+        /* width: 75%; */
+    }
+
+    .bog-content {
+        display: flex
+    }
+
+    .space-y-8>*+* {
+        margin-top: 32px;
+
+    }
+
+    .space-x-10>*+* {
+        margin-left: 40px;
+
+    }
+
+    .custom-rounded-lg {
+        border-radius: 0.5rem;
+    }
+
+    .custom-bg-blue {
+        background-color: #00699E;
+    }
+
+    .custom-text-blue {
+        color: #00699E;
+    }
+
+    .custom-border-gray {
+        border-color: #A6A6A633;
+    }
+
+    .custom-underline {
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 10px;
+    }
+
+    .custom-rotate-90 {
+        transform: rotate(90deg);
+    }
+
+    .custom-spacing-y-4 {
+        margin-top: 16px;
+        /* Assuming 4 spacing units = 16px */
+    }
+
+    .custom-spacing-t-2 {
+        border-top: 2px solid #A6A6A633;
+        margin: 10px 0;
+    }
+
+    .custom-bg-dark-blue {
+        background-color: #0E4F70;
+    }
+
+    .custom-bg-light-blue {
+        background-color: #39A0D4;
+    }
+
+    .custom-rounded-small {
+        border-radius: 3px;
+    }
+
+    .custom-rounded-md {
+        border-radius: 6px;
+    }
+
+    .custom-rounded-btn {
+        border-radius: 10px;
     }
 
     /* sidebar  */
     .blog-sidebar {
-        width: 100%;
-        margin-left: 0px;
+        width: 33%;
+    }
+
+    .blog-sidebar a {
+        font-family: 'Inter';
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 20px;
+        text-align: left;
+        color: #231F20;
+    }
+
+    .blog-sidebar .recent-post-date {
+        font-family: 'Poppins';
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 26px;
+        text-align: left;
+        color: #656865;
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .blog-sidebar .flex-column {
+        flex-direction: column;
+    }
+
+    .sidebar-title {
+        /* font-family: Inter; */
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 32px;
+        text-align: left;
+        color: #00699E;
     }
 
     .sidebar-search {
-        flex-direction: row !important;
+        height: 52px;
+        margin-bottom: 20px;
+        border: 1px solid #A6A6A633
     }
 
-    .recent-post div {
-        /* align-items: start; */
+    .sidebar-search input {
+        padding-left: 15px;
+        border-radius: 6px;
     }
-}
 
-@media (max-width: 640px) {}
+    .sidebar-search input:focus {
+        outline: none;
+        border: none;
+        box-shadow: none;
+    }
+
+    .sidebar-search .sidebar-search-icon {
+        width: 60px;
+        height: 50px;
+        font-size: 17px;
+        text-align: center;
+    }
+
+    .form-control:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: #007bff;
+    }
+
+
+    @media (max-width: 768px) {
+        .blog-container {
+            gap: 50px;
+        }
+
+        /* blog content  */
+        .blog-content {
+            width: 100%;
+        }
+
+        /* sidebar  */
+        .blog-sidebar {
+            width: 100%;
+            margin-left: 0px;
+        }
+
+        .sidebar-search {
+            flex-direction: row !important;
+        }
+
+        .recent-post div {
+            /* align-items: start; */
+        }
+    }
+
+    @media (max-width: 640px) {}
 </style>
 <div class="container" style="margin-top: 15px; margin-bottom: 50px;">
     <div class="d-flex justify-content-between align-items-start space-x-10 blog-container ">
-
         <!-- blogs content  -->
         <?php
         if (!empty($ads)) {
@@ -913,54 +912,55 @@
         ?>
 
         <!-- sidebar  -->
-        <div class="blog-sidebar w-25 bg-white custom-rounded-lg">
-            <div class="d-flex align-items-center border custom-border-gray custom-rounded-md mb-3 sidebar-search position-relative">
-                <input type="text" id="blog-search-input" placeholder="Enter the keywords here..." class="form-control" autocomplete="off">
-                <div class="d-flex justify-content-center align-items-center custom-bg-blue text-white custom-rounded-md custom-rotate-90 sidebar-search-icon">
+        <!-- <div class="blog-sidebar w-25 bg-white custom-rounded-lg">
+            <div
+                class="d-flex align-items-center border custom-border-gray custom-rounded-md mb-3 sidebar-search position-relative">
+                <input type="text" id="blog-search-input" placeholder="Enter the keywords here..." class="form-control"
+                    autocomplete="off">
+                <div
+                    class="d-flex justify-content-center align-items-center custom-bg-blue text-white custom-rounded-md custom-rotate-90 sidebar-search-icon">
                     <i class="fa fa-search"></i>
                 </div>
 
-                <!-- Dropdown for search results -->
                 <ul class="dropdown-menu w-100" id="search-results" style="display: none;"></ul>
             </div>
 
 
-            <!-- recent posts -->
             <h3 class="sidebar-title mt-4"><span class="sidebar-title custom-underline">Recent</span> Posts</h3>
             <div class="mt-3 recent-post">
                 <?php foreach ($ads as $d => $ad): ?>
-                    <?php
-                        if ($d >= 5) {
-                            break;
-                        }
-                     preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $ad->content, $imges);
-                     $imageSrc = !empty($imges[1]) ? $imges[1] : '/assets/img/blog/default.png';
-                        
-                    ?>
-                    <div class="d-flex align-items-center mt-5 custom-spacing-y-4">
-                        <!-- Dynamic Image -->
-                        <img src="<?php echo !empty($ad->featured_image) ? Yii::app()->apps->getBaseUrl() . "uploads/images/" . $ad->featured_image : $imageSrc; ?>"
-                            alt="Recent Post Image" class="rounded-circle"
-                            style="width: 75px;  object-fit: cover; height: 75px; margin-right:15px; margin-bottom: 15px;">
+                <?php
+                    if ($d >= 5) {
+                        break;
+                    }
+                    preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $ad->content, $imges);
+                    $imageSrc = !empty($imges[1]) ? $imges[1] : '/assets/img/blog/default.png';
+
+                ?>
+                <div class="d-flex align-items-center mt-5 custom-spacing-y-4">
+       
+                    <img src="<?php echo !empty($ad->featured_image) ? Yii::app()->apps->getBaseUrl() . "uploads/images/" . $ad->featured_image : $imageSrc; ?>"
+                        alt="Recent Post Image" class="rounded-circle"
+                        style="width: 75px;  object-fit: cover; height: 75px; margin-right:15px; margin-bottom: 15px;">
 
 
-                        <div class="d-flex flex-column ml-4">
-                            <!-- Dynamic Title -->
-                            <a href="<?php echo $this->app->createUrl('bloglist/details', array('slug' => $ad->slug)); ?>" class="text-dark" style="font-size: 14px;">
-                                <?php echo $ad->title; ?>
-                            </a>
-                            <!-- Dynamic Date -->
-                            <span class="text-muted recent-post-date" style="font-size: 12px;">
-                                <?php echo date('M j, Y', strtotime($ad->date_added)); ?>
-                            </span>
-                        </div>
+                    <div class="d-flex flex-column ml-4">
+     
+                        <a href="<?php echo $this->app->createUrl('bloglist/details', array('slug' => $ad->slug)); ?>"
+                            class="text-dark" style="font-size: 14px;">
+                            <?php echo $ad->title; ?>
+                        </a>
+             
+                        <span class="text-muted recent-post-date" style="font-size: 12px;">
+                            <?php echo date('M j, Y', strtotime($ad->date_added)); ?>
+                        </span>
                     </div>
-                    <div class="custom-spacing-t-2"></div>
+                </div>
+                <div class="custom-spacing-t-2"></div>
                 <?php endforeach; ?>
             </div>
 
 
-            <!-- recent category -->
             <div class="business-card">
                 <div class="water-bubble"></div>
                 <div class="card-content">
@@ -970,22 +970,20 @@
                     </a>
                 </div>
                 <div class="image-container">
-                    <img src="<?php echo $this->app->apps->getBaseUrl('assets/img/blog/image.png'); ?>" alt="Business Person" />
+                    <img src="<?php echo $this->app->apps->getBaseUrl('assets/img/blog/image.png'); ?>"
+                        alt="Business Person" />
                 </div>
             </div>
-
-
-
-        </div>
+        </div> -->
     </div>
 
     <div class="clearfix"></div>
 </div>
 </section>
 <script>
-    var ads = <?php echo json_encode(array_map(function($ad) {
-        return ['title' => $ad->title, 'slug' => $ad->slug];
-    }, $ads)); ?>;
+    var ads = <?php echo json_encode(array_map(function ($ad) {
+                    return ['title' => $ad->title, 'slug' => $ad->slug];
+                }, $ads)); ?>;
     document.getElementById('blog-search-input').addEventListener('input', function() {
         const query = this.value.trim().toLowerCase();
         const dropdown = document.getElementById('search-results');
@@ -1015,256 +1013,267 @@
             dropdown.style.display = 'none';
         }
     });
-
 </script>
 <!-- image.png -->
 
 <!-- recent category style  -->
 <style>
-.recent-posts {
-    max-width: 360px;
-    margin-top: 50px;
-}
-.business-card {
-    position: relative;
-    width: 100%;
-    height: 310px;
-    background-color: #175e7e;
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: left;
-    color: white;
-    overflow: hidden;
-}
-
-.card-content {
-    z-index: 2;
-    position: relative;
-    width: 100%; /* Content should be centered */
-}
-
-.card-title {
-    font-size: 1.5rem; /* Adjust font size for prominence */
-    font-weight: 600;
-    color: white;
-    height: 6.2rem;
-    width: 71%;
-    margin-bottom: 20px;
-}
-
-.contact-button {
-    display: inline-block;
-    background-color: #2ca9e0; /* Light blue button */
-    padding: 10px 20px;
-    border-radius: 5px;
-    color: white !important;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 0.875rem;
-    margin-top: 10px;
-    display: inline-flex;
-    align-items: center;
-}
-
-.contact-button i {
-    margin-left: 10px;
-}
-
-.image-container {
-    width: 50%;
-    position: absolute;
-    bottom: 9px;
-    right: -1px;
-    z-index: 2;
-}
-
-.image-container img {
-    width: 100%;
-    position: relative;
-    border-radius: 10px;
-}
-
-.water-bubble {
-    position: absolute;
-    right: 100px; /* Adjust based on bubble positioning */
-    top: 50px; /* Adjust based on bubble positioning */
-    width: 200px;
-    height: 200px;
-    background-color: #87CEEB; /* Light blue bubble color */
-    border-radius: 50%;
-    z-index: 1;
-    opacity: 0.4; /* Semi-transparent bubble */
-}
-
-
-.recent-post-item {
-    margin-bottom: 20px;
-}
-
-.recent-post-img {
-    width: 75px;
-    height: 75px;
-    margin-right: 15px;
-}
-
-.recent-post-content {
-    margin-left: 15px;
-}
-
-.recent-post-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: #000;
-    text-decoration: none;
-    margin-bottom: 5px;
-}
-
-.recent-post-title:hover {
-    text-decoration: underline;
-}
-
-.recent-post-date {
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-}
-
-.custom-spacing-t-2 {
-    margin-top: 10px;
-}
-
-.recent-posts-title {
-    font-size: 12px; /* text-lg */
-    font-weight: 600; /* font-semibold */
-    margin-top: 1.25rem; /* mt-5 */
-}
-
-.recent-posts-underline {
-    width: 63px;
-    border-bottom: 2px solid #070707;
-}
-
-.post-categories {
-    display: flex;
-    flex-wrap: wrap;
-    font-size: 12px;
-    gap: 10px;
-}
-
-
-.category {
-    width: 30%;
-    height: 30px;
-    /* margin-top: 1rem; */
-    border-radius: 3px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid rgba(166, 166, 166, 0.3);
-    /* border-[#A6A6A64D] */
-    /* margin-right: 5px; */
-}
-/* Dropdown styling */
-#search-results {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-}
-
-#search-results li {
-    padding: 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #eee;
-}
-
-#search-results li:hover {
-    background-color: #f0f0f0;
-}
-
-.business-platform {
-    width: 100%;
-    max-width: 295px;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #0E4F70;
-    margin-top: 2rem;
-    /* mt-8 */
-    color: white;
-    padding: 1rem;
-}
-
-.business-text {
-    font-weight: 400;
-    margin-bottom: 1.25rem;
-    /* mb-5 */
-    text-align: center;
-    font-size: 18px;
-    line-height: 1.75rem;
-    /* leading-7 */
-}
-
-.contact-us-button {
-    width: 100%;
-    max-width: 121px;
-    height: 43px;
-    background-color: #39A0D4;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-    text-align: center;
-}
-
-@media (max-width: 768px) {
     .recent-posts {
-        top: auto;
-        right: auto;
+        max-width: 360px;
+        margin-top: 50px;
+    }
+
+    .business-card {
         position: relative;
-        margin: 1rem 0;
-    }
-
-    .business-platform {
-        max-width: 100%;
-        padding: 2rem;
-    }
-
-    .category {
-        width: 45%;
-        margin-bottom: 0.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .business-text {
-        font-size: 16px;
-        line-height: 1.5rem;
-    }
-
-    .category {
         width: 100%;
+        height: 310px;
+        background-color: #175e7e;
+        border-radius: 10px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: left;
+        color: white;
+        overflow: hidden;
+    }
+
+    .card-content {
+        z-index: 2;
+        position: relative;
+        width: 100%;
+        /* Content should be centered */
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        /* Adjust font size for prominence */
+        font-weight: 600;
+        color: white;
+        height: 6.2rem;
+        width: 71%;
+        margin-bottom: 20px;
+    }
+
+    .contact-button {
+        display: inline-block;
+        background-color: #2ca9e0;
+        /* Light blue button */
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: white !important;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 0.875rem;
+        margin-top: 10px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .contact-button i {
+        margin-left: 10px;
+    }
+
+    .image-container {
+        width: 50%;
+        position: absolute;
+        bottom: 9px;
+        right: -1px;
+        z-index: 2;
+    }
+
+    .image-container img {
+        width: 100%;
+        position: relative;
+        border-radius: 10px;
+    }
+
+    .water-bubble {
+        position: absolute;
+        right: 100px;
+        /* Adjust based on bubble positioning */
+        top: 50px;
+        /* Adjust based on bubble positioning */
+        width: 200px;
+        height: 200px;
+        background-color: #87CEEB;
+        /* Light blue bubble color */
+        border-radius: 50%;
+        z-index: 1;
+        opacity: 0.4;
+        /* Semi-transparent bubble */
+    }
+
+
+    .recent-post-item {
+        margin-bottom: 20px;
+    }
+
+    .recent-post-img {
+        width: 75px;
+        height: 75px;
+        margin-right: 15px;
+    }
+
+    .recent-post-content {
+        margin-left: 15px;
+    }
+
+    .recent-post-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #000;
+        text-decoration: none;
+        margin-bottom: 5px;
+    }
+
+    .recent-post-title:hover {
+        text-decoration: underline;
+    }
+
+    .recent-post-date {
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+    }
+
+    .custom-spacing-t-2 {
+        margin-top: 10px;
     }
 
     .recent-posts-title {
-        font-size: 1rem;
+        font-size: 12px;
         /* text-lg */
+        font-weight: 600;
+        /* font-semibold */
+        margin-top: 1.25rem;
+        /* mt-5 */
+    }
+
+    .recent-posts-underline {
+        width: 63px;
+        border-bottom: 2px solid #070707;
+    }
+
+    .post-categories {
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 12px;
+        gap: 10px;
+    }
+
+
+    .category {
+        width: 30%;
+        height: 30px;
+        /* margin-top: 1rem; */
+        border-radius: 3px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid rgba(166, 166, 166, 0.3);
+        /* border-[#A6A6A64D] */
+        /* margin-right: 5px; */
+    }
+
+    /* Dropdown styling */
+    #search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    #search-results li {
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+    }
+
+    #search-results li:hover {
+        background-color: #f0f0f0;
+    }
+
+    .business-platform {
+        width: 100%;
+        max-width: 295px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #0E4F70;
+        margin-top: 2rem;
+        /* mt-8 */
+        color: white;
+        padding: 1rem;
+    }
+
+    .business-text {
+        font-weight: 400;
+        margin-bottom: 1.25rem;
+        /* mb-5 */
+        text-align: center;
+        font-size: 18px;
+        line-height: 1.75rem;
+        /* leading-7 */
     }
 
     .contact-us-button {
         width: 100%;
+        max-width: 121px;
+        height: 43px;
+        background-color: #39A0D4;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        text-align: center;
     }
-}
+
+    @media (max-width: 768px) {
+        .recent-posts {
+            top: auto;
+            right: auto;
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        .business-platform {
+            max-width: 100%;
+            padding: 2rem;
+        }
+
+        .category {
+            width: 45%;
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .business-text {
+            font-size: 16px;
+            line-height: 1.5rem;
+        }
+
+        .category {
+            width: 100%;
+        }
+
+        .recent-posts-title {
+            font-size: 1rem;
+            /* text-lg */
+        }
+
+        .contact-us-button {
+            width: 100%;
+        }
+    }
 </style>
 
 
@@ -1302,38 +1311,40 @@
 
 
 <style>
-.sticky1 {
-    transition: ease .3s;
-    padding-top: 15px !important;
-    padding-bottom: 15px !important;
-}
-
-.sticky-pin {
-    position: fixed;
-    top: 0;
-    z-index: 11111;
-    background: #fff;
-    width: 100%;
-
-}
-.active{
-    border-bottom: 2px solid #EF7D28;
-    color: #00699E;
-}
-@media only screen and (max-width: 768px) {
-
-    .sb-btn {
-        position: fixed;
-        bottom: 36px !important;
-        left: 0 !important;
-        right: 0 !important;
-        width: 100% !important;
-        border-radius: 0px !important;
-        background: #fff !important;
-        z-index: 1;
-        min-width: 100%;
+    .sticky1 {
+        transition: ease .3s;
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
     }
-}
+
+    .sticky-pin {
+        position: fixed;
+        top: 0;
+        z-index: 11111;
+        background: #fff;
+        width: 100%;
+
+    }
+
+    .active {
+        border-bottom: 2px solid #EF7D28;
+        color: #00699E;
+    }
+
+    @media only screen and (max-width: 768px) {
+
+        .sb-btn {
+            position: fixed;
+            bottom: 36px !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            border-radius: 0px !important;
+            background: #fff !important;
+            z-index: 1;
+            min-width: 100%;
+        }
+    }
 </style>
 
 <section class="">
@@ -1371,165 +1382,165 @@
 </section>
 
 <style>
-.bg-black {
-    background-color: #06364E80;
-    border-radius: 10px;
-}
+    .bg-black {
+        background-color: #06364E80;
+        border-radius: 10px;
+    }
 
-.subscription-form {
-    position: relative;
-    display: flex;
-    border: 1px solid #ccc;
-    /* Light gray border */
-    border-radius: 4px;
-    /* Rounded corners */
-}
+    .subscription-form {
+        position: relative;
+        display: flex;
+        border: 1px solid #ccc;
+        /* Light gray border */
+        border-radius: 4px;
+        /* Rounded corners */
+    }
 
-.subscription-form input[type="email"] {
-    border: none;
-    padding: 10px 15px 10px 40px;
-    width: 100%;
-    border-radius: 4px 0 0 4px;
-    /* Rounded left corners */
-}
+    .subscription-form input[type="email"] {
+        border: none;
+        padding: 10px 15px 10px 40px;
+        width: 100%;
+        border-radius: 4px 0 0 4px;
+        /* Rounded left corners */
+    }
 
-.subscription-form button {
-    border: none;
-    background-color: #EF7D28;
-    /* Orange background */
-    color: black;
-    font-weight: 500;
-    /* White text */
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 0 4px 4px 0;
-    /* Rounded right corners */
-    transition: background-color 0.3s;
-    /* Smooth transition for hover effect */
-}
+    .subscription-form button {
+        border: none;
+        background-color: #EF7D28;
+        /* Orange background */
+        color: black;
+        font-weight: 500;
+        /* White text */
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 0 4px 4px 0;
+        /* Rounded right corners */
+        transition: background-color 0.3s;
+        /* Smooth transition for hover effect */
+    }
 
-.subscription-form button:hover {
-    background-color: #e69500;
-    /* Darker orange on hover */
-}
+    .subscription-form button:hover {
+        background-color: #e69500;
+        /* Darker orange on hover */
+    }
 
-.custom-section {
-    margin-left: 100px;
-    margin-right: 100px;
-}
-
-.bg-cover {
-    background-size: cover;
-    background-position: center;
-}
-
-.w-60 {
-    width: 60%;
-}
-
-.w-40 {
-    width: 40%;
-}
-
-.custom-bg {
-    height: 275px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    /* padding: 60px; */
-}
-
-.custom-bg h2 {
-    font-weight: 700;
-    font-size: 2.25rem;
-    line-height: 2.5rem;
-}
-
-.btn-primary {
-    background-color: #EF7D28;
-    border: none;
-}
-
-.btn-primary:hover {
-    background-color: #005ea1;
-}
-
-@media (max-width: 768px) {
     .custom-section {
-        margin-left: 20px;
-        margin-right: 20px;
+        margin-left: 100px;
+        margin-right: 100px;
     }
 
-    .w-60,
+    .bg-cover {
+        background-size: cover;
+        background-position: center;
+    }
+
+    .w-60 {
+        width: 60%;
+    }
+
     .w-40 {
-        width: 100%;
+        width: 40%;
     }
 
-    .d-flex {
-        flex-direction: column;
+    .custom-bg {
+        height: 275px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        /* padding: 60px; */
     }
 
-    .btn {
-        margin-top: 10px;
-        width: 100%;
+    .custom-bg h2 {
+        font-weight: 700;
+        font-size: 2.25rem;
+        line-height: 2.5rem;
     }
-}
+
+    .btn-primary {
+        background-color: #EF7D28;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #005ea1;
+    }
+
+    @media (max-width: 768px) {
+        .custom-section {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .w-60,
+        .w-40 {
+            width: 100%;
+        }
+
+        .d-flex {
+            flex-direction: column;
+        }
+
+        .btn {
+            margin-top: 10px;
+            width: 100%;
+        }
+    }
 </style>
 
 
 
 
 <script>
-function setPagenumber(k) {
-    var pageNaumber = $(k).attr('data-page')
-    $('#page1').val(pageNaumber).change();
-    return false;
-}
+    function setPagenumber(k) {
+        var pageNaumber = $(k).attr('data-page')
+        $('#page1').val(pageNaumber).change();
+        return false;
+    }
 
-$(document).ready(function() {
+    $(document).ready(function() {
 
 
-    var stickyElement = $(".sticky1"),
-        stickyClass = "sticky-pin",
-        stickyPos = stickyElement.offset().top, //Distance from the top of the window.
-        stickyHeight;
+        var stickyElement = $(".sticky1"),
+            stickyClass = "sticky-pin",
+            stickyPos = stickyElement.offset().top, //Distance from the top of the window.
+            stickyHeight;
 
-    //Create a negative margin to prevent content 'jumps':
-    stickyElement.after('<div class="jumps-prevent"></div>');
+        //Create a negative margin to prevent content 'jumps':
+        stickyElement.after('<div class="jumps-prevent"></div>');
 
-    function jumpsPrevent() {
-        stickyHeight = stickyElement.innerHeight();
-        stickyElement.css({
-            "margin-bottom": "-" + stickyHeight + "px"
+        function jumpsPrevent() {
+            stickyHeight = stickyElement.innerHeight();
+            stickyElement.css({
+                "margin-bottom": "-" + stickyHeight + "px"
+            });
+            stickyElement.next().css({
+                "padding-top": +stickyHeight + "px"
+            });
+        };
+        jumpsPrevent(); //Run.
+
+        //Function trigger:
+        $(window).resize(function() {
+            jumpsPrevent();
         });
-        stickyElement.next().css({
-            "padding-top": +stickyHeight + "px"
+
+        //Sticker function:
+        function stickerFn() {
+            var winTop = $(this).scrollTop();
+            //Check element position:
+            winTop >= stickyPos ?
+                stickyElement.addClass(stickyClass) :
+                stickyElement.removeClass(stickyClass) //Boolean class switcher.
+        };
+        stickerFn(); //Run.
+
+        //Function trigger:
+        $(window).scroll(function() {
+            stickerFn();
         });
-    };
-    jumpsPrevent(); //Run.
-
-    //Function trigger:
-    $(window).resize(function() {
-        jumpsPrevent();
+        const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+        observer.observe();
     });
-
-    //Sticker function:
-    function stickerFn() {
-        var winTop = $(this).scrollTop();
-        //Check element position:
-        winTop >= stickyPos ?
-            stickyElement.addClass(stickyClass) :
-            stickyElement.removeClass(stickyClass) //Boolean class switcher.
-    };
-    stickerFn(); //Run.
-
-    //Function trigger:
-    $(window).scroll(function() {
-        stickerFn();
-    });
-    const observer = lozad(); // lazy loads elements with default selector as '.lozad'
-    observer.observe();
-});
 </script>
 <!-- <div class="container text-center margin-bottom-50">
     <button type="button" class="btn btn-primary sb-btn  " style="max-width:300px;" data-toggle="modal" data-target="#exampleModal"><?php echo  $this->tag->getTag('subscribe_to_our_free_newslett', 'Subscribe to our free newsletter'); ?></button>

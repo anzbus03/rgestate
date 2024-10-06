@@ -116,16 +116,15 @@ class BloglistController extends Controller
 		Yii::app()->end();
 	}
 
-	public function actionDetails($slug)
+	public function actionDetails($slug, $page = "1")
 	{
-
-
 		$model  = BlogArticle::model()->blogBySlug($slug);
 
 		if (empty($model)) {
 			throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
 		}
 
+		$ads = Article::model()->findAll();
 
 		$ip = Yii::app()->request->getUserHostAddress();
 		$articleView = new ArticleView;
@@ -165,7 +164,7 @@ class BloglistController extends Controller
 		$category = ArticleCategory::model()->getBlogCategories(20);
 		// $this->getData('pageStyles')->add(array('src' =>  Yii::app()->apps->getBaseUrl('assets/css/new_blog.css?q=9')));
 
-		$this->render("details", compact('model', 'category', 'cat', 'latest', 'popular', 'imageUrl'));
+		$this->render("details", compact('model', 'ads', 'category', 'cat', 'latest', 'popular', 'imageUrl'));
 	}
 
 	public function actionRuntimeloader()

@@ -125,7 +125,8 @@
 .category-menu {
     border-bottom: 1px solid #A6A6A633;
 }
-.btn:hover{
+
+.btn:hover {
     color: #FFF;
 }
 </style>
@@ -173,11 +174,12 @@
     }
 }
 
-.active{
+.active {
     border-bottom: 2px solid #EF7D28;
     color: #00699E;
 }
-.mb-4{
+
+.mb-4 {
     margin-bottom: 10px;
 }
 </style>
@@ -210,39 +212,484 @@
     </div>
 </section>
 
+<style>
+.recent-posts {
+    max-width: 360px;
+    margin-top: 50px;
+}
+
+.business-card {
+    position: relative;
+    width: 100%;
+    height: 310px;
+    background-color: #175e7e;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    color: white;
+    overflow: hidden;
+}
+
+.card-content {
+    z-index: 2;
+    position: relative;
+    width: 100%;
+    /* Content should be centered */
+}
+
+.card-title {
+    font-size: 1.5rem;
+    /* Adjust font size for prominence */
+    font-weight: 600;
+    color: white;
+    height: 6.2rem;
+    width: 71%;
+    margin-bottom: 20px;
+}
+
+.contact-button {
+    display: inline-block;
+    background-color: #2ca9e0;
+    /* Light blue button */
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white !important;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.875rem;
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.contact-button i {
+    margin-left: 10px;
+}
+
+.image-container {
+    width: 50%;
+    position: absolute;
+    bottom: 9px;
+    right: -1px;
+    z-index: 2;
+}
+
+.image-container img {
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+}
+
+.water-bubble {
+    position: absolute;
+    right: 100px;
+    /* Adjust based on bubble positioning */
+    top: 50px;
+    /* Adjust based on bubble positioning */
+    width: 200px;
+    height: 200px;
+    background-color: #87CEEB;
+    /* Light blue bubble color */
+    border-radius: 50%;
+    z-index: 1;
+    opacity: 0.4;
+    /* Semi-transparent bubble */
+}
+
+
+.recent-post-item {
+    margin-bottom: 20px;
+}
+
+.recent-post-img {
+    width: 75px;
+    height: 75px;
+    margin-right: 15px;
+}
+
+.recent-post-content {
+    margin-left: 15px;
+}
+
+.recent-post-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #000;
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.recent-post-title:hover {
+    text-decoration: underline;
+}
+
+.recent-post-date {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.custom-spacing-t-2 {
+    margin-top: 10px;
+}
+
+.recent-posts-title {
+    font-size: 12px;
+    /* text-lg */
+    font-weight: 600;
+    /* font-semibold */
+    margin-top: 1.25rem;
+    /* mt-5 */
+}
+
+.recent-posts-underline {
+    width: 63px;
+    border-bottom: 2px solid #070707;
+}
+
+.post-categories {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 12px;
+    gap: 10px;
+}
+
+
+.category {
+    width: 30%;
+    height: 30px;
+    /* margin-top: 1rem; */
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid rgba(166, 166, 166, 0.3);
+    /* border-[#A6A6A64D] */
+    /* margin-right: 5px; */
+}
+
+/* Dropdown styling */
+#search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+#search-results li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+#search-results li:hover {
+    background-color: #f0f0f0;
+}
+
+.business-platform {
+    width: 100%;
+    max-width: 295px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #0E4F70;
+    margin-top: 2rem;
+    /* mt-8 */
+    color: white;
+    padding: 1rem;
+}
+
+.business-text {
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+    /* mb-5 */
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.75rem;
+    /* leading-7 */
+}
+
+.contact-us-button {
+    width: 100%;
+    max-width: 121px;
+    height: 43px;
+    background-color: #39A0D4;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .recent-posts {
+        top: auto;
+        right: auto;
+        position: relative;
+        margin: 1rem 0;
+    }
+
+    .business-platform {
+        max-width: 100%;
+        padding: 2rem;
+    }
+
+    .category {
+        width: 45%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .business-text {
+        font-size: 16px;
+        line-height: 1.5rem;
+    }
+
+    .category {
+        width: 100%;
+    }
+
+    .recent-posts-title {
+        font-size: 1rem;
+        /* text-lg */
+    }
+
+    .contact-us-button {
+        width: 100%;
+    }
+}
+
+.w-3-4 {
+    /* width: 75%; */
+}
+
+.bog-content {
+    display: flex
+}
+
+.space-y-8>*+* {
+    margin-top: 32px;
+
+}
+
+.space-x-10>*+* {
+    margin-left: 60px;
+
+}
+
+.custom-rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.custom-bg-blue {
+    background-color: #00699E;
+}
+
+.custom-text-blue {
+    color: #00699E;
+}
+
+.custom-border-gray {
+    border-color: #A6A6A633;
+}
+
+.custom-underline {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 10px;
+}
+
+.custom-rotate-90 {
+    transform: rotate(90deg);
+}
+
+.custom-spacing-y-4 {
+    margin-top: 16px;
+    /* Assuming 4 spacing units = 16px */
+}
+
+.custom-spacing-t-2 {
+    border-top: 2px solid #A6A6A633;
+    margin: 10px 0;
+}
+
+.custom-bg-dark-blue {
+    background-color: #0E4F70;
+}
+
+.custom-bg-light-blue {
+    background-color: #39A0D4;
+}
+
+.custom-rounded-small {
+    border-radius: 3px;
+}
+
+.custom-rounded-md {
+    border-radius: 6px;
+}
+
+.custom-rounded-btn {
+    border-radius: 10px;
+}
+
+
+/* sidebar  */
+.blog-detials {
+    width: 75%;
+}
+
+.blog-sidebar {
+    width: 25%;
+}
+
+.blog-sidebar a {
+    font-family: 'Inter';
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: left;
+    color: #231F20;
+}
+
+.blog-sidebar .recent-post-date {
+    font-family: 'Poppins';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+    text-align: left;
+    color: #656865;
+    /* margin-top: 15px; */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.blog-sidebar .flex-column {
+    flex-direction: column;
+}
+
+.sidebar-title {
+    /* font-family: Inter; */
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 32px;
+    text-align: left;
+    color: #00699E;
+}
+
+.sidebar-search {
+    height: 52px;
+    margin-bottom: 20px;
+    border: 1px solid #A6A6A633
+}
+
+.sidebar-search input {
+    padding-left: 15px;
+    border-radius: 6px;
+}
+
+.sidebar-search input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+.sidebar-search .sidebar-search-icon {
+    width: 60px;
+    height: 50px;
+    font-size: 17px;
+    text-align: center;
+}
+
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #007bff;
+}
+
+
+@media (max-width: 768px) {
+    .blog-container {
+        gap: 50px;
+    }
+
+    .expertSection {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .blog-detials {
+        width: 100%;
+    }
+
+    /* blog content  */
+    .blog-content {
+        width: 100%;
+    }
+
+    /* sidebar  */
+    .blog-sidebar {
+        width: 100%;
+        margin-left: 0px;
+    }
+
+    .sidebar-search {
+        flex-direction: row !important;
+    }
+
+    .recent-post div {
+        /* align-items: start; */
+    }
+}
+</style>
 <!-- <pre><?php print_r($model) ?></pre> -->
 <!-- main content  -->
-<div class="expertSection">
-    <?php
-    if (isset($model)) {
-        $timthumb =  Yii::app()->apps->getBaseUrl('timthumb.php');
-    ?>
-    <!-- <img style="object-fit: contain;margin-top:10px;display:block;" src="<?php echo @$imageUrl; ?>"
+<div class="d-flex justify-content-between align-items-start space-x-10 expertSection">
+
+    <div class="blog-detials">
+        <?php
+        if (isset($model)) {
+            $timthumb =  Yii::app()->apps->getBaseUrl('timthumb.php');
+        ?>
+        <!-- <img style="object-fit: contain;margin-top:10px;display:block;" src="<?php echo @$imageUrl; ?>"
         class="attachment-blog-image size-blog-image wp-post-image" alt="<?php echo $model->title; ?>"
         srcset="<?php echo $imageUrl; ?> 2200w,<?php echo $timthumb . '?src=' . @$imageUrl . '&h=167&w=300&zc=1'; ?> 300w,<?php echo $timthumb . '?src=' . @$imageUrl . '&h=427&w=768&zc=1'; ?> 768w,<?php echo $timthumb . '?src=' . @$imageUrl . '&h=569&w=1024&zc=1'; ?> 1024w"
         sizes="(max-width: 2200px) 100vw, 2200px" width="2200" height="1222"> -->
-    <?php } ?>
-    
-    <?php 
-    if (!empty($model->featured_image) && !is_null($model->featured_image)){
-        $featuredImageUrl = Yii::app()->baseUrl . '/uploads/images/' . $model->featured_image;
-    } else {
-        preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $model->content, $featuredImageUrl);
-    }
-    $cleanedContent = preg_replace('/<img[^>]+>/i', '', $model->content);
+        <?php } ?>
 
-    ?>
-            <h3 class="mb-5" style="color: #00699E;font-size: 28px;font:Poppins;font-weight:600;"><?php echo $model->title ?></h3>
+        <?php
+        if (!empty($model->featured_image) && !is_null($model->featured_image)) {
+            $featuredImageUrl = Yii::app()->baseUrl . '/uploads/images/' . $model->featured_image;
+        } else {
+            preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $model->content, $featuredImageUrl);
+        }
+        $cleanedContent = preg_replace('/<img[^>]+>/i', '', $model->content);
 
-    <img
-        style="width: 100%;"
-        src="<?php echo is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl; ?>"
-        class="img-fluid" style="object-fit: cover;" alt="<?php echo $model->title ?>">
-    <div class="tlText" style="margin-top: 40px;">
-        <p class="dtlParagrap">
-            <?php echo $cleanedContent ?>
-        </p>
-        <!-- <div class="row blog-service-list">
+        ?>
+        <h3 class="mb-5" style="color: #00699E;font-size: 28px;font:Poppins;font-weight:600;">
+            <?php echo $model->title ?>
+        </h3>
+
+        <img style="width: 100%;"
+            src="<?php echo is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl; ?>"
+            class="img-fluid" style="object-fit: cover;" alt="<?php echo $model->title ?>">
+        <div class="tlText" style="margin-top: 40px;">
+            <p class="dtlParagrap">
+                <?php echo $cleanedContent ?>
+            </p>
+            <!-- <div class="row blog-service-list">
             <div class="col-12 col-md-6 col-lg-4 mb-4">
                 <div class="d-flex align-items-center">
                     <span class="dtlIcon m-2"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"
@@ -355,79 +802,79 @@
         </div> -->
 
 
-        <!-- <p class="dtlParagrap">Accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae abillo
+            <!-- <p class="dtlParagrap">Accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae abillo
             inventore veritatis et quasi
             architecto beatae vitae dicta sunt explicabo. Nemo enim epsam voluptatem quia voluptas sit aspernature
         </p> -->
-        <div class="d-flex align-items-center tag-and-postin"
-            style="justify-content: space-between; margin-top:33px; margin-bottom:27px;">
-            <div class="d-flex">
-                <?php
-                if (!empty($model->tags)) {
-                    echo '
+            <div class="d-flex align-items-center tag-and-postin"
+                style="justify-content: space-between; margin-top:33px; margin-bottom:27px;">
+                <div class="d-flex">
+                    <?php
+                    if (!empty($model->tags)) {
+                        echo '
                     <h4 class="mb-1" style="font-size: 18px;font-weight: 600;line-height: 32px;text-align: left;">
                         <span >Tags:<span>
                     </h4>';
-                    $tagdata = $model->tags;
-                    $tags = explode(',', $tagdata);
-                } else {
-                    $tags = [];
-                }
-                ?>
-                <?php foreach ($tags as $tag) { ?>
-                <span class="border border-secondary text-muted px-2" style="border-color: #A6A6A64D;">
-                    TEST
-                    <?php echo htmlspecialchars(trim($tag)); ?>
-                </span>
-                <?php } ?>
-            </div>
-            <!-- <div class="d-flex" style="font-size: 18px;font-weight: 600;line-height: 32px;text-align: left;">
+                        $tagdata = $model->tags;
+                        $tags = explode(',', $tagdata);
+                    } else {
+                        $tags = [];
+                    }
+                    ?>
+                    <?php foreach ($tags as $tag) { ?>
+                    <span class="border border-secondary text-muted px-2" style="border-color: #A6A6A64D;">
+                        TEST
+                        <?php echo htmlspecialchars(trim($tag)); ?>
+                    </span>
+                    <?php } ?>
+                </div>
+                <!-- <div class="d-flex" style="font-size: 18px;font-weight: 600;line-height: 32px;text-align: left;">
                 <span class="h5 fw-bold">Posted In</span>
                 <span class="text-white postsIn rounded">Business Relator Work</span>
                 <span class="text-white postsIn rounded">Investment Work</span>
             </div> -->
-        </div>
-
-        <div class="share-this">
-            <span>Share This:</span>
-            <div>
-                <a href="https://www.facebook.com/sharer.php?u=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>"
-                    class="share-icon rounded-circle p-2">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M0 9.05025C0 13.5247 3.24975 17.2455 7.5 18V11.4998H5.25V9H7.5V6.99975C7.5 4.74975 8.94975 3.50025 11.0002 3.50025C11.6497 3.50025 12.3503 3.6 12.9998 3.69975V6H11.85C10.7498 6 10.5 6.54975 10.5 7.25025V9H12.9L12.5002 11.4998H10.5V18C14.7502 17.2455 18 13.5255 18 9.05025C18 4.0725 13.95 0 9 0C4.05 0 0 4.0725 0 9.05025Z"
-                            fill="white" />
-                    </svg>
-                </a>
-                <a href="https://twitter.com/intent/tweet?original_referer=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>&amp;url=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>&amp;text=<?php echo urlencode($model->title); ?>"
-                    class="share-icon rounded-circle p-2">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M9 0C4.02991 0 0 4.02991 0 9C0 13.9701 4.02991 18 9 18C13.9701 18 18 13.9701 18 9C18 4.02991 13.9701 0 9 0ZM13.3252 6.78415C13.3312 6.87857 13.3312 6.97701 13.3312 7.07344C13.3312 10.0225 11.0853 13.4196 6.98103 13.4196C5.7154 13.4196 4.54219 13.052 3.55379 12.4192C3.7346 12.4393 3.90737 12.4473 4.09219 12.4473C5.13683 12.4473 6.0971 12.0938 6.8625 11.4951C5.88214 11.475 5.05848 10.8321 4.77723 9.94821C5.12076 9.99844 5.43013 9.99844 5.78371 9.90804C5.27891 9.80548 4.8252 9.53133 4.49963 9.13215C4.17407 8.73298 3.99674 8.23341 3.99777 7.7183V7.69018C4.29308 7.85692 4.64062 7.95937 5.00424 7.97344C4.69857 7.76972 4.44788 7.49373 4.27442 7.16993C4.10096 6.84613 4.01007 6.48452 4.00982 6.11719C4.00982 5.70134 4.1183 5.32165 4.31317 4.99219C4.87347 5.68193 5.57263 6.24604 6.36522 6.64788C7.15781 7.04971 8.02609 7.28026 8.91362 7.32455C8.59821 5.80781 9.73125 4.58036 11.0933 4.58036C11.7362 4.58036 12.3147 4.84955 12.7225 5.28348C13.2268 5.18906 13.7089 5.00022 14.1388 4.7471C13.9721 5.26339 13.6225 5.69933 13.1585 5.97455C13.6085 5.92634 14.0424 5.80179 14.4442 5.62701C14.1408 6.07299 13.7612 6.46875 13.3252 6.78415Z"
-                            fill="white" />
-                    </svg>
-                </a>
-                <a href="#" class="share-icon rounded-circle p-2">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M7.99998 1.44147C10.1361 1.44147 10.3891 1.4496 11.2327 1.48809C12.0126 1.52369 12.4362 1.65401 12.7182 1.76354C13.0916 1.90867 13.3581 2.08205 13.638 2.36198C13.9179 2.64191 14.0913 2.90844 14.2364 3.28183C14.346 3.56376 14.4763 3.98735 14.5119 4.76731C14.5504 5.61091 14.5585 5.86391 14.5585 8.00002C14.5585 10.1361 14.5504 10.3891 14.5119 11.2327C14.4763 12.0127 14.346 12.4363 14.2364 12.7182C14.0913 13.0916 13.9179 13.3581 13.638 13.638C13.3581 13.918 13.0916 14.0914 12.7182 14.2365C12.4362 14.346 12.0126 14.4763 11.2327 14.5119C10.3892 14.5504 10.1362 14.5586 7.99998 14.5586C5.86375 14.5586 5.61075 14.5504 4.76731 14.5119C3.98732 14.4763 3.56373 14.346 3.28183 14.2365C2.90841 14.0914 2.64188 13.918 2.36195 13.638C2.08202 13.3581 1.90863 13.0916 1.76354 12.7182C1.65398 12.4363 1.52366 12.0127 1.48806 11.2327C1.44957 10.3891 1.44144 10.1361 1.44144 8.00002C1.44144 5.86391 1.44957 5.61091 1.48806 4.76735C1.52366 3.98735 1.65398 3.56376 1.76354 3.28183C1.90863 2.90844 2.08202 2.64191 2.36195 2.36198C2.64188 2.08205 2.90841 1.90867 3.28183 1.76354C3.56373 1.65401 3.98732 1.52369 4.76728 1.48809C5.61088 1.4496 5.86388 1.44147 7.99998 1.44147ZM7.99998 0C5.8273 0 5.55489 0.00920926 4.70161 0.0481422C3.85007 0.0870116 3.26855 0.222229 2.75966 0.420006C2.23359 0.624451 1.78745 0.897998 1.34271 1.34274C0.897966 1.78748 0.624419 2.23363 0.419974 2.7597C0.222197 3.26859 0.0869798 3.8501 0.0481104 4.70164C0.0091775 5.5549 0 5.82733 0 8.00002C0 10.1727 0.0091775 10.4451 0.0481104 11.2984C0.0869798 12.1499 0.222197 12.7314 0.419974 13.2403C0.624419 13.7664 0.897966 14.2125 1.34271 14.6573C1.78745 15.102 2.23359 15.3756 2.75966 15.58C3.26855 15.7778 3.85007 15.913 4.70161 15.9519C5.55489 15.9908 5.8273 16 7.99998 16C10.1727 16 10.4451 15.9908 11.2984 15.9519C12.1499 15.913 12.7314 15.7778 13.2403 15.58C13.7664 15.3756 14.2125 15.102 14.6573 14.6573C15.102 14.2125 15.3755 13.7664 15.58 13.2403C15.7778 12.7314 15.913 12.1499 15.9519 11.2984C15.9908 10.4451 16 10.1727 16 8.00002C16 5.82733 15.9908 5.5549 15.9519 4.70164C15.913 3.8501 15.7778 3.26859 15.58 2.7597C15.3755 2.23363 15.102 1.78748 14.6573 1.34274C14.2125 0.897998 13.7664 0.624451 13.2403 0.420006C12.7314 0.222229 12.1499 0.0870116 11.2984 0.0481422C10.4451 0.00920926 10.1727 0 7.99998 0ZM7.99998 3.89189C5.73114 3.89189 3.89186 5.73117 3.89186 8.00002C3.89186 10.2689 5.73114 12.1081 7.99998 12.1081C10.2688 12.1081 12.1081 10.2689 12.1081 8.00002C12.1081 5.73117 10.2688 3.89189 7.99998 3.89189ZM7.99998 10.6667C6.52723 10.6667 5.3333 9.47277 5.3333 8.00002C5.3333 6.52727 6.52723 5.33333 7.99998 5.33333C9.47273 5.33333 10.6667 6.52727 10.6667 8.00002C10.6667 9.47277 9.47273 10.6667 7.99998 10.6667ZM13.2304 3.72959C13.2304 4.25979 12.8006 4.68961 12.2704 4.68961C11.7402 4.68961 11.3104 4.25979 11.3104 3.72959C11.3104 3.19939 11.7402 2.7696 12.2704 2.7696C12.8006 2.7696 13.2304 3.19939 13.2304 3.72959Z"
-                            fill="white" />
-                    </svg>
-
-                </a>
-                <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>"
-                    class="share-icon rounded-circle p-2">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M3.63223 15V4.87902H0.20274V14.9999H3.63223V15ZM1.91784 3.49769C3.1134 3.49769 3.85814 2.71986 3.85814 1.74866C3.83553 0.755866 3.1134 0 1.94026 0C0.766937 3.071e-05 0 0.755896 0 1.74869C0 2.71989 0.74433 3.49772 1.89527 3.49772L1.91784 3.49769ZM5.53031 15C5.53031 15 5.57531 5.82864 5.53031 4.87905H8.96033V6.34681H8.93757C9.38857 5.65614 10.2011 4.64139 12.0512 4.64139C14.3082 4.64139 16 6.08792 16 9.1967V15H12.5705V9.58558C12.5705 8.22509 12.0743 7.29673 10.8329 7.29673C9.88558 7.29673 9.32104 7.9226 9.07311 8.52759C8.98241 8.74293 8.96033 9.04539 8.96033 9.34788V15H5.53031Z"
-                            fill="white" />
-                    </svg>
-                </a>
             </div>
 
-        </div>
-        <!-- <hr class="my-4 mx-auto custom-hr" style="color: #A6A6A633;"> -->
-        <!-- <div class="d-flex gap-3 revies">
+            <div class="share-this">
+                <span>Share This:</span>
+                <div>
+                    <a href="https://www.facebook.com/sharer.php?u=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>"
+                        class="share-icon rounded-circle p-2">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0 9.05025C0 13.5247 3.24975 17.2455 7.5 18V11.4998H5.25V9H7.5V6.99975C7.5 4.74975 8.94975 3.50025 11.0002 3.50025C11.6497 3.50025 12.3503 3.6 12.9998 3.69975V6H11.85C10.7498 6 10.5 6.54975 10.5 7.25025V9H12.9L12.5002 11.4998H10.5V18C14.7502 17.2455 18 13.5255 18 9.05025C18 4.0725 13.95 0 9 0C4.05 0 0 4.0725 0 9.05025Z"
+                                fill="white" />
+                        </svg>
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?original_referer=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>&amp;url=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>&amp;text=<?php echo urlencode($model->title); ?>"
+                        class="share-icon rounded-circle p-2">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9 0C4.02991 0 0 4.02991 0 9C0 13.9701 4.02991 18 9 18C13.9701 18 18 13.9701 18 9C18 4.02991 13.9701 0 9 0ZM13.3252 6.78415C13.3312 6.87857 13.3312 6.97701 13.3312 7.07344C13.3312 10.0225 11.0853 13.4196 6.98103 13.4196C5.7154 13.4196 4.54219 13.052 3.55379 12.4192C3.7346 12.4393 3.90737 12.4473 4.09219 12.4473C5.13683 12.4473 6.0971 12.0938 6.8625 11.4951C5.88214 11.475 5.05848 10.8321 4.77723 9.94821C5.12076 9.99844 5.43013 9.99844 5.78371 9.90804C5.27891 9.80548 4.8252 9.53133 4.49963 9.13215C4.17407 8.73298 3.99674 8.23341 3.99777 7.7183V7.69018C4.29308 7.85692 4.64062 7.95937 5.00424 7.97344C4.69857 7.76972 4.44788 7.49373 4.27442 7.16993C4.10096 6.84613 4.01007 6.48452 4.00982 6.11719C4.00982 5.70134 4.1183 5.32165 4.31317 4.99219C4.87347 5.68193 5.57263 6.24604 6.36522 6.64788C7.15781 7.04971 8.02609 7.28026 8.91362 7.32455C8.59821 5.80781 9.73125 4.58036 11.0933 4.58036C11.7362 4.58036 12.3147 4.84955 12.7225 5.28348C13.2268 5.18906 13.7089 5.00022 14.1388 4.7471C13.9721 5.26339 13.6225 5.69933 13.1585 5.97455C13.6085 5.92634 14.0424 5.80179 14.4442 5.62701C14.1408 6.07299 13.7612 6.46875 13.3252 6.78415Z"
+                                fill="white" />
+                        </svg>
+                    </a>
+                    <a href="#" class="share-icon rounded-circle p-2">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M7.99998 1.44147C10.1361 1.44147 10.3891 1.4496 11.2327 1.48809C12.0126 1.52369 12.4362 1.65401 12.7182 1.76354C13.0916 1.90867 13.3581 2.08205 13.638 2.36198C13.9179 2.64191 14.0913 2.90844 14.2364 3.28183C14.346 3.56376 14.4763 3.98735 14.5119 4.76731C14.5504 5.61091 14.5585 5.86391 14.5585 8.00002C14.5585 10.1361 14.5504 10.3891 14.5119 11.2327C14.4763 12.0127 14.346 12.4363 14.2364 12.7182C14.0913 13.0916 13.9179 13.3581 13.638 13.638C13.3581 13.918 13.0916 14.0914 12.7182 14.2365C12.4362 14.346 12.0126 14.4763 11.2327 14.5119C10.3892 14.5504 10.1362 14.5586 7.99998 14.5586C5.86375 14.5586 5.61075 14.5504 4.76731 14.5119C3.98732 14.4763 3.56373 14.346 3.28183 14.2365C2.90841 14.0914 2.64188 13.918 2.36195 13.638C2.08202 13.3581 1.90863 13.0916 1.76354 12.7182C1.65398 12.4363 1.52366 12.0127 1.48806 11.2327C1.44957 10.3891 1.44144 10.1361 1.44144 8.00002C1.44144 5.86391 1.44957 5.61091 1.48806 4.76735C1.52366 3.98735 1.65398 3.56376 1.76354 3.28183C1.90863 2.90844 2.08202 2.64191 2.36195 2.36198C2.64188 2.08205 2.90841 1.90867 3.28183 1.76354C3.56373 1.65401 3.98732 1.52369 4.76728 1.48809C5.61088 1.4496 5.86388 1.44147 7.99998 1.44147ZM7.99998 0C5.8273 0 5.55489 0.00920926 4.70161 0.0481422C3.85007 0.0870116 3.26855 0.222229 2.75966 0.420006C2.23359 0.624451 1.78745 0.897998 1.34271 1.34274C0.897966 1.78748 0.624419 2.23363 0.419974 2.7597C0.222197 3.26859 0.0869798 3.8501 0.0481104 4.70164C0.0091775 5.5549 0 5.82733 0 8.00002C0 10.1727 0.0091775 10.4451 0.0481104 11.2984C0.0869798 12.1499 0.222197 12.7314 0.419974 13.2403C0.624419 13.7664 0.897966 14.2125 1.34271 14.6573C1.78745 15.102 2.23359 15.3756 2.75966 15.58C3.26855 15.7778 3.85007 15.913 4.70161 15.9519C5.55489 15.9908 5.8273 16 7.99998 16C10.1727 16 10.4451 15.9908 11.2984 15.9519C12.1499 15.913 12.7314 15.7778 13.2403 15.58C13.7664 15.3756 14.2125 15.102 14.6573 14.6573C15.102 14.2125 15.3755 13.7664 15.58 13.2403C15.7778 12.7314 15.913 12.1499 15.9519 11.2984C15.9908 10.4451 16 10.1727 16 8.00002C16 5.82733 15.9908 5.5549 15.9519 4.70164C15.913 3.8501 15.7778 3.26859 15.58 2.7597C15.3755 2.23363 15.102 1.78748 14.6573 1.34274C14.2125 0.897998 13.7664 0.624451 13.2403 0.420006C12.7314 0.222229 12.1499 0.0870116 11.2984 0.0481422C10.4451 0.00920926 10.1727 0 7.99998 0ZM7.99998 3.89189C5.73114 3.89189 3.89186 5.73117 3.89186 8.00002C3.89186 10.2689 5.73114 12.1081 7.99998 12.1081C10.2688 12.1081 12.1081 10.2689 12.1081 8.00002C12.1081 5.73117 10.2688 3.89189 7.99998 3.89189ZM7.99998 10.6667C6.52723 10.6667 5.3333 9.47277 5.3333 8.00002C5.3333 6.52727 6.52723 5.33333 7.99998 5.33333C9.47273 5.33333 10.6667 6.52727 10.6667 8.00002C10.6667 9.47277 9.47273 10.6667 7.99998 10.6667ZM13.2304 3.72959C13.2304 4.25979 12.8006 4.68961 12.2704 4.68961C11.7402 4.68961 11.3104 4.25979 11.3104 3.72959C11.3104 3.19939 11.7402 2.7696 12.2704 2.7696C12.8006 2.7696 13.2304 3.19939 13.2304 3.72959Z"
+                                fill="white" />
+                        </svg>
+
+                    </a>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>"
+                        class="share-icon rounded-circle p-2">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M3.63223 15V4.87902H0.20274V14.9999H3.63223V15ZM1.91784 3.49769C3.1134 3.49769 3.85814 2.71986 3.85814 1.74866C3.83553 0.755866 3.1134 0 1.94026 0C0.766937 3.071e-05 0 0.755896 0 1.74869C0 2.71989 0.74433 3.49772 1.89527 3.49772L1.91784 3.49769ZM5.53031 15C5.53031 15 5.57531 5.82864 5.53031 4.87905H8.96033V6.34681H8.93757C9.38857 5.65614 10.2011 4.64139 12.0512 4.64139C14.3082 4.64139 16 6.08792 16 9.1967V15H12.5705V9.58558C12.5705 8.22509 12.0743 7.29673 10.8329 7.29673C9.88558 7.29673 9.32104 7.9226 9.07311 8.52759C8.98241 8.74293 8.96033 9.04539 8.96033 9.34788V15H5.53031Z"
+                                fill="white" />
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+            <!-- <hr class="my-4 mx-auto custom-hr" style="color: #A6A6A633;"> -->
+            <!-- <div class="d-flex gap-3 revies">
             <!-- <img class="manImage" src="./img/images 3.png" alt=""> 
             <?php if (!empty($model->author->image)) { ?>
             <img src="<?php echo Yii::app()->apps->getBaseUrl() . "uploads/images/" . $model->author->image ?>"
@@ -477,9 +924,9 @@
             </div>
         </div> -->
 
-        <hr class="my-4 mx-auto custom-hr" style="color: #A6A6A633;">
-        <?php 
-            $modelCritera=Article::model()->findPosts($formData,$count_future=false,1,$calculate=false);
+            <hr class="my-4 mx-auto custom-hr" style="color: #A6A6A633;">
+            <?php
+            $modelCritera = Article::model()->findPosts($formData, $count_future = false, 1, $calculate = false);
             // $modelCritera->limit = 6; 
             $result = Article::model()->findAll($modelCritera);
 
@@ -516,7 +963,7 @@
                 <div class="left">
                     <div>
                         <a href="' . Yii::app()->createUrl('bloglist/details', array('slug' => $previous_post->slug)) . '" class="previous-post">
-                            <h6>'.htmlspecialchars(mb_strimwidth($previous_post->title, 0, 40, '...')).'</h6>
+                            <h6>' . htmlspecialchars(mb_strimwidth($previous_post->title, 0, 40, '...')) . '</h6>
                             <span class="text-muted d-flex align-items-center">
                                 <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -550,7 +997,7 @@
                                         d="M12.849 16.725H15.374C15.624 16.725 15.849 16.525 15.849 16.25V13.725C15.849 13.475 15.649 13.25 15.374 13.25H12.849C12.599 13.25 12.374 13.45 12.374 13.725V16.25C12.374 16.5 12.574 16.725 12.849 16.725ZM13.299 14.175H14.899V15.775H13.299V14.175Z"
                                         fill="#656865" />
                                 </svg>
-                                '. date('M d, Y', strtotime(!empty($previous_post->publish_date) && $previous_post->publish_date != "0000-00-00" ? $previous_post->publish_date : $previous_post->date_added)) .'
+                                ' . date('M d, Y', strtotime(!empty($previous_post->publish_date) && $previous_post->publish_date != "0000-00-00" ? $previous_post->publish_date : $previous_post->date_added)) . '
                             </span>
                         </a>
                     </div>
@@ -564,7 +1011,7 @@
                 <div class="right">
                     <div>
                         <a href="' . Yii::app()->createUrl('bloglist/details', array('slug' => $next_post->slug)) . '" class="next-post">
-                            <h6>'.htmlspecialchars(mb_strimwidth($next_post->title, 0, 30, '...')).'</h6>
+                            <h6>' . htmlspecialchars(mb_strimwidth($next_post->title, 0, 30, '...')) . '</h6>
                             <span class="text-muted d-flex align-items-center">
                                 <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -598,7 +1045,7 @@
                                         d="M12.849 16.725H15.374C15.624 16.725 15.849 16.525 15.849 16.25V13.725C15.849 13.475 15.649 13.25 15.374 13.25H12.849C12.599 13.25 12.374 13.45 12.374 13.725V16.25C12.374 16.5 12.574 16.725 12.849 16.725ZM13.299 14.175H14.899V15.775H13.299V14.175Z"
                                         fill="#656865" />
                                 </svg>
-                                '. date('M d, Y', strtotime(!empty($next_post->publish_date) && $next_post->publish_date != "0000-00-00" ? $next_post->publish_date : $next_post->date_added)) .'
+                                ' . date('M d, Y', strtotime(!empty($next_post->publish_date) && $next_post->publish_date != "0000-00-00" ? $next_post->publish_date : $next_post->date_added)) . '
                             </span>
                         </a>
                     </div>
@@ -607,115 +1054,195 @@
             }
 
             echo '</div>';
-        ?>
+            ?>
+
+        </div>
+    </div>
+
+    <!-- sidebar  -->
+    <div class="blog-sidebar bg-white custom-rounded-lg">
+        <div
+            class="d-flex align-items-center custom-border-gray custom-rounded-md mb-3 sidebar-search position-relative">
+            <input type="text" id="blog-search-input" placeholder="Enter the keywords here..." class="form-control"
+                autocomplete="off">
+            <div
+                class="d-flex justify-content-center align-items-center custom-bg-blue text-white custom-rounded-md custom-rotate-90 sidebar-search-icon">
+                <i class="fa fa-search"></i>
+            </div>
+
+            <!-- Dropdown for search results -->
+            <ul class="dropdown-menu w-100" id="search-results" style="display: none;"></ul>
+        </div>
+
+
+        <!-- recent posts -->
+        <h3 class="sidebar-title mt-4" style="margin-bottom: 25px;"><span
+                class="sidebar-title custom-underline">Recent</span> Posts</h3>
+        <div class="mt-3 recent-post">
+            <?php foreach ($ads as $d => $ad): ?>
+            <?php
+                if ($d >= 5) {
+                    break;
+                }
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $ad->content, $imges);
+                $imageSrc = !empty($imges[1]) ? $imges[1] : '/assets/img/blog/default.png';
+
+                ?>
+            <div class="d-flex align-items-center custom-spacing-y-4">
+                <!-- Dynamic Image -->
+                <img src="<?php echo !empty($ad->featured_image) ? Yii::app()->apps->getBaseUrl() . "uploads/images/" . $ad->featured_image : $imageSrc; ?>"
+                    alt="Recent Post Image" class="rounded-circle"
+                    style="width: 75px;  object-fit: cover; height: 75px; margin-right:15px; margin-bottom: 8px;">
+
+
+                <div class="d-flex flex-column ml-4">
+                    <!-- Dynamic Title -->
+                    <a href="<?php echo $this->app->createUrl('bloglist/details', array('slug' => $ad->slug)); ?>"
+                        class="text-dark" style="font-size: 14px;">
+                        <?php echo $ad->title; ?>
+                    </a>
+                    <!-- Dynamic Date -->
+                    <span class="text-muted recent-post-date" style="font-size: 12px;">
+                        <?php echo date('M j, Y', strtotime($ad->date_added)); ?>
+                    </span>
+                </div>
+            </div>
+            <div class="custom-spacing-t-2"></div>
+            <?php endforeach; ?>
+        </div>
+
+
+        <!-- recent category -->
+        <!-- <div class="business-card">
+            <div class="water-bubble"></div>
+            <div class="card-content">
+                <h2 class="card-title" style="height: 4rem;">Contact The Best Business Platform</h2>
+                <a href="/contact-us" class="contact-button">
+                    Contact Us <i class="fa fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="image-container">
+                <img src="<?php echo $this->app->apps->getBaseUrl('assets/img/blog/image.png'); ?>"
+                    alt="Business Person" />
+            </div>
+        </div> -->
+
+        <!-- get in touch  -->
+        <section class="background-image contact-box">
+            <div class="contact-overlay"></div>
+
+            <div class="getTouch">
+                <h2>GET IN TOUCH</h2>
+                <h1>Need Any Help? Or Looking For an Agent</h1>
+                <!-- <p>
+                    Accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
+                    veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem
+                    quia voluptas sit aspernatur.
+                </p>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/sharer.php?u=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>"
+                        class="share-icon rounded-circle p-2">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0 9.05025C0 13.5247 3.24975 17.2455 7.5 18V11.4998H5.25V9H7.5V6.99975C7.5 4.74975 8.94975 3.50025 11.0002 3.50025C11.6497 3.50025 12.3503 3.6 12.9998 3.69975V6H11.85C10.7498 6 10.5 6.54975 10.5 7.25025V9H12.9L12.5002 11.4998H10.5V18C14.7502 17.2455 18 13.5255 18 9.05025C18 4.0725 13.95 0 9 0C4.05 0 0 4.0725 0 9.05025Z"
+                                fill="white" />
+                        </svg>
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?original_referer=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>&amp;url=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>&amp;text=<?php echo urlencode($model->title); ?>"
+                        class="share-icon rounded-circle p-2">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9 0C4.02991 0 0 4.02991 0 9C0 13.9701 4.02991 18 9 18C13.9701 18 18 13.9701 18 9C18 4.02991 13.9701 0 9 0ZM13.3252 6.78415C13.3312 6.87857 13.3312 6.97701 13.3312 7.07344C13.3312 10.0225 11.0853 13.4196 6.98103 13.4196C5.7154 13.4196 4.54219 13.052 3.55379 12.4192C3.7346 12.4393 3.90737 12.4473 4.09219 12.4473C5.13683 12.4473 6.0971 12.0938 6.8625 11.4951C5.88214 11.475 5.05848 10.8321 4.77723 9.94821C5.12076 9.99844 5.43013 9.99844 5.78371 9.90804C5.27891 9.80548 4.8252 9.53133 4.49963 9.13215C4.17407 8.73298 3.99674 8.23341 3.99777 7.7183V7.69018C4.29308 7.85692 4.64062 7.95937 5.00424 7.97344C4.69857 7.76972 4.44788 7.49373 4.27442 7.16993C4.10096 6.84613 4.01007 6.48452 4.00982 6.11719C4.00982 5.70134 4.1183 5.32165 4.31317 4.99219C4.87347 5.68193 5.57263 6.24604 6.36522 6.64788C7.15781 7.04971 8.02609 7.28026 8.91362 7.32455C8.59821 5.80781 9.73125 4.58036 11.0933 4.58036C11.7362 4.58036 12.3147 4.84955 12.7225 5.28348C13.2268 5.18906 13.7089 5.00022 14.1388 4.7471C13.9721 5.26339 13.6225 5.69933 13.1585 5.97455C13.6085 5.92634 14.0424 5.80179 14.4442 5.62701C14.1408 6.07299 13.7612 6.46875 13.3252 6.78415Z"
+                                fill="white" />
+                        </svg>
+                    </a>
+                    <a href="#" class="share-icon rounded-circle p-2">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M7.99998 1.44147C10.1361 1.44147 10.3891 1.4496 11.2327 1.48809C12.0126 1.52369 12.4362 1.65401 12.7182 1.76354C13.0916 1.90867 13.3581 2.08205 13.638 2.36198C13.9179 2.64191 14.0913 2.90844 14.2364 3.28183C14.346 3.56376 14.4763 3.98735 14.5119 4.76731C14.5504 5.61091 14.5585 5.86391 14.5585 8.00002C14.5585 10.1361 14.5504 10.3891 14.5119 11.2327C14.4763 12.0127 14.346 12.4363 14.2364 12.7182C14.0913 13.0916 13.9179 13.3581 13.638 13.638C13.3581 13.918 13.0916 14.0914 12.7182 14.2365C12.4362 14.346 12.0126 14.4763 11.2327 14.5119C10.3892 14.5504 10.1362 14.5586 7.99998 14.5586C5.86375 14.5586 5.61075 14.5504 4.76731 14.5119C3.98732 14.4763 3.56373 14.346 3.28183 14.2365C2.90841 14.0914 2.64188 13.918 2.36195 13.638C2.08202 13.3581 1.90863 13.0916 1.76354 12.7182C1.65398 12.4363 1.52366 12.0127 1.48806 11.2327C1.44957 10.3891 1.44144 10.1361 1.44144 8.00002C1.44144 5.86391 1.44957 5.61091 1.48806 4.76735C1.52366 3.98735 1.65398 3.56376 1.76354 3.28183C1.90863 2.90844 2.08202 2.64191 2.36195 2.36198C2.64188 2.08205 2.90841 1.90867 3.28183 1.76354C3.56373 1.65401 3.98732 1.52369 4.76728 1.48809C5.61088 1.4496 5.86388 1.44147 7.99998 1.44147ZM7.99998 0C5.8273 0 5.55489 0.00920926 4.70161 0.0481422C3.85007 0.0870116 3.26855 0.222229 2.75966 0.420006C2.23359 0.624451 1.78745 0.897998 1.34271 1.34274C0.897966 1.78748 0.624419 2.23363 0.419974 2.7597C0.222197 3.26859 0.0869798 3.8501 0.0481104 4.70164C0.0091775 5.5549 0 5.82733 0 8.00002C0 10.1727 0.0091775 10.4451 0.0481104 11.2984C0.0869798 12.1499 0.222197 12.7314 0.419974 13.2403C0.624419 13.7664 0.897966 14.2125 1.34271 14.6573C1.78745 15.102 2.23359 15.3756 2.75966 15.58C3.26855 15.7778 3.85007 15.913 4.70161 15.9519C5.55489 15.9908 5.8273 16 7.99998 16C10.1727 16 10.4451 15.9908 11.2984 15.9519C12.1499 15.913 12.7314 15.7778 13.2403 15.58C13.7664 15.3756 14.2125 15.102 14.6573 14.6573C15.102 14.2125 15.3755 13.7664 15.58 13.2403C15.7778 12.7314 15.913 12.1499 15.9519 11.2984C15.9908 10.4451 16 10.1727 16 8.00002C16 5.82733 15.9908 5.5549 15.9519 4.70164C15.913 3.8501 15.7778 3.26859 15.58 2.7597C15.3755 2.23363 15.102 1.78748 14.6573 1.34274C14.2125 0.897998 13.7664 0.624451 13.2403 0.420006C12.7314 0.222229 12.1499 0.0870116 11.2984 0.0481422C10.4451 0.00920926 10.1727 0 7.99998 0ZM7.99998 3.89189C5.73114 3.89189 3.89186 5.73117 3.89186 8.00002C3.89186 10.2689 5.73114 12.1081 7.99998 12.1081C10.2688 12.1081 12.1081 10.2689 12.1081 8.00002C12.1081 5.73117 10.2688 3.89189 7.99998 3.89189ZM7.99998 10.6667C6.52723 10.6667 5.3333 9.47277 5.3333 8.00002C5.3333 6.52727 6.52723 5.33333 7.99998 5.33333C9.47273 5.33333 10.6667 6.52727 10.6667 8.00002C10.6667 9.47277 9.47273 10.6667 7.99998 10.6667ZM13.2304 3.72959C13.2304 4.25979 12.8006 4.68961 12.2704 4.68961C11.7402 4.68961 11.3104 4.25979 11.3104 3.72959C11.3104 3.19939 11.7402 2.7696 12.2704 2.7696C12.8006 2.7696 13.2304 3.19939 13.2304 3.72959Z"
+                                fill="white" />
+                        </svg>
+
+                    </a>
+                    <a href="#" class="share-icon rounded-circle p-2">
+                        <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M3.63223 15V4.87902H0.20274V14.9999H3.63223V15ZM1.91784 3.49769C3.1134 3.49769 3.85814 2.71986 3.85814 1.74866C3.83553 0.755866 3.1134 0 1.94026 0C0.766937 3.071e-05 0 0.755896 0 1.74869C0 2.71989 0.74433 3.49772 1.89527 3.49772L1.91784 3.49769ZM5.53031 15C5.53031 15 5.57531 5.82864 5.53031 4.87905H8.96033V6.34681H8.93757C9.38857 5.65614 10.2011 4.64139 12.0512 4.64139C14.3082 4.64139 16 6.08792 16 9.1967V15H12.5705V9.58558C12.5705 8.22509 12.0743 7.29673 10.8329 7.29673C9.88558 7.29673 9.32104 7.9226 9.07311 8.52759C8.98241 8.74293 8.96033 9.04539 8.96033 9.34788V15H5.53031Z"
+                                fill="white" />
+                        </svg>
+                    </a>
+                </div> -->
+            </div>
+
+
+            <div class="form-section">
+                <form style="">
+                    <div class="">
+                        <div class="form-fiels">
+                            <div class="contact-input">
+                                <svg width="13" height="12" viewBox="0 0 13 12" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M12.8075 9.60118C12.3022 8.57974 11.7103 7.68212 10.6998 7.14045C10.2812 6.90831 9.77592 6.97021 9.40059 7.27974C8.59218 7.94522 7.58166 8.3476 6.49897 8.3476C5.41627 8.3476 4.40576 7.94522 3.59734 7.27974C3.22201 6.97021 2.71675 6.90831 2.29811 7.14045C1.30203 7.68212 0.666848 8.57974 0.16159 9.60118C-0.401411 10.7309 0.594668 12 1.79285 12H11.4361C12.6342 12 13.3705 10.7309 12.8075 9.60118Z"
+                                        fill="#A9A9A9" />
+                                    <path
+                                        d="M6.5 7C8.425 7 10 5.30891 10 3.53465C10 1.7604 8.425 0 6.5 0C4.575 0 3 1.74654 3 3.53465C3 5.32277 4.575 7 6.5 7Z"
+                                        fill="#A9A9A9" />
+                                </svg>
+                                <input type="text" id="name" placeholder="Enter your name">
+                            </div>
+                            <div class="contact-input">
+                                <svg width="15" height="12" viewBox="0 0 15 12" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.9032 6.23165C7.78316 6.31964 7.64157 6.3636 7.50002 6.3636C7.35839 6.3636 7.21684 6.31964 7.0968 6.23165L1.36363 2.02734L4.54544e-05 1.02739L0 10.6818C4.54544e-05 11.0584 0.305272 11.3636 0.681816 11.3636L14.3182 11.3636C14.6948 11.3636 15 11.0583 15 10.6818V1.02734L13.6363 2.02734L7.9032 6.23165Z"
+                                        fill="#A9A9A9" />
+                                    <path d="M7.50025 4.83635L14.0951 4.54294e-05L0.905273 0L7.50025 4.83635Z"
+                                        fill="#A9A9A9" />
+                                </svg>
+
+                                <input type="email" id="email" placeholder="Enter your email address">
+                            </div>
+                            <div class="contact-input-phone col-12 col-md-12">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_19_853)">
+                                        <path
+                                            d="M15.8286 12.1339C15.2329 11.0079 13.1647 9.78708 13.0736 9.73369C12.8078 9.58241 12.5305 9.50233 12.271 9.50233C11.8851 9.50233 11.5692 9.67911 11.3778 10.0006C11.0753 10.3625 10.7001 10.7855 10.609 10.851C9.90426 11.3292 9.35256 11.2749 8.74213 10.6645L5.33521 7.25725C4.72863 6.65067 4.67287 6.09215 5.14775 5.39125C5.21419 5.29959 5.63716 4.92408 5.99903 4.62123C6.2298 4.4839 6.38819 4.27983 6.4576 4.02949C6.54984 3.69639 6.48192 3.30456 6.2642 2.92282C6.21289 2.83502 4.99143 0.766426 3.86607 0.17112C3.65607 0.0598894 3.41937 0.00115967 3.18208 0.00115967C2.79114 0.00115967 2.42334 0.15362 2.14689 0.429768L1.39409 1.18228C0.203473 2.3726 -0.227508 3.7219 0.112412 5.19251C0.395976 6.41813 1.22235 7.72234 2.56898 9.06868L6.9307 13.4304C8.63505 15.1347 10.2599 15.9991 11.7602 15.9991C12.8639 15.9991 13.8923 15.5301 14.8171 14.6056L15.5696 13.8531C16.027 13.396 16.1308 12.7049 15.8286 12.1339Z"
+                                            fill="#A9A9A9" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_19_853">
+                                            <rect width="16" height="16" fill="white" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                                <input type="tel" id="contact1" placeholder="Enter your contact number">
+                            </div>
+                        </div>
+                        <!-- <div class="row"> -->
+                        <div class="w-full contact-textarea">
+                            <div style="position: relative;">
+                                <textarea id="message" rows="3" style="height: 250px;resize: none; width: 100%;"
+                                    placeholder="Enter your message"></textarea>
+                                <p id="wordCount"
+                                    style="position: absolute; bottom: 5px; right: 10px; margin: 0; font-size: 12px; color: #555;">
+                                    0 / 50 words</p>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+
+
+                    <button type="submit" class="btn bg-Color text-white inquiry-btn">SEND INQUIRY</button>
+                </form>
+            </div>
+        </section>
 
     </div>
 </div>
 
-<!-- get in touch  -->
-<section class="background-image contact-box">
-    <div class="contact-overlay"></div>
 
-    <div class="getTouch">
-        <h2>GET IN TOUCH</h2>
-        <h1>Need Any Help? Or Looking For an Agent</h1>
-        <p>
-            Accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
-            veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem
-            quia voluptas sit aspernatur.
-        </p>
-        <div class="social-icons">
-            <a href="https://www.facebook.com/sharer.php?u=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>"
-                class="share-icon rounded-circle p-2">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M0 9.05025C0 13.5247 3.24975 17.2455 7.5 18V11.4998H5.25V9H7.5V6.99975C7.5 4.74975 8.94975 3.50025 11.0002 3.50025C11.6497 3.50025 12.3503 3.6 12.9998 3.69975V6H11.85C10.7498 6 10.5 6.54975 10.5 7.25025V9H12.9L12.5002 11.4998H10.5V18C14.7502 17.2455 18 13.5255 18 9.05025C18 4.0725 13.95 0 9 0C4.05 0 0 4.0725 0 9.05025Z"
-                        fill="white" />
-                </svg>
-            </a>
-            <a href="https://twitter.com/intent/tweet?original_referer=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>&amp;url=<?php echo urlencode(Yii::app()->createAbsoluteUrl($model->slug . '/blog')); ?>&amp;text=<?php echo urlencode($model->title); ?>"
-                class="share-icon rounded-circle p-2">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M9 0C4.02991 0 0 4.02991 0 9C0 13.9701 4.02991 18 9 18C13.9701 18 18 13.9701 18 9C18 4.02991 13.9701 0 9 0ZM13.3252 6.78415C13.3312 6.87857 13.3312 6.97701 13.3312 7.07344C13.3312 10.0225 11.0853 13.4196 6.98103 13.4196C5.7154 13.4196 4.54219 13.052 3.55379 12.4192C3.7346 12.4393 3.90737 12.4473 4.09219 12.4473C5.13683 12.4473 6.0971 12.0938 6.8625 11.4951C5.88214 11.475 5.05848 10.8321 4.77723 9.94821C5.12076 9.99844 5.43013 9.99844 5.78371 9.90804C5.27891 9.80548 4.8252 9.53133 4.49963 9.13215C4.17407 8.73298 3.99674 8.23341 3.99777 7.7183V7.69018C4.29308 7.85692 4.64062 7.95937 5.00424 7.97344C4.69857 7.76972 4.44788 7.49373 4.27442 7.16993C4.10096 6.84613 4.01007 6.48452 4.00982 6.11719C4.00982 5.70134 4.1183 5.32165 4.31317 4.99219C4.87347 5.68193 5.57263 6.24604 6.36522 6.64788C7.15781 7.04971 8.02609 7.28026 8.91362 7.32455C8.59821 5.80781 9.73125 4.58036 11.0933 4.58036C11.7362 4.58036 12.3147 4.84955 12.7225 5.28348C13.2268 5.18906 13.7089 5.00022 14.1388 4.7471C13.9721 5.26339 13.6225 5.69933 13.1585 5.97455C13.6085 5.92634 14.0424 5.80179 14.4442 5.62701C14.1408 6.07299 13.7612 6.46875 13.3252 6.78415Z"
-                        fill="white" />
-                </svg>
-            </a>
-            <a href="#" class="share-icon rounded-circle p-2">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M7.99998 1.44147C10.1361 1.44147 10.3891 1.4496 11.2327 1.48809C12.0126 1.52369 12.4362 1.65401 12.7182 1.76354C13.0916 1.90867 13.3581 2.08205 13.638 2.36198C13.9179 2.64191 14.0913 2.90844 14.2364 3.28183C14.346 3.56376 14.4763 3.98735 14.5119 4.76731C14.5504 5.61091 14.5585 5.86391 14.5585 8.00002C14.5585 10.1361 14.5504 10.3891 14.5119 11.2327C14.4763 12.0127 14.346 12.4363 14.2364 12.7182C14.0913 13.0916 13.9179 13.3581 13.638 13.638C13.3581 13.918 13.0916 14.0914 12.7182 14.2365C12.4362 14.346 12.0126 14.4763 11.2327 14.5119C10.3892 14.5504 10.1362 14.5586 7.99998 14.5586C5.86375 14.5586 5.61075 14.5504 4.76731 14.5119C3.98732 14.4763 3.56373 14.346 3.28183 14.2365C2.90841 14.0914 2.64188 13.918 2.36195 13.638C2.08202 13.3581 1.90863 13.0916 1.76354 12.7182C1.65398 12.4363 1.52366 12.0127 1.48806 11.2327C1.44957 10.3891 1.44144 10.1361 1.44144 8.00002C1.44144 5.86391 1.44957 5.61091 1.48806 4.76735C1.52366 3.98735 1.65398 3.56376 1.76354 3.28183C1.90863 2.90844 2.08202 2.64191 2.36195 2.36198C2.64188 2.08205 2.90841 1.90867 3.28183 1.76354C3.56373 1.65401 3.98732 1.52369 4.76728 1.48809C5.61088 1.4496 5.86388 1.44147 7.99998 1.44147ZM7.99998 0C5.8273 0 5.55489 0.00920926 4.70161 0.0481422C3.85007 0.0870116 3.26855 0.222229 2.75966 0.420006C2.23359 0.624451 1.78745 0.897998 1.34271 1.34274C0.897966 1.78748 0.624419 2.23363 0.419974 2.7597C0.222197 3.26859 0.0869798 3.8501 0.0481104 4.70164C0.0091775 5.5549 0 5.82733 0 8.00002C0 10.1727 0.0091775 10.4451 0.0481104 11.2984C0.0869798 12.1499 0.222197 12.7314 0.419974 13.2403C0.624419 13.7664 0.897966 14.2125 1.34271 14.6573C1.78745 15.102 2.23359 15.3756 2.75966 15.58C3.26855 15.7778 3.85007 15.913 4.70161 15.9519C5.55489 15.9908 5.8273 16 7.99998 16C10.1727 16 10.4451 15.9908 11.2984 15.9519C12.1499 15.913 12.7314 15.7778 13.2403 15.58C13.7664 15.3756 14.2125 15.102 14.6573 14.6573C15.102 14.2125 15.3755 13.7664 15.58 13.2403C15.7778 12.7314 15.913 12.1499 15.9519 11.2984C15.9908 10.4451 16 10.1727 16 8.00002C16 5.82733 15.9908 5.5549 15.9519 4.70164C15.913 3.8501 15.7778 3.26859 15.58 2.7597C15.3755 2.23363 15.102 1.78748 14.6573 1.34274C14.2125 0.897998 13.7664 0.624451 13.2403 0.420006C12.7314 0.222229 12.1499 0.0870116 11.2984 0.0481422C10.4451 0.00920926 10.1727 0 7.99998 0ZM7.99998 3.89189C5.73114 3.89189 3.89186 5.73117 3.89186 8.00002C3.89186 10.2689 5.73114 12.1081 7.99998 12.1081C10.2688 12.1081 12.1081 10.2689 12.1081 8.00002C12.1081 5.73117 10.2688 3.89189 7.99998 3.89189ZM7.99998 10.6667C6.52723 10.6667 5.3333 9.47277 5.3333 8.00002C5.3333 6.52727 6.52723 5.33333 7.99998 5.33333C9.47273 5.33333 10.6667 6.52727 10.6667 8.00002C10.6667 9.47277 9.47273 10.6667 7.99998 10.6667ZM13.2304 3.72959C13.2304 4.25979 12.8006 4.68961 12.2704 4.68961C11.7402 4.68961 11.3104 4.25979 11.3104 3.72959C11.3104 3.19939 11.7402 2.7696 12.2704 2.7696C12.8006 2.7696 13.2304 3.19939 13.2304 3.72959Z"
-                        fill="white" />
-                </svg>
-
-            </a>
-            <a href="#" class="share-icon rounded-circle p-2">
-                <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M3.63223 15V4.87902H0.20274V14.9999H3.63223V15ZM1.91784 3.49769C3.1134 3.49769 3.85814 2.71986 3.85814 1.74866C3.83553 0.755866 3.1134 0 1.94026 0C0.766937 3.071e-05 0 0.755896 0 1.74869C0 2.71989 0.74433 3.49772 1.89527 3.49772L1.91784 3.49769ZM5.53031 15C5.53031 15 5.57531 5.82864 5.53031 4.87905H8.96033V6.34681H8.93757C9.38857 5.65614 10.2011 4.64139 12.0512 4.64139C14.3082 4.64139 16 6.08792 16 9.1967V15H12.5705V9.58558C12.5705 8.22509 12.0743 7.29673 10.8329 7.29673C9.88558 7.29673 9.32104 7.9226 9.07311 8.52759C8.98241 8.74293 8.96033 9.04539 8.96033 9.34788V15H5.53031Z"
-                        fill="white" />
-                </svg>
-            </a>
-        </div>
-    </div>
-
-
-    <div class="form-section">
-        <form style="padding: 10px 50px 0 0;">
-            <div class="row">
-                <div class="form-fiels">
-                    <div class="contact-input">
-                        <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M12.8075 9.60118C12.3022 8.57974 11.7103 7.68212 10.6998 7.14045C10.2812 6.90831 9.77592 6.97021 9.40059 7.27974C8.59218 7.94522 7.58166 8.3476 6.49897 8.3476C5.41627 8.3476 4.40576 7.94522 3.59734 7.27974C3.22201 6.97021 2.71675 6.90831 2.29811 7.14045C1.30203 7.68212 0.666848 8.57974 0.16159 9.60118C-0.401411 10.7309 0.594668 12 1.79285 12H11.4361C12.6342 12 13.3705 10.7309 12.8075 9.60118Z"
-                                fill="#A9A9A9" />
-                            <path
-                                d="M6.5 7C8.425 7 10 5.30891 10 3.53465C10 1.7604 8.425 0 6.5 0C4.575 0 3 1.74654 3 3.53465C3 5.32277 4.575 7 6.5 7Z"
-                                fill="#A9A9A9" />
-                        </svg>
-                        <input type="text" id="name" placeholder="Enter your name">
-                    </div>
-                    <div class="contact-input">
-                        <svg width="15" height="12" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M7.9032 6.23165C7.78316 6.31964 7.64157 6.3636 7.50002 6.3636C7.35839 6.3636 7.21684 6.31964 7.0968 6.23165L1.36363 2.02734L4.54544e-05 1.02739L0 10.6818C4.54544e-05 11.0584 0.305272 11.3636 0.681816 11.3636L14.3182 11.3636C14.6948 11.3636 15 11.0583 15 10.6818V1.02734L13.6363 2.02734L7.9032 6.23165Z"
-                                fill="#A9A9A9" />
-                            <path d="M7.50025 4.83635L14.0951 4.54294e-05L0.905273 0L7.50025 4.83635Z" fill="#A9A9A9" />
-                        </svg>
-    
-                        <input type="email" id="email" placeholder="Enter your email address">
-                    </div>
-                    <div class="contact-input-phone col-12 col-md-12">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g clip-path="url(#clip0_19_853)">
-                                <path
-                                    d="M15.8286 12.1339C15.2329 11.0079 13.1647 9.78708 13.0736 9.73369C12.8078 9.58241 12.5305 9.50233 12.271 9.50233C11.8851 9.50233 11.5692 9.67911 11.3778 10.0006C11.0753 10.3625 10.7001 10.7855 10.609 10.851C9.90426 11.3292 9.35256 11.2749 8.74213 10.6645L5.33521 7.25725C4.72863 6.65067 4.67287 6.09215 5.14775 5.39125C5.21419 5.29959 5.63716 4.92408 5.99903 4.62123C6.2298 4.4839 6.38819 4.27983 6.4576 4.02949C6.54984 3.69639 6.48192 3.30456 6.2642 2.92282C6.21289 2.83502 4.99143 0.766426 3.86607 0.17112C3.65607 0.0598894 3.41937 0.00115967 3.18208 0.00115967C2.79114 0.00115967 2.42334 0.15362 2.14689 0.429768L1.39409 1.18228C0.203473 2.3726 -0.227508 3.7219 0.112412 5.19251C0.395976 6.41813 1.22235 7.72234 2.56898 9.06868L6.9307 13.4304C8.63505 15.1347 10.2599 15.9991 11.7602 15.9991C12.8639 15.9991 13.8923 15.5301 14.8171 14.6056L15.5696 13.8531C16.027 13.396 16.1308 12.7049 15.8286 12.1339Z"
-                                    fill="#A9A9A9" />
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_19_853">
-                                    <rect width="16" height="16" fill="white" />
-                                </clipPath>
-                            </defs>
-                        </svg>
-                        <input type="tel" id="contact1" placeholder="Enter your contact number">
-                    </div>
-                </div>
-                <!-- <div class="row"> -->
-                <div class="w-full contact-textarea">
-                    <div style="position: relative;">
-                        <textarea id="message" rows="3" style="height: 250px;resize: none; width: 100%;" placeholder="Enter your message"></textarea>
-                        <p id="wordCount" style="position: absolute; bottom: 5px; right: 10px; margin: 0; font-size: 12px; color: #555;">0 / 50 words</p>
-                    </div>
-                </div>
-                <!-- </div> -->
-            </div>
-
-
-            <button type="submit" class="btn bg-Color text-white inquiry-btn">SEND INQUIRY</button>
-        </form>
-    </div>
-</section>
 
 <section class="subscription-section">
     <div class="position-relative subscription-bg">
@@ -739,22 +1266,59 @@
     </div>
 </section>
 <script>
-    const message = document.getElementById('message');
-    const wordCount = document.getElementById('wordCount');
-    const maxWords = 50;
+const message = document.getElementById('message');
+const wordCount = document.getElementById('wordCount');
+const maxWords = 50;
 
-    message.addEventListener('input', function() {
-        const words = this.value.match(/\b[-?(\w+)?]+\b/gi) || [];
-        if (words.length >= maxWords) {
-            // Prevent typing if the word limit is reached
-            this.value = words.slice(0, maxWords).join(" ");
-            // Optionally, you can prevent further input
-            this.setAttribute("maxlength", this.value.length); // Optional: limit input length to the current value
-        } else {
-            this.removeAttribute("maxlength"); // Remove limit if under max
-        }
-        wordCount.textContent = `${words.length}/${maxWords} words`;
-    });
+message.addEventListener('input', function() {
+    const words = this.value.match(/\b[-?(\w+)?]+\b/gi) || [];
+    if (words.length >= maxWords) {
+        // Prevent typing if the word limit is reached
+        this.value = words.slice(0, maxWords).join(" ");
+        // Optionally, you can prevent further input
+        this.setAttribute("maxlength", this.value.length); // Optional: limit input length to the current value
+    } else {
+        this.removeAttribute("maxlength"); // Remove limit if under max
+    }
+    wordCount.textContent = `${words.length}/${maxWords} words`;
+});
+</script>
+
+
+<!-- search result  -->
+<script>
+var ads = <?php echo json_encode(array_map(function ($ad) {
+                    return ['title' => $ad->title, 'slug' => $ad->slug];
+                }, $ads)); ?>;
+document.getElementById('blog-search-input').addEventListener('input', function() {
+    const query = this.value.trim().toLowerCase();
+    const dropdown = document.getElementById('search-results');
+
+    // Clear previous results
+    dropdown.innerHTML = '';
+
+    if (query.length > 2) {
+        let hasResults = false;
+
+        // Iterate over PHP $ads variable (available via inline JavaScript below)
+        ads.forEach(function(ad) {
+            if (ad.title.toLowerCase().includes(query)) {
+                const li = document.createElement('li');
+                li.textContent = ad.title;
+                li.addEventListener('click', function() {
+                    window.location.href = `/blog/${ad.slug}`;
+                });
+                dropdown.appendChild(li);
+                hasResults = true;
+            }
+        });
+
+        // Show the dropdown if there are matching results
+        dropdown.style.display = hasResults ? 'block' : 'none';
+    } else {
+        dropdown.style.display = 'none';
+    }
+});
 </script>
 
 <style>
@@ -976,9 +1540,11 @@
     justify-content: space-between;
     align-items: center;
 }
-h2{
+
+h2 {
     font-size: 20px;
 }
+
 .insures-section h6 {
     font-size: 18px;
     font-weight: 600;
@@ -1014,7 +1580,7 @@ h2{
 
 .form-section {
     background-color: transparent !important;
-    width: 60%;
+    width: 100%;
     position: relative;
 }
 
@@ -1039,7 +1605,7 @@ h2{
     border-radius: 8px;
     box-shadow: 2px 2px 29px 0 #00000014;
     padding: 10px 20px;
-    width: 48.5%;
+    /* width: 100%; */
     /* margin: 0 20px 20px 0; */
 }
 
@@ -1052,7 +1618,7 @@ h2{
     border-radius: 8px;
     box-shadow: 2px 2px 29px 0 #00000014;
     padding: 10px 20px;
-    width: 100%;
+    /* width: 100%; */
     /* margin: 0 20px 20px 0; */
 }
 
@@ -1061,21 +1627,25 @@ h2{
     border-radius: 8px;
     resize: none;
     box-shadow: 2px 2px 29px 0 #00000014;
-    margin-bottom: 40px;
+    margin-bottom: 25px;
 }
 
-.contact-input input,.contact-input-phone  input {
+.contact-input input,
+.contact-input-phone input {
     border: none;
 }
 
-.contact-input input:focus,.contact-input-phone input:focus {
+.contact-input input:focus,
+.contact-input-phone input:focus {
     border: none;
     outline: none;
     box-shadow: none;
 }
+
 a {
     color: #00699E;
 }
+
 .form-section textarea {
     border: none !important;
     outline: none !important;
@@ -1471,7 +2041,8 @@ a {
 
 .background-image {
     background-image: url('<?php echo $this->app->apps->getBaseUrl('assets/img/blog/bg-waves.png'); ?>');
-    background-size: 55%;
+    /* background-size: 55%; */
+    background-size: 95%;
     background-position: bottom left;
     background-repeat: no-repeat;
     /* padding: 20px; */
@@ -1515,12 +2086,13 @@ a {
 
 .contact-box {
     display: flex;
-    gap: 44px;
+    flex-direction: column;
+    gap: 15px;
     /* position: absolute; */
     width: 100%;
     position: relative;
     margin-top: 40px;
-    padding: 70px 0;
+    padding: 40px 20px;
 }
 
 .contact-box .contact-overlay {
@@ -1530,25 +2102,26 @@ a {
     left: 0;
     height: 100%;
     width: 100%;
+    border-radius: 8px;
 }
 
 .getTouch {
-    padding: 0 50px;
-    width: 40%;
+    /* padding: 0 50px; */
+    width: 100%;
 }
 
 .getTouch h2 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 400;
-    line-height: 26px;
+    line-height: 20px;
     text-align: left;
     color: #00699E;
 }
 
 .getTouch h1 {
-    font-size: 46px;
+    font-size: 30px;
     font-weight: 600;
-    line-height: 61px;
+    line-height: 40px;
     text-align: left;
     color: #383939;
 }

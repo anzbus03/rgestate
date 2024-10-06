@@ -43,13 +43,13 @@
     <div class="no-gutters">
         <div class="card-img">
             <a href="<?php echo $this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>" class="_xvt7x"
-            aria-busy="false">
+                aria-busy="false">
                 <?php if (!empty($v->featured_image)) { ?>
-                    <img src="<?php echo Yii::app()->apps->getBaseUrl() . "uploads/images/" . $v->featured_image ?>"
-                        class="custom-rounded-img" alt="<?php echo CHtml::encode($v->title); ?>">
+                <img src="<?php echo Yii::app()->apps->getBaseUrl() . "uploads/images/" . $v->featured_image ?>"
+                    class="custom-rounded-img" alt="<?php echo CHtml::encode($v->title); ?>">
                 <?php } else { ?>
-                    <img src="<?php echo $imageSrc; ?>" class="custom-rounded-img"
-                        alt="<?php echo CHtml::encode($v->title); ?>">
+                <img src="<?php echo $imageSrc; ?>" class="custom-rounded-img"
+                    alt="<?php echo CHtml::encode($v->title); ?>">
                 <?php } ?>
             </a>
         </div>
@@ -60,7 +60,8 @@
                 class="d-flex justify-content-between align-items-center card-header">
                 <div class="d-flex align-items-center">
                     <div class="custom-text-gray blog-date">
-                        <svg style="margin-right: 10px;margin-top: 2px;" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg style="margin-right: 10px;margin-top: 2px;" width="19" height="20" viewBox="0 0 19 20"
+                            fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M6.00039 2.575H12.8504C13.1004 2.575 13.3254 2.375 13.3254 2.1C13.3254 1.825 13.1254 1.625 12.8504 1.625H6.00039C5.75039 1.625 5.52539 1.825 5.52539 2.1C5.52539 2.375 5.75039 2.575 6.00039 2.575Z"
                                 fill="#656865" />
@@ -98,7 +99,8 @@
                 </div>
                 <div class="share-icon-container">
                     <div class="rounded-circle custom-shadow p-2 d-flex justify-content-center align-items-center text-align-center"
-                        style="width: 36px;cursor: pointer; height: 36px; background-color: white;" onclick="toggleShareMenu(<?php echo $v->article_id; ?>)">
+                        style="width: 36px;cursor: pointer; height: 36px; background-color: white;"
+                        onclick="toggleShareMenu(<?php echo $v->article_id; ?>)">
                         <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M11.9504 9.71901C11.2562 9.71901 10.6364 9.99173 10.1653 10.438L5.23141 8.03306C5.2562 7.8595 5.28099 7.68595 5.28099 7.4876C5.28099 7.28926 5.2562 7.1157 5.23141 6.94215L10.1653 4.53719C10.6364 4.98347 11.2562 5.2562 11.9504 5.2562C13.4132 5.2562 14.5785 4.06612 14.5785 2.6281C14.5785 1.16529 13.3884 0 11.9504 0C10.4876 0 9.32232 1.19008 9.32232 2.6281C9.32232 2.77686 9.32231 2.90083 9.34711 3.04959L4.31405 5.47934C3.86777 5.08264 3.27273 4.8595 2.6281 4.8595C1.16529 4.8595 0 6.04959 0 7.4876C0 8.92562 1.19008 10.1157 2.6281 10.1157C3.27273 10.1157 3.86777 9.89256 4.31405 9.49587L9.34711 11.9504C9.32231 12.0744 9.32232 12.2231 9.32232 12.3719C9.32232 13.8347 10.5124 15 11.9504 15C13.4132 15 14.5785 13.8099 14.5785 12.3719C14.5785 10.9091 13.4132 9.71901 11.9504 9.71901Z"
@@ -109,23 +111,27 @@
                     <!-- Popup menu for sharing options -->
                     <div id="shareMenu<?php echo $v->article_id; ?>" class="share-popup" style="width: 50%;">
                         <ul>
-                            <li onclick="copyLink('<?php echo 'https:\/\/rgestate.com/'.$this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>')">
+                            <li
+                                onclick="copyLink('<?php echo 'https:\/\/rgestate.com/'.$this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>')">
                                 <i class="fa fa-link"></i>&nbsp;
                                 Copy Link
                             </li>
                             <li>
                                 <i class="fa fa-facebook"></i>&nbsp;
-                                <a href="https://www.facebook.com/share.php?u=<?php echo 'https://rgestate.com/'.$this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>" target="_blank">Facebook</a>
+                                <a href="https://www.facebook.com/share.php?u=<?php echo 'https://rgestate.com/'.$this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>"
+                                    target="_blank">Facebook</a>
                             </li>
                             <li>
                                 <i class="fa fa-linkedin-square" aria-hidden="true"></i>&nbsp;
-                                <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo 'https://rgestate.com/'.$this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>" target="_blank">
+                                <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo 'https://rgestate.com/'.$this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>"
+                                    target="_blank">
                                     Share on LinkedIn
                                 </a>
                             </li>
                             <li>
                                 <i class="fa fa-twitter-square" aria-hidden="true"></i>&nbsp;
-                                <a href="https://twitter.com/intent/tweet?url=<?php echo 'https://rgestate.com/'.$this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>" target="_blank">
+                                <a href="https://twitter.com/intent/tweet?url=<?php echo 'https://rgestate.com/'.$this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>"
+                                    target="_blank">
                                     Share on Twitter
                                 </a>
                             </li>
@@ -138,7 +144,8 @@
                     class="_xvt7x" aria-busy="false"><?php echo CHtml::encode($v->title); ?></a>
             </h5>
             <hr>
-                <p class="card-description"><?php echo CHtml::encode(strlen($excerpt) > 120 ? substr($excerpt, 0, 120) . '...' : $excerpt); ?></p>
+            <p class="card-description">
+                <?php echo CHtml::encode(strlen($excerpt) > 120 ? substr($excerpt, 0, 120) . '...' : $excerpt); ?></p>
             <div style="justify-content: space-between;"
                 class="d-flex justify-content-between align-items-center mt-auto card-footer">
                 <a href="<?php echo $this->app->createUrl('bloglist/details', array('slug' => $v->slug)); ?>"
@@ -157,7 +164,7 @@
 <?php endforeach; ?>
 
 <style>
-    /* Popup style */
+/* Popup style */
 .share-popup {
     display: none;
     position: absolute;
@@ -189,7 +196,7 @@
 }
 
 .card {
-    width: 21rem;
+    width: 22rem;
 }
 
 .card-header {
@@ -203,29 +210,41 @@
 }
 
 .card-title {
-    font-size: 1.25rem; /* Adjust as needed */
-    line-height: 1.4; /* Adjust the line height */
-    height: 5.2rem; /* Fixed height for 3 lines, adjust accordingly */
+    font-size: 1.25rem;
+    /* Adjust as needed */
+    line-height: 1.4;
+    /* Adjust the line height */
+    height: 5.2rem;
+    /* Fixed height for 3 lines, adjust accordingly */
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Number of lines you want */
+    -webkit-line-clamp: 2;
+    /* Number of lines you want */
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
-    white-space: normal; /* Allows multiple lines before truncating */
-    word-wrap: break-word; /* Ensures words wrap correctly */
+    white-space: normal;
+    /* Allows multiple lines before truncating */
+    word-wrap: break-word;
+    /* Ensures words wrap correctly */
 }
+
 hr {
     border-color: #e2e2e2;
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
 .card-description {
-    font-size: 1rem; /* Adjust as needed */
-    line-height: 1.5; /* Adjust the line height */
-    height: 4.5rem; /* Fixed height for description */
+    font-size: 1rem;
+    /* Adjust as needed */
+    line-height: 1.5;
+    /* Adjust the line height */
+    height: 4.5rem;
+    /* Fixed height for description */
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* Number of lines you want */
+    -webkit-line-clamp: 3;
+    /* Number of lines you want */
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
     word-wrap: break-word;
@@ -239,19 +258,25 @@ hr {
     text-align: left;
     margin-bottom: 40px;
 }
+
 .card-img {
     width: 100%;
-    height: 200px; /* Adjust the height as per your design */
+    height: 200px;
+    /* Adjust the height as per your design */
     position: relative;
-    overflow: hidden; /* Ensure the image doesn't overflow */
+    overflow: hidden;
+    /* Ensure the image doesn't overflow */
 }
 
 .card-img img {
     width: 100%;
     height: 200px;
-    object-fit: cover; /* Ensures the image fits the container without stretching */
-    object-position: center; /* Aligns the image properly within the container */
-    display: block; /* Remove any inline space or gap from the image */
+    object-fit: cover;
+    /* Ensures the image fits the container without stretching */
+    object-position: center;
+    /* Aligns the image properly within the container */
+    display: block;
+    /* Remove any inline space or gap from the image */
 }
 
 /* Custom Styles */
@@ -312,9 +337,9 @@ hr {
 }
 </style>
 <script>
-    // Function to toggle the share menu visibility
+// Function to toggle the share menu visibility
 function toggleShareMenu(id) {
-    var shareMenu = document.getElementById("shareMenu"+id);
+    var shareMenu = document.getElementById("shareMenu" + id);
     if (shareMenu.style.display === "block") {
         shareMenu.style.display = "none";
     } else {
@@ -332,5 +357,4 @@ function copyLink(url) {
     document.body.removeChild(tempInput);
     alert('Link copied to clipboard!');
 }
-
 </script>
