@@ -195,4 +195,28 @@ class BloglistController extends Controller
 		}
 		$this->renderPartial('runtime', compact('model'));
 	}
+
+	public function actionSend()
+	{
+		if (Yii::app()->request->isPostRequest) {
+			$model = new ContactPopup();
+
+			// Collect POST data
+			$model->name = Yii::app()->request->getPost('name');
+			$model->email = Yii::app()->request->getPost('email');
+			$model->phone = Yii::app()->request->getPost('contact');
+			$model->message = Yii::app()->request->getPost('message');
+
+			// Save to the database or handle the logic
+			if ($model->save()) {
+				// Return success response
+				echo CJSON::encode(['status' => 'success', 'message' => 'Form submitted successfully']);
+			} else {
+				// Return error response
+				echo CJSON::encode(['status' => 'error', 'message' => 'Form submission failed']);
+			}
+
+			Yii::app()->end(); // End the request to prevent further rendering
+		}
+	}
 }

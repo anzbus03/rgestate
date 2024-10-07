@@ -3119,7 +3119,7 @@ Property Ads Location', 'Title', 'Amenities', 'Furnished', 'Price', 'Rent', 'Sta
                 $userCriteria->condition = "email LIKE :email";
                 $userCriteria->params = [':email' => $data[39]];
                 $userModel = User::model()->find($userCriteria);
-                $userId = $userModel->id ?? 31988;
+                $userId = $userModel->user_id ?? 31988;
 
 
                 // Set model attributes from the Excel data
