@@ -500,7 +500,7 @@ class Place_propertyController  extends Controller
         $tags_short =  $model->place_ad_tag_code();;
         $this->render('list', compact('model', 'filteredData', 'soldPropertyIds', 'tags', 'tags_short'));
     }
-    
+
 
     public function actionExportExcel()
     {
@@ -538,25 +538,40 @@ class Place_propertyController  extends Controller
             $output = fopen('php://output', 'w');
 
             // Write column headers
-            $header = array('RefNo', 'Permit No', 'Title', 'Section', 'Country', 'City', 'Date Created', 'Type', 'Price', 'Rent', 'Status', 'Category', 'Featured');
+            $header = array('Date Created', 'Refresh Date', 'RefNo', 'Permit No', 'Offer Type', 'Property Type Category', 'Property Type', 'Country', 'City', 'Location', 'Google Map Link
+Property Ads Location', 'Title', 'Amenities', 'Furnished', 'Price', 'Rent', 'Status',  'Featured', 'Hot', 'Verified', 'Agent Name', 'Agent Email', 'Agent Contact', 'Bedrooms', 'Bathrooms', 'Balconies');
             fputcsv($output, $header, ',');
 
             // Write data rows
             foreach ($data as $item) {
                 $row = array(
+                    $item->date_added,
+                    $item->last_updated,
                     $item->RefNo,
                     $item->PropertyID,
-                    $item->ad_title,
                     Section::model()->findByPk($item->section_id)->section_name,
+                    Category::model()->findByPk($item->listing_type)->category_name,
+                    Category::model()->findByPk($item->category_id)->category_name,
                     $item->country_name,
                     States::model()->findByPk($item->state)->state_name,
-                    $item->date_added,
-                    Category::model()->findByPk($item->listing_type)->category_name,
+                    $item->area_location,
+                    $item->location_latitude . ', ' . $item->location_longitude,
+                    $item->ad_title,
+                    $item->amenities,
+                    $item->furnished,
                     $item->price,
                     $item->Rent,
                     $item->status,
-                    Category::model()->findByPk($item->category_id)->category_name,
                     $item->featured,
+                    $item->hot,
+                    $item->verified,
+                    User::model()->findByPk($item->user_id)->FullName,
+                    User::model()->findByPk($item->user_id)->email,
+                    User::model()->findByPk($item->user_id)->phone_number,
+                    $item->bedrooms,
+                    $item->bathrooms,
+                    $item->balconies,
+
                 );
                 fputcsv($output, $row, ',');
             }
