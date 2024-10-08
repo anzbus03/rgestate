@@ -118,6 +118,7 @@ class BloglistController extends Controller
 
 	public function actionDetails($slug, $page = "1")
 	{
+
 		$model  = BlogArticle::model()->blogBySlug($slug);
 
 		if (empty($model)) {
@@ -196,27 +197,51 @@ class BloglistController extends Controller
 		$this->renderPartial('runtime', compact('model'));
 	}
 
-	public function actionSend()
+	public function beforeAction($action)
 	{
-		if (Yii::app()->request->isPostRequest) {
-			$model = new ContactPopup();
-
-			// Collect POST data
-			$model->name = Yii::app()->request->getPost('name');
-			$model->email = Yii::app()->request->getPost('email');
-			$model->phone = Yii::app()->request->getPost('contact');
-			$model->message = Yii::app()->request->getPost('message');
-
-			// Save to the database or handle the logic
-			if ($model->save()) {
-				// Return success response
-				echo CJSON::encode(['status' => 'success', 'message' => 'Form submitted successfully']);
-			} else {
-				// Return error response
-				echo CJSON::encode(['status' => 'error', 'message' => 'Form submission failed']);
-			}
-
-			Yii::app()->end(); // End the request to prevent further rendering
+		if ($action->id == 'contact') {
+			Yii::app()->request->enableCsrfValidation = false;
 		}
+		return parent::beforeAction($action);
+	}
+
+
+	public function actionContact()
+	{
+		// Enable error reporting
+		error_reporting(E_ALL);
+		ini_set('display_errors', 1);
+
+		$response = ['status' => 'error', 'message' => ''];
+
+		if (Yii::app()->request->isGetRequest) {
+			$model = new Contact();
+
+			$model->name = Yii::app()->request->getParam('name');
+			$model->email = Yii::app()->request->getParam('email');
+			$model->contact = Yii::app()->request->getParam('contact');
+			$model->message = Yii::app()->request->getParam('message');
+
+			if ($model->validate()) {
+				if ($model->save()) {
+					$response['status'] = 'success';
+					$response['message'] = 'Form submitted successfully!';
+				} else {
+					$response['status'] = 'error';
+					$response['message'] = 'Failed to save the data.';
+				}
+			} else {
+				$response['status'] = 'error';
+				$response['message'] = CHtml::errorSummary($model);
+			}
+		} else {
+			$response['status'] = 'error';
+			$response['message'] = 'Invalid request method. Only GET requests are allowed.';
+		}
+
+		// Return a JSON response, even if there's an error
+		header('Content-Type: application/json');
+		echo CJSON::encode($response);
+		Yii::app()->end();
 	}
 }

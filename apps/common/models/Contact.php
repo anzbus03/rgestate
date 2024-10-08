@@ -17,7 +17,7 @@
  */
 class Contact extends ActiveRecord
 {
-	 public $verifyCode;
+    public $verifyCode;
     /**
      * @return string the associated database table name
      */
@@ -34,18 +34,18 @@ class Contact extends ActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, email, phone, message, ad_id', 'required'),
-            array('ad_id', 'numerical', 'integerOnly'=>true),
-            array('name', 'length', 'max'=>250),
-            array('email', 'length', 'max'=>150),
+            array('name, email, phone, message', 'required'),
+            array('ad_id', 'numerical', 'integerOnly' => true),
+            array('name', 'length', 'max' => 250),
+            array('email', 'length', 'max' => 150),
             array('email', 'email'),
-              
-            array('phone', 'length', 'max'=>15),
-           array('verifyCode', 'CaptchaExtendedValidator', 'allowEmpty'=>!CCaptcha::checkRequirements(), 'captchaAction' => 'site/captcha'),
-             array('verifyCode', 'safe'),
+
+            array('phone', 'length', 'max' => 15),
+            array('verifyCode', 'CaptchaExtendedValidator', 'allowEmpty' => !CCaptcha::checkRequirements(), 'captchaAction' => 'site/captcha'),
+            array('verifyCode', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('contact_id, name, email, phone, message, ad_id, added_date,verifyCode', 'safe', 'on'=>'search'),
+            array('contact_id, name, email, phone, message, ad_id, added_date,verifyCode', 'safe', 'on' => 'search'),
         );
     }
 
@@ -93,20 +93,20 @@ class Contact extends ActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
 
-        $criteria->compare('contact_id',$this->contact_id);
-        $criteria->compare('name',$this->name,true);
-        $criteria->compare('email',$this->email,true);
-        $criteria->compare('phone',$this->phone,true);
-        $criteria->compare('message',$this->message,true);
-        $criteria->compare('ad_id',$this->ad_id);
-        $criteria->compare('added_date',$this->added_date,true);
-		$criteria->together = true;
-		$criteria->with = array('ad'=>array("condition"=>"ad.isTrash='0'"));
+        $criteria->compare('contact_id', $this->contact_id);
+        $criteria->compare('name', $this->name, true);
+        $criteria->compare('email', $this->email, true);
+        $criteria->compare('phone', $this->phone, true);
+        $criteria->compare('message', $this->message, true);
+        $criteria->compare('ad_id', $this->ad_id);
+        $criteria->compare('added_date', $this->added_date, true);
+        $criteria->together = true;
+        $criteria->with = array('ad' => array("condition" => "ad.isTrash='0'"));
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
-             'pagination'    => array(
+            'criteria' => $criteria,
+            'pagination'    => array(
                 'pageSize'  => $this->paginationOptions->getPageSize(),
                 'pageVar'   => 'page',
             ),
@@ -119,7 +119,7 @@ class Contact extends ActiveRecord
      * @param string $className active record class name.
      * @return Contact the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }

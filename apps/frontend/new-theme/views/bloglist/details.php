@@ -1175,11 +1175,11 @@
 
 
             <div class="form-section">
-                <form id="contactForm">
+                <form method="GET" id="contactForm">
                     <!-- CSRF Protection -->
-                    <!-- <?php if (Yii::app()->request->enableCsrfValidation) { ?>
+                    <!-- <?php if (Yii::app()->request->enableCsrfValidation) { ?> -->
                     <input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>" />
-                    <?php } ?> -->
+                    <!-- <?php } ?> -->
 
                     <div class="">
                         <div class="form-fiels">
@@ -1193,7 +1193,7 @@
                                         d="M6.5 7C8.425 7 10 5.30891 10 3.53465C10 1.7604 8.425 0 6.5 0C4.575 0 3 1.74654 3 3.53465C3 5.32277 4.575 7 6.5 7Z"
                                         fill="#A9A9A9" />
                                 </svg>
-                                <input type="text" id="name" placeholder="Enter your name">
+                                <input type="text" name="name" id="name" placeholder="Enter your name">
                             </div>
                             <div class="contact-input">
                                 <svg width="15" height="12" viewBox="0 0 15 12" fill="none"
@@ -1205,7 +1205,7 @@
                                         fill="#A9A9A9" />
                                 </svg>
 
-                                <input type="email" id="email" placeholder="Enter your email address">
+                                <input type="email" name="email" id="email" placeholder="Enter your email address">
                             </div>
                             <div class="contact-input-phone col-12 col-md-12">
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -1221,13 +1221,14 @@
                                         </clipPath>
                                     </defs>
                                 </svg>
-                                <input type="tel" id="contact1" placeholder="Enter your contact number">
+                                <input type="tel" name="contact" id="contact1" placeholder="Enter your contact number">
                             </div>
                         </div>
                         <!-- <div class="row"> -->
                         <div class="w-full contact-textarea">
                             <div style="position: relative;">
-                                <textarea id="message" rows="3" style="height: 250px;resize: none; width: 100%;"
+                                <textarea id="message" rows="3" name="message"
+                                    style="height: 250px;resize: none; width: 100%;"
                                     placeholder="Enter your message"></textarea>
                                 <p id="wordCount"
                                     style="position: absolute; bottom: 5px; right: 10px; margin: 0; font-size: 12px; color: #555;">
@@ -1242,6 +1243,11 @@
                     <!-- Success message placeholder -->
                     <div id="successMessage" style="display: none; color: green; margin-top: 10px;">
                         Your message has been sent successfully!
+                    </div>
+
+                    <!-- Error message placeholder -->
+                    <div id="errorMessage" style="display: none; color: red; margin-top: 10px;">
+                        There was an error sending your message.
                     </div>
                 </form>
             </div>
@@ -1292,38 +1298,38 @@ message.addEventListener('input', function() {
 });
 </script>
 
-<!-- contact form submission -->
+<!-- jQuery (if not already included in your project) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
 $(document).ready(function() {
-    $('#contactForm').on('submit', function(event) {
-        event.preventDefault(); // Prevent normal form submission
+    $('#contactForm').submit(function(e) {
+        e.preventDefault(); // Prevent the default form submission
 
-        // Collect form data
-        var formData = {
-            name: $('#name').val(),
-            email: $('#email').val(),
-            contact: $('#contact1').val(),
-            message: $('#message').val(),
-        };
+        // Get form data
+        var formData = $(this).serialize();
 
-        // AJAX request
+        // Send form data using AJAX
         $.ajax({
-            url: '<?php echo Yii::app()->createUrl("bloglist/send"); ?>', // Yii dynamic URL
-            type: 'POST',
+            url: '<?php echo Yii::app()->createUrl("bloglist/contact"); ?>', // Adjust the URL as necessary
+            type: 'GET',
             data: formData,
             success: function(response) {
-                // Clear form fields
-                $('#name').val('');
-                $('#email').val('');
-                $('#contact1').val('');
-                $('#message').val('');
-
-                // Show success message
-                $('#successMessage').fadeIn().delay(3000)
-                    .fadeOut(); // Display success message for 3 seconds
+                // No need to parse, response should already be a JSON object
+                if (response.status === 'success') {
+                    $('#successMessage').show().html(response
+                    .message); // Show success message
+                    $('#contactForm')[0].reset(); // Clear form fields
+                    $('#errorMessage').hide(); // Hide error message if previously shown
+                } else {
+                    $('#errorMessage').text(response.message).show(); // Show error message
+                    $('#successMessage').hide(); // Hide success message
+                }
             },
             error: function(xhr, status, error) {
-                alert('An error occurred while submitting the form.');
+                console.log(xhr.responseText); // Log the response for debugging
+                alert('There was an error sending your message: ' + xhr
+                .responseText); // Show error details
             }
         });
     });
