@@ -529,8 +529,16 @@ class Place_propertyController  extends Controller
             }
     
             // Retrieve data using CActiveRecord's findAll method
-            $data = PlaceAnAd::model()->findAll($criteria);
-    
+            if (Yii::app()->user->model->user_id == 2){
+                $data = PlaceAnAd::model()->findAll($criteria);
+            }else {
+                $criteria->condition = 'user_id = :userId'; // Use a placeholder for security
+                $criteria->params = [':userId' => Yii::app()->user->model->user_id]; // Bind the parameter
+
+                // Execute the query
+                $data = PlaceAnAd::model()->findAll($criteria);
+            }
+            
             // Prepare data for JSON response
             $responseData = [];
             foreach ($data as $item) {
