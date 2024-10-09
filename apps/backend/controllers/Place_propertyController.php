@@ -3109,20 +3109,24 @@ class Place_propertyController  extends Controller
     public function actionUploadExcel()
     {
         $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
-    
+        
         if (isset($_FILES['excelFile'])) {
             // Collect all RefNo, category names, and user emails for bulk queries
             $refNos = array_column($excelData, 4); 
             $categoryNames = array_column($excelData, 8);
             $stateNames = array_column($excelData, 11);
             $userEmails = array_column($excelData, 39);
-    
+            $filteredStates = array_filter(array_slice($stateNames, 1));
+            $filteredrefNos = array_filter(array_slice($refNos, 1));
+            $filteredcategoryNames = array_filter(array_slice($categoryNames, 1));
+            $filtereduserEmails = array_filter(array_slice($userEmails, 1));
+
             // Preload data from DB in bulk
             $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A']);
-            $states = States::model()->findAllByAttributes(['state_name' => $stateNames, 'isTrash' => '0']);
+            $states = States::model()->findAllByAttributes(['state_name' => $filteredStates, 'isTrash' => '0']);
             $users = User::model()->findAllByAttributes(['email' => $userEmails]);
-    
+           
             // Map the loaded data for quick lookup
             $adsMap = [];
             foreach ($ads as $ad) {
@@ -3199,7 +3203,7 @@ class Place_propertyController  extends Controller
                     }
                     $model->availability = $availability;
                     $model->user_id = $userModel->user_id ?? 31988;
-    
+                   
                     // Save model
                     if (!$model->save()) {
                         throw new Exception('Failed to save model: ' . json_encode($model->getErrors()));
