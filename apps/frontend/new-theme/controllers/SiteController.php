@@ -1944,6 +1944,122 @@ Jq4pd48R
 		file_put_contents($path_file . "/{$img}", $html);
 		echo 'updated XML';
 	}
+	public function actionSubmit() {
+		$request = Yii::app()->request;
+		$model = new ContactUs();
+	
+		// Check if it's a POST request
+		if ($request->isPostRequest) {
+			// Get form data directly from POST
+			$name = $request->getPost('name');
+			$email = $request->getPost('email');
+			$contact = $request->getPost('contact'); // Use 'contact' as it's defined in AJAX
+			$message = $request->getPost('message');
+	
+			// Check if required fields are provided
+			if (empty($name) || empty($email) || empty($contact) || empty($message)) {
+				echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
+				Yii::app()->end();
+			}
+	
+			// CRM URL to get customer details
+			$createCustomerUrl = 'https://crm.rgestate.com/rest/158/x0g9p2hpse2h48si/crm.contact.add.json';
+	
+			// Prepare customer data
+			$nameParts = explode(' ', $name);
+			$firstName = $nameParts[0] ?? null;
+			$lastName = isset($nameParts[1]) ? implode(' ', array_slice($nameParts, 1)) : null; // Handle last name correctly
+	
+			$crmCustomerData = [
+				'fields' => [
+					'NAME' => $firstName,
+					'SECOND_NAME' => $lastName,
+					'TYPE_ID' => 'CLIENT',
+					'SOURCE_ID' => 'SELF',
+					'EMAIL' => [['VALUE' => $email, 'VALUE_TYPE' => 'WORK']],
+					'PHONE' => [['VALUE' => $contact, 'VALUE_TYPE' => 'WORK']],
+				]
+			];
+	
+			// Send customer creation request
+			$postCustomerData = http_build_query($crmCustomerData);
+			$contextCustomerOptions = [
+				'http' => [
+					'method' => 'POST',
+					'header' => 'Content-Type: application/x-www-form-urlencoded',
+					'content' => $postCustomerData,
+				]
+			];
+			$contextCreateCustomer = stream_context_create($contextCustomerOptions);
+	
+			try {
+				$data = file_get_contents($createCustomerUrl, false, $contextCreateCustomer);
+				$response = json_decode($data, true);
+				$customerId = $response['result'] ?? null; // Get customer ID from response
+				if (!$customerId) {
+					throw new Exception('Failed to create customer in CRM.');
+				}
+			} catch (Exception $e) {
+				echo json_encode(['status' => 'error', 'message' => 'Unable to create customer.']);
+				Yii::app()->end();
+			}
+	
+			// CRM URL to create a new lead
+			$crmUrl = 'https://crm.rgestate.com/rest/88/x0g9p2hpse2h48si/crm.lead.add.json';
+	
+			// Prepare lead data
+			$crmData = [
+				'FIELDS' => [
+					'TITLE' => 'RGestate Lead - Contact Form',
+					'CATEGORY_ID' => 16,
+					'LEAD_PHONE' => $contact,
+					'LEAD_LAST_NAME' => $lastName,
+					'LEAD_NAME' => $firstName,
+					'LEAD_EMAIL' => $email,
+					'CONTACT_ID' => $customerId,
+					'COMMENTS' => $message,
+					'ASSIGNED_BY_ID' => 22,
+				]
+			];
+	
+			// Send lead creation request
+			$postData = http_build_query($crmData);
+			$contextOptions = [
+				'http' => [
+					'method' => 'POST',
+					'header' => 'Content-Type: application/x-www-form-urlencoded',
+					'content' => $postData,
+				]
+			];
+			$context = stream_context_create($contextOptions);
+	
+			try {
+				file_get_contents($crmUrl, false, $context);
+			} catch (Exception $e) {
+				echo json_encode(['status' => 'error', 'message' => 'Unable to create lead.']);
+				Yii::app()->end();
+			}
+			$model->attributes = $_POST; 
+			// Set model attributes and save
+			$model->name = $name; // Set other attributes as necessary
+			$model->email = $email;
+			$model->phone = $contact;
+			$model->phone_false = $contact;
+			$model->meassage = $message;
+	
+			// Save the model and return the success or error message
+			if ($model->validate() && $model->save()) {
+				echo json_encode(['status' => 'success', 'message' => 'Successfully submitted.']);
+			} else {
+				echo json_encode(['status' => 'error', 'message' => 'Error: ' . CHtml::errorSummary($model)]);
+			}
+	
+			Yii::app()->end();
+		} else {
+			throw new CHttpException(400, 'Invalid request.');
+		}
+	}
+	
 	public function actionSend(){
 		$request    = Yii::app()->request;
 		$requestParms = $request->getPost("ContactPopup");

@@ -447,7 +447,11 @@ class Place_propertyController  extends Controller
         if (isset($_GET['preleased']) && $_GET['preleased'] !== '') {
             $criteria->compare('t.preleased', $_GET['preleased']);
         }
-
+        if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+            $criteria->addCondition("DATE(date_added) >= :startDate AND DATE(date_added) <= :endDate");
+            $criteria->params[':startDate'] = $_GET['startDate'];
+            $criteria->params[':endDate'] = $_GET['endDate'];
+        }
         // Add condition for 'submitted_properties'
         if (isset($_GET['submited_by']) && $_GET['submited_by'] !== '') {
             $criteria->compare('t.submited_by', $_GET['submited_by']);
@@ -502,90 +506,103 @@ class Place_propertyController  extends Controller
     }
 
 
-    public function actionExportExcel()
+    public function actionExportData()
     {
         try {
-
-            $model = new PlaceAnAd('search');
-            $model->unsetAttributes();
-            // clear any default values
-            if (isset($_GET['type']) && $_GET['type'] == 'unpublished') {
-                $model->unpublished = '1';
+            $criteria = new CDbCriteria();
+    
+            // Set filters based on request parameters
+            if (isset($_GET['type'])) {
+                if ($_GET['type'] == 'unpublished') {
+                    $criteria->compare('unpublished', '1');
+                } elseif ($_GET['type'] == 'business') {
+                    define('ONLY_BUSINESS', '1');
+                } elseif ($_GET['type'] == 'trash') {
+                    $criteria->compare('isTrash', '1');
+                }
             }
-            if (isset($_GET['type']) && $_GET['type'] == 'business') {
-                define('ONLY_BUSINESS', '1');
-            }
-            if (isset($_GET['type']) && $_GET['type'] == 'trash') {
-                $model->isTrash = '1';
-            }
+    
             if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
-                $model->startDate = $_GET['startDate'];
-                $model->endDate = $_GET['endDate'];
+                $criteria->addCondition("DATE(date_added) >= :startDate AND DATE(date_added) <= :endDate");
+                $criteria->params[':startDate'] = $_GET['startDate'];
+                $criteria->params[':endDate'] = $_GET['endDate'];
             }
-
-            $dataProvider = $model->search();
-            $dataProvider->pagination = false;
-            // Get all data
-
-            // Prepare data for export
-            $data = $dataProvider->getData();
-
-            // Set headers to force download
-            header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="ExportedData_' . date('YmdHis') . '.csv"');
-            header('Cache-Control: max-age=0');
-            // Open output stream
-            $output = fopen('php://output', 'w');
-
-            // Write column headers
-            $header = array('Date Created', 'Refresh Date', 'RefNo', 'Permit No', 'Offer Type', 'Property Type Category', 'Property Type', 'Country', 'City', 'Location', 'Google Map Link
-Property Ads Location', 'Title', 'Amenities', 'Furnished', 'Price', 'Rent', 'Status',  'Featured', 'Hot', 'Verified', 'Agent Name', 'Agent Email', 'Agent Contact', 'Bedrooms', 'Bathrooms', 'Balconies');
-            fputcsv($output, $header, ',');
-
-            // Write data rows
+    
+            // Retrieve data using CActiveRecord's findAll method
+            $data = PlaceAnAd::model()->findAll($criteria);
+    
+            // Prepare data for JSON response
+            $responseData = [];
             foreach ($data as $item) {
-                $row = array(
-                    $item->date_added,
-                    $item->last_updated,
-                    $item->RefNo,
-                    $item->PropertyID,
-                    Section::model()->findByPk($item->section_id)->section_name,
-                    Category::model()->findByPk($item->listing_type)->category_name,
-                    Category::model()->findByPk($item->category_id)->category_name,
-                    $item->country_name,
-                    States::model()->findByPk($item->state)->state_name,
-                    $item->area_location,
-                    $item->location_latitude . ', ' . $item->location_longitude,
-                    $item->ad_title,
-                    $item->amenities,
-                    $item->furnished,
-                    $item->price,
-                    $item->Rent,
-                    $item->status,
-                    $item->featured,
-                    $item->hot,
-                    $item->verified,
-                    User::model()->findByPk($item->user_id)->FullName,
-                    User::model()->findByPk($item->user_id)->email,
-                    User::model()->findByPk($item->user_id)->phone_number,
-                    $item->bedrooms,
-                    $item->bathrooms,
-                    $item->balconies,
-
-                );
-                fputcsv($output, $row, ',');
+                $userId = $item->user_id;
+                $agencyName = ''; // Default if no agency found
+    
+                // Find user where 'agents' column contains the agent ID
+                $agency = User::model()->find([
+                    'condition' => 'FIND_IN_SET(:userId, agents)', // Checks for comma-separated userId in 'agents'
+                    'params' => [':userId' => $userId],
+                ]);
+    
+                if ($agency) {
+                    $agencyName = $agency->first_name; // Assume 'agency_name' is the column storing the agency name
+                }
+                $responseData[] = [
+                    'UID'                              => $item->uid,
+                    'Sr. No'                           => $item->id,
+                    'Creation Date'                    => $item->date_added,
+                    'Refresh Date'                     => $item->last_updated,
+                    'Reference ID'                     => $item->RefNo,
+                    'Permit Number'                    => $item->PropertyID,
+                    'Offer Type'                       => Section::model()->findByPk($item->section_id)->section_name,
+                    'Property Type Category'           => Category::model()->findByPk($item->listing_type)->category_name,
+                    'Property Type'                    => Category::model()->findByPk($item->category_id)->category_name,
+                    'COUNTRY'                          => $item->country_name ?? "UAE",
+                    'EMIRATE'                          => States::model()->findByPk($item->state)->state_name,
+                    'LOCATION'                         => $item->area_location,
+                    'Google Map Property Ads Location' => $item->location_latitude . ', ' . $item->location_longitude,
+                    'Ad Title'                         => $item->ad_title,
+                    'Ad Description'                   => $item->ad_description,
+                    'Amenities'                        => $item->amenities,
+                    'FURNISHED'                        => $item->furnished,
+                    'Resi. Bedrooms'                   => $item->bedrooms,
+                    'Resi. Bathrooms'                  => $item->bathrooms,
+                    'Number Of Units'                  => $item->no_of_u,
+                    'Floor Number'                     => $item->FloorNo,
+                    'Plot Area (sqft)'                 => $item->plot_area,
+                    'BUA Size (sqft)'                  => $item->builtup_area,
+                    'Sale/Rent Price (AED)'            => $item->price,
+                    'Rent Paid Frequency'              => $item->rent_paid,
+                    'PRELEASED STATUS'                 => $item->lease_status,
+                    'LEASE STATUS'                     => $item->lease_status,
+                    'CURRENT/EXPECTED RENTAL INCOME'   => $item->income,
+                    'CURRENT/EXPECTED ROI PA %'        => $item->roi,
+                    'Photos (JPG/PNG)'                 => $item->ad_images_g,
+                    'Floor Plans'                      => $item->floor_plan,
+                    'Video (YouTube URL)'              => $item->video,
+                    'FEATURED'                         => $item->featured,
+                    'HOT'                              => $item->hot,
+                    'VARIFIED'                         => $item->verified,
+                    'Availability'                     => $item->availability,
+                    'Publish_Status'                   => $item->status,
+                    'AGENCY NAME'                      => $agencyName,
+                    'AGENT NAME'                       => User::model()->findByPk($userId)->first_name,
+                    'AGENT EMAIL'                      => User::model()->findByPk($userId)->email,
+                    'AGENT CONTACT'                    => User::model()->findByPk($userId)->phone_number,
+                ];
+                
             }
-
-            // Close output stream
-            fclose($output);
-
+    
+            // Send JSON response
+            header('Content-Type: application/json');
+            echo json_encode($responseData);
             Yii::app()->end();
         } catch (Exception $e) {
-            print_r($e->getMessage());
-            exit;
+            echo json_encode(['error' => $e->getMessage()]);
+            Yii::app()->end();
         }
     }
-
+    
+    
     public function actionBusiness()
     {
 
@@ -954,7 +971,7 @@ Property Ads Location', 'Title', 'Amenities', 'Furnished', 'Price', 'Rent', 'Sta
 
             if (!$model->save()) {
 
-                $model->amenities = Yii::app()->request->getPost('amenities');
+                // $model->amenities = Yii::app()->request->getPost('amenities');
                 $exp =  explode(',', $model->image);
                 if ($exp) {
                     foreach ($exp as $k => $v) {
@@ -1083,7 +1100,7 @@ Property Ads Location', 'Title', 'Amenities', 'Furnished', 'Price', 'Rent', 'Sta
                 $image_array[] = $v->image_name;
             }
         };
-        $model->amenities =  CHtml::listData($model->adAmenities, 'amenities_id', 'inp_val2');
+        // $model->amenities =  CHtml::listData($model->adAmenities, 'amenities_id', 'inp_val2');
 
         $country = Countries::model()->ListDataForJSON();
 
@@ -1109,12 +1126,12 @@ Property Ads Location', 'Title', 'Amenities', 'Furnished', 'Price', 'Rent', 'Sta
             Yii::app()->end();
         }
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
-
+            
             $model->attributes = $attributes;
 
             if (!$model->save()) {
 
-                $model->amenities = Yii::app()->request->getPost('amenities');
+                // $model->amenities = Yii::app()->request->getPost('amenities');
                 $exp =  explode(',', $model->image);
                 if ($exp) {
                     foreach ($exp as $k => $v) {
@@ -1161,26 +1178,26 @@ Property Ads Location', 'Title', 'Amenities', 'Furnished', 'Price', 'Rent', 'Sta
                 $room_image->save();
             }
         }
-        $am = new  AdAmenities();
-        $am->deleteAll(array('condition' => 'ad_id=:ad_id', 'params' => array(':ad_id' => $model->id)));
-        if ($ameni = Yii::app()->request->getPost('amenities')) {
+        // $am = new  AdAmenities();
+        // $am->deleteAll(array('condition' => 'ad_id=:ad_id', 'params' => array(':ad_id' => $model->id)));
+        // if ($ameni = Yii::app()->request->getPost('amenities')) {
 
-            foreach ($ameni as  $k => $v) {
+        //     foreach ($ameni as  $k => $v) {
 
-                if (isset($v['inp_val']) and  empty($v['inp_val'])) {
-                    continue;
-                }
-                $am->isNewRecord = true;
-                $am->ad_id = $model->id;
-                $am->amenities_id =  $k;
-                if (isset($v['inp_val']) and  !empty($v['inp_val'])) {
-                    $am->inp_val =  $v['inp_val'];
-                } else {
-                    $am->inp_val = NULL;
-                }
-                $am->save();
-            }
-        }
+        //         if (isset($v['inp_val']) and  empty($v['inp_val'])) {
+        //             continue;
+        //         }
+        //         $am->isNewRecord = true;
+        //         $am->ad_id = $model->id;
+        //         $am->amenities_id =  $k;
+        //         if (isset($v['inp_val']) and  !empty($v['inp_val'])) {
+        //             $am->inp_val =  $v['inp_val'];
+        //         } else {
+        //             $am->inp_val = NULL;
+        //         }
+        //         $am->save();
+        //     }
+        // }
     }
 
     public function actionDetails($model, $subcategory, $category, $fields, $image_array)
@@ -2203,9 +2220,9 @@ Property Ads Location', 'Title', 'Amenities', 'Furnished', 'Price', 'Rent', 'Sta
 
     public function actionStatus_change($id = null, $val = null)
     {
-        if (!Yii::app()->request->isAjaxRequest) {
-            return false;
-        }
+        // if (!Yii::app()->request->isAjaxRequest) {
+            //     return false;
+            // }
         $user = PlaceAnAd::model()->findByPk((int)$id);
 
         if (empty($user)) {
@@ -2213,7 +2230,23 @@ Property Ads Location', 'Title', 'Amenities', 'Furnished', 'Price', 'Rent', 'Sta
         }
 
         $user::model()->updateByPk($id, array('status' => $val));
-        echo 1;
+        $this->redirect(Yii::app()->request->urlReferrer);
+    }
+    public function actionRefresh_date($id = null)
+    {
+        // if (!Yii::app()->request->isAjaxRequest) {
+            //     return false;
+            // }
+        $user = PlaceAnAd::model()->findByPk((int)$id);
+
+        if (empty($user)) {
+            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+        }
+
+        PlaceAnAd::model()->updateByPk($id, array(
+            'last_updated' => date('Y-m-d H:i:s'),
+        ));
+        $this->redirect(Yii::app()->request->urlReferrer);
     }
 
     public function actionUpload_floor_plan($width = null, $height = null)
@@ -3053,7 +3086,7 @@ Property Ads Location', 'Title', 'Amenities', 'Furnished', 'Price', 'Rent', 'Sta
                 $model->ad_description = Yii::app()->ioFilter->purify(Yii::app()->params['POST'][$model->modelName]['ad_description']);
             }
             if (!$model->save()) {
-                $model->amenities = Yii::app()->request->getPost("amenities");
+                // $model->amenities = Yii::app()->request->getPost("amenities");
                 $exp =  explode(",", $model->image);
                 if ($exp) {
                     foreach ($exp as $k => $v) {
@@ -3076,128 +3109,149 @@ Property Ads Location', 'Title', 'Amenities', 'Furnished', 'Price', 'Rent', 'Sta
     public function actionUploadExcel()
     {
         $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
-
+    
         if (isset($_FILES['excelFile'])) {
-            foreach (array_slice($excelData, 1) as $data) {
-                // Check if the ad already exists by RefNo
-                $criteria = new CDbCriteria;
-                $criteria->condition = "RefNo = :refNo";
-                $criteria->params = [':refNo' => $data[4]];
-
-                // Find the ad based on the RefNo
-                $model = PlaceAnAd::model()->find($criteria);
-
-                if ($model) {
-                    // Ad exists - update scenario
-                    $model->scenario = 'update_content';
-                } else {
-                    // Ad does not exist - create a new one
-                    $model = new PlaceAnAd();
-                    $model->scenario = 'new_insert';
-                }
-
-                // Set the model attributes from the Excel data
-                $subCategoryCriteria = new CDbCriteria;
-                $subCategoryCriteria->condition = "t.isTrash='0' AND status='A' AND category_name LIKE :name";
-                $subCategoryCriteria->params = [':name' => $data[8]];
-                $subCategory = Category::model()->find($subCategoryCriteria);
-
-                $sectionId = $data[6] == "Sale" ? 1 : 2;
-                $location = explode($data[12], ", ");
-                $lat = $location[0];
-                $long = $location[1];
-
-                // Find state
-                $stateCriteria = new CDbCriteria;
-                $stateCriteria->condition = "t.isTrash='0' AND state_name LIKE :name";
-                $stateCriteria->params = [':name' => $data[11]];
-                $stateModel = States::model()->find($stateCriteria);
-                $state = $stateModel->state_id ?? 0;
-
-                // Find User
-                $userCriteria = new CDbCriteria;
-                $userCriteria->condition = "email LIKE :email";
-                $userCriteria->params = [':email' => $data[39]];
-                $userModel = User::model()->find($userCriteria);
-                $userId = $userModel->user_id ?? 31988;
-
-
-                // Set model attributes from the Excel data
-                $model->section_id = $sectionId;
-                $model->listing_type = $data[7] == "Commercial" ? 151 : 150;
-                $model->category_id = $subCategory->category_id;
-                $model->RefNo = $data[4];
-                $model->ad_title = $data[13];
-                $model->PropertyID = $data[5];
-                $model->ad_description = $data[14];
-                $model->area_location = $data[11];
-                $model->interior_size = $data[22];
-
-                // Handle price conversion based on the frequency
-                if ($data[24] == "Yearly") {
-                    $model->price = $data[23];
-                } elseif ($data[24] == "Monthly") {
-                    $model->price = $data[23] * 12;
-                } elseif ($data[24] == "Quarterly") {
-                    $model->price = $data[23] * 4;
-                } elseif ($data[24] == "half-yearly") {
-                    $model->price = $data[23] * 2;
-                } elseif ($data[24] == "Weekly") {
-                    $model->price = $data[23] * 52;
-                } else {
-                    $model->price = $data[23] * 52;
-                }
-
-                $model->lease_status = isset($data[25]) && $data[25] == "Yes" ? 1 : 0;
-                $model->income = $data[27];
-                $model->roi = (int)$data[28];
-                // $model->plot_area = $data[10];
-                $model->bedrooms = $data[17];
-                $model->bathrooms = $data[18];
-                $model->FloorNo = $data[20];
-                $model->plot_area = $data[21];
-                $model->builtup_area = $data[22];
-                $model->furnished = $data[16] == "Yes" ? "Y" : "N";
-                $model->featured = $data[32] == "Yes" ? "Y" : "N";
-                $model->hot = $data[33] == "Yes" ? 1 : 0;
-                $model->verified = $data[34] == "Yes" ? 1 : 0;
-                $model->mandate = $data[2];
-                $model->contact_person = $data[38];
-                $model->salesman_email = $data[39];
-                $model->mobile_number = $data[40];
-                $model->country = 66124;
-                $model->state = $state;
-                $model->status = $data[36] == "Active" ? "A" : "I";
-                $model->user_id = $userId;
-                print_r($data);
-
-
-                // Save the model (insert or update based on existence)
-                if (!$model->save()) {
-                    $errors = $model->getErrors();
-                    $errorMessage = 'Failed to save model: ' . json_encode($errors);
-                    $this->sendJsonResponse(['status' => 'error', 'message' => $errorMessage]);
-                    return;
-                }
-
-                // Handle the image processing
-                $existingImage = AdImage::model()->findByAttributes(['image_name' => $data[29]]);
-                if ($existingImage) {
-                    $existingImage->ad_id = $model->id;
-                    if ($existingImage->save()) {
-                        if ($model->image == '') {
-                            $model->updateByPk($model->id, ['image' => $existingImage->image_name]);
-                        }
-                    } else {
-                        return $this->sendJsonResponse(['status' => 'error', 'message' => 'Failed to update the image property_id.']);
-                    }
-                }
+            // Collect all RefNo, category names, and user emails for bulk queries
+            $refNos = array_column($excelData, 4); 
+            $categoryNames = array_column($excelData, 8);
+            $stateNames = array_column($excelData, 11);
+            $userEmails = array_column($excelData, 39);
+    
+            // Preload data from DB in bulk
+            $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
+            $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A']);
+            $states = States::model()->findAllByAttributes(['state_name' => $stateNames, 'isTrash' => '0']);
+            $users = User::model()->findAllByAttributes(['email' => $userEmails]);
+    
+            // Map the loaded data for quick lookup
+            $adsMap = [];
+            foreach ($ads as $ad) {
+                $adsMap[$ad->RefNo] = $ad;
             }
-
-            return $this->sendJsonResponse(['status' => 'success']);
+    
+            $categoriesMap = [];
+            foreach ($categories as $category) {
+                $categoriesMap[$category->category_name] = $category;
+            }
+    
+            $statesMap = [];
+            foreach ($states as $state) {
+                $statesMap[$state->state_name] = $state;
+            }
+    
+            $usersMap = [];
+            foreach ($users as $user) {
+                $usersMap[$user->email] = $user;
+            }
+    
+            // Transaction for bulk insert/update
+            $transaction = Yii::app()->db->beginTransaction();
+            try {
+                foreach (array_slice($excelData, 1) as $data) {
+                    // Check if ad exists in the preloaded ads
+                    $model = isset($adsMap[$data[4]]) ? $adsMap[$data[4]] : new PlaceAnAd();
+                    $model->scenario = isset($adsMap[$data[4]]) ? 'update_content' : 'new_insert';
+    
+                    // Set model attributes using preloaded data
+                    $subCategory = isset($categoriesMap[$data[8]]) ? $categoriesMap[$data[8]] : null;
+                    $stateModel = isset($statesMap[$data[11]]) ? $statesMap[$data[11]] : null;
+                    $userModel = isset($usersMap[$data[39]]) ? $usersMap[$data[39]] : null;
+    
+                    // Set model attributes from the Excel data
+                    $model->section_id = $data[6] == "Sale" ? 1 : 2;
+                    $model->listing_type = $data[7] == "Commercial" ? 151 : 150;
+                    $model->category_id = $subCategory->category_id ?? null;
+                    $model->RefNo = $data[4];
+                    $model->ad_title = $data[13];
+                    $model->PropertyID = $data[5];
+                    $model->ad_description = $data[14];
+                    $model->area_location = $data[11];
+                    $model->interior_size = $data[22];
+                    $model->price = $this->calculatePrice($data[23], $data[24]);
+                    $model->rent_paid = strtolower($data[24]);
+                    $model->lease_status = $data[25] == "Yes" ? 1 : 0;
+                    $model->income = $data[27];
+                    $model->roi = (int)$data[28];
+                    $model->bedrooms = $data[17];
+                    $model->bathrooms = $data[18];
+                    $model->no_of_u = $data[19];
+                    $model->FloorNo = $data[20];
+                    $model->plot_area = $data[21];
+                    $model->builtup_area = $data[22] ?? 0;
+                    $model->furnished = $data[16] == "Yes" ? "Y" : "N";
+                    $model->featured = $data[32] == "Yes" ? "Y" : "N";
+                    $model->hot = $data[33] == "Yes" ? 1 : 0;
+                    $model->verified = $data[34] == "Yes" ? 1 : 0;
+                    $model->mandate = $data[2];
+                    $model->contact_person = $data[38];
+                    $model->salesman_email = $data[39];
+                    $model->mobile_number = $data[40];
+                    $model->country = 66124;
+                    $model->state = $stateModel->state_id ?? 0;
+                    $model->status = $data[36] == "Active" ? "A" : "I";
+                    $availability = "not_available";
+                    if ($data[35] == "Sold Out"){
+                        $availability = "sold_out";
+                    }else if ($data[35] == "Leased Out"){
+                        $availability = "lease_out";
+                    }else if ($data[35] == "Available"){
+                        $availability = null;
+                    }
+                    $model->availability = $availability;
+                    $model->user_id = $userModel->user_id ?? 31988;
+    
+                    // Save model
+                    if (!$model->save()) {
+                        throw new Exception('Failed to save model: ' . json_encode($model->getErrors()));
+                    }
+    
+                    // Handle image saving separately
+                    $this->handleImageSaving($model, $data[29]);
+                }
+    
+                // Commit transaction
+                $transaction->commit();
+                return $this->sendJsonResponse(['status' => 'success']);
+            } catch (Exception $e) {
+                // Rollback in case of an error
+                $transaction->rollback();
+                return $this->sendJsonResponse(['status' => 'error', 'message' => $e->getMessage()]);
+            }
         }
     }
-
+    
+    private function calculatePrice($price, $frequency)
+    {
+        switch (strtolower($frequency)) {
+            case 'yearly':
+                return $price;
+            case 'monthly':
+                return $price * 12;
+            case 'quarterly':
+                return $price * 4;
+            case 'half-yearly':
+                return $price * 2;
+            case 'weekly':
+            default:
+                return $price * 52;
+        }
+    }
+    
+    private function handleImageSaving($model, $imageName)
+    {
+        $existingImage = AdImage::model()->findByAttributes(['image_name' => $imageName]);
+        if ($existingImage) {
+            $existingImage->ad_id = $model->id;
+            if ($existingImage->save()) {
+                if (empty($model->image)) {
+                    $model->updateByPk($model->id, ['image' => $existingImage->image_name]);
+                }
+            } else {
+                throw new Exception('Failed to update the image property_id.');
+            }
+        }
+    }
+    
 
 
     public function _setupEditorOptions(CEvent $event)
@@ -3226,6 +3280,57 @@ Property Ads Location', 'Title', 'Amenities', 'Furnished', 'Price', 'Rent', 'Sta
         header('Content-Type: application/json');
         echo json_encode($data);
         Yii::app()->end();
+    }
+    public function actionUpdateAvailability()
+    {
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+
+        if ($request->isPostRequest && isset($_POST['Property'])) {
+            $propertyId = $_POST['Property']['place_an_ad_id'];
+            $availability = $_POST['Property']['availability'];
+            $reason = $_POST['Property']['reason'] ?? null;
+            $soldPrice = $_POST['Property']['sold_price'] ?? null;
+
+            $placeAd = PlaceAnAd::model()->findByPk($propertyId);
+            if ($placeAd === null) {
+                $notify->addError(Yii::t('app', 'Property not found.'));
+                return;
+            }
+
+            // Update status based on availability
+            if ($availability == 'available') {
+                $placeAd->status = 'A'; // Active
+                $placeAd->availability = null; // Clear availability reason
+            } else {
+                $placeAd->status = 'I'; // Inactive (not available)
+                $placeAd->availability = $reason;
+
+                // If the property is sold out, save the sold price and call sold out logic
+                if ($reason == 'sold_out' && $soldPrice) {
+                    $model = new SoldProperty();
+                    $model->user_id = $placeAd->user_id; // Assign the current logged-in user's ID
+                    $model->isTrash = 0; // Default value for non-deleted records
+                    $model->sold_price = $soldPrice;
+                    $model->property_id = $propertyId;
+                    $model->save();
+                    
+                    $placeAd->status = 'S'; // Mark as sold
+                    // You can also call additional logic here for sold-out properties
+                }
+            }
+
+            if ($placeAd->save()) {
+                $notify->addSuccess(Yii::t('app', 'Property availability updated successfully!'));
+            } else {
+                $notify->addError(Yii::t('app', 'Failed to update property availability.'));
+            }
+
+            // Redirect back to the page
+            $this->redirect(Yii::app()->request->urlReferrer);
+        } else {
+            throw new CHttpException(400, Yii::t('app', 'Invalid request.'));
+        }
     }
 
     public function actionMarkAsSold()

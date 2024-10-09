@@ -68,9 +68,9 @@ if ($viewCollection->renderContent) { ?>
             action="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/blog_articles'); ?>">
 
             <!-- CSRF Protection -->
-            <?php if (Yii::app()->request->enableCsrfValidation) { ?>
-            <input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>" />
-            <?php } ?>
+            <?php // if (Yii::app()->request->enableCsrfValidation) { ?>
+                    <input type="hidden" name="csrf_token" value="<?php echo Yii::app()->request->csrfToken; ?>" />
+                <?php // } ?>
             <div class="table-responsive">
                 <table id="blogs-datatable" class="table table-bordered table-hover table-striped">
                     <thead>
@@ -148,6 +148,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
+            
             url: deleteUrl,
             data: {
                 id: articleId,

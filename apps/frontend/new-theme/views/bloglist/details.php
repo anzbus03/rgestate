@@ -1175,10 +1175,10 @@
 
 
             <div class="form-section">
-                <form method="GET" id="contactForm">
+                <form method="POST" id="contactForm">
                     <!-- CSRF Protection -->
                     <!-- <?php if (Yii::app()->request->enableCsrfValidation) { ?> -->
-                    <input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>" />
+                    <input type="hidden" name="csrf_token" id="csrf_token" value="<?php echo Yii::app()->request->csrfToken; ?>" />
                     <!-- <?php } ?> -->
 
                     <div class="">
@@ -1239,7 +1239,7 @@
                     </div>
 
 
-                    <button type="submit" class="btn bg-Color text-white inquiry-btn">SEND INQUIRY</button>
+                    <button type="btn" id="submitFormContact" class="btn bg-Color text-white inquiry-btn">SEND INQUIRY</button>
                     <!-- Success message placeholder -->
                     <div id="successMessage" style="display: none; color: green; margin-top: 10px;">
                         Your message has been sent successfully!
@@ -1303,17 +1303,27 @@ message.addEventListener('input', function() {
 
 <script>
 $(document).ready(function() {
-    $('#contactForm').submit(function(e) {
+    $('#submitFormContact').click(function(e) {
         e.preventDefault(); // Prevent the default form submission
-
         // Get form data
         var formData = $(this).serialize();
-
+        let name = $("#name").val();
+        let email = $("#email").val();
+        let contact = $("#contact1").val();
+        let message = $("#message").val();
+        let csrf_token = $("#csrf_token").val();
         // Send form data using AJAX
         $.ajax({
-            url: '<?php echo Yii::app()->createUrl("bloglist/contact"); ?>', // Adjust the URL as necessary
-            type: 'GET',
-            data: formData,
+            url: "<?php echo Yii::app()->createAbsoluteUrl('site/submit'); ?>", // Adjust the URL as necessary
+            type: 'POST',
+            data: {
+                name: name,
+                email: email,
+                contact: contact,
+                message: message,
+                csrf_token: csrf_token,
+            },
+            dataType: 'json',
             success: function(response) {
                 // No need to parse, response should already be a JSON object
                 if (response.status === 'success') {
@@ -1322,14 +1332,9 @@ $(document).ready(function() {
                     $('#contactForm')[0].reset(); // Clear form fields
                     $('#errorMessage').hide(); // Hide error message if previously shown
                 } else {
-                    $('#errorMessage').text(response.message).show(); // Show error message
+                    $('#errorMessage').html(response.message).show(); // Show error message
                     $('#successMessage').hide(); // Hide success message
                 }
-            },
-            error: function(xhr, status, error) {
-                console.log(xhr.responseText); // Log the response for debugging
-                alert('There was an error sending your message: ' + xhr
-                .responseText); // Show error details
             }
         });
     });

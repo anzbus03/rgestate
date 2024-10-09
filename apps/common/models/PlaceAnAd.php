@@ -130,8 +130,10 @@ class PlaceAnAd extends ActiveRecord
 			array('ad_description', 'required', 'on' => 'update_content', 'message' => $required),
 			array('country,state,city', 'safe', 'on' => 'new_insert'),
 			array('price', 'validatePrice'),
+			array('availability', 'safe'),
 			array('salesman_email', 'email'),
 			array('sub_category_id', 'validateSub'),
+			array('amenities', 'safe'),
 			array('ad_description', 'validateDescription'),
 			array('mobile_number', 'validatePhone'),
 			array('w_for', 'validateSectionValue', 'on' => 'new_insert'),
@@ -176,7 +178,7 @@ class PlaceAnAd extends ActiveRecord
 			array('modified_date, xml_listing_date, xml_update_date, expiry_date,property_overview,LocalAreaAmenitiesDesc,RecommendedProperties,PropertyID,status,rent_paid,name,unsubmited,amenities_fields', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, section_id, category_id, sub_category_id, ad_title, ad_description, price, country, state, city, district, mobile_number, bathrooms, bedrooms, user_id, added_date, modified_date, priority, isTrash, status,occupant_status, slug, image, dynamic, dynamicArray, location_latitude, location_longitude, area_location, xml_inserted, xml_pk, xml_type, xml_reference, xml_listing_date, xml_update_date, code, RefNo, community_id, sub_community_id, property_name, builtup_area, PrimaryUnitView,     FloorNo, HandoverDate,     parking,   salesman_email, expiry_date,       mandate, currency_abr, area_measurement, PDFBrochureLink,property_overview,ReraStrNo,preleased,PropertyID,featured', 'safe', 'on' => 'search'),
+			array('id, section_id, category_id, sub_category_id, ad_title, ad_description, price, country, state, city, district, mobile_number, bathrooms, bedrooms, user_id, added_date, modified_date, priority, isTrash, status,occupant_status, slug, image, dynamic, dynamicArray, location_latitude, location_longitude, area_location, xml_inserted, xml_pk, xml_type, xml_reference, xml_listing_date, xml_update_date, code, RefNo, community_id, sub_community_id, property_name, builtup_area, PrimaryUnitView,     FloorNo, HandoverDate,     parking,   salesman_email, expiry_date,       mandate, currency_abr, area_measurement, PDFBrochureLink,property_overview,ReraStrNo,preleased,PropertyID,featured,last_updated', 'safe', 'on' => 'search'),
 		);
 		return array_merge($rules1, $rules);
 	}
@@ -543,6 +545,7 @@ class PlaceAnAd extends ActiveRecord
 			'sub_category_id' => $this->mTag()->getTag('subcategory', 'Subcategory'),
 			'ad_title' => $this->mTag()->getTag('ad_title', 'Ad Title'),
 			'ad_description' => $this->mTag()->getTag('description', 'Description'),
+			'amenities' => $this->mTag()->getTag('amenities', 'Amenities'),
 			'engine_size' => 'Engine Size',
 			'killometer' => 'Killometer',
 			'model' => 'Model',
@@ -1328,14 +1331,19 @@ class PlaceAnAd extends ActiveRecord
 
 		if ($this->isNewRecord) {
 			$userMo = ListingUsers::model()->findByPk($this->user_id);
+			$userMo2 = User::model()->findByPk($this->user_id);
 			if ($userMo) {
 				$useridd  = !empty($userMo->parent_user) ? $userMo->parent_user : $userMo->user_id;
 				$packagemodel = PricePlanOrder::model()->userActivePackageId($useridd);
+			}else if($userMo2) {
+				$useridd  = $userMo2->user_id;
+				$packagemodel = PricePlanOrder::model()->userActivePackageId($useridd);	
 			}
 			if ($packagemodel) {
 				$this->package_used = $packagemodel->order_id;
 			} else {
-				throw new Exception('No active package found! Please contact administrator');
+				$this->package_used = 0;
+				// throw new Exception('No active package found! Please contact administrator');
 			}
 			if (!empty($userMo->parent_user)) {
 				define('SEND_NOTIFICATION', $userMo->parent_user);

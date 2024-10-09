@@ -115,17 +115,19 @@ class BloglistController extends Controller
 		}
 		Yii::app()->end();
 	}
-
+	
 	public function actionDetails($slug, $page = "1")
 	{
-
+		
 		$model  = BlogArticle::model()->blogBySlug($slug);
 
 		if (empty($model)) {
 			throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
 		}
-
-		$ads = Article::model()->findAll();
+		$ads = BlogArticle::model()->findAll(array(
+			'order' => 'article_id DESC',
+		));
+		
 
 		$ip = Yii::app()->request->getUserHostAddress();
 		$articleView = new ArticleView;

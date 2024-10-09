@@ -1,3 +1,6 @@
+<script
+	src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/global/global.min.js'); ?>"
+	type="text/javascript"></script>
 <div hidden>
 	<svg id="add-button" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
 		<g>
@@ -1486,9 +1489,23 @@ if ($viewCollection->renderContent) {
 									<div class="clearfix"><!-- --></div>
 									<h4 class="subheading_font row "><?php echo $this->tag->getTag('features_/_amenities', 'Features / Amenities'); ?></h4>
 									<div class="clearfix"><!-- --></div>
+									<div class="amn1 row">
+										<div class="form-group col-lg-12">
+											<div style="width:100%;height:15px;"></div>
+											<?php echo $form->labelEx($model, 'amenities'); ?>
+											<?php
+											if (Yii::App()->isAppName('backend') and !$model->isNewRecord) {
+												echo $model->getTranslateHtml('amenities');
+											}
+											?>
+											<?php echo $form->textArea($model, 'amenities', array_replace($model->getHtmlOptions('amenities'), array("rows" => "5", 'dir' => 'auto', 'placeholder' => $this->tag->getTag('mention_the_key_feature_of_you', 'Mention the key feature of your property (short description of your property)')))); ?>
+											<div class="text-warning small hide pull-left"><?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::DESC_MIN, '{max}' => $model::DESC_MAX));; ?></div>
+											<div class="pull-right text-warning" style="font-size: 12px;"><span id="inputcounter2"></span></div>
+											<div class="clearfix"></div>
+											<?php echo $form->error($model, 'amenities'); ?>
+										</div>
 
-									<div class="amn1">
-										<style>
+										<!-- <style>
 											.amlabel .form-check {
 												width: 50% !important;
 												float: left;
@@ -1497,54 +1514,54 @@ if ($viewCollection->renderContent) {
 											.amlabel .form-check:nth-child(2n+1) {
 												clear: both;
 											}
-										</style>
-										<div class="amn">
+										</style> -->
+										<!-- <div class="amn">
 											<?php
-											$categoris =   CHtml::listData(Master::model()->listData(2), 'master_id', 'master_name');
-											//print_r($model->amenities) ;exit; 
+											// $categoris =   CHtml::listData(Master::model()->listData(2), 'master_id', 'master_name');
+											// //print_r($model->amenities) ;exit; 
 
-											foreach ($categoris as $k => $v) {
-												//$amenities_array=	 CHtml::listData(Amenities::model()->findAllCategories($k),'amenities_id','amenities_name');
-												$amenities_array =	 Amenities::model()->findAllCategories($k);
+											// foreach ($categoris as $k => $v) {
+											// 	//$amenities_array=	 CHtml::listData(Amenities::model()->findAllCategories($k),'amenities_id','amenities_name');
+											// 	$amenities_array =	 Amenities::model()->findAllCategories($k);
 
-												//echo $k.''. print_r($amenities_array); echo '<br />';echo '<br />';echo '<br />';echo '<br />';
-												if (!empty($amenities_array)) {
-													echo '<div class="col-sm-12 amlabel amn-' . $k . '" style="">';
-													echo '<div class="parent-h-div">';
-													echo '<a href="javascript:void(0)" class="cls-closebtn"  onclick="updateOpenClose(this)"><svg viewBox="0 0 70.098 53.605" ><use xlink:href="#cls-close"></use></svg></a>';
-													echo '<h4 class="spl-headd margin-top-5  margin-bottom-5" onclick="updateOpen(this)">' . $v . '<svg viewBox="0 0 70.098 53.605" class="button_icon-style5"><use xlink:href="#add-button"></use></svg></h4><div class="clearfix"></div>';
-													foreach ($amenities_array as $k => $v) {
+											// 	//echo $k.''. print_r($amenities_array); echo '<br />';echo '<br />';echo '<br />';echo '<br />';
+											// 	if (!empty($amenities_array)) {
+											// 		echo '<div class="col-sm-12 amlabel amn-' . $k . '" style="">';
+											// 		echo '<div class="parent-h-div">';
+											// 		echo '<a href="javascript:void(0)" class="cls-closebtn"  onclick="updateOpenClose(this)"><svg viewBox="0 0 70.098 53.605" ><use xlink:href="#cls-close"></use></svg></a>';
+											// 		echo '<h4 class="spl-headd margin-top-5  margin-bottom-5" onclick="updateOpen(this)">' . $v . '<svg viewBox="0 0 70.098 53.605" class="button_icon-style5"><use xlink:href="#add-button"></use></svg></h4><div class="clearfix"></div>';
+											// 		foreach ($amenities_array as $k => $v) {
 
-														// echo '<div class="form-check form-check-flat"  id="amnitm_'.$k.'"><label class="form-check-label"><input class="amnit" value="'.$k.'" id="amenities_'.$k.'" '; echo  in_array($k,(array) $model->amenities) ? 'checked' : '';  echo ' type="checkbox" name="amenities[]" onclick="expandthis(this)" >  '.$v.' <i class="input-helper"></i></label></div>';
+											// 			// echo '<div class="form-check form-check-flat"  id="amnitm_'.$k.'"><label class="form-check-label"><input class="amnit" value="'.$k.'" id="amenities_'.$k.'" '; echo  in_array($k,(array) $model->amenities) ? 'checked' : '';  echo ' type="checkbox" name="amenities[]" onclick="expandthis(this)" >  '.$v.' <i class="input-helper"></i></label></div>';
 
-														if ($v->f_type == '0') {
-															echo '<div class="form-check form-check-flat"  id="amnitm_' . $v->amenities_id . '"><label class="form-check-label"><input class="amnit" value="' . $v->amenities_id . '" id="amenities_' . $v->amenities_id . '" ';
-															echo  in_array($v->amenities_id, (array) $model->amenities) ? 'checked' : '';
-															echo ' type="checkbox" name="amenities[' . $v->amenities_id . ']" onclick="expandthis(this)" >  ' . $v->amenities_name . ' <i class="input-helper"></i></label></div>';
-														} else if ($v->f_type == '1') {
-															echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::dropDownList('amenities[' . $v->amenities_id . '][inp_val]', @$model->amenities[$v->amenities_id], array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8+'), array('empty' => '0', 'class' => 'input-text  form-control')) . '</div></div>';
-														} else {
-															$vals =   isset($model->amenities[$v->amenities_id]['inp_val']) ?  $model->amenities[$v->amenities_id]['inp_val'] :  @$model->amenities[$v->amenities_id];
-															$on_input = ($v->i_o == '1') ? "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" : '';
-															echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::textField('amenities[' . $v->amenities_id . '][inp_val]', $vals, array('class' => 'input-text cmv  form-control', 'max-length' => '50', 'oninput' => $on_input)) . '</div></div>';
-														}
-													}
+											// 			if ($v->f_type == '0') {
+											// 				echo '<div class="form-check form-check-flat"  id="amnitm_' . $v->amenities_id . '"><label class="form-check-label"><input class="amnit" value="' . $v->amenities_id . '" id="amenities_' . $v->amenities_id . '" ';
+											// 				echo  in_array($v->amenities_id, (array) $model->amenities) ? 'checked' : '';
+											// 				echo ' type="checkbox" name="amenities[' . $v->amenities_id . ']" onclick="expandthis(this)" >  ' . $v->amenities_name . ' <i class="input-helper"></i></label></div>';
+											// 			} else if ($v->f_type == '1') {
+											// 				echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::dropDownList('amenities[' . $v->amenities_id . '][inp_val]', @$model->amenities[$v->amenities_id], array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8+'), array('empty' => '0', 'class' => 'input-text  form-control')) . '</div></div>';
+											// 			} else {
+											// 				$vals =   isset($model->amenities[$v->amenities_id]['inp_val']) ?  $model->amenities[$v->amenities_id]['inp_val'] :  @$model->amenities[$v->amenities_id];
+											// 				$on_input = ($v->i_o == '1') ? "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" : '';
+											// 				echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::textField('amenities[' . $v->amenities_id . '][inp_val]', $vals, array('class' => 'input-text cmv  form-control', 'max-length' => '50', 'oninput' => $on_input)) . '</div></div>';
+											// 			}
+											// 		}
 
-													echo '</div>';
+											// 		echo '</div>';
 
-													echo '</div>';
-												}
-											}
+											// 		echo '</div>';
+											// 	}
+											// }
 
 
 
 											//	echo CHtml::checkBoxList('amenities',$model->amenities ,$amenities_array,array('separator'=>'','labelOptions'=>array('class'=>''),'template'=>'<div class="form-check form-check-flat"><label class="form-check-label">{input}  {labelTitle} <i class="input-helper"></i></label></div>'));                                              
 											?>
-										</div>
-										<div class="clearfix"></div>
+										</div> -->
+										<!-- <div class="clearfix"></div>
 										<div class="expandDiv hide" onclick="toggleClassExpand()"></div>
 										<div class="clearfix"></div>
-										<?php echo $form->error($model, 'amenities'); ?>
+										<?php //echo $form->error($model, 'amenities'); ?> -->
 									</div>
 									<div class="clearfix"><!-- --></div>
 								</div>

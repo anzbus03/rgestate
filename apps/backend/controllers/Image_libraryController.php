@@ -196,11 +196,11 @@ class Image_libraryController extends Controller
         $img_saved = false;
         $floorPlanSaved = false;
 
-        var_dump($files);
-        var_dump($floorPlanFiles);
-        var_dump($propertyId);
-        var_dump($videoLink);
-        exit;
+        // var_dump($files);
+        // var_dump($floorPlanFiles);
+        // var_dump($propertyId);
+        // var_dump($videoLink);
+        // exit;
 
         // Process general files
         foreach ($files as $file) {
@@ -238,6 +238,7 @@ class Image_libraryController extends Controller
 
         // Process floor plan files
         foreach ($floorPlanFiles as $floorPlan) {
+          
             // Construct the upload path for floor plans
             $floorPlanDir = "{$rootPath}/uploads/floorPlans/{$year}/{$month}/";
 
@@ -253,7 +254,6 @@ class Image_libraryController extends Controller
             // Save the uploaded floor plan file
             $floorPlanName = $floorPlan->name; // Generate a unique file name
             $floorPlanPath = $floorPlanDir . $floorPlanName; // Complete path for the file
-
             if ($floorPlan->saveAs($floorPlanPath)) { // Move the uploaded file to the specified directory
                 $adFloorPlan = new AdFloorPlan; // Create a new AdFloorPlan instance
                 $adFloorPlan->isNewRecord = true;
@@ -261,6 +261,7 @@ class Image_libraryController extends Controller
                 $adFloorPlan->floor_title = $floorPlanName; // Set the floor title to the uploaded file name
                 $adFloorPlan->floor_file = $year . '/' . $month . '/' . $floorPlanName; // Save the unique file path
                 $floorPlanSaved = $adFloorPlan->save(); // Save the floor plan record in the database
+              
             } else {
                 // If saveAs fails, return an error message
                 $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to save floor plan: {$floorPlan->name}"]);
@@ -271,22 +272,24 @@ class Image_libraryController extends Controller
         // Update video link in the PlaceAnAd model
         if ($videoLink) {
             // Find the property by ID
-            $placeAd = PlaceAnAd::model()->findByAttributes(['id' => $propertyId]);
-
+            $placeAd = PlaceAnAd::model()->findByPk($propertyId);
+            
             if ($placeAd) {
                 // Replace the existing video link
                 $placeAd->video = $videoLink;
-
+                
                 if (!$placeAd->save()) {
                     // Handle error saving video link
                     $this->sendJsonResponse(['status' => 'error', 'message' => 'Failed to save video link.']);
                     return;
                 }
-            } else {
-                // If property not found, handle accordingly
-                $this->sendJsonResponse(['status' => 'error', 'message' => 'Property not found.']);
-                return;
+          
             }
+            //  else {
+            //     // If property not found, handle accordingly
+            //     $this->sendJsonResponse(['status' => 'error', 'message' => 'Property not found.']);
+            //     return;
+            // }
         }
 
         // Return a success response if at least one image or floor plan was saved

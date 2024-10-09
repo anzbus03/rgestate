@@ -278,8 +278,8 @@ if ($viewCollection->renderContent) { ?>
                                 </td>
                                 <td>
                                     <span class="date-display"
-                                        style="margin-right: 3px;"><?php echo CHtml::encode($data->Sdate); ?></span>
-                                    <a href="#" class="refresh-date" data-id="<?php echo $data->id; ?>"
+                                        style="margin-right: 3px;"><?php echo CHtml::encode($data->last_updated); ?></span>
+                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/refresh_date', array('id' => $data->id)); ?>" class="refresh-date" data-id="<?php echo $data->id; ?>"
                                         data-ldate="<?php echo CHtml::encode($data->Ldate); ?>"
                                         style="text-decoration: none; color: blue; cursor: pointer;">
                                         <i class="fa fa-refresh"></i>
@@ -295,7 +295,14 @@ if ($viewCollection->renderContent) { ?>
                                     <!-- <a href="<?php echo Yii::app()->createUrl('statistics/property_statistics', array('property_id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Statistics'); ?>" target="_blank">
                                                 <i class="fa fa-bar-chart text-red"></i>
                                             </a> -->
-                                    <?php $PreviewURL = str_replace('index.php/', '', $data->PreviewUrlTrashB); ?>
+
+                                    <?php 
+                                    if ($data->section_id == 2){
+                                        $PreviewURL = ('/rent/'.$data->slug);    
+                                    }else if ($data->section_id == 1){
+                                        $PreviewURL = ('/sale/'.$data->slug);    
+                                    }
+                                        ?>
                                     <a href="<?php echo $PreviewURL; ?>" title="<?php echo Yii::t('app', 'View'); ?>"
                                         target="_blank" class="view-icon">
                                         <i class="fa fa-eye"></i>
@@ -320,17 +327,18 @@ if ($viewCollection->renderContent) { ?>
                                         <i class="fa fa-check-circle"></i>
                                     </a>
                                     <?php if ($data->status === "A") { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status', array('id' => $data->id, 'status' => $data->status)); ?>"
-                                        title="<?php echo Yii::t('app', 'Inactive AD'); ?>" class="Block">
+                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status_change', array('id' => $data->id, 'val' => "I")); ?>"
+                                        title="<?php echo Yii::t('app', 'Inactive AD'); ?>" class="Block"
+                                        >
                                         <i class="fa fa-ban"></i>
                                     </a>
                                     <?php } ?>
                                     <?php if ($data->status === "I") { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status', array('id' => $data->id, 'status' => $data->status)); ?>"
+                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status_change', array('id' => $data->id, 'val' => "A")); ?>"
                                         title="<?php echo Yii::t('app', 'Activate AD'); ?>"
                                         class="Enable active-property"
-                                        onclick="event.preventDefault(); $.ajax({type:'POST', url:$(this).attr('href'), success: function() {$.fn.yiiGridView.update('<?php echo $model->modelName; ?>-grid');}});">
-                                        <i class="fa fa-check-circle"></i>
+
+>                                        <i class="fa fa-check-circle"></i>
                                     </a>
                                     <?php } ?>
                                     <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/hot')) { ?>
@@ -352,10 +360,13 @@ if ($viewCollection->renderContent) { ?>
 
                                     <?php else: ?>
                                     <!-- If the property is not sold, show the clickable icon -->
-                                    <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Sold property'); ?>"
-                                        onclick="openUp2(<?php echo $data->id; ?>)">
-                                        <i class='far fa-handshake'></i>
-                                    </a>
+                                    <?php if ($data->status == "A"){ ?>
+                                        
+                                        <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Sold property'); ?>"
+                                            onclick="openUp2(<?php echo $data->id; ?>)">
+                                            <i class='far fa-handshake'></i>
+                                        </a>
+                                    <?php } ?>
 
                                     <?php endif; ?>
                                 </td>
@@ -377,47 +388,47 @@ if ($viewCollection->renderContent) { ?>
     </div>
 
     <style>
-    /* Property Status Colors */
-    .hot-property {
-        color: #FF4500;
-        /* Red or choose another suggested color */
-    }
+        /* Property Status Colors */
+        .hot-property {
+            color: #FF4500;
+            /* Red or choose another suggested color */
+        }
 
-    .featured-property {
-        color: #FFD700;
-        /* Gold */
-    }
+        .featured-property {
+            color: #FFD700;
+            /* Gold */
+        }
 
-    .verified-property {
-        color: #28A745;
-        /* Green */
-    }
+        .verified-property {
+            color: #28A745;
+            /* Green */
+        }
 
-    .active-property {
-        color: #007BFF;
-        /* Blue */
-    }
+        .active-property {
+            color: #007BFF;
+            /* Blue */
+        }
 
-    .sold-property {
-        color: #DC3545;
-        /* Red */
-    }
+        .sold-property {
+            color: #DC3545;
+            /* Red */
+        }
 
-    /* Action Icon Colors */
-    .edit-icon {
-        color: #FFC107;
-        /* Orange */
-    }
+        /* Action Icon Colors */
+        .edit-icon {
+            color: #FFC107;
+            /* Orange */
+        }
 
-    .delete-icon {
-        color: #FF0000;
-        /* Red */
-    }
+        .delete-icon {
+            color: #FF0000;
+            /* Red */
+        }
 
-    .view-icon {
-        color: #6C757D;
-        /* Gray */
-    }
+        .view-icon {
+            color: #6C757D;
+            /* Gray */
+        }
     </style>
 
 
@@ -447,28 +458,77 @@ if ($viewCollection->renderContent) { ?>
     </div>
 
     <!-- Sold Property Modal -->
-    <div class="modal fade" id="soldPropertyModal" tabindex="-1" role="dialog">
+   <!-- Modal for changing property availability -->
+    <div class="modal fade" id="availabilityModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Sold Property</h5>
+                    <h5 class="modal-title">Update Property Availability</h5>
                     <button type="button" class="btn close" data-bs-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form id="soldPropertyForm" method="POST">
+                    <form id="availabilityForm" method="POST" action="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/updateavailability'); ?>">
                         <!-- Hidden input to store property_id -->
-                        <input type="hidden" id="propertyIdInput" name="SoldProperty[property_id]">
+                        <input type="hidden" id="propertyIdInput" name="Property[place_an_ad_id]">
+
+                        <!-- Availability Dropdown -->
                         <div class="form-group">
-                            <label for="soldPriceInput">Sold Price</label>
-                            <input type="text" id="soldPriceInput" name="SoldProperty[sold_price]" class="form-control"
-                                required>
+                            <label for="availabilitySelect">Availability</label>
+                            <select id="availabilitySelect" name="Property[availability]" class="form-control" required>
+                                <option value="">Select Availability</option>
+                                <option value="available">Available</option>
+                                <option value="not_available">Not Available</option>
+                            </select>
                         </div>
+
+                        <!-- Reason Dropdown (shown when not available) -->
+                        <div class="form-group d-none mt-2" id="reasonContainer">
+                            <label for="reasonSelect">Reason</label>
+                            <select id="reasonSelect" name="Property[reason]" class="form-control">
+                                <option value="">Select Reason</option>
+                                <option value="sold_out">Sold Out</option>
+                                <option value="lease_out">Lease Out</option>
+                                <option value="not_available">Not Available</option>
+                            </select>
+                        </div>
+
+                        <!-- Sold Price Input (shown when reason is sold out) -->
+                        <div class="form-group d-none mt-2 mb-2" id="soldPriceContainer">
+                            <label for="soldPriceInput">Sold Price</label>
+                            <input type="text" id="soldPriceInput" placeholder="Sold Price" name="Property[sold_price]" class="form-control">
+                        </div>
+
+                        <!-- Submit Button -->
                         <button type="submit" class="btn btn-success mt-2">Submit</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+<script>
+    document.getElementById('availabilitySelect').addEventListener('change', function () {
+        const reasonContainer = document.getElementById('reasonContainer');
+        const soldPriceContainer = document.getElementById('soldPriceContainer');
+
+        if (this.value === 'not_available') {
+            reasonContainer.classList.remove('d-none');
+        } else {
+            reasonContainer.classList.add('d-none');
+            soldPriceContainer.classList.add('d-none');
+        }
+    });
+
+    document.getElementById('reasonSelect').addEventListener('change', function () {
+        const soldPriceContainer = document.getElementById('soldPriceContainer');
+        if (this.value === 'sold_out') {
+            soldPriceContainer.classList.remove('d-none');
+        } else {
+            soldPriceContainer.classList.add('d-none');
+        }
+    });
+</script>
+
 
     <style>
     /* Select2 Container Styles */
@@ -593,7 +653,7 @@ if ($viewCollection->renderContent) { ?>
         // Set the property ID in the hidden input field of the form
         $('#propertyIdInput').val(propertyId);
         // Show the modal
-        $('#soldPropertyModal').modal('show');
+        $('#availabilityModal').modal('show');
     }
 
     // AJAX form submission for creating a new sold property record
@@ -854,24 +914,43 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
         }
         $('#exportExcel').click(function(e) {
+            e.preventDefault(); // Prevent default behavior
+
             var dateRange = $('#dateRange').data('daterangepicker');
             var startDate = dateRange.startDate.format('YYYY-MM-DD');
             var endDate = dateRange.endDate.format('YYYY-MM-DD');
-            var exportUrl = '<?php echo Yii::app()->createUrl('place_property/exportExcel'); ?>';
+            var exportUrl = '<?php echo Yii::app()->createUrl('place_property/exportData'); ?>'; // New action for JSON data
 
+            // Build URL with date range
             if (startDate && endDate) {
-                exportUrl += '?startDate=' + encodeURIComponent(startDate) + '&endDate=' +
-                    encodeURIComponent(endDate);
+                exportUrl += '?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate);
+
+                // Check if the current page has a type filter (e.g., trash)
                 var currentUrl = window.location.href;
                 if (currentUrl.includes("trash")) {
                     exportUrl += "&type=trash";
                 }
             }
 
+            // Make AJAX request to retrieve JSON data
+            $.ajax({
+                url: exportUrl,
+                type: 'GET',
+                success: function(response) {
+                    // Convert JSON to Excel format using SheetJS
+                    var ws = XLSX.utils.json_to_sheet(response); // Convert JSON to sheet
+                    var wb = XLSX.utils.book_new(); // Create a new workbook
+                    XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); // Append sheet to workbook
 
-            // Redirect to the export URL
-            window.location.href = exportUrl;
+                    // Trigger download of the Excel file
+                    XLSX.writeFile(wb, "ExportedData_" + new Date().toISOString().slice(0, 10) + ".xlsx");
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error: " + error); // Log any errors for debugging
+                }
+            });
         });
+
         var table = $('#enquiryTable').DataTable({
             "paging": true, // Enable pagination
             "lengthChange": true, // Allow users to change page length
@@ -928,14 +1007,14 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     <!-- update latest date -->
     <script>
     $(document).ready(function() {
-        $('.refresh-date').on('click', function(e) {
-            e.preventDefault(); // Prevent the default action of the anchor tag
+        // $('.refresh-date').on('click', function(e) {
+        //     e.preventDefault(); // Prevent the default action of the anchor tag
 
-            // Get the new date from the data attribute
-            var newDate = $(this).data('ldate');
+        //     // Get the new date from the data attribute
+        //     var newDate = $(this).data('ldate');
 
-            // Update the displayed date
-            $(this).closest('td').find('.date-display').text(newDate);
-        });
+        //     // Update the displayed date
+        //     $(this).closest('td').find('.date-display').text(newDate);
+        // });
     });
     </script>

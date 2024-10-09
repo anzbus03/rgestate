@@ -108,7 +108,7 @@ if ($viewCollection->renderContent) { ?>
                     <?php echo CHtml::hiddenField(Yii::app()->request->csrfTokenName, Yii::app()->request->csrfToken); ?>
 
                     <div class="form-group">
-                        <label for="fileUpload">Choose files</label>
+                        <label for="fileUpload">Choose Images</label>
                         <input type="file" class="form-control" id="fileUpload" name="files[]" multiple>
                     </div>
                     <div id="uploadedFiles" class="uploaded-files-box"
@@ -195,8 +195,11 @@ $(document).ready(function() {
             processData: false,
             success: function(response) {
                 // Handle success (e.g., refresh the table)
-                $('#home-banner-table').DataTable().ajax.reload();
-                $('#uploadModal').modal('hide'); // Hide the modal
+                if(JSON.parse(response).status == "success"){
+                    window.history.back();
+                    $('#home-banner-table').DataTable().ajax.reload();
+                    $('#uploadModal').modal('hide'); // Hide the modal
+                }
             },
             error: function() {
                 alert('Error uploading files');
