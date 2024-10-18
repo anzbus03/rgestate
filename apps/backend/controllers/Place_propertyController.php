@@ -3117,7 +3117,8 @@ class Place_propertyController  extends Controller
     public function actionUploadExcel()
     {
         $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
-
+        $newCount = 0;
+        $updatedCount = 0;
         if (isset($_FILES['excelFile'])) {
             // Collect all RefNo, category names, and user emails for bulk queries
             $refNos = array_column($excelData, 4); 
@@ -3174,6 +3175,11 @@ class Place_propertyController  extends Controller
                 foreach (array_slice($excelData, 1) as $data) {
                     // Check if ad exists in the preloaded ads
                     $model = isset($adsMap[$data[4]]) ? $adsMap[$data[4]] : new PlaceAnAd();
+                    if (isset($adsMap[$data[4]])){
+                        $updatedCount++;
+                    }else {
+                        $newCount++;
+                    }
                     $model->scenario = isset($adsMap[$data[4]]) ? 'update_content' : 'new_insert';
 
                     // Set model attributes using preloaded data
@@ -3235,7 +3241,8 @@ class Place_propertyController  extends Controller
 
                 // Commit transaction
                 $transaction->commit();
-                return $this->sendJsonResponse(['status' => 'success']);
+                return $this->sendJsonResponse(['status' => 'success','newCount' => $newCount,
+                'updatedCount' => $updatedCount]);
             } catch (Exception $e) {
                 // Rollback in case of an error
                 $transaction->rollback();

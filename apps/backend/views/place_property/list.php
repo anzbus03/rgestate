@@ -308,10 +308,12 @@ if ($viewCollection->renderContent) { ?>
                                         <i class="fa fa-eye"></i>
                                     </a>
                                     <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->id)); ?>"
-                                        title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete delete-icon">
-                                        <i class="fa fa-times-circle"></i>
-                                    </a>
+                                        <a href="javascript:void(0);"
+                                        title="<?php echo Yii::t('app', 'Delete'); ?>"
+                                        class="delete delete-icon"
+                                        onclick="confirmDelete('<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->id)); ?>')">
+                                            <i class="fa fa-times-circle"></i>
+                                        </a>
                                     <?php } ?>
                                     <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/featured')) { ?>
                                     <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/featured', array('id' => $data->id, 'featured' => $data->featured)); ?>"
@@ -515,6 +517,13 @@ if ($viewCollection->renderContent) { ?>
     </div>
 
 <script>
+    function confirmDelete(url) {
+        // Show confirmation dialog
+        if (confirm('Are you sure you want to delete this property?')) {
+            // If confirmed, proceed to the URL for deletion
+            window.location.href = url;
+        }
+    }
     document.getElementById('availabilitySelect').addEventListener('change', function () {
         const reasonContainer = document.getElementById('reasonContainer');
         const soldPriceContainer = document.getElementById('soldPriceContainer');
@@ -814,8 +823,10 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     // Hide loading bar once upload completes
                     $('#loadingBar').hide();
                     if (response.status == "success") {
-                        $('#uploadStatus').text("Success");
-                        location.reload();
+                        $('#uploadStatus').html(`Upload successful. <br/> <strong>New properties: ${response.newCount}</strong>. <br/><strong>Updated properties: ${response.updatedCount}.</strong>`);                        
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
                     } else {
                         $('#uploadStatus').text(response.message);
                     }
