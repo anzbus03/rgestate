@@ -831,7 +831,7 @@ class PlaceAnAd extends ActiveRecord
 	{
 		// $html =  $this->ReferenceNumberTitle . " " . $this->JavascriptPreview . $this->Sharable . "<span style='display:block;color: #888;'>" . $this->SmallDateAdded . "</span>";
 		// return  $html . '  ' . $this->IsExpiredAd . ' ' . $this->SoldStatusH;
-		$html =  $this->ReferenceNumberTitle . " " . $this->JavascriptPreview . $this->Sharable;
+		$html =  $this->ReferenceNumberTitle . " ";
 		return  $html;
 	}
 	public function getJavascriptPreview()

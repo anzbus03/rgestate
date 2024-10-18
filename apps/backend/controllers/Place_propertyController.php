@@ -3160,6 +3160,8 @@ class Place_propertyController  extends Controller
             $transaction = Yii::app()->db->beginTransaction();
             try {
                 foreach (array_slice($excelData, 1) as $data) {
+                    print_r($data);
+                    exit;
                     // Check if ad exists in the preloaded ads
                     $model = isset($adsMap[$data[4]]) ? $adsMap[$data[4]] : new PlaceAnAd();
                     $model->scenario = isset($adsMap[$data[4]]) ? 'update_content' : 'new_insert';
