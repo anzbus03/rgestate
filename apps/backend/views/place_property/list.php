@@ -452,6 +452,14 @@ if ($viewCollection->renderContent) { ?>
                         <button type="submit" class="pull-right btn btn-primary mt-4">Upload</button>
                     </form>
                     <div id="uploadStatus"></div>
+
+                    <!-- Loading bar (hidden initially) -->
+                    <div id="loadingBar" style="display: none; margin-top: 20px;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Uploading...</span>
+                        </div>
+                        <span class="ml-2">Uploading...</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -531,73 +539,73 @@ if ($viewCollection->renderContent) { ?>
 
 
     <style>
-    /* Select2 Container Styles */
-    .select2-selection--single {
-        background-color: #ffffff !important;
-        /* White background */
-        border: 1px solid #ced4da !important;
-        /* Light border color */
-        border-radius: 4px !important;
-        /* Rounded corners */
-        height: 40px !important;
-        /* Height of the select box */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
-        /* Subtle shadow */
-        transition: border-color 0.2s !important;
-    }
+        /* Select2 Container Styles */
+        .select2-selection--single {
+            background-color: #ffffff !important;
+            /* White background */
+            border: 1px solid #ced4da !important;
+            /* Light border color */
+            border-radius: 4px !important;
+            /* Rounded corners */
+            height: 40px !important;
+            /* Height of the select box */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+            /* Subtle shadow */
+            transition: border-color 0.2s !important;
+        }
 
-    /* Focus and Hover Styles */
-    .select2-container--default .select2-selection--single:focus,
-    .select2-container--default .select2-selection--single:hover {
-        border-color: #007bff;
-        /* Border color on focus/hover */
-    }
+        /* Focus and Hover Styles */
+        .select2-container--default .select2-selection--single:focus,
+        .select2-container--default .select2-selection--single:hover {
+            border-color: #007bff;
+            /* Border color on focus/hover */
+        }
 
-    /* Selected Item Styles */
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        color: #495057;
-        /* Text color */
-        line-height: 38px;
-        /* Vertically center the text */
-    }
+        /* Selected Item Styles */
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #495057;
+            /* Text color */
+            line-height: 38px;
+            /* Vertically center the text */
+        }
 
-    /* Placeholder Styles */
-    .select2-container--default .select2-selection--single .select2-selection__placeholder {
-        color: #6c757d;
-        /* Placeholder color */
-        line-height: 38px;
-        /* Vertically center the placeholder */
-    }
+        /* Placeholder Styles */
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: #6c757d;
+            /* Placeholder color */
+            line-height: 38px;
+            /* Vertically center the placeholder */
+        }
 
-    /* Dropdown Arrow Styles */
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 38px;
-        /* Adjust height of arrow */
-    }
+        /* Dropdown Arrow Styles */
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 38px;
+            /* Adjust height of arrow */
+        }
 
-    /* Dropdown Menu Styles */
-    .select2-container--default .select2-results__option {
-        color: #495057;
-        /* Text color for dropdown options */
-        padding: 10px 15px;
-        /* Padding for options */
-        cursor: pointer;
-        /* Pointer cursor on options */
-    }
+        /* Dropdown Menu Styles */
+        .select2-container--default .select2-results__option {
+            color: #495057;
+            /* Text color for dropdown options */
+            padding: 10px 15px;
+            /* Padding for options */
+            cursor: pointer;
+            /* Pointer cursor on options */
+        }
 
-    /* Hover Effect on Dropdown Options */
-    .select2-container--default .select2-results__option--highlighted[aria-selected] {
-        background-color: #007bff;
-        /* Highlight background color */
-        color: #ffffff;
-        /* Highlight text color */
-    }
+        /* Hover Effect on Dropdown Options */
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: #007bff;
+            /* Highlight background color */
+            color: #ffffff;
+            /* Highlight text color */
+        }
 
-    /* Disabled State Styles */
-    .select2-container--default .select2-selection--single .select2-selection__clear {
-        display: none;
-        /* Hide clear option for single selection */
-    }
+        /* Disabled State Styles */
+        .select2-container--default .select2-selection--single .select2-selection__clear {
+            display: none;
+            /* Hide clear option for single selection */
+        }
     </style>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -793,15 +801,18 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
         });
 
         function uploadFiles(formData) {
+            // Show loading bar before starting upload
+            $('#loadingBar').show();
+
             $.ajax({
-                // Yii::app()->controller->id here refers to place_propertyController and the function name is uploadExcel, you can also get controller name from url
-                // place_property
                 url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/uploadExcel'); ?>',
                 type: 'POST',
                 data: formData,
                 contentType: false,
                 processData: false,
                 success: function(response) {
+                    // Hide loading bar once upload completes
+                    $('#loadingBar').hide();
                     if (response.status == "success") {
                         $('#uploadStatus').text("Success");
                         location.reload();
@@ -810,10 +821,13 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
+                    // Hide loading bar even on error
+                    $('#loadingBar').hide();
                     $('#uploadStatus').text('Upload failed: ' + textStatus);
                 }
             });
         }
+
         $('#downloadTemplateBtn').click(function() {
             // Create a new workbook and add a worksheet
             var workbook = XLSX.utils.book_new();

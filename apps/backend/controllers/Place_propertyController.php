@@ -3117,7 +3117,7 @@ class Place_propertyController  extends Controller
     public function actionUploadExcel()
     {
         $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
-        
+
         if (isset($_FILES['excelFile'])) {
             // Collect all RefNo, category names, and user emails for bulk queries
             $refNos = array_column($excelData, 4); 
@@ -3134,43 +3134,53 @@ class Place_propertyController  extends Controller
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A']);
             $states = States::model()->findAllByAttributes(['state_name' => $filteredStates, 'isTrash' => '0']);
             $users = User::model()->findAllByAttributes(['email' => $userEmails]);
-           
+
             // Map the loaded data for quick lookup
             $adsMap = [];
             foreach ($ads as $ad) {
                 $adsMap[$ad->RefNo] = $ad;
             }
-    
+
             $categoriesMap = [];
             foreach ($categories as $category) {
                 $categoriesMap[$category->category_name] = $category;
             }
-    
+
             $statesMap = [];
             foreach ($states as $state) {
                 $statesMap[$state->state_name] = $state;
             }
-    
+
             $usersMap = [];
             foreach ($users as $user) {
                 $usersMap[$user->email] = $user;
             }
-    
+
+            // Validation: Check for missing categories or states
+            $missingCategories = array_diff($filteredcategoryNames, array_keys($categoriesMap));
+            $missingStates = array_diff($filteredStates, array_keys($statesMap));
+
+            if (!empty($missingCategories)) {
+                return $this->sendJsonResponse(['status' => 'error', 'message' => 'Category does not exist: ' . implode(', ', $missingCategories)]);
+            }
+
+            if (!empty($missingStates)) {
+                return $this->sendJsonResponse(['status' => 'error', 'message' => 'State does not exist: ' . implode(', ', $missingStates)]);
+            }
+
             // Transaction for bulk insert/update
             $transaction = Yii::app()->db->beginTransaction();
             try {
                 foreach (array_slice($excelData, 1) as $data) {
-                    print_r($data);
-                    exit;
                     // Check if ad exists in the preloaded ads
                     $model = isset($adsMap[$data[4]]) ? $adsMap[$data[4]] : new PlaceAnAd();
                     $model->scenario = isset($adsMap[$data[4]]) ? 'update_content' : 'new_insert';
-    
+
                     // Set model attributes using preloaded data
                     $subCategory = isset($categoriesMap[$data[8]]) ? $categoriesMap[$data[8]] : null;
                     $stateModel = isset($statesMap[$data[11]]) ? $statesMap[$data[11]] : null;
                     $userModel = isset($usersMap[$data[39]]) ? $usersMap[$data[39]] : null;
-    
+
                     // Set model attributes from the Excel data
                     $model->section_id = $data[6] == "Sale" ? 1 : 2;
                     $model->listing_type = $data[7] == "Commercial" ? 151 : 150;
@@ -3204,25 +3214,25 @@ class Place_propertyController  extends Controller
                     $model->state = $stateModel->state_id ?? 0;
                     $model->status = $data[36] == "Active" ? "A" : "I";
                     $availability = "not_available";
-                    if ($data[35] == "Sold Out"){
+                    if ($data[35] == "Sold Out") {
                         $availability = "sold_out";
-                    }else if ($data[35] == "Leased Out"){
+                    } else if ($data[35] == "Leased Out") {
                         $availability = "lease_out";
-                    }else if ($data[35] == "Available"){
+                    } else if ($data[35] == "Available") {
                         $availability = null;
                     }
                     $model->availability = $availability;
                     $model->user_id = $userModel->user_id ?? 31988;
-                   
+
                     // Save model
                     if (!$model->save()) {
                         throw new Exception('Failed to save model: ' . json_encode($model->getErrors()));
                     }
-    
+
                     // Handle image saving separately
                     $this->handleImageSaving($model, $data[29]);
                 }
-    
+
                 // Commit transaction
                 $transaction->commit();
                 return $this->sendJsonResponse(['status' => 'success']);
@@ -3233,6 +3243,7 @@ class Place_propertyController  extends Controller
             }
         }
     }
+
     
     private function calculatePrice($price, $frequency)
     {
