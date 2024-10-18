@@ -1197,7 +1197,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
                                             </div>
                                             <div class="col-sm-7">
                                                 <?php
-                                                $subCategoryD = Subcategory::model()->findAllByAttributes(array('parent_id' => null));
+                                                $subCategoryD = Subcategory::model()->findAllByAttributes(array('parent_id' => null, 'category_id' => $model->category_id));
                                                 $options = array('' => 'Select'); // Initialize options with a default empty value
                                                 foreach ($subCategoryD as $subcategory) {
                                                     $options[$subcategory->sub_category_id] = $subcategory->sub_category_name;
