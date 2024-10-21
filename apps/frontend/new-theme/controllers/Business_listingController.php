@@ -58,7 +58,11 @@ class Business_listingController extends Controller
                 if ($mainRegion) {
                     $_GET['state'] = $mainRegion->slug;
                     unset($_GET['type_of']);
-                }
+                }else {
+					$mainRegion = States::model()->findByAttributes(['slug' => $subCategory]);
+					$_GET['state'] = $mainRegion->slug;
+                    unset($_GET['type_of']);
+				}
             }
         }
         if (isset($_GET['sub_category'])) {
@@ -66,7 +70,7 @@ class Business_listingController extends Controller
             $subCategoryModel = Subcategory::model()->findByAttributes(['slug' => $subCategory]);
         
             if (!$subCategoryModel) {
-                $mainRegion = MainRegion::model()->findByAttributes(['slug' => $subCategory]);
+                $mainRegion = States::model()->findByAttributes(['slug' => $subCategory]);
         
                 if ($mainRegion) {
                     $_GET['state'] = $mainRegion->slug;
