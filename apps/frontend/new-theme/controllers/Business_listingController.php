@@ -48,57 +48,65 @@ class Business_listingController extends Controller
 			$redirectUrl = Yii::app()->createUrl($this->route, $_GET);
 			$this->redirect($redirectUrl);
 		}
-        if (isset($_GET['type_of'])) {
-            $subCategory = $_GET['type_of'];
-            $subCategoryModel = Subcategory::model()->findByAttributes(['slug' => $subCategory]);
-        
-            if (!$subCategoryModel) {
-                $mainRegion = MainRegion::model()->findByAttributes(['slug' => $subCategory]);
-        
-                if ($mainRegion) {
-                    $_GET['state'] = $mainRegion->slug;
-                    unset($_GET['type_of']);
-                }else {
-					$mainRegion = States::model()->findByAttributes(['slug' => $subCategory]);
-					$_GET['state'] = $mainRegion->slug;
-                    unset($_GET['type_of']);
+		if (isset($_GET['type_of'])) {
+			$subCategory = $_GET['type_of'];
+			$subCategoryModel = Subcategory::model()->findByAttributes(['slug' => $subCategory]);
+		
+			if (!$subCategoryModel) {
+				// Check in States
+				$mainRegion = States::model()->findByAttributes(['slug' => $subCategory]);
+				
+				// If not found in States, check in MainRegion
+				if (!$mainRegion) {
+					$mainRegion = MainRegion::model()->findByAttributes(['slug' => $subCategory]);
 				}
-            }
-        }
-        if (isset($_GET['sub_category'])) {
-            $subCategory = $_GET['sub_category'];
-            $subCategoryModel = Subcategory::model()->findByAttributes(['slug' => $subCategory]);
-        
-            if (!$subCategoryModel) {
-                $mainRegion = States::model()->findByAttributes(['slug' => $subCategory]);
-        
-                if ($mainRegion) {
-                    $_GET['state'] = $mainRegion->slug;
-                    unset($_GET['sub_category']);
-                }
-				// else{
-				// 	$subRegion = States::model()->findByAttributes(['slug' => $subCategory]);
-				// 	if ($subRegion) {
-				// 		$_GET['state'] = $subRegion->slug;
-				// 		unset($_GET['sub_category']);
-				// 	}
-				// }
-            }
-        }
-        
-        if (isset($_GET['nested_sub_category'])) {
-            $nestedSubCategory = $_GET['nested_sub_category'];
-            $nestedSubCategoryModel = Subcategory::model()->findByAttributes(['slug' => $nestedSubCategory]);
-        
-            if (!$nestedSubCategoryModel) {
-                $mainRegion = MainRegion::model()->findByAttributes(['slug' => $nestedSubCategory]);
-        
-                if ($mainRegion) {
-                    $_GET['state'] = $mainRegion->slug;
-                    unset($_GET['nested_sub_category']);
-                }
-            }
-        }
+				
+				if ($mainRegion) {
+					$_GET['state'] = $mainRegion->slug;
+					unset($_GET['type_of']);
+				}
+			}
+		}
+		
+		if (isset($_GET['sub_category'])) {
+			$subCategory = $_GET['sub_category'];
+			$subCategoryModel = Subcategory::model()->findByAttributes(['slug' => $subCategory]);
+		
+			if (!$subCategoryModel) {
+				// Check in States
+				$mainRegion = States::model()->findByAttributes(['slug' => $subCategory]);
+				
+				// If not found in States, check in MainRegion
+				if (!$mainRegion) {
+					$mainRegion = MainRegion::model()->findByAttributes(['slug' => $subCategory]);
+				}
+		
+				if ($mainRegion) {
+					$_GET['state'] = $mainRegion->slug;
+					unset($_GET['sub_category']);
+				}
+			}
+		}
+		if (isset($_GET['nested_sub_category'])) {
+			$nestedSubCategory = $_GET['nested_sub_category'];
+			$nestedSubCategoryModel = Subcategory::model()->findByAttributes(['slug' => $nestedSubCategory]);
+		
+			if (!$nestedSubCategoryModel) {
+				// First, check in States model
+				$mainRegion = States::model()->findByAttributes(['slug' => $nestedSubCategory]);
+		
+				// If not found in States, check in MainRegion model
+				if (!$mainRegion) {
+					$mainRegion = MainRegion::model()->findByAttributes(['slug' => $nestedSubCategory]);
+				}
+		
+				if ($mainRegion) {
+					$_GET['state'] = $mainRegion->slug;
+					unset($_GET['nested_sub_category']);
+				}
+			}
+		}
+		
     	if (isset($_GET['reg'])) {
 			if (!isset($_GET['state'])) {
 				$_GET['state'] = $_GET['reg'];
