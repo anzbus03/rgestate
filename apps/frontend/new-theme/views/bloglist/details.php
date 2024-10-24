@@ -676,31 +676,12 @@
     $cleanedContent = preg_replace('/<img[^>]+>/i', '', $model->content);
     // echo ;
     // exit; 
-       // Detect if HTTPS or HTTP
-       $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-
-       // Build the base URL using the server name
-       $baseUrl = $protocol . $_SERVER['HTTP_HOST'] . Yii::app()->baseUrl;
-   
-       // Check if the featured image exists and set the URL
-       if (!empty($model->featured_image) && !is_null($model->featured_image)) {
-           $featuredImageUrl = $baseUrl . '/uploads/images/' . $model->featured_image;
-       } else {
-           // If no featured image, check for an image inside the content
-           preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $model->content, $imageMatch);
-           if (isset($imageMatch[1])) {
-               $featuredImageUrl = $imageMatch[1]; // Image found in the content
-           } else {
-               $featuredImageUrl = ''; // Fallback if no image is found
-           }
-       }
+      
    
     ?>
-    <meta property="og:title" content="<?php echo CHtml::encode($model->title); ?>" />
-<meta property="og:description" content="<?php echo CHtml::encode($model->title); ?>" />
-<meta property="og:image" content="<?php echo $featuredImageUrl; ?>" />
-<meta property="og:url" content="<?php echo Yii::app()->createUrl('bloglist/details', array('slug' => $model->slug)); ?>" />
-<meta property="og:type" content="article" />
+    <head>
+
+    </head>
 <!-- <pre><?php print_r($model) ?></pre> -->
 <!-- main content  -->
 <div class="d-flex justify-content-between align-items-start space-x-10 expertSection">

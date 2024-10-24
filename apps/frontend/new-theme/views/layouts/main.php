@@ -25,6 +25,7 @@ $en = Yii::t('app',CURRENT_URL,array('rgestate.com/ar/'=>'rgestate.com/'));
 <meta property="og:url" content="<?php echo CURRENT_URL;?>" />
 <meta property="og:site_name" content="<?php echo $this->project_name;?>"/>
 <meta property="og:email" content="sales@rgestate.com"/>
+<meta property="og:image" content="<?php echo $featuredImageUrl; ?>"/>
 <meta property="og:phone_number" content="+971552792403"/>
 <meta property="og:site_name" content="RGEstate.Com By Riveria Global Group" />
 <meta property="article:publisher" content="https://www.facebook.com/RGEstateUAE"/>
