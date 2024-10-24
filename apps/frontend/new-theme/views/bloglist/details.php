@@ -653,7 +653,34 @@
         /* align-items: start; */
     }
 }
+/* Target the content section where lists should have list styles */
+.tlText ul, 
+.tlText ol {
+    list-style: disc; /* For <ul> (you can change to square or circle if needed) */
+    list-style-position: inside; /* Ensure that the bullets/numbers are inside the list item */
+    padding-left: 20px; /* Add padding for better visibility */
+}
+
+.tlText ol {
+    list-style: decimal; /* For <ol>, using default decimal style */
+}
+
 </style>
+
+    <?php
+    if (!empty($model->featured_image) && !is_null($model->featured_image)) {
+        $featuredImageUrl = Yii::app()->baseUrl . '/uploads/images/' . $model->featured_image;
+    } else {
+        preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $model->content, $featuredImageUrl);
+    }
+    $cleanedContent = preg_replace('/<img[^>]+>/i', '', $model->content);
+
+    ?>
+    <meta property="og:title" content="<?php echo CHtml::encode($model->title); ?>" />
+<meta property="og:description" content="<?php echo CHtml::encode($model->title); ?>" />
+<meta property="og:image" content="<?php echo is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl; ?>" />
+<meta property="og:url" content="<?php echo Yii::app()->createUrl('bloglist/details', array('slug' => $model->slug)); ?>" />
+<meta property="og:type" content="article" />
 <!-- <pre><?php print_r($model) ?></pre> -->
 <!-- main content  -->
 <div class="d-flex justify-content-between align-items-start space-x-10 expertSection">
@@ -669,15 +696,6 @@
         sizes="(max-width: 2200px) 100vw, 2200px" width="2200" height="1222"> -->
         <?php } ?>
 
-        <?php
-        if (!empty($model->featured_image) && !is_null($model->featured_image)) {
-            $featuredImageUrl = Yii::app()->baseUrl . '/uploads/images/' . $model->featured_image;
-        } else {
-            preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $model->content, $featuredImageUrl);
-        }
-        $cleanedContent = preg_replace('/<img[^>]+>/i', '', $model->content);
-
-        ?>
         <h3 class="mb-5" style="color: #00699E;font-size: 28px;font:Poppins;font-weight:600;">
             <?php echo $model->title ?>
         </h3>
