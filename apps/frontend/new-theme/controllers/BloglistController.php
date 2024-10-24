@@ -159,13 +159,30 @@ class BloglistController extends Controller
 											preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $model->content, $imges);
 											
 									}
-		if(isset($imges['1'])){ $image = $imges['1']; }else{ $image = ''; }
+										// Detect if HTTPS or HTTP
+		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+		// Build the base URL using the server name
+		$baseUrl = $protocol . $_SERVER['HTTP_HOST'] . Yii::app()->baseUrl;
+	 
+		// Check if the featured image exists and set the URL
+		if (!empty($model->featured_image) && !is_null($model->featured_image)) {
+			$featuredImageUrl = $baseUrl . '/uploads/images/' . $model->featured_image;
+		} else {
+			// If no featured image, check for an image inside the content
+			preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $model->content, $imageMatch);
+			if (isset($imageMatch[1])) {
+				$featuredImageUrl = $imageMatch[1]; // Image found in the content
+			} else {
+				$featuredImageUrl = ''; // Fallback if no image is found
+			}
+		}
 		   $this->setData(array(
                     'pageTitle'         => Yii::t('app', '{title} | {name}', array('{name}' =>      $this->project_name, '{title}'=> !empty($model->meta_title) ? $model->meta_title :  ucfirst($model->title) )), 
                     'pageMetaDescription'   =>  Yii::t('app', '{title} :: {name}', array('{name}' =>     Yii::app()->options->get('system.common.site_name') , '{title}'=> !empty($model->meta_description) ? $model->meta_description :  ucfirst($model->title) )),
                     'pageMetaKeywords'   =>  Yii::t('app', '{title} :: {name}', array('{name}' =>     Yii::app()->options->get('system.common.site_name') , '{title}'=> !empty($model->meta_keywords) ? $model->meta_keywords :  ucfirst($model->title) )),
                    'title' => $model->title ,  
-                   'image' => $image , 
+                   'image' => $featuredImageUrl , 
                    'description' => $model->ShortDescription,
                    'shareUrl' => Yii::app()->createAbsoluteUrl($model->slug.'/blog'),
                 ));

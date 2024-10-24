@@ -22,6 +22,10 @@ $en = Yii::t('app',CURRENT_URL,array('rgestate.com/ar/'=>'rgestate.com/'));
 <meta property="og:type" content="website" />
 <meta property="og:title" content="<?php  echo  $pageTitle ;  ?>" />
 <meta property="og:description" content="<?php echo $meta_description;?>" />
+
+<meta property="og:image" content="<?php echo $featuredImageUrl; ?>"/>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="420">
 <meta property="og:url" content="<?php echo CURRENT_URL;?>" />
 <meta property="og:site_name" content="<?php echo $this->project_name;?>"/>
 <meta property="og:email" content="sales@rgestate.com"/>
