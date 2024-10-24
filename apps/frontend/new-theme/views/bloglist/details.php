@@ -678,7 +678,7 @@
     ?>
     <meta property="og:title" content="<?php echo CHtml::encode($model->title); ?>" />
 <meta property="og:description" content="<?php echo CHtml::encode($model->title); ?>" />
-<meta property="og:image" content="<?php echo is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl; ?>" />
+<meta property="og:image" content="<?php echo Yii::app()->baseUrl . is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl ?>" />
 <meta property="og:url" content="<?php echo Yii::app()->createUrl('bloglist/details', array('slug' => $model->slug)); ?>" />
 <meta property="og:type" content="article" />
 <!-- <pre><?php print_r($model) ?></pre> -->
