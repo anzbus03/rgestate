@@ -189,7 +189,7 @@ class BloglistController extends Controller
                  $category = ArticleCategory::model()->getBlogCategories(20);
    // $this->getData('pageStyles')->add(array('src' =>  Yii::app()->apps->getBaseUrl('assets/css/new_blog.css?q=9')));
 	
-		$this->render( "details" ,compact('model','category','cat','latest','popular','imageUrl'));
+		$this->render( "details" ,compact('model','featuredImageUrl','category','cat','latest','popular','imageUrl'));
 		
 	}
     
