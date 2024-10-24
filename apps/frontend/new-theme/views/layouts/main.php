@@ -23,7 +23,8 @@ $en = Yii::t('app',CURRENT_URL,array('rgestate.com/ar/'=>'rgestate.com/'));
 <meta property="og:title" content="<?php  echo  $pageTitle ;  ?>" />
 <meta property="og:description" content="<?php echo $meta_description;?>" />
 
-<meta property="og:image" content="<?php echo $featuredImageUrl; ?>"/>
+<!-- <meta property="og:image" content="<?php echo $featuredImageUrl; ?>"/> -->
+<meta property="og:image" content="https://en.blog.wordpress.com/wp-content/uploads/2024/10/four-wordpress-shortcuts-boost-productivity-header.jpg"/>
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="420">
 <meta property="og:url" content="<?php echo CURRENT_URL;?>" />
