@@ -3134,8 +3134,10 @@ class Place_propertyController  extends Controller
             $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A']);
             $states = States::model()->findAllByAttributes(['state_name' => $filteredStates, 'isTrash' => '0']);
-            $users = User::model()->findAllByAttributes(['email' => $userEmails]);
-
+            $criteria = new CDbCriteria();
+            $criteria->addInCondition('LOWER(email)', array_map('strtolower', $userEmails));
+            $users = User::model()->findAll($criteria);
+            
             // Map the loaded data for quick lookup
             $adsMap = [];
             foreach ($ads as $ad) {
