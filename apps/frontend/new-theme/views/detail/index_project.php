@@ -11,10 +11,12 @@ if (Yii::app()->request->isAjaxRequest) {
       <meta property="og:description" content="<?php echo $description;?>">
       <meta property="og:type" content="article">
       <meta property="og:url" content="<?php echo  $shareUrl;?>">
-      <meta property="og:image" content="<?php echo $image;?>">
-      <meta property="og:image:width" content="">
-      <meta property="og:image:height" content="">
-      <meta property="og:locale" content="en_US">
+      
+    <meta property="og:image" content="<?php echo 'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
+    <meta property="og:image:secure_url" content="<?php echo 'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="420">
+	<meta property="og:locale" content="en_US">
       
         <meta name="twitter:widgets:csp" content="on">
         <meta name="twitter:card" content="photo">

@@ -23,8 +23,8 @@ $en = Yii::t('app',CURRENT_URL,array('rgestate.com/ar/'=>'rgestate.com/'));
 <meta property="og:title" content="<?php  echo  $pageTitle ;  ?>" />
 <meta property="og:description" content="<?php echo $meta_description;?>" />
 
-<meta property="og:image" content="<?php echo $featuredImageUrl; ?>"/>
-<meta property="og:image:secure_url" content="<?php echo $featuredImageUrl; ?>"/>
+<meta property="og:image" content="<?php echo $featuredImageUrl??'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
+<meta property="og:image:secure_url" content="<?php echo $featuredImageUrl??'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="420">
 <meta property="og:url" content="<?php echo CURRENT_URL;?>" />
@@ -60,9 +60,10 @@ if($this->id=='detail' and in_array($this->action->id,array('index','project')))
 <meta property="og:description" content="<?php echo $description;?>">
 <meta property="og:type" content="article">
 <meta property="og:url" content="<?php echo  $shareUrl;?>">
-<meta property="og:image" content="<?php echo $image;?>">
-<meta property="og:image:width" content="">
-<meta property="og:image:height" content="">
+<meta property="og:image" content="<?php echo $featuredImageUrl??'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
+<meta property="og:image:secure_url" content="<?php echo $featuredImageUrl??'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="420">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:widgets:csp" content="on">
 <meta name="twitter:card" content="photo">

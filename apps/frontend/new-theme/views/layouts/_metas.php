@@ -19,6 +19,11 @@ $meta_keyword =     Yii::t('app',$this->generateCommon('home_meta_keywords'),arr
 <meta property="og:url" content="<?php echo CURRENT_URL;?>" />
 <meta property="og:site_name" content="<?php echo $this->project_name;?>"/>
 <meta property="og:email" content="sales@rgestate.com"/>
+
+<meta property="og:image" content="<?php echo 'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
+<meta property="og:image:secure_url" content="<?php echo 'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="420">
 <meta property="og:phone_number" content="+971552792403"/>
 <meta property="og:site_name" content="RGEstate.Com By Riveria Global Group" />
 <meta property="article:publisher" content="https://www.facebook.com/RGEstateUAE"/>

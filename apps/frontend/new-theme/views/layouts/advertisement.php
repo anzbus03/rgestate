@@ -8,7 +8,12 @@
    	<meta name="description" content="<?php echo !empty($pageMetaDescription) ? $pageMetaDescription : $this->app->options->get('system.common.home_meta_description');?>">
 	<meta name="keywords" content="<?php echo $this->app->options->get('system.common.home_meta_keywords');?>">
 	<meta name="google-site-verification" content="gYY9Itu5_ej42w0P_Wi9ISGUEFs_4gMA4yWC-QLVmpg" />
-  <?php
+  <meta property="og:image" content="<?php echo 'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
+      <meta property="og:image:secure_url" content="<?php echo 'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
+      <meta property="og:image:width" content="1200">
+      <meta property="og:image:height" content="420">
+      
+ <?php
   if($this->id=='detail' and in_array($this->action->id,array('index','project'))){
     ?>
       <meta property="fb:app_id" content="<?php echo $this->options->get('system.common.facebook_app_id');?>">
@@ -17,9 +22,7 @@
       <meta property="og:description" content="<?php echo $description;?>">
       <meta property="og:type" content="article">
       <meta property="og:url" content="<?php echo  $shareUrl;?>">
-      <meta property="og:image" content="<?php echo ENABLED_AWS_PATH.$image;?>">
-      <meta property="og:image:width" content="">
-      <meta property="og:image:height" content="">
+      
       <meta property="og:locale" content="en_US">
       
         <meta name="twitter:widgets:csp" content="on">

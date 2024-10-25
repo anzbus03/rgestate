@@ -174,7 +174,7 @@ class BloglistController extends Controller
 			if (isset($imageMatch[1])) {
 				$featuredImageUrl = $imageMatch[1]; // Image found in the content
 			} else {
-				$featuredImageUrl = ''; // Fallback if no image is found
+				$featuredImageUrl = 'https://www.rgestate.com/theme/assets/images/logo.svg'; // Fallback if no image is found
 			}
 		}
 		   $this->setData(array(
