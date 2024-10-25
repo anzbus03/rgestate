@@ -61,14 +61,25 @@ if ($viewCollection->renderContent) { ?>
     </div>
     <div class="card-body">
         <div class="table-responsive">
+            <div class="bulk-actions pull-right mb-4">
+                <div class="form-group" style="width: 200px; display: inline-block;">
+                    <select name="bulk-action" id="bulk-action-select" class="form-control input-xs">
+                        <option value="">Select Action</option>
+                        <option value="trash">Delete</option>
+                    </select>
+                </div>
+                <button id="apply-bulk-action" type="button" class="btn btn-primary btn-sm"
+                    style="height:50px;">Apply</button>
+            </div>
             <table id="home-banner-table" class="table table-bordered table-hover table-striped">
                 <thead>
                     <tr>
+                        <th><input type="checkbox" id="select-all"></th>
                         <th>Image</th>
                         <th>Image Path</th>
                         <th>Property</th>
                         <th>Status</th>
-                        <!-- <th>Options</th> -->
+                        <th>Options</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,15 +93,15 @@ if ($viewCollection->renderContent) { ?>
     </div>
 </div>
 <style>
-.modal {
-    z-index: 1050;
-    /* Bootstrap default for modal */
-}
+    .modal {
+        z-index: 1050;
+        /* Bootstrap default for modal */
+    }
 
-.select2-container--default .select2-selection--single {
-    z-index: 1060;
-    /* Set this higher than the modal */
-}
+    .select2-container--default .select2-selection--single {
+        z-index: 1060;
+        /* Set this higher than the modal */
+    }
 </style>
 <!-- Modal -->
 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
@@ -130,13 +141,25 @@ if ($viewCollection->renderContent) { ?>
                     </div>
 
                     <div class="form-group mt-4">
-                        <!-- <label for="propertySelect">Select Property (optional)</label> -->
                         <select class="form-control" id="propertySelect" name="property_id">
                             <?php foreach ($properties as $property): ?>
                             <option value="<?php echo $property->id; ?>">
                                 <?php echo $property->RefNo . ' - ' . $property->ad_title; ?></option>
                             <?php endforeach; ?>
                         </select>
+                    </div>
+
+                    <!-- New Input Fields for Image Alt and Title -->
+                    <div class="form-group mt-4">
+                        <label for="imageAlt">Image Alt Text</label>
+                        <input type="text" class="form-control" id="imageAlt" name="image_alt"
+                            placeholder="Enter alt text for image">
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <label for="imageTitle">Image Title</label>
+                        <input type="text" class="form-control" id="imageTitle" name="image_title"
+                            placeholder="Enter title for image">
                     </div>
 
                 </form>
@@ -148,10 +171,49 @@ if ($viewCollection->renderContent) { ?>
         </div>
     </div>
 </div>
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <script>
+    $(document).ready(function (){ 
+
+        $('#select-all').on('change', function() {
+            $('.bulk-item').prop('checked', this.checked);
+        });
+
+        $('#apply-bulk-action').on('click', function() {
+            const action = $('#bulk-action-select').val();
+            const selectedItems = $('.bulk-item:checked').map(function() {
+                return $(this).val();
+            }).get();
+            var csrfToken = '<?php echo Yii::app()->request->csrfToken; ?>';
+            if (action && selectedItems.length) {
+                // Perform an AJAX request to the backend
+                $.ajax({
+                    url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/bulk_action'); ?>', // Update with your action URL
+                    type: 'GET',
+                    data: {
+                        bulk_action: action,
+                        bulk_item: selectedItems,
+                        YII_CSRF: csrfToken
+                    },
+                    success: function(response) {
+                        // Handle successful response
+                        window.location.reload(); // Reload the page to reflect changes
+                    },
+                    error: function(xhr) {
+                        // Handle error
+                        alert(
+                            'An error occurred while processing your request. Please try again.'
+                        );
+                    }
+                });
+            } else {
+                alert('Please select an action and at least one item.');
+            }
+        });
+        });
 $(document).ready(function() {
     // Initialize Select2 for property selection
     $('#propertySelect').select2({
@@ -226,7 +288,14 @@ $(document).ready(function() {
                             next: '<i class=\"fa fa-angle-double-right\" aria-hidden=\"true\"></i>',
                             previous: '<i class=\"fa fa-angle-double-left\" aria-hidden=\"true\"></i>'
                         }
-                    }
+                    },
+                    columnDefs: [
+                        {
+                            targets: 0, 
+                            orderable: false,
+                             searchable: false
+                        }
+                    ]
                 });
             });
         ");

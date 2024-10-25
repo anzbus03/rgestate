@@ -121,12 +121,13 @@ class Image_libraryController extends Controller
             $imageUrl = Yii::getPathOfAlias('') . '/uploads/files/' . $item->image_name; // URL for the image
 
             $response['data'][] = [
+                "<input type='checkbox' class='bulk-item' value='$item->id'>",
                 "<img src='{$imageUrl}' alt='{$imageUrl}' style='width: 100px; height: 100px;'>",
                 $item->image_name,
                 $item->ad->ad_title,
-                $item->status
+                $item->status,
                 // CHtml::link('<span class="fa fa-pencil"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/update', ['id' => $item->id]), ['class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Update')]) .
-                // CHtml::link('<span class="fa fa-trash"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/delete', ['id' => $item->id]), ['class' => 'btn btn-danger btn-xs', 'title' => Yii::t('app', 'Delete'), 'onclick' => 'return confirm("Are you sure you want to delete this item?")']),
+                CHtml::link('<span class="fa fa-trash"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/delete', ['id' => $item->id]), ['class' => 'btn btn-danger btn-xs', 'title' => Yii::t('app', 'Delete'), 'onclick' => 'return confirm("Are you sure you want to delete this item?")']),
             ];
         }
 
@@ -135,7 +136,54 @@ class Image_libraryController extends Controller
         Yii::app()->end();
     }
 
+    public function actionDelete($id)
+    {
+        $model = AdImage::model()->findByPk((int)$id);
 
+        if (empty($model)) {
+            throw new CHttpException(404, Yii::t('app', 'The requested image does not exist.'));
+        }
+
+        $model->updateByPk($id, array('isTrash' => Yii::app()->params['onTrash']));
+
+        //144
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+
+        if (!$request->getQuery('ajax')) {
+            $notify->addSuccess(Yii::t('app', 'The item has been successfully deleted!'));
+            $this->redirect($request->getPost('returnUrl', array(Yii::app()->controller->id . '/index')));
+        }
+    }
+    public function actionBulk_action()
+    {
+        $request = Yii::app()->request;
+        $notify  = Yii::app()->notify;
+
+        $action = $_GET['bulk_action'];
+        $items  = $_GET['bulk_item'];
+
+        if ($action == PlaceAnAd::BULK_ACTION_TRASH && count($items)) {
+            $affected = 0;
+            $customerModel = new AdImage();
+            foreach ($items as $item) {
+
+                $customer = $customerModel->findByPk($item);
+                if (!$customer) {
+                    continue;
+                }
+
+                $customer->updateByPk($item, array('isTrash' => '1'));
+                $affected++;
+            }
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+
+        $defaultReturn = $request->getServer('HTTP_REFERER', array('image_library/index'));
+        $this->redirect($request->getPost('returnUrl', $defaultReturn));
+    }
     // public function actionUploadFiles()
     // {
     //     $files = CUploadedFile::getInstancesByName('files');
@@ -192,15 +240,12 @@ class Image_libraryController extends Controller
         $floorPlanFiles = CUploadedFile::getInstancesByName('floorPlans'); // Floor plan files
         $propertyId = isset($_POST['property_id']) ? $_POST['property_id'] : null;
         $videoLink = isset($_POST['video_link']) ? $_POST['video_link'] : null; // Video link
+        $imageAlt = isset($_POST['image_alt']) ? $_POST['image_alt'] : null; // Video link
+        $imageTitle = isset($_POST['image_title']) ? $_POST['image_title'] : null; // Video link
 
         $img_saved = false;
         $floorPlanSaved = false;
 
-        // var_dump($files);
-        // var_dump($floorPlanFiles);
-        // var_dump($propertyId);
-        // var_dump($videoLink);
-        // exit;
 
         // Process general files
         foreach ($files as $file) {
@@ -227,6 +272,8 @@ class Image_libraryController extends Controller
                 $adImage = new AdImage; // Create a new AdImage instance
                 $adImage->isNewRecord = true;
                 $adImage->ad_id = $propertyId;
+                $adImage->image_title = $imageTitle;
+                $adImage->image_alt = $imageAlt;
                 $adImage->image_name = $year . '/' . $month . '/' . $fileName; // Save the unique file name
                 $img_saved = $adImage->save(); // Save the image record in the database
             } else {

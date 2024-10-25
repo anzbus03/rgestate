@@ -43,7 +43,7 @@ class AdImage extends ActiveRecord
             array('xml_image,image_type , Title , IsMarketingImage , ImageRemarks ', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, ad_id, image_name, priority, isTrash,status', 'safe', 'on'=>'search'),
+            array('id, ad_id,image_alt,image_title ,image_name, priority, isTrash,status', 'safe', 'on'=>'search'),
         );
     }
 
