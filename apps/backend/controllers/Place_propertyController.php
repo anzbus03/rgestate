@@ -3156,7 +3156,7 @@ class Place_propertyController  extends Controller
 
             $usersMap = [];
             foreach ($users as $user) {
-                $usersMap[$user->email] = $user;
+                $usersMap[strtolower($user->email)] = $user; // Save the email in lowercase
             }
 
             // Validation: Check for missing categories or states
