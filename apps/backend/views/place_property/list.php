@@ -292,9 +292,7 @@ if ($viewCollection->renderContent) { ?>
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                     <?php } ?>
-                                    <!-- <a href="<?php echo Yii::app()->createUrl('statistics/property_statistics', array('property_id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Statistics'); ?>" target="_blank">
-                                                <i class="fa fa-bar-chart text-red"></i>
-                                            </a> -->
+                                   
 
                                     <?php 
                                     if ($data->section_id == 2){
@@ -338,9 +336,8 @@ if ($viewCollection->renderContent) { ?>
                                     <?php if ($data->status === "I") { ?>
                                     <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status_change', array('id' => $data->id, 'val' => "A")); ?>"
                                         title="<?php echo Yii::t('app', 'Activate AD'); ?>"
-                                        class="Enable active-property"
-
->                                        <i class="fa fa-check-circle"></i>
+                                        class="Enable active-property">
+                                        <i class="fa fa-check-circle"></i>
                                     </a>
                                     <?php } ?>
                                     <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/hot')) { ?>

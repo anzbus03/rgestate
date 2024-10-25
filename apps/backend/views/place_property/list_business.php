@@ -88,7 +88,7 @@ if ($viewCollection->renderContent) { ?>
                     <div class="row">
                         <div class="col-sm-2" style="margin-bottom: 15px;">
 
-                            <button type="button" class="btn btn-secondary btn-xs" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-success btn-xs" data-bs-toggle="modal"
                                 style="margin-top: -5px;" data-bs-target="#uploadModal">
                                 Upload By Excel
                             </button>
@@ -111,27 +111,41 @@ if ($viewCollection->renderContent) { ?>
                         </div>
                     </div>
                 <div class="table-responsive">
+                    <div class="bulk-actions pull-right mb-4">
+                        <div class="form-group" style="width: 200px; display: inline-block;">
+                            <select name="bulk-action" id="bulk-action-select" class="form-control input-xs">
+                                <option value="">Select Action</option>
+                                <option value="trash">Trash</option>
+                                <option value="restore">Restore</option>
+                                <option value="unpublish">Unpublish</option>
+                                <option value="publish">Publish</option>
+                                <option value="delete">Delete</option>
+                            </select>
+                        </div>
+                        <button id="apply-bulk-action" type="button" class="btn btn-primary btn-sm"
+                            style="height:50px;">Apply</button>
+                    </div>
                     <table id="enquiryTable" class="table table-striped table-bordered">
                         <thead>
                             <tr>
+
+                                <th><input type="checkbox" id="select-all"></th>
                                 <th>Reference Number</th>
                                 <th>Ad Title</th>
-                                <th>Username</th>
-                                <th>Country Name</th>
-                                <th>Section</th>
+                                <th>Location</th>
                                 <th>Price</th>
                                 <th>Status</th>
-                                <th>Priority</th>
-                                <th>Date Added</th>
+                                <th>Refresh Added</th>
                                 <th>Options</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($model->search()->getData() as $data) { ?>
                                 <tr>
+                                    <td><input type="checkbox" class="bulk-item" value="<?php echo $data->id; ?>"></td>
                                     <td><?php echo CHtml::decode($data->ReferenceNumberTitleP); ?></td>
                                     <td>
-                                        <?php echo CHtml::encode($data->AdTitleWithIcons2, Yii::app()->createUrl("place_property/update", array("id" => $data->id))); ?>
+                                        <?php echo CHtml::decode($data->AdTitleWithIcons2, Yii::app()->createUrl("place_property/update", array("id" => $data->id))); ?>
                                         <div><?php echo $data->Tags; ?></div>
                                         <input type="hidden" class="propertyId" value="<?php echo $data->id; ?>">
                                         <input type="hidden" class="sId" value="<?php echo $data->section_id; ?>">
@@ -142,22 +156,27 @@ if ($viewCollection->renderContent) { ?>
                                         <input type="hidden" id="meta_description-<?php echo $data->id; ?>" class="meta_description" value="<?php echo $data->MetaDescriptionEnglish; ?>">
                                         <input type="hidden" id="meta_description-ar-<?php echo $data->id; ?>" class="meta_description_ar" value="<?php echo $data->MetaDescriptionArabic; ?>">
                                     </td>
-                                    <td><?php echo $data->userUrl ?></td>
                                     <td><?php echo CHtml::decode($data->CountryNameSection2); ?></td>
-                                    <td><?php echo CHtml::encode($data->section->section_name); ?></td>
                                     <td><?php echo CHtml::encode($data->price); ?></td>
                                     <td style="text-align:center;"><?php echo $data->statusLink; ?></td>
-                                    <td><?php echo CHtml::textField("priority[$data->id]", $data->priority, array("style" => "width:50px; text-align:center; display:block; margin:auto;", "class" => "form-controll")); ?></td>
-                                    <td><?php echo CHtml::encode($data->Sdate); ?></td>
+                                    <td>
+                                        <span class="date-display"
+                                            style="margin-right: 3px;"><?php echo CHtml::encode($data->last_updated); ?></span>
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/refresh_date', array('id' => $data->id)); ?>" class="refresh-date" data-id="<?php echo $data->id; ?>"
+                                            data-ldate="<?php echo CHtml::encode($data->Ldate); ?>"
+                                            style="text-decoration: none; color: blue; cursor: pointer;">
+                                            <i class="fa fa-refresh"></i>
+                                        </a>
+                                    </td>
                                     <td>
                                         <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
                                             <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
                                                 <i class="fa fa-pencil"></i>
                                             </a>
                                         <?php } ?>
-                                        <a href="<?php echo Yii::app()->createUrl('statistics/property_statistics', array('property_id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Statistics'); ?>" target="_blank">
+                                        <!-- <a href="<?php echo Yii::app()->createUrl('statistics/property_statistics', array('property_id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Statistics'); ?>" target="_blank">
                                             <i class="fa fa-bar-chart text-red"></i>
-                                        </a>
+                                        </a> -->
                                         <a href="<?php echo $data->PreviewUrlTrashB; ?>" title="<?php echo Yii::t('app', 'View'); ?>" target="_blank" class="text-green">
                                             <i class="fa fa-eye"></i>
                                         </a>
@@ -185,11 +204,11 @@ if ($viewCollection->renderContent) { ?>
                                                 <i class="fa fa-check-circle"></i>
                                             </a>
                                         <?php } ?>
-                                        <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/image_management')) { ?>
+                                        <!-- <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/image_management')) { ?>
                                             <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/image_management', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Image Management'); ?>">
                                                 <i class="fa fa-picture-o"></i>
                                             </a>
-                                        <?php } ?>
+                                        <?php } ?> -->
                                         <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Update Meta Tag'); ?>" data-toggle="modal" onclick="openUp(this)">
                                             <i class="fa fa-tags"></i>
                                         </a>
@@ -263,7 +282,44 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
 <!-- for button loading text  -->
 <script>
-      function submitFilters() {
+    $(document).ready(function (){
+        $('#select-all').on('change', function() {
+            $('.bulk-item').prop('checked', this.checked);
+        });
+
+        $('#apply-bulk-action').on('click', function() {
+            const action = $('#bulk-action-select').val();
+            const selectedItems = $('.bulk-item:checked').map(function() {
+                return $(this).val();
+            }).get();
+            var csrfToken = '<?php echo Yii::app()->request->csrfToken; ?>';
+            if (action && selectedItems.length) {
+                // Perform an AJAX request to the backend
+                $.ajax({
+                    url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/bulk_action'); ?>', // Update with your action URL
+                    type: 'GET',
+                    data: {
+                        bulk_action: action,
+                        bulk_item: selectedItems,
+                        YII_CSRF: csrfToken
+                    },
+                    success: function(response) {
+                        // Handle successful response
+                        window.location.reload(); // Reload the page to reflect changes
+                    },
+                    error: function(xhr) {
+                        // Handle error
+                        alert(
+                            'An error occurred while processing your request. Please try again.'
+                        );
+                    }
+                });
+            } else {
+                alert('Please select an action and at least one item.');
+            }
+        });
+    });
+    function submitFilters() {
         var selectedFilters = {};
 
         // Collect selected checkbox values

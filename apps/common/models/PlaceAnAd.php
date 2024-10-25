@@ -899,15 +899,15 @@ class PlaceAnAd extends ActiveRecord
 		$loc_latitude = '';
 		$download_image = '';
 		if (empty($this->city_location_latitude)) {
-			$loc_latitude .=  '<i   class="fa text-red  fa-check-circle"></i>';
+			// $loc_latitude .=  '<i   class="fa text-red  fa-check-circle"></i>';
 		} else {
-			$loc_latitude .=  '<i   class="fa text-green  fa-check-circle"></i>';
+			// $loc_latitude .=  '<i   class="fa text-green  fa-check-circle"></i>';
 		}
 		if (!empty($this->city_location_latitude) and empty($this->city_location_image)) {
-			$download_image =     CHtml::link('<i class="fa fa-photo"></i>', Yii::app()->createUrl('city/generate_image', array('id' => $this->city)));
+			// $download_image =     CHtml::link('<i class="fa fa-photo"></i>', Yii::app()->createUrl('city/generate_image', array('id' => $this->city)));
 		}
-
-		$html =   $this->city_name . CHtml::link($loc_latitude, Yii::App()->createUrl('city/update', array('id' => $this->city)), array('target' => '_blank')) . $download_image . '<br /><small>' . $this->state_name . '</small>';
+		$html =   $this->state_name ;
+		// . CHtml::link($loc_latitude, Yii::App()->createUrl('city/update', array('id' => $this->city)), array('target' => '_blank')) . $download_image . '<br /><small>' . $this->state_name . '</small>';
 		return  $html;
 	}
 	public $email_verified;
