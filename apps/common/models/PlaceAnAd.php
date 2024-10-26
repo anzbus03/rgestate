@@ -3305,7 +3305,7 @@ class PlaceAnAd extends ActiveRecord
 
 		$criteria->join  .= ' left join {{area_unit}} au ON au.master_id = t.area_unit ';
 		$criteria->join  .=   ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
-		$criteria->condition .= ' and usr.status = "A" and usr.isTrash="0"';
+		// $criteria->condition .= ' and usr.status = "A" and usr.isTrash="0"';
 		if (Yii::app()->user->getId() and !isset($formData['logged_in'])) {
 			$criteria->select .= ' ,fav.ad_id as fav ';
 			$criteria->join  .= ' left join {{ad_favourite}} fav ON fav.ad_id = t.id and fav.user_id =:user_me';
@@ -3356,8 +3356,8 @@ class PlaceAnAd extends ActiveRecord
 				unset($formData['dealer']);
 			}
 		}
-		$criteria->join  .=   ' LEFT JOIN {{listing_users}} p_usr1 on p_usr1.user_id = usr.parent_user ';
-		$criteria->select .=  ' , CASE WHEN usr.parent_user is NOT NULL THEN p_usr1.image ELSE usr.image END user_image , CASE WHEN p_usr1.user_id  is NOT NULL THEN p_usr1.company_name ELSE usr.company_name END as company_name ';
+		// $criteria->join  .=   ' LEFT JOIN {{listing_users}} p_usr1 on p_usr1.user_id = usr.parent_user ';
+		// $criteria->select .=  ' , CASE WHEN usr.parent_user is NOT NULL THEN p_usr1.profile_image ELSE usr.image END user_image , CASE WHEN p_usr1.user_id  is NOT NULL THEN p_usr1.company_name ELSE usr.company_name END as company_name ';
 
 		if (isset($formData['dealer']) and !empty($formData['dealer'])) {
 
@@ -5368,6 +5368,7 @@ class PlaceAnAd extends ActiveRecord
 		return  array(
 			'permit_no' 	 =>     $this->PropertyID,
 			'reference' 	 =>     $this->ReferenceNumberTitle,
+			'added_on' 	 =>     date('d-m-Y', strtotime($this->last_updated)),
 			'listing_type'	 =>  !empty($this->listing_category) ? $this->listing_category :  $this->ListingType,
 			//	'location' 	 =>  $this->mandate ,
 			'category_id' 	 =>   !empty($this->category_name) ? $this->category_name :     $this->ListingTypeCategory,

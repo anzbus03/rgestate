@@ -54,7 +54,7 @@ class PlaceAnAdNew extends PlaceAnAd
 	public function findAds($formData=array(),$count_future=false,$returnCriteria=false,$calculate=false,$user_id=false){
 	    $criteria = new CDbCriteria;
 		$criteria->select = 't.ad_title, t.nested_sub_category, t.sub_category_id, t.RefNo, t.project_status, t.verified, t.featured, t.lease_status, t.income, t.roi, t.hot, t.slug_en, t.slug_ar, t.user_id as user_id, t.property_status, t.id, t.slug, t.section_id, t.category_id, t.state, t.listing_type, t.sub_category_id, t.location_latitude, t.location_longitude, from_price_unit, to_price_unit, area_unit, rent_paid, price, p_o_r, bathrooms, bedrooms, t.builtup_area, t.view_360, t.view_video, t.view_floor, t.cron_featured as featured2';
-		
+		$criteria->compare('t.isTrash', "0");
 		$criteria->select .= ', t.cron_images as ad_images_g, t.cron_simage as ad_image2';
  	    if(isset($formData['preleased']) and !empty($formData['preleased'])){
 			 $criteria->compare('t.property_status','1');

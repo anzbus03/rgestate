@@ -311,11 +311,11 @@ if(!empty($model->puser_id)){
 				<div class="MediaBlock__MediaContainer-skmvlj-0 cBzaHP">
 					<div class="MediaBlock__MediaContent-skmvlj-1 dCsAgE"><span class="Text__TextBase-sc-1cait9d-0 jLQBVG"><a href="<?php echo Yii::App()->createUrl('listing/index',array('sec'=>$model->sec_slug,'state'=>$model->state_slug));?>" onclick="easyload(this,event,'mainContainerClass')"><?php echo $model->state_name;?></a></span>
 					</div>
-					<div class="ui__SvgContainer-sc-1z03173-0 jbEOdO">
+					<!-- <div class="ui__SvgContainer-sc-1z03173-0 jbEOdO">
 						<svg width="8" height="8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
 							<path fill="#474E52" d="M4.7 2.4a.5.5 0 0 1 .6-.8l8 6a.5.5 0 0 1 0 .8l-8 6a.5.5 0 0 1-.6-.8L12.167 8 4.7 2.4z"></path>
 						</svg>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			 
@@ -699,61 +699,43 @@ observer.observe();
 
 		                    </style>
 							<div class="user_details margin-top-5 no-padding text-center">
-							 <?php
-							if(!empty($model->puser_id)){ 
+								<div class="img_dev mobe" style="width: 70px; text-align: center; margin: auto;">
+									<a href="javascript:void(0)" class="margin-bottom-5" style="display: block; margin: 0 auto; line-height: 1;">
+										<img src="/uploads/files/2022/02/2022-02-02043122-6512.png" 
+											style="object-fit: contain; width: 70px; height: 70px; padding: 1px; border-radius: 50%; border: 1px solid #d1d1d1;">
+									</a>
+								</div>
 								
-								$this->renderPartial('_agentDetais');
-								?>
-							<?php }
-							else{ 
-							?>
-							<div class="img_dev mobe " style="width:70px; text-align: center;margin:auto;    ">
-							<?php 
-
-							$image = $model->companyImage; 
-							//$total_rest = $model->activePropertys; 
-
-							$lnk = $model->DetLink  ; 
-							if(!empty($image)){
-							echo '<a href="'.$lnk.'"   class="margin-bottom-5" style="display: block;margin: 0 auto;line-height:1;" ><img src="'.$image.'" style="object-fit:contain;width:70px;height:70px;padding: 1px;    border-radius: 50%;border: 1px solid #d1d1d1;" ></a>';
-							} ?>
-							</div>
-							<div class="clearfiix"></div>
-							<div class="img_dev_details " style="width:100%; ">
-							<div class="_1p3joamp" style="margin-bottom: 2px !important;"><a href="<?php echo $lnk;?>"class="<?php echo $model->enable_l_f=='1' ? '  ' : '';?>" ><?php echo $model->companyName;?></a>
-
-							</div> 
-							<?php
-							if(empty($model->companyName)){ ?> 
-							<p class="margin-bottom-2" style="margin-bottom:2px;white-space: nowrap;"><i class="fa fa-user"></i>   <?php echo $model->first_name;?> </p>
-							<?php } ?> 
 								<div class="clearfix"></div>
-							 	<div class="clearfix"></div>
-								<?php
-							 
-							if(!empty($model->advertiser_character)){  
-							?>
-							 
-							<span class="smllgry nowrap hide"><i><?php echo $this->tag->getTag('advertiser-character','Advertiser Character');?></i> : <?php echo $model->ArabicCharacter;?></span>
-							<?php } ?>
-							<?php
-							 
-							if(!empty($model->licence_no)){  
-							?>
-							 
-							<span class="smllgry nowrap  hide"><i><?php echo $this->tag->getTag('advertiser_license_number','Advertiser License Number');?></i> : <?php echo $model->licence_no;?> </span>
-							<?php } ?>
-							<div class="clearfix"></div>
-							<?php
-							if(!empty($model->cr_number)){  
-							?>
-							 
-							<span class="smllgry nowrap  hide"><i><?php echo $this->tag->getTag('commercial_registration_no.','Commercial Registration No.');?></i> : <?php echo $model->cr_number;?> </span>
-							<?php } ?>
-							<p class="margin-bottom-0 margin-top-5"><?php echo CHtml::link($this->tag->getTag('sale','Sale').'('.(int)$total_rest['sale_total'].')',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-sale')).'?dealer='.$model->user_slug,array('class'=>'sale_link'));?> ,    <?php echo CHtml::link($this->tag->getTag('rent','Rent').'('.(int)$total_rest['rent_total'].')',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-rent')).'?dealer='.$model->user_slug,array('class'=>'rent_link'));?></p>
-							</div> 
-                            <?php } ?>
-							<div class="clearfix"></div>
+								
+								<div class="img_dev_details" style="width: 100%;">
+									<div class="_1p3joamp" style="margin-bottom: 2px !important;">
+										<a href="javascript:void(0)">RGEstate</a>
+									</div>
+									
+									<div class="clearfix"></div>
+									
+									<span class="smllgry nowrap hide">
+										<i>Advertiser Character</i>: Authorized
+									</span>
+									
+									<span class="smllgry nowrap hide">
+										<i>Advertiser License Number</i>: 1
+									</span>
+									
+									<div class="clearfix"></div>
+									
+									<span class="smllgry nowrap hide">
+										<i>Commercial Registration No.</i>: 1
+									</span>
+									
+									<p class="margin-bottom-0 margin-top-5">
+										<a class="sale_link" href="/property-for-sale?dealer=rgestate">Sale(1421)</a>,
+										<a class="rent_link" href="/property-for-rent?dealer=rgestate">Rent(610)</a>
+									</p>
+								</div>
+								
+								<div class="clearfix"></div>
 							</div>
 
 	<?php  
