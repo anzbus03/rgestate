@@ -13,7 +13,7 @@ class ListingController extends Controller
 
 	public function actionIndex($country = null, $state = null, $city = null, $type = null, $community = null, $sec = null, $category = null, $dealer = null, $loc = null)
 	{
-		// print_r($_GET);
+		print_r($_GET);
 
 		define('ITS_LIST_PAGE', '1');
 		if (isset($_GET['reg'])) {
