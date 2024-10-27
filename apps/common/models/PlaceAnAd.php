@@ -4980,7 +4980,7 @@ class PlaceAnAd extends ActiveRecord
 			// Step 2: Check if user is admin
 			if ($user->rules == 1) { // Assuming 1 is the role for admin
 				// Display profile_image for admin
-				$profileImage = !empty($user->profile_image) ? '/uploads/images/'.$user->profile_image : '/new_assets/images/logoo.svg';
+				$profileImage =  '/new_assets/images/logoo.svg';
 				$html .= '<img style="width: 80px;height:40px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image">';
 			}
 			// Step 3: Check if user is an agent
