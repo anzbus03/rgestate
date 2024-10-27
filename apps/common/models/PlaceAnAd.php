@@ -4973,22 +4973,15 @@ class PlaceAnAd extends ActiveRecord
 ';
 		return $html;
 	}
-	public function footerLinkNew2()
-	{
-		$call = $this->mTag()->getTag('call', 'Call');
-		$email = $this->mTag()->getTag('email', 'mail');
-		$share_u_abs = $this->DetailUrlAbs;
-		$text_message = Yii::t('app', $this->mTag()->getTag('i_would_like_to_inquire_about', 'I would like to inquire about your property {1} - {2}. Please contact me at your earliest convenience. {3}'), array('{1}' => '', '{2}' => $model->ReferenceNumberTitle, '{3}' => '%0a' . $this->mTag()->getTag('property_link', 'Property Link'))) . ' %0a' .   urlencode($share_u_abs);
-		$w_share_url = Yii::t('app', 'https://wa.me/{number}?text={text}', array('{number}' => Yii::t('app', !empty($this->whatsapp) ? $this->whatsapp : $this->mobile_number, array('+' => '', ' ' => '')), '{text}' => $text_message));
+	public function headerImageList(){
 		$user = User::model()->findByPk($this->user_id);
 		$html = '';
-
 		if ($user) {
 			// Step 2: Check if user is admin
 			if ($user->rules == 1) { // Assuming 1 is the role for admin
 				// Display profile_image for admin
-				$profileImage = !empty($user->profile_image) ? $user->profile_image : '/new_assets/images/logoo.svg';
-				$html .= '<div class="admin-profile"><img style="width: 100px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image"></div>';
+				$profileImage = !empty($user->profile_image) ? '/uploads/images/'.$user->profile_image : '/new_assets/images/logoo.svg';
+				$html .= '<img style="width: 100px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image">';
 			}
 			// Step 3: Check if user is an agent
 			elseif ($user->is_agent == 1) {
@@ -5002,15 +4995,55 @@ class PlaceAnAd extends ActiveRecord
 					if (in_array($user->user_id, $agents)) {
 						// Display profile_image for the agent (if available)
 						$agentProfileImage = !empty($agencyUser->profile_image) ? $agencyUser->profile_image : 'default_agent_image.jpg';
-						$html .= '<div class="agent-profile"><img style="width: 100px;height:50px;float: right;" src="/uploads/images/' . $agentProfileImage . '" alt="Agent Profile Image"></div>';
+						$html .= '<img style="width: 100px;height:50px;float: right;" src="/uploads/images/' . $agentProfileImage . '" alt="Agent Profile Image">';
 						break; // Exit loop after finding the match
 					}
 				}
 			}
 		} else if ($this->user_id == 31988) {
 			$profileImage = !empty($user->profile_image) ? $user->profile_image : '/new_assets/images/logoo.svg';
-			$html .= '<div class="admin-profile"><img style="width: 100px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image"></div>';
+			$html .= '<img style="width: 100px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image">';
 		}
+		return $html;
+	}
+	public function footerLinkNew2()
+	{
+		$call = $this->mTag()->getTag('call', 'Call');
+		$email = $this->mTag()->getTag('email', 'mail');
+		$share_u_abs = $this->DetailUrlAbs;
+		$text_message = Yii::t('app', $this->mTag()->getTag('i_would_like_to_inquire_about', 'I would like to inquire about your property {1} - {2}. Please contact me at your earliest convenience. {3}'), array('{1}' => '', '{2}' => $model->ReferenceNumberTitle, '{3}' => '%0a' . $this->mTag()->getTag('property_link', 'Property Link'))) . ' %0a' .   urlencode($share_u_abs);
+		$w_share_url = Yii::t('app', 'https://wa.me/{number}?text={text}', array('{number}' => Yii::t('app', !empty($this->whatsapp) ? $this->whatsapp : $this->mobile_number, array('+' => '', ' ' => '')), '{text}' => $text_message));
+		$user = User::model()->findByPk($this->user_id);
+		$html = '';
+
+		// if ($user) {
+		// 	// Step 2: Check if user is admin
+		// 	if ($user->rules == 1) { // Assuming 1 is the role for admin
+		// 		// Display profile_image for admin
+		// 		$profileImage = !empty($user->profile_image) ? '/uploads/images/'.$user->profile_image : '/new_assets/images/logoo.svg';
+		// 		$html .= '<div class="admin-profile"><img style="width: 100px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image"></div>';
+		// 	}
+		// 	// Step 3: Check if user is an agent
+		// 	elseif ($user->is_agent == 1) {
+		// 		// Find all users where rule is agency (rule = 2)
+		// 		$agencyUsers = User::model()->findAllByAttributes(['rules' => 2]);
+
+		// 		// Loop through each agency user
+		// 		foreach ($agencyUsers as $agencyUser) {
+		// 			// Check if the agent's ID exists in the agency's 'agents' column (comma-separated values)
+		// 			$agents = explode(',', $agencyUser->agents); // Split comma-separated agent IDs into an array
+		// 			if (in_array($user->user_id, $agents)) {
+		// 				// Display profile_image for the agent (if available)
+		// 				$agentProfileImage = !empty($agencyUser->profile_image) ? $agencyUser->profile_image : 'default_agent_image.jpg';
+		// 				$html .= '<div class="agent-profile"><img style="width: 100px;height:50px;float: right;" src="/uploads/images/' . $agentProfileImage . '" alt="Agent Profile Image"></div>';
+		// 				break; // Exit loop after finding the match
+		// 			}
+		// 		}
+		// 	}
+		// } else if ($this->user_id == 31988) {
+		// 	$profileImage = !empty($user->profile_image) ? $user->profile_image : '/new_assets/images/logoo.svg';
+		// 	$html .= '<div class="admin-profile"><img style="width: 100px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image"></div>';
+		// }
 
 		$html  .= '<div class="d-flex footer-contact"><button type="button"    onclick="OpenCallNewlatest(this)"  data-prop="' . $this->id . '" data-agent="' . $this->OwnerName . '"  data-ref="' . $this->ReferenceNumberTitle . '" data-phone="' . $this->mobile_number . '"  class="btn btnnc btn-transparent"><i class="fa fa-phone"></i> ' . $call . '</button>
                   <button type="button" data-reactid="' . $this->id . '" onclick="OpenFormClickNew(this)"    class="btn btnnc btn-transparent"><i class="fa fa-envelope"></i> ' . $email . '</button>

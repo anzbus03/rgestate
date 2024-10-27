@@ -32,6 +32,7 @@ foreach ($works as $k => $v) {
       <div class="details">
         <div class="tc_content">
           <span class="fp_price"><?php echo $v->listRowPriceNew(); ?></span>
+          <?php echo $v->headerImageList(); ?>
           <p class="add"><span class="flaticon-placeholder"></span><?php echo $v->listRowLocation(); ?></p>
           <h2 class="prce"><?php echo $v->AdTitle2; ?></h2>
           
