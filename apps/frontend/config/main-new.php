@@ -99,12 +99,12 @@ return array(
 					array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<state:(.*)>/*'),
 				*/                
 
-				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:('.$category_main.')>/<type_of:('.$category_list.')>/<state:(.*)>/*'),
-				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:('.$category_main.')>/<type_of:('.$category_list.')>/*'),
-				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:('.$category_main.')>/<state:(.*)>/*'),
-				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<type_of:('.$category_list.')>/<state:(.*)>/*'),
-				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:('.$category_main.')>/*'),
-				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<type_of:('.$category_list.')>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<type_of:(.*)>/<state:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<type_of:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<state:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<type_of:(.*)>/<state:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<type_of:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<state:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/*'),  
 

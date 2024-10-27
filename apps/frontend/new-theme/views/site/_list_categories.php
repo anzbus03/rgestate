@@ -11,7 +11,7 @@ $adModelCriteria->order  ='count(t.id) desc ';
 $new_homes =  $adModel->findAll($adModelCriteria);
 
 // echo "<pre>";
-// print_r($new_homes);
+// print_r($formData);
  unset($formData['section_id']);unset($formData['country']);
   if(isset($formData['preleased'])){
           unset($formData['preleased']);

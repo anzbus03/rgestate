@@ -13,12 +13,23 @@ class ListingController extends Controller
 
 	public function actionIndex($country = null, $state = null, $city = null, $type = null, $community = null, $sec = null, $category = null, $dealer = null, $loc = null)
 	{
+		// print_r($_GET);
+
 		define('ITS_LIST_PAGE', '1');
 		if (isset($_GET['reg'])) {
 			if (!isset($_GET['state'])) {
 				$_GET['state'] = $_GET['reg'];
 			}
 			unset($_GET['reg']);
+		}
+		if (isset($_GET['state'])) {
+			$stateValue = $_GET['state'];
+			
+			$exists = Category::model()->exists('slug=:slug', array(':slug' => $stateValue));
+			if ($exists) {
+				unset($_GET['state']);				
+				$_GET['type_of'] = $stateValue;
+			}
 		}
 
 		$country_id = COUNTRY_ID;
@@ -89,6 +100,7 @@ class ListingController extends Controller
 		if (!isset($_GET['category']) and  in_array($sec, array('preleased', 'for-sale', 'to-rent', 'to-rent', 'property-for-sale', 'property-for-rent'))) {
 			$_GET['category'] = 'commercial';
 		}
+
 		$location_title = '';
 		$areaData = States::model()->all_cities_list(); // print_r($areaData);exit; 
 		if (isset($_GET['state']) and !empty($_GET['state'])) {
