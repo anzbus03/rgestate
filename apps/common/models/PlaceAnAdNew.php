@@ -44,7 +44,7 @@ class PlaceAnAdNew extends PlaceAnAd
 		 return '  t.cron_featured = "Y" desc ';
 	 }
 	 public function getExpityConditionFronEnd(){
-	   return  ' and t.cron_expiry ="1" '; 
+	//    return  ' and t.cron_expiry ="1" '; 
     }
 
 	 public static function model($className=__CLASS__)
@@ -374,9 +374,10 @@ class PlaceAnAdNew extends PlaceAnAd
 			$criteria->condition .= ' and t.rent_paid =:rent_paid ';$criteria->params[':rent_paid'] = $formData['rent_paid'];
 		}
 		if(isset($formData['category'])){
-						$criteria->condition .= ' and lstype.slug =:category1 ';$criteria->params[':category1'] = $formData['category'] ;
-						  
-					}
+			$criteria->condition .= ' and lstype.slug =:category1 ';
+			$criteria->params[':category1'] = $formData['category'] ;
+				
+		}
 		if(isset($formData['type_of']) and !empty(array_filter((array)$formData['type_of'])) and is_array($formData['type_of'])){
 			if(isset($formData['sec']) and $formData['sec']=='new-development'){
 							/*New Development Multiple*/

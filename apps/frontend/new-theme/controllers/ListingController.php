@@ -13,8 +13,6 @@ class ListingController extends Controller
 
 	public function actionIndex($country = null, $state = null, $city = null, $type = null, $community = null, $sec = null, $category = null, $dealer = null, $loc = null)
 	{
-		print_r($_GET);
-
 		define('ITS_LIST_PAGE', '1');
 		if (isset($_GET['reg'])) {
 			if (!isset($_GET['state'])) {
@@ -289,7 +287,7 @@ class ListingController extends Controller
 		$limit = 21;
 
 		$placead = new PlaceAnAdNew();
-
+		// print_r($formData);
 		$criteria =  $placead->findAds($formData, false, 1);
 
 		if ($l_view  == 'map') {
