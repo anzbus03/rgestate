@@ -4981,7 +4981,7 @@ class PlaceAnAd extends ActiveRecord
 			if ($user->rules == 1) { // Assuming 1 is the role for admin
 				// Display profile_image for admin
 				$profileImage = !empty($user->profile_image) ? '/uploads/images/'.$user->profile_image : '/new_assets/images/logoo.svg';
-				$html .= '<img style="width: 100px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image">';
+				$html .= '<img style="width: 80px;height:40px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image">';
 			}
 			// Step 3: Check if user is an agent
 			elseif ($user->is_agent == 1) {
@@ -4995,14 +4995,14 @@ class PlaceAnAd extends ActiveRecord
 					if (in_array($user->user_id, $agents)) {
 						// Display profile_image for the agent (if available)
 						$agentProfileImage = !empty($agencyUser->profile_image) ? $agencyUser->profile_image : 'default_agent_image.jpg';
-						$html .= '<img style="width: 100px;height:50px;float: right;" src="/uploads/images/' . $agentProfileImage . '" alt="Agent Profile Image">';
+						$html .= '<img style="width: 80px;height:40px;float: right;" src="/uploads/images/' . $agentProfileImage . '" alt="Agent Profile Image">';
 						break; // Exit loop after finding the match
 					}
 				}
 			}
 		} else if ($this->user_id == 31988) {
 			$profileImage = !empty($user->profile_image) ? $user->profile_image : '/new_assets/images/logoo.svg';
-			$html .= '<img style="width: 100px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image">';
+			$html .= '<img style="width: 80px;height:40px;float: right;" src="' . $profileImage . '" alt="Admin Profile Image">';
 		}
 		return $html;
 	}
