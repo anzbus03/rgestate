@@ -277,7 +277,7 @@ class Image_libraryController extends Controller
     
         // Process floor plan files
         foreach ($floorPlanFiles as $floorPlan) {
-            $floorPlanDir = "{$rootPath}/floorPlans/{$year}/{$month}/";
+            $floorPlanDir = "{$rootPath}/floor_plan/{$year}/{$month}/";
             if (!is_dir($floorPlanDir) && !mkdir($floorPlanDir, 0755, true)) {
                 $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to create directory: {$floorPlanDir}"]);
                 return;
