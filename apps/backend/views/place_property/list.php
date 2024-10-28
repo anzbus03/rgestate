@@ -742,19 +742,25 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 var reader = new FileReader();
                 reader.onload = function(event) {
                     var data = new Uint8Array(event.target.result);
-                    var workbook = XLSX.read(data, {
-                        type: 'array'
-                    });
+                    var workbook = XLSX.read(data, { type: 'array' });
                     var sheetName = workbook.SheetNames[0];
                     var sheet = workbook.Sheets[sheetName];
-                    var json = XLSX.utils.sheet_to_json(sheet, {
-                        header: 1
-                    });
+                    
+                    // Convert Excel data to JSON with line breaks handled
+                    var json = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: true });
 
-                    // Add Excel data to FormData
+                    // Replace \n with \\n in all cells to maintain spacing during transmission
+                    json = json.map(row => 
+                        row.map(cell => 
+                            typeof cell === 'string' ? cell.replace(/\n/g, '\\n') : cell
+                        )
+                    );
+
+                    // Add processed Excel data to FormData
                     formData.append('excelData', JSON.stringify(json));
 
-                    uploadFiles(formData); // Call function to upload files
+                    // Function to upload files to backend
+                    uploadFiles(formData); 
                 };
                 reader.readAsArrayBuffer(excelFile);
             }
