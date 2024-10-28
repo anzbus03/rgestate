@@ -225,7 +225,7 @@ class SiteController extends Controller
 		$criteriaFeatured->condition = "t.featured = 'Y' AND t.status = :status AND t.isTrash = :isTrash";
 		$criteriaFeatured->params[':status'] = 'A';
 		$criteriaFeatured->params[':isTrash'] = '0';
-		$criteriaFeatured->order = 't.featured_date DESC';
+		$criteriaFeatured->order = 't.date_added DESC';
 		$criteriaFeatured->limit = 10;
 		$featuredListings = $model->findAll($criteriaFeatured);
 		   // Add featured listings to $featured array
@@ -245,7 +245,7 @@ class SiteController extends Controller
             // $criteria->params[':featured'] = 'Y';
             $criteria->params[':status'] = 'A';
             $criteria->params[':isTrash'] = '0';
-            $criteria->order = 't.last_updated DESC';
+            $criteria->order = 't.date_added DESC';
             
 			$cookieName = 'USERFAV'.COUNTRY_ID;
 			if((isset(Yii::app()->request->cookies[$cookieName])   )){

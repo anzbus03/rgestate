@@ -183,6 +183,12 @@
                     .furnished.lefticons {
                         background-image: url(../../assets/img/amen_293.svg);
                     }
+                    .added_on.lefticons{
+                        background-image: url(../../assets/img/icons/Villa.svg);
+                    }
+                    .permit_no.lefticons{
+                        background-image: url(../../assets/img/icons/Palace.svg);
+                    }
                     </style>
                     <?php
 			
