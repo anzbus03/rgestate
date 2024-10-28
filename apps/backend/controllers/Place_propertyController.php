@@ -3197,6 +3197,7 @@ class Place_propertyController  extends Controller
                     $model->ad_title = $data[13];
                     $model->PropertyID = $data[5];
                     $model->ad_description = $data[14];
+                    $model->amenities = $data[15];
                     $model->area_location = $data[11];
                     $model->interior_size = $data[22];
                     $model->price = $this->calculatePrice($data[23], $data[24]);
