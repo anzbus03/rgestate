@@ -236,110 +236,81 @@ class Image_libraryController extends Controller
 
     public function actionUploadFiles()
     {
-        $files = CUploadedFile::getInstancesByName('files'); // General files
-        $floorPlanFiles = CUploadedFile::getInstancesByName('floorPlans'); // Floor plan files
-        $propertyId = isset($_POST['property_id']) ? $_POST['property_id'] : null;
-        $videoLink = isset($_POST['video_link']) ? $_POST['video_link'] : null; // Video link
-        $imageAlt = isset($_POST['image_alt']) ? $_POST['image_alt'] : null; // Video link
-        $imageTitle = isset($_POST['image_title']) ? $_POST['image_title'] : null; // Video link
-
+        $files = CUploadedFile::getInstancesByName('files');
+        $floorPlanFiles = CUploadedFile::getInstancesByName('floorPlans');
+        $propertyId = $_POST['property_id'] ?? null;
+        $videoLink = $_POST['video_link'] ?? null;
+        $imageAlt = $_POST['image_alt'] ?? null;
+        $imageTitle = $_POST['image_title'] ?? null;
+    
         $img_saved = false;
         $floorPlanSaved = false;
-
-
+    
+        // Define the root directory and ensure it exists
+        $rootPath = Yii::getPathOfAlias('root') . '/uploads';
+        $year = date('Y');
+        $month = date('m');
+    
         // Process general files
         foreach ($files as $file) {
-            // Construct the upload path based on the current year and month
-            $rootPath = dirname(Yii::getPathOfAlias('root'));
-            $year = date('Y');
-            $month = date('m');
-            $uploadDir = "{$rootPath}/uploads/files/{$year}/{$month}/";
-
-            // Ensure the directory exists
-            if (!is_dir($uploadDir)) {
-                if (!mkdir($uploadDir, 0755, true)) {
-                    // If mkdir fails, return an error message
-                    $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to create directory: {$uploadDir}"]);
-                    return;
-                }
+            $uploadDir = "{$rootPath}/files/{$year}/{$month}/";
+            if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
+                $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to create directory: {$uploadDir}"]);
+                return;
             }
-
-            // Save the uploaded file
-            $fileName = $file->name; // Generate a unique file name
-            $filePath = $uploadDir . $fileName; // Complete path for the file
-
-            if ($file->saveAs($filePath)) { // Move the uploaded file to the specified directory
-                $adImage = new AdImage; // Create a new AdImage instance
+    
+            $fileName = $file->name;
+            $filePath = $uploadDir . $fileName;
+            if ($file->saveAs($filePath)) {
+                $adImage = new AdImage;
                 $adImage->isNewRecord = true;
                 $adImage->ad_id = $propertyId;
                 $adImage->image_title = $imageTitle;
                 $adImage->image_alt = $imageAlt;
-                $adImage->image_name = $year . '/' . $month . '/' . $fileName; // Save the unique file name
-                $img_saved = $adImage->save(); // Save the image record in the database
+                $adImage->image_name = "{$year}/{$month}/{$fileName}";
+                $img_saved = $adImage->save();
             } else {
-                // If saveAs fails, return an error message
                 $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to save file: {$file->name}"]);
                 return;
             }
         }
-
+    
         // Process floor plan files
         foreach ($floorPlanFiles as $floorPlan) {
-          
-            // Construct the upload path for floor plans
-            $floorPlanDir = "{$rootPath}/uploads/floorPlans/{$year}/{$month}/";
-
-            // Ensure the directory exists
-            if (!is_dir($floorPlanDir)) {
-                if (!mkdir($floorPlanDir, 0755, true)) {
-                    // If mkdir fails, return an error message
-                    $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to create directory: {$floorPlanDir}"]);
-                    return;
-                }
+            $floorPlanDir = "{$rootPath}/floorPlans/{$year}/{$month}/";
+            if (!is_dir($floorPlanDir) && !mkdir($floorPlanDir, 0755, true)) {
+                $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to create directory: {$floorPlanDir}"]);
+                return;
             }
-
-            // Save the uploaded floor plan file
-            $floorPlanName = $floorPlan->name; // Generate a unique file name
-            $floorPlanPath = $floorPlanDir . $floorPlanName; // Complete path for the file
-            if ($floorPlan->saveAs($floorPlanPath)) { // Move the uploaded file to the specified directory
-                $adFloorPlan = new AdFloorPlan; // Create a new AdFloorPlan instance
+    
+            $floorPlanName = $floorPlan->name;
+            $floorPlanPath = $floorPlanDir . $floorPlanName;
+            if ($floorPlan->saveAs($floorPlanPath)) {
+                $adFloorPlan = new AdFloorPlan;
                 $adFloorPlan->isNewRecord = true;
-                $adFloorPlan->ad_id = $propertyId; // Set the ad ID
-                $adFloorPlan->floor_title = $floorPlanName; // Set the floor title to the uploaded file name
-                $adFloorPlan->floor_file = $year . '/' . $month . '/' . $floorPlanName; // Save the unique file path
-                $floorPlanSaved = $adFloorPlan->save(); // Save the floor plan record in the database
-              
+                $adFloorPlan->ad_id = $propertyId;
+                $adFloorPlan->floor_title = $floorPlanName;
+                $adFloorPlan->floor_file = "{$year}/{$month}/{$floorPlanName}";
+                $floorPlanSaved = $adFloorPlan->save();
             } else {
-                // If saveAs fails, return an error message
                 $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to save floor plan: {$floorPlan->name}"]);
                 return;
             }
         }
-
-        // Update video link in the PlaceAnAd model
+    
+        // Save video link if provided
         if ($videoLink) {
-            // Find the property by ID
             $placeAd = PlaceAnAd::model()->findByPk($propertyId);
-            
             if ($placeAd) {
-                // Replace the existing video link
                 $placeAd->video = $videoLink;
-                
                 if (!$placeAd->save()) {
-                    // Handle error saving video link
                     $this->sendJsonResponse(['status' => 'error', 'message' => 'Failed to save video link.']);
                     return;
                 }
-          
             }
-            //  else {
-            //     // If property not found, handle accordingly
-            //     $this->sendJsonResponse(['status' => 'error', 'message' => 'Property not found.']);
-            //     return;
-            // }
         }
-
-        // Return a success response if at least one image or floor plan was saved
+    
+        // Return a success response if files were saved
         if ($img_saved || $floorPlanSaved) {
             echo CJSON::encode(['status' => 'success']);
         } else {
@@ -347,6 +318,7 @@ class Image_libraryController extends Controller
         }
         Yii::app()->end();
     }
+    
 
 
     private function sendJsonResponse($data)
