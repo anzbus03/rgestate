@@ -277,8 +277,10 @@ if ($viewCollection->renderContent) { ?>
                                 <td><?php echo CHtml::textField("priority[$data->id]", $data->priority, array("style" => "width:50px; text-align:center; display:block; margin:auto;", "class" => "form-controll")); ?>
                                 </td>
                                 <td>
-                                    <span class="date-display"
-                                        style="margin-right: 3px;"><?php echo CHtml::encode($data->last_updated); ?></span>
+                                    <span class="date-display" style="margin-right: 3px;">
+                                        <?php echo CHtml::encode(date('d-M-Y', strtotime($data->date_added))); ?>
+                                    </span>
+
                                     <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/refresh_date', array('id' => $data->id)); ?>" class="refresh-date" data-id="<?php echo $data->id; ?>"
                                         data-ldate="<?php echo CHtml::encode($data->Ldate); ?>"
                                         style="text-decoration: none; color: blue; cursor: pointer;">

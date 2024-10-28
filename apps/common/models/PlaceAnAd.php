@@ -5401,7 +5401,7 @@ class PlaceAnAd extends ActiveRecord
 		return  array(
 			'permit_no' 	 =>     $this->PropertyID,
 			'reference' 	 =>     $this->ReferenceNumberTitle,
-			'added_on' 	 =>     date('d-m-Y', strtotime($this->last_updated)),
+			'added_on' 	 =>     date('d-M-Y', strtotime($this->date_added)),
 			'listing_type'	 =>  !empty($this->listing_category) ? $this->listing_category :  $this->ListingType,
 			//	'location' 	 =>  $this->mandate ,
 			'category_id' 	 =>   !empty($this->category_name) ? $this->category_name :     $this->ListingTypeCategory,

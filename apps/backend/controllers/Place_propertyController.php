@@ -558,7 +558,7 @@ class Place_propertyController  extends Controller
                     'UID'                              => $item->uid,
                     'Sr. No'                           => $item->id,
                     'Creation Date'                    => $item->date_added,
-                    'Refresh Date'                     => $item->last_updated,
+                    'Refresh Date'                     => $item->date_added,
                     'Reference ID'                     => $item->RefNo,
                     'Permit Number'                    => $item->PropertyID,
                     'Offer Type'                       => Section::model()->findByPk($item->section_id)->section_name,
@@ -2252,7 +2252,7 @@ class Place_propertyController  extends Controller
         }
 
         PlaceAnAd::model()->updateByPk($id, array(
-            'last_updated' => date('Y-m-d H:i:s'),
+            'date_added' => date('Y-m-d H:i:s'),
         ));
         $this->redirect(Yii::app()->request->urlReferrer);
     }
@@ -3188,7 +3188,6 @@ class Place_propertyController  extends Controller
                     $subCategory = isset($categoriesMap[$data[8]]) ? $categoriesMap[$data[8]] : null;
                     $stateModel = isset($statesMap[$data[11]]) ? $statesMap[$data[11]] : null;
                     $userModel = isset($usersMap[$data[39]]) ? $usersMap[$data[39]] : null;
-
                     // Set model attributes from the Excel data
                     $model->section_id = $data[6] == "Sale" ? 1 : 2;
                     $model->listing_type = $data[7] == "Commercial" ? 151 : 150;
@@ -3197,6 +3196,9 @@ class Place_propertyController  extends Controller
                     $model->ad_title = $data[13];
                     $model->PropertyID = $data[5];
                     $model->ad_description = $data[14];
+                    $excelDate = $data[3];
+                    $timestamp = ($excelDate - 25569) * 86400; 
+                    $model->date_added = date('Y-m-d H:i:s', $timestamp);
                     $model->amenities = $data[15];
                     $model->area_location = $data[11];
                     $model->interior_size = $data[22];
@@ -3237,7 +3239,8 @@ class Place_propertyController  extends Controller
                     if (!$model->save()) {
                         throw new Exception('Failed to save model: ' . json_encode($model->getErrors()));
                     }
-
+                    // $model;
+                    // exit;
                     // Handle image saving separately
                     $this->handleImageSaving($model, $data[29]);
                 }
