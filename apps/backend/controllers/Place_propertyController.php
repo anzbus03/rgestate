@@ -3122,17 +3122,20 @@ class Place_propertyController  extends Controller
         if (isset($_FILES['excelFile'])) {
             // Collect all RefNo, category names, and user emails for bulk queries
             $refNos = array_column($excelData, 4); 
+            $categoryTypes = array_column($excelData, 7);
             $categoryNames = array_column($excelData, 8);
             $stateNames = array_column($excelData, 11);
             $userEmails = array_column($excelData, 39);
             $filteredStates = array_filter(array_slice($stateNames, 1));
             $filteredrefNos = array_filter(array_slice($refNos, 1));
             $filteredcategoryNames = array_filter(array_slice($categoryNames, 1));
+            $filteredcategoryTypes = array_filter(array_slice($categoryTypes, 1));
             $filtereduserEmails = array_filter(array_slice($userEmails, 1));
 
             // Preload data from DB in bulk
             $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A']);
+            $types = Category::model()->findAllByAttributes(['category_name' => $categoryTypes, 'isTrash' => '0', 'status' => 'A']);
             $states = States::model()->findAllByAttributes(['state_name' => $filteredStates, 'isTrash' => '0']);
             $criteria = new CDbCriteria();
             $criteria->addInCondition('LOWER(email)', array_map('strtolower', $userEmails));
@@ -3149,6 +3152,11 @@ class Place_propertyController  extends Controller
                 $categoriesMap[$category->category_name] = $category;
             }
 
+            $typesMap = [];
+            foreach ($types as $type) {
+                $typesMap[$type->category_name] = $type;
+            }
+
             $statesMap = [];
             foreach ($states as $state) {
                 $statesMap[$state->state_name] = $state;
@@ -3161,11 +3169,15 @@ class Place_propertyController  extends Controller
 
             // Validation: Check for missing categories or states
             $missingCategories = array_diff($filteredcategoryNames, array_keys($categoriesMap));
+            $missingType = array_diff($filteredcategoryTypes, array_keys($categoriesMap));
             $missingStates = array_diff($filteredStates, array_keys($statesMap));
 
             if (!empty($missingCategories)) {
                 return $this->sendJsonResponse(['status' => 'error', 'message' => 'Category does not exist: ' . implode(', ', $missingCategories)]);
             }
+            // if (!empty($missingType)) {
+            //     return $this->sendJsonResponse(['status' => 'error', 'message' => 'Type does not exist: ' . implode(', ', $missingType)]);
+            // }
 
             if (!empty($missingStates)) {
                 return $this->sendJsonResponse(['status' => 'error', 'message' => 'State does not exist: ' . implode(', ', $missingStates)]);
@@ -3183,14 +3195,26 @@ class Place_propertyController  extends Controller
                         $newCount++;
                     }
                     $model->scenario = isset($adsMap[$data[4]]) ? 'update_content' : 'new_insert';
-
+                    // print_r($data);
+                    // exit;
                     // Set model attributes using preloaded data
+                    $type = isset($typesMap[$data[7]]) ? $typesMap[$data[7]] : null;
                     $subCategory = isset($categoriesMap[$data[8]]) ? $categoriesMap[$data[8]] : null;
                     $stateModel = isset($statesMap[$data[11]]) ? $statesMap[$data[11]] : null;
                     $userModel = isset($usersMap[$data[39]]) ? $usersMap[$data[39]] : null;
                     // Set model attributes from the Excel data
+                    // Find the first category with the specified attributes
+                    $category = Category::model()->findByAttributes([
+                        'category_name' => $data[7],
+                        'isTrash' => '0',
+                        'status' => 'A'
+                    ]);
+
+                    // Check if a matching category is found and retrieve its ID
+                    $categoryId = $category ? $category->category_id : null;
+
                     $model->section_id = $data[6] == "Sale" ? 1 : 2;
-                    $model->listing_type = $data[7] == "Commercial" ? 151 : 150;
+                    $model->listing_type = $categoryId;
                     $model->category_id = $subCategory->category_id ?? null;
                     $model->RefNo = $data[4];
                     $model->ad_title = $data[13];
