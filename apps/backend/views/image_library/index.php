@@ -246,6 +246,8 @@ $(document).ready(function() {
 
     // Handle upload button click
     $('#uploadFilesButton').on('click', function() {
+        var $uploadButton = $(this);
+        $uploadButton.text('Please wait...').prop('disabled', true); // Change text and disable button
         var formData = new FormData($('#uploadForm')[0]); // Create form data from the form
 
         // Optionally: Add any additional parameters here
@@ -257,6 +259,7 @@ $(document).ready(function() {
             processData: false,
             success: function(response) {
                 // Handle success (e.g., refresh the table)
+                $uploadButton.text('Upload').prop('disabled', false); // Revert text and enable button
                 if(JSON.parse(response).status == "success"){
                     window.history.back();
                     $('#home-banner-table').DataTable().ajax.reload();
@@ -265,6 +268,7 @@ $(document).ready(function() {
             },
             error: function() {
                 alert('Error uploading files');
+                $uploadButton.text('Upload').prop('disabled', false); // Revert text and enable button
             }
         });
     });
