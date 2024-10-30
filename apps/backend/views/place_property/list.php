@@ -630,26 +630,29 @@ if ($viewCollection->renderContent) { ?>
             }).get();
             var csrfToken = '<?php echo Yii::app()->request->csrfToken; ?>';
             if (action && selectedItems.length) {
-                // Perform an AJAX request to the backend
-                $.ajax({
-                    url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/bulk_action'); ?>', // Update with your action URL
-                    type: 'GET',
-                    data: {
-                        bulk_action: action,
-                        bulk_item: selectedItems,
-                        YII_CSRF: csrfToken
-                    },
-                    success: function(response) {
-                        // Handle successful response
-                        window.location.reload(); // Reload the page to reflect changes
-                    },
-                    error: function(xhr) {
-                        // Handle error
-                        alert(
-                            'An error occurred while processing your request. Please try again.'
-                        );
-                    }
-                });
+                if (confirm('Are you sure you want to proceed with this action?')) {
+
+                    // Perform an AJAX request to the backend
+                    $.ajax({
+                        url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/bulk_action'); ?>', // Update with your action URL
+                        type: 'GET',
+                        data: {
+                            bulk_action: action,
+                            bulk_item: selectedItems,
+                            YII_CSRF: csrfToken
+                        },
+                        success: function(response) {
+                            // Handle successful response
+                            window.location.reload(); // Reload the page to reflect changes
+                        },
+                        error: function(xhr) {
+                            // Handle error
+                            alert(
+                                'An error occurred while processing your request. Please try again.'
+                            );
+                        }
+                    });
+                }
             } else {
                 alert('Please select an action and at least one item.');
             }
