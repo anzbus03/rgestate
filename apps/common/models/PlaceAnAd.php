@@ -224,7 +224,7 @@ class PlaceAnAd extends ActiveRecord
 			if (empty($this->income)) {
 				$this->addError('income',  Yii::t('app', '{attribute} cannot be blank.', array('{attribute}' => $this->getAttributeLabel('income'))));
 			}
-			if (empty($this->lease_status)) {
+			if (empty($this->lease_status) && $this->lease_status != 0) {
 				$this->addError('lease_status',  Yii::t('app', '{attribute} cannot be blank.', array('{attribute}' => $this->getAttributeLabel('lease_status'))));
 			}
 			if (empty($this->roi)) {

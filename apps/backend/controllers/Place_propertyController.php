@@ -3200,103 +3200,105 @@ class Place_propertyController  extends Controller
             $transaction = Yii::app()->db->beginTransaction();
             try {
                 foreach (array_slice($excelData, 1) as $data) {
+                    if (count($data) > 0){
 
-                    // Check if ad exists in the preloaded ads
-                    $model = isset($adsMap[$data[4]]) ? $adsMap[$data[4]] : new PlaceAnAd();
-                    if (isset($adsMap[$data[4]])){
-                        $updatedCount++;
-                    }else {
-                        $newCount++;
-                    }
-                    $model->scenario = isset($adsMap[$data[4]]) ? 'update_content' : 'new_insert';
-                    // print_r($data[26]);
-                    // exit;
-                    // Set model attributes using preloaded data
-                    $type = isset($typesMap[$data[7]]) ? $typesMap[$data[7]] : null;
-                    $subCategory = isset($categoriesMap[$data[8]]) ? $categoriesMap[$data[8]] : null;
-                    $stateModel = isset($statesMap[$data[11]]) ? $statesMap[$data[11]] : null;
-                    $userModel = isset($usersMap[$data[39]]) ? $usersMap[$data[39]] : null;
-                    // Set model attributes from the Excel data
-                    // Find the first category with the specified attributes
-                    $category = Category::model()->findByAttributes([
-                        'category_name' => $data[7],
-                        'isTrash' => '0',
-                        'status' => 'A'
-                    ]);
-
-                    // Check if a matching category is found and retrieve its ID
-                    $categoryId = $category ? $category->category_id : null;
-                    // print_r();
-                    // exit;
-                    $model->section_id = $data[6] == "Sale" ? 1 : 2;
-                    $model->listing_type = $categoryId;
-                    $model->category_id = $subCategory->category_id ?? null;
-                    $model->RefNo = $data[4];
-                    $model->ad_title = $data[13];
-                    $model->PropertyID = $data[5];
-                    $model->ad_description = (($data[14]));
-                    $excelDate = $data[3];
-                    $timestamp = ($excelDate - 25569) * 86400; 
-                    $model->date_added = date('Y-m-d H:i:s', $timestamp);
-                    $model->amenities = $data[15];
-                    $model->area_location = $data[11];
-                    $model->interior_size = $data[22];
-                    $model->price = $this->calculatePrice($data[23], $data[24]);
-                    $model->rent_paid = strtolower($data[24]);
-                    if (empty($data[26])) {
-                        $model->lease_status = 0; // Save as 0 if empty
-                    } else {
-                        $model->lease_status = ($data[26] == "Leased" ? 1 : 0); // Save as 1 if "Leased", else 0
-                    }
-                    $model->property_status = $data[25] == "Yes" ? 1 : 0;
-                    $model->income = $data[27];
-                    $model->roi = $data[28]*100 ?? 0;
-                    $model->bedrooms = $data[17];
-                    $model->bathrooms = $data[18];
-                    $model->no_of_u = $data[19];
-                    $model->FloorNo = $data[20];
-                    $model->plot_area = $data[21];
-                    $model->builtup_area = $data[22] ?? 0;
-                    $model->furnished = $data[16] == "Yes" ? "Y" : "N";
-                    $model->featured = $data[32] == "Yes" ? "Y" : "N";
-                    $model->hot = $data[33] == "Yes" ? 1 : 0;
-                    $model->verified = $data[34] == "Yes" ? 1 : 0;
-                    $model->mandate = $data[2];
-                    $model->contact_person = $data[38];
-                    $model->salesman_email = $data[39];
-                    $model->mobile_number = $data[40];
-                    $model->country = 66124;
-                    $model->state = $stateModel->state_id ?? 0;
-                    $model->status = $data[36] == "Active" ? "A" : "I";
-                    $availability = "not_available";
-                    if ($data[35] == "Sold Out") {
-                        $availability = "sold_out";
-                    } else if ($data[35] == "Leased Out") {
-                        $availability = "lease_out";
-                    } else if ($data[35] == "Available") {
-                        $availability = null;
-                    }
-                    $model->availability = $availability;
-                    $model->user_id = $userModel->user_id ?? 31988;
-
-                    // Save model
-                    if (!$model->save()) {
-                        throw new Exception('Failed to save model: ' . json_encode($model->getErrors()));
-                    }
-                    // $model;
-                    // exit;
-                    // Handle image saving separately
-                    foreach(explode(",",$data[29]) as $imageName){
-                        if (isset($imageName) && !empty($imageName)){
-                            ($this->handleImageSaving($model, $imageName));
+                        // Check if ad exists in the preloaded ads
+                        $model = isset($adsMap[$data[4]]) ? $adsMap[$data[4]] : new PlaceAnAd();
+                        if (isset($adsMap[$data[4]])){
+                            $updatedCount++;
+                        }else {
+                            $newCount++;
                         }
+                        // $model->scenario = isset($adsMap[$data[4]]) ? 'update_content' : 'new_insert';
+                        // print_r($data[26]);
                         // exit;
-                    }
-                    foreach(explode(",",$data[30]) as $floorName){
-                        if (isset($floorName) && !empty($floorName)){
-                            ($this->handleFloorPlanSaving($model, $floorName));
+                        // Set model attributes using preloaded data
+                        $type = isset($typesMap[$data[7]]) ? $typesMap[$data[7]] : null;
+                        $subCategory = isset($categoriesMap[$data[8]]) ? $categoriesMap[$data[8]] : null;
+                        $stateModel = isset($statesMap[$data[11]]) ? $statesMap[$data[11]] : null;
+                        $userModel = isset($usersMap[$data[39]]) ? $usersMap[$data[39]] : null;
+                        // Set model attributes from the Excel data
+                        // Find the first category with the specified attributes
+                        $category = Category::model()->findByAttributes([
+                            'category_name' => $data[7],
+                            'isTrash' => '0',
+                            'status' => 'A'
+                        ]);
+    
+                        // Check if a matching category is found and retrieve its ID
+                        $categoryId = $category ? $category->category_id : null;
+                        // print_r();
+                        // exit;
+                        $model->section_id = $data[6] == "Sale" ? 1 : 2;
+                        $model->listing_type = $categoryId;
+                        $model->category_id = $subCategory->category_id ?? null;
+                        $model->RefNo = $data[4];
+                        $model->ad_title = $data[13];
+                        $model->PropertyID = $data[5];
+                        $model->ad_description = (($data[14]));
+                        $excelDate = $data[3];
+                        $timestamp = ($excelDate - 25569) * 86400; 
+                        $model->date_added = date('Y-m-d H:i:s', $timestamp);
+                        $model->amenities = $data[15];
+                        $model->area_location = $data[11];
+                        $model->interior_size = $data[22];
+                        $model->price = $this->calculatePrice($data[23], $data[24]);
+                        $model->rent_paid = strtolower($data[24]);
+                        if (empty($data[26])) {
+                            $model->lease_status = 0; // Save as 0 if empty
+                        } else {
+                            $model->lease_status = ($data[26] == "Leased" ? 1 : 0); // Save as 1 if "Leased", else 0
                         }
+                        $model->property_status = $data[25] == "Yes" ? 1 : 0;
+                        $model->income = $data[27];
+                        $model->roi = $data[28]*100 ?? 0;
+                        $model->bedrooms = $data[17];
+                        $model->bathrooms = $data[18];
+                        $model->no_of_u = $data[19];
+                        $model->FloorNo = $data[20];
+                        $model->plot_area = $data[21];
+                        $model->builtup_area = $data[22] ?? 0;
+                        $model->furnished = $data[16] == "Yes" ? "Y" : "N";
+                        $model->featured = $data[32] == "Yes" ? "Y" : "N";
+                        $model->hot = $data[33] == "Yes" ? 1 : 0;
+                        $model->verified = $data[34] == "Yes" ? 1 : 0;
+                        $model->mandate = $data[2];
+                        $model->contact_person = $data[38];
+                        $model->salesman_email = $data[39];
+                        $model->mobile_number = $data[40];
+                        $model->country = 66124;
+                        $model->state = $stateModel->state_id ?? 0;
+                        $model->status = $data[36] == "Active" ? "A" : "I";
+                        $availability = "not_available";
+                        if ($data[35] == "Sold Out") {
+                            $availability = "sold_out";
+                        } else if ($data[35] == "Leased Out") {
+                            $availability = "lease_out";
+                        } else if ($data[35] == "Available") {
+                            $availability = null;
+                        }
+                        $model->availability = $availability;
+                        $model->user_id = $userModel->user_id ?? 31988;
+    
+                        // Save model
+                        if (!$model->save()) {
+                            throw new Exception('Failed to save model: ' . json_encode($model->getErrors()));
+                        }
+                        // $model;
                         // exit;
+                        // Handle image saving separately
+                        foreach(explode(",",$data[29]) as $imageName){
+                            if (isset($imageName) && !empty($imageName)){
+                                ($this->handleImageSaving($model, $imageName));
+                            }
+                            // exit;
+                        }
+                        foreach(explode(",",$data[30]) as $floorName){
+                            if (isset($floorName) && !empty($floorName)){
+                                ($this->handleFloorPlanSaving($model, $floorName));
+                            }
+                            // exit;
+                        }
                     }
                 }
 
