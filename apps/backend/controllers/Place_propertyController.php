@@ -542,6 +542,19 @@ class Place_propertyController  extends Controller
             // Prepare data for JSON response
             $responseData = [];
             foreach ($data as $item) {
+                $images = AdImage::model()->findAllByAttributes(['ad_id' => $item->id]);
+                $imageNames = array_map(function($image) {
+                    return $image->image_name;
+                }, $images);
+                $imageList = implode(',', $imageNames);
+            
+                // Fetch the list of floor plan names associated with the current ad
+                $floorPlans = AdFloorPlan::model()->findAllByAttributes(['ad_id' => $item->id]);
+                $floorPlanNames = array_map(function($floorPlan) {
+                    return $floorPlan->floor_title;
+                }, $floorPlans);
+                $floorPlanList = implode(',', $floorPlanNames);
+
                 $userId = $item->user_id;
                 $agencyName = ''; // Default if no agency found
     
@@ -580,12 +593,12 @@ class Place_propertyController  extends Controller
                     'BUA Size (sqft)'                  => $item->builtup_area,
                     'Sale/Rent Price (AED)'            => $item->price,
                     'Rent Paid Frequency'              => $item->rent_paid,
-                    'PRELEASED STATUS'                 => $item->lease_status,
+                    'PRELEASED STATUS'                 => $item->property_status,
                     'LEASE STATUS'                     => $item->lease_status,
                     'CURRENT/EXPECTED RENTAL INCOME'   => $item->income,
                     'CURRENT/EXPECTED ROI PA %'        => $item->roi,
-                    'Photos (JPG/PNG)'                 => $item->ad_images_g,
-                    'Floor Plans'                      => $item->floor_plan,
+                    'Photos (JPG/PNG)'                 => $imageList,
+                    'Floor Plans'                      => $floorPlanList,
                     'Video (YouTube URL)'              => $item->video,
                     'FEATURED'                         => $item->featured,
                     'HOT'                              => $item->hot,
@@ -3187,6 +3200,7 @@ class Place_propertyController  extends Controller
             $transaction = Yii::app()->db->beginTransaction();
             try {
                 foreach (array_slice($excelData, 1) as $data) {
+
                     // Check if ad exists in the preloaded ads
                     $model = isset($adsMap[$data[4]]) ? $adsMap[$data[4]] : new PlaceAnAd();
                     if (isset($adsMap[$data[4]])){
@@ -3195,7 +3209,7 @@ class Place_propertyController  extends Controller
                         $newCount++;
                     }
                     $model->scenario = isset($adsMap[$data[4]]) ? 'update_content' : 'new_insert';
-                    // print_r($data);
+                    // print_r($data[26]);
                     // exit;
                     // Set model attributes using preloaded data
                     $type = isset($typesMap[$data[7]]) ? $typesMap[$data[7]] : null;
@@ -3229,9 +3243,14 @@ class Place_propertyController  extends Controller
                     $model->interior_size = $data[22];
                     $model->price = $this->calculatePrice($data[23], $data[24]);
                     $model->rent_paid = strtolower($data[24]);
-                    $model->lease_status = $data[25] == "Yes" ? 1 : 0;
+                    if (empty($data[26])) {
+                        $model->lease_status = 0; // Save as 0 if empty
+                    } else {
+                        $model->lease_status = ($data[26] == "Leased" ? 1 : 0); // Save as 1 if "Leased", else 0
+                    }
+                    $model->property_status = $data[25] == "Yes" ? 1 : 0;
                     $model->income = $data[27];
-                    $model->roi = (int)$data[28];
+                    $model->roi = $data[28]*100 ?? 0;
                     $model->bedrooms = $data[17];
                     $model->bathrooms = $data[18];
                     $model->no_of_u = $data[19];
@@ -3267,7 +3286,18 @@ class Place_propertyController  extends Controller
                     // $model;
                     // exit;
                     // Handle image saving separately
-                    $this->handleImageSaving($model, $data[29]);
+                    foreach(explode(",",$data[29]) as $imageName){
+                        if (isset($imageName) && !empty($imageName)){
+                            ($this->handleImageSaving($model, $imageName));
+                        }
+                        // exit;
+                    }
+                    foreach(explode(",",$data[30]) as $floorName){
+                        if (isset($floorName) && !empty($floorName)){
+                            ($this->handleFloorPlanSaving($model, $floorName));
+                        }
+                        // exit;
+                    }
                 }
 
                 // Commit transaction
@@ -3300,20 +3330,42 @@ class Place_propertyController  extends Controller
         }
     }
     
-    private function handleImageSaving($model, $imageName)
+    public function handleImageSaving($model, $imageName)
     {
+        // Find the existing image record by image name
         $existingImage = AdImage::model()->findByAttributes(['image_name' => $imageName]);
+    
         if ($existingImage) {
-            $existingImage->ad_id = $model->id;
+            $existingImage->ad_id = (int)$model->id; // Assign ad_id from model
             if ($existingImage->save()) {
+                // Check if the model image field is empty, then update it
                 if (empty($model->image)) {
                     $model->updateByPk($model->id, ['image' => $existingImage->image_name]);
                 }
             } else {
-                throw new Exception('Failed to update the image property_id.');
+                // Log or debug the errors if save() fails
+                throw new Exception('Failed to update the image property_id: ' . json_encode($existingImage->getErrors()));
             }
+        } else {
+            // Log if no image was found with the provided image name
+            throw new Exception("No AdImage found with image_name: $imageName");
         }
     }
+    public function handleFloorPlanSaving($model, $floorPlan)
+    {
+        // Find the existing image record by image name
+        $existingFloorPlan = AdFloorPlan::model()->findByAttributes(['floor_title' => $floorPlan]);
+    
+        if ($existingFloorPlan) {
+            $existingFloorPlan->ad_id = (int)$model->id; // Assign ad_id from model
+            if (!$existingFloorPlan->save()) {
+                throw new Exception('Failed to update the floor plan property_id: ' . json_encode($existingFloorPlan->getErrors()));
+            }
+        } else {
+            throw new Exception("No Ad Floor Plan found with title: $floorPlan");
+        }
+    }
+    
     
 
 

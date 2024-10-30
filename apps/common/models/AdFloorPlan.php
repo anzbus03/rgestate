@@ -35,7 +35,7 @@ class AdFloorPlan extends  ActiveRecord
             array('floor_title, floor_file', 'length', 'max'=>250),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('floor_id, ad_id, floor_title, floor_file', 'safe', 'on'=>'search'),
+            array('floor_id, isTrash, ad_id, floor_title, floor_file', 'safe', 'on'=>'search'),
         );
     }
 

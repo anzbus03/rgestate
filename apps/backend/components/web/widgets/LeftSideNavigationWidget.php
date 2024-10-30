@@ -65,6 +65,12 @@ class LeftSideNavigationWidget extends CWidget
                     'active'    => 'image_library',
                     'route'     => array('image_library/index'),
                 ),
+                'floor_plan' => array(
+                    'name'      => Yii::t('app', 'Floor Plan'),
+                    'icon'      => 'flaticon-043-menu',
+                    'active'    => 'floor_plan',
+                    'route'     => array('image_library/floor_plan'),
+                ),
                 'enquiries' => array(
                     'name'      => Yii::t('app', 'Enquiries'),
                     'icon'      => 'fa fa-envelope',
@@ -296,6 +302,12 @@ class LeftSideNavigationWidget extends CWidget
                 'active'    => array('image_library'),
                 'route'     => array('image_library/index'),
             );
+            $menuItems['floor_plan'] = array(
+                'name'      => Yii::t('app', 'Floor Plan'),
+                'icon'      => 'flaticon-043-menu',
+                'active'    => array('floor_plan'),
+                'route'     => array('image_library/floor_plan'),
+            );
             $menuItems['place_an_ad'] = array(
                 'name'      => Yii::t('app', 'Listings Management'),
                 'icon'      => 'flaticon-043-menu',
@@ -326,6 +338,12 @@ class LeftSideNavigationWidget extends CWidget
                 'icon'      => 'flaticon-043-menu',
                 'active'    => array('image_library'),
                 'route'     => array('image_library/index'),
+            );
+            $menuItems['floor_plan'] = array(
+                'name'      => Yii::t('app', 'Floor Plan'),
+                'icon'      => 'flaticon-043-menu',
+                'active'    => array('floor_plan'),
+                'route'     => array('image_library/floor_plan'),
             );
             $menuItems['place_an_ad'] = array(
                 'name'      => Yii::t('app', 'Listings Management'),

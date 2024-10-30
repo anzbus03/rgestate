@@ -78,6 +78,69 @@ class Image_libraryController extends Controller
 
         $this->render('index', compact('model', 'properties'));
     }
+    public function actionFloor_plan()
+    {
+        $request = Yii::app()->request;
+        $model = new AdFloorPlan('search');
+        $model->isTrash = '0';
+
+        // Find only 50 properties ordered by `id` in descending order
+        $criteria = new CDbCriteria();
+        $criteria->limit = 50; // Limit to 50 records
+        $criteria->order = 'id DESC'; // Order by `id` in descending order
+
+        // Get only 50 records with the defined criteria
+        $properties = PlaceAnAd::model()->findAll($criteria);
+
+        if ($request->isAjaxRequest) {
+            $dataProvider = $model->search(); // This should return a CActiveDataProvider instance
+            $data = $dataProvider->getData();
+
+            // Ensure $dataProvider is not null
+            if ($dataProvider instanceof CActiveDataProvider) {
+                $response = [
+                    'draw' => intval($request->getParam('draw')),
+                    'recordsTotal' => $dataProvider->totalItemCount,
+                    'recordsFiltered' => $dataProvider->totalItemCount,
+                    'data' => [],
+                ];
+
+                foreach ($data as $item) {
+                    // Define the path to the image file
+                    $imagePath = Yii::getPathOfAlias('webroot') . '/uploads/floor_plan/' . $item->floor_file;
+
+                    // Check if the image file exists on the server
+                    $imageExists = file_exists($imagePath);
+
+                    // Prepare the row data including the image existence check
+                    $response['data'][] = [
+                        $imageExists ? CHtml::image(Yii::app()->request->baseUrl . '/uploads/' . $item->floor_title, 
+                        $item->floor_title, ['width' => '50']) : 'Image not found',
+                        $item->ad->ad_title,
+                        "A",
+                            CHtml::link('<span class="fa fa-trash"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/delete', ['id' => $item->floor_id]), ['class' => 'btn btn-danger btn-xs', 'title' => Yii::t('app', 'Delete'), 'onclick' => 'return confirm("Are you sure you want to delete this item?")']),
+                    ];
+                }
+
+                echo CJSON::encode($response);
+                Yii::app()->end();
+            } else {
+                // Handle the error if $dataProvider is not an instance of CActiveDataProvider
+                throw new CHttpException(500, 'Internal Server Error: Invalid data provider.');
+            }
+        }
+
+        $this->setData([
+            'pageMetaTitle' => $this->data->pageMetaTitle . ' | ' . Yii::t(Yii::app()->controller->id, "Floor Plan Files List"),
+            'pageHeading' => Yii::t(Yii::app()->controller->id, "Floor Plan Files List"),
+            'pageBreadcrumbs' => [
+                Yii::t(Yii::app()->controller->id, "Floor Plan Files Library") => $this->createUrl(Yii::app()->controller->id . '/floor_plan'),
+                Yii::t('app', 'View all'),
+            ],
+        ]);
+
+        $this->render('floor_plan', compact('model', 'properties'));
+    }
 
 
     public function actionAjaxData()
@@ -135,6 +198,61 @@ class Image_libraryController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    public function actionAjaxDataFloorPlan()
+    {
+        $model = new AdFloorPlan('search');
+        $model->isTrash = '0';
+
+        // Get the parameters from the DataTables request
+        $requestData = $_GET;
+
+        // Set pagination parameters from DataTables
+        $pageSize = isset($requestData['length']) ? intval($requestData['length']) : 10; // Default to 10
+        $offset = isset($requestData['start']) ? intval($requestData['start']) : 0;
+
+        // Set criteria for search and pagination
+        $criteria = new CDbCriteria;
+        $criteria->compare('isTrash', '0');
+
+        // Add search functionality here (if needed)
+
+        // Fetch data with pagination
+        $dataProvider = new CActiveDataProvider($model, [
+            'criteria' => $criteria,
+            'pagination' => [
+                'pageSize' => $pageSize,
+                'currentPage' => $offset / $pageSize,
+            ],
+        ]);
+
+        // Create response structure
+        $response = [
+            'draw' => intval($requestData['draw']),
+            'recordsTotal' => $dataProvider->totalItemCount,
+            'recordsFiltered' => $dataProvider->totalItemCount, // You can adjust this based on filtering
+            'data' => [],
+        ];
+
+        // Loop through data and build response array
+        foreach ($dataProvider->getData() as $item) {
+            $imagePath = Yii::getPathOfAlias('webroot') . '/' . $item->floor_title;
+            $imageUrl = Yii::getPathOfAlias('') . '/uploads/floor_plan/' . $item->floor_file; // URL for the image
+
+            $response['data'][] = [
+                "<input type='checkbox' class='bulk-item' value='$item->floor_id'>",
+                "<a href='{$imageUrl}' download='{$item->floor_title}' class='btn btn-success btn-xs'>Download Floor Plan</a>",
+                $item->floor_title,
+                $item->ad->ad_title,
+                "A",
+                // CHtml::link('<span class="fa fa-pencil"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/update', ['id' => $item->id]), ['class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Update')]) .
+                CHtml::link('<span class="fa fa-trash"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/delete_floor_plan', ['id' => $item->floor_id]), ['class' => 'btn btn-danger btn-xs', 'title' => Yii::t('app', 'Delete'), 'onclick' => 'return confirm("Are you sure you want to delete this item?")']),
+            ];
+        }
+
+        // Send response as JSON
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
 
     public function actionDelete($id)
     {
@@ -155,6 +273,35 @@ class Image_libraryController extends Controller
             $this->redirect($request->getPost('returnUrl', array(Yii::app()->controller->id . '/index')));
         }
     }
+    public function actionDelete_floor_plan($id)
+    {
+        // Find the model by floor_id instead of the primary key
+        $model = AdFloorPlan::model()->find('floor_id = :floorId', [':floorId' => (int)$id]);
+        
+        // Check if the model exists
+        if (empty($model)) {
+            throw new CHttpException(404, Yii::t('app', 'The requested floor plan does not exist.'));
+        }
+    
+        // Set the isTrash attribute to mark it as deleted
+        $model->isTrash = Yii::app()->params['onTrash'];
+    
+        // Save the model to update the isTrash column
+        if (!$model->save()) {
+            // Handle errors if the save operation fails
+            throw new CHttpException(500, Yii::t('app', 'Failed to delete the floor plan.'));
+        }
+    
+        // Notify the user of the successful deletion
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+    
+        if (!$request->getQuery('ajax')) {
+            $notify->addSuccess(Yii::t('app', 'The item has been successfully deleted!'));
+            $this->redirect($request->getPost('returnUrl', array(Yii::app()->controller->id . '/floor_plan')));
+        }
+    }
+    
     public function actionBulk_action()
     {
         $request = Yii::app()->request;
@@ -182,6 +329,37 @@ class Image_libraryController extends Controller
         }
 
         $defaultReturn = $request->getServer('HTTP_REFERER', array('image_library/index'));
+        $this->redirect($request->getPost('returnUrl', $defaultReturn));
+    }
+    public function actionBulk_action_floor()
+    {
+        $request = Yii::app()->request;
+        $notify  = Yii::app()->notify;
+
+        $action = $_GET['bulk_action'];
+        $items  = $_GET['bulk_item'];
+
+        if ($action == PlaceAnAd::BULK_ACTION_TRASH && count($items)) {
+            $affected = 0;
+            $customerModel = new AdFloorPlan();
+            foreach ($items as $item) {
+                // $model = AdFloorPlan::model()->find('floor_id = :floorId', [':floorId' => (int)$id]);
+
+                $customer = $customerModel->find('floor_id = :floorId', [':floorId' => (int)$item]);
+                if (!$customer) {
+                    continue;
+                }
+
+                $customer->isTrash = '1';
+                $customer->save();
+                $affected++;
+            }
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+
+        $defaultReturn = $request->getServer('HTTP_REFERER', array('image_library/floor_plan'));
         $this->redirect($request->getPost('returnUrl', $defaultReturn));
     }
     // public function actionUploadFiles()
@@ -238,7 +416,7 @@ class Image_libraryController extends Controller
     {
         $files = CUploadedFile::getInstancesByName('files');
         $floorPlanFiles = CUploadedFile::getInstancesByName('floorPlans');
-        $propertyId = $_POST['property_id'] ?? null;
+        $propertyId = $_POST['property_id'] ?? 0;
         $videoLink = $_POST['video_link'] ?? null;
         $imageAlt = $_POST['image_alt'] ?? null;
         $imageTitle = $_POST['image_title'] ?? null;
@@ -274,7 +452,6 @@ class Image_libraryController extends Controller
                 return;
             }
         }
-    
         // Process floor plan files
         foreach ($floorPlanFiles as $floorPlan) {
             $floorPlanDir = "{$rootPath}/floor_plan/{$year}/{$month}/";
@@ -282,7 +459,7 @@ class Image_libraryController extends Controller
                 $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to create directory: {$floorPlanDir}"]);
                 return;
             }
-    
+            
             $floorPlanName = $floorPlan->name;
             $floorPlanPath = $floorPlanDir . $floorPlanName;
             if ($floorPlan->saveAs($floorPlanPath)) {
@@ -292,6 +469,8 @@ class Image_libraryController extends Controller
                 $adFloorPlan->floor_title = $floorPlanName;
                 $adFloorPlan->floor_file = "{$year}/{$month}/{$floorPlanName}";
                 $floorPlanSaved = $adFloorPlan->save();
+                // print_r($adFloorPlan->getErrors());
+                // exit;
             } else {
                 $this->sendJsonResponse(['status' => 'error', 'message' => "Failed to save floor plan: {$floorPlan->name}"]);
                 return;
