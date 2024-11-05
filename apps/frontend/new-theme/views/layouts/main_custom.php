@@ -82,7 +82,11 @@
     var Contact_title 	= '<?php echo $this->tag->getTag('contact_us','Contact Us');?>';
     
     </script>
-
+  <style>
+    /* .b24-widget-button-wrapper{
+      display: none !important;
+    } */
+  </style>
     <?php
     if(!empty($schema)){ echo $schema; } ?>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DMQGQPSMZC"></script>
@@ -632,6 +636,20 @@ if(!hasError)
 	})
 	
   </script>
+
+<!-- <script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '67252e1be643c722e18f352c' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production'
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script> -->
 </body>
 
 </html>
