@@ -1472,6 +1472,25 @@ class Place_an_ad_no_loginController extends Controller
 
 		$event->params['htmlOptions']->add('wysiwyg_editor_options', $options);
 	}
+
+	public function actionDynamicNestedSubcategories() {
+
+		if ( isset( $_GET[ 'parentId' ] ) ) {
+			$parentId = $_GET[ 'parentId' ];
+			$nestedSubcategories = Subcategory::model()->findAllByAttributes( array( 'parent_id' => $parentId ) );
+			$options = array();
+			foreach ( $nestedSubcategories as $subcategory ) {
+				$options[ $subcategory->sub_category_id ] = $subcategory->sub_category_name;
+			}
+			echo CHtml::tag( 'option', array( 'value' => '' ), CHtml::encode( 'Select Nested Sub Category' ), true );
+			foreach ( $options as $value => $name ) {
+				$selected = ( $_GET[ 'nestedSubcategoryId' ] == $value ) ? 'selected' : '';
+				echo CHtml::tag( 'option', array( 'value' => $value, 'selected' => $selected ), CHtml::encode( $name ), true );
+			}
+		}
+		Yii::app()->end();
+	}
+
 	public function actionSuccess_posted()
 	{
 		// PlaceAnAd

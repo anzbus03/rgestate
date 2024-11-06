@@ -391,8 +391,8 @@ $objWriter->save('php://output');
 
         public function actionDynamicNestedSubcategories() {
 
-            if ( isset( $_POST[ 'parentId' ] ) ) {
-                $parentId = $_POST[ 'parentId' ];
+            if ( isset( $_GET[ 'parentId' ] ) ) {
+                $parentId = $_GET[ 'parentId' ];
                 $nestedSubcategories = Subcategory::model()->findAllByAttributes( array( 'parent_id' => $parentId ) );
                 $options = array();
                 foreach ( $nestedSubcategories as $subcategory ) {
@@ -400,7 +400,7 @@ $objWriter->save('php://output');
                 }
                 echo CHtml::tag( 'option', array( 'value' => '' ), CHtml::encode( 'Select Nested Sub Category' ), true );
                 foreach ( $options as $value => $name ) {
-                    $selected = ( $_POST[ 'nestedSubcategoryId' ] == $value ) ? 'selected' : '';
+                    $selected = ( $_GET[ 'nestedSubcategoryId' ] == $value ) ? 'selected' : '';
                     echo CHtml::tag( 'option', array( 'value' => $value, 'selected' => $selected ), CHtml::encode( $name ), true );
                 }
             }

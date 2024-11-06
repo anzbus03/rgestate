@@ -1217,8 +1217,8 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
                                                 var parentId = $(subCategoryId).val();
                                                 console.log(parentId)
                                                 $.ajax({
-                                                    type: 'POST',
-                                                    url: '<?php echo CController::createUrl("place_property/dynamicNestedSubcategories"); ?>',
+                                                    type: 'GET',
+                                                    url: '<?php echo CController::createUrl("place_an_ad_no_login/dynamicNestedSubcategories"); ?>',
                                                     data: {parentId: parentId},
                                                     success: function(data) {
                                                         $('#BusinessForSale_nested_sub_category').html(data);
@@ -1228,8 +1228,8 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
                                             function populateNestedSubcategoriesOnLoad(subCategoryId) {
                                                 var parentId = subCategoryId;
                                                 $.ajax({
-                                                    type: 'POST',
-                                                    url: '<?php echo CController::createUrl("place_property/dynamicNestedSubcategories"); ?>',
+                                                    type: 'GET',
+                                                    url: '<?php echo CController::createUrl("place_an_ad_no_login/dynamicNestedSubcategories"); ?>',
                                                     data: {parentId: parentId, nestedSubcategoryId: "<?php echo $model->nested_sub_category; ?>"},
                                                     success: function(data) {
                                                         $('#BusinessForSale_nested_sub_category').html(data);
