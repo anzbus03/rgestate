@@ -533,11 +533,17 @@ background:
 										<?php echo $form->textField($model, 'contact_person', $model->getHtmlOptions('contact_person')); ?>
 										<?php echo $form->error($model, 'contact_person');?>
 										</div> 
-									 		<div class="form-group col-lg-3">
+										<div class="form-group col-lg-3">
 										<?php 
 									 	echo $form->labelEx($model, 'mobile_number');?>
 										<?php echo $form->textField($model, 'mobile_number', $model->getHtmlOptions('mobile_number')); ?>
 										<?php echo $form->error($model, 'mobile_number');?>
+										</div> 
+										<div class="form-group col-lg-3">
+										<?php 
+									 	echo $form->labelEx($model, 'salesman_email');?>
+										<?php echo $form->textField($model, 'salesman_email', $model->getHtmlOptions('salesman_email')); ?>
+										<?php echo $form->error($model, 'salesman_email');?>
 										</div> 
 											<div class="form-group col-lg-3">
 										<?php 

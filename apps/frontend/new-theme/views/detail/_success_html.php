@@ -14,8 +14,17 @@
             <div class="clearfix"></div>
         </div>
         <div class="info">
-            <div class="title"><?php echo $this->tag->getTag('thank_you_for_your_submission.','Thank you for your submission.') ;?></div>
-            <div class="text"><?php echo $this->tag->getTag('we_will_get_back_to_you_soon.','We will get back to you soon.') ;?></div>
+        <?php
+            // ContactUs
+            $contactUs = ContactUs::model()->find(array(
+                'order' => 'id DESC', // Replace 'id' with your primary key or timestamp column if different
+            ));
+            $name = $contactUs ? $contactUs->name : null;
+            $email = $contactUs ? $contactUs->email : null;	
+
+        ?>
+        <div class="title"><?php echo $this->tag->getTag('thank_you_for_your_submission.', "Thank you {$name} <span class='email'>{$email}</span> for your submission."); ?></div>
+        <div class="text"><?php echo $this->tag->getTag('we_will_get_back_to_you_soon.','We will get back to you soon.') ;?></div>
             <button class="continue"  data-dismiss="modal"><?php echo  $this->tag->gettag('continue','Continue') ;?></button>
         </div>
     </div>

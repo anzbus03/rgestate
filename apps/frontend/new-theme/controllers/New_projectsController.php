@@ -217,16 +217,29 @@ class New_projectsController   extends Controller
 	}
 	public function actionSuccess_posted()
 	{
+		$lastDevelopment = NewDevelopment::model()->find(array(
+			'order' => 'id DESC', // Replace 'id' with your primary key or timestamp column if different
+		));
+		$name = $lastDevelopment ? $lastDevelopment->contact_person : null;
+		$email = $lastDevelopment ? $lastDevelopment->salesman_email : null;	
 
 		$this->setData(array(
 			'hooks'     =>  Yii::app()->hooks,
-			'pageTitle'     =>   Yii::t('app', '{name}   :: {p}', array('{name}' => 'Successfully submitted yor property ', '{p}' => Yii::app()->options->get('system.common.site_name'))),
-
+			'pageTitle'     => Yii::t('app', '{name} :: {p}', 
+				array(
+					'{name}' 	=> 'Successfully submitted yor property ', 
+					'{p}' 		=> Yii::app()->options->get('system.common.site_name'),
+					'{user}' 	=> $name,
+					'{email}' 	=> $email,
+				)
+			),
 			'pageHeading'       => Yii::t(Yii::app()->controller->id, "List your property"),
 			'pageBreadcrumbs'   => array(
 				Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title}") => $this->createUrl(Yii::app()->controller->id . '/index'),
 				Yii::t('app', 'Create new'),
-			)
+			),
+			'name' => $name,
+			'email' => $email
 		));
 		//   $this->no_header = '1'; $this->secure_header='1';
 		$this->render('//place_an_ad/success', compact('model'));

@@ -434,8 +434,9 @@ if(!hasError)
 										     $('#signUpForm3').find('select').val('');
 										        	var msg_new = success_message;
 												if(data.name != undefined){
+                          
 												    //successAlert('&nbsp; ',msg_new.replace("{name}", data.name)); 
-												     $('#contact-message').html('<div class="alert alert-success" role="alert">'+success_message+'</div>');
+												     $('#contact-message').html('<div class="alert alert-success" role="alert">'+success_message+'<br>Thanks '+data.email+' <span class="email">'+data.name+'</span></div>');
 												}else{
 												     //successAlert('&nbsp; ',msg_new.replace("{name}", ''));
 												      
@@ -478,7 +479,7 @@ if(!hasError)
 										        	var msg_new = success_message;
 												if(data.name != undefined){
 												    //successAlert('&nbsp; ',msg_new.replace("{name}", data.name)); 
-												     $('#contact-message3').html('<div class="alert alert-success" role="alert">'+success_message+'</div>');
+												     $('#contact-message3').html('<div class="alert alert-success" role="alert">'+success_message+'<br>Thanks '+data.email+' <span class="email">'+data.name+'</span></div>');
 												}else{
 												     //successAlert('&nbsp; ',msg_new.replace("{name}", ''));
 												      
@@ -526,7 +527,7 @@ if(!hasError)
 										        	var msg_new = success_message;
 												if(data.name != undefined){
 												    //successAlert('&nbsp; ',msg_new.replace("{name}", data.name)); 
-												     $('#contact-message2').html('<div class="alert alert-success" role="alert">'+success_message+'</div>');
+												     $('#contact-message2').html('<div class="alert alert-success" role="alert">'+success_message+'<br>Thanks '+data.email+' <span class="email">'+data.name+'</span></div>');
 												}else{
 												     //successAlert('&nbsp; ',msg_new.replace("{name}", ''));
 												      

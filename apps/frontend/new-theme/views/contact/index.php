@@ -1113,10 +1113,12 @@ function ajaxSubmitHappenlistmort(form, data, hasError, saveUrl) {
                     $('#signUpForm').find('select').val('');
                     var msg_new = success_message;
                     if (data.name != undefined) {
-                        successAlert('&nbsp; ', msg_new.replace("{name}", data.name));
-
+                        let modifiedMsg = msg_new.replace("{name}", data.name).replace("{email}", data.email);
+                        successAlert('&nbsp; ', modifiedMsg);
                     } else {
-                        successAlert('&nbsp; ', msg_new.replace("{name}", ''));
+                        let modifiedMsg = msg_new.replace("{name}", '').replace("{email}", '');
+                        successAlert('&nbsp; ', modifiedMsg);
+
 
                     }
                     onRecaptchaLoadCallback();

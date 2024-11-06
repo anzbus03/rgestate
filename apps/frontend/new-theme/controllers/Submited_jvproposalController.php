@@ -3,6 +3,9 @@
 
 class Submited_jvproposalController extends Controller
 {
+
+    public $name;
+    public $email;
     public function init()
     {
         parent::init();
@@ -31,10 +34,12 @@ class Submited_jvproposalController extends Controller
             if (!$model->save()) {
                 $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
             } else {
-
-			    // Start CRM Code
+                
+                // Start CRM Code
 			    
 		    	$requestParms = $request->getPost("JvproposalEnquiry");
+                $this->name = $requestParms['name'];
+                $this->email = $requestParms['email'];
 		  //  	echo "<pre>";
 		  //  	print_r($requestParms);
 		  //  	print_r();
@@ -166,20 +171,30 @@ class Submited_jvproposalController extends Controller
 
     public function actionSuccess()
     {
-
-        $this->setData(array(
-            'pageMetaTitle'     => Yii::app()->options->get('system.common.site_name') . ' | ' . Yii::t('articles', 'Contact Us'),
-            'pageBreadcrumbs'   => array()
+        // Fetch the last JvproposalEnquiry entry
+        $lastEnquiry = JvproposalEnquiry::model()->find(array(
+            'order' => 'jv_id DESC', // Replace 'id' with your primary key or timestamp column
         ));
+    
+        // Check if there is a record
+        $name = $lastEnquiry ? $lastEnquiry->name : null;
+        $email = $lastEnquiry ? $lastEnquiry->email : null;
+    
+        // Set data for the view, including name and email
         $this->setData(array(
-            'pageTitle'     => 'Submit Your Requirements',
-            'pageMetaDescription'   => 'Submit Your Requirements',
-            'metaKeywords'   => 'Submit Your Requirements',
+            'pageMetaTitle' => Yii::app()->options->get('system.common.site_name') . ' | ' . Yii::t('articles', 'Contact Us'),
+            'pageBreadcrumbs' => array(),
+            'pageTitle' => 'Submit Your Requirements',
+            'pageMetaDescription' => 'Submit Your Requirements',
+            'metaKeywords' => 'Submit Your Requirements',
+            'name' => $name,     // Pass name to the view
+            'email' => $email,   // Pass email to the view
         ));
-
-        $this->render("success");
+    
+        // Render the success view with data
+        $this->render("success", compact('name', 'email'));
     }
-
+    
     public function actionLoadCities()
     {
         $id = null;

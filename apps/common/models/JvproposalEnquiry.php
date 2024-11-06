@@ -82,12 +82,12 @@ public function validateHiddenInput($attribute,$params)
 			$captcha = json_decode($res);
 			
 		 
-				if ($captcha->success) {
+				// if ($captcha->success) {
 						 
-				 }
-				 else{
-					  $this->addError($attribute,  'Spam suspect. Please try again.' );
-				 }
+				//  }
+				//  else{
+				// 	  $this->addError($attribute,  'Spam suspect. Please try again.' );
+				//  }
 				
  
 		 

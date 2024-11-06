@@ -125,7 +125,7 @@ if ($viewCollection->renderContent) {
 								<?
 							}
 							else { ?>
-							<h3 class="pre-select-cat">Thanks for listing your   business on <?php echo $this->app->options->get('system.common.site_name');?> . <br /> After administrator valiadation , your listing  will active on main website. </h3>
+							<h3 class="pre-select-cat">Thanks <?php echo $name; ?> <span class="email"><?php echo $email; ?></span> for listing your   business on <?php echo $this->app->options->get('system.common.site_name');?> . <br /> After administrator valiadation , your listing  will active on main website. </h3>
 							<?php } ?> 
 							
 							<br /> 

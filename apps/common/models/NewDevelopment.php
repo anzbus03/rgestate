@@ -54,6 +54,7 @@ class NewDevelopment extends PlaceAnAd
             'id' => 'ID',
             'section_id' => 'Section',
             'rent_pad' => 'Rent Paid On ',
+            'salesman_email' => 'Email ',
             'category_id' => 'Category',
             'sub_category_id' => 'Sub Category',
             'ad_title' => 'Project Title',

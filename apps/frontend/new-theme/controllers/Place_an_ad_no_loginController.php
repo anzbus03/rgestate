@@ -1474,6 +1474,12 @@ class Place_an_ad_no_loginController extends Controller
 	}
 	public function actionSuccess_posted()
 	{
+		// PlaceAnAd
+		$propertySuccess = PlaceAnAd::model()->find(array(
+			'order' => 'id DESC', // Replace 'id' with your primary key or timestamp column if different
+		));
+		$name = $propertySuccess ? $propertySuccess->contact_person : null;
+		$email = $propertySuccess ? $propertySuccess->salesman_email : null;	
 
 		$this->setData(array(
 			'hooks' => Yii::app()->hooks,
@@ -1483,13 +1489,20 @@ class Place_an_ad_no_loginController extends Controller
 			'pageBreadcrumbs'   => array(
 				Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title}") => $this->createUrl(Yii::app()->controller->id . '/index'),
 				Yii::t('app', 'Create new'),
-			)
+			),
+			'name' => $name,
+			'email' => $email
 		));
 		// $this->no_header = '1'; $this->secure_header='1';
 		$this->render('//place_an_ad/success', compact('model'));
 	}
 	public function actionsuccess_posted_business()
 	{
+		$businessForSale = BusinessForSale::model()->find(array(
+			'order' => 'id DESC', // Replace 'id' with your primary key or timestamp column if different
+		));
+		$name = $businessForSale ? $businessForSale->contact_person : null;
+		$email = $businessForSale ? $businessForSale->salesman_email : null;	
 
 		$this->setData(array(
 			'hooks' => Yii::app()->hooks,
@@ -1499,7 +1512,9 @@ class Place_an_ad_no_loginController extends Controller
 			'pageBreadcrumbs'   => array(
 				Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title}") => $this->createUrl(Yii::app()->controller->id . '/index'),
 				Yii::t('app', 'Create new'),
-			)
+			),
+			'name' => $name,
+			'email' => $email
 		));
 		//  $this->no_header = '1'; $this->secure_header='1';
 		$this->render('//place_an_ad/success_business', compact('model'));
