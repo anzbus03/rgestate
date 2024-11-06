@@ -3227,15 +3227,13 @@ class Place_propertyController  extends Controller
     
                         // Check if a matching category is found and retrieve its ID
                         $categoryId = $category ? $category->category_id : null;
-                        // print_r();
-                        // exit;
                         $model->section_id = $data[6] == "Sale" ? 1 : 2;
                         $model->listing_type = $categoryId;
                         $model->category_id = $subCategory->category_id ?? null;
                         $model->RefNo = $data[4];
                         $model->ad_title = $data[13];
                         $model->PropertyID = $data[5];
-                        $model->ad_description = (($data[14]));
+                        $model->ad_description = str_replace(["\r\n", "\r", "\n"], "\n", $data[14]);
                         $excelDate = $data[3];
                         $timestamp = ($excelDate - 25569) * 86400; 
                         $model->date_added = date('Y-m-d H:i:s', $timestamp);
