@@ -261,7 +261,7 @@ smartad_title a {
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.youtube.com/@RGEstateUAE" class="rg-bg-blue rg-wh-32 rounded-circle position-relative d-block" target="_blank">
+                            <a href="https://www.youtube.com/@RGEstate" class="rg-bg-blue rg-wh-32 rounded-circle position-relative d-block" target="_blank">
                                 <svg width="16" height="15"
                                     class="rg-fill-white position-absolute top-50 start-50 translate-middle">
                                     <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-youtube"></use>
