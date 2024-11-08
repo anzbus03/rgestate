@@ -20,7 +20,9 @@ class SiteController extends Controller
 	}
 	public function actionSubmit_bot() {
 		if (Yii::app()->request->isPostRequest) {
-
+			Yii::log('Received parameters: ' . CVarDumper::dumpAsString(Yii::app()->request->getQuery('name')), CLogger::LEVEL_INFO);
+			Yii::log('Received email: ' . CVarDumper::dumpAsString(Yii::app()->request->getQuery('email')), CLogger::LEVEL_INFO);
+			
 			// $rawData 	= Yii::app()->request->getRawBody();
 			// $jsonData 	= CJSON::decode($rawData, true);
 
