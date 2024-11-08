@@ -21,7 +21,7 @@ class SiteController extends Controller
 	public function actionSubmit_bot() {
 		$rawData 	= Yii::app()->request->getRawBody();
     	$jsonData 	= CJSON::decode($rawData, true);
-		print_r($jsonData);
+		print_r($rawData);
 		exit;
 		$model 		= new ContactUs();
 		$model->scenario = 'ai_bot';
