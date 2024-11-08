@@ -83,9 +83,9 @@
     
     </script>
   <style>
-    /* .b24-widget-button-wrapper{
+    .b24-widget-button-wrapper{
       display: none !important;
-    } */
+    }
   </style>
     <?php
     if(!empty($schema)){ echo $schema; } ?>
@@ -637,7 +637,7 @@ if(!hasError)
 	
   </script>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
   (function(d, t) {
       var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
       v.onload = function() {
@@ -649,7 +649,7 @@ if(!hasError)
       }
       v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
   })(document, 'script');
-</script> -->
+</script>
 </body>
 
 </html>
