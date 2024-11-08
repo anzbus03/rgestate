@@ -21,16 +21,15 @@ class SiteController extends Controller
 	public function actionSubmit_bot() {
 		if (Yii::app()->request->isPostRequest) {
 
-			$rawData 	= Yii::app()->request->getRawBody();
-			$jsonData 	= CJSON::decode($rawData, true);
+			// $rawData 	= Yii::app()->request->getRawBody();
+			// $jsonData 	= CJSON::decode($rawData, true);
 
 			$model 		= new ContactUs();
 			$model->scenario = 'ai_bot';
-			$name 		= $jsonData['name'];
-			$email		= $jsonData['email'];
-			$phone		= $jsonData['phone'];
-			$message 	= $jsonData['message'];
-
+			$name = Yii::app()->request->getQuery('name');
+			$email = Yii::app()->request->getQuery('email');
+			$phone = Yii::app()->request->getQuery('phone');
+			$message = Yii::app()->request->getQuery('message');
 			// CRM URL to get customer details
 			$createCustomerUrl = 'https://crm.rgestate.com/rest/158/x0g9p2hpse2h48si/crm.contact.add.json';
 
