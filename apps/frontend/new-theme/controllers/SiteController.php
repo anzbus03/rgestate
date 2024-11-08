@@ -18,7 +18,107 @@ class SiteController extends Controller
 		$listContries  = Countries::model()->list_array_country();
 		echo json_encode(array('status' => 'SUCCESS', 'statusCode' => '1', 'errorMessage' => '', 'data' => json_encode($listContries)));
 	}
+	public function actionSubmit_bot() {
+		$rawData 	= Yii::app()->request->getRawBody();
+    	$jsonData 	= CJSON::decode($rawData, true);
 
+		$model 		= new ContactUs();
+		$model->scenario = 'ai_bot';
+		$name 		= $jsonData['name'];
+		$email		= $jsonData['email'];
+		$phone		= $jsonData['phone'];
+		$message 	= $jsonData['message'];
+
+		// CRM URL to get customer details
+		$createCustomerUrl = 'https://crm.rgestate.com/rest/158/x0g9p2hpse2h48si/crm.contact.add.json';
+
+	
+		$crmCustomerData = [
+			'fields' => [
+				'NAME' => $name,
+				'SECOND_NAME' => $name,
+				'TYPE_ID' => 'CLIENT',
+				'SOURCE_ID' => 'SELF',
+				'EMAIL' => [['VALUE' => $email, 'VALUE_TYPE' => 'WORK']],
+				'PHONE' => [['VALUE' => $phone, 'VALUE_TYPE' => 'WORK']],
+			]
+		];
+
+		// Send customer creation request
+		$postCustomerData = http_build_query($crmCustomerData);
+		$contextCustomerOptions = [
+			'http' => [
+				'method' => 'POST',
+				'header' => 'Content-Type: application/x-www-form-urlencoded',
+				'content' => $postCustomerData,
+			]
+		];
+		$contextCreateCustomer = stream_context_create($contextCustomerOptions);
+
+		try {
+			$data = file_get_contents($createCustomerUrl, false, $contextCreateCustomer);
+			$response = json_decode($data, true);
+			$customerId = $response['result'] ?? null; // Get customer ID from response
+			if (!$customerId) {
+				throw new Exception('Failed to create customer in CRM.');
+			}
+		} catch (Exception $e) {
+			echo json_encode(['status' => 'error', 'message' => 'Unable to create customer.']);
+			Yii::app()->end();
+		}
+
+		// CRM URL to create a new lead
+		$crmUrl = 'https://crm.rgestate.com/rest/158/x0g9p2hpse2h48si/crm.lead.add.json';
+
+		$crmData = [
+			'FIELDS' => [
+				'TITLE' => 'RGestate Lead - AI Bot',
+				'CATEGORY_ID' => 16,
+				'LEAD_PHONE' => $phone,
+				'LEAD_LAST_NAME' => $name,
+				'LEAD_NAME' => $name,
+				'LEAD_EMAIL' => $email,
+				'CONTACT_ID' => $customerId,
+				'COMMENTS' => $message,
+				'ASSIGNED_BY_ID' => 22,
+			]
+		];
+
+		// Send lead creation request
+		$postData = http_build_query($crmData);
+		$contextOptions = [
+			'http' => [
+				'method' => 'POST',
+				'header' => 'Content-Type: application/x-www-form-urlencoded',
+				'content' => $postData,
+			]
+		];
+		$context = stream_context_create($contextOptions);
+
+		try {
+			file_get_contents($crmUrl, false, $context);
+		} catch (Exception $e) {
+			echo json_encode(['status' => 'error', 'message' => 'Unable to create lead.']);
+			Yii::app()->end();
+		}
+		$model->attributes = $_POST; 
+		// Set model attributes and save
+		$model->name = $name; // Set other attributes as necessary
+		$model->email = $email;
+		$model->phone = $phone;
+		$model->phone_false = $phone;
+		$model->meassage = $message;
+		$model->ai_bot = 1;
+
+		// Save the model and return the success or error message
+		if ($model->validate() && $model->save()) {
+			echo json_encode(['status' => 'success', 'message' => 'Successfully submitted.']);
+		} else {
+			echo json_encode(['status' => 'error', 'message' => 'Error: ' . CHtml::errorSummary($model)]);
+		}
+
+
+	}
 	public $default_country_slug;
 	public $system_defaultt_country_id;
 	public $banners;
@@ -1953,7 +2053,7 @@ Jq4pd48R
 			// Get form data directly from POST
 			$name = $request->getPost('name');
 			$email = $request->getPost('email');
-			$contact = $request->getPost('contact'); // Use 'contact' as it's defined in AJAX
+			$contact = $request->getPost('contact'); 
 			$message = $request->getPost('message');
 	
 			// Check if required fields are provided

@@ -81,6 +81,7 @@ class LeftSideNavigationWidget extends CWidget
                         array('url' => array('contact_services/index'), 'label' => Yii::t('app', 'Contact Service'), 'active' => strpos($route, 'contact_services') === 0),
                         array('url' => array('enquiry/index'), 'label' => Yii::t('app', 'ALL Enquiries'), 'active' => strpos($route, 'enquiry') === 0),
                         array('url' => array('adv_interest/index'), 'label' => Yii::t('app', 'Advertisement Enquiry'), 'active' => strpos($route, 'adv_interest') === 0),
+                        array('url' => array('contact_us/ai_bot'), 'label' => Yii::t('app', 'BOT Enquiries'), 'active' => strpos($route, 'contact_us') === 0),
                     ),
                 ),
                 'career' => array(

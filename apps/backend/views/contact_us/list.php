@@ -21,7 +21,7 @@ if ($viewCollection->renderContent) { ?>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title">
-                <span class="fa fa-star"></span> <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title." List");?>
+                <span class="fa fa-star"></span> <?php echo $pageHeading;?>
             </h3>
             <div>
                 <input type="text" id="dateRange" class="form-control " style="margin-left: 10px;" />
@@ -55,7 +55,6 @@ if ($viewCollection->renderContent) { ?>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>City</th>
                             <th>Date</th>
                             <th>IP Address</th>
                             <th>Options</th>
@@ -67,7 +66,6 @@ if ($viewCollection->renderContent) { ?>
                                 <td><?php echo CHtml::encode($data->name); ?></td>
                                 <td><?php echo CHtml::encode($data->email); ?></td>
                                 <td><?php echo CHtml::encode($data->phone); ?></td>
-                                <td><?php echo CHtml::encode($data->city); ?></td>
                                 <td><?php echo CHtml::encode($data->date); ?></td>
                                 <td><?php echo CHtml::encode($data->IpInfo); ?></td>
                                 <td>
@@ -91,7 +89,6 @@ if ($viewCollection->renderContent) { ?>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>City</th>
                             <th>Date</th>
                             <th>IP Address</th>
                             <th>Options</th>

@@ -156,7 +156,7 @@ class Image_libraryController extends Controller
     
         $criteria = new CDbCriteria;
         $criteria->compare('t.isTrash', '0');
-    
+        $criteria->order = 't.id DESC';
         if (!empty($searchValue)) {
             $criteria->with = ['ad'];
             $criteria->together = true;
@@ -180,13 +180,19 @@ class Image_libraryController extends Controller
         ];
     
         foreach ($dataProvider->getData() as $item) {
-            $imagePath = Yii::getPathOfAlias('webroot') . '/' . $item->image_name;
-            $imageUrl = Yii::getPathOfAlias('') . '/uploads/files/' . $item->image_name;
-    
+            $domain = Yii::app()->request->hostInfo;  // Get the domain with the base URL
+            $fullImageUrl = $domain . '/uploads/files/' . $item->image_name; // Prepend the domain to the image URL
+            $imageUrl = Yii::getPathOfAlias('') . '/uploads/files/' . $item->image_name; // URL for the image
+
             $response['data'][] = [
                 "<input type='checkbox' class='bulk-item' value='$item->id'>",
                 "<img src='{$imageUrl}' alt='{$item->image_alt}' style='width: 100px; height: 100px;'>",
-                $item->image_name,
+                "<div>
+                    <span>{$fullImageUrl}</span>
+                    <button class='btn btn-primary btn-xs' onclick='copyToClipboard(\"{$fullImageUrl}\")'>Copy</button>
+                </div>",
+                $item->image_alt,
+                $item->image_title,
                 $item->ad->ad_title,
                 $item->status,
                 CHtml::link('<span class="fa fa-trash"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/delete', ['id' => $item->id]), ['class' => 'btn btn-danger btn-xs', 'title' => Yii::t('app', 'Delete'), 'onclick' => 'return confirm("Are you sure you want to delete this item?")']),
@@ -234,13 +240,18 @@ class Image_libraryController extends Controller
 
         // Loop through data and build response array
         foreach ($dataProvider->getData() as $item) {
-            $imagePath = Yii::getPathOfAlias('webroot') . '/' . $item->floor_title;
+            $domain = Yii::app()->request->hostInfo; 
+            $fullImageUrl = $domain . '/uploads/floor_plan/' . $item->floor_file; // Prepend the domain to the image URL
             $imageUrl = Yii::getPathOfAlias('') . '/uploads/floor_plan/' . $item->floor_file; // URL for the image
 
             $response['data'][] = [
                 "<input type='checkbox' class='bulk-item' value='$item->floor_id'>",
                 "<a href='{$imageUrl}' download='{$item->floor_title}' class='btn btn-success btn-xs'>Download Floor Plan</a>",
                 $item->floor_title,
+                "<div>
+                    <span>{$fullImageUrl}</span>
+                    <button class='btn btn-primary btn-xs' onclick='copyToClipboard(\"{$fullImageUrl}\")'>Copy</button>
+                </div>",
                 $item->ad->ad_title,
                 "A",
                 // CHtml::link('<span class="fa fa-pencil"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/update', ['id' => $item->id]), ['class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Update')]) .

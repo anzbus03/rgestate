@@ -40,24 +40,48 @@ class Contact_usController extends Controller
      */
     public function actionIndex()
     {
-         $request = Yii::app()->request;
-         $notify = Yii::app()->notify;
-         $model = new ContactUs('serach');
-       
-         $model->unsetAttributes();
-         $model->attributes = (array)$request->getQuery($model->modelName, array());
-         if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+        $model = new ContactUs('serach');
+    
+        $model->unsetAttributes();
+        $model->attributes = (array)$request->getQuery($model->modelName, array());
+        if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
             $model->startDate = $_GET['startDate'];
             $model->endDate = $_GET['endDate'];
         }
-         $this->setData(array(
+        $model->ai_bot = 0;
+        $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"), 
             'pageHeading'       => Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
             'pageBreadcrumbs'   => array(
                 Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title}") => $this->createUrl(Yii::app()->controller->id.'/index'),
                 Yii::t('app', 'View all')
             )
-         ));
+            ));
+        $this->render('list', compact('model'));
+    }
+    public function actionAi_bot()
+    {
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+        $model = new ContactUs('serach');
+    
+        $model->unsetAttributes();
+        $model->attributes = (array)$request->getQuery($model->modelName, array());
+        if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+            $model->startDate = $_GET['startDate'];
+            $model->endDate = $_GET['endDate'];
+        }
+        $model->ai_bot = 1;
+        $this->setData(array(
+            'pageMetaTitle'     => "Bot Enquiries", 
+            'pageHeading'       => "Bot Enquiries",
+            'pageBreadcrumbs'   => array(
+                Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title}") => $this->createUrl(Yii::app()->controller->id.'/index'),
+                Yii::t('app', 'View all')
+            )
+            ));
         $this->render('list', compact('model'));
     }
     /*

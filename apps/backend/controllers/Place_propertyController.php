@@ -543,15 +543,16 @@ class Place_propertyController  extends Controller
             $responseData = [];
             foreach ($data as $item) {
                 $images = AdImage::model()->findAllByAttributes(['ad_id' => $item->id]);
-                $imageNames = array_map(function($image) {
-                    return $image->image_name;
+                $domain = Yii::app()->request->hostInfo;
+                $imageNames = array_map(function($image) use ($domain){
+                    return $domain . '/uploads/files/' . $image->image_name;
                 }, $images);
                 $imageList = implode(',', $imageNames);
             
                 // Fetch the list of floor plan names associated with the current ad
                 $floorPlans = AdFloorPlan::model()->findAllByAttributes(['ad_id' => $item->id]);
-                $floorPlanNames = array_map(function($floorPlan) {
-                    return $floorPlan->floor_title;
+                $floorPlanNames = array_map(function($floorPlan) use($domain) {
+                    return $domain . '/uploads/floor_plan/' . $floorPlan->floor_title;
                 }, $floorPlans);
                 $floorPlanList = implode(',', $floorPlanNames);
 
@@ -3209,9 +3210,6 @@ class Place_propertyController  extends Controller
                         }else {
                             $newCount++;
                         }
-                        // $model->scenario = isset($adsMap[$data[4]]) ? 'update_content' : 'new_insert';
-                        // print_r($data[26]);
-                        // exit;
                         // Set model attributes using preloaded data
                         $type = isset($typesMap[$data[7]]) ? $typesMap[$data[7]] : null;
                         $subCategory = isset($categoriesMap[$data[8]]) ? $categoriesMap[$data[8]] : null;
@@ -3282,20 +3280,20 @@ class Place_propertyController  extends Controller
                         if (!$model->save()) {
                             throw new Exception('Failed to save model: ' . json_encode($model->getErrors()));
                         }
-                        // $model;
-                        // exit;
                         // Handle image saving separately
                         foreach(explode(",",$data[29]) as $imageName){
                             if (isset($imageName) && !empty($imageName)){
-                                ($this->handleImageSaving($model, $imageName));
+                                $domain = Yii::app()->request->hostInfo; 
+                                $cleanImageName = str_replace($domain.'/uploads/files/', '', $imageName);
+                                ($this->handleImageSaving($model, $cleanImageName));
                             }
-                            // exit;
                         }
                         foreach(explode(",",$data[30]) as $floorName){
                             if (isset($floorName) && !empty($floorName)){
-                                ($this->handleFloorPlanSaving($model, $floorName));
+                                $domain             = Yii::app()->request->hostInfo; 
+                                $cleanFloorPlanName = str_replace($domain.'/uploads/floor_plan/', '', $floorName);
+                                ($this->handleFloorPlanSaving($model, $cleanFloorPlanName));
                             }
-                            // exit;
                         }
                     }
                 }

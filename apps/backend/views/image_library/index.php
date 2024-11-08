@@ -77,6 +77,8 @@ if ($viewCollection->renderContent) { ?>
                         <th><input type="checkbox" id="select-all"></th>
                         <th>Image</th>
                         <th>Image Path</th>
+                        <th>Alt Text</th>
+                        <th>Title</th>
                         <th>Property</th>
                         <th>Status</th>
                         <th>Options</th>
@@ -176,6 +178,15 @@ if ($viewCollection->renderContent) { ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <script>
+    function copyToClipboard(text) {
+        var tempInput = document.createElement('input');
+        document.body.appendChild(tempInput);
+        tempInput.value = text;
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        alert('URL copied to clipboard!');
+    }
     $(document).ready(function (){ 
 
         $('#select-all').on('change', function() {
