@@ -147,21 +147,23 @@ class Image_libraryController extends Controller
     {
         $model = new AdImage('search');
         $model->isTrash = '0';
-
-        // Get the parameters from the DataTables request
+    
         $requestData = $_GET;
-
-        // Set pagination parameters from DataTables
-        $pageSize = isset($requestData['length']) ? intval($requestData['length']) : 10; // Default to 10
+        $searchValue = isset($requestData['search']['value']) ? $requestData['search']['value'] : '';
+    
+        $pageSize = isset($requestData['length']) ? intval($requestData['length']) : 10;
         $offset = isset($requestData['start']) ? intval($requestData['start']) : 0;
-
-        // Set criteria for search and pagination
+    
         $criteria = new CDbCriteria;
-        $criteria->compare('isTrash', '0');
-
-        // Add search functionality here (if needed)
-
-        // Fetch data with pagination
+        $criteria->compare('t.isTrash', '0');
+    
+        if (!empty($searchValue)) {
+            $criteria->with = ['ad'];
+            $criteria->together = true;
+            $criteria->condition = "t.image_name LIKE :search OR t.image_alt LIKE :search OR ad.ad_title LIKE :search";
+            $criteria->params = [':search' => '%' . $searchValue . '%'];
+        }
+    
         $dataProvider = new CActiveDataProvider($model, [
             'criteria' => $criteria,
             'pagination' => [
@@ -169,35 +171,32 @@ class Image_libraryController extends Controller
                 'currentPage' => $offset / $pageSize,
             ],
         ]);
-
-        // Create response structure
+    
         $response = [
             'draw' => intval($requestData['draw']),
-            'recordsTotal' => $dataProvider->totalItemCount,
-            'recordsFiltered' => $dataProvider->totalItemCount, // You can adjust this based on filtering
+            'recordsTotal' => AdImage::model()->count('isTrash=0'),
+            'recordsFiltered' => $dataProvider->totalItemCount,
             'data' => [],
         ];
-
-        // Loop through data and build response array
+    
         foreach ($dataProvider->getData() as $item) {
             $imagePath = Yii::getPathOfAlias('webroot') . '/' . $item->image_name;
-            $imageUrl = Yii::getPathOfAlias('') . '/uploads/files/' . $item->image_name; // URL for the image
-
+            $imageUrl = Yii::getPathOfAlias('') . '/uploads/files/' . $item->image_name;
+    
             $response['data'][] = [
                 "<input type='checkbox' class='bulk-item' value='$item->id'>",
-                "<img src='{$imageUrl}' alt='{$imageUrl}' style='width: 100px; height: 100px;'>",
+                "<img src='{$imageUrl}' alt='{$item->image_alt}' style='width: 100px; height: 100px;'>",
                 $item->image_name,
                 $item->ad->ad_title,
                 $item->status,
-                // CHtml::link('<span class="fa fa-pencil"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/update', ['id' => $item->id]), ['class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Update')]) .
                 CHtml::link('<span class="fa fa-trash"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/delete', ['id' => $item->id]), ['class' => 'btn btn-danger btn-xs', 'title' => Yii::t('app', 'Delete'), 'onclick' => 'return confirm("Are you sure you want to delete this item?")']),
             ];
         }
-
-        // Send response as JSON
+    
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    
     public function actionAjaxDataFloorPlan()
     {
         $model = new AdFloorPlan('search');
