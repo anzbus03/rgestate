@@ -19,8 +19,6 @@ class SiteController extends Controller
 		echo json_encode(array('status' => 'SUCCESS', 'statusCode' => '1', 'errorMessage' => '', 'data' => json_encode($listContries)));
 	}
 	public function actionSubmit_bot() {
-		print_r($_GET['name']);
-		exit;
 		if (Yii::app()->request->isPostRequest) {
 		
 			// $rawData 	= Yii::app()->request->getRawBody();
@@ -28,10 +26,10 @@ class SiteController extends Controller
 
 			$model 		= new ContactUs();
 			$model->scenario = 'ai_bot';
-			$name = Yii::app()->request->getQuery('name');
-			$email = Yii::app()->request->getQuery('email');
-			$phone = Yii::app()->request->getQuery('phone');
-			$message = Yii::app()->request->getQuery('message');
+			$name = $_GET['name'];
+			$email = $_GET['email'];
+			$phone = $_GET['phone'];
+			$message = $_GET['message'];
 			// CRM URL to get customer details
 			$createCustomerUrl = 'https://crm.rgestate.com/rest/158/x0g9p2hpse2h48si/crm.contact.add.json';
 
