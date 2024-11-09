@@ -19,10 +19,10 @@ class SiteController extends Controller
 		echo json_encode(array('status' => 'SUCCESS', 'statusCode' => '1', 'errorMessage' => '', 'data' => json_encode($listContries)));
 	}
 	public function actionSubmit_bot() {
+		print_r($_GET['name']);
+		exit;
 		if (Yii::app()->request->isPostRequest) {
-			Yii::log('Received parameters: ' . CVarDumper::dumpAsString(Yii::app()->request->getQuery('name')), CLogger::LEVEL_INFO);
-			Yii::log('Received email: ' . CVarDumper::dumpAsString(Yii::app()->request->getQuery('email')), CLogger::LEVEL_INFO);
-			
+		
 			// $rawData 	= Yii::app()->request->getRawBody();
 			// $jsonData 	= CJSON::decode($rawData, true);
 
