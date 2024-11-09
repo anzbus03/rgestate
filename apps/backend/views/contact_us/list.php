@@ -66,7 +66,7 @@ if ($viewCollection->renderContent) { ?>
                                 <td><?php echo CHtml::encode($data->name); ?></td>
                                 <td><?php echo CHtml::encode($data->email); ?></td>
                                 <td><?php echo CHtml::encode($data->phone); ?></td>
-                                <td><?php echo CHtml::encode($data->date); ?></td>
+                                <td><?php echo CHtml::encode($data->date_added); ?></td>
                                 <td><?php echo CHtml::encode($data->IpInfo); ?></td>
                                 <td>
                                 <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/view')) { ?>
