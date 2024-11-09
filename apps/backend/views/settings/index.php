@@ -46,7 +46,7 @@ if ($viewCollection->renderContent) {
 		<?php
         $form = $this->beginWidget('CActiveForm',array('htmlOptions' => array('enctype' => 'multipart/form-data'))); ?>
         <?php $this->renderPartial('_'.$view, compact('form'));?>
-        <div class="box box-primary">
+        <div class="card">
             <div class="box-footer">
                 <div class="pull-right">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>

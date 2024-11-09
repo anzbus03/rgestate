@@ -44,7 +44,7 @@ class States extends ActiveRecord
 public function getPrimaryField(){
 		 return 'state_id';
 	 }
-    /**
+    /** 
      * @return array relational rules.
      */
     public function relations()
@@ -54,6 +54,7 @@ public function getPrimaryField(){
         return array(
           'con' => array(self::BELONGS_TO, 'Countries', 'country_id','on'=>"con.isTrash='0'"),
           'hotelCount' => array(self::STAT, 'Hotel','state'),
+		  'users' => array(self::HAS_MANY, 'User', 'state_id'),
         );
     }
   public function behaviors(){

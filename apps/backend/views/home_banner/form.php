@@ -48,10 +48,31 @@ if ($viewCollection->renderContent) {
         'enableAjaxValidation'=>false,
 'htmlOptions'=>array('enctype'=>'multipart/form-data'),
 )); ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+<style>
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .card-header-left {
+        flex: 1;
+    }
+
+    .card-header-right {
+        display: flex;
+        gap: 10px;
+    }
+
+    .card-header-right .btn {
+        margin-left: 5px;
+    }
+</style>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$model->isNewRecord) { ?>
@@ -61,7 +82,7 @@ if ($viewCollection->renderContent) {
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
@@ -75,62 +96,60 @@ if ($viewCollection->renderContent) {
                 )));
                 ?>
               
-               
+               <div class="row">
+                    <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($model, 'f_type');?>
+                        <div class="clearfix"><!-- --></div>
+                        <?php echo $form->dropDownList($model, 'f_type',$model->bannerList(),$model->getHtmlOptions('f_type')); ?>
+                        <?php echo $form->error($model, 'f_type');?>
+                    </div>   
+                   <div class="forImage"   >    
+                       <div class="clearfix"><!-- --></div>
+                       <div class="form-group col-lg-6">
+                           <?php echo $form->labelEx($model, 'image');?><span class="pull-right">Banner  Size: 1948px X663px </span>
+                           <div class="clearfix"><!-- --></div>
+                           <?php echo $form->fileField($model, 'image',$model->getHtmlOptions('image')); ?>
+                           <?php echo $form->error($model, 'image');?>
+                       </div>   
+                      <?php
+                       if(!Yii::app()->request->isPostRequest and !empty($model->image)){ ?> 
+                       <div class="col-sm-2"><img src="<?php echo Yii::app()->apps->getBaseUrl('uploads/files/'. $model->image);?>" style="width:100%;" /></div>
+                       <?php } ?>
+                       <div class="clearfix"><!-- --></div>
+                       <div class="form-group col-lg-6">
+                           <?php echo $form->labelEx($model, 'title');?><span class="pull-right">Banner  Size: 540px ×773px</span>
+                           <div class="clearfix"><!-- --></div>
+                           <?php echo $form->fileField($model, 'title',$model->getHtmlOptions('title')); ?>
+                           <?php echo $form->error($model, 'title');?>
+                       </div>   
+                          <?php
+                       if(!Yii::app()->request->isPostRequest and !empty($model->title)){ ?> 
+                       <div class="col-sm-2"><img src="<?php echo Yii::app()->apps->getBaseUrl('uploads/files/'. $model->title);?>" style="width:100%;" /></div>
+                       <?php } ?>
+                       <div class="clearfix"><!-- --></div>
+                   
+                           <div class="clearfix"><!-- --></div>
+                       <div class="form-group col-lg-6">
+                           <?php echo $form->labelEx($model, 'status');?>
+                           <div class="clearfix"><!-- --></div>
+                           <?php echo $form->dropDownList($model, 'status',$model->statusArray(),$model->getHtmlOptions('status')); ?>
+                           <?php echo $form->error($model, 'status');?>
+                       </div>   
+                         <?php
+                         $model->country_id = empty($model->country_id) ? '66124' : $model->country_id; ?>
+                           <div class="clearfix"><!-- --></div>
+                       <div class="form-group col-lg-6">
+                           <?php echo $form->labelEx($model, 'country_id');?>
+                           <div class="clearfix"><!-- --></div>
+                           <?php echo $form->dropDownList($model, 'country_id',CHtml::listData(Countries::model()->listingCountries(),'country_id','country_name'),$model->getHtmlOptions('country_id',array('empty'=>'Please Select'))); ?>
+                           <?php echo $form->error($model, 'country_id');?>
+                       </div>   
+                         
+                      
+                       <div class="clearfix"><!-- --></div>     
+                   </div>   
+               </div>
       
-				
-                <div class="clearfix"><!-- --></div>
-                		<div class="clearfix"><!-- --></div>
-					<div class="form-group col-lg-6">
-						<?php echo $form->labelEx($model, 'f_type');?>
-						<div class="clearfix"><!-- --></div>
-						<?php echo $form->dropDownList($model, 'f_type',$model->bannerList(),$model->getHtmlOptions('f_type')); ?>
-						<?php echo $form->error($model, 'f_type');?>
-					</div>   
-                <div class="forImage"   >    
-					<div class="clearfix"><!-- --></div>
-					<div class="form-group col-lg-6">
-						<?php echo $form->labelEx($model, 'image');?><span class="pull-right">Banner  Size: 1948px X663px </span>
-						<div class="clearfix"><!-- --></div>
-						<?php echo $form->fileField($model, 'image',$model->getHtmlOptions('image')); ?>
-						<?php echo $form->error($model, 'image');?>
-					</div>   
-				   <?php
-					if(!Yii::app()->request->isPostRequest and !empty($model->image)){ ?> 
-					<div class="col-sm-2"><img src="<?php echo Yii::app()->apps->getBaseUrl('uploads/files/'. $model->image);?>" style="width:100%;" /></div>
-					<?php } ?>
-					<div class="clearfix"><!-- --></div>
-					<div class="form-group col-lg-6">
-						<?php echo $form->labelEx($model, 'title');?><span class="pull-right">Banner  Size: 540px ×773px</span>
-						<div class="clearfix"><!-- --></div>
-						<?php echo $form->fileField($model, 'title',$model->getHtmlOptions('title')); ?>
-						<?php echo $form->error($model, 'title');?>
-					</div>   
-				   	<?php
-					if(!Yii::app()->request->isPostRequest and !empty($model->title)){ ?> 
-					<div class="col-sm-2"><img src="<?php echo Yii::app()->apps->getBaseUrl('uploads/files/'. $model->title);?>" style="width:100%;" /></div>
-					<?php } ?>
-					<div class="clearfix"><!-- --></div>
-				
-						<div class="clearfix"><!-- --></div>
-					<div class="form-group col-lg-6">
-						<?php echo $form->labelEx($model, 'status');?>
-						<div class="clearfix"><!-- --></div>
-						<?php echo $form->dropDownList($model, 'status',$model->statusArray(),$model->getHtmlOptions('status')); ?>
-						<?php echo $form->error($model, 'status');?>
-					</div>   
-				      <?php
-				      $model->country_id = empty($model->country_id) ? '66124' : $model->country_id; ?>
-						<div class="clearfix"><!-- --></div>
-					<div class="form-group col-lg-6">
-						<?php echo $form->labelEx($model, 'country_id');?>
-						<div class="clearfix"><!-- --></div>
-						<?php echo $form->dropDownList($model, 'country_id',CHtml::listData(Countries::model()->listingCountries(),'country_id','country_name'),$model->getHtmlOptions('country_id',array('empty'=>'Please Select'))); ?>
-						<?php echo $form->error($model, 'country_id');?>
-					</div>   
-				      
-				   
-					<div class="clearfix"><!-- --></div>     
-                </div>   
                
                 <div class="clearfix"><!-- --></div>     
                 <?php 
@@ -149,7 +168,7 @@ if ($viewCollection->renderContent) {
             </div>
             <div class="box-footer">
                 <div class="pull-right">
-                    <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
+                    <button type="submit" class="btn btn-primary btn-submit" style="margin: 20px;" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>

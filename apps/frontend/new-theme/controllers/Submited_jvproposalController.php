@@ -94,8 +94,6 @@ class Submited_jvproposalController extends Controller
                         'TITLE' => 'New Lead - JV Proposal Submitted - RGEstate',
                         'ASSIGNED_BY_ID' => 22,
                         'CATEGORY_ID' => 22,
-                        "EMAIL" => [[ "VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK" ]],
-                        "PHONE" => [[ "VALUE" => $requestParms['mobile'], "VALUE_TYPE" => "WORK" ]],
                         'CONTACT_ID' => $customerId,
                         'COMMENTS' => 
                             'Category: '.Category::model()->findByPk($requestParms['jv_business_cat'])->category_name.

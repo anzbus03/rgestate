@@ -117,8 +117,9 @@ return array(
             'urlFormat'      => 'path',
                'showScriptName'=>'false',
             'caseSensitive'  => false,
-            'urlSuffix'      => null, 
-            'rules'          => array(),
+            'urlSuffix'      => false, 
+            'rules'          => array(
+            ),
         ),
          'tags' => array(
             'class' => 'common.components.managers.TagsManager',

@@ -14,15 +14,15 @@
 ?>
 <?php
 /*
-<div class="box box-primary">
-    <div class="box-header">
+<div class="card">
+    <div class="card-header">
         <div class="pull-left">
-            <h3 class="box-title"><span class="glyphicon glyphicon-user"></span> <?php echo Yii::t('servers', 'Customer');?></h3>
+            <h3 class="card-title"><span class="glyphicon glyphicon-user"></span> <?php echo Yii::t('servers', 'Customer');?></h3>
         </div>
         <div class="pull-right"></div>
         <div class="clearfix"><!-- --></div>
     </div>
-    <div class="box-body">
+    <div class="card-body">
         <div class="form-group col-lg-3">
             <?php echo $form->labelEx($server, 'customer_id');?>
             <?php echo $form->hiddenField($server, 'customer_id', $server->getHtmlOptions('customer_id')); ?>

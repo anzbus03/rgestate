@@ -29,7 +29,7 @@
     background: #fff;
 }
 .f-ull-height { height:100%;position:relative;}
-.f-ull-height .blog-img { height:100%; margin-bottom:15px;}
+.f-ull-height .blog-img { height:250px; margin-bottom:15px;}
 .f-ull-height .blog-img img {
     object-fit: cover !important;
     height: 100%;
@@ -373,7 +373,7 @@ padding-left: 8px !important;
 			<?php 
 			foreach ($partners as $partner) {
 			?>
-			<div class="col-sm-2">
+			<div class="col-sm-2" style="border: 1px solid #2222;margin: 10px 10px 10px 0;">
 			    <div class="img-sc">
 			<img class="box partner-logo float--left" src="<?php echo Yii::App()->apps->getBaseUrl('uploads/partners/'.$partner["image"]) ?>">
 			</div>

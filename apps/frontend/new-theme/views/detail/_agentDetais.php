@@ -1,4 +1,4 @@
-			
+<!-- 			
 							<div class="agentSec margin-bottom-10">
 							<div class="pull-left margin-right-10 text-center" style="width:50px;">
 							<img src="<?php echo $model->UserImage;?>" style="  border-radius: 50%;border: 1px solid #d1d1d1;object-fit:contatin;width:100%;height:50px;width:50px;padding: 1px;  " >
@@ -68,4 +68,4 @@
 								<hr />
 							<p class="margin-bottom-0  sal-dec"><?php echo CHtml::link($this->tag->getTag('sale','Sale').'('.(int)$total_rest['sale_total'].')',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-sale','dealer'=>$model->user_slug)),array('class'=>'sale_link'));?> ,    <?php echo CHtml::link($this->tag->getTag('rent','Rent').'('.(int)$total_rest['rent_total'].')',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-rent','dealer'=>$model->user_slug)),array('class'=>'rent_link'));?></p>
 							</div> 
-					
+					 -->

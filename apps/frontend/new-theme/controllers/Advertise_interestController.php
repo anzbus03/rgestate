@@ -205,7 +205,7 @@ class Advertise_interestController extends Controller
 				  Yii::app()->end();
 			  }
 			  else{
-				  echo json_encode(array('status'=>'1','name'=>$model->email , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+				  echo json_encode(array('status'=>'1','name'=>$model->name , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
 				  Yii::app()->end();
 			  }
 		 

@@ -157,14 +157,14 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
                    </div>
                    <div class="col-sm-2">
                      <div class="form-group">
-                 <label for="f_properties"> <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;" class="form-control" id="f_properties"   onchange="setTagThis2(this,'PlaceAnAd_f_properties')" <?php echo !empty($model->f_properties) ? 'checked' : '';?>  >Submitted Properties</label>
+                    <label for="f_properties"> <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;" class="form-control" id="f_properties"   onchange="setTagThis2(this,'PlaceAnAd_f_properties')" <?php echo !empty($model->f_properties) ? 'checked' : '';?>  >Submitted Properties</label>
                    </div>
                    </div>
-                       <div class="col-sm-2">
-                     <div class="form-group">
-                 <label for="submited_by">  Submitted By</label>
-                 <?php echo CHtml::dropDownList( 'submited_by',$model->submited_by,$model->getsubmited_by_array(), array('empty'=>'Please select','class'=>'form-control','onchange'=>'setvalThis(this,"PlaceAnAd_submited_by")')); ?>
-                   </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                            <label for="submited_by">  Submitted By</label>
+                            <?php echo CHtml::dropDownList( 'submited_by',$model->submited_by,$model->getsubmited_by_array(), array('empty'=>'Please select','class'=>'form-control','onchange'=>'setvalThis(this,"PlaceAnAd_submited_by")')); ?>
+                        </div>
                    </div>
             
                 </div>
@@ -192,6 +192,8 @@ $this->widget('zii.widgets.jui.CJuiDatePicker',array(
 
                         // Function to fetch filtered data
                         function fetchFilteredData(startDate, endDate) {
+                            window.location.href = '<?php echo Yii::app()->createUrl($this->route); ?>?startDate=' + startDate + '&endDate=' + endDate;
+
                             $.ajax({
                                 url: '<?php echo Yii::app()->createUrl($this->route); ?>',
                                 type: 'GET',

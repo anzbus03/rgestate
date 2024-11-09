@@ -52,11 +52,11 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm'); 
         ?>    
-        <div class="box box-primary">
-            <div class="box-header">
-                <h3 class="box-title"> <span class="glyphicon glyphicon-text-width"></span> <?php echo $pageHeading;?> </h3>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"> <span class="glyphicon glyphicon-text-width"></span> <?php echo $pageHeading;?> </h3>
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
@@ -70,32 +70,34 @@ if ($viewCollection->renderContent) {
                 )));
                 ?>
                 <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($template, 'name');?>
-                    <?php echo $form->textField($template, 'name', $template->getHtmlOptions('name')); ?>
-                    <?php echo $form->error($template, 'name');?>
-                </div>
-                <div class="form-group col-lg-3">
-                    <?php echo $form->labelEx($template, 'inline_css');?>
-                    <?php echo $form->dropDownList($template, 'inline_css', $template->getInlineCssArray(), $template->getHtmlOptions('inline_css')); ?>
-                    <?php echo $form->error($template, 'inline_css');?>
-                </div>
-                <div class="form-group col-lg-3">
-                    <?php echo $form->labelEx($template, 'minify');?>
-                    <?php echo $form->dropDownList($template, 'minify', $template->getYesNoOptions(), $template->getHtmlOptions('minify')); ?>
-                    <?php echo $form->error($template, 'minify');?>
-                </div>
-                <div class="clearfix"><!-- --></div>
-                 <div class="form-group col-lg-12">
-                    <?php echo $form->labelEx($template, 'subject');?><?php echo $template->getTranslateHtml('subject','ar');?>
-                    <?php echo $form->textField($template, 'subject', $template->getHtmlOptions('subject')); ?>
-                    <?php echo $form->error($template, 'subject');?>
-                </div>
-                <hr />
-                <div class="form-group">
-                    <?php echo $form->labelEx($template, 'content');?><?php echo $template->getTranslateHtml('content','ar',false);?>
-                    <?php echo $form->textArea($template, 'content', $template->getHtmlOptions('content', array('rows' => 15))); ?>
-                    <?php echo $form->error($template, 'content');?>
+                <div class="row">
+
+                    <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($template, 'name');?>
+                        <?php echo $form->textField($template, 'name', $template->getHtmlOptions('name')); ?>
+                        <?php echo $form->error($template, 'name');?>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <?php echo $form->labelEx($template, 'inline_css');?>
+                        <?php echo $form->dropDownList($template, 'inline_css', $template->getInlineCssArray(), $template->getHtmlOptions('inline_css')); ?>
+                        <?php echo $form->error($template, 'inline_css');?>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <?php echo $form->labelEx($template, 'minify');?>
+                        <?php echo $form->dropDownList($template, 'minify', $template->getYesNoOptions(), $template->getHtmlOptions('minify')); ?>
+                        <?php echo $form->error($template, 'minify');?>
+                    </div>
+                    <div class="clearfix"><!-- --></div>
+                     <div class="form-group col-lg-12">
+                        <?php echo $form->labelEx($template, 'subject');?><?php echo $template->getTranslateHtml('subject','ar');?>
+                        <?php echo $form->textField($template, 'subject', $template->getHtmlOptions('subject')); ?>
+                        <?php echo $form->error($template, 'subject');?>
+                    </div>
+                    <div class="form-group">
+                        <?php echo $form->labelEx($template, 'content');?><?php echo $template->getTranslateHtml('content','ar',false);?>
+                        <?php echo $form->textArea($template, 'content', $template->getHtmlOptions('content', array('rows' => 15))); ?>
+                        <?php echo $form->error($template, 'content');?>
+                    </div>
                 </div>
                 <div class="clearfix"><!-- --></div>
                 <?php 

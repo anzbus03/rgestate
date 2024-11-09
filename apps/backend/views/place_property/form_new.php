@@ -1,3 +1,6 @@
+<script
+	src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/global/global.min.js'); ?>"
+	type="text/javascript"></script>
 <div hidden>
 	<svg id="add-button" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
 		<g>
@@ -745,9 +748,9 @@ if ($viewCollection->renderContent) {
 			}
 
 			.amn1 {
-				margin-left: -15px;
+				/* margin-left: -15px;
 
-				margin-right: -15px;
+				margin-right: -15px; */
 			}
 
 			#place_an_ad .amn1 .amn {
@@ -858,6 +861,15 @@ if ($viewCollection->renderContent) {
 					#section_picker.open-second .only-no-sector {
 						display: none;
 					}
+
+					.hide {
+						display: none !important;
+					}
+
+					.hidden {
+						display: none !important;
+						visibility: hidden !important;
+					}
 				</style>
 
 
@@ -866,7 +878,7 @@ if ($viewCollection->renderContent) {
 					<div class="insidecontent  padding-top-0">
 
 						<h4 class="subheading_font row " style="display: block;"><?php echo $this->tag->gettag('choose_a_category', 'Choose a Category'); ?> <?php if (Yii::app()->isAppName('frontend')) { ?> <a href="<?php $refref = Yii::app()->request->urlReferrer;
-																																																					echo  !empty($refref) ? $refref : Yii::app()->createUrl('site/index'); ?>" class="pull-right margin-right-10"><?php echo $this->tag->getTag('back', 'Back'); ?></a> <?php } ?> </h4>
+																																																						echo  !empty($refref) ? $refref : Yii::app()->createUrl('site/index'); ?>" class="pull-right margin-right-10"><?php echo $this->tag->getTag('back', 'Back'); ?></a> <?php } ?> </h4>
 
 						<div class="col-sm-12 picker_class sect_select ">
 
@@ -880,15 +892,19 @@ if ($viewCollection->renderContent) {
 								<?php
 								if (isset($_GET['type']) and !empty($_GET['type'])) {
 									if ($_GET['type'] == 'business') {
-										$section = array('6' => '<span class="img"></span>' . $this->tag->getTag('business_for_sale', 'Business for sale'));
+										$section = array('6' => '<span class="img"></span>' . $this->tag->getTag('business_for_sale', 'Business Opportiunities'));
 									} else {
 										$section = array('1' => '<span class="img"></span>' . $this->tag->getTag('for_sale', 'For Sale'), '2' => '<span class="img"></span>' . $this->tag->getTag('for_rent', 'For Rent'));
 									}
 								} else {
-									$section = array('1' => '<span class="img"></span>' . $this->tag->getTag('for_sale', 'For Sale'), '2' => '<span class="img"></span>' . $this->tag->getTag('for_rent', 'For Rent'), '6' => '<span class="img"></span>' . $this->tag->getTag('business_for_sale', 'Business for sale'));
+									$section = array('1' => '<span class="img"></span>' . $this->tag->getTag('for_sale', 'For Sale'), '2' => '<span class="img"></span>' . $this->tag->getTag('for_rent', 'For Rent'), '6' => '<span class="img"></span>' . $this->tag->getTag('business_for_sale', 'Business Opportiunities'));
 								}
 								echo CHtml::radioButtonList('section_id', $model->section_id, $section, array(
-									'data-url' => Yii::App()->createUrl($this->id . '/select_category3'), 'onclick' => 'load_via_ajax_category(this,"category_id")', 'separator' => '', 'labelOptions' => array('class' => ''), 'template' => '<div class="inputGroup" id="sec_{idInput}">   {input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg><div class="clearfix"><!-- --></div></div>'
+									'data-url' => Yii::App()->createUrl($this->id . '/select_category3'),
+									'onclick' => 'load_via_ajax_category(this,"category_id")',
+									'separator' => '',
+									'labelOptions' => array('class' => ''),
+									'template' => '<div class="inputGroup" id="sec_{idInput}">   {input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg><div class="clearfix"><!-- --></div></div>'
 								));
 								?>
 							</div>
@@ -906,7 +922,10 @@ if ($viewCollection->renderContent) {
 									<?php
 
 									echo CHtml::radioButtonList('w_for', $model->w_for, $model->wanted_for(), array(
-										'onclick' => 'openFields2(this)', 'separator' => '', 'labelOptions' => array('class' => ''), 'template' => '<div class="inputGroup">{input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg><div class="clearfix"><!-- --></div></div>'
+										'onclick' => 'openFields2(this)',
+										'separator' => '',
+										'labelOptions' => array('class' => ''),
+										'template' => '<div class="inputGroup">{input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg><div class="clearfix"><!-- --></div></div>'
 									));
 									?>
 
@@ -930,16 +949,21 @@ if ($viewCollection->renderContent) {
 
 								<?php
 								/*
-				echo CHtml::radioButtonList('listing_type',$model->listing_type,$list_type,array('data-url'=>Yii::App()->createUrl($this->id.'/select_category3'),'onchange'=>'load_via_ajax_category(this,"category_id")' ,'separator'=>'','labelOptions'=>array('class'=>'')
-				,'template'=>'<div class="inputGroup" id="l_type_{idInput}"><span class="img"></span> {input}  <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg>  {label}<div class="clearfix"><!-- --></div></div>'));                                              
-				
-				*/
+									echo CHtml::radioButtonList('listing_type',$model->listing_type,$list_type,array('data-url'=>Yii::App()->createUrl($this->id.'/select_category3'),'onchange'=>'load_via_ajax_category(this,"category_id")' ,'separator'=>'','labelOptions'=>array('class'=>'')
+									,'template'=>'<div class="inputGroup" id="l_type_{idInput}"><span class="img"></span> {input}  <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg>  {label}<div class="clearfix"><!-- --></div></div>'));                                              
+									
+									*/
 								?>
 								<?php
 								$list_typeq =    Category::model()->ListDataForJSON_ID_BySEctionNew($model->section_id);
 
 								echo CHtml::radioButtonList('listing_type', $model->listing_type, $list_typeq, array(
-									'separator' => '', 'onclick' => 'load_via_ajax_main_category(this)', 'data-url' => Yii::App()->createUrl($this->id . '/select_category4'), 'separator' => '', 'labelOptions' => array('class' => ''), 'template' => '<div class="inputGroup">{input}   {label} <span class="img"></span> <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg></div>'
+									'separator' => '',
+									'onclick' => 'load_via_ajax_main_category(this)',
+									'data-url' => Yii::App()->createUrl($this->id . '/select_category4'),
+									'separator' => '',
+									'labelOptions' => array('class' => ''),
+									'template' => '<div class="inputGroup">{input}   {label} <span class="img"></span> <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg></div>'
 								));
 								?>
 
@@ -1017,7 +1041,10 @@ if ($viewCollection->renderContent) {
 								<?php
 
 								echo CHtml::radioButtonList('category_id', $model->category_id, $catlist, array(
-									'separator' => '', 'onclick' => 'validateInputSector()', 'labelOptions' => array('class' => ''), 'template' => '<div class="inputGroup">{input}   {label}</div>'
+									'separator' => '',
+									'onclick' => 'validateInputSector()',
+									'labelOptions' => array('class' => ''),
+									'template' => '<div class="inputGroup">{input}   {label}</div>'
 								));
 								?>
 
@@ -1033,7 +1060,7 @@ if ($viewCollection->renderContent) {
 				<div id="moredetails">
 
 					<h4 class="subheading_font row  full-content" style="display:block;"><?php echo $this->tag->getTag('selected_category', 'Selected Category'); ?> <?php if (Yii::app()->isAppName('frontend')) { ?> <a href="<?php $refref = Yii::app()->request->urlReferrer;
-																																																							echo  !empty($refref) ? $refref : Yii::app()->createUrl('site/index'); ?>" class="pull-right margin-right-10"><?php echo $this->tag->getTag('back', 'Back'); ?></a> <?php } ?></h4>
+																																																								echo  !empty($refref) ? $refref : Yii::app()->createUrl('site/index'); ?>" class="pull-right margin-right-10"><?php echo $this->tag->getTag('back', 'Back'); ?></a> <?php } ?></h4>
 					<div class="_1ybgv full-content" data-aut-id="breadcrumb">
 						<div class="rui-3blDo">
 							<ol class="rui-1CmqM" id="textChanger"></ol>
@@ -1049,7 +1076,7 @@ if ($viewCollection->renderContent) {
 							<?php
 							if ($this->id == 'update_property' and $this->functionality == 'picture') {
 							?>
-								<div class="col-sm-5 text-right">
+								<div class="col-sm-5 text-right" style="text-align: right;">
 									<label for="PlaceAnAd_sub_category_id" class="required">Property</label>
 
 								</div>
@@ -1061,7 +1088,6 @@ if ($viewCollection->renderContent) {
 							}
 							?>
 							<div class="minimize_form full-content">
-
 								<div class="row for-land  form-group">
 									<?php
 									/* $sub_category =  CHtml::listData(Subcategory::model()->ListDataForCategory(121),'sub_category_id','sub_category_name'); */
@@ -1069,7 +1095,7 @@ if ($viewCollection->renderContent) {
 									?>
 									<div class="clearfix"><!-- --></div>
 
-									<div class="col-sm-5 text-right">
+									<div class="col-sm-5 text-right" style="text-align: right;">
 										<label for="PlaceAnAd_sub_category_id" class="required"><?php echo $this->tag->getTag('subcategory', 'Subcategory'); ?> <span class="required">*</span></label>
 
 									</div>
@@ -1079,14 +1105,14 @@ if ($viewCollection->renderContent) {
 										<?php echo $form->error($model, 'sub_category_id'); ?>
 									</div>
 								</div>
-								<div class="row  form-group hide">
+								<div class="row  form-group hide <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>">
 									<?php
 									if (!Yii::app()->request->isPostRequest and   empty($model->client_ref)) {
 										$model->client_ref = date('ymdHis') . '-' . rand(1, 100);
 									}
 									?>
 
-									<div class="col-sm-5 text-right"> <?php echo $form->labelEx($model, 'client_ref'); ?></div>
+									<div class="col-sm-5 text-right" style="text-align: right;"> <?php echo $form->labelEx($model, 'client_ref'); ?></div>
 									<div class="col-sm-7">
 										<div class=" ">
 
@@ -1099,15 +1125,14 @@ if ($viewCollection->renderContent) {
 								</div>
 								<div class="insidecontent full-content">
 									<div class="clearfix"><!-- --></div>
-									<?php $this->renderPartial('root.apps.backend.views.place_property._ad_location', compact('form')); ?>
-
+									<?php $this->renderPartial('root.apps.frontend.new-theme.views.place_property._ad_location', compact('form')); ?>
 									<div class="clearfix"><!-- --></div>
 
 								</div>
 
-								<div class="row  form-group  ">
+								<div class="row  form-group  <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>">
 
-									<div class="col-sm-5 text-right">
+									<div class="col-sm-5 text-right" style="text-align: right;">
 
 										<?php echo $form->labelEx($model, 'RefNo'); ?>
 
@@ -1117,11 +1142,11 @@ if ($viewCollection->renderContent) {
 										<?php echo $form->textField($model, 'RefNo',   $mer); ?>
 										<?php echo $form->error($model, 'RefNo'); ?>
 									</div>
-									
-								</div>
-								<div class="row  form-group  ">
 
-									<div class="col-sm-5 text-right">
+								</div>
+								<div class="row  form-group <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?> ">
+
+									<div class="col-sm-5 text-right" style="text-align: right;">
 
 										<?php echo $form->labelEx($model, 'Permit Number'); ?>
 
@@ -1134,16 +1159,16 @@ if ($viewCollection->renderContent) {
 								</div>
 								<div class="clearfix"><!-- --></div>
 
-								<div class="row">
+								<div class="row form-group">
 
-									<div class="col-sm-12  " <?php if (Yii::app()->isAppName('backend')) { ?> style="padding-left:0px;" <?php } ?>> <?php echo $form->labelEx($model, 'ad_title'); ?>
+									<div class="col-sm-12"> <?php echo $form->labelEx($model, 'ad_title'); ?>
 										<?php
 										if (Yii::App()->isAppName('backend')  and !$model->isNewRecord) {
 											echo $model->getTranslateHtml('ad_title');
 										}
 										?>
 									</div>
-									<div class="col-sm-12" <?php if (Yii::app()->isAppName('backend')) { ?> style="padding-left:0px;" <?php } ?>>
+									<div class="col-sm-12">
 										<style>
 											html #PlaceAnAd_ad_title::placeholder {
 												color: #b6b6b6 !important;
@@ -1181,10 +1206,8 @@ if ($viewCollection->renderContent) {
 											echo $model->getTranslateHtml('ad_description');
 										}
 										?>
-										<?php echo $form->textArea($model, 'ad_description', array_replace($model->getHtmlOptions('ad_description'), array("rows" => "5", 'dir' => 'auto', 'placeholder' => $this->tag->getTag('mention_the_key_feature_of_you', 'Mention the key feature of your property (short description of your property)'), 'style' => 'resize: vertical;'))); ?>
-										<div class="text-warning small hide pull-left">
-											<?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::DESC_MIN, '{max}' => $model::DESC_MAX)); ?>
-										</div>
+										<?php echo $form->textArea($model, 'ad_description', array_replace($model->getHtmlOptions('ad_description'), array("rows" => "5", 'dir' => 'auto', 'placeholder' => $this->tag->getTag('mention_the_key_feature_of_you', 'Mention the key feature of your property (short description of your property)')))); ?>
+										<div class="text-warning small hide pull-left"><?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::DESC_MIN, '{max}' => $model::DESC_MAX));; ?></div>
 										<div class="pull-right text-warning" style="font-size: 12px;"><span id="inputcounter2"></span></div>
 										<div class="clearfix"></div>
 										<?php echo $form->error($model, 'ad_description'); ?>
@@ -1193,13 +1216,12 @@ if ($viewCollection->renderContent) {
 
 
 
-
-								<div class="row  form-group">
+								<div class="row  form-group <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>">
 									<?php
 
 									if ($model->checkFieldsShow2('builtup_area')) { ?>
 
-										<div class="col-sm-5 text-right">
+										<div class="col-sm-5 text-right" style="text-align: right;">
 											<?php echo $form->labelEx($model, 'builtup_area'); ?>
 										</div>
 										<div class="col-sm-7">
@@ -1223,12 +1245,12 @@ if ($viewCollection->renderContent) {
 								<div class="clearfix"><!-- --></div>
 								<div class="clearfix"><!-- --></div>
 
-								<div class="row  form-group" id="h_in">
+								<div class="row  form-group <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_in">
 									<?php
 
 									if ($model->checkFieldsShow2('interior_size')) { ?>
 
-										<div class="col-sm-5 text-right">
+										<div class="col-sm-5 text-right" style="text-align: right;">
 											<?php echo $form->labelEx($model, 'interior_size'); ?>
 										</div>
 										<div class="col-sm-7">
@@ -1250,11 +1272,10 @@ if ($viewCollection->renderContent) {
 									<?php } ?>
 								</div>
 								<div class="clearfix"><!-- --></div>
-
-								<div class="row  form-group bedroomsclass" id="h_bd">
+								<div class="row  form-group bedroomsclass <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_bd">
 									<?php
 									if ($model->checkFieldsShow2('bedrooms')) { ?>
-										<div class="col-sm-5 text-right">
+										<div class="col-sm-5 text-right" style="text-align: right;">
 
 											<?php echo $form->labelEx($model, 'bedrooms'); ?>
 
@@ -1267,10 +1288,10 @@ if ($viewCollection->renderContent) {
 									<?php } ?>
 								</div>
 								<div class="clearfix"><!-- --></div>
-								<div class="row  form-group bathroomsclass" id="h_bth">
+								<div class="row  form-group bathroomsclass <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_bth">
 									<?php
 									if ($model->checkFieldsShow2('bathrooms')) { ?>
-										<div class="col-sm-5 text-right">
+										<div class="col-sm-5 text-right" style="text-align: right;">
 											<?php echo $form->labelEx($model, 'bathrooms'); ?>
 										</div>
 										<div class="col-sm-7 ">
@@ -1297,7 +1318,7 @@ if ($viewCollection->renderContent) {
 								</Style>
 								<?php /* 	
 							   		<div class="row  form-group rent_paid"  id="h_selling_price">
-<div class="col-sm-5 text-right">
+<div class="col-sm-5 text-right" style="text-align: right;">
 <?php echo $form->labelEx($model, 'selling_price');?> 
 </div>
 <div class="col-sm-7 ">
@@ -1309,8 +1330,8 @@ if ($viewCollection->renderContent) {
 */
 								?>
 								<div class="clearfix"><!-- --></div>
-								<div class="row  form-group" id="h_l_no">
-									<div class="col-sm-5 text-right">
+								<div class="row  form-group <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_l_no">
+									<div class="col-sm-5 text-right" style="text-align: right;">
 										<?php echo $form->labelEx($model, 'l_no'); ?>
 									</div>
 									<div class="col-sm-7 ">
@@ -1320,8 +1341,8 @@ if ($viewCollection->renderContent) {
 									</div>
 								</div>
 
-								<div class="row  form-group" id="h_plan_no">
-									<div class="col-sm-5 text-right">
+								<div class="row  form-group <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_plan_no">
+									<div class="col-sm-5 text-right" style="text-align: right;">
 										<?php echo $form->labelEx($model, 'plan_no'); ?>
 									</div>
 									<div class="col-sm-7 ">
@@ -1331,8 +1352,8 @@ if ($viewCollection->renderContent) {
 									</div>
 								</div>
 
-								<div class="row  form-group" id="h_no_of_u">
-									<div class="col-sm-5 text-right">
+								<div class="row  form-group <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_no_of_u">
+									<div class="col-sm-5 text-right" style="text-align: right;">
 										<?php echo $form->labelEx($model, 'no_of_u'); ?>
 									</div>
 									<div class="col-sm-7 ">
@@ -1341,8 +1362,8 @@ if ($viewCollection->renderContent) {
 										<?php echo $form->error($model, 'no_of_u'); ?>
 									</div>
 								</div>
-								<div class="row  form-group" id="h_floor_no">
-									<div class="col-sm-5 text-right">
+								<div class="row  form-group <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_floor_no">
+									<div class="col-sm-5 text-right" style="text-align: right;">
 										<?php echo $form->labelEx($model, 'floor_no'); ?>
 									</div>
 									<div class="col-sm-7 ">
@@ -1352,8 +1373,8 @@ if ($viewCollection->renderContent) {
 									</div>
 								</div>
 
-								<div class="row  form-group" id="h_unit_no">
-									<div class="col-sm-5 text-right">
+								<div class="row  form-group <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_unit_no">
+									<div class="col-sm-5 text-right" style="text-align: right;">
 										<?php echo $form->labelEx($model, 'unit_no'); ?>
 									</div>
 									<div class="col-sm-7 ">
@@ -1440,8 +1461,8 @@ if ($viewCollection->renderContent) {
 								?>
 								<div class="clearfix"></div>
 
-								<div class="row  form-group is_morclass" id="h_disputes">
-									<div class="col-sm-5 text-right">
+								<div class="row  form-group is_morclass <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_disputes">
+									<div class="col-sm-5 text-right" style="text-align: right;">
 										<?php echo $form->labelEx($model, 'furnished'); ?>
 									</div>
 									<div class="col-sm-7">
@@ -1453,11 +1474,11 @@ if ($viewCollection->renderContent) {
 
 
 								<div class="clearfix"></div>
-								<div class="row  form-group" id="h_expiry_date">
+								<div class="row  form-group <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_expiry_date">
 
 
 
-									<div class="col-sm-5 text-right">
+									<div class="col-sm-5 text-right" style="text-align: right;">
 										<?php echo $form->labelEx($model, 'expiry_date'); ?>
 									</div>
 									<div class="col-sm-7">
@@ -1490,8 +1511,38 @@ if ($viewCollection->renderContent) {
 									<h4 class="subheading_font row "><?php echo $this->tag->getTag('features_/_amenities', 'Features / Amenities'); ?></h4>
 									<div class="clearfix"><!-- --></div>
 
-									<div class="amn1">
-										<style>
+									<div class="amn1 row">
+										<div class="row">
+
+											<div class="form-group col-lg-12">
+												<div style="width:100%;height:15px;"></div>
+												<?php echo $form->labelEx($model, 'amenities'); ?>
+												<?php
+												if (Yii::App()->isAppName('backend') and !$model->isNewRecord) {
+													echo $model->getTranslateHtml('amenities');
+												}
+												?>
+												<?php echo $form->textArea($model, 'amenities', array_replace($model->getHtmlOptions('amenities'), array(
+													"rows" => "5",
+													'dir' => 'auto',
+													'placeholder' => Yii::t('app', 'Mention the key features of your property (short description of your property)')
+												))); ?>
+												<div class="text-warning small hide pull-left">
+													<?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array(
+														'{s}' => '<span dir="ltr" style="white-space:nowrap;">', 
+														'{e}' => '</span>', 
+														'{min}' => $model::DESC_MIN, 
+														'{max}' => $model::DESC_MAX
+													)); ?>
+												</div>
+												<div class="pull-right text-warning" style="font-size: 12px;">
+													<span id="inputcounter2"></span>
+												</div>
+												<div class="clearfix"></div>
+												<?php echo $form->error($model, 'amenities'); ?>
+											</div>
+										</div>
+										<!-- <style>
 											.amlabel .form-check {
 												width: 50% !important;
 												float: left;
@@ -1500,54 +1551,54 @@ if ($viewCollection->renderContent) {
 											.amlabel .form-check:nth-child(2n+1) {
 												clear: both;
 											}
-										</style>
-										<div class="amn">
+										</style> -->
+										<!-- <div class="amn">
 											<?php
-											$categoris =   CHtml::listData(Master::model()->listData(2), 'master_id', 'master_name');
-											//print_r($model->amenities) ;exit; 
+											// $categoris =   CHtml::listData(Master::model()->listData(2), 'master_id', 'master_name');
+											// //print_r($model->amenities) ;exit; 
 
-											foreach ($categoris as $k => $v) {
-												//$amenities_array=	 CHtml::listData(Amenities::model()->findAllCategories($k),'amenities_id','amenities_name');
-												$amenities_array =	 Amenities::model()->findAllCategories($k);
+											// foreach ($categoris as $k => $v) {
+											// 	//$amenities_array=	 CHtml::listData(Amenities::model()->findAllCategories($k),'amenities_id','amenities_name');
+											// 	$amenities_array =	 Amenities::model()->findAllCategories($k);
 
-												//echo $k.''. print_r($amenities_array); echo '<br />';echo '<br />';echo '<br />';echo '<br />';
-												if (!empty($amenities_array)) {
-													echo '<div class="col-sm-12 amlabel amn-' . $k . '" style="">';
-													echo '<div class="parent-h-div">';
-													echo '<a href="javascript:void(0)" class="cls-closebtn"  onclick="updateOpenClose(this)"><svg viewBox="0 0 70.098 53.605" ><use xlink:href="#cls-close"></use></svg></a>';
-													echo '<h4 class="spl-headd margin-top-5  margin-bottom-5" onclick="updateOpen(this)">' . $v . '<svg viewBox="0 0 70.098 53.605" class="button_icon-style5"><use xlink:href="#add-button"></use></svg></h4><div class="clearfix"></div>';
-													foreach ($amenities_array as $k => $v) {
+											// 	//echo $k.''. print_r($amenities_array); echo '<br />';echo '<br />';echo '<br />';echo '<br />';
+											// 	if (!empty($amenities_array)) {
+											// 		echo '<div class="col-sm-12 amlabel amn-' . $k . '" style="">';
+											// 		echo '<div class="parent-h-div">';
+											// 		echo '<a href="javascript:void(0)" class="cls-closebtn"  onclick="updateOpenClose(this)"><svg viewBox="0 0 70.098 53.605" ><use xlink:href="#cls-close"></use></svg></a>';
+											// 		echo '<h4 class="spl-headd margin-top-5  margin-bottom-5" onclick="updateOpen(this)">' . $v . '<svg viewBox="0 0 70.098 53.605" class="button_icon-style5"><use xlink:href="#add-button"></use></svg></h4><div class="clearfix"></div>';
+											// 		foreach ($amenities_array as $k => $v) {
 
-														// echo '<div class="form-check form-check-flat"  id="amnitm_'.$k.'"><label class="form-check-label"><input class="amnit" value="'.$k.'" id="amenities_'.$k.'" '; echo  in_array($k,(array) $model->amenities) ? 'checked' : '';  echo ' type="checkbox" name="amenities[]" onclick="expandthis(this)" >  '.$v.' <i class="input-helper"></i></label></div>';
+											// 			// echo '<div class="form-check form-check-flat"  id="amnitm_'.$k.'"><label class="form-check-label"><input class="amnit" value="'.$k.'" id="amenities_'.$k.'" '; echo  in_array($k,(array) $model->amenities) ? 'checked' : '';  echo ' type="checkbox" name="amenities[]" onclick="expandthis(this)" >  '.$v.' <i class="input-helper"></i></label></div>';
 
-														if ($v->f_type == '0') {
-															echo '<div class="form-check form-check-flat"  id="amnitm_' . $v->amenities_id . '"><label class="form-check-label"><input class="amnit" value="' . $v->amenities_id . '" id="amenities_' . $v->amenities_id . '" ';
-															echo  in_array($v->amenities_id, (array) $model->amenities) ? 'checked' : '';
-															echo ' type="checkbox" name="amenities[' . $v->amenities_id . ']" onclick="expandthis(this)" >  ' . $v->amenities_name . ' <i class="input-helper"></i></label></div>';
-														} else if ($v->f_type == '1') {
-															echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::dropDownList('amenities[' . $v->amenities_id . '][inp_val]', @$model->amenities[$v->amenities_id], array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8+'), array('empty' => '0', 'class' => 'input-text  form-control')) . '</div></div>';
-														} else {
-															$vals =   isset($model->amenities[$v->amenities_id]['inp_val']) ?  $model->amenities[$v->amenities_id]['inp_val'] :  @$model->amenities[$v->amenities_id];
-															$on_input = ($v->i_o == '1') ? "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" : '';
-															echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::textField('amenities[' . $v->amenities_id . '][inp_val]', $vals, array('class' => 'input-text cmv  form-control', 'max-length' => '50', 'oninput' => $on_input)) . '</div></div>';
-														}
-													}
+											// 			if ($v->f_type == '0') {
+											// 				echo '<div class="form-check form-check-flat"  id="amnitm_' . $v->amenities_id . '"><label class="form-check-label"><input class="amnit" value="' . $v->amenities_id . '" id="amenities_' . $v->amenities_id . '" ';
+											// 				echo  in_array($v->amenities_id, (array) $model->amenities) ? 'checked' : '';
+											// 				echo ' type="checkbox" name="amenities[' . $v->amenities_id . ']" onclick="expandthis(this)" >  ' . $v->amenities_name . ' <i class="input-helper"></i></label></div>';
+											// 			} else if ($v->f_type == '1') {
+											// 				echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::dropDownList('amenities[' . $v->amenities_id . '][inp_val]', @$model->amenities[$v->amenities_id], array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8+'), array('empty' => '0', 'class' => 'input-text  form-control')) . '</div></div>';
+											// 			} else {
+											// 				$vals =   isset($model->amenities[$v->amenities_id]['inp_val']) ?  $model->amenities[$v->amenities_id]['inp_val'] :  @$model->amenities[$v->amenities_id];
+											// 				$on_input = ($v->i_o == '1') ? "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" : '';
+											// 				echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::textField('amenities[' . $v->amenities_id . '][inp_val]', $vals, array('class' => 'input-text cmv  form-control', 'max-length' => '50', 'oninput' => $on_input)) . '</div></div>';
+											// 			}
+											// 		}
 
-													echo '</div>';
+											// 		echo '</div>';
 
-													echo '</div>';
-												}
-											}
+											// 		echo '</div>';
+											// 	}
+											// }
 
 
 
 											//	echo CHtml::checkBoxList('amenities',$model->amenities ,$amenities_array,array('separator'=>'','labelOptions'=>array('class'=>''),'template'=>'<div class="form-check form-check-flat"><label class="form-check-label">{input}  {labelTitle} <i class="input-helper"></i></label></div>'));                                              
 											?>
-										</div>
-										<div class="clearfix"></div>
+										</div> -->
+										<!-- <div class="clearfix"></div>
 										<div class="expandDiv hide" onclick="toggleClassExpand()"></div>
 										<div class="clearfix"></div>
-										<?php echo $form->error($model, 'amenities'); ?>
+										<?php //echo $form->error($model, 'amenities'); ?> -->
 									</div>
 									<div class="clearfix"><!-- --></div>
 								</div>
@@ -1760,7 +1811,6 @@ if ($viewCollection->renderContent) {
 									<h3 class="subHeadh2"> Contact Details</h3>
 									<div class="clearfix"></div>
 									<div class="row">
-
 										<div class="clearfix"></div>
 										<div class="form-group col-lg-6">
 											<?php
@@ -1806,7 +1856,7 @@ if ($viewCollection->renderContent) {
 												<?php echo $form->labelEx($model, 'user_id'); ?>
 												<div></div>
 
-												<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(ListingUsers::model()->findAllByPk($model->user_id), 'user_id', 'fullName'), $model->getHtmlOptions('user_id')); ?>
+												<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(User::model()->findAll(), 'user_id', 'fullName'), $model->getHtmlOptions('user_id')); ?>
 												<?php echo $form->error($model, 'user_id'); ?>
 											</div>
 										<?php } else {
@@ -1862,7 +1912,7 @@ if ($viewCollection->renderContent) {
 					</div>
 				</div>
 			</div>
-			<div class="box-footer  " style="border:0px;padding-top:0px; ">
+			<div class="box-footer" style="border:0px;padding-top:0px; background:none;">
 				<div class="pull-right">
 					<?php
 					if ($this->action->id == 'preview') {
@@ -2022,12 +2072,12 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
 	.amn-104,
 	.for-land {
-		display: none;
+		display: flex;
 	}
 
 	.land-prop .amn-104,
 	.land-prop .for-land {
-		display: block;
+		display: flex;
 	}
 
 	.land-prop .amn-99 {

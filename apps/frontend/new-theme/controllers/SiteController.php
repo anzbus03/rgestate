@@ -18,7 +18,107 @@ class SiteController extends Controller
 		$listContries  = Countries::model()->list_array_country();
 		echo json_encode(array('status' => 'SUCCESS', 'statusCode' => '1', 'errorMessage' => '', 'data' => json_encode($listContries)));
 	}
+	public function actionSubmit_bot() {
+	
+		// $rawData 	= Yii::app()->request->getRawBody();
+		// $jsonData 	= CJSON::decode($rawData, true);
 
+		$model 		= new ContactUs();
+		$model->scenario = 'ai_bot';
+		$name = $_GET['name'];
+		$email = $_GET['email'];
+		$phone = $_GET['phone'];
+		$message = $_GET['message'];
+		// CRM URL to get customer details
+		$createCustomerUrl = 'https://crm.rgestate.com/rest/158/x0g9p2hpse2h48si/crm.contact.add.json';
+
+	
+		$crmCustomerData = [
+			'fields' => [
+				'NAME' => $name,
+				'SECOND_NAME' => $name,
+				'TYPE_ID' => 'CLIENT',
+				'SOURCE_ID' => 'SELF',
+				'EMAIL' => [['VALUE' => $email, 'VALUE_TYPE' => 'WORK']],
+				'PHONE' => [['VALUE' => $phone, 'VALUE_TYPE' => 'WORK']],
+			]
+		];
+
+		// Send customer creation request
+		$postCustomerData = http_build_query($crmCustomerData);
+		$contextCustomerOptions = [
+			'http' => [
+				'method' => 'POST',
+				'header' => 'Content-Type: application/x-www-form-urlencoded',
+				'content' => $postCustomerData,
+			]
+		];
+		$contextCreateCustomer = stream_context_create($contextCustomerOptions);
+
+		try {
+			$data = file_get_contents($createCustomerUrl, false, $contextCreateCustomer);
+			$response = json_decode($data, true);
+			$customerId = $response['result'] ?? null; // Get customer ID from response
+			if (!$customerId) {
+				throw new Exception('Failed to create customer in CRM.');
+			}
+		} catch (Exception $e) {
+			echo json_encode(['status' => 'error', 'message' => 'Unable to create customer.']);
+			Yii::app()->end();
+		}
+
+		// CRM URL to create a new lead
+		$crmUrl = 'https://crm.rgestate.com/rest/158/x0g9p2hpse2h48si/crm.lead.add.json';
+
+		$crmData = [
+			'FIELDS' => [
+				'TITLE' => 'RGestate Lead - AI Bot',
+				'CATEGORY_ID' => 16,
+				'LEAD_PHONE' => $phone,
+				'LEAD_LAST_NAME' => $name,
+				'LEAD_NAME' => $name,
+				'LEAD_EMAIL' => $email,
+				'CONTACT_ID' => $customerId,
+				'COMMENTS' => $message,
+				'ASSIGNED_BY_ID' => 22,
+			]
+		];
+
+		// Send lead creation request
+		$postData = http_build_query($crmData);
+		$contextOptions = [
+			'http' => [
+				'method' => 'POST',
+				'header' => 'Content-Type: application/x-www-form-urlencoded',
+				'content' => $postData,
+			]
+		];
+		$context = stream_context_create($contextOptions);
+
+		try {
+			file_get_contents($crmUrl, false, $context);
+		} catch (Exception $e) {
+			echo json_encode(['status' => 'error', 'message' => 'Unable to create lead.']);
+			Yii::app()->end();
+		}
+		$model->attributes = $_POST; 
+		// Set model attributes and save
+		$model->name = $name; // Set other attributes as necessary
+		$model->email = $email;
+		$model->phone = $phone;
+		$model->phone_false = $phone;
+		$model->meassage = $message;
+		$model->ai_bot = 1;
+
+		// Save the model and return the success or error message
+		if ($model->validate() && $model->save()) {
+			echo json_encode(['status' => 'success', 'message' => 'Successfully submitted.']);
+		} else {
+			echo json_encode(['status' => 'error', 'message' => 'Error: ' . CHtml::errorSummary($model)]);
+		}
+
+		
+	}
 	public $default_country_slug;
 	public $system_defaultt_country_id;
 	public $banners;
@@ -130,11 +230,9 @@ class SiteController extends Controller
 		$model = new ContactPopup;
 		$notify = Yii::app()->notify;
 		if (isset($_POST['ajax'])) {
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
+		echo CActiveForm::validate($model);
+		Yii::app()->end();
 		}
-		print_r(5);
-		exit;
         if (Yii::app()->request->isPostRequest && ($attributes = (array)Yii::app()->request->getPost($model->modelName, array()))) {
 		echo $model->name;
 		$model->attributes = $attributes;
@@ -227,7 +325,7 @@ class SiteController extends Controller
 		$criteriaFeatured->condition = "t.featured = 'Y' AND t.status = :status AND t.isTrash = :isTrash";
 		$criteriaFeatured->params[':status'] = 'A';
 		$criteriaFeatured->params[':isTrash'] = '0';
-		$criteriaFeatured->order = 't.featured_date DESC';
+		$criteriaFeatured->order = 't.date_added DESC';
 		$criteriaFeatured->limit = 10;
 		$featuredListings = $model->findAll($criteriaFeatured);
 		   // Add featured listings to $featured array
@@ -247,7 +345,7 @@ class SiteController extends Controller
             // $criteria->params[':featured'] = 'Y';
             $criteria->params[':status'] = 'A';
             $criteria->params[':isTrash'] = '0';
-            $criteria->order = 't.last_updated DESC';
+            $criteria->order = 't.date_added DESC';
             
 			$cookieName = 'USERFAV'.COUNTRY_ID;
 			if((isset(Yii::app()->request->cookies[$cookieName])   )){
@@ -1637,7 +1735,7 @@ Jq4pd48R
 
 
 		$adModel = new PlaceAnAdNew();
-
+		
 
 		$htm = '';
 		/*
@@ -1785,14 +1883,13 @@ Jq4pd48R
 			}
 		}
 	}
-
+	public function actionSitemap()
+	{
+		return $this->renderPartial('root.apps.frontend.new-theme.views.sitemap');
+	}
+	
 	public function actionGenerate_sitemap()
 	{
-
-
-
-
-
 		$time_format = date('Y-m-d');
 		$path = ASKAAN_PATH;
 		$path2  = ASKAAN_PATH_CONTSTANT;
@@ -1947,6 +2044,122 @@ Jq4pd48R
 		file_put_contents($path_file . "/{$img}", $html);
 		echo 'updated XML';
 	}
+	public function actionSubmit() {
+		$request = Yii::app()->request;
+		$model = new ContactUs();
+	
+		// Check if it's a POST request
+		if ($request->isPostRequest) {
+			// Get form data directly from POST
+			$name = $request->getPost('name');
+			$email = $request->getPost('email');
+			$contact = $request->getPost('contact'); 
+			$message = $request->getPost('message');
+	
+			// Check if required fields are provided
+			if (empty($name) || empty($email) || empty($contact) || empty($message)) {
+				echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
+				Yii::app()->end();
+			}
+	
+			// CRM URL to get customer details
+			$createCustomerUrl = 'https://crm.rgestate.com/rest/158/x0g9p2hpse2h48si/crm.contact.add.json';
+	
+			// Prepare customer data
+			$nameParts = explode(' ', $name);
+			$firstName = $nameParts[0] ?? null;
+			$lastName = isset($nameParts[1]) ? implode(' ', array_slice($nameParts, 1)) : null; // Handle last name correctly
+	
+			$crmCustomerData = [
+				'fields' => [
+					'NAME' => $firstName,
+					'SECOND_NAME' => $lastName,
+					'TYPE_ID' => 'CLIENT',
+					'SOURCE_ID' => 'SELF',
+					'EMAIL' => [['VALUE' => $email, 'VALUE_TYPE' => 'WORK']],
+					'PHONE' => [['VALUE' => $contact, 'VALUE_TYPE' => 'WORK']],
+				]
+			];
+	
+			// Send customer creation request
+			$postCustomerData = http_build_query($crmCustomerData);
+			$contextCustomerOptions = [
+				'http' => [
+					'method' => 'POST',
+					'header' => 'Content-Type: application/x-www-form-urlencoded',
+					'content' => $postCustomerData,
+				]
+			];
+			$contextCreateCustomer = stream_context_create($contextCustomerOptions);
+	
+			try {
+				$data = file_get_contents($createCustomerUrl, false, $contextCreateCustomer);
+				$response = json_decode($data, true);
+				$customerId = $response['result'] ?? null; // Get customer ID from response
+				if (!$customerId) {
+					throw new Exception('Failed to create customer in CRM.');
+				}
+			} catch (Exception $e) {
+				echo json_encode(['status' => 'error', 'message' => 'Unable to create customer.']);
+				Yii::app()->end();
+			}
+	
+			// CRM URL to create a new lead
+			$crmUrl = 'https://crm.rgestate.com/rest/88/x0g9p2hpse2h48si/crm.lead.add.json';
+	
+			// Prepare lead data
+			$crmData = [
+				'FIELDS' => [
+					'TITLE' => 'RGestate Lead - Contact Form',
+					'CATEGORY_ID' => 16,
+					'LEAD_PHONE' => $contact,
+					'LEAD_LAST_NAME' => $lastName,
+					'LEAD_NAME' => $firstName,
+					'LEAD_EMAIL' => $email,
+					'CONTACT_ID' => $customerId,
+					'COMMENTS' => $message,
+					'ASSIGNED_BY_ID' => 22,
+				]
+			];
+	
+			// Send lead creation request
+			$postData = http_build_query($crmData);
+			$contextOptions = [
+				'http' => [
+					'method' => 'POST',
+					'header' => 'Content-Type: application/x-www-form-urlencoded',
+					'content' => $postData,
+				]
+			];
+			$context = stream_context_create($contextOptions);
+	
+			try {
+				file_get_contents($crmUrl, false, $context);
+			} catch (Exception $e) {
+				echo json_encode(['status' => 'error', 'message' => 'Unable to create lead.']);
+				Yii::app()->end();
+			}
+			$model->attributes = $_POST; 
+			// Set model attributes and save
+			$model->name = $name; // Set other attributes as necessary
+			$model->email = $email;
+			$model->phone = $contact;
+			$model->phone_false = $contact;
+			$model->meassage = $message;
+	
+			// Save the model and return the success or error message
+			if ($model->validate() && $model->save()) {
+				echo json_encode(['status' => 'success', 'message' => 'Successfully submitted.']);
+			} else {
+				echo json_encode(['status' => 'error', 'message' => 'Error: ' . CHtml::errorSummary($model)]);
+			}
+	
+			Yii::app()->end();
+		} else {
+			throw new CHttpException(400, 'Invalid request.');
+		}
+	}
+	
 	public function actionSend(){
 		$request    = Yii::app()->request;
 		$requestParms = $request->getPost("ContactPopup");
@@ -2016,9 +2229,7 @@ Jq4pd48R
 				'CATEGORY_ID' => 16,
 				'ASSIGNED_BY_ID' => 22,
 				'CONTACT_ID' => $customerId,
-				"EMAIL" => [[ "VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK" ]],
-                "PHONE" => [[ "VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK" ]],
-				'COMMENTS' => 'Name: ' . $requestParms['name'] . ' <br/> Phone: ' . $requestParms['phone'] . ' <br/> Email: ' . $requestParms['email'] . ' <br/> Message: ' . $requestParms['message'],
+				'COMMENTS' => 'Name: ' . $requestParms['name'] . ' <br/> Phone: ' . $requestParms['phone'] . ' <br/> Email: ' . $requestParms['email'],
 				'UF_CRM_1701236145750' => $services[$requestParms['type']],
 			],
 		];
@@ -2050,7 +2261,7 @@ Jq4pd48R
 			if(!$model->save()){
 				echo json_encode(array('status'=>'0','msg'=>'<div class="alert alert-danger1"><strong>Error!</strong> '.CHtml::errorSummary($model).'. </div>'));
 			}else{
-				echo json_encode(array('status'=>'1','email'=> $model->name,'name'=>$model->email , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+				echo json_encode(array('status'=>'1','name'=>$model->name , 'msg'=>'<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
 			}
 		}
 	

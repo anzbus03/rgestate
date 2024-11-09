@@ -1,4 +1,4 @@
- <?php  $options= $app->options;$tag=  $conntroller->tag; 
+<?php  $options= $app->options;$tag=  $conntroller->tag; 
  //echo '<pre>';
  //print_r($tag);
  //die;

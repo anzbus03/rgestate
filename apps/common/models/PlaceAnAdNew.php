@@ -44,33 +44,33 @@ class PlaceAnAdNew extends PlaceAnAd
 		 return '  t.cron_featured = "Y" desc ';
 	 }
 	 public function getExpityConditionFronEnd(){
-	   return  ' and t.cron_expiry ="1" '; 
+	//    return  ' and t.cron_expiry ="1" '; 
     }
 
 	 public static function model($className=__CLASS__)
     {
         return parent::model($className);
     }
-		public function findAds($formData=array(),$count_future=false,$returnCriteria=false,$calculate=false,$user_id=false){
-	    $criteria=new CDbCriteria;
-		$criteria->select = 't.ad_title,t.nested_sub_category,t.sub_category_id,t.RefNo,t.project_status, t.verified,t.featured,t.lease_status,t.income,t.roi,t.hot,t.slug_en,t.slug_ar,t.user_id as user_id,t.property_status,t.id,t.slug,t.section_id,t.category_id,t.state,t.listing_type,t.sub_category_id,t.location_latitude,t.location_longitude,from_price_unit,to_price_unit,area_unit,rent_paid,price,p_o_r,bathrooms,bedrooms,t.builtup_area,t.view_360,t.view_video,t.view_floor,t.cron_featured as featured2,   usr.full_number as mobile_number ,  usr.first_name,usr.last_name';
-        $criteria->select .= ', t.cron_images  as ad_images_g,t.cron_simage as ad_image2';
-		$criteria->compare('t.isTrash','0');
-
-       	if(isset($formData['preleased']) and !empty($formData['preleased'])){
+	public function findAds($formData=array(),$count_future=false,$returnCriteria=false,$calculate=false,$user_id=false){
+	    $criteria = new CDbCriteria;
+		$criteria->select = 't.ad_title, t.nested_sub_category, t.sub_category_id, t.RefNo, t.project_status, t.verified, t.featured, t.lease_status, t.income, t.roi, t.hot, t.slug_en, t.slug_ar, t.user_id as user_id, t.property_status, t.id, t.slug, t.section_id, t.category_id, t.state, t.listing_type, t.sub_category_id, t.location_latitude, t.location_longitude, from_price_unit, to_price_unit, area_unit, rent_paid, price, p_o_r, bathrooms, bedrooms, t.builtup_area, t.view_360, t.view_video, t.view_floor, t.cron_featured as featured2';
+		$criteria->compare('t.isTrash', "0");
+		$criteria->select .= ', t.cron_images as ad_images_g, t.cron_simage as ad_image2';
+ 	    if(isset($formData['preleased']) and !empty($formData['preleased'])){
 			 $criteria->compare('t.property_status','1');
 		}else{
 		    if(!defined('SHOW_ALL_PROP')){
 		     //$criteria->compare('t.property_status!','1');
 		    }
 		}
-        if(isset($formData['status']) and !empty($formData['status'])){
-			$criteria->compare('t.status',$formData['status']);
+       
+        if(isset($formData['sta']) and !empty($formData['sta'])){
+			$criteria->compare('t.status',$formData['sta']);
 		}else{
         	$criteria->compare('t.status','A');
 		}
         if(!empty($user_id)){
-				$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END '; 
+					$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END '; 
 			$criteria->params[':thisusr'] = (int) $user_id;
 	
 			 
@@ -115,10 +115,28 @@ class PlaceAnAdNew extends PlaceAnAd
 		
 		 
 		$criteria->join  .= ' left join {{area_unit}} au ON au.master_id = t.area_unit ';
-        $criteria->join  .=   ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
+		$criteria->join .= ' LEFT JOIN {{listing_users}} usr ON usr.user_id = t.user_id';
+		$criteria->join .= ' LEFT JOIN {{user}} u ON u.user_id = t.user_id'; // Joining the `user` table
 	
-		$criteria->join  .=   ' LEFT JOIN {{listing_users}} p_usr1 on p_usr1.user_id = usr.parent_user and usr.parent_user IS NOT NULL ';
-		$criteria->select .=  ' , (CASE WHEN usr.parent_user is NOT NULL THEN p_usr1.image  ELSE usr.image END) user_image , CASE WHEN usr.parent_user is NOT NULL THEN p_usr1.company_name ELSE usr.company_name END as company_name ' ;	
+		// Select user information conditionally based on which table has the user data
+		$criteria->select .= ' , 
+			CASE 
+				WHEN usr.user_id IS NOT NULL THEN usr.full_number 
+				ELSE u.phone_number 
+			END as mobile_number, 
+			CASE 
+				WHEN usr.user_id IS NOT NULL THEN usr.first_name 
+				ELSE u.first_name 
+			END as first_name, 
+			CASE 
+				WHEN usr.user_id IS NOT NULL THEN usr.last_name 
+				ELSE u.last_name 
+			END as last_name, 
+			CASE 
+				WHEN usr.user_id IS NOT NULL THEN usr.image 
+				ELSE u.profile_image 
+			END as user_image';
+			
 		if(!defined('BUSINESS')  and $formData['sec'] != 'new-development'){
 		    //	$criteria->condition .= ' and t.listing_type != "181" ' ; 
 		}
@@ -356,9 +374,10 @@ class PlaceAnAdNew extends PlaceAnAd
 			$criteria->condition .= ' and t.rent_paid =:rent_paid ';$criteria->params[':rent_paid'] = $formData['rent_paid'];
 		}
 		if(isset($formData['category'])){
-						$criteria->condition .= ' and lstype.slug =:category1 ';$criteria->params[':category1'] = $formData['category'] ;
-						  
-					}
+			$criteria->condition .= ' and lstype.slug =:category1 ';
+			$criteria->params[':category1'] = $formData['category'] ;
+				
+		}
 		if(isset($formData['type_of']) and !empty(array_filter((array)$formData['type_of'])) and is_array($formData['type_of'])){
 			if(isset($formData['sec']) and $formData['sec']=='new-development'){
 							/*New Development Multiple*/

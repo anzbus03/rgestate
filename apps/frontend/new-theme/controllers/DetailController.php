@@ -24,98 +24,108 @@ class DetailController extends Controller
 		ini_set("memory_limit", "-1");
 		$mod = new PlaceAnAd();
 		$criteria = new CDbCriteria;
-		//$criteria->select = 't.*,'.$mod->FetauredQuery.'usr.enable_l_f,usr.slug as user_slug,usr.premium as premium_u,ct.image as location_image,ct.location_latitude as city_location_latitude,ct.location_longitude as city_location_longitude,usr.whatsapp as whatsapp,usr.full_number as mobile_number,sec.slug as sec_slug,con.country_name as country_name,ct.city_name as city_name ,cat.slug as category_slug ,   sub_com.sub_community_name as sub_community_name,st.state_name as state_name,st.slug as state_slug,cat.category_name as  category_name,sub.sub_category_name as sub_category_name,usr.description as user_description,usr.image as user_image,usr.company_name as company_name,usr.first_name,usr.last_name,usr.phone as user_number,usr.address as user_address,usr.user_type as user_type,sec.section_name,st.state_name as state_name,com.community_name,(SELECT CONCAT(image_name, "||F||", status) FROM {{ad_image}} img  WHERE  img.ad_id = t.id   and  img.isTrash="0" order by img.status="A" desc  limit 1  )     as ad_image2 ';
-		$criteria->select = 't.*,p_usr.user_id as puser_id,CASE WHEN p_usr.user_id  is NOT NULL THEN p_usr.cr_number ELSE usr.cr_number END as cr_number,CASE WHEN p_usr.user_id  is NOT NULL THEN p_usr.licence_no ELSE usr.licence_no END as licence_no,CASE WHEN p_usr.a_chara_ar  is NOT NULL THEN p_usr.a_chara_ar ELSE usr.a_chara_ar END as advertiser_character,usr.slug as agent_slug ,usr.email as user_email,usr.image as image ,usr.total_reviews as total_reviews ,usr.avg_r as avg_r , ' . $mod->FetauredQuery . 'CASE WHEN p_usr.user_id  is NOT NULL THEN p_usr.enable_l_f ELSE usr.enable_l_f END as enable_l_f,CASE WHEN p_usr.user_id  is NOT NULL THEN p_usr.slug ELSE  usr.slug END   as user_slug,usr.premium as premium_u,ct.image as location_image,ct.location_latitude as city_location_latitude,ct.location_longitude as city_location_longitude,usr.whatsapp as whatsapp,usr.full_number as mobile_number,sec.slug as sec_slug,con.country_name as country_name,ct.city_name as city_name ,cat.slug as category_slug ,cat.image as category_img,   sub_com.sub_community_name as sub_community_name,st.state_name as state_name,st.slug as state_slug,cat.category_name as  category_name,sub.sub_category_name as sub_category_name,usr.description as user_description,CASE WHEN p_usr.image is NOT NULL THEN p_usr.image ELSE  usr.image END  as user_image,CASE WHEN p_usr.user_id  is NOT NULL THEN p_usr.company_name ELSE usr.company_name END as company_name,CASE WHEN p_usr.user_id  is NOT NULL THEN p_usr.company_name_ar ELSE usr.company_name_ar END as company_name_ar,usr.first_name,usr.first_name_ar,usr.last_name,usr.phone as user_number,usr.address as user_address,usr.user_type as user_type,sec.section_name,st.state_name as state_name,com.community_name,(SELECT CONCAT(image_name, "||F||", status) FROM {{ad_image}} img  WHERE  img.ad_id = t.id   and  img.isTrash="0" order by img.status="A" desc  limit 1  )     as ad_image2 ';
 
+		// Main select with conditional user data
+		$criteria->select = 't.*, 
+			sec.slug AS sec_slug, 
+			con.country_name AS country_name, 
+			ct.city_name AS city_name, 
+			cat.slug AS category_slug, 
+			cat.image AS category_img, 
+			sub_com.sub_community_name AS sub_community_name, 
+			st.state_name AS state_name, 
+			st.slug AS state_slug, 
+			cat.category_name AS category_name, 
+			sub.sub_category_name AS sub_category_name, 
+			sec.section_name';
+
+		// Condition and join adjustments
 		$criteria->condition = '1';
 		if (Yii::app()->request->getQuery('showTrash', '0') == '0') {
 			$criteria->compare('t.isTrash', '0');
 			$criteria->compare('t.status', 'A');
 		}
-		$criteria->select .= ',lstype.category_name as listing_category ,lstype.slug as l_slug,  (t.builtup_area*(1/au.value))   as converted_unit,au.master_name as atitle,au.master_name as atitle,au2.master_name as atitle2 ';
 
-		$criteria->join  .= ' left join {{section}} sec ON sec.section_id = t.section_id ';
-		$criteria->join  .= ' left join {{category}} lstype ON lstype.category_id = t.listing_type ';
-		$criteria->join  .= ' left join {{category}} cat ON cat.category_id = t.category_id ';
-		$criteria->join  .= ' left join {{area_unit}} au ON au.master_id = t.area_unit ';
-		$criteria->join  .= ' left join {{area_unit}} au2 ON au2.master_id = t.area_unit_1 ';
-		$criteria->join  .= ' left join {{subcategory}} sub ON sub.sub_category_id = t.sub_category_id ';
-		$criteria->join  .= ' left join {{community}} com ON com.community_id = t.community_id ';
-		$criteria->join  .= ' left join {{sub_community}} sub_com ON sub_com.sub_community_id = t.sub_community_id ';
-		$criteria->join  .= ' left join {{states}} st ON st.state_id = t.state ';
-		$criteria->join  .= ' left join {{countries}} con ON con.country_id = t.country ';
-		$criteria->join  .= ' LEFT JOIN {{city}} ct on ct.city_id = t.city';
-		$criteria->join  .=   ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
-		$criteria->join  .=   ' LEFT JOIN {{listing_users}} p_usr on p_usr.user_id = usr.parent_user ';
+		// Additional select fields
+		$criteria->select .= ', lstype.category_name AS listing_category, lstype.slug AS l_slug, 
+			(t.builtup_area * (1/au.value)) AS converted_unit, au.master_name AS atitle, 
+			au2.master_name AS atitle2';
+
+		// Joins with conditional user lookup between listing_users and user
+		$criteria->join .= ' LEFT JOIN {{section}} sec ON sec.section_id = t.section_id';
+		$criteria->join .= ' LEFT JOIN {{category}} lstype ON lstype.category_id = t.listing_type';
+		$criteria->join .= ' LEFT JOIN {{category}} cat ON cat.category_id = t.category_id';
+		$criteria->join .= ' LEFT JOIN {{area_unit}} au ON au.master_id = t.area_unit';
+		$criteria->join .= ' LEFT JOIN {{area_unit}} au2 ON au2.master_id = t.area_unit_1';
+		$criteria->join .= ' LEFT JOIN {{subcategory}} sub ON sub.sub_category_id = t.sub_category_id';
+		$criteria->join .= ' LEFT JOIN {{community}} com ON com.community_id = t.community_id';
+		$criteria->join .= ' LEFT JOIN {{sub_community}} sub_com ON sub_com.sub_community_id = t.sub_community_id';
+		$criteria->join .= ' LEFT JOIN {{states}} st ON st.state_id = t.state';
+		$criteria->join .= ' LEFT JOIN {{countries}} con ON con.country_id = t.country';
+		$criteria->join .= ' LEFT JOIN {{city}} ct ON ct.city_id = t.city';
+
+		// Other joins for translations and favorites
 		if (Yii::app()->user->getId()) {
-			$criteria->select .= ' ,fav.ad_id as fav ';
-			$criteria->join  .= ' left join {{ad_favourite}} fav ON fav.ad_id = t.id and fav.user_id =:user_me';
+			$criteria->select .= ' ,fav.ad_id AS fav';
+			$criteria->join .= ' LEFT JOIN {{ad_favourite}} fav ON fav.ad_id = t.id AND fav.user_id = :user_me';
 			$criteria->params[':user_me'] = Yii::app()->user->getId();
 		} else {
 			$cookieName = 'USERFAV' . COUNTRY_ID;
-			if ((isset(Yii::app()->request->cookies[$cookieName]))) {
-				$cook =  Yii::app()->request->cookies[$cookieName]->value;
-				//print_r($cook);exit; 
-				if (!empty($cook) and is_array($cook)) {
-
+			if (isset(Yii::app()->request->cookies[$cookieName])) {
+				$cook = Yii::app()->request->cookies[$cookieName]->value;
+				if (!empty($cook) && is_array($cook)) {
 					$userStr = implode("', '", $cook);
-					$criteria->select .= " , CASE WHEN t.id  in ('{$userStr}') THEN 1 ELSE 0 END as fav ";
+					$criteria->select .= " , CASE WHEN t.id IN ('{$userStr}') THEN 1 ELSE 0 END AS fav";
 				}
 			}
 		}
-		$criteria->join  .= ' left join `mw_translate` `translatead` on (  translatead.source_tag = concat("PlaceAnAd_ad_title_",t.id) )          left join `mw_translate_relation` `translationRelationad` on translationRelationad.ad_id = t.id  and  translationRelationad.translate_id = translatead.translate_id  LEFT  JOIN mw_translation_data tdataad ON (`translationRelationad`.translate_id=tdataad.translation_id and tdataad.lang=:lan2  ) ';
-		$criteria->join  .= ' left join `mw_translate` `translateadesc` on (  translateadesc.source_tag = concat("PlaceAnAd_ad_description_",t.id) )          left join `mw_translate_relation` `translationRelationaddesc` on translationRelationaddesc.ad_id = t.id  and  translationRelationaddesc.translate_id = translateadesc.translate_id  LEFT  JOIN mw_translation_data tdataaddesc ON (`translationRelationaddesc`.translate_id=tdataaddesc.translation_id and tdataaddesc.lang=:lan2  ) ';
-		$criteria->join  .= ' left join `mw_translate` `translateadarea` on (  translateadarea.source_tag = concat("PlaceAnAd_area_location_",t.id) )          left join `mw_translate_relation` `translationRelationadarea` on translationRelationadarea.ad_id = t.id  and  translationRelationadarea.translate_id = translateadarea.translate_id  LEFT  JOIN mw_translation_data tdataadarea ON (`translationRelationadarea`.translate_id=tdataadarea.translation_id and tdataadarea.lang=:lan2  ) ';
 
-		$criteria->select .= ',tdataad.message as ad_title2,tdataaddesc.message as ad_description2,tdataadarea.message as area_location2';
+		// Additional translation joins
+		$criteria->join .= ' LEFT JOIN mw_translate translatead ON translatead.source_tag = CONCAT("PlaceAnAd_ad_title_", t.id)';
+		$criteria->join .= ' LEFT JOIN mw_translate_relation translationRelationad ON translationRelationad.ad_id = t.id 
+			AND translationRelationad.translate_id = translatead.translate_id';
+		$criteria->join .= ' LEFT JOIN mw_translation_data tdataad ON translationRelationad.translate_id = tdataad.translation_id 
+			AND tdataad.lang = :lan2';
+		$criteria->select .= ', tdataad.message AS ad_title2';
+
+		// Define language parameter
 		$criteria->params[':lan2'] = 'ar';
-		$criteria->distinct   = 't.id';
+		$criteria->distinct = 't.id';
+
+		// Language-specific handling if needed
 		if (defined('LANGUAGE')) {
-			$langaugae = LANGUAGE;
-			if (!empty($langaugae) and  $langaugae != 'en') {
-				$criteria->join  .= ' left join `mw_translate_relation` `translationRelation` on translationRelation.state_id = st.state_id   LEFT  JOIN mw_translation_data tdata ON (`translationRelation`.translate_id=tdata.translation_id and tdata.lang=:lan) ';
-				$criteria->select .= ' ,CASE WHEN tdata.message   IS NOT NULL THEN tdata.message ELSE st.state_name  END as  state_name  ';
-
-				/*
-				$criteria->join  .= ' left join `mw_translate_relation` `translationRelation5` on translationRelation5.city_id = ct.city_id   LEFT  JOIN mw_translation_data tdata5 ON (`translationRelation5`.translate_id=tdata5.translation_id and tdata5.lang=:lan) ';
-				$criteria->select .= ' ,CASE WHEN tdata5.message   IS NOT NULL THEN tdata5.message ELSE ct.city_name  END as  city_name  ';
-				*/
-
-				$criteria->join  .= ' left join `mw_translate_relation` `translationRelation15` on translationRelation15.category_id = t.category_id   LEFT  JOIN mw_translation_data tdata15 ON (`translationRelation15`.translate_id=tdata15.translation_id and tdata15.lang=:lan) ';
-				$criteria->select .= ' ,CASE WHEN tdata15.message   IS NOT NULL THEN tdata15.message ELSE cat.category_name  END as  category_name  ';
-
-
-				$criteria->join  .= ' left join `mw_translate_relation` `translationRelation25` on translationRelation25.category_id = t.listing_type   LEFT  JOIN mw_translation_data tdata25 ON (`translationRelation25`.translate_id=tdata25.translation_id and tdata25.lang=:lan) ';
-				$criteria->select .= ' ,CASE WHEN tdata25.message   IS NOT NULL THEN tdata25.message ELSE lstype.category_name  END as  listing_category  ';
-
-				//$criteria->join  .= ' left join `mw_translate`  translate2user  on ( translate2user.source_tag = concat("ListingUsers_company_name_","",p_usr.user_id) )   left join `mw_translate_relation` `translationRelation2usr` on translationRelation2usr.user_id = p_usr.user_id  and  translationRelation2usr.translate_id = translate2user.translate_id  LEFT  JOIN mw_translation_data tdata2usr ON (`translationRelation2usr`.translate_id=tdata2usr.translation_id and tdata2usr.lang=:lan  ) ';
-				//$criteria->join  .= ' left join `mw_translate`  translate1usr  on ( translate1usr.source_tag = concat("ListingUsers_company_name_","",t.user_id) )   left join `mw_translate_relation` `translationRelation1usr` on translationRelation1usr.user_id = t.user_id  and  translationRelation1usr.translate_id = translate1usr.translate_id  LEFT  JOIN mw_translation_data tdata1usr ON (`translationRelation1usr`.translate_id=tdata1usr.translation_id and tdata1usr.lang=:lan  ) ';
-				//$criteria->select   .= ' , ( CASE WHEN p_usr.user_id IS NOT NULL THEN ( CASE WHEN tdata2usr.message IS NOT NULL AND translate2user.source_tag IS NOT NULL    THEN  tdata2usr.message ELSE p_usr.company_name END ) ELSE ( CASE  WHEN tdata1usr.message IS NOT NULL AND translate1usr.source_tag IS NOT NULL    THEN  tdata1usr.message ELSE usr.company_name END)  END ) 	 as  company_name   ';
-
-				$criteria->params[':lan'] = $langaugae;
-				$criteria->distinct   = 't.id';
+			$language = LANGUAGE;
+			if (!empty($language) && $language !== 'en') {
+				$criteria->join .= ' LEFT JOIN mw_translate_relation translationRelation ON translationRelation.state_id = st.state_id 
+					LEFT JOIN mw_translation_data tdata ON translationRelation.translate_id = tdata.translation_id AND tdata.lang = :lan';
+				$criteria->select .= ', CASE WHEN tdata.message IS NOT NULL THEN tdata.message ELSE st.state_name END AS state_name';
+				$criteria->params[':lan'] = $language;
+				$criteria->distinct = 't.id';
 			}
 		}
-		$criteria->condition .= ' and usr.status = "A" and usr.isTrash="0"';
+
+		// ID or slug conditionals
 		if (empty($id)) {
-			if (defined('LANGUAGE') and LANGUAGE == 'ar'  and isset($_GET['slug_ar'])) {
-				$criteria->condition .= ' and t.slug_ar=:slug ';
-				$criteria->params[':slug'] = isset($_GET['slug_ar']) ? $_GET['slug_ar'] : $slug;
-			} else if (defined('LANGUAGE') and LANGUAGE == 'en' and isset($_GET['slug_en'])) {
-				$criteria->condition .= ' and t.slug_en=:slug ';
-				$criteria->params[':slug'] = isset($_GET['slug_en']) ? $_GET['slug_en'] : $slug;
+			if (defined('LANGUAGE') && LANGUAGE == 'ar' && isset($_GET['slug_ar'])) {
+				$criteria->condition .= ' AND t.slug_ar = :slug';
+				$criteria->params[':slug'] = $_GET['slug_ar'] ?? $slug;
+			} elseif (defined('LANGUAGE') && LANGUAGE == 'en' && isset($_GET['slug_en'])) {
+				$criteria->condition .= ' AND t.slug_en = :slug';
+				$criteria->params[':slug'] = $_GET['slug_en'] ?? $slug;
 			} else {
-				$criteria->condition .= ' and t.slug=:slug ';
+				$criteria->condition .= ' AND t.slug = :slug';
 				$criteria->params[':slug'] = $slug;
 			}
 		} else {
-			$criteria->condition .= ' and t.id=:id ';
+			$criteria->condition .= ' AND t.id = :id';
 			$criteria->params[':id'] = $id;
 		}
+
 		$model = $mod->find($criteria);
 		if (empty($model)) {
 			throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
 		}
+
 		//echo $model->mobile_number;exit;
 		define('RETURN_URL',  $model->id);
 		if (isset($_POST['ajax'])) {
@@ -152,19 +162,6 @@ class DetailController extends Controller
 		define('sell_title', $this->tag->getTag('post_property', 'Post Property'));
 		define('sell_url', $this->app->createUrl('place_an_ad_no_login/create', array('type' => 'property')));
 
-
-		$this->getData('pageStyles')->mergeWith(array(
-			//  array('src' => $this->appAssetUrl('css/property-web.css') , 'priority' => '1'),
-			// array('src' => $this->appAssetUrl('css/icons.css') , 'priority' => '9' ),
-			// array('src' => $this->appAssetUrl('css/search-web.css') , 'priority' =>'2' ),
-			// array('src' => $this->appAssetUrl('css/inner-style.css') , 'priority' =>'3' ),
-			//array('src' => $this->appAssetUrl('css/main11.css') , 'priority' =>'4' ),
-			// array('src' => $this->app->apps->getBaseUrl('assets/css/property_detail.css?q=1') , 'priority' =>'4' ),
-		));
-		// $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/bootstrap.min.js'), 'priority' => -1000));   
-
-		//  $this->getData('pageScripts')->add(array('src' => $this->appAssetUrl('scripts/_right_detail1.js'), 'priority' => -100));   
-		//   $this->getData('pageScripts')->add(array('src' => $this->appAssetUrl('scripts/owl.carousel.min.js'), 'priority' => -100));   
 		$titl = LANGUAGE == 'ar' ? $model->MetaTitleArabic : $model->MetaTitleEnglish;
 
 		$description = LANGUAGE == 'ar' ? $model->MetaDescriptionArabic : $model->MetaDescriptionEnglish;
@@ -697,9 +694,7 @@ class DetailController extends Controller
 						'TITLE' => 'RGestate Lead - Property Listing Form',
 						'CONTACT_ID' => $customerId,
 						'COMMENTS' => $requestParms['meassage'],
-						'ASSIGNED_BY_ID' => 22,
-						"EMAIL" => [["VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK"]],
-						"PHONE" => [["VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK"]]
+						'ASSIGNED_BY_ID' => 22
 					],
 				];
 
@@ -735,7 +730,7 @@ class DetailController extends Controller
 					if (!$model->save()) {
 						echo json_encode(array('status' => '0', 'msg' => '<div class="alert alert-danger1"><strong>Error!</strong> ' . CHtml::errorSummary($model) . '. </div>'));
 					} else {
-						echo json_encode(array('status' => '1', 'name' => $model->email, 'msg' => '<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+						echo json_encode(array('status' => '1', 'name' => $model->name, 'msg' => '<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
 					}
 				}
 

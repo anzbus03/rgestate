@@ -43,10 +43,10 @@ if ($viewCollection->renderContent) {
         $form = $this->beginWidget('CActiveForm',array('focus'=>array($model,Yii::app()->controller->focus))); 
         ?>
         <style>.jqx-combobox-content{ text-indent:4px;}</style>
-        <div class="box box-primary">
-            <div class="box-header">
+        <div class="card">
+            <div class="card-header">
                 <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+                    <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$model->isNewRecord) { ?>
@@ -56,7 +56,7 @@ if ($viewCollection->renderContent) {
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
@@ -294,7 +294,7 @@ background:
 												 
 										<?php echo $form->labelEx($model, 'user_id');?>
 										<?php $mer =  array_merge($model->getHtmlOptions('user_id'),array('empty'=>"Select Customer",'class'=>"  form-control")); ?>
-										<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(ListingUsers::model()->findAllByPk($model->user_id),'user_id','fullName')   , $mer ); ?>
+										<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(User::model()->findAll(),'user_id','fullName')   , $mer ); ?>
 										<?php echo $form->error($model, 'user_id');?>
 									</div>
 							 

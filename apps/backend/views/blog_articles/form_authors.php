@@ -45,23 +45,44 @@ if ($viewCollection->renderContent) {
             'htmlOptions' => array('enctype' => 'multipart/form-data'), // Ensure form supports file uploads
         ));
         ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title">
+        <style>
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .card-header-left {
+                flex: 1;
+            }
+
+            .card-header-right {
+                display: flex;
+                gap: 10px;
+            }
+
+            .card-header-right .btn {
+                margin-left: 5px;
+            }
+        </style>
+        <div class="card card-primary">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3 class="card-title">
                         <span class="glyphicon glyphicon-book"></span> 
                         <?php echo $pageHeading;?>
                     </h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$article->isNewRecord) { ?>
-                    <?php echo CHtml::link(Yii::t('app', 'Create new'), array('blog_articles/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
+                    <?php echo CHtml::link(Yii::t('app', 'Create new'), array('blog_articles/create_author'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));?>
                     <?php } ?>
-                    <?php echo CHtml::link(Yii::t('app', 'Cancel'), array('blog_articles/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
+                    <?php echo CHtml::link(Yii::t('app', 'Cancel'), array('blog_articles/index_authors'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
@@ -88,7 +109,7 @@ if ($viewCollection->renderContent) {
                         </div>
                         <div class="form-group">
                             <?php echo $form->labelEx($article, 'image');?>
-                            <?php echo $form->fileField($article, 'image'); ?>
+                            <?php echo $form->fileField($article, 'image', array('class' => "form-control")); ?>
                             <?php echo $form->error($article, 'image');?>
                         </div>
                        
@@ -108,7 +129,7 @@ if ($viewCollection->renderContent) {
                 ?>
             </div>
             <div class="box-footer">
-                <div class="pull-right">
+                <div class="pull-right" style="margin: 20px;">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
                 <div class="clearfix"><!-- --></div>

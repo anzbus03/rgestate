@@ -1,3 +1,4 @@
+
 <style>
 #mainContainerClass {width:100%; max-width:100%;}
 .tp_banner {height:150px;background-color:var(--secondary-color);color:#fff;display: flex;align-items: center;justify-content: center; margin-bottom:50px;}
@@ -726,19 +727,7 @@
 }
 
 </style> 
- <script>
-  function () {
-
-      return {
-
-      "email": "<?php echo $model->email; ?>" ,
-
-      "phone_number": "<?php echo $model->phone; ?>" , // repeat for yourPhoneVariable and following variable names below
-
-    }
-
-  }
-</script>
+ 
 <section class="panel1 panel-bg banner" style="background-image:url(<?php echo $img;?>);">
     <div class="abs-banner"> 
             <div class="bloghead container"> 

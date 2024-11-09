@@ -11,25 +11,37 @@
  * @since 1.0
  */
 
-/**
- * This hook gives a chance to prepend content or to replace the default view content with a custom content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderContent} to false 
- * in order to stop rendering the default content.
- * @since 1.3.3.1
- */
 $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCollection(array(
     'controller'    => $this,
     'renderContent' => true,
 )));
 
-// and render if allowed
 if ($viewCollection->renderContent) { ?>
-    <div class="box box-primary">
-        <div class="box-header">
-            <div class="pull-left">
-                <h3 class="box-title">
+<style>
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .card-header-left {
+        flex: 1;
+    }
+
+    .card-header-right {
+        display: flex;
+        gap: 10px;
+    }
+
+    .card-header-right .btn {
+        margin-left: 5px;
+    }
+</style>
+    <div class="card">
+        <div class="card-header">
+            <div class="card-header-left">
+                <h3 class="card-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo Yii::t(Yii::app()->controller->id, "Home Banner");?>
                 </h3>
             </div>
@@ -39,170 +51,64 @@ if ($viewCollection->renderContent) { ?>
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="box-body">
-                         <?php echo CHtml::link(Yii::t('app', 'Update Banner Cache'), Yii::app()->createUrl(Yii::app()->controller->id.'/index',array('update_cache'=>'1')), array('class' => 'btn btn-success btn-xs', 'title' => Yii::t('app', 'Update Cache')));?>
-   
+        <div class="card-body">
+            <?php echo CHtml::link(Yii::t('app', 'Update Banner Cache'), Yii::app()->createUrl(Yii::app()->controller->id.'/index',array('update_cache'=>'1')), array('class' => 'btn btn-success btn-xs mb-4', 'title' => Yii::t('app', 'Update Cache')));?>
             <div class="table-responsive">
-            <?php 
-            /**
-             * This hook gives a chance to prepend content or to replace the default grid view content with a custom content.
-             * Please note that from inside the action callback you can access all the controller view
-             * variables via {@CAttributeCollection $collection->controller->data}
-             * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderGrid} to false 
-             * in order to stop rendering the default content.
-             * @since 1.3.3.1
-             */
-            $hooks->doAction('before_grid_view', $collection = new CAttributeCollection(array(
-                'controller'    => $this,
-                'renderGrid'    => true,
-            )));
-           
-             $form=$this->beginWidget('CActiveForm', array( 
-			 'enableAjaxValidation'=>true,
-			 ));  
-			 
-			
-            // and render if allowed
-            if ($collection->renderGrid) {
-                $this->widget('zii.widgets.grid.CGridView', $hooks->applyFilters('grid_view_properties', array(
-                    'ajaxUrl'           => $this->createUrl($this->route),
-                    'ajaxUpdate'        =>$model->modelName.'-grid',
-                    'id'                => $model->modelName.'-grid',
-                    'dataProvider'      => $model->search(),
-                    'filter'            => $model,
-                    'filterPosition'    => 'body',
-                    'filterCssClass'    => 'grid-filter-cell',
-                    'itemsCssClass'     => 'table table-bordered table-hover table-striped',
-                    'selectableRows'    => 0,
-                    'enableSorting'     => false,
-                    'cssFile'           => false,
-                    'pagerCssClass'     => 'pagination pull-right',
-                    'pager'             => array(
-                        'class'         => 'CLinkPager',
-                        'cssFile'       => false,
-                        'header'        => false,
-                        'htmlOptions'   => array('class' => 'pagination')
-                    ),
-                    'columns' => $hooks->applyFilters('grid_view_columns', array(
-                    
-                      
-                         
-                        array(
-                            'name'  => 'image',
-                            
-                           
-						
-						 
-					
-                            'value' => function($data){
-								         echo "<div class='property_img_box1'>";
-								          
-				                             	?>
-				                             		<div id="property_img_1" class="property_imgdivborder_approve" style="background-image:url(<?php echo  $data->BannerLink ;?>);width:100px;height:60px;  background-position: center top; background-size: cover; background-repeat: no-repeat;" >
-													</div>
-				                             	<?									
-										 
-										 echo "</div>";
-											 
-										},
-                            'filter'=>false,
-                            
-                            
-                        ),
-                         array(
-                            'name'  => 'f_type',
-                              'value' => '$data->FTitle',
-                             'filter'=> $model->bannerList(),
-                             
-                            
-                        ),
-                        array(
-                            'name'  => 'country_id',
-                              'value' => '$data->country->country_name',
-                             'filter'=> false,
-                             
-                            
-                        ),
-                 array(
-                            'name'  => 'status',
-                              'value' => '$data->status',
-                             'filter'=> $model->statusArray(),
-                             'type'=>'raw',
-                             'htmlOptions'=>array('style'=>'width:100px;')
-                            
-                        ),
-                      	array(
-						'name'=>'priority',
-						'type'=>'raw',
-						'filter'=>false,
-						'value'=>'CHtml::textField("priority[$data->banner_id]",$data->priority,array("style"=>"width:50px;text-align:center","class"=>"form-controll"))',
-						'htmlOptions'=>array("style"=>"width:50px;text-align:center","class"=>"form-controll"),
-						),
-                       
-                      
-                              
-                        array(
-                            'class'     => 'CButtonColumn',
-                            'header'    => Yii::t('app', 'Options'),
-                            'footer'    => $model->paginationOptions->getGridFooterPagination(),
-                            'buttons'   => array(
-                                'update' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
-                                    'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/update", array("id" => $data->banner_id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
-                                     'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/update")',
-                                ),
-                                'delete' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
-                                    'url'       => 'Yii::app()->createUrl("'.Yii::app()->controller->id.'/delete", array("id" => $data->banner_id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
-                                   // 'visible'   => '$data->removable === User::TEXT_YES',
-                                    'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/delete")',
-                                ),    
-                            ),
-                            'htmlOptions' => array(
-                                'style' => 'width:70px;',
-                            ),
-                            'template' => '{update} {delete}'
-                        ),
-    
-                    ), $this),
-                ), $this)); 
-            }
-            /**
-             * This hook gives a chance to append content after the grid view content.
-             * Please note that from inside the action callback you can access all the controller view
-             * variables via {@CAttributeCollection $collection->controller->data}
-             * @since 1.3.3.1
-             */
-            $hooks->doAction('after_grid_view', new CAttributeCollection(array(
-                'controller'    => $this,
-                'renderedGrid'  => $collection->renderGrid,
-            )));
-            ?>
-            <div class="clearfix"><!-- --></div>
-            </div>    
-            
-			<div class="box-footer">
-			<div class="pull-right">
-			<button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Update Priority');?></button>
-			</div>
-			<div class="clearfix"><!-- --></div>
-			</div>
-			</div>
-          <?php $this->endWidget(); ?>
+                <table id="home-banner-table" class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Type</th>
+                            <th>Country</th>
+                            <th>Status</th>
+                            <th>Priority</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($model->search()->getData() as $data) { ?>
+                            <tr>
+                                <td>
+                                    <div class='property_img_box1'>
+                                        <div id='property_img_1' class='property_imgdivborder_approve' style='background-image:url(<?php echo $data->BannerLink; ?>); width:100px; height:60px; background-position: center top; background-size: cover; background-repeat: no-repeat;'></div>
+                                    </div>
+                                </td>
+                                <td><?php echo CHtml::encode($data->FTitle); ?></td>
+                                <td><?php echo CHtml::encode($data->country->country_name); ?></td>
+                                <td><?php echo CHtml::encode($data->status); ?></td>
+                                <td><?php echo CHtml::textField("priority[$data->banner_id]", $data->priority, array("style" => "width:50px;text-align:center", "class" => "form-control")); ?></td>
+                                <td>
+                                    <?php echo CHtml::link(' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->banner_id)), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Update'))); ?>
+                                    <?php echo CHtml::link(' &nbsp; <span class="fa fa-trash"></span> &nbsp;', Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->banner_id)), array('class' => 'btn btn-danger btn-xs', 'title' => Yii::t('app', 'Delete'), 'onclick' => 'return confirm("Are you sure you want to delete this item?")')); ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="box-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Update Priority');?></button>
+                </div>
+                <div class="clearfix"><!-- --></div>
+            </div>
         </div>
     </div>
-<?php 
+
+    <?php 
+    Yii::app()->clientScript->registerScript('initialize-dataTables', "
+        $(document).ready(function() {
+            $('#home-banner-table').DataTable({
+                language: {
+                    paginate: {
+                        next: '<i class=\"fa fa-angle-double-right\" aria-hidden=\"true\"></i>',
+                        previous: '<i class=\"fa fa-angle-double-left\" aria-hidden=\"true\"></i>'
+                    }
+                }
+            });
+        });
+    ");
 }
-/**
- * This hook gives a chance to append content after the view file default content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * @since 1.3.3.1
- */
 $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'controller'        => $this,
     'renderedContent'   => $viewCollection->renderContent,

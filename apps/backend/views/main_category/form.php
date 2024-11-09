@@ -47,10 +47,34 @@ if ($viewCollection->renderContent) {
 'htmlOptions'=>array('enctype'=>'multipart/form-data'),
 )); 
         ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+          <style>
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card-header-left {
+            flex: 1;
+        }
+
+        .card-header-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .card-header-right .btn {
+            margin-left: 5px;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$model->isNewRecord) { ?>
@@ -60,7 +84,7 @@ if ($viewCollection->renderContent) {
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
@@ -78,32 +102,30 @@ if ($viewCollection->renderContent) {
                  <div class="clearfix"><!-- --></div>
                
                 <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'category_name');?>
-                    <?php echo $form->textField($model, 'category_name',$model->getHtmlOptions('category_name')); ?>
-                    <?php echo $form->error($model, 'category_name');?>
-                </div> 
-                 <div class="clearfix"><!-- --></div>
-               
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6 hide">
-                    <?php echo $form->labelEx($model, 'section_id');?>
-                    <?php echo $form->dropDownList($model, 'section_id',CHtml::listData(Section::model()->findAll(),'section_id','section_name'),$model->getHtmlOptions('section_id',array('empty'=>'All Sections'))); ?>
-                    <?php echo $form->error($model, 'section_id');?>
-                </div> 
-                 <div class="clearfix"><!-- --></div>  
-                  <div class="clearfix"><!-- --></div>  
-                <div class="form-group col-lg-6">
-					<?php 
-					if(!$model->isNewRecord and !Yii::app()->request->isPostRequest){
-						$model->used_in = CHtml::listData($model->listTypes,'section_id','section_id');
-						 
-					}
-					;?>
-                    <?php echo $form->labelEx($model, 'used_in');?>
-                    <?php echo $form->dropDownList($model, 'used_in',CHtml::listData(Section::model()->ListData(),'section_id','section_name'),$model->getHtmlOptions('used_in',array('empty'=>'Select','multiple'=>true))); ?>
-                    <?php echo $form->error($model, 'used_in');?>
-                </div>  
+                <div class="row">
+                    
+                    <div class="col-lg-6">
+                        <?php echo $form->labelEx($model, 'category_name');?>
+                        <?php echo $form->textField($model, 'category_name',$model->getHtmlOptions('category_name')); ?>
+                        <?php echo $form->error($model, 'category_name');?>
+                    </div> 
+                    <div class="col-lg-6 hide">
+                        <?php echo $form->labelEx($model, 'section_id');?>
+                        <?php echo $form->dropDownList($model, 'section_id',CHtml::listData(Section::model()->findAll(),'section_id','section_name'),$model->getHtmlOptions('section_id',array('empty'=>'All Sections'))); ?>
+                        <?php echo $form->error($model, 'section_id');?>
+                    </div> 
+                    <div class="col-lg-6">
+                        <?php 
+                        if(!$model->isNewRecord and !Yii::app()->request->isPostRequest){
+                            $model->used_in = CHtml::listData($model->listTypes,'section_id','section_id');
+                             
+                        }
+                        ;?>
+                        <?php echo $form->labelEx($model, 'used_in');?>
+                        <?php echo $form->dropDownList($model, 'used_in',CHtml::listData(Section::model()->ListData(),'section_id','section_name'),$model->getHtmlOptions('used_in',array('empty'=>'Select','multiple'=>true))); ?>
+                        <?php echo $form->error($model, 'used_in');?>
+                    </div>  
+                </div>
                  <div class="clearfix"><!-- --></div>  
                   <div class="clearfix"><!-- --></div>
                 <div class="forImage" >    
@@ -130,7 +152,7 @@ if ($viewCollection->renderContent) {
                 <div class="clearfix"><!-- --></div>
             </div>
             <div class="box-footer">
-                <div class="pull-right">
+                <div class="pull-right" style="margin: 20px;">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
                 <div class="clearfix"><!-- --></div>

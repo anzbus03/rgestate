@@ -43,19 +43,19 @@ if ($viewCollection->renderContent) {
     if ($collection->renderForm) {
         $form = $this->beginWidget('CActiveForm',array('focus'=>array($model,Yii::app()->controller->focus))); 
         ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$model->isNewRecord) { ?>
                      <?php } ?>
                     <?php echo CHtml::link(Yii::t('app', 'Cancel'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
                 </div>
-                <div class="clearfix"><!-- --></div>
+                
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 <?php 
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
@@ -68,28 +68,30 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?>
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($model, 'master_name');?>
-                    <?php echo $form->textField($model, 'master_name',$model->getHtmlOptions('master_name')); ?>
-                    <?php echo $form->error($model, 'master_name');?>
-                </div>        
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6"><label class="pull-right">Note : Hundred is 100 .</label>
-                
-             
-                    <?php echo $form->labelEx($model, 'value');?>
-                       <div class="clearfix"></div>
-                    <?php echo $form->textField($model, 'value',$model->getHtmlOptions('value',array('placeholder'=>'eg 1 Hundred = 100.'))); ?>
-                    <?php echo $form->error($model, 'value');?>
-                </div>        
+                <div class="row">
+
+                    <div class="form-group col-lg-6">
+                        <?php echo $form->labelEx($model, 'master_name');?>
+                        <?php echo $form->textField($model, 'master_name',$model->getHtmlOptions('master_name')); ?>
+                        <?php echo $form->error($model, 'master_name');?>
+                    </div>        
+                    
+                    <div class="form-group col-lg-6"><label class="pull-right">Note : Hundred is 100 .</label>
+                    
+                 
+                        <?php echo $form->labelEx($model, 'value');?>
+                           <div class="clearfix"></div>
+                        <?php echo $form->textField($model, 'value',$model->getHtmlOptions('value',array('placeholder'=>'eg 1 Hundred = 100.'))); ?>
+                        <?php echo $form->error($model, 'value');?>
+                    </div>        
+                </div>
             
              
         	
-                 <div class="clearfix"><!-- --></div>       
+                       
             
                 
-                <div class="clearfix"><!-- --></div>     
+                    
                 <?php 
                 /**
                  * This hook gives a chance to append content after the active form fields.
@@ -102,13 +104,13 @@ if ($viewCollection->renderContent) {
                     'form'          => $form    
                 )));
                 ?> 
-                <div class="clearfix"><!-- --></div>
+                
             </div>
             <div class="box-footer">
-                <div class="pull-right">
+                <div class="pull-right m-4">
                     <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
                 </div>
-                <div class="clearfix"><!-- --></div>
+                
             </div>
         </div>
         <?php 

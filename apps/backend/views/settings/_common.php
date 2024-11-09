@@ -3,11 +3,11 @@
  
  
 ?>
-<div class="box box-primary">
-    <div class="box-header">
-        <h3 class="box-title"><?php echo Yii::t('settings', 'Common settings')?></h3>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title"><?php echo Yii::t('settings', 'Common settings')?></h3>
     </div>
-    <div class="box-body">
+    <div class="card-body">
         <?php 
         /**
          * This hook gives a chance to prepend content before the active form fields.
@@ -21,91 +21,81 @@
         )));
         ?>
         <div class="clearfix"><!-- --></div>
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'site_name');?><?php echo $commonModel->createTransLink('site_name');?>
-            <?php echo $form->textField($commonModel, 'site_name', $commonModel->getHtmlOptions('site_name')); ?>
-            <?php echo $form->error($commonModel, 'site_name');?>
+        <div class="row">
+
+            <div class="form-group col-lg-6">
+                <?php echo $form->labelEx($commonModel, 'site_name');?><?php echo $commonModel->createTransLink('site_name');?>
+                <?php echo $form->textField($commonModel, 'site_name', $commonModel->getHtmlOptions('site_name')); ?>
+                <?php echo $form->error($commonModel, 'site_name');?>
+            </div>
+            <div class="form-group col-lg-6">
+                <?php echo $form->labelEx($commonModel, 'copywrite_name');?><?php echo $commonModel->createTransLink('copywrite_name');?>
+                <?php echo $form->textField($commonModel, 'copywrite_name', $commonModel->getHtmlOptions('copywrite_name')); ?>
+                <?php echo $form->error($commonModel, 'copywrite_name');?>
+            </div>
+            <div class="form-group col-lg-6 mt-2">
+                <?php echo $form->labelEx($commonModel, 'site_tagline');?>
+                <?php echo $form->textField($commonModel, 'site_tagline', $commonModel->getHtmlOptions('site_tagline')); ?>
+                <?php echo $form->error($commonModel, 'site_tagline');?>
+            </div>    
+            <div class="form-group col-lg-3 mt-2">
+               <?php echo $form->labelEx($commonModel, 'defalut_currency');?>
+               <?php echo $form->textField($commonModel, 'defalut_currency', $commonModel->getHtmlOptions('defalut_currency')); ?>
+               <?php echo $form->error($commonModel, 'defalut_currency');?>
+           </div>   
+            <div class="form-group col-lg-3 mt-2">
+               <?php echo $form->labelEx($commonModel, 'usd_val');?>
+               <?php echo $form->textField($commonModel, 'usd_val', $commonModel->getHtmlOptions('usd_val')); ?>
+               <?php echo $form->error($commonModel, 'usd_val');?>
+           </div>   
+            <div class="form-group col-lg-6 mt-2">
+               <?php echo $form->labelEx($commonModel, 'support_phone');?>
+               <?php echo $form->textField($commonModel, 'support_phone', $commonModel->getHtmlOptions('support_phone')); ?>
+               <?php echo $form->error($commonModel, 'support_phone');?>
+           </div>   
+            <div class="form-group col-lg-6 mt-2">
+               <?php echo $form->labelEx($commonModel, 'support_email');?>
+               <?php echo $form->textField($commonModel, 'support_email', $commonModel->getHtmlOptions('support_email')); ?>
+               <?php echo $form->error($commonModel, 'support_email');?>
+           </div>   
+            <div class="form-group col-lg-6 mt-2">
+               <?php echo $form->labelEx($commonModel, 'admin_email');?>
+               <?php echo $form->textField($commonModel, 'admin_email', $commonModel->getHtmlOptions('admin_email')); ?>
+               <?php echo $form->error($commonModel, 'admin_email');?>
+           </div>   
+            <div class="form-group col-lg-6 mt-2">
+               <?php echo $form->labelEx($commonModel, 'contact_phone');?>
+               <?php echo $form->textField($commonModel, 'contact_phone', $commonModel->getHtmlOptions('contact_phone')); ?>
+               <?php echo $form->error($commonModel, 'contact_phone');?>
+           </div>   
+           
+            <div class="form-group col-lg-6 mt-2">
+               <?php echo $form->labelEx($commonModel, 'contact_email');?>
+               <?php echo $form->textField($commonModel, 'contact_email', $commonModel->getHtmlOptions('contact_email')); ?>
+               <?php echo $form->error($commonModel, 'contact_email');?>
+           </div>   
+           
+            <div class="form-group col-lg-3 mt-2">
+               <?php echo $form->labelEx($commonModel, 'contact_fax');?>
+               <?php echo $form->textField($commonModel, 'contact_fax', $commonModel->getHtmlOptions('contact_fax')); ?>
+               <?php echo $form->error($commonModel, 'contact_fax');?>
+           </div>   
+             <div class="form-group col-lg-3 mt-2">
+               <?php echo $form->labelEx($commonModel, 'contact_phone_hide_with');?>
+               <?php echo $form->textField($commonModel, 'contact_phone_hide_with', $commonModel->getHtmlOptions('contact_phone_hide_with')); ?>
+               <?php echo $form->error($commonModel, 'contact_phone_hide_with');?>
+           </div>   
+            <div class="form-group col-lg-12 mt-2">
+               <?php echo $form->labelEx($commonModel, 'contact_address');?><?php echo $commonModel->createTransLink('contact_address');?> 
+               <?php echo $form->textArea($commonModel, 'contact_address', $commonModel->getHtmlOptions('contact_address')); ?>
+               <?php echo $form->error($commonModel, 'contact_address');?>
+           </div>   
+            <div class="form-group col-lg-12 mt-2">
+               <?php echo $form->labelEx($commonModel, 'office_timing');?><?php echo $commonModel->createTransLink('office_timing');?> 
+               <?php echo $form->textArea($commonModel, 'office_timing', $commonModel->getHtmlOptions('office_timing')); ?>
+               <?php echo $form->error($commonModel, 'office_timing');?>
+           </div>  
         </div>
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'copywrite_name');?><?php echo $commonModel->createTransLink('copywrite_name');?>
-            <?php echo $form->textField($commonModel, 'copywrite_name', $commonModel->getHtmlOptions('copywrite_name')); ?>
-            <?php echo $form->error($commonModel, 'copywrite_name');?>
-        </div>
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'site_tagline');?>
-            <?php echo $form->textField($commonModel, 'site_tagline', $commonModel->getHtmlOptions('site_tagline')); ?>
-            <?php echo $form->error($commonModel, 'site_tagline');?>
-        </div>    
-        <?php /*
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'site_description');?>
-            <?php echo $form->textField($commonModel, 'site_description', $commonModel->getHtmlOptions('site_description')); ?>
-            <?php echo $form->error($commonModel, 'site_description');?>
-        </div>
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'site_keywords');?>
-            <?php echo $form->textField($commonModel, 'site_keywords', $commonModel->getHtmlOptions('site_keywords')); ?>
-            <?php echo $form->error($commonModel, 'site_keywords');?>
-        </div>  
-        * */
-        ?>
-         <div class="form-group col-lg-3">
-            <?php echo $form->labelEx($commonModel, 'defalut_currency');?>
-            <?php echo $form->textField($commonModel, 'defalut_currency', $commonModel->getHtmlOptions('defalut_currency')); ?>
-            <?php echo $form->error($commonModel, 'defalut_currency');?>
-        </div>   
-         <div class="form-group col-lg-3">
-            <?php echo $form->labelEx($commonModel, 'usd_val');?>
-            <?php echo $form->textField($commonModel, 'usd_val', $commonModel->getHtmlOptions('usd_val')); ?>
-            <?php echo $form->error($commonModel, 'usd_val');?>
-        </div>   
-         <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'support_phone');?>
-            <?php echo $form->textField($commonModel, 'support_phone', $commonModel->getHtmlOptions('support_phone')); ?>
-            <?php echo $form->error($commonModel, 'support_phone');?>
-        </div>   
-         <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'support_email');?>
-            <?php echo $form->textField($commonModel, 'support_email', $commonModel->getHtmlOptions('support_email')); ?>
-            <?php echo $form->error($commonModel, 'support_email');?>
-        </div>   
-         <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'admin_email');?>
-            <?php echo $form->textField($commonModel, 'admin_email', $commonModel->getHtmlOptions('admin_email')); ?>
-            <?php echo $form->error($commonModel, 'admin_email');?>
-        </div>   
-         <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'contact_phone');?>
-            <?php echo $form->textField($commonModel, 'contact_phone', $commonModel->getHtmlOptions('contact_phone')); ?>
-            <?php echo $form->error($commonModel, 'contact_phone');?>
-        </div>   
-        
-         <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'contact_email');?>
-            <?php echo $form->textField($commonModel, 'contact_email', $commonModel->getHtmlOptions('contact_email')); ?>
-            <?php echo $form->error($commonModel, 'contact_email');?>
-        </div>   
-        
-         <div class="form-group col-lg-3">
-            <?php echo $form->labelEx($commonModel, 'contact_fax');?>
-            <?php echo $form->textField($commonModel, 'contact_fax', $commonModel->getHtmlOptions('contact_fax')); ?>
-            <?php echo $form->error($commonModel, 'contact_fax');?>
-        </div>   
-          <div class="form-group col-lg-3">
-            <?php echo $form->labelEx($commonModel, 'contact_phone_hide_with');?>
-            <?php echo $form->textField($commonModel, 'contact_phone_hide_with', $commonModel->getHtmlOptions('contact_phone_hide_with')); ?>
-            <?php echo $form->error($commonModel, 'contact_phone_hide_with');?>
-        </div>   
-         <div class="form-group col-lg-12">
-            <?php echo $form->labelEx($commonModel, 'contact_address');?><?php echo $commonModel->createTransLink('contact_address');?> 
-            <?php echo $form->textArea($commonModel, 'contact_address', $commonModel->getHtmlOptions('contact_address')); ?>
-            <?php echo $form->error($commonModel, 'contact_address');?>
-        </div>   
-         <div class="form-group col-lg-12">
-            <?php echo $form->labelEx($commonModel, 'office_timing');?><?php echo $commonModel->createTransLink('office_timing');?> 
-            <?php echo $form->textArea($commonModel, 'office_timing', $commonModel->getHtmlOptions('office_timing')); ?>
-            <?php echo $form->error($commonModel, 'office_timing');?>
-        </div>  
          <div class="clearfix"><!-- --></div>
          <?php /* 
         <hr />
@@ -137,16 +127,18 @@
         <hr />
         <h4><?php echo Yii::t('settings', 'Cookie Settings')?></h4>
         <hr />
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'cookie_text');?>
-            <?php echo $form->textField($commonModel, 'cookie_text', $commonModel->getHtmlOptions('cookie_text')); ?>
-            <?php echo $form->error($commonModel, 'cookie_text');?>
-        </div>    
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'cookie_url_more');?>
-            <?php echo $form->textField($commonModel, 'cookie_url_more', $commonModel->getHtmlOptions('cookie_url_more')); ?>
-            <?php echo $form->error($commonModel, 'cookie_url_more');?>
-        </div>    
+        <div class="row">
+            <div class="form-group col-lg-6 mt-2">
+                <?php echo $form->labelEx($commonModel, 'cookie_text');?>
+                <?php echo $form->textField($commonModel, 'cookie_text', $commonModel->getHtmlOptions('cookie_text')); ?>
+                <?php echo $form->error($commonModel, 'cookie_text');?>
+            </div>    
+            <div class="form-group col-lg-6 mt-2">
+                <?php echo $form->labelEx($commonModel, 'cookie_url_more');?>
+                <?php echo $form->textField($commonModel, 'cookie_url_more', $commonModel->getHtmlOptions('cookie_url_more')); ?>
+                <?php echo $form->error($commonModel, 'cookie_url_more');?>
+            </div>    
+        </div>
           
          <?php /* 
        <div class="clearfix"><!-- --></div>
@@ -185,51 +177,56 @@
         <hr />
         <h4><?php echo Yii::t('settings', 'Blog Settings')?></h4>
         <hr />
-        <div class="form-group col-lg-4">
-            <?php echo $form->labelEx($commonModel, 'blog_link');?>
-            <?php echo $form->textField($commonModel, 'blog_link', $commonModel->getHtmlOptions('blog_link')); ?>
-            <?php echo $form->error($commonModel, 'blog_link');?>
-        </div>    
-        <div class="form-group col-lg-4">
-            <?php echo $form->labelEx($commonModel, 'home_blob_title');?>
-            <?php echo $form->textField($commonModel, 'home_blob_title', $commonModel->getHtmlOptions('home_blob_title')); ?>
-            <?php echo $form->error($commonModel, 'home_blob_title');?>
-        </div>    
-        <div class="form-group col-lg-4">
-            <?php echo $form->labelEx($commonModel, 'enable_blog_home');?>
-             <?php echo $form->dropDownList($commonModel, 'enable_blog_home', $commonModel->getYesNoOptions(), $commonModel->getHtmlOptions('enable_blog_home')); ?>
-            <?php echo $form->error($commonModel, 'enable_blog_home');?>
-        </div>    
+        <div class="row">
+            <div class="form-group col-lg-4 mt-2">
+                <?php echo $form->labelEx($commonModel, 'blog_link');?>
+                <?php echo $form->textField($commonModel, 'blog_link', $commonModel->getHtmlOptions('blog_link')); ?>
+                <?php echo $form->error($commonModel, 'blog_link');?>
+            </div>    
+            <div class="form-group col-lg-4 mt-2">
+                <?php echo $form->labelEx($commonModel, 'home_blob_title');?>
+                <?php echo $form->textField($commonModel, 'home_blob_title', $commonModel->getHtmlOptions('home_blob_title')); ?>
+                <?php echo $form->error($commonModel, 'home_blob_title');?>
+            </div>    
+            <div class="form-group col-lg-4 mt-2">
+                <?php echo $form->labelEx($commonModel, 'enable_blog_home');?>
+                 <?php echo $form->dropDownList($commonModel, 'enable_blog_home', $commonModel->getYesNoOptions(), $commonModel->getHtmlOptions('enable_blog_home')); ?>
+                <?php echo $form->error($commonModel, 'enable_blog_home');?>
+            </div>    
+        </div>
         <div class="clearfix"><!-- --></div>
         <hr />
         <h4><?php echo Yii::t('settings', 'Social Pages')?></h4>
         <hr />
-        <div class="form-group col-lg-4">
-            <?php echo $form->labelEx($commonModel, 'facebook_url');?>
-            <?php echo $form->textField($commonModel, 'facebook_url', $commonModel->getHtmlOptions('facebook_url')); ?>
-            <?php echo $form->error($commonModel, 'facebook_url');?>
-        </div>    
-        <div class="form-group col-lg-4">
-            <?php echo $form->labelEx($commonModel, 'twitter_url');?>
-            <?php echo $form->textField($commonModel, 'twitter_url', $commonModel->getHtmlOptions('twitter_url')); ?>
-            <?php echo $form->error($commonModel, 'twitter_url');?>
-        </div>    
-        <div class="form-group col-lg-4  ">
-            <?php echo $form->labelEx($commonModel, 'pinterest_url');?>
-            <?php echo $form->textField($commonModel, 'pinterest_url', $commonModel->getHtmlOptions('pinterest_url')); ?>
-            <?php echo $form->error($commonModel, 'pinterest_url');?>
-        </div>    
-        <div class="form-group col-lg-4">
-            <?php echo $form->labelEx($commonModel, 'google_plus_url');?>
-            <?php echo $form->textField($commonModel, 'google_plus_url', $commonModel->getHtmlOptions('google_plus_url')); ?>
-            <?php echo $form->error($commonModel, 'google_plus_url');?>
-        </div>    
-        <div class="form-group col-lg-6 hide">
-            <?php echo $form->labelEx($commonModel, 'linked_in');?>
-            <?php echo $form->textField($commonModel, 'linked_in', $commonModel->getHtmlOptions('linked_in')); ?>
-            <?php echo $form->error($commonModel, 'linked_in');?>
-        </div>    
-          
+        <div class="row">
+
+            <div class="form-group col-lg-4 mt-2">
+                <?php echo $form->labelEx($commonModel, 'facebook_url');?>
+                <?php echo $form->textField($commonModel, 'facebook_url', $commonModel->getHtmlOptions('facebook_url')); ?>
+                <?php echo $form->error($commonModel, 'facebook_url');?>
+            </div>    
+            <div class="form-group col-lg-4 mt-2">
+                <?php echo $form->labelEx($commonModel, 'twitter_url');?>
+                <?php echo $form->textField($commonModel, 'twitter_url', $commonModel->getHtmlOptions('twitter_url')); ?>
+                <?php echo $form->error($commonModel, 'twitter_url');?>
+            </div>    
+            <div class="form-group col-lg-4 mt-2  ">
+                <?php echo $form->labelEx($commonModel, 'pinterest_url');?>
+                <?php echo $form->textField($commonModel, 'pinterest_url', $commonModel->getHtmlOptions('pinterest_url')); ?>
+                <?php echo $form->error($commonModel, 'pinterest_url');?>
+            </div>    
+            <div class="form-group col-lg-6 mt-2">
+                <?php echo $form->labelEx($commonModel, 'google_plus_url');?>
+                <?php echo $form->textField($commonModel, 'google_plus_url', $commonModel->getHtmlOptions('google_plus_url')); ?>
+                <?php echo $form->error($commonModel, 'google_plus_url');?>
+            </div>    
+            <div class="form-group col-lg-6 mt-2 hide">
+                <?php echo $form->labelEx($commonModel, 'linked_in');?>
+                <?php echo $form->textField($commonModel, 'linked_in', $commonModel->getHtmlOptions('linked_in')); ?>
+                <?php echo $form->error($commonModel, 'linked_in');?>
+            </div>    
+              
+        </div>
        <div class="clearfix"><!-- --></div>
           <div class="clearfix"><!-- --></div>
           <?php /*
@@ -463,81 +460,85 @@
         </div> 
         */
         ?>
-        <div class="clearfix"><!-- --></div>   
-        <div class="form-group col-lg-4">
-            <?php echo $form->labelEx($commonModel, 'frontend_default_ad_status');?>
-            <?php echo $form->dropDownList($commonModel, 'frontend_default_ad_status',PlaceAnAd::model()->statusArray(), $commonModel->getHtmlOptions('frontend_default_ad_status')); ?>
-            <?php echo $form->error($commonModel, 'frontend_default_ad_status');?>
-        </div>
-         <div class="form-group col-lg-4">
-            <?php echo $form->labelEx($commonModel, 'frontend_default_ad_image_status');?>
-            <?php echo $form->dropDownList($commonModel, 'frontend_default_ad_image_status',array('A'=>'Active','I'=>'Inactive'), $commonModel->getHtmlOptions('frontend_default_ad_image_status')); ?>
-            <?php echo $form->error($commonModel, 'frontend_default_ad_image_status');?>
-        </div>
+        <div class="clearfix"><!-- --></div>  
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <?php echo $form->labelEx($commonModel, 'frontend_default_ad_status');?>
+                <?php echo $form->dropDownList($commonModel, 'frontend_default_ad_status',PlaceAnAd::model()->statusArray(), $commonModel->getHtmlOptions('frontend_default_ad_status')); ?>
+                <?php echo $form->error($commonModel, 'frontend_default_ad_status');?>
+            </div>
+             <div class="form-group col-lg-6">
+                <?php echo $form->labelEx($commonModel, 'frontend_default_ad_image_status');?>
+                <?php echo $form->dropDownList($commonModel, 'frontend_default_ad_image_status',array('A'=>'Active','I'=>'Inactive'), $commonModel->getHtmlOptions('frontend_default_ad_image_status')); ?>
+                <?php echo $form->error($commonModel, 'frontend_default_ad_image_status');?>
+            </div>
+        </div> 
        <div class="clearfix"><!-- --></div>
       
         <hr />
         <h4><?php echo Yii::t('settings', 'SEO Friendly')?></h4>
         <hr />
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'home_meta_title');?><?php echo $commonModel->createTransLink('home_meta_title');?>
-            <?php echo $form->textField($commonModel, 'home_meta_title', $commonModel->getHtmlOptions('home_meta_title')); ?>
-            <?php echo $form->error($commonModel, 'home_meta_title');?>
-        </div>    
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'home_meta_keywords');?><?php echo $commonModel->createTransLink('home_meta_keywords');?>
-            <?php echo $form->textField($commonModel, 'home_meta_keywords', $commonModel->getHtmlOptions('home_meta_keywords')); ?>
-            <?php echo $form->error($commonModel, 'home_meta_keywords');?>
-        </div>    
-        <div class="form-group col-lg-12">
-            <?php echo $form->labelEx($commonModel, 'home_meta_description');?><?php echo $commonModel->createTransLink('home_meta_description');?>
-            <?php echo $form->textArea($commonModel, 'home_meta_description', $commonModel->getHtmlOptions('home_meta_description')); ?>
-            <?php echo $form->error($commonModel, 'home_meta_description');?>
-        </div>    
-        
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'facebook_app_id');?>
-            <?php echo $form->textField($commonModel, 'facebook_app_id', $commonModel->getHtmlOptions('facebook_app_id')); ?>
-            <?php echo $form->error($commonModel, 'facebook_app_id');?>
-        </div>    
-       
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'facebook_seceret_key');?>
-            <?php echo $form->textField($commonModel, 'facebook_seceret_key', $commonModel->getHtmlOptions('facebook_seceret_key')); ?>
-            <?php echo $form->error($commonModel, 'facebook_seceret_key');?>
-        </div>    
-          <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'google_app_id');?>
-            <?php echo $form->textField($commonModel, 'google_app_id', $commonModel->getHtmlOptions('google_app_id')); ?>
-            <?php echo $form->error($commonModel, 'google_app_id');?>
-        </div>    
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'google_client_secret');?>
-            <?php echo $form->textField($commonModel, 'google_client_secret', $commonModel->getHtmlOptions('google_client_secret')); ?>
-            <?php echo $form->error($commonModel, 'google_client_secret');?>
-        </div>    
-        
-         <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'google_map_api_key');?>
-            <?php echo $form->textField($commonModel, 'google_map_api_key', $commonModel->getHtmlOptions('google_map_api_key')); ?>
-            <?php echo $form->error($commonModel, 'google_map_api_key');?>
-        </div>       
-          <div class="form-group col-lg-12 hide">
-            <?php echo $form->labelEx($commonModel, 'google_analytics_code');?>
-            <?php echo $form->textArea($commonModel, 'google_analytics_code', $commonModel->getHtmlOptions('google_analytics_code')); ?>
-            <?php echo $form->error($commonModel, 'google_analytics_code');?>
-        </div> 
-        <div class="clearfix"></div>
-          <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 're_captcha_key');?>
-            <?php echo $form->textField($commonModel, 're_captcha_key', $commonModel->getHtmlOptions('re_captcha_key')); ?>
-            <?php echo $form->error($commonModel, 're_captcha_key');?>
-        </div>       
-          <div class="form-group col-lg-6  ">
-            <?php echo $form->labelEx($commonModel, 're_captcha_secret');?>
-            <?php echo $form->textField($commonModel, 're_captcha_secret', $commonModel->getHtmlOptions('re_captcha_secret')); ?>
-            <?php echo $form->error($commonModel, 're_captcha_secret');?>
-        </div> 
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <?php echo $form->labelEx($commonModel, 'home_meta_title');?><?php echo $commonModel->createTransLink('home_meta_title');?>
+                <?php echo $form->textField($commonModel, 'home_meta_title', $commonModel->getHtmlOptions('home_meta_title')); ?>
+                <?php echo $form->error($commonModel, 'home_meta_title');?>
+            </div>    
+            <div class="form-group col-lg-6">
+                <?php echo $form->labelEx($commonModel, 'home_meta_keywords');?><?php echo $commonModel->createTransLink('home_meta_keywords');?>
+                <?php echo $form->textField($commonModel, 'home_meta_keywords', $commonModel->getHtmlOptions('home_meta_keywords')); ?>
+                <?php echo $form->error($commonModel, 'home_meta_keywords');?>
+            </div>    
+            <div class="form-group col-lg-12 mt-2">
+                <?php echo $form->labelEx($commonModel, 'home_meta_description');?><?php echo $commonModel->createTransLink('home_meta_description');?>
+                <?php echo $form->textArea($commonModel, 'home_meta_description', $commonModel->getHtmlOptions('home_meta_description')); ?>
+                <?php echo $form->error($commonModel, 'home_meta_description');?>
+            </div>    
+            
+            <div class="form-group col-lg-6 mt-2">
+                <?php echo $form->labelEx($commonModel, 'facebook_app_id');?>
+                <?php echo $form->textField($commonModel, 'facebook_app_id', $commonModel->getHtmlOptions('facebook_app_id')); ?>
+                <?php echo $form->error($commonModel, 'facebook_app_id');?>
+            </div>    
+           
+            <div class="form-group col-lg-6 mt-2">
+                <?php echo $form->labelEx($commonModel, 'facebook_seceret_key');?>
+                <?php echo $form->textField($commonModel, 'facebook_seceret_key', $commonModel->getHtmlOptions('facebook_seceret_key')); ?>
+                <?php echo $form->error($commonModel, 'facebook_seceret_key');?>
+            </div>    
+              <div class="form-group col-lg-6 mt-2">
+                <?php echo $form->labelEx($commonModel, 'google_app_id');?>
+                <?php echo $form->textField($commonModel, 'google_app_id', $commonModel->getHtmlOptions('google_app_id')); ?>
+                <?php echo $form->error($commonModel, 'google_app_id');?>
+            </div>    
+            <div class="form-group col-lg-6 mt-2">
+                <?php echo $form->labelEx($commonModel, 'google_client_secret');?>
+                <?php echo $form->textField($commonModel, 'google_client_secret', $commonModel->getHtmlOptions('google_client_secret')); ?>
+                <?php echo $form->error($commonModel, 'google_client_secret');?>
+            </div>    
+            
+             <div class="form-group col-lg-12 mt-2">
+                <?php echo $form->labelEx($commonModel, 'google_map_api_key');?>
+                <?php echo $form->textField($commonModel, 'google_map_api_key', $commonModel->getHtmlOptions('google_map_api_key')); ?>
+                <?php echo $form->error($commonModel, 'google_map_api_key');?>
+            </div>       
+              <div class="form-group col-lg-12 mt-2 hide">
+                <?php echo $form->labelEx($commonModel, 'google_analytics_code');?>
+                <?php echo $form->textArea($commonModel, 'google_analytics_code', $commonModel->getHtmlOptions('google_analytics_code')); ?>
+                <?php echo $form->error($commonModel, 'google_analytics_code');?>
+            </div> 
+            <div class="clearfix"></div>
+              <div class="form-group col-lg-6 mt-2">
+                <?php echo $form->labelEx($commonModel, 're_captcha_key');?>
+                <?php echo $form->textField($commonModel, 're_captcha_key', $commonModel->getHtmlOptions('re_captcha_key')); ?>
+                <?php echo $form->error($commonModel, 're_captcha_key');?>
+            </div>       
+              <div class="form-group col-lg-6 mt-2  ">
+                <?php echo $form->labelEx($commonModel, 're_captcha_secret');?>
+                <?php echo $form->textField($commonModel, 're_captcha_secret', $commonModel->getHtmlOptions('re_captcha_secret')); ?>
+                <?php echo $form->error($commonModel, 're_captcha_secret');?>
+            </div> 
+        </div>
         
         <?php
         /*
@@ -712,16 +713,18 @@
         <hr />
         <h4><?php echo Yii::t('settings', 'Pagination / Time info')?></h4>
         <hr />
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'backend_page_size');?>
-            <?php echo $form->dropDownList($commonModel, 'backend_page_size', $commonModel->paginationOptions->getOptionsList(), $commonModel->getHtmlOptions('backend_page_size')); ?>
-            <?php echo $form->error($commonModel, 'backend_page_size');?>
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <?php echo $form->labelEx($commonModel, 'backend_page_size');?>
+                <?php echo $form->dropDownList($commonModel, 'backend_page_size', $commonModel->paginationOptions->getOptionsList(), $commonModel->getHtmlOptions('backend_page_size')); ?>
+                <?php echo $form->error($commonModel, 'backend_page_size');?>
+            </div>
+            <div class="form-group col-lg-6">
+                <?php echo $form->labelEx($commonModel, 'customer_page_size');?>
+                <?php echo $form->dropDownList($commonModel, 'customer_page_size', $commonModel->paginationOptions->getOptionsList(), $commonModel->getHtmlOptions('customer_page_size')); ?>
+                <?php echo $form->error($commonModel, 'customer_page_size');?>
+            </div>  
         </div>
-        <div class="form-group col-lg-6">
-            <?php echo $form->labelEx($commonModel, 'customer_page_size');?>
-            <?php echo $form->dropDownList($commonModel, 'customer_page_size', $commonModel->paginationOptions->getOptionsList(), $commonModel->getHtmlOptions('customer_page_size')); ?>
-            <?php echo $form->error($commonModel, 'customer_page_size');?>
-        </div>  
         <div class="clearfix"><!-- --></div>
    
         <div class="clearfix"><!-- --></div>

@@ -43,12 +43,12 @@ class ContactUs extends ActiveRecord
             array('phone', 'length', 'max'=>14),
             array('email', 'email','message'=>$this->mTag()->getTag('enter_a_valid_email_address.','Enter a valid email address.')),
             array('ip_address', 'safe'),
-              array('_recaptcha', 'validateRecaptcha' ,"on"=>'insert' ),
+              array('_recaptcha', 'validateRecaptcha' ,"on"=>'insert','except' => 'ai_bot' ),
            // array('verifyCode', 'CaptchaExtendedValidator', 'allowEmpty'=>!CCaptcha::checkRequirements(), 'captchaAction' => 'site/captcha'),
            // array('verifyCode', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, type, email, name, meassage, city, date', 'safe', 'on'=>'search'),
+            array('id, type, email, ai_bot, name, meassage, city, date', 'safe', 'on'=>'search'),
         );
     }
     public function validateRecaptcha($attribute,$params){
@@ -176,6 +176,9 @@ class ContactUs extends ActiveRecord
         $criteria->compare('type',$this->type);
         $criteria->compare('email',$this->email,true);
         $criteria->compare('name',$this->name,true);
+		if ($this->ai_bot == 1) {
+			$criteria->compare('ai_bot', 1);
+		}
         $criteria->compare('meassage',$this->meassage,true);
         $criteria->compare('city',$this->city,true);
         $criteria->compare('date',$this->date,true);

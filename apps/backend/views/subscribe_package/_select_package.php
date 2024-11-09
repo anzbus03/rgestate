@@ -46,9 +46,9 @@ if ($viewCollection->renderContent) {
         .margin-bottom-25 { margin-bottom: 25px; }
         </style>
         <div class="box box-primary  ">
-            <div class="box-header">
+            <div class="card-header">
                 <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
+                    <h3 class="card-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$order->isNewRecord) { ?>
@@ -58,7 +58,7 @@ if ($viewCollection->renderContent) {
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
-            <div class="box-body">
+            <div class="card-body">
 				
 				   <?php 
 $video_packages = Package::model()->findFromCategoryID(2);

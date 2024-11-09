@@ -20,12 +20,12 @@
 <div class=" col-sm-12 no-padding-left pull-left spl-no-padding-mob">
 				<div class="user_details only-mob margin-top-5 no-padding text-center">
 				            							<?php
-							if(!empty($model->puser_id)){ 
-							echo '<div style="width:100%;">';
-							$this->renderPartial('_agentDetais');
-							echo '</div>';
+							// if(!empty($model->puser_id)){ 
+							// echo '<div style="width:100%;">';
+							// $this->renderPartial('_agentDetais');
+							// echo '</div>';
 							?>
-							<?php }else { ?>
+							<?php // }else { ?>
 
 							<div class="img_dev mobe  " style="width:100%;  text-align: center;    display: block;margin: auto;    width:55px!important;    height:55px!important;    ">
 							<?php 
@@ -71,7 +71,7 @@
 							<?php } ?>
 							<p class="margin-bottom-0 margin-top-5 sal-dec"><?php echo CHtml::link($this->tag->getTag('sale','Sale').'('.(int)$total_rest['sale_total'].')',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-sale','dealer'=>$model->user_slug)),array('class'=>'sale_link'));?> ,    <?php echo CHtml::link($this->tag->getTag('rent','Rent').'('.(int)$total_rest['rent_total'].')',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-rent','dealer'=>$model->user_slug)),array('class'=>'rent_link'));?></p>
 							</div> 
-                            <?php } ?> 
+                            <?php // } ?> 
 							<div class="clearfix"></div>
 							</div>
 						

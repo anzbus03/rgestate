@@ -667,12 +667,12 @@ observer.observe();
 		                    </style>
 							<div class="user_details margin-top-5 no-padding text-center">
 							 <?php
-							if(!empty($model->puser_id)){ 
+							// if(!empty($model->puser_id)){ 
 								
-								$this->renderPartial('_agentDetais');
+								// $this->renderPartial('_agentDetais');
 								?>
-							<?php }
-							else{ 
+							<?php// }
+							// else{ 
 							?>
 							<div class="img_dev mobe " style="width:70px; text-align: center;margin:auto;    ">
 							<?php 
@@ -719,7 +719,7 @@ observer.observe();
 							<?php } ?>
 							<p class="margin-bottom-0 margin-top-5 hide"><?php echo CHtml::link($this->tag->getTag('sale','Sale').'('.(int)$total_rest['sale_total'].')',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-sale','dealer'=>$model->user_slug)),array('class'=>'sale_link'));?> ,    <?php echo CHtml::link($this->tag->getTag('rent','Rent').'('.(int)$total_rest['rent_total'].')',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-rent','dealer'=>$model->user_slug)),array('class'=>'rent_link'));?></p>
 							</div> 
-                            <?php } ?>
+                            <?php // } ?>
 							<div class="clearfix"></div>
 							</div>
 

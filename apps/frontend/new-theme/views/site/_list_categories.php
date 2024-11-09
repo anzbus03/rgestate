@@ -1,7 +1,7 @@
 <?php 
  
 $cityDats = Category::model()->ListDataForJSON_ID_BySEctionNewSlugNtCacheWithId(''); 
- 
+//  print_r($cityDats['Commercial Plots']);
 $adModelCriteria =	$adModel->findAds($formData ,false,true); 
 
 $adModelCriteria->select = 't.category_id as category_name,count(t.id) as id  ';
@@ -35,15 +35,15 @@ if(!empty($new_homes)){
    
     echo '<ul class="list-inline-item   col-sm-12 ">';
     foreach($new_homes as $k=>$v){
-        
-         if(isset($cityDats[$v->category_name])){
-             $data1 = $cityDats[$v->category_name]; 
-             
-             $name = $data1['name'];
-             $slug = $data1['slug'];
+        if(isset($cityDats[$v->category_name])){
+            $data1 = $cityDats[$v->category_name]; 
+            // print_r($data1['name']);
+            
+            $name = $data1['name'];
+            $slug = $data1['slug'];
          }else{
-             echo $v->category_name;  
-             continue; 
+            echo $v->category_name;  
+            continue; 
          }
          
 		 $formData1 = $formData; 

@@ -90,8 +90,6 @@ class CategoryController extends Controller
     
     public function actionCreate()
     {
-        print_r('asd');
-        exit;
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         $model = new Category();

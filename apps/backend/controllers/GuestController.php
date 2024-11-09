@@ -38,13 +38,30 @@ class GuestController extends Controller
         $model = new UserLogin();
         $request = Yii::app()->request;
         // print_r(UserLogin::all());
+      
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
-// 			print_r($attributes);
             $model->attributes = $attributes;
             if ($model->validate()) {
-                $this->redirect(Yii::app()->user->returnUrl);
+                // If the login is successful, check the user's rules
+                $user = User::model()->findByPk(Yii::app()->user->id);  // Fetch the current logged-in user's details
+                
+                if ($user) {
+                    // Redirect based on the user's role (rules)
+                    if ($user->rules == 2) {
+                        $this->redirect(array('account/index')); // Redirect to agents/index for agency users
+                    } elseif ($user->rules == 3) {
+                        $this->redirect(array('account/index')); // Redirect to profile/index for agents
+                    } else {
+                        // Use the default redirect for other roles
+                        $this->redirect(Yii::app()->user->returnUrl);
+                    }
+                } else {
+                    // In case no user is found, use the default redirect
+                    $this->redirect(Yii::app()->user->returnUrl);
+                }
             }
         }
+        
         // print_r("ASD");
         $this->setData(array(
             'pageMetaTitle' => Yii::app()->options->get('system.common.site_name') . ' | '. Yii::t('users', 'Please login'), 

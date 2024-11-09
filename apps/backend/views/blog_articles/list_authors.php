@@ -26,10 +26,32 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
-    <div class="box box-primary">
-        <div class="box-header">
-            <div class="pull-left">
-                <h3 class="box-title">
+    <style>
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card-header-left {
+            flex: 1;
+        }
+
+        .card-header-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .card-header-right .btn {
+            margin-left: 5px;
+        }
+    </style>
+    <div class="card card-primary">
+
+        <div class="card-header">
+            <div class="card-header-left">
+                <h3 class="card-title">
                     <span class="glyphicon glyphicon-book"></span> <?php echo Yii::t('articles', 'Authors');?>
                 </h3>
             </div>
@@ -39,7 +61,7 @@ if ($viewCollection->renderContent) { ?>
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="box-body">
+        <div class="card-body">
             <div class="table-responsive">
             <?php 
             /**
@@ -56,66 +78,43 @@ if ($viewCollection->renderContent) { ?>
             )));
             
             // and render if allowed
-            if ($collection->renderGrid) {
-                $this->widget('zii.widgets.grid.CGridView', $hooks->applyFilters('grid_view_properties', array(
-                    'ajaxUrl'           => $this->createUrl($this->route),
-                    'id'                => $authors->modelName.'-grid',
-                    'dataProvider'      => $authors->search(),
-                    'filter'            => $authors,
-                    'filterPosition'    => 'body',
-                    'filterCssClass'    => 'grid-filter-cell',
-                    'itemsCssClass'     => 'table table-bordered table-hover table-striped',
-                    'selectableRows'    => 0,
-                    'enableSorting'     => false,
-                    'cssFile'           => false,
-                    'pagerCssClass'     => 'pagination pull-right',
-                    'pager'             => array(
-                        'class'         => 'CLinkPager',
-                        'cssFile'       => false,
-                        'header'        => false,
-                        'htmlOptions'   => array('class' => 'pagination')
-                    ),
-                    'columns' => $hooks->applyFilters('grid_view_columns', array(
-                        array(
-                            'name'  => 'name',
-                            'value' => '$data->name',
-                        ),
-                        array(
-                            'name'      => 'date_added',
-                            'value'     => '$data->dateAdded',
-                            'filter'    => false,
-                        ),
-                        array(
-                            'name'      => 'last_updated',
-                            'value'     => '$data->lastUpdated',
-                            'filter'    => false,
-                        ),
-                        array(
-                            'class'     => 'CButtonColumn',
-                            'header'    => Yii::t('app', 'Options'),
-                            'footer'    => $authors->paginationOptions->getGridFooterPagination(),
-                            'buttons'   => array(
-                                'update' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
-                                    'url'       => 'Yii::app()->createUrl("blog_articles/update_author", array("id" => $data->author_id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
-                                ),
-                                'delete' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
-                                    'url'       => 'Yii::app()->createUrl("blog_articles/delete_author", array("id" => $data->author_id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
-                                ),    
-                            ),
-                            'htmlOptions' => array(
-                                'style' => 'width:110px;',
-                            ),
-                            'template' => '  {update} {delete}'
-                        ),
-                    ), $this),
-                ), $this));  
-            }
+            if ($collection->renderGrid) { ?>
+                <table id="authors-grid" class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th><?php echo Yii::t('app', 'Name'); ?></th>
+                            <th><?php echo Yii::t('app', 'Date Added'); ?></th>
+                            <th><?php echo Yii::t('app', 'Last Updated'); ?></th>
+                            <th><?php echo Yii::t('app', 'Options'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($authors->search()->data as $author) { ?>
+                            <tr>
+                                <td><?php echo CHtml::encode($author->name); ?></td>
+                                <td><?php echo CHtml::encode($author->dateAdded); ?></td>
+                                <td><?php echo CHtml::encode($author->lastUpdated); ?></td>
+                                <td>
+                                    <?php echo CHtml::link('<span class="fa fa-pencil"></span>', Yii::app()->createUrl("blog_articles/update_author", array("id" => $author->author_id)), array('title' => Yii::t('app', 'Update'), 'class' => 'btn btn-xs btn-warning')); ?>
+                                    <?php echo CHtml::link('<span class="fa fa-trash"></span>', Yii::app()->createUrl("blog_articles/delete_author", array("id" => $author->author_id)), array('title' => Yii::t('app', 'Delete'), 'class' => 'btn btn-xs btn-danger delete')); ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+                <script>
+                    $(document).ready(function() {
+                        $('#authors-grid').DataTable({
+                            language: {
+                                paginate: {
+                                    next: '<i class=\"fa fa-angle-double-right\" aria-hidden=\"true\"></i>',
+                                    previous: '<i class=\"fa fa-angle-double-left\" aria-hidden=\"true\"></i>'
+                                }
+                            }
+                        });
+                    });
+                </script>
+            <?php }
             /**
              * This hook gives a chance to append content after the grid view content.
              * Please note that from inside the action callback you can access all the controller view

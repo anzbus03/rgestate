@@ -12,6 +12,7 @@
  *
  * The followings are the available model relations:
  * @property ListingUsers[] $listingUsers
+ * @property User[] $users
  */
 class Services extends  ActiveRecord
 {
@@ -43,13 +44,14 @@ class Services extends  ActiveRecord
 
     /**
      * @return array relational rules.
-     */
+     */ 
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
             'listingUsers' => array(self::HAS_MANY, 'ListingUsers', 'designation_id'),
+            'users' => array(self::HAS_MANY, 'User', 'service_id'),
         );
     }
 

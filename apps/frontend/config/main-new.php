@@ -76,54 +76,56 @@ return array(
        
         
         'urlManager' => array(
-      // 'urlFormat'=>'get',
-           'urlFormat'=>'path',
-            'showScriptName'=>'false',
-              'urlSuffix'      => '', 
+      		// 'urlFormat'=>'get',
+           	'urlFormat'=>'path',
+            'showScriptName'=>false,
+            'urlSuffix'      => false, 
             'rules' => array(
-                array('site/index', 'pattern' => ''),
-               
-                array('site/index', 'pattern' => 'home'),
-                
+				
+                // array('site/index', 'pattern' => ''),
+                // array('site/index', 'pattern' => 'home'),
+                array('site/sitemap', 'pattern' => 'sitemap.xml', 'urlSuffix' => '.xml'),
+				
                 /*
-                          array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<type_of:('.$category_list.')>/<type_of:('.$category_list.')>/<state:(.*)>/<reg:(fujairah|umm-al-quwain|ras-al-khaimah|al-ain|ajman|sharjah|abu-dhabi|dubai)>/*'),
+                    array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<type_of:('.$category_list.')>/<type_of:('.$category_list.')>/<state:(.*)>/<reg:(fujairah|umm-al-quwain|ras-al-khaimah|al-ain|ajman|sharjah|abu-dhabi|dubai)>/*'),
 
-           array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<type_of:('.$category_list.')>/<reg:(fujairah|umm-al-quwain|ras-al-khaimah|al-ain|ajman|sharjah|abu-dhabi|dubai)>/*'),
-array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<state:(.*)>/<reg:(fujairah|umm-al-quwain|ras-al-khaimah|al-ain|ajman|sharjah|abu-dhabi|dubai)>/*'),
-array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<reg:(fujairah|umm-al-quwain|ras-al-khaimah|al-ain|ajman|sharjah|abu-dhabi|dubai)>/*'),  
- 
+           			array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<type_of:('.$category_list.')>/<reg:(fujairah|umm-al-quwain|ras-al-khaimah|al-ain|ajman|sharjah|abu-dhabi|dubai)>/*'),
+					array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<state:(.*)>/<reg:(fujairah|umm-al-quwain|ras-al-khaimah|al-ain|ajman|sharjah|abu-dhabi|dubai)>/*'),
+					array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<reg:(fujairah|umm-al-quwain|ras-al-khaimah|al-ain|ajman|sharjah|abu-dhabi|dubai)>/*'),  
 					
-          array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<type_of:('.$category_list.')>/<state:(.*)>/*'),
-array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<type_of:('.$category_list.')>/*'),
-array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<state:(.*)>/*'),
-*/
-                    array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:('.$category_main.')>/<type_of:('.$category_list.')>/<state:(.*)>/*'),
-                    array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:('.$category_main.')>/<type_of:('.$category_list.')>/*'),
-                    array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:('.$category_main.')>/<state:(.*)>/*'),
-                    array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<type_of:('.$category_list.')>/<state:(.*)>/*'),
-                    array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:('.$category_main.')>/*'),
-                    array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<type_of:('.$category_list.')>/*'),
-                    array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<state:(.*)>/*'),
-                    array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/*'),  
+										
+							array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<type_of:('.$category_list.')>/<state:(.*)>/*'),
+					array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<type_of:('.$category_list.')>/*'),
+					array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<state:(.*)>/*'),
+				*/                
 
-                    '<sec:(property-for-sale|property-for-rent|preleased)>'=>'listing/index',
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<type_of:(.*)>/<state:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<type_of:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<state:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<type_of:(.*)>/<state:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<type_of:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<state:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/*'),  
 
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<nested_sub_category:(.*)>/<state:(.*)>/<location:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<nested_sub_category:(.*)>/<state:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<nested_sub_category:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<state:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<state:(.*)>/<location:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<state:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<sub_category:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<nested_sub_category:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<state:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<state:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<state:(.*)>/<sub_category:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<nested_sub_category:(.*)>/<state:(.*)>/*'),
-                    array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/*'),  
-                    '<sec:(business-opportunities)>'=>'business_listing/index',
+				'<sec:(property-for-sale|property-for-rent|preleased)>'=>'listing/index',
+
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<nested_sub_category:(.*)>/<state:(.*)>/<location:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<nested_sub_category:(.*)>/<state:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<nested_sub_category:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<state:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<state:(.*)>/<location:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<state:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<sub_category:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<nested_sub_category:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<state:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<sub_category:(.*)>/<state:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<state:(.*)>/<sub_category:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/<type_of:(.*)>/<nested_sub_category:(.*)>/<state:(.*)>/*'),
+				array('business_listing/index', 'pattern' =>'<sec:(business-opportunities)>/*'),  
+				'<sec:(business-opportunities)>'=>'business_listing/index',
 
 
                 '<sec>-list/Property_<type_of>/<state>/Locality_<locality>'=>'listing/index',
@@ -132,76 +134,76 @@ array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to
                 '<sec>-list/<state>'=>'listing/index',
                 '<sec>-list/<state>/Locality_<locality>'=>'listing/index',
                 '<sec>-list'=>'listing/index',
-                  '<sec>List/Property_<type_of>/<state>/Locality_<locality>'=>'listing/index',
+				'<sec>List/Property_<type_of>/<state>/Locality_<locality>'=>'listing/index',
                 '<sec>List/Property_<type_of>/<state>'=>'listing/index',
                 '<sec>List/Property_<type_of>'=>'listing/index',
                 '<sec>List/<state>'=>'listing/index',
                 '<sec>List/<state>/Locality_<locality>'=>'listing/index',
                 '<sec>List'=>'listing/index',
              
-               array('listing/index/sec/property-for-sale/type_of[]/114/state/(.*)', 'pattern' => 'Houses_Property/$1'),
+               	array('listing/index/sec/property-for-sale/type_of[]/114/state/(.*)', 'pattern' => 'Houses_Property/$1'),
                 array('hybridauth/endpoint', 'pattern' => 'hybridauth/endpoint?hauth.done'),
 				array('details/index', 'pattern' => '<slug:(.*)>/detailView'), 
 				array('project/detail', 'pattern' => '<slug:(.*)>/projectView'), 
 				array('project/floor_detail', 'pattern' => '<slug:(.*)>/floorPlan'), 
 				array('project/floor_plan', 'pattern' => 'floor-plan'),  
-				 array('place_an_ad_no_login/create', 'pattern' => 'submit/<type:(.*)>'  ),
-				  array('new_projects/create', 'pattern' => 'submit-new-project'  ),
-					array('place_an_ad_no_login/select', 'pattern' => 'choose-your-option'), 
-						array('submited_jvproposal/success', 'pattern' => 'submitted-jvproposal-success'), 
-			//	 array('listing/index', 'pattern' => 'properties'), 
+				array('place_an_ad_no_login/create', 'pattern' => 'submit/<type:(.*)>'  ),
+				array('new_projects/create', 'pattern' => 'submit-new-project'  ),
+				array('place_an_ad_no_login/select', 'pattern' => 'choose-your-option'), 
+				array('submited_jvproposal/success', 'pattern' => 'submitted-jvproposal-success'), 
+				//	 array('listing/index', 'pattern' => 'properties'), 
 				'Houses_Property/<state:.*?>'=>array('properties/sec/property-for-sale/type_of[]/114'),
-			 array('listing/index/term/furnish', 'pattern' => 'Furnished_Properties'),
-				    array('listing/index/term/installment', 'pattern' => 'Installment_Properties'),
+				array('listing/index/term/furnish', 'pattern' => 'Furnished_Properties'),
+				array('listing/index/term/installment', 'pattern' => 'Installment_Properties'),
           
-				  array('listing/index/sec/new-development', 'pattern' => 'new-development'), 
-				  array('listing/index/sec/new-development', 'pattern' => 'new-development/*'), 
-				  array('listing/index/sec/property-for-sale', 'pattern' => 'property-for-sale'), 
-				  array('listing/index/sec/property-for-sale', 'pattern' => 'property-for-sale/*'), 
-				  array('listing/index/sec/property-for-rent', 'pattern' => 'property-for-rent'), 
-				  array('listing/index/sec/property-for-rent', 'pattern' => 'property-for-rent/*'), 
-				  
-				   array('listing/index/sec/business-for-sale', 'pattern' => 'business-for-sale'), 
-				  array('listing/index/sec/business-for-sale', 'pattern' => 'business-for-sale/*'),
-				   array('submited_preq/success', 'pattern' => 'submitted-property-requirement-success'), 
-				  array('listing/index/sec/wanted', 'pattern' => 'wanted'), 
-				   
-				  array('listing/index/sec/wanted', 'pattern' => 'wanted/*'), 
-				  array('listing/index', 'pattern' => 'properties'),
-				  array('listing/index', 'pattern' => 'properties/*'),
-				  array('detail/index/section/1', 'pattern' => 'sale/<slug:(.*)>'  ),
-				  array('detail/index/section/2', 'pattern' => 'rent/<slug:(.*)>' ),
-				   array('detail/index/section/1', 'pattern' => 'property-for-sale/<slug_en:(.*)>'  ),
-				  array('detail/index/section/2', 'pattern' => 'for-rent/<slug_en:(.*)>' ),
-				  
-				  
-				  array('detail/index/section/1', 'pattern' => 'تخفيض-السعر/<slug_ar:(.*)>'  ),
-				  array('detail/index/section/2', 'pattern' => 'تأجير/<slug_ar:(.*)>' ),
-				 
-				   array('detail/index_business/section/6', 'pattern' => 'business-sale/<slug:(.*)>' ),
-				   
-				   	  array('detail/short_link/section/1', 'pattern' => 'property-for-sale/<id:(.*)>'  ),
-				  array('detail/short_link/section/2', 'pattern' => 'for-rent/<id:(.*)>' ),
-				   array('detail/short_link/section/5', 'pattern' => 'business-sale/<id:(.*)>' ),
-				   
-				   
-				      	  array('detail/index', 'pattern' => 'id-<id:(.*)>'  ),
-				  array('detail/index', 'pattern' => 'id-<id:(.*)>' ),
-				
-				   array('detail/index_business', 'pattern' => 'business-for-sale-id-<id:(.*)>'  ),
-				  array('detail/index_business', 'pattern' => 'business-for-sale-<id:(.*)>' ),
-				    array('detail/index', 'pattern' => 'property/<slug:(.*)>'),
-				 
-			  array('detail/project', 'pattern' => 'project/<slug:(.*)>'),
-			  
-				  	array('member/activate_ad', 'pattern' => 'activate-ad/<id:(.*)>'), 
-			 	array('bloglist/runtimeloader', 'pattern' => 'blogruntimeloader'),
-			 	array('bloglist/fetch_ad', 'pattern' => 'bajax'),	array('bloglist/fetch_ad', 'pattern' => 'bajax/*'),
-		
-			 	array('bloglist/index', 'pattern' => 'blogs/<category:(.*)>/*'),
-			 	array('bloglist/index', 'pattern' => 'blog'),
-			 	array('bloglist/details', 'pattern' => 'blog/<slug:(.*)>/*'), 
-			 			array('articles/category/slug/help', 'pattern' => 'help'),
+				array('listing/index/sec/new-development', 'pattern' => 'new-development'), 
+				array('listing/index/sec/new-development', 'pattern' => 'new-development/*'), 
+				array('listing/index/sec/property-for-sale', 'pattern' => 'property-for-sale'), 
+				array('listing/index/sec/property-for-sale', 'pattern' => 'property-for-sale/*'), 
+				array('listing/index/sec/property-for-rent', 'pattern' => 'property-for-rent'), 
+				array('listing/index/sec/property-for-rent', 'pattern' => 'property-for-rent/*'), 
+
+				array('listing/index/sec/business-for-sale', 'pattern' => 'business-for-sale'), 
+				array('listing/index/sec/business-for-sale', 'pattern' => 'business-for-sale/*'),
+				array('submited_preq/success', 'pattern' => 'submitted-property-requirement-success'), 
+				array('listing/index/sec/wanted', 'pattern' => 'wanted'), 
+
+				array('listing/index/sec/wanted', 'pattern' => 'wanted/*'), 
+				array('listing/index', 'pattern' => 'properties'),
+				array('listing/index', 'pattern' => 'properties/*'),
+				array('detail/index/section/1', 'pattern' => 'sale/<slug:(.*)>'  ),
+				array('detail/index/section/2', 'pattern' => 'rent/<slug:(.*)>' ),
+				array('detail/index/section/1', 'pattern' => 'property-for-sale/<slug_en:(.*)>'  ),
+				array('detail/index/section/2', 'pattern' => 'for-rent/<slug_en:(.*)>' ),
+
+
+				array('detail/index/section/1', 'pattern' => 'تخفيض-السعر/<slug_ar:(.*)>'  ),
+				array('detail/index/section/2', 'pattern' => 'تأجير/<slug_ar:(.*)>' ),
+
+				array('detail/index_business/section/6', 'pattern' => 'business-sale/<slug:(.*)>' ),
+
+				array('detail/short_link/section/1', 'pattern' => 'property-for-sale/<id:(.*)>'  ),
+				array('detail/short_link/section/2', 'pattern' => 'for-rent/<id:(.*)>' ),
+				array('detail/short_link/section/5', 'pattern' => 'business-sale/<id:(.*)>' ),
+
+
+				array('detail/index', 'pattern' => 'id-<id:(.*)>'  ),
+				array('detail/index', 'pattern' => 'id-<id:(.*)>' ),
+
+				array('detail/index_business', 'pattern' => 'business-for-sale-id-<id:(.*)>'  ),
+				array('detail/index_business', 'pattern' => 'business-for-sale-<id:(.*)>' ),
+				array('detail/index', 'pattern' => 'property/<slug:(.*)>'),
+
+				array('detail/project', 'pattern' => 'project/<slug:(.*)>'),
+
+				array('member/activate_ad', 'pattern' => 'activate-ad/<id:(.*)>'), 
+				array('bloglist/runtimeloader', 'pattern' => 'blogruntimeloader'),
+				array('bloglist/fetch_ad', 'pattern' => 'bajax'),	array('bloglist/fetch_ad', 'pattern' => 'bajax/*'),
+
+				array('bloglist/index', 'pattern' => 'blogs/<category:(.*)>/*'),
+				array('bloglist/index', 'pattern' => 'blog'),
+				array('bloglist/details', 'pattern' => 'blog/<slug:(.*)>/*'), 
+				array('articles/category/slug/help', 'pattern' => 'help'),
 				array('articles/category/slug/policies', 'pattern' => 'policies'),
 				array('articles/view/slug/career', 'pattern' => 'careers'), 
 				array('articles/view/slug/site-map-1', 'pattern' => 'sitemap'), 
@@ -209,41 +211,41 @@ array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to
 				array('articles/view/slug/legal', 'pattern' => 'legal'), 
 				array('articles/view/slug/media-sales', 'pattern' => 'media-sales'), 
 				array('user/signup', 'pattern' => 'free-register'),  
-					array('user/signin', 'pattern' => 'login'),  
-					
-					array('member/dashboard', 'pattern' => 'my-dashboard'), 
+				array('user/signin', 'pattern' => 'login'),  
+
+				array('member/dashboard', 'pattern' => 'my-dashboard'), 
 				array('member/dashboard', 'pattern' => 'my-dashboard/*'), 
-				
-					array('place_an_ad/create', 'pattern' => 'post-my-property'), 
+
+				array('place_an_ad/create', 'pattern' => 'post-my-property'), 
 				array('place_an_ad/create', 'pattern' => 'post-my-property/*'), 
-					array('place_an_ad/update', 'pattern' => 'update-my-property'), 
+				array('place_an_ad/update', 'pattern' => 'update-my-property'), 
 				array('place_an_ad/update', 'pattern' => 'update-my-property/*'),
-					
-							array('place_an_ad/index', 'pattern' => 'my-properties-listings'),  
+
+				array('place_an_ad/index', 'pattern' => 'my-properties-listings'),  
 				array('place_an_ad/index', 'pattern' => 'my-properties-list/*'),
-					
-						array('place_an_ad/index/status/A', 'pattern' => 'my-published-properties-listings'), 
+
+				array('place_an_ad/index/status/A', 'pattern' => 'my-published-properties-listings'), 
 				array('place_an_ad/index/status/A', 'pattern' => 'my-published-properties-listings/*'),
-				
-				
-						array('place_an_ad/index/status/W', 'pattern' => 'my-waiting-approval-properties-listings'), 
+
+
+				array('place_an_ad/index/status/W', 'pattern' => 'my-waiting-approval-properties-listings'), 
 				array('place_an_ad/index/status/W', 'pattern' => 'my-waiting-approval-properties-listings/*'),
-				
-					array('place_an_ad/index/status/R', 'pattern' => 'my-rejected-properties-listings'), 
+
+				array('place_an_ad/index/status/R', 'pattern' => 'my-rejected-properties-listings'), 
 				array('place_an_ad/index/status/R', 'pattern' => 'my-rejected-properties-listings/*'),
-				
-				
-					array('place_an_ad/index/status/I', 'pattern' => 'my-inactive-properties-listings'), 
+
+
+				array('place_an_ad/index/status/I', 'pattern' => 'my-inactive-properties-listings'), 
 				array('place_an_ad/index/status/I', 'pattern' => 'my-inactive-properties-listings/*'),
-				
-			 	array('member/account_settings', 'pattern' => 'account-settings'), 
+
+				array('member/account_settings', 'pattern' => 'account-settings'), 
 				array('member/account_settings', 'pattern' => 'account-settings/*'),
-					array('user/logout', 'pattern' => 'logout'), 
-					
-						array('member/profile_settings', 'pattern' => 'profile-settings'), 
+				array('user/logout', 'pattern' => 'logout'), 
+
+				array('member/profile_settings', 'pattern' => 'profile-settings'), 
 				array('member/profile_settings', 'pattern' => 'profile-settings/*'),
-					
-					array('articles/view/slug/advertise', 'pattern' => 'advertise'),  
+
+				array('articles/view/slug/advertise', 'pattern' => 'advertise'),  
 				array('articles/view/slug/about-us', 'pattern' => 'about-us'),
 				array('articles/view/slug/terms', 'pattern' => 'terms'),
 				array('articles/view', 'pattern' => 'article/<slug:(.*)>'),
@@ -251,7 +253,7 @@ array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to
 				array('contact/index', 'pattern' => 'contact-us'),
 				array('advertisement/details/slug/home', 'pattern' => 'advertisement-home'),
 				array('advertisement/details', 'pattern' => 'advertise-askaan/<slug:(.*)>'),
-				
+
 				//array('user_listing/find', 'pattern' => 'real-estate-agents-find'), 
 				array('user_listing_developers/find', 'pattern' => 'real-estate-developers-find'), 
 				array('user_listing/index', 'pattern' => 'real-estate-agencies'), 
@@ -262,7 +264,7 @@ array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to
 				array('user_listing_developers/detail', 'pattern' => 'real-estate-developer/<slug:(.*)>'), 
 				array('blog/details', 'pattern' => 'blog/<slug:(.*)>/<action:(details)>'), 
 				array('blog/index', 'pattern' => 'blog/<slug:(.*)>'), 
-				
+
 				array('partners/index', 'pattern' => 'our-partners'),
 				array('areaguides/index', 'pattern' => 'area-guides'),
 				array('areaguides/view', 'pattern' => 'area-guides/<area:(.*)>'),
@@ -313,8 +315,7 @@ array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to
             'class' => 'frontend.components.init.FrontendSystemInitLatest',
         ),
     ),
-      
-    
+	
     'modules' => array(),
    
     // application-level parameters that can be accessed

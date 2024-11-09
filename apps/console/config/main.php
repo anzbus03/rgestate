@@ -36,9 +36,6 @@ return array(
         'hello' => array(
             'class' => 'console.commands.HelloCommand'
         ),
-        'checkPublishDates' => array(
-            'class' => 'console.commands.CheckPublishDatesCommand',
-        ),
         'send-campaigns' => array(
             'class' => 'console.commands.SendCampaignsCommand'
         ),

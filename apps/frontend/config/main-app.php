@@ -38,7 +38,8 @@ return array(
                     'showScriptName'=>'false',
             'rules' => array(
                 array('site/index', 'pattern' => ''),
-               
+                array('site/index', 'pattern' => 'sitemap', 'urlSuffix' => '.xml'),
+
             ),
         ),
         

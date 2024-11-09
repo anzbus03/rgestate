@@ -63,23 +63,54 @@ class DashboardController extends Controller
             ),
         ));
         
-       
+        // Active For Sale
         $criteria = PlaceAnAd::model()->search(1);
         $criteria->compare('t.isTrash','0');
-        $criteria->compare('t.status','W');     
+        $criteria->compare('t.status','A');     
+        $criteria->compare('t.section_id','1');     
         $ads = PlaceAnAd::model()->findAll($criteria);
         
-           $criteria=new CDbCriteria;
+        // Active for rent
+        $criteria = PlaceAnAd::model()->search(1);
+        $criteria->compare('t.isTrash','0');
+        $criteria->compare('t.status','A');     
+        $criteria->compare('t.section_id','2');     
+        $adsRent = PlaceAnAd::model()->findAll($criteria);
+
+        // Active Business Opportiunities
+        $criteria = PlaceAnAd::model()->search(1);
+        $criteria->compare('t.isTrash','0');
+        $criteria->compare('t.status','A');     
+        $criteria->compare('t.section_id','3');     
+        $adsBusiness = PlaceAnAd::model()->findAll($criteria);
+
+        // Active New Projects
+        $criteria=new CDbCriteria;
+        $criteria->compare('t.isTrash','0');
+        $criteria->compare('t.status','A');     
+        $newProjects = Project::model()->findAll($criteria);
+
+        // Active New Projects
+        $criteria=new CDbCriteria;
+        $criteria->compare('t.isTrash','0');
+        $criteria->compare('t.status','A');     
+        $criteria->compare('t.property_status','1');     
+        $preLeasedProperties = PlaceAnAd::model()->findAll($criteria);
+        
+
+        $criteria=new CDbCriteria;
         $criteria->compare('t.isTrash','0');
         $criteria->compare('t.status','W');     
-       // $criteria->compare('t.filled_info','1'); 
-         $criteria->order="t.user_id desc";
+        // $criteria->compare('t.filled_info','1'); 
+        $criteria->order="t.user_id desc";
         $usr = ListingUsers::model()->findAll($criteria);
+       
+        $enquiries = SendEnquiry::model()->findAll();
+
         
         
-        
-           $limit =25; 
-          $criteria =  SendEnquiry::model()->findEnquiry(array(),false,1);
+        $limit =25; 
+        $criteria =  SendEnquiry::model()->findEnquiry(array(),false,1);
         $criteria->limit = $limit;
 		$pro_enquiry  = SendEnquiry::model()->findAll($criteria);
 		$criteria->compare('is_read','0');
@@ -90,15 +121,29 @@ class DashboardController extends Controller
 		$general_enquiry  = ContactUs::model()->findAll($criteria);
 		$criteria->compare('is_read','0');
 		$general_enquiry_unread  = ContactUs::model()->count($criteria);
-         
-         
+
+        
+
+        $modelCriteraBlog=Article::model()->findPosts([],$count_future=false,1,$calculate=false);
+        $adsCount = Article::model()->count($modelCriteraBlog);
+        $pages = new CPagination($adsCount);
+        $pages->pageSize = $limit;
+        $pages->applyLimit($modelCriteraBlog);
+
+        
+        $modelCriteraBlog->limit = $limit ;
+        $articleCategoryFromSlug = Article::model()->findAll($modelCriteraBlog);
+
         $criteria =  ContactAgent::model()->findEnquiry(array(),false,1);
         $criteria->limit = $limit;
 		$agent_enquiry  = ContactAgent::model()->findAll($criteria);
 		$criteria->compare('is_read','0');
 		$agent_enquiry_unread  = ContactUs::model()->count($criteria);
         
-        $this->render('index', compact('checkVersionUpdate','ads','usr','limit','pro_enquiry','general_enquiry','pro_enquiry_unread','general_enquiry_unread','agent_enquiry','agent_enquiry_unread'));
+
+        $modelContactServices = new ContactPopup();       
+        $modelContactServices->unsetAttributes();
+        $this->render('index', compact('checkVersionUpdate', 'modelContactServices','articleCategoryFromSlug','ads', 'adsBusiness','enquiries', 'preLeasedProperties', 'newProjects','adsRent','usr','limit','pro_enquiry','general_enquiry','pro_enquiry_unread','general_enquiry_unread','agent_enquiry','agent_enquiry_unread'));
     }
        public function actionSitemap()
     {
@@ -299,6 +344,42 @@ class DashboardController extends Controller
 			$model->isTrash  =  '0';
             $this->renderPartial('latest_files',compact('model'));
     }
+    public function actionMonthLatestAds(){
+        $model = new PlaceAnAd('search');
+        $model->unsetAttributes(); // clear any default values
+        $model->isTrash  =  '0';
+    
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'DATE_FORMAT(t.date_added, "%Y-%m") = DATE_FORMAT(NOW(), "%Y-%m")';
+        $model->dbCriteria->mergeWith($criteria);
+    
+        $this->renderPartial('latest_files', compact('model'));
+    }
+    
+    public function actionWeekLatestAds(){
+        $model = new PlaceAnAd('search');
+        $model->unsetAttributes(); // clear any default values
+        $model->isTrash  =  '0';
+    
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'YEARWEEK(t.date_added, 1) = YEARWEEK(NOW(), 1)';
+        $model->dbCriteria->mergeWith($criteria);
+    
+        $this->renderPartial('latest_files', compact('model'));
+    }
+    
+    public function actionTodayLatestAds(){
+        $model = new PlaceAnAd('search');
+        $model->unsetAttributes(); // clear any default values
+        $model->isTrash  =  '0';
+    
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'DATE(t.date_added) = CURDATE()';
+        $model->dbCriteria->mergeWith($criteria);
+    
+        $this->renderPartial('latest_files', compact('model'));
+    }
+    
      public function actionLatestCustomer(){
      
 				$model = new ListingUsers('serach');

@@ -52,12 +52,12 @@
 <div class=" col-sm-12 no-padding-left pull-left spl-no-padding-mob">
     <div class="user_details only-mob margin-top-5 no-padding text-center">
         <?php
-							if(!empty($model->puser_id)){ 
-							echo '<div style="width:100%;">';
-							$this->renderPartial('_agentDetais');
-							echo '</div>';
+							// if(!empty($model->puser_id)){ 
+							// echo '<div style="width:100%;">';
+							// $this->renderPartial('_agentDetais');
+							// echo '</div>';
 							?>
-        <?php }else { ?>
+        <?php //  }else { ?>
 
         <div class="img_dev mobe  "
             style="width:100%;  text-align: center;    display: block;margin: auto;    width:55px!important;    height:55px!important;    ">
@@ -117,7 +117,7 @@
                 <?php echo CHtml::link($this->tag->getTag('rent','Rent').'('.(int)$total_rest['rent_total'].')',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-rent' )).'?dealer='.$model->user_slug,array('class'=>'rent_link'));?>
             </p>
         </div>
-        <?php } ?>
+        <?php // } ?>
         <div class="clearfix"></div>
     </div>
 
@@ -183,8 +183,11 @@
                     .furnished.lefticons {
                         background-image: url(../../assets/img/amen_293.svg);
                     }
-                    .permit_no.lefticons {
-                        background-image: url(../../assets/img/amen_295.svg);
+                    .added_on.lefticons{
+                        background-image: url(../../assets/img/icons/Villa.svg);
+                    }
+                    .permit_no.lefticons{
+                        background-image: url(../../assets/img/icons/Palace.svg);
                     }
                     </style>
                     <?php
@@ -214,7 +217,7 @@
     			foreach($array as $k=>$fld){
                     if(!empty( $fld)) { 
                     ?>
-                        <div class="facts_listitem <?php echo $k.' '.$listing_type.' '.$category_ids.' '.$sect_ids;?> <?php echo in_array($k,array('permit_no', 'bedrooms','bathrooms','builtup_area','listing_type','category_id','section_id','reference','client_ref','interior_size','l_no','plan_no','no_of_u','floor_no','unit_no','c_date','selling_price','furnished')) ? 'lefticons': '';?>"
+                        <div class="facts_listitem <?php echo $k.' '.$listing_type.' '.$category_ids.' '.$sect_ids;?> <?php echo in_array($k,array('permit_no', 'bedrooms','bathrooms','builtup_area','listing_type','category_id','section_id','reference','client_ref','interior_size','l_no','plan_no','no_of_u','floor_no','unit_no','c_date','selling_price','furnished','added_on')) ? 'lefticons': '';?>"
                             style="border-bottom:0px;">
                             <div class="facts_label " style="width:100% !important;">
                                 <?php echo !in_array($k,array()) ?  $model->getAttributeLabel($k).' <span style="font-weight:500;" dir="auto">'.$fld.'</span>': $fld;?>
@@ -473,7 +476,7 @@ if($hasedit and !empty($model->slug_z)){
     <?php } ?>
 
     <?php
-  $amentites = $model->all_amentitie();
+  $amentites = $model->amenities;
  
 if(!empty( $amentites)){ 
     ?>
@@ -562,12 +565,13 @@ if(!empty( $amentites)){
                     <?php
 		 
                     echo '<div class="clearfix"></div><h2 class="facts_heading margin-top-20" style="width:100%"><span class="am_svg" id="am_svg_99" ></span> '.$this->tag->getTag('amenities','Amenities').'</h2>';
-                    foreach($amentites as $k=>$v){
-                    if($v->inp_val=='8'){ $v->inp_val ='8+';};
-						$mn = ': '.$v->inp_val; 
-						$vals = !empty($v->inp_val) ?  $mn : ''; 
-						echo '<div class="amenities_listitem listiu " style="border-bottom:0px;"><i class="amen_dis  amenities_icon amen_'.$v->primaryKey.'"></i><div class="amenities_content amenc_'.$v->primaryKey.'">'.$v->amenities_name.$vals.'</div></div>' ;
-                    }
+                    echo $amentites;
+                    // foreach($amentites as $k=>$v){
+                    // if($v->inp_val=='8'){ $v->inp_val ='8+';};
+					// 	$mn = ': '.$v->inp_val; 
+					// 	$vals = !empty($v->inp_val) ?  $mn : ''; 
+					// 	echo '<div class="amenities_listitem listiu " style="border-bottom:0px;"><i class="amen_dis  amenities_icon amen_'.$v->primaryKey.'"></i><div class="amenities_content amenc_'.$v->primaryKey.'">'.$v->amenities_name.$vals.'</div></div>' ;
+                    // }
                  
               
              

@@ -22,9 +22,7 @@ $en = Yii::t('app',CURRENT_URL,array('rgestate.com/ar/'=>'rgestate.com/'));
 <meta property="og:type" content="website" />
 <meta property="og:title" content="<?php  echo  $pageTitle ;  ?>" />
 <meta property="og:description" content="<?php echo $meta_description;?>" />
-
-<meta property="og:image" content="<?php echo $featuredImageUrl??'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
-<meta property="og:image:secure_url" content="<?php echo $featuredImageUrl??'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
+<meta property="og:image" content="<?php echo $featuredImageUrl; ?>"/>
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="420">
 <meta property="og:url" content="<?php echo CURRENT_URL;?>" />
@@ -60,10 +58,9 @@ if($this->id=='detail' and in_array($this->action->id,array('index','project')))
 <meta property="og:description" content="<?php echo $description;?>">
 <meta property="og:type" content="article">
 <meta property="og:url" content="<?php echo  $shareUrl;?>">
-<meta property="og:image" content="<?php echo $featuredImageUrl??'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
-<meta property="og:image:secure_url" content="<?php echo $featuredImageUrl??'https://www.rgestate.com/theme/assets/images/logo.svg'; ?>"/>
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="420">
+<meta property="og:image" content="<?php echo $image;?>">
+<meta property="og:image:width" content="">
+<meta property="og:image:height" content="">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:widgets:csp" content="on">
 <meta name="twitter:card" content="photo">
@@ -410,12 +407,12 @@ if($this->id != 'contact'){ ?>
     --bs-modal-width: 120rem !important;
 }
 
-.exampleModalBlogMessage .rg-modal-img {
+.exampleModal .rg-modal-img {
     max-width: 100%;
     height: 100%;
 }
 
-.exampleModalBlogMessage .rg-close-btn {
+.exampleModal .rg-close-btn {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -424,26 +421,26 @@ if($this->id != 'contact'){ ?>
     padding: .6rem;
 }
 
-.exampleModalBlogMessage .rg-modal-form .input-group {
+.exampleModal .rg-modal-form .input-group {
     margin-bottom: 2rem;
 }
 
-.exampleModalBlogMessage .rg-modal-form .input-group .form-control-lg {
+.exampleModal .rg-modal-form .input-group .form-control-lg {
     min-height: calc(1.5em + 2.5rem + calc(var(--bs-border-width) * 2));
 }
 
-.exampleModalBlogMessage .rg-modal-form .input-group .form-control {
+.exampleModal .rg-modal-form .input-group .form-control {
     font-size: 1.5rem;
     color: var(--bs-dark);
 }
 
-.exampleModalBlogMessage .rg-sub-btn .btn {
+.exampleModal .rg-sub-btn .btn {
     padding-left: 4rem;
     padding-right: 4rem
 }
 
 </style>
-<div class="modal modal-new" id="exampleModalBlogMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalBlogMessageLabel" aria-hidden="true">
+<div class="modal modal-new" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="min-width: 100% !important;">
         <div class="modal-content position-relative rounded-0">
             <div class="modal-body">
@@ -470,50 +467,6 @@ if($this->id != 'contact'){ ?>
         </div>
     </div>
 </div>
-<style>
-  @media (max-width: 576px) {
-    #exampleModalBlogMessage .modal-content {
-        margin: 0 !important;
-    }
-
-    @media (min-width: 400px) and (max-width: 424px) {
-        #exampleModalBlogMessage .modal-content {
-            width: 60% !important;
-        }
-    }
-
-    @media (min-width: 425px) and (max-width: 449px) {
-        #exampleModalBlogMessage .modal-content {
-            width: 68% !important;
-        }
-    }
-
-    @media (min-width: 450px) and (max-width: 474px) {
-        #exampleModalBlogMessage .modal-content {
-            width: 73% !important;
-        }
-    }
-
-    @media (min-width: 475px) and (max-width: 499px) {
-        #exampleModalBlogMessage .modal-content {
-            width: 77% !important;
-        }
-    }
-
-    @media (min-width: 500px) and (max-width: 524px) {
-        #exampleModalBlogMessage .modal-content {
-            width: 85% !important;
-        }
-    }
-
-    @media (min-width: 525px) and (max-width: 576px) {
-        #exampleModalBlogMessage .modal-content {
-            width: 90% !important;
-        }
-    }
-}
-
-</style>
     
 <div id="dynamicScripts"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
@@ -522,19 +475,19 @@ if($this->id != 'contact'){ ?>
         if (!Cookies.get('modalShownBlog') && window.location.pathname === '/blog') {
             showModalBlog();
         }
-        $('#exampleModalBlogMessage').on('hidden.bs.modal', function (e) {
+        $('#exampleModal').on('hidden.bs.modal', function (e) {
             
             Cookies.set('modalShownBlog', 'true', { expires: 7 }); 
         })
         var closeButton = document.getElementById('closepopup');
         if (closeButton) {
             closeButton.addEventListener('click', function() {
-                $('#exampleModalBlogMessage').modal('hide');
+                $('#exampleModal').modal('hide');
             });
         }
         function showModalBlog() {
     
-            $('#exampleModalBlogMessage').modal("show")
+            $('#exampleModal').modal("show")
         }
     })
 </script>

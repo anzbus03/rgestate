@@ -26,10 +26,34 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
 if ($viewCollection->renderContent) { ?> 
-    <div class="box box-primary">
-        <div class="box-header">
-            <div class="pull-left">
-                <h3 class="box-title">
+        <style>
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .card-header-left {
+                flex: 1;
+            }
+
+            .card-header-right {
+                display: flex;
+                gap: 10px;
+            }
+
+            .card-header-right .btn {
+                margin-left: 5px;
+            }
+            .hide{
+                display: none;
+            }
+        </style>
+    <div class="card">
+        <div class="card-header">
+            <div class="card-header-left">
+                <h3 class="card-title">
                     <span class="glyphicon glyphicon-book"></span> <?php echo Yii::t('articles', 'Article categories');?>
                 </h3>
             </div>
@@ -39,7 +63,7 @@ if ($viewCollection->renderContent) { ?>
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="box-body">
+        <div class="card-body">
             <div class="table-responsive">
             <?php 
             /**
@@ -57,79 +81,38 @@ if ($viewCollection->renderContent) { ?>
             
             // and render if allowed
             if ($collection->renderGrid) {
-                $this->widget('zii.widgets.grid.CGridView', $hooks->applyFilters('grid_view_properties', array(
-                    'ajaxUrl'           => $this->createUrl($this->route),
-                    'id'                => $category->modelName.'-grid',
-                    'dataProvider'      => $category->search(),
-                    'filter'            => $category,
-                    'filterPosition'    => 'body',
-                    'filterCssClass'    => 'grid-filter-cell',
-                    'itemsCssClass'     => 'table table-bordered table-hover table-striped',
-                    'selectableRows'    => 0,
-                    'enableSorting'     => false,
-                    'cssFile'           => false,
-                    'pagerCssClass'     => 'pagination pull-right',
-                    'pager'             => array(
-                        'class'         => 'CLinkPager',
-                        'cssFile'       => false,
-                        'header'        => false,
-                        'htmlOptions'   => array('class' => 'pagination')
-                    ),
-                    'columns' => $hooks->applyFilters('grid_view_columns', array(
-                        array(
-                            'name'  => 'name',
-                            'value' => '$data->getParentNameTrail().$data->getTranslateHtml("name")',
-                            'type'=>'raw',
-                        ),
-                        array(
-                            'name'      => 'status',
-                            'value'     => '$data->statusText',
-                            'filter'    => $category->getStatusesArray(),
-                        ),
-                        array(
-                            'name'      => 'date_added',
-                            'value'     => '$data->dateAdded',
-                            'filter'    => false,
-                        ),
-                        array(
-                            'name'      => 'last_updated',
-                            'value'     => '$data->lastUpdated',
-                            'filter'    => false,
-                        ),
-                        array(
-                            'class'     => 'CButtonColumn',
-                            'header'    => Yii::t('app', 'Options'),
-                            'footer'    => $category->paginationOptions->getGridFooterPagination(),
-                            'buttons'   => array(
-                                'view' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;', 
-                                    'url'       => '$data->permalink',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'View'), 'class' => '', 'target' => '_blank'),
-                                    
-                                ),
-                                'update' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
-                                    'url'       => 'Yii::app()->createUrl("article_categories/update", array("id" => $data->category_id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
-                                     'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/update")',
-                                ),
-                                'delete' => array(
-                                    'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp; ', 
-                                    'url'       => 'Yii::app()->createUrl("article_categories/delete", array("id" => $data->category_id))',
-                                    'imageUrl'  => null,
-                                    'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),
-                                     'visible'   => 'AccessHelper::hasRouteAccess("'.Yii::app()->controller->id.'/delete")',
-                                ),    
-                            ),
-                            'htmlOptions' => array(
-                                'style' => 'width:110px;',
-                            ),
-                            'template' => ' {update} {delete}'
-                        ),
-                    ), $this),
-                ), $this)); 
+                
+                echo '<table id="categories-table" class="table table-bordered table-hover table-striped">';
+                echo '<thead>';
+                echo '<tr>';
+                echo '<th>' . CHtml::encode($category->getAttributeLabel('name')) . '</th>';
+                echo '<th>' . CHtml::encode($category->getAttributeLabel('status')) . '</th>';
+                echo '<th>' . CHtml::encode($category->getAttributeLabel('date_added')) . '</th>';
+                echo '<th>' . CHtml::encode($category->getAttributeLabel('last_updated')) . '</th>';
+                echo '<th>' . Yii::t('app', 'Options') . '</th>';
+                echo '</tr>';
+                echo '</thead>';
+                echo '<tbody>';
+
+                foreach ($category->search()->getData() as $data) {
+                    echo '<tr>';
+                    echo '<td>' . $data->getParentNameTrail() . $data->getTranslateHtml('name') . '</td>';
+                    echo '<td>' . $data->statusText . '</td>';
+                    echo '<td>' . $data->dateAdded . '</td>';
+                    echo '<td>' . $data->lastUpdated . '</td>';
+                    echo '<td>';
+                    if (AccessHelper::hasRouteAccess("article_categories/update")) {
+                        echo CHtml::link('<span class="fa fa-pencil"></span>', Yii::app()->createUrl("article_categories/update", array("id" => $data->category_id)), array('class' => 'btn btn-xs btn-primary', 'title' => Yii::t('app', 'Update')));
+                    }
+                    if (AccessHelper::hasRouteAccess("article_categories/delete")) {
+                        echo CHtml::link('<span class="fa fa-trash"></span>', Yii::app()->createUrl("article_categories/delete", array("id" => $data->category_id)), array('class' => 'btn btn-xs btn-danger delete', 'title' => Yii::t('app', 'Delete')));
+                    }
+                    echo '</td>';
+                    echo '</tr>';
+                }
+
+                echo '</tbody>';
+                echo '</table>';
             }
             /**
              * This hook gives a chance to append content after the grid view content.
@@ -146,6 +129,18 @@ if ($viewCollection->renderContent) { ?>
             </div>    
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#categories-table').DataTable({
+                language: {
+                    paginate: {
+                        next: '<i class=\"fa fa-angle-double-right\" aria-hidden=\"true\"></i>',
+                        previous: '<i class=\"fa fa-angle-double-left\" aria-hidden=\"true\"></i>'
+                    }
+                }
+            });
+        });
+    </script>
 <?php 
 }
 /**

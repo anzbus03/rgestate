@@ -86,9 +86,9 @@ class CkeditorExt extends ExtensionInit
 
         unset($wysiwygOptions['id']);
 
-        $script  = $optionsVarName.' = ' . CJavaScript::encode($wysiwygOptions) . ';' . "\n";
-        $script .= '$("#'.$editorId.'").ckeditor('.$optionsVarName.');' . "\n";
-        $script .= $editorVarName .' = CKEDITOR.instances["'.$editorId.'"];' . "\n";
+        // $script  = $optionsVarName.' = ' . CJavaScript::encode($wysiwygOptions) . ';' . "\n";
+        // $script .= '$("#'.$editorId.'").ckeditor('.$optionsVarName.');' . "\n";
+        // $script .= $editorVarName .' = CKEDITOR.instances["'.$editorId.'"];' . "\n";
 
         Yii::app()->clientScript->registerScript(md5(__FILE__.__LINE__.$editorId), $script);
     }
@@ -212,8 +212,8 @@ class CkeditorExt extends ExtensionInit
         Yii::app()->params['wysiwyg'] = 'ckeditor';
 
         $assetsUrl = $this->getAssetsUrl();
-        Yii::app()->clientScript->registerScriptFile($assetsUrl . '/ckeditor/ckeditor.js');
-        Yii::app()->clientScript->registerScriptFile($assetsUrl . '/ckeditor/adapters/jquery.js');
+        // Yii::app()->clientScript->registerScriptFile($assetsUrl . '/ckeditor/ckeditor.js');
+        // Yii::app()->clientScript->registerScriptFile($assetsUrl . '/ckeditor/adapters/jquery.js');
 
         // find the language file, if any.
         $language       = str_replace('_', '-', Yii::app()->language);

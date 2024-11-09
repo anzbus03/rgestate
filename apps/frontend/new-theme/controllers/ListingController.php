@@ -13,13 +13,21 @@ class ListingController extends Controller
 
 	public function actionIndex($country = null, $state = null, $city = null, $type = null, $community = null, $sec = null, $category = null, $dealer = null, $loc = null)
 	{
-		
 		define('ITS_LIST_PAGE', '1');
 		if (isset($_GET['reg'])) {
 			if (!isset($_GET['state'])) {
 				$_GET['state'] = $_GET['reg'];
 			}
 			unset($_GET['reg']);
+		}
+		if (isset($_GET['state'])) {
+			$stateValue = $_GET['state'];
+			
+			$exists = Category::model()->exists('slug=:slug', array(':slug' => $stateValue));
+			if ($exists) {
+				unset($_GET['state']);				
+				$_GET['type_of'] = $stateValue;
+			}
 		}
 
 		$country_id = COUNTRY_ID;
@@ -90,6 +98,7 @@ class ListingController extends Controller
 		if (!isset($_GET['category']) and  in_array($sec, array('preleased', 'for-sale', 'to-rent', 'to-rent', 'property-for-sale', 'property-for-rent'))) {
 			$_GET['category'] = 'commercial';
 		}
+
 		$location_title = '';
 		$areaData = States::model()->all_cities_list(); // print_r($areaData);exit; 
 		if (isset($_GET['state']) and !empty($_GET['state'])) {
@@ -278,7 +287,7 @@ class ListingController extends Controller
 		$limit = 21;
 
 		$placead = new PlaceAnAdNew();
-
+		// print_r($formData);
 		$criteria =  $placead->findAds($formData, false, 1);
 
 		if ($l_view  == 'map') {
@@ -504,13 +513,13 @@ class ListingController extends Controller
 
 
 		$this->setData(array(
-			'pageMetaTitle'     =>  Yii::t('app',  'Properties Listing' . '  | {project} ', array('{project}' => $this->project_name)),
-			'noFooter'     =>  $file_view == 'index_map' ? '1' : false,
-			'newMetaTitle' => $m_title,
-			'pageTitle' => $m_title . '  | ' . BRAND_TITLE,
-			'meta_keyword' => $newMetaKeywords,
-			'pageMetaDescription' => $newMetaDescription,
-			'schema'            =>  !empty($pageContent->neighborhood) ? $pageContent->neighborhood : ''
+			'pageMetaTitle'     => Yii::t('app',  'Properties Listing' . '  | {project} ', array('{project}' => $this->project_name)),
+			'noFooter'     		=> $file_view == 'index_map' ? '1' : false,
+			'newMetaTitle' 		=> $m_title,
+			'pageTitle' 		=> $m_title . '  | ' . BRAND_TITLE,
+			'meta_keyword' 		=> $newMetaKeywords,
+			'pageMetaDescription' 	=> $newMetaDescription,
+			'schema'            	=>  !empty($pageContent->neighborhood) ? $pageContent->neighborhood : ''
 		));
 		if ($pageContent) {
 			$p_title = $pageContent->meta_title;

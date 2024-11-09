@@ -8,237 +8,239 @@ if (!empty($banners)) {
 }
 ?>
 <style>
-    #ListingUsers_password input,
-    #signUpForm .form-control.LJB,
-    #signin-form input.form-control.LJB,
-    #signin-form select.form-control.LJB {
-        border-color: #fff;
-        appearance: none;
-        border-radius: 2px;
-        border-style: solid;
-        border-width: 1px;
-        line-height: 36px;
-        min-height: 48px;
-        width: 100%;
-        text-indent: 18px;
-        font-size: 16px !important;
-        background: #f8f8f8;
-    }
+#ListingUsers_password input,
+#signUpForm .form-control.LJB,
+#signin-form input.form-control.LJB,
+#signin-form select.form-control.LJB {
+    border-color: #fff;
+    appearance: none;
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 1px;
+    line-height: 36px;
+    min-height: 48px;
+    width: 100%;
+    text-indent: 18px;
+    font-size: 16px !important;
+    background: #f8f8f8;
+}
 
-    #contact #mainContainerClass {
-        background: #fff;
-    }
+#contact #mainContainerClass {
+    background: #fff;
+}
 
-    #contact input,
-    #contact label,
-    #contact textarea {
-        margin-bottom: 0px;
-        margin-top: 0px;
-    }
+#contact input,
+#contact label,
+#contact textarea {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
 
-    #contact label {
-        font-weight: 600;
-    }
+#contact label {
+    font-weight: 600;
+}
 
-    #contact .rows {
-        margin-bottom: 15px;
-    }
+#contact .rows {
+    margin-bottom: 15px;
+}
 
-    #signUpForm .rounded-btn-n,
-    #signin-form .rounded-btn-n {
+#signUpForm .rounded-btn-n,
+#signin-form .rounded-btn-n {
 
-        height: 65px !important;
+    height: 65px !important;
 
-        font-size: 21px;
-    }
+    font-size: 21px;
+}
 
-    .errorMessage {
-        color: #e13009 !important;
-    }
+.errorMessage {
+    color: #e13009 !important;
+}
 
-    .banner {
-        margin-left: -15px;
-        margin-right: -15px;
-        width: calc(100% + 30px);
-        position: relative;
-        height: 20.56vw;
-        background-color: rgba(0, 0, 0, 0.8);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
+.banner {
+    margin-left: -15px;
+    margin-right: -15px;
+    width: calc(100% + 30px);
+    position: relative;
+    height: 20.56vw;
+    background-color: rgba(0, 0, 0, 0.8);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 
-    #mainContainerClass,
-    #pageContainer {
-        max-width: 100%;
-        width: 100%;
-    }
+#mainContainerClass,
+#pageContainer {
+    max-width: 100%;
+    width: 100%;
+}
 
-    .abs-banner::before {
-        content: '';
-        left: 0px;
-        right: 0px;
-        top: 0px;
-        bottom: 0px;
-        position: absolute;
-        background: rgba(0, 0, 0, 0.2);
-    }
+.abs-banner::before {
+    content: '';
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.2);
+}
 
-    .bloghead {
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        flex-direction: column;
-        font-weight: 300;
-        display: flex;
-        z-index: 1;
-        position: relative;
-    }
+.bloghead {
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    flex-direction: column;
+    font-weight: 300;
+    display: flex;
+    z-index: 1;
+    position: relative;
+}
 
-    .bloghead {}
+.bloghead {}
 
-    .bloghead h1,
-    .bloghead p {
-        background-color: transparent !important;
-        color: #fff !important;
-    }
+.bloghead h1,
+.bloghead p {
+    background-color: transparent !important;
+    color: #fff !important;
+}
 
-    .bloghead h1 {
-        margin-bottom: 19px;
-    }
+.bloghead h1 {
+    margin-bottom: 19px;
+}
 
-    .bloghead p {
-        font-weight: 300;
-        font-size: 16px;
-    }
+.bloghead p {
+    font-weight: 300;
+    font-size: 16px;
+}
 
-    .abs-banner {
+.abs-banner {
 
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        color: #fff;
-        z-index: 1;
-        content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #fff;
+    z-index: 1;
+    content: '';
 
-    }
+}
 
-    .fancy-title {
+.fancy-title {
 
-        color: #fff;
-    }
-    .ja_title>div {
-        position: absolute;
-        background: #fff;
-    }
+    color: #fff;
+}
+</style>
+<style>
+.ja_title>div {
+    position: absolute;
+    background: #fff;
+}
 
-    .continue {
-        padding: 10px;
-        margin-top: 10px !important;
-        border-radius: 5px;
-        min-width: 136px;
-        font-size: 16px;
-        cursor: pointer;
-        background: var(--secondary-color);
-    }
+.continue {
+    padding: 10px;
+    margin-top: 10px !important;
+    border-radius: 5px;
+    min-width: 136px;
+    font-size: 16px;
+    cursor: pointer;
+    background: var(--secondary-color);
+}
 
-    html .ja_close_round {
-        color: inherit;
-        font-size: 60px;
-        font-weight: 300;
-        background: transparent;
-        right: 15px;
-        top: 22px;
-    }
+html .ja_close_round {
+    color: inherit;
+    font-size: 60px;
+    font-weight: 300;
+    background: transparent;
+    right: 15px;
+    top: 22px;
+}
 
-    html .ja_body .title {
-        font-weight: 600;
-        text-align: left;
-        margin-bottom: 15px;
-        font-size: 22px;
-    }
+html .ja_body .title {
+    font-weight: 600;
+    text-align: left;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
 
-    html .ja_body .text {
-        text-align: left;
-        font-size: 18px;
-    }
+html .ja_body .text {
+    text-align: left;
+    font-size: 18px;
+}
 
-    html .ja_body .info {
-        text-align: left;
-        max-width: 400px;
-        margin: auto;
-        color: #888;
-    }
+html .ja_body .info {
+    text-align: left;
+    max-width: 400px;
+    margin: auto;
+    color: #888;
+}
 
-    html[dir="rtl"] .ja_body .info {
-        text-align: right;
-    }
+html[dir="rtl"] .ja_body .info {
+    text-align: right;
+}
 
-    html .jAlert>div {
-        position: relative;
-        border-radius: 5px !important;
-        overflow: hidden;
-    }
+html .jAlert>div {
+    position: relative;
+    border-radius: 5px !important;
+    overflow: hidden;
+}
 
-    html .ja_body {
-        padding: 50px;
-    }
+html .ja_body {
+    padding: 50px;
+}
 
-    .jAlert {
-        margin-top: 0px;
-        width: 600px;
-        max-width: 90%;
-    }
+.jAlert {
+    margin-top: 0px;
+    width: 600px;
+    max-width: 90%;
+}
 
-    .ja_close_round:hover,
-    .ja_close_round:active {
-        color: inherit;
-        background: transparent;
-    }
+.ja_close_round:hover,
+.ja_close_round:active {
+    color: inherit;
+    background: transparent;
+}
 
-    #signUpForm .rounded-btn-n,
-    #signin-form .rounded-btn-n {
+#signUpForm .rounded-btn-n,
+#signin-form .rounded-btn-n {
 
-        font-size: 17px !important;
-        font-weight: 500 !important;
-    }
+    font-size: 17px !important;
+    font-weight: 500 !important;
+}
 
-    .widget .social-icons a {
+.widget .social-icons a {
 
-        border: 1px solid var(--secondary-color);
-        color: var(--secondary-color);
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-    }
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    .widget .social-icons {
-        line-height: 1;
-        border: 0px dotted #eee;
-        padding: 0px;
-        display: flex;
-        align-items: center;
-        /* justify-content: center; */
-        background: #fff;
-    }
+.widget .social-icons {
+    line-height: 1;
+    border: 0px dotted #eee;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    background: #fff;
+}
 
-    html .continue {
-        padding: 9px 10px !important;
-        margin-top: 10px !important;
-        border-radius: 5px;
-        min-width: 136px;
-        font-size: 16px;
-        cursor: pointer;
-        background: var(--secondary-color);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1;
-        border: 0px;
-    }
+html .continue {
+    padding: 9px 10px !important;
+    margin-top: 10px !important;
+    border-radius: 5px;
+    min-width: 136px;
+    font-size: 16px;
+    cursor: pointer;
+    background: var(--secondary-color);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border: 0px;
+}
 </style>
 <div hidden>
     <svg id="send_svg" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -260,196 +262,246 @@ if (!empty($banners)) {
         </g>
     </svg>
 </div>
+<div class="clearfix"></div>
+<!-- Header Container / End -->
+
+<!-- Content
+================================================== -->
+
+<!-- Map Container -->
+
+<div class="clearfix"></div>
+<!-- Map Container / End -->
 <section class="panel panel-bg banner" style="background-image:url(<?php echo $img; ?>);">
     <div class="abs-banner">
+
+
         <div class="bloghead container">
+
             <div class="fancy-title-hold text-initial clearfix">
-                <h3 class="fancy-title animate animated">
-                    <span class="title">
-                        <?php echo $this->tag->getTag('contact_us', 'Contact us'); ?>
-                    </span>
-                    <span class="subtitle">
-                        <?php echo $this->tag->getTag('letstalk', 'Let\'s Talk'); ?>
-                    </span>
-                </h3>
+                <h3 class="fancy-title animate animated"><span
+                        class="title"><?php echo $this->tag->getTag('contact_us', 'Contact us'); ?></span> <span
+                        class="subtitle"><?php echo $this->tag->getTag('letstalk', 'Let\'s Talk'); ?></span></h3>
             </div>
+
         </div>
+
+
     </div>
+
+
+
 </section>
 
-<div class="container margin-top-20" style="max-width: 1024px;">
+<div class="home-banner-outer contact-us">
+    <?php
+    /*<div class="inner-banner " style="background:url('<?php echo Yii::app()->apps->getBaseUrl('assets/img/signing-1.jpg');?>')
+    no-repeat center;">
+    <div class="olay"
+        style="position: absolute;left: 0;right: 0 !important;bottom: 0;top: 0;background: rgba(0,0,0,0.4);"></div>
+    <div class="container">
+        <div class="tit-innrhd animatedParent">
+            <div class="theme-title banner_text animated growIn go">
+                <h3>Contact Us</h3>
+                <ul style="list-style-type:none;font-weight:400;">
+                    <?php
+				$your_array = explode("\n", $this->options->get('system.common.contact_address'));
+			 	if(!empty($your_array)){
+					foreach($your_array as $k=>$v){
+						if($k=='0'){
+							echo '<li>'.$v.'</li>';
+						}else{
+							echo '<li>'.$v.'</li>';
+						}
+					}
+					
+					}
+					?>
+
+                    <li><a href="tel:<?php echo $this->options->get('system.common.contact_phone','');?>"
+                            style="color:#fff;"><?php echo $this->options->get('system.common.contact_phone','');?></a>
+                    </li>
+
+
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+*/ ?>
+
+</div>
+
+<!-- Container / Start -->
+<div class="container margin-top-20" style="    max-width: 1024px;">
     <style>
-        .left-content-bl {
+    .left-content-bl {
 
-            border-right: 1px dotted #d8e4ef;
-        }
+        border-right: 1px dotted #d8e4ef;
+    }
 
-        .right-contentl {
-            padding: 0px 0px 25px 0px !important;
+    .right-contentl {
+        padding: 0px 0px 25px 0px !important;
 
-        }
+    }
 
-        .sidebar-header {
-            font-size: 19.6px;
-            border-bottom: 3px solid #d8e4ef;
-            padding: 0px 0 10px 2px;
-            font-size: 22px;
-            line-height: 32px;
-        }
+    .sidebar-header {
+        font-size: 19.6px;
+        border-bottom: 3px solid #d8e4ef;
+        padding: 0px 0 10px 2px;
+        font-size: 22px;
+        line-height: 32px;
+    }
 
-        #pre-method-text {
-            margin-top: 8px;
-            color: #7B7B7B;
-        }
+    #pre-method-text {
+        margin-top: 8px;
+        color: #7B7B7B;
+    }
 
-        #contact-method li {
+    #contact-method li {
 
-            padding-bottom: 4px;
-        }
+        padding-bottom: 4px;
+    }
 
-        #contact-telephone {
+    #contact-telephone {
 
-            padding-left: 0px;
-        }
+        padding-left: 0px;
+    }
 
-        #contact-telephone span,
-        #contact-skype span,
-        #contact-email span {
-            font-weight: bold;
-            font-size: 1.1em;
-        }
+    #contact-telephone span,
+    #contact-skype span,
+    #contact-email span {
+        font-weight: bold;
+        font-size: 1.1em;
+    }
 
-        a.link-color:hover {
-            text-decoration: underline;
-            color: var(--link-color);
-        }
+    a.link-color:hover {
+        text-decoration: underline;
+        color: var(--link-color);
+    }
 
-        .link-color {
-            color: var(--link-color);
-        }
+    .link-color {
+        color: var(--link-color);
+    }
 
-        .pk-text {
-            color: var(--logo-color);
-        }
+    .pk-text {
+        color: var(--logo-color);
+    }
 
-        #contact #mainContainerClass {
-            background: #eee;
-            max-width: 100%;
-        }
+    #contact #mainContainerClass {
+        background: #eee;
+        max-width: 100%;
+    }
 
-        #contact .container h4 {
-            font-weight: 700;
-            color: var(--secondary-color);
-        }
+    #contact .container h4 {
+        font-weight: 700;
+        color: var(--secondary-color);
+    }
 
-        #contact #mainContainerClass {
-            background: #fff !important;
-            max-width: 100%;
-        }
+    #contact #mainContainerClass {
+        background: #fff !important;
+        max-width: 100%;
+    }
 
-        .fancy-title {
+    .fancy-title {
 
-            padding-right: 76px;
-        }
+        padding-right: 76px;
+    }
 
-        .fancy-title .title {
-            font-size: 50px;
-            padding-bottom: 0px;
-        }
+    .fancy-title .title {
+        font-size: 50px;
+        padding-bottom: 0px;
+    }
 
-        #signUpForm .rounded-btn-n,
-        #signin-form .rounded-btn-n {
-            height: 51px !important;
-            font-size: 19px;
-            line-height: 1;
-            padding: 0px;
-            max-width: 214px;
-            border-radius: 4px;
-        }
+    #signUpForm .rounded-btn-n,
+    #signin-form .rounded-btn-n {
+        height: 51px !important;
+        font-size: 19px;
+        line-height: 1;
+        padding: 0px;
+        max-width: 214px;
+        border-radius: 4px;
+    }
 
-        .widget {
-            margin-bottom: 34px;
-        }
+    .widget {
+        margin-bottom: 34px;
+    }
 
-        .widget-contact-details p small {
-            display: block;
-            font-weight: 400;
-            font-size: 400;
-            color: orange !important;
-            font-size: 15px;
-        }
+    .widget-contact-details p small {
+        display: block;
+        font-weight: 400;
+        font-size: 400;
+        color: orange !important;
+        font-size: 15px;
+    }
 
-        .widget-contact-details p span {
-            display: block;
-            font-size: 16px;
-            color: inherit !important;
-            font-weight: 400;
-        }
+    .widget-contact-details p span {
+        display: block;
+        font-size: 16px;
+        color: inherit !important;
+        font-weight: 400;
+    }
 
-        .widget-contact-details p small {
-            display: block;
-            font-weight: 500;
-            font-size: 400;
-            color: inherit !important;
-            font-size: 18px;
-            line-height: 1;
-            margin-bottom: 10px !important;
-        }
+    .widget-contact-details p small {
+        display: block;
+        font-weight: 500;
+        font-size: 400;
+        color: inherit !important;
+        font-size: 18px;
+        line-height: 1;
+        margin-bottom: 10px !important;
+    }
 
-        .widget-contact-details p {
+    .widget-contact-details p {
 
-            margin-bottom: 30px;
-        }
+        margin-bottom: 30px;
+    }
 
-        .widget {
-            margin-bottom: 0px;
-            padding: 0px 0px;
+    .widget {
+        margin-bottom: 0px;
+        padding: 0px 0px;
 
-        }
+    }
     </style>
     <div class="row margin-top-40 margin-bottom-50">
+
+        <!-- Contact Details -->
+        <!-- Contact Form -->
         <div class="col-sm-6">
-            <h2 class="animate animated"> 
-                <span class="title">
-                    <?php echo $this->tag->getTag('contact_us', 'Contact us'); ?>
-                </span>
-            </h2>
+            <h2 class="animate animated"> <span
+                    class="title"><?php echo $this->tag->getTag('contact_us', 'Contact us'); ?></span></h2>
             <style>
-                .widget-contact-details small svg {
-                    width: 30px;
-                    height: 35px;
-                    color: var(--secondary-color);
-                    fill: var(--logo-color);
-                }
+            .widget-contact-details small svg {
+                width: 30px;
+                height: 35px;
+                color: var(--secondary-color);
+                fill: var(--logo-color);
+            }
 
-                .widget-contact-details p.d-flex {
+            .widget-contact-details p.d-flex {
 
-                    display: flex;
-                    align-items: center;
-                }
+                display: flex;
+                align-items: center;
+            }
 
-                .widget .social-icons a {
-                    border: 0px;
-                    color: #555;
-                    display: inline-flex;
-                    justify-content: center;
-                    align-items: center;
-                }
+            .widget .social-icons a {
+                border: 0px;
+                color: #555;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+            }
             </style>
 
             <div class="widget widget-contact-details">
-                <p class="">
-                    <small class="margin-right-25">Telephone</small>
-                    <a href="tel:<?php echo  $this->options->get('system.common.contact_phone'); ?>">
-                        <i class="fa fa-phone"></i>
-                        <?php echo $this->options->get('system.common.contact_phone'); ?>
-                    </a>
-                </p>
-                <p class=" ">
-                    <small class=" ">
-                        <?php echo $this->tag->getTag('email', 'Email'); ?>
-                    </small> 
-                <a href="mailto:<?php echo  $this->options->get('system.common.contact_email'); ?>"><i
+                <p class=""><small class="margin-right-25">Telephone</small> <a
+                        href="tel:<?php echo  $this->options->get('system.common.contact_phone'); ?>"><i
+                            class="fa fa-phone"></i>
+                        <?php echo  $this->options->get('system.common.contact_phone'); ?></a></p>
+                <p class=" "> <small class=" "><?php echo $this->tag->getTag('email', 'Email'); ?></small> <a
+                        href="mailto:<?php echo  $this->options->get('system.common.contact_email'); ?>"><i
                             class="fa fa-envelope"></i>
                         <?php echo  $this->options->get('system.common.contact_email'); ?></a></p>
 
@@ -568,7 +620,6 @@ if (!empty($banners)) {
 
 
                 </div>
-
 
 
                 <div class="row rows">

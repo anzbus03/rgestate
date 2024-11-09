@@ -1182,7 +1182,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 												<?php echo $form->labelEx($model, 'category_id'); ?>
 
 											</div>
-											<div class="col-sm-7">
+											<div class="col-sm-7 mb-2">
 											    <?php echo $form->hiddenField($model, 'category_id', array('id' => 'hidden_category_id', 'name' => 'BusinessForSale[hidden_category_id]')); ?>
 												<?php $mer =  array_merge($model->getHtmlOptions('category_id'), array('class' => 'input-text  form-control', 'onchange' => 'changefld(this)', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 												<?php echo $form->dropDownList($model, 'category_id', $category, $mer); ?>
@@ -1190,7 +1190,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 											</div>
 										</div>
 
-								    	<div class="row form-group">
+								    	<div class="row form-group mb-2">
                                             <div class="clearfix"><!-- --></div>
                                             <div class="col-sm-5 text-right">
                                                 <?php echo $form->labelEx($model, 'sub_category'); ?>
@@ -1237,7 +1237,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
                                                 });
                                             }
                                         </script>
-                                        <div class="row form-group">
+                                        <div class="row form-group mb-2">
                                             <div class="clearfix"><!-- --></div>
                                             <div class="col-sm-5 text-right">
                                                 <?php echo $form->labelEx($model, 'nested_sub_category'); ?>
@@ -1254,7 +1254,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
                                         
                                      
 
-										<div class="row  form-group">
+										<div class="row  form-group mb-2">
 
 											<div class="clearfix"><!-- --></div>
 
@@ -1269,7 +1269,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 											</div>
 										</div>
 										<div class="clearfix"><!-- --></div>
-										<div class="row  form-group  ">
+										<div class="row  form-group mb-2  ">
 
 											<div class="col-sm-5 text-right">
 
@@ -1283,7 +1283,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 											</div>
 
 										</div>
-										<div class="row  form-group  ">
+										<div class="row  form-group mb-2  ">
 
 											<div class="col-sm-5 text-right">
 
@@ -1299,7 +1299,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 
 										<div class="clearfix"><!-- --></div>
 										<div class="row">
-											<div class="form-group col-sm-12">
+											<div class="form-group mb-2 col-sm-12">
 												<div style="width:100%;height:15px;"></div>
 												<?php echo $form->labelEx($model, 'ad_description'); ?>
 												<?php
@@ -1330,7 +1330,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 										<div class="insidecontent full-content">
 											<h4 class="subheading_font row "><?php echo $this->tag->gettag('price', 'Price'); ?></h4>
 
-											<div class="row  form-group hide" style="max-width:300px;">
+											<div class="row  form-group mb-2 hide" style="max-width:300px;">
 												<?php
 												$currency =    Currency::model()->systemCurrencies();
 												$ar_c = array();
@@ -1358,7 +1358,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 											$max = $this->tag->getTag('max_rang', 'Max. Range'); ?>
 
 											<div class="minimize_form">
-												<div class="row  form-group for-franch" style="max-width:400px;">
+												<div class="row  form-group mb-2 for-franch" style="max-width:400px;">
 
 													<div class="clearfix"><!-- --></div>
 													<div class="col-sm-5 ">
@@ -1570,39 +1570,39 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 												?>
 												<div class="clearfix"><!-- --></div>
 
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 													<label for="BusinessForSale_listing_type" class="required"><?php echo $model->getAttributeLabel('listing_type'); ?><span class="required">*</span></label>
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('listing_type'), array('class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->dropDownList($model, 'listing_type', $property_type, $mer); ?>
 													<?php echo $form->error($model, 'listing_type'); ?>
 												</div>
 											</div>
 
-											<div class="row  form-group not-for-franch">
+											<div class="row  form-group mb-2 not-for-franch">
 												<?php $ow_type =    Chtml::listData(Master::model()->listData('8'), 'master_id', 'master_name');  ?>
 												<div class="clearfix"><!-- --></div>
 												<div class="col-sm-5 text-right">
 													<label for="BusinessForSale_ow_type" class="required"><?php echo $model->getAttributeLabel('ow_type'); ?><span class="required">*</span></label>
 
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('ow_type'), array('class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->dropDownList($model, 'ow_type', $ow_type, $mer); ?>
 													<?php echo $form->error($model, 'ow_type'); ?>
 												</div>
 											</div>
 											<div class="clearfix"></div>
-											<div class="row  form-group not-for-franch">
+											<div class="row mb-2 form-group not-for-franch">
 
 												<div class="clearfix"><!-- --></div>
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 
 													<label for="BusinessForSale_Rent" class="required"><?php echo $model->getAttributeLabel('Rent'); ?> (AED)</label>
 
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('Rent'), array('placeholder' => '', 'class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->textField($model, 'Rent',  $mer); ?>
 													<?php echo $form->error($model, 'Rent'); ?>
@@ -1639,15 +1639,15 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 											</div>
 
 											<div class="clearfix"></div>
-											<div class="row  form-group not-for-franch">
+											<div class="row mb-2 form-group not-for-franch">
 
 												<div class="clearfix"><!-- --></div>
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 
 													<label for="BusinessForSale_mandate" class="required"><?php echo $model->getAttributeLabel('mandate'); ?><span class="required">*</span></label>
 
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('mandate'), array('placeholder' => '', 'class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->textArea($model, 'mandate',  $mer); ?>
 													<?php echo $form->error($model, 'mandate'); ?>
@@ -1662,7 +1662,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 
 											<h4 class="subheading_font row ">Business Operation</h4>
 
-											<div class="row  form-group">
+											<div class="row mb-2 form-group">
 												<?php
 												$YesNoArray =    $model->YesNoArray2();
 
@@ -1670,18 +1670,18 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 												?>
 												<div class="clearfix"><!-- --></div>
 
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 													<label for="BusinessForSale_maid_room" class="required"><?php echo $model->getAttributeLabel('maid_room'); ?><?php echo in_array('maid_room', $model->businessrequirement()) ? '<span class="required">*</span>' : ''; ?></label>
 
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('maid_room'), array('class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->dropDownList($model, 'maid_room', $YesNoArray, $mer); ?>
 													<?php echo $form->error($model, 'maid_room'); ?>
 												</div>
 											</div>
 
-											<div class="row  form-group">
+											<div class="row mb-2 form-group">
 												<?php
 												$YesNoArray =    $model->Competitionmarket();
 
@@ -1689,11 +1689,11 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 												?>
 												<div class="clearfix"><!-- --></div>
 
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 													<label for="BusinessForSale_transaction_type" class="required"><?php echo $model->getAttributeLabel('transaction_type'); ?><?php echo in_array('transaction_type', $model->businessrequirement()) ? '<span class="required">*</span>' : ''; ?></label>
 
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('transaction_type'), array('class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->dropDownList($model, 'transaction_type', $YesNoArray, $mer); ?>
 													<?php echo $form->error($model, 'transaction_type'); ?>
@@ -1701,55 +1701,55 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 											</div>
 
 
-											<div class="row  form-group">
+											<div class="row mb-2 form-group">
 
 												<div class="clearfix"><!-- --></div>
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 													<label for="BusinessForSale_p_limits" class="required"><?php echo $model->getAttributeLabel('p_limits'); ?><?php echo in_array('p_limits', $model->businessrequirement()) ? '<span class="required">*</span>' : ''; ?></label>
 
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('p_limits'), array('placeholder' => '', 'class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->textArea($model, 'p_limits',  $mer); ?>
 													<?php echo $form->error($model, 'p_limits'); ?>
 												</div>
 											</div>
 
-											<div class="row  form-group">
+											<div class="row mb-2 form-group">
 
 												<div class="clearfix"><!-- --></div>
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 													<label for="BusinessForSale_disputes" class="required"><?php echo $model->getAttributeLabel('disputes'); ?><?php echo in_array('disputes', $model->businessrequirement()) ? '<span class="required">*</span>' : ''; ?></label>
 
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('disputes'), array('placeholder' => '', 'class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->textArea($model, 'disputes',  $mer); ?>
 													<?php echo $form->error($model, 'disputes'); ?>
 												</div>
 											</div>
 
-											<div class="row  form-group">
+											<div class="row mb-2 form-group">
 
 												<div class="clearfix"><!-- --></div>
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 													<label for="BusinessForSale_RetUnitCategory" class="required"><?php echo $model->getAttributeLabel('RetUnitCategory'); ?><?php echo in_array('RetUnitCategory', $model->businessrequirement()) ? '<span class="required">*</span>' : ''; ?></label>
 
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('RetUnitCategory'), array('placeholder' => '', 'class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->textField($model, 'RetUnitCategory',  $mer); ?>
 													<?php echo $form->error($model, 'RetUnitCategory'); ?>
 												</div>
 											</div>
-											<div class="row  form-group">
+											<div class="row mb-2 form-group">
 
 												<div class="clearfix"><!-- --></div>
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 													<label for="BusinessForSale_c_date" class="required"><?php echo $model->getAttributeLabel('c_date'); ?><?php echo in_array('c_date', $model->businessrequirement()) ? '<span class="required">*</span>' : ''; ?></label>
 
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('c_date'), array('placeholder' => '', 'class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->dropDownList($model, 'c_date', $model->getPublishedYear(),  $mer); ?>
 													<?php echo $form->error($model, 'c_date'); ?>
@@ -1757,7 +1757,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 											</div>
 
 
-											<div class="row  form-group">
+											<div class="row mb-2 form-group">
 												<?php
 												$YesNoArray =    $model->YesNoArray2();
 
@@ -1765,11 +1765,11 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 												?>
 												<div class="clearfix"><!-- --></div>
 
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 													<label for="BusinessForSale_w_for" class="required"><?php echo $model->getAttributeLabel('w_for'); ?><?php echo in_array('w_for', $model->businessrequirement()) ? '<span class="required">*</span>' : ''; ?></label>
 
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('w_for'), array('class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->dropDownList($model, 'w_for', $YesNoArray, $mer); ?>
 													<?php echo $form->error($model, 'w_for'); ?>
@@ -1777,33 +1777,33 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 											</div>
 
 
-											<div class="row  form-group">
+											<div class="row mb-2 form-group">
 
 												<div class="clearfix"><!-- --></div>
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 													<label for="BusinessForSale_RentPerMonth" class="required"><?php echo $model->getAttributeLabel('RentPerMonth'); ?><?php echo in_array('RentPerMonth', $model->businessrequirement()) ? '<span class="required">*</span>' : ''; ?> (AED)</label>
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('RentPerMonth'), array('placeholder' => '', 'oninput' => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');", 'class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->textField($model, 'RentPerMonth',  $mer); ?><div class="pull-right"><?php echo $form->checkbox($model, 'fur_i',   array('style' => "    width: auto;    height: auto;    display: inline;    margin-right: 10px;")); ?><label for="BusinessForSale_fur_i"><?php echo $model->getAttributeLabel('fur_i'); ?></label></div>
 													<?php echo $form->error($model, 'RentPerMonth'); ?>
 												</div>
 											</div>
 
-											<div class="row  form-group">
+											<div class="row mb-2 form-group">
 
 												<div class="clearfix"><!-- --></div>
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 													<label for="BusinessForSale_interior_size" class="required"><?php echo $model->getAttributeLabel('interior_size'); ?><?php echo in_array('interior_size', $model->businessrequirement()) ? '<span class="required">*</span>' : ''; ?> (AED)</label>
 
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('interior_size'), array('placeholder' => '', 'oninput' => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');", 'class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->textField($model, 'interior_size',  $mer); ?><div class="pull-right"><?php echo $form->checkbox($model, 'inv_i',  array('style' => "    width: auto;    height: auto;    display: inline;    margin-right: 10px;")); ?><label for="BusinessForSale_inv_i"><?php echo $model->getAttributeLabel('inv_i'); ?></label></div>
 													<?php echo $form->error($model, 'interior_size'); ?>
 												</div>
 											</div>
-											<div class="row  form-group">
+											<div class="row mb-2 form-group">
 												<?php
 												$YesNoArray =    $model->YesNoArray2();
 
@@ -1811,11 +1811,11 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 												?>
 												<div class="clearfix"><!-- --></div>
 
-												<div class="col-sm-5 text-right">
+												<div class="col-sm-5 mb-2 text-right">
 													<label for="BusinessForSale_construction_status" class="required"><?php echo $model->getAttributeLabel('construction_status'); ?><?php echo in_array('construction_status', $model->businessrequirement()) ? '<span class="required">*</span>' : ''; ?></label>
 
 												</div>
-												<div class="col-sm-7">
+												<div class="col-sm-7 mb-2">
 													<?php $mer =  array_merge($model->getHtmlOptions('construction_status'), array('class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 													<?php echo $form->dropDownList($model, 'construction_status', $YesNoArray, $mer); ?>
 													<?php echo $form->error($model, 'construction_status'); ?>
@@ -1829,14 +1829,14 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 
 
 										<div class="clearfix"></div>
-										<div class="row  form-group" id="h_expiry_date">
+										<div class="row mb-2 form-group" id="h_expiry_date">
 
 
 
-											<div class="col-sm-5 text-right">
+											<div class="col-sm-5 mb-2 text-right">
 												<?php echo $form->labelEx($model, 'expiry_date'); ?>
 											</div>
-											<div class="col-sm-7">
+											<div class="col-sm-7 mb-2">
 												<?php
 												$model->expiry_date =  	!empty($model->expiry_date) ? date('d-m-Y', strtotime($model->expiry_date)) : '';
 												echo  $this->widget('zii.widgets.jui.CJuiDatePicker', array(
@@ -1866,8 +1866,38 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 											<h4 class="subheading_font row "><?php echo $this->tag->getTag('features_/_amenities', 'Features / Amenities'); ?></h4>
 											<div class="clearfix"><!-- --></div>
 
-											<div class="amn1">
-												<style>
+											<div class="amn1 row">
+												<div class="row">
+
+													<div class="form-group col-lg-12">
+														<div style="width:100%;height:15px;"></div>
+														<?php echo $form->labelEx($model, 'amenities'); ?>
+														<?php
+														if (Yii::App()->isAppName('backend') and !$model->isNewRecord) {
+															echo $model->getTranslateHtml('amenities');
+														}
+														?>
+														<?php echo $form->textArea($model, 'amenities', array_replace($model->getHtmlOptions('amenities'), array(
+															"rows" => "5",
+															'dir' => 'auto',
+															'placeholder' => Yii::t('app', 'Mention the key features of your property (short description of your property)')
+														))); ?>
+														<div class="text-warning small hide pull-left">
+															<?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array(
+																'{s}' => '<span dir="ltr" style="white-space:nowrap;">', 
+																'{e}' => '</span>', 
+																'{min}' => $model::DESC_MIN, 
+																'{max}' => $model::DESC_MAX
+															)); ?>
+														</div>
+														<div class="pull-right text-warning" style="font-size: 12px;">
+															<span id="inputcounter2"></span>
+														</div>
+														<div class="clearfix"></div>
+														<?php echo $form->error($model, 'amenities'); ?>
+													</div>
+												</div>
+												<!-- <style>
 													.amlabel .form-check {
 														width: 50% !important;
 														float: left;
@@ -1876,53 +1906,54 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 													.amlabel .form-check:nth-child(2n+1) {
 														clear: both;
 													}
-												</style>
-												<div class="amn">
+												</style> -->
+												<!-- <div class="amn">
 													<?php
-													$categoris =   CHtml::listData(Master::model()->listData(2), 'master_id', 'master_name');
-													//print_r($model->amenities) ;exit; 
+													// $categoris =   CHtml::listData(Master::model()->listData(2), 'master_id', 'master_name');
+													// //print_r($model->amenities) ;exit; 
 
-													foreach ($categoris as $k => $v) {
-														//$amenities_array=	 CHtml::listData(Amenities::model()->findAllCategories($k),'amenities_id','amenities_name');
-														$amenities_array =	 Amenities::model()->findAllCategories($k);
+													// foreach ($categoris as $k => $v) {
+													// 	//$amenities_array=	 CHtml::listData(Amenities::model()->findAllCategories($k),'amenities_id','amenities_name');
+													// 	$amenities_array =	 Amenities::model()->findAllCategories($k);
 
-														//echo $k.''. print_r($amenities_array); echo '<br />';echo '<br />';echo '<br />';echo '<br />';
-														if (!empty($amenities_array)) {
-															echo '<div class="col-sm-12 amlabel amn-' . $k . '" style="">';
+													// 	//echo $k.''. print_r($amenities_array); echo '<br />';echo '<br />';echo '<br />';echo '<br />';
+													// 	if (!empty($amenities_array)) {
+													// 		echo '<div class="col-sm-12 amlabel amn-' . $k . '" style="">';
+													// 		echo '<div class="parent-h-div">';
+													// 		echo '<a href="javascript:void(0)" class="cls-closebtn"  onclick="updateOpenClose(this)"><svg viewBox="0 0 70.098 53.605" ><use xlink:href="#cls-close"></use></svg></a>';
+													// 		echo '<h4 class="spl-headd margin-top-5  margin-bottom-5" onclick="updateOpen(this)">' . $v . '<svg viewBox="0 0 70.098 53.605" class="button_icon-style5"><use xlink:href="#add-button"></use></svg></h4><div class="clearfix"></div>';
+													// 		foreach ($amenities_array as $k => $v) {
 
-															echo '<h4 class="spl-headd margin-top-5  margin-bottom-5">' . $v . '</h4><div class="clearfix"></div>';
-															foreach ($amenities_array as $k => $v) {
+													// 			// echo '<div class="form-check form-check-flat"  id="amnitm_'.$k.'"><label class="form-check-label"><input class="amnit" value="'.$k.'" id="amenities_'.$k.'" '; echo  in_array($k,(array) $model->amenities) ? 'checked' : '';  echo ' type="checkbox" name="amenities[]" onclick="expandthis(this)" >  '.$v.' <i class="input-helper"></i></label></div>';
 
-																// echo '<div class="form-check form-check-flat"  id="amnitm_'.$k.'"><label class="form-check-label"><input class="amnit" value="'.$k.'" id="amenities_'.$k.'" '; echo  in_array($k,(array) $model->amenities) ? 'checked' : '';  echo ' type="checkbox" name="amenities[]" onclick="expandthis(this)" >  '.$v.' <i class="input-helper"></i></label></div>';
+													// 			if ($v->f_type == '0') {
+													// 				echo '<div class="form-check form-check-flat"  id="amnitm_' . $v->amenities_id . '"><label class="form-check-label"><input class="amnit" value="' . $v->amenities_id . '" id="amenities_' . $v->amenities_id . '" ';
+													// 				echo  in_array($v->amenities_id, (array) $model->amenities) ? 'checked' : '';
+													// 				echo ' type="checkbox" name="amenities[' . $v->amenities_id . ']" onclick="expandthis(this)" >  ' . $v->amenities_name . ' <i class="input-helper"></i></label></div>';
+													// 			} else if ($v->f_type == '1') {
+													// 				echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::dropDownList('amenities[' . $v->amenities_id . '][inp_val]', @$model->amenities[$v->amenities_id], array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8+'), array('empty' => '0', 'class' => 'input-text  form-control')) . '</div></div>';
+													// 			} else {
+													// 				$vals =   isset($model->amenities[$v->amenities_id]['inp_val']) ?  $model->amenities[$v->amenities_id]['inp_val'] :  @$model->amenities[$v->amenities_id];
+													// 				$on_input = ($v->i_o == '1') ? "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" : '';
+													// 				echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::textField('amenities[' . $v->amenities_id . '][inp_val]', $vals, array('class' => 'input-text cmv  form-control', 'max-length' => '50', 'oninput' => $on_input)) . '</div></div>';
+													// 			}
+													// 		}
 
-																if ($v->f_type == '0') {
-																	echo '<div class="form-check form-check-flat"  id="amnitm_' . $v->amenities_id . '"><label class="form-check-label"><input class="amnit" value="' . $v->amenities_id . '" id="amenities_' . $v->amenities_id . '" ';
-																	echo  in_array($v->amenities_id, (array) $model->amenities) ? 'checked' : '';
-																	echo ' type="checkbox" name="amenities[' . $v->amenities_id . ']" onclick="expandthis(this)" >  ' . $v->amenities_name . ' <i class="input-helper"></i></label></div>';
-																} else if ($v->f_type == '1') {
-																	echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::dropDownList('amenities[' . $v->amenities_id . '][inp_val]', @$model->amenities[$v->amenities_id], array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8+'), array('empty' => '0', 'class' => 'input-text  form-control')) . '</div></div>';
-																} else {
-																	$vals =   isset($model->amenities[$v->amenities_id]['inp_val']) ?  $model->amenities[$v->amenities_id]['inp_val'] :  @$model->amenities[$v->amenities_id];
-																	$on_input = ($v->i_o == '1') ? "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" : '';
-																	echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::textField('amenities[' . $v->amenities_id . '][inp_val]', $vals, array('class' => 'input-text cmv  form-control', 'max-length' => '50', 'oninput' => $on_input)) . '</div></div>';
-																}
-															}
+													// 		echo '</div>';
 
-
-
-															echo '</div>';
-														}
-													}
+													// 		echo '</div>';
+													// 	}
+													// }
 
 
 
 													//	echo CHtml::checkBoxList('amenities',$model->amenities ,$amenities_array,array('separator'=>'','labelOptions'=>array('class'=>''),'template'=>'<div class="form-check form-check-flat"><label class="form-check-label">{input}  {labelTitle} <i class="input-helper"></i></label></div>'));                                              
 													?>
-												</div>
-												<div class="clearfix"></div>
+												</div> -->
+												<!-- <div class="clearfix"></div>
 												<div class="expandDiv hide" onclick="toggleClassExpand()"></div>
 												<div class="clearfix"></div>
-												<?php echo $form->error($model, 'amenities'); ?>
+												<?php //echo $form->error($model, 'amenities'); ?> -->
 											</div>
 											<div class="clearfix"><!-- --></div>
 										</div>
@@ -2042,7 +2073,24 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 									}
 
 									?>
+						<div class="box-footer  " style="border:0px;padding-top:0px;display:block !important ">
+							<div class="pull-right">
+								<?php
+								if ($this->action->id == 'preview') {
+								?>
+									<a href="<?php echo Yii::App()->createUrl($this->id . '/create', array('preview' => $LocalStorage->cookie_name)); ?>" class="btn btn-primary  " style="background-color:var(--logo-color);border:1px solid var(--logo-color);"><?php echo $this->tag->getTag('update_property', 'Update Property'); ?></a>
 
+								<?
+								}
+								?>
+								<button <?php if ($this->id == 'place_an_ad_no_login' and $this->action->id == 'preview') {
+											echo 'type="button" onclick="OpenSignupRequiredNew(this)"';
+										} else {
+											echo 'type="submit"';
+										} ?> id="bb" class="btn btn-primary  " data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', $mainText); ?></button>
+							</div>
+							<div class="clearfix"><!-- --></div>
+						</div>
 									<div class="clearfix"><!-- --></div>
 
 
@@ -2051,24 +2099,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 							</div>
 						</div>
 					</div>
-					<div class="box-footer  " style="border:0px;padding-top:0px;display:block !important ">
-						<div class="pull-right">
-							<?php
-							if ($this->action->id == 'preview') {
-							?>
-								<a href="<?php echo Yii::App()->createUrl($this->id . '/create', array('preview' => $LocalStorage->cookie_name)); ?>" class="btn btn-primary  " style="background-color:var(--logo-color);border:1px solid var(--logo-color);"><?php echo $this->tag->getTag('update_property', 'Update Property'); ?></a>
-
-							<?
-							}
-							?>
-							<button <?php if ($this->id == 'place_an_ad_no_login' and $this->action->id == 'preview') {
-										echo 'type="button" onclick="OpenSignupRequiredNew(this)"';
-									} else {
-										echo 'type="submit"';
-									} ?> id="bb" class="btn btn-primary  " data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', $mainText); ?></button>
-						</div>
-						<div class="clearfix"><!-- --></div>
-					</div>
+					
 				</div>
 		<?php
 				$this->endWidget();

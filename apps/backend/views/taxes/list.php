@@ -32,9 +32,9 @@ if ($viewCollection->renderContent) {
     $itemsCount = Tax::model()->count();
     ?>
     <div class="box box-primary borderless">
-        <div class="box-header">
+        <div class="card-header">
             <div class="pull-left">
-                <h3 class="box-title">
+                <h3 class="card-title">
                     <span class="glyphicon glyphicon-star"></span> <?php echo  $pageHeading;?>
                 </h3>
             </div>
@@ -45,7 +45,7 @@ if ($viewCollection->renderContent) {
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
-        <div class="box-body">
+        <div class="card-body">
             <div class="table-responsive">
             <?php 
             /**
@@ -117,14 +117,14 @@ if ($viewCollection->renderContent) {
                             'footer'    => $tax->paginationOptions->getGridFooterPagination(),
                             'buttons'   => array(
                                 'update' => array(
-                                     'label'     => ' &nbsp; <span class="glyphicon glyphicon-pencil"></span> &nbsp;', 
+                                     'label'     => ' &nbsp; <span class="fa fa-pencil"></span> &nbsp;', 
                                     'url'       => 'Yii::app()->createUrl("taxes/update", array("id" => $data->tax_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Update'), 'class' => ''),
                                     'visible'   => 'AccessHelper::hasRouteAccess("taxes/update")',
                                 ),
                                 'delete' => array(
-                                     'label'     => ' &nbsp; <span class="glyphicon glyphicon-remove-circle"></span> &nbsp;',
+                                     'label'     => ' &nbsp; <span class="fa fa-trash"></span> &nbsp;',
                                     'url'       => 'Yii::app()->createUrl("taxes/delete", array("id" => $data->tax_id))',
                                     'imageUrl'  => null,
                                     'options'   => array('title' => Yii::t('app', 'Delete'), 'class' => 'delete'),

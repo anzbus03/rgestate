@@ -38,28 +38,27 @@ if ($viewCollection->renderContent) {
         'controller'    => $this,
         'renderForm'    => true,
     )));
-    
+
     // and render if allowed
     if ($collection->renderForm) {
-        $form = $this->beginWidget('CActiveForm'); 
-        ?>
-        <div class="box box-primary">
-            <div class="box-header">
-                <div class="pull-left">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-user"></span> <?php echo $pageHeading;?></h3>
+        $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'user-form',
+            'enableAjaxValidation' => false,
+            'htmlOptions' => array('enctype' => 'multipart/form-data'), // This is necessary for file uploads
+        ));        ?>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3 class="card-title"><span class="glyphicon glyphicon-user"></span> <?php echo $pageHeading; ?></h3>
                 </div>
                 <div class="pull-right">
                     <?php if (!$user->isNewRecord) { ?>
-                    <?php
-                    //echo CHtml::link(Yii::t('app', 'Create new'), array('users/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create new')));
-                    ?>
                     <?php } ?>
-                    <?php echo CHtml::link(Yii::t('app', 'Cancel'), array('users/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel')));?>
+                    <?php echo CHtml::link(Yii::t('app', 'Cancel'), array('users/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Cancel'))); ?>
                 </div>
-                <div class="clearfix"><!-- --></div>
             </div>
-            <div class="box-body">
-                <?php 
+            <div class="card-body">
+                <?php
                 /**
                  * This hook gives a chance to prepend content before the active form fields.
                  * Please note that from inside the action callback you can access all the controller view variables 
@@ -68,85 +67,148 @@ if ($viewCollection->renderContent) {
                  */
                 $hooks->doAction('before_active_form_fields', new CAttributeCollection(array(
                     'controller'    => $this,
-                    'form'          => $form    
+                    'form'          => $form
                 )));
                 ?>
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'first_name');?>
-                    <?php echo $form->textField($user, 'first_name', $user->getHtmlOptions('first_name')); ?>
-                    <?php echo $form->error($user, 'first_name');?>
-                </div>        
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'last_name');?>
-                    <?php echo $form->textField($user, 'last_name', $user->getHtmlOptions('last_name')); ?>
-                    <?php echo $form->error($user, 'last_name');?>
-                </div>    
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'email');?>
-                    <?php echo $form->textField($user, 'email', $user->getHtmlOptions('email')); ?>
-                    <?php echo $form->error($user, 'email');?>
-                </div>        
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'confirm_email');?>
-                    <?php echo $form->textField($user, 'confirm_email', $user->getHtmlOptions('confirm_email')); ?>
-                    <?php echo $form->error($user, 'confirm_email');?>
-                </div>        
-                <div class="clearfix"><!-- --></div>
-                   <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'alt_email');?>
-                    <?php echo $form->textField($user, 'alt_email', $user->getHtmlOptions('alt_email')); ?>
-                    <?php echo $form->error($user, 'alt_email');?>
-                </div>        
-                 <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'fake_password');?>
-                    <?php echo $form->textField($user, 'fake_password', $user->getHtmlOptions('password')); ?>
-                    <?php echo $form->error($user, 'fake_password');?>
+                <div class="clearfix">
+                    <!-- -->
                 </div>
-                <div class="form-group col-lg-6">
-                    <?php echo $form->labelEx($user, 'confirm_password');?>
-                    <?php echo $form->textField($user, 'confirm_password', $user->getHtmlOptions('confirm_password')); ?>
-                    <?php echo $form->error($user, 'confirm_password');?>
-                </div>
-                <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-3">
-                    <?php echo $form->labelEx($user, 'timezone');?>
-                    <?php echo $form->dropDownList($user, 'timezone', $user->getTimeZonesArray(), $user->getHtmlOptions('timezone')); ?>
-                    <?php echo $form->error($user, 'timezone');?>
-                </div>
-                <div class="form-group col-lg-3 hidden">
-                    <?php echo $form->labelEx($user, 'language_id');?>
-                    <?php echo $form->dropDownList($user, 'language_id', CMap::mergeArray(array('' => Yii::t('app', 'Application default')), Language::getLanguagesArray()), $user->getHtmlOptions('language_id')); ?>
-                    <?php echo $form->error($user, 'language_id');?>
-                </div>
-                <div class="form-group col-lg-3">
-                    <?php echo $form->labelEx($user, 'status');?>
-                    <?php echo $form->dropDownList($user, 'status', $user->getStatusesArray(), $user->getHtmlOptions('status')); ?>
-                    <?php echo $form->error($user, 'status');?>
-                </div>  
-                <div class="clearfix"><!-- --></div>   
-                       <div class="">
-                    <?php if ($user->removable == User::TEXT_YES && ($options = UserGroup::getAllAsOptions())) { ?>
-                    <div class="form-group col-lg-6">
+                <div class="row">
+
+                    <div class="form-group col-lg-6 ">
+                        <?php echo $form->labelEx($user, 'first_name'); ?>
+                        <?php echo $form->textField($user, 'first_name', $user->getHtmlOptions('first_name')); ?>
+                        <?php echo $form->error($user, 'first_name'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 ">
+                        <?php echo $form->labelEx($user, 'last_name'); ?>
+                        <?php echo $form->textField($user, 'last_name', $user->getHtmlOptions('last_name')); ?>
+                        <?php echo $form->error($user, 'last_name'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'phone_number'); ?>
+                        <?php echo $form->textField($user, 'phone_number', $user->getHtmlOptions('phone_number')); ?>
+                        <?php echo $form->error($user, 'phone_number'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'email'); ?>
+                        <?php echo $form->textField($user, 'email', $user->getHtmlOptions('email')); ?>
+                        <?php echo $form->error($user, 'email'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'age'); ?>
+                        <?php echo $form->textField($user, 'age', $user->getHtmlOptions('age')); ?>
+                        <?php echo $form->error($user, 'age'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'confirm_email'); ?>
+                        <?php echo $form->textField($user, 'confirm_email', $user->getHtmlOptions('confirm_email')); ?>
+                        <?php echo $form->error($user, 'confirm_email'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'alt_email'); ?>
+                        <?php echo $form->textField($user, 'alt_email', $user->getHtmlOptions('alt_email')); ?>
+                        <?php echo $form->error($user, 'alt_email'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'fake_password'); ?>
+                        <?php echo $form->textField($user, 'fake_password', $user->getHtmlOptions('password')); ?>
+                        <?php echo $form->error($user, 'fake_password'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'profile_image'); ?>
+                        <?php echo CHtml::activeFileField($user, 'profile_image', $user->getHtmlOptions('profile_image')); ?>
+                        <?php echo $form->error($user, 'profile_image'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'confirm_password'); ?>
+                        <?php echo $form->textField($user, 'confirm_password', $user->getHtmlOptions('confirm_password')); ?>
+                        <?php echo $form->error($user, 'confirm_password'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'timezone'); ?>
+                        <?php echo $form->dropDownList($user, 'timezone', $user->getTimeZonesArray(), $user->getHtmlOptions('timezone')); ?>
+                        <?php echo $form->error($user, 'timezone'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'language_id'); ?>
+                        <?php echo $form->dropDownList($user, 'language_id', CMap::mergeArray(array('' => Yii::t('app', 'Application default')), Language::getLanguagesArray()), $user->getHtmlOptions('language_id')); ?>
+                        <?php echo $form->error($user, 'language_id'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 mt-4">
+                        <?php echo $form->labelEx($user, 'status'); ?>
+                        <?php echo $form->dropDownList($user, 'status', $user->getStatusesArray(), $user->getHtmlOptions('status')); ?>
+                        <?php echo $form->error($user, 'status'); ?>
+                    </div>
+                    <div class="form-group col-lg-6 mb-2 mt-4">
                         <div class="">
-                            <?php echo $form->labelEx($user, 'group_id');?>
-                            <?php echo $form->dropDownList($user, 'group_id', CMap::mergeArray(array('' => ''), $options), $user->getHtmlOptions('group_id')); ?>
-                            <?php echo $form->error($user, 'group_id');?>
+                            <?php $options = [2 => "Agency", 3 => "Agent"] ?>
+                            <?php echo $form->labelEx($user, 'rules'); ?>
+                            <?php echo $form->dropDownList($user, 'rules', CMap::mergeArray(array('' => 'Select Role'), $options), $user->getHtmlOptions('rules')); ?>
+                            <?php echo $form->error($user, 'rules'); ?>
                         </div>
                     </div>
-                        <div class="form-group col-lg-6">
+
+                    <!-- Multi-select form for agents, initially hidden -->
+                    <div class="form-group col-lg-6 mb-2 mt-4" id="agent-select-group" style="display:none;">
                         <div class="">
-                            <?php echo $form->labelEx($user, 'bank_id');?>
-                            <?php echo $form->dropDownList($user, 'bank_id', Bank::model()->ListDataAll() , $user->getHtmlOptions('bank_id',array('empty'=>'Select All'))); ?>
-                            <?php echo $form->error($user, 'bank_id');?>
+                            <?php echo $form->labelEx($user, 'agents'); ?>
+
+                            <?php
+                            // Fetch all agents where rules == 3
+                            $agents = User::model()->findAllByAttributes(['rules' => 3]);
+
+                            // Generate the agent list with first_name and last_name
+                            $agentList = CHtml::listData($agents, 'user_id', function ($agent) {
+                                return $agent->first_name . ' ' . $agent->last_name;
+                            });
+
+                            // If this is an update, get the selected agents from the database
+                            $selectedAgents = explode(',', $user->agents); // Assuming agents are stored as a comma-separated string
+
+                            // Render the multi-select dropdown with the selected agents
+                            echo $form->dropDownList($user, 'agents', $agentList, [
+                                'multiple' => 'multiple',
+                                'class' => 'form-control',
+                                'options' => array_combine($selectedAgents, array_fill(0, count($selectedAgents), ['selected' => true])) // Pre-select the saved agents
+                            ]);
+                            ?>
                         </div>
                     </div>
-                    <?php } ?>
-                </div>  
-                <div class="clearfix"><!-- --></div>     
-                <?php 
+
+                </div>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+                <script>
+                    $(function() {
+                        $("#User_agents").select2({
+                            placeholder: "Select Agent"
+                        });
+                    })
+                    document.getElementById('User_rules').addEventListener('change', function() {
+                        var selectedRole = this.value;
+                        var agentSelectGroup = document.getElementById('agent-select-group');
+
+                        if (selectedRole == 2) {
+                            // Show multi-select for agents when "Agency" is selected
+                            agentSelectGroup.style.display = 'block';
+                        } else {
+                            // Hide multi-select when any other role is selected
+                            agentSelectGroup.style.display = 'none';
+                        }
+                    });
+                    var selectedRole = document.getElementById('User_rules').value;
+                    var agentSelectGroup = document.getElementById('agent-select-group');
+
+                    if (selectedRole == 2) {
+                        // Show multi-select for agents when "Agency" is selected
+                        agentSelectGroup.style.display = 'block';
+                    } else {
+                        // Hide multi-select when any other role is selected
+                        agentSelectGroup.style.display = 'none';
+                    }
+                </script>
+                <?php
                 /**
                  * This hook gives a chance to append content after the active form fields.
                  * Please note that from inside the action callback you can access all the controller view variables 
@@ -155,20 +217,22 @@ if ($viewCollection->renderContent) {
                  */
                 $hooks->doAction('after_active_form_fields', new CAttributeCollection(array(
                     'controller'    => $this,
-                    'form'          => $form    
+                    'form'          => $form
                 )));
-                ?> 
-                <div class="clearfix"><!-- --></div>
+                ?>
             </div>
             <div class="box-footer">
                 <div class="pull-right">
-                    <button type="submit" class="btn btn-primary btn-submit" data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...');?>"><?php echo Yii::t('app', 'Save changes');?></button>
+                    <button type="submit" class="btn btn-primary btn-submit m-4"
+                        data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', 'Save changes'); ?></button>
                 </div>
-                <div class="clearfix"><!-- --></div>
+                <div class="clearfix">
+                    <!-- -->
+                </div>
             </div>
         </div>
-        <?php 
-        $this->endWidget(); 
+<?php
+        $this->endWidget();
     }
     /**
      * This hook gives a chance to append content after the active form.
@@ -192,7 +256,3 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'renderedContent'   => $viewCollection->renderContent,
 )));
 ?>
-
-<script>
-$(function(){ $('#User_timezone').select2();  })
-</script>

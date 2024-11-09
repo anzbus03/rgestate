@@ -77,8 +77,18 @@ html textarea.input-text.form-control {
                                     <?php } ?>
                                 </div>
                                 <a href="<?php echo $add->detailUrl;?>">
-                                <img class="d-block w-100 h-100 object-fit-cover" src="<?php echo $add->getAd_image_singlenew("293");?>"
-                                    alt="Stylish downtown apartment">
+                                <?php
+                                    $imagePath  = $add->getAd_image_singlenew("293");
+                                    $imagePath  = str_replace('/uploads/files/', '', $imagePath);
+                                    $adImage    = AdImage::model()->findByAttributes(['image_name' => $imagePath]);
+                                    $titleAltText   = $adImage->image_alt;
+                                    $titleText      = $adImage->image_title;
+                                ?>
+                                <img class="d-block w-100 h-100 object-fit-cover"  
+                                    src="<?php echo $imagePath;?>"
+                                    alt="<?php echo $titleAltText; ?>"
+                                    title="<?php echo $titleText; ?>">
+
                                 </a>
                             </div>
                             <div class="rg-featured-body">

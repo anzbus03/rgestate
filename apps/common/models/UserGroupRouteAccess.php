@@ -240,7 +240,6 @@ class UserGroupRouteAccess extends ActiveRecord
 
         return $hashes[$hashKey] = isset($groupRoutes[$groupId][$route]) && $groupRoutes[$groupId][$route] === false ? false : true;
     }
-    
     protected static function getRoutesFromFiles()
     {
         $files = array();
@@ -250,7 +249,7 @@ class UserGroupRouteAccess extends ActiveRecord
         $files   = array_merge($files, FileSystemHelper::readDirectoryContents(Yii::app()->controllerPath, true));
         $exclude = array(
             Yii::app()->controllerPath . '/GuestController.php', 
-          //  Yii::app()->controllerPath . '/DashboardController.php',
+            // Yii::app()->controllerPath . '/DashboardController.php',
             Yii::app()->controllerPath . '/AccountController.php',
         );
         $files = array_diff($files, $exclude);
@@ -259,61 +258,88 @@ class UserGroupRouteAccess extends ActiveRecord
         $rootPath = Yii::getPathOfAlias('root.apps');
         $info     = array();
         foreach ($files as $file) { 
+            
             if (substr($file, -4) != '.php') {
                 continue;
             }
             if(strlen($file)=='4'){ continue; }  
-           // echo  Yii::app()->controllerPath . '/AccountController.php';exit;
-            
+            // echo  Yii::app()->controllerPath . '/AccountController.php';exit;
+            // ini_set('display_errors', true);
+            // error_reporting(E_ALL);
+
             $fileNameNoExt = basename($file, '.php');
             $controllerId  = strtolower(substr($fileNameNoExt, 0, -10));
             
-            if (!class_exists($fileNameNoExt, false)) {
-                require_once $file;
+            if (class_exists($fileNameNoExt, false) && file_exists($file)) {
+                require_once Yii::getPathOfAlias('root.apps.backend.controllers') . '/' . $file;
             }
-            
+            require_once(Yii::getPathOfAlias('common.framework') . '/YiiBase.php');
             $refl    = new ReflectionClass(new $fileNameNoExt($controllerId));
-             if(in_array($refl->name,array(
-             'Ext_translateController',
-             'Ext_ckeditorController',
-             'Video_categoriesController',
-             'VideosController',
-             'Upload_settingsController',
-             'ServiceController',
-             'ReligionController',
-             'OccupationController',
-             'Nearby_locationController',
-             'MechanicalconditionController',
-             'Marital_statusController',
-             'Listing_managementController',
-             'Ip_location_servicesController',
-             'FueltypeController',
-             'FueltypeController',
-             'Floor_plan_uploadController',
-             'Floor_plan_uploadController',
-             'AgenciesController',
-             'AccountController',
-             'Agent_roleController',
-             'AgentsController',
-            // 'Blog_articlesController',
-             'DevelopersController',
-             'GuestController',
-             'ProjectController',
-             'PropertyController',
-             'Sub_communityController',
-             'SubcategoryController',
-          //   'DashboardController',
-             'StatesController',
-             'DistrictController',
-            // 'CurrenciesController',
-             'CommunityController',
-             'Floor_planController',
-             'Experience_levelController',
-             'Engine_sizeController',
-             'Employment_typeController',
-             'Email_blacklistController','Banner_requestController','Agent_bannerController','Education_levelController','DoorController','DeveloperController', 'Developer_bannerController', 'Customer_tagController','ColorController','Bounce_serversController','BodyconditionController','Banner_positionController','AvatarController','Advertisement_listingController','Adv_articleController','Adv_categoriesController','AdvertisementController','Place_an_adController','Place_an_adController','TagController','ExtensionsController','ThemeController','Customers_mass_emailsController','AjaxController'))){
-						continue;
-				}
+            if(in_array($refl->name, array(
+                'Ext_translateController',
+                'Ext_ckeditorController',
+                'Video_categoriesController',
+                'VideosController',
+                'Upload_settingsController',
+                'ServiceController',
+                'ReligionController',
+                'OccupationController',
+                'Nearby_locationController',
+                'MechanicalconditionController',
+                'Marital_statusController',
+                'Listing_managementController',
+                'Ip_location_servicesController',
+                'FueltypeController',
+                'FueltypeController',
+                'Floor_plan_uploadController',
+                'Floor_plan_uploadController',
+                'AgenciesController',
+                'AccountController',
+                'Agent_roleController',
+                'AgentsController',
+                // 'Blog_articlesController',
+                'DevelopersController',
+                'GuestController',
+                'ProjectController',
+                'PropertyController',
+                'Sub_communityController',
+                'SubcategoryController',
+                // 'DashboardController',
+                'StatesController',
+                'DistrictController',
+                // 'CurrenciesController',
+                'CommunityController',
+                'Floor_planController',
+                'Experience_levelController',
+                'Engine_sizeController',
+                'Employment_typeController',
+                'Email_blacklistController',
+                'Banner_requestController',
+                'Agent_bannerController',
+                'Education_levelController',
+                'DoorController',
+                'DeveloperController', 
+                'Developer_bannerController', 
+                'Customer_tagController',
+                'ColorController',
+                'Bounce_serversController',
+                'BodyconditionController',
+                'Banner_positionController',
+                'AvatarController',
+                'Advertisement_listingController',
+                'Adv_articleController',
+                'Adv_categoriesController',
+                'AdvertisementController',
+                'Place_an_adController',
+                'Place_an_adController',
+                'TagController',
+                'ExtensionsController',
+                'ThemeController',
+                'Customers_mass_emailsController',
+                'AjaxController'
+            ))){
+                continue;
+            }
             $methods = $refl->getMethods(ReflectionMethod::IS_PUBLIC);
             $routes  = array();
             
@@ -321,50 +347,50 @@ class UserGroupRouteAccess extends ActiveRecord
 				
 				if($refl->name== 'Place_propertyController' ){  
 					if(in_array(strtolower($method->name),array('actiondetails_2','actiondetails','actiondetails_edit','actionfindonmap' ,
-					'actionselect_state',
-'actionselect_city',
-'actionselect_category',
-'actionselect_sub_category',
-'actionselect_model',
-'actionupload',
-'actiondelete_image',
-'actionsuccess',
-'actionsuccess_edit',
-'actionloadcities',
-'actiondelete_image_db',
-'actionapprove',
-'actiondisapprove',
-'actionupload',
-'actionapprove_selected',
-'actionapprove_all',
-'actiondispprove_all',
-'actioncheckmodel',
-'actioncommunity',
-'actiondistrict',
-'actioncustomer',
-'actioncheckmodel',
-'actionimage_approve_manage',
-'actionad_image',
-'actionupload',
-'actionupload',
-'actionsubcoummunity',
-'actionview',
-'actionstatus_change',
-'actionupload_floor_plan',
-'actiondelete_floor_plan',
-'actionupdatemetatag',
-'actionsavetaglist',
-'actionget_tag_list',
-'actionget_tag_list2',
-'actionsavetaglist2',
-'actionselect_city_new',
-'actionselect_location',
-'actionselect_category2',
-'actionselect_sub_category2',
-'actionselect_category3',
-'actiongetcityid',
-'actionlist_image',
-'actionnotification',
+                        'actionselect_state',
+                        'actionselect_city',
+                        'actionselect_category',
+                        'actionselect_sub_category',
+                        'actionselect_model',
+                        'actionupload',
+                        'actiondelete_image',
+                        'actionsuccess',
+                        'actionsuccess_edit',
+                        'actionloadcities',
+                        'actiondelete_image_db',
+                        'actionapprove',
+                        'actiondisapprove',
+                        'actionupload',
+                        'actionapprove_selected',
+                        'actionapprove_all',
+                        'actiondispprove_all',
+                        'actioncheckmodel',
+                        'actioncommunity',
+                        'actiondistrict',
+                        'actioncustomer',
+                        'actioncheckmodel',
+                        'actionimage_approve_manage',
+                        'actionad_image',
+                        'actionupload',
+                        'actionupload',
+                        'actionsubcoummunity',
+                        'actionview',
+                        'actionstatus_change',
+                        'actionupload_floor_plan',
+                        'actiondelete_floor_plan',
+                        'actionupdatemetatag',
+                        'actionsavetaglist',
+                        'actionget_tag_list',
+                        'actionget_tag_list2',
+                        'actionsavetaglist2',
+                        'actionselect_city_new',
+                        'actionselect_location',
+                        'actionselect_category2',
+                        'actionselect_sub_category2',
+                        'actionselect_category3',
+                        'actiongetcityid',
+                        'actionlist_image',
+                        'actionnotification',
 
 					))){
 					 
@@ -393,62 +419,59 @@ class UserGroupRouteAccess extends ActiveRecord
 				}
 				if($refl->name== 'ListingusersController' ){
 					if(in_array(strtolower($method->name),array( 
-'actionduplicate',
-'actionautocomplete',
-'actionimage_crop',
-'actionresentemail',
- 
-'actioncsv_import',
-
-
-))){
+                        'actionduplicate',
+                        'actionautocomplete',
+                        'actionimage_crop',
+                        'actionresentemail',
+                        'actioncsv_import',
+                    ))){
 						continue;
 					} 
 				}
 				if($refl->name== 'New_projectsController' ){
 					if(in_array(strtolower($method->name),array( 
-					
-					'actiondetails',
-'actiondetails_2',
-'actiondetails_edit',
-'actionfindonmap',
-'actionselect_state',
-'actionselect_city',
-'actionselect_category',
-'actionselect_sub_category',
-'actionselect_model',
-'actionupload',
-'actiondelete_image',
-'actionsuccess',
-'actionsuccess_edit',
-'actionloadcities',
-'actiondelete_image_db',
-'actionapprove',
-'actiondisapprove',
-'actionapprove_selected',
-'actionapprove_all',
-'actiondispprove_all',
-'actionad_image',
-'actionimage_approve_manage',
-'actioncheckmodel',
-'actioncommunity',
-'actiondistrict',
-'actioncustomer',
-'actionsubcoummunity',
-'actionstatus_change',
-'actionupload_floor_plan',
-'actiondelete_floor_plan',
-'actionupdatemetatag',
-'actionsavetaglist',
-'actionget_tag_list',
-'actionget_tag_list2',
-'actionsavetaglist2',
-'actionselect_city_new',
-'actionselect_location',
-'actionselect_category2',
-'actionselect_sub_category2',
+                        
+                        'actiondetails',
+                        'actiondetails_2',
+                        'actiondetails_edit',
+                        'actionfindonmap',
+                        'actionselect_state',
+                        'actionselect_city',
+                        'actionselect_category',
+                        'actionselect_sub_category',
+                        'actionselect_model',
+                        'actionupload',
+                        'actiondelete_image',
+                        'actionsuccess',
+                        'actionsuccess_edit',
+                        'actionloadcities',
+                        'actiondelete_image_db',
+                        'actionapprove',
+                        'actiondisapprove',
+                        'actionapprove_selected',
+                        'actionapprove_all',
+                        'actiondispprove_all',
+                        'actionad_image',
+                        'actionimage_approve_manage',
+                        'actioncheckmodel',
+                        'actioncommunity',
+                        'actiondistrict',
+                        'actioncustomer',
+                        'actionsubcoummunity',
+                        'actionstatus_change',
+                        'actionupload_floor_plan',
+                        'actiondelete_floor_plan',
+                        'actionupdatemetatag',
+                        'actionsavetaglist',
+                        'actionget_tag_list',
+                        'actionget_tag_list2',
+                        'actionsavetaglist2',
+                        'actionselect_city_new',
+                        'actionselect_location',
+                        'actionselect_category2',
+                        'actionselect_sub_category2',
 
-					  ))){
+                    ))){
 						continue;
 					} 
 				}
@@ -456,12 +479,12 @@ class UserGroupRouteAccess extends ActiveRecord
 				if(in_array($refl->name,array( 'CategoryController','Delivery_serversController','CountriesController','TemplatesController','RegionController','CityController','SettingsController' ))){
 					if(!in_array(strtolower($method->name),array( 
 					
-					'actionindex',
-'actioncreate',
-'actionupdate',
-'actiondelete', 
-'actionemail_templates', 
-					  ))){
+                        'actionindex',
+                        'actioncreate',
+                        'actionupdate',
+                        'actiondelete', 
+                        'actionemail_templates', 
+                    ))){
 						continue;
 					} 
 				}
@@ -475,6 +498,7 @@ class UserGroupRouteAccess extends ActiveRecord
                 $actionId = strtolower(substr($method->name, 6));
                 $routes[] = array_merge(array('route' => $controllerId . '/' . $actionId), self::extractObjectInfo($method));
             }
+            
             $data = array(
                 'controller' => self::extractObjectInfo($refl),
                 'routes'     => $routes,
@@ -483,7 +507,17 @@ class UserGroupRouteAccess extends ActiveRecord
         }
         return $info;
     }
-    
+    protected static function extractNamespaceFromFile($file)
+    {
+        $lines = file($file);
+        foreach ($lines as $line) {
+            if (preg_match('/^namespace\s+(.+?);$/', $line, $matches)) {
+                return $matches[1];  // Return the namespace
+            }
+        }
+        return null;  // No namespace found
+    }
+
     protected static function extractObjectInfo($reflObj)
     {
         $comment = $reflObj->getDocComment();

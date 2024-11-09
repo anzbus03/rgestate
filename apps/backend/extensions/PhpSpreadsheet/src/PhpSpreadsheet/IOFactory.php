@@ -109,10 +109,10 @@ abstract class IOFactory
     /**
      * Identify file type using automatic IReader resolution.
      */
-    public static function identify(string $filename, ?array $readers = null): string
+    public static function identify($filename, $readers = null)
     {
         $reader = self::createReaderForFile($filename, $readers);
-        $className = $reader::class;
+        $className = get_class($reader);
         $classType = explode('\\', $className);
         unset($reader);
 
@@ -171,42 +171,43 @@ abstract class IOFactory
     /**
      * Guess a reader type from the file extension, if any.
      */
-    private static function getReaderTypeFromExtension(string $filename): ?string
+    private static function getReaderTypeFromExtension($filename)
     {
         $pathinfo = pathinfo($filename);
         if (!isset($pathinfo['extension'])) {
             return null;
         }
-
-        return match (strtolower($pathinfo['extension'])) {
-            // Excel (OfficeOpenXML) Spreadsheet
-            'xlsx',
-            // Excel (OfficeOpenXML) Macro Spreadsheet (macros will be discarded)
-            'xlsm',
-            // Excel (OfficeOpenXML) Template
-            'xltx',
-            // Excel (OfficeOpenXML) Macro Template (macros will be discarded)
-            'xltm' => 'Xlsx',
-            // Excel (BIFF) Spreadsheet
-            'xls',
-            // Excel (BIFF) Template
-            'xlt' => 'Xls',
-            // Open/Libre Offic Calc
-            'ods',
-            // Open/Libre Offic Calc Template
-            'ots' => 'Ods',
-            'slk' => 'Slk',
-            // Excel 2003 SpreadSheetML
-            'xml' => 'Xml',
-            'gnumeric' => 'Gnumeric',
-            'htm', 'html' => 'Html',
-            // Do nothing
-            // We must not try to use CSV reader since it loads
-            // all files including Excel files etc.
-            'csv' => null,
-            default => null,
-        };
+    
+        $extension = strtolower($pathinfo['extension']);
+    
+        switch ($extension) {
+            case 'xlsx':
+            case 'xlsm':
+            case 'xltx':
+            case 'xltm':
+                return 'Xlsx';
+            case 'xls':
+            case 'xlt':
+                return 'Xls';
+            case 'ods':
+            case 'ots':
+                return 'Ods';
+            case 'slk':
+                return 'Slk';
+            case 'xml':
+                return 'Xml';
+            case 'gnumeric':
+                return 'Gnumeric';
+            case 'htm':
+            case 'html':
+                return 'Html';
+            case 'csv':
+                return null;
+            default:
+                return null;
+        }
     }
+    
 
     /**
      * Register a writer with its type and class name.

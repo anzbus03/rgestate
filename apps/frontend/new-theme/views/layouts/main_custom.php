@@ -85,7 +85,11 @@
     var Contact_title 	= '<?php echo $this->tag->getTag('contact_us','Contact Us');?>';
     
     </script>
-
+  <style>
+    .b24-widget-button-wrapper{
+      display: none !important;
+    }
+  </style>
     <?php
     if(!empty($schema)){ echo $schema; } ?>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DMQGQPSMZC"></script>
@@ -345,13 +349,12 @@
       var closeButton = document.querySelector(".modal-header .close");
 
       closeButton.addEventListener("click", function() {
-        var modal = document.getElementById("exampleModalBlogMessage");
+        var modal = document.getElementById("exampleModal");
         $(modal).modal("hide");
       });
     });
   </script>
-<div id="dynamicScripts"></div>
-<div class="modal modal-new fade" id="exampleModalBlogMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalBlogMessageLabel" aria-hidden="true">
+<div id="dynamicScripts"></div><div class="modal modal-new fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
       <div class="modal-content position-relative rounded-0">
         <div class="modal-header">
@@ -380,7 +383,7 @@
   </div>
 </div>
 
-        <ul class="rg-hero-contact w-100 position-fixed top-50 end-0 translate-middle-y z-1 text-white">
+<ul class="rg-hero-contact w-100 position-fixed top-50 end-0 translate-middle-y z-1 text-white">
           <li class="pt-4 pb-3">
             <a href="#" class="d-block text-center" data-bs-toggle="modal" data-bs-target="#popupmodal">
               <svg width="16" height="13" class="rg-fill-white mb-1">
@@ -637,6 +640,20 @@ if(!hasError)
 	})
 	
   </script>
+
+<script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '67252e1be643c722e18f352c' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production'
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
 </body>
 
 </html>

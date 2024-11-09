@@ -71,6 +71,7 @@ return array(
           'urlFormat'=>'path',
                     'showScriptName'=>'false',
             'rules' => array(
+                'sitemap.xml' => 'site/sitemap',
                 array('site/index', 'pattern' => ''),
                 array('adlist/index', 'pattern' => 'adlist/<slug:(.*)>'),
                 array('details/index', 'pattern' => 'details/<slug:(.*)>'),
