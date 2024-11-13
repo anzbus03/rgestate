@@ -39,20 +39,13 @@ if ($viewCollection->renderContent) { ?>
             <span class="fa fa-star"></span>
             <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title . " List"); ?>
         </h3>
-        <div>
-            <div class="row">
-                <div class="col-md-7 mt-2">
-                    <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id . '/create'), array('class' => 'btn btn-primary btn-sm', 'title' => Yii::t('app', 'Create new'))); ?>
-                    <button type="button" id="exportExcel" class="btn btn-success btn-sm" style="">Export Excel</button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#uploadModal">
-                        Excel Upload
-                    </button>
-                </div>
-                <div class="col-md-5">
-                    <input type="text" id="dateRange" class="form-control" style="margin-left: 10px;" />
-                </div>
-            </div>
+        <div class="d-flex flex-wrap align-items-center">
+            <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id . '/create'), array('class' => 'btn btn-primary btn-sm me-2', 'title' => Yii::t('app', 'Create new'))); ?>
+            <button type="button" id="exportExcel" class="btn btn-success btn-sm me-2">Export Excel</button>
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                Excel Upload
+            </button>
+            <input type="text" id="dateRange" class="form-control ms-3 mt-2 mt-md-0" style="width: auto;" />
         </div>
     </div>
 
@@ -247,7 +240,7 @@ if ($viewCollection->renderContent) { ?>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($filteredData as $data) {
+                            <?php foreach ($placeAds as $data) {
                                     $isSold = in_array($data->id, $soldPropertyIds); ?>
                             <tr>
                                 <td><input type="checkbox" class="bulk-item" value="<?php echo $data->id; ?>"></td>
@@ -467,7 +460,7 @@ if ($viewCollection->renderContent) { ?>
     </div>
 
     <!-- Sold Property Modal -->
-   <!-- Modal for changing property availability -->
+    <!-- Modal for changing property availability -->
     <div class="modal fade" id="availabilityModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -515,35 +508,35 @@ if ($viewCollection->renderContent) { ?>
         </div>
     </div>
 
-<script>
-    function confirmDelete(url) {
-        // Show confirmation dialog
-        if (confirm('Are you sure you want to delete this property?')) {
-            // If confirmed, proceed to the URL for deletion
-            window.location.href = url;
+    <script>
+        function confirmDelete(url) {
+            // Show confirmation dialog
+            if (confirm('Are you sure you want to delete this property?')) {
+                // If confirmed, proceed to the URL for deletion
+                window.location.href = url;
+            }
         }
-    }
-    document.getElementById('availabilitySelect').addEventListener('change', function () {
-        const reasonContainer = document.getElementById('reasonContainer');
-        const soldPriceContainer = document.getElementById('soldPriceContainer');
+        document.getElementById('availabilitySelect').addEventListener('change', function () {
+            const reasonContainer = document.getElementById('reasonContainer');
+            const soldPriceContainer = document.getElementById('soldPriceContainer');
 
-        if (this.value === 'not_available') {
-            reasonContainer.classList.remove('d-none');
-        } else {
-            reasonContainer.classList.add('d-none');
-            soldPriceContainer.classList.add('d-none');
-        }
-    });
+            if (this.value === 'not_available') {
+                reasonContainer.classList.remove('d-none');
+            } else {
+                reasonContainer.classList.add('d-none');
+                soldPriceContainer.classList.add('d-none');
+            }
+        });
 
-    document.getElementById('reasonSelect').addEventListener('change', function () {
-        const soldPriceContainer = document.getElementById('soldPriceContainer');
-        if (this.value === 'sold_out') {
-            soldPriceContainer.classList.remove('d-none');
-        } else {
-            soldPriceContainer.classList.add('d-none');
-        }
-    });
-</script>
+        document.getElementById('reasonSelect').addEventListener('change', function () {
+            const soldPriceContainer = document.getElementById('soldPriceContainer');
+            if (this.value === 'sold_out') {
+                soldPriceContainer.classList.remove('d-none');
+            } else {
+                soldPriceContainer.classList.add('d-none');
+            }
+        });
+    </script>
 
 
     <style>
@@ -992,6 +985,24 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             "info": true, // Display table information
             "autoWidth": false, // Disable auto column width calculation
             "pageLength": 10,
+            "serverSide": true,
+            "processing": true,
+            "ajax": {
+                "url": "<?php echo Yii::app()->createUrl('place_property/serverProcessing'); ?>", // Replace with your server URL
+                "type": "POST"
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "reference_number" },
+                { "data": "ad_title" },
+                { "data": "section" },
+                { "data": "price" },
+                { "data": "category" },
+                { "data": "status" },
+                { "data": "priority" },
+                { "data": "refresh_date" },
+                { "data": "options" }
+            ],
             createdRow: function(row, data, index) {
                 $(row).addClass('selected');
             },
