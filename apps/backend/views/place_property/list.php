@@ -942,6 +942,10 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
         $('#exportExcel').click(function(e) {
             e.preventDefault(); // Prevent default behavior
 
+            var $button = $(this); // Reference to the button
+            $button.prop('disabled', true); // Disable the button
+            $button.text('Loading...'); // Change button text to indicate loading
+
             var dateRange = $('#dateRange').data('daterangepicker');
             var startDate = dateRange.startDate.format('YYYY-MM-DD');
             var endDate = dateRange.endDate.format('YYYY-MM-DD');
@@ -973,9 +977,15 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 },
                 error: function(xhr, status, error) {
                     console.log("Error: " + error); // Log any errors for debugging
+                    alert("An error occurred while exporting the data."); // Alert the user
+                },
+                complete: function() {
+                    $button.prop('disabled', false); // Re-enable the button
+                    $button.text('Export Excel'); // Reset button text
                 }
             });
         });
+
 
         var table = $('#enquiryTable').DataTable({
             "paging": true, // Enable pagination

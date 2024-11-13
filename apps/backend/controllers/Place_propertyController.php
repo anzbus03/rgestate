@@ -602,7 +602,6 @@ class Place_propertyController  extends Controller
     {
         try {
             $criteria = new CDbCriteria();
-            $criteria->limit = 10000;
             // Set filters based on request parameters
             if (isset($_GET['type'])) {
                 if ($_GET['type'] == 'unpublished') {

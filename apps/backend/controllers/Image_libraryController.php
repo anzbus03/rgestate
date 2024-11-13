@@ -160,7 +160,7 @@ class Image_libraryController extends Controller
         if (!empty($searchValue)) {
             $criteria->with = ['ad'];
             $criteria->together = true;
-            $criteria->condition = "t.image_name LIKE :search OR t.image_alt LIKE :search OR ad.ad_title LIKE :search";
+            $criteria->condition = "(t.image_name LIKE :search OR t.image_alt LIKE :search OR ad.ad_title LIKE :search) and t.isTrash LIKE '0'";
             $criteria->params = [':search' => '%' . $searchValue . '%'];
         }
     
@@ -195,13 +195,36 @@ class Image_libraryController extends Controller
                 $item->image_title,
                 $item->ad->ad_title,
                 $item->status,
-                CHtml::link('<span class="fa fa-trash"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/delete', ['id' => $item->id]), ['class' => 'btn btn-danger btn-xs', 'title' => Yii::t('app', 'Delete'), 'onclick' => 'return confirm("Are you sure you want to delete this item?")']),
-            ];
+                CHtml::link('<span class="fa fa-trash"></span>', Yii::app()->createUrl(Yii::app()->controller->id . '/delete', ['id' => $item->id]), ['class' => 'btn btn-danger btn-xs', 'title' => Yii::t('app', 'Delete'), 'onclick' => 'return confirm("Are you sure you want to delete this item?")']) . 
+                "<button class='btn btn-info btn-xs' onclick='openEditModal({$item->id}, \"{$item->image_alt}\", \"{$item->image_title}\")'><span class='fa fa-pen'></span></button>",
+            ];            
         }
     
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    public function actionUpdateImageDetails() {
+        if (Yii::app()->request->isPostRequest && isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $alt = $_POST['alt'];
+            $title = $_POST['title'];
+    
+            $model = AdImage::model()->findByPk($id);
+            if ($model) {
+                $model->image_alt = $alt;
+                $model->image_title = $title;
+                if ($model->save()) {
+                    echo CJSON::encode(['success' => true]);
+                } else {
+                    echo CJSON::encode(['success' => false]);
+                }
+            } else {
+                echo CJSON::encode(['success' => false, 'message' => 'Image not found']);
+            }
+        }
+        Yii::app()->end();
+    }
+    
     
     public function actionAjaxDataFloorPlan()
     {

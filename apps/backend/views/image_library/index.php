@@ -173,11 +173,73 @@ if ($viewCollection->renderContent) { ?>
         </div>
     </div>
 </div>
+<div class="modal fade editModal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Image Details</h5>
+                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" enctype="multipart/form-data">
+                    <input type="hidden" id="editId" name="id">
+                    <?php echo CHtml::hiddenField(Yii::app()->request->csrfTokenName, Yii::app()->request->csrfToken); ?>
+                    <div class="form-group">
+                        <label for="editAlt">Alt Text:</label>
+                        <input type="text" id="editAlt" name="alt" class="form-control">
+                    
+                    </div>
+                    <!-- Video Link Input -->
+                    <div class="form-group mt-4">
+                        <label for="editTitle">Title Text:</label>
+                        <input type="text" id="editTitle" name="title" class="form-control">
+                
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editFormButton">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <script>
+    function openEditModal(id, currentAlt, currentTitle) {
+        document.getElementById('editId').value = id;
+        document.getElementById('editAlt').value = currentAlt;
+        document.getElementById('editTitle').value = currentTitle;
+        $("#editModal").modal('toggle')
+    }
+
+    $("#editFormButton").on('click', function() {
+        var $uploadButton = $(this);
+        var formData = new FormData($('#editForm')[0]);
+        $.ajax({
+            url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . "/updateImageDetails"); ?>',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (JSON.parse(response).success) {
+                    $('#editModal').modal('toggle');
+                    $('#home-banner-table').DataTable().ajax.reload(); // Reload DataTable
+                }
+            },
+            error: function () {
+                alert('An error occurred.');
+            }
+        });
+    });
+
     function copyToClipboard(text) {
         var tempInput = document.createElement('input');
         document.body.appendChild(tempInput);
