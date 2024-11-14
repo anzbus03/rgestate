@@ -601,7 +601,10 @@ class Place_propertyController  extends Controller
     public function actionExportData()
     {
         try {
+            ini_set('display_errors', 1); error_reporting(E_ALL);
+            ini_set('memory_limit', '512M');
             $criteria = new CDbCriteria();
+          
             // Set filters based on request parameters
             if (isset($_GET['type'])) {
                 if ($_GET['type'] == 'unpublished') {
@@ -612,8 +615,7 @@ class Place_propertyController  extends Controller
                     $criteria->compare('isTrash', '1');
                 }
             }
-            // print_r(isset($_GET['startDate']));
-            // exit;
+             
             // if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
             //     $criteria->addCondition("DATE(date_added) >= :startDate AND DATE(date_added) <= :endDate");
             //     $criteria->params[':startDate'] = $_GET['startDate'];
@@ -623,7 +625,9 @@ class Place_propertyController  extends Controller
             // Retrieve data using CActiveRecord's findAll method
             if (Yii::app()->user->model->user_id == 2){
                 $data = PlaceAnAd::model()->findAll($criteria);
+                
             }else {
+                  
                 $criteria->condition = 'user_id = :userId'; // Use a placeholder for security
                 $criteria->params = [':userId' => Yii::app()->user->model->user_id]; // Bind the parameter
 
@@ -631,6 +635,7 @@ class Place_propertyController  extends Controller
                 $data = PlaceAnAd::model()->findAll($criteria);
             }
             
+           
             // Prepare data for JSON response
             $responseData = [];
             foreach ($data as $item) {
@@ -668,10 +673,10 @@ class Place_propertyController  extends Controller
                     'Reference ID'                     => $item->RefNo,
                     'Permit Number'                    => $item->PropertyID,
                     'Offer Type'                       => Section::model()->findByPk($item->section_id)->section_name,
-                    'Property Type Category'           => Category::model()->findByPk($item->listing_type)->category_name,
-                    'Property Type'                    => Category::model()->findByPk($item->category_id)->category_name,
+                    'Property Type Category'           => Category::model()->findByPk($item->listing_type)->category_name??'',
+                    'Property Type'                    => Category::model()->findByPk($item->category_id)->category_name??'',
                     'COUNTRY'                          => $item->country_name ?? "UAE",
-                    'EMIRATE'                          => States::model()->findByPk($item->state)->state_name,
+                    'EMIRATE'                          => States::model()->findByPk($item->state)->state_name??'',
                     'LOCATION'                         => $item->area_location,
                     'Google Map Property Ads Location' => $item->location_latitude . ', ' . $item->location_longitude,
                     'Ad Title'                         => $item->ad_title,
@@ -699,16 +704,16 @@ class Place_propertyController  extends Controller
                     'Availability'                     => $item->availability,
                     'Publish_Status'                   => $item->status,
                     'AGENCY NAME'                      => $agencyName,
-                    'AGENT NAME'                       => User::model()->findByPk($userId)->first_name,
-                    'AGENT EMAIL'                      => User::model()->findByPk($userId)->email,
-                    'AGENT CONTACT'                    => User::model()->findByPk($userId)->phone_number,
+                    'AGENT NAME'                       => User::model()->findByPk($userId)->first_name??'',
+                    'AGENT EMAIL'                      => User::model()->findByPk($userId)->email??'',
+                    'AGENT CONTACT'                    => User::model()->findByPk($userId)->phone_number??'',
                 ];
                 
             }
-    
-            // Send JSON response
             header('Content-Type: application/json');
             echo json_encode($responseData);
+
+            // Send JSON response
             Yii::app()->end();
         } catch (Exception $e) {
             echo json_encode(['error' => $e->getMessage()]);
