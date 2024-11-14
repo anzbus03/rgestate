@@ -77,6 +77,7 @@ if ($viewCollection->renderContent) { ?>
                         <th><input type="checkbox" id="select-all"></th>
                         <th>Donwload File</th>
                         <th>Floor Plan Path</th>
+                        <th>Floor Plan URL</th>
                         <th>Property</th>
                         <th>Status</th>
                         <th>Options</th>
