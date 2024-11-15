@@ -9369,7 +9369,7 @@ label {
 
 textarea.form-control {
   min-height: auto !important;
-  height: auto !important;
+  /* height: auto !important; */
   padding: 25px; }
 
 .border-left-end {

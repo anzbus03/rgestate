@@ -1159,6 +1159,10 @@ if ($viewCollection->renderContent) {
 												opacity: 1;
 												/* Firefox */
 											}
+											textarea {
+												resize: vertical; /* Allows both vertical and horizontal resizing */
+												overflow: auto; /* Adds scrollbars if necessary */
+											}
 										</style>
 										<?php echo $form->textField($model, 'ad_title', $model->getHtmlOptions('ad_title', array('placeholder' => '', 'dir' => 'auto', 'class' => 'input-text form-control', 'style' => 'width:100% !important'))); ?>
 										<span class="rui-qvKkT"></span>
@@ -1184,13 +1188,22 @@ if ($viewCollection->renderContent) {
 											echo $model->getTranslateHtml('ad_description');
 										}
 										?>
-										<?php echo $form->textArea($model, 'ad_description', array_replace($model->getHtmlOptions('ad_description'), array("rows" => "5", 'dir' => 'auto', 'placeholder' => $this->tag->getTag('mention_the_key_feature_of_you', 'Mention the key feature of your property (short description of your property)')))); ?>
-										<div class="text-warning small hide pull-left"><?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::DESC_MIN, '{max}' => $model::DESC_MAX));; ?></div>
+										<?php echo $form->textArea($model, 'ad_description', array_replace($model->getHtmlOptions('ad_description'), array(
+											"rows" => "5", 
+											'dir' => 'auto', 
+											'placeholder' => $this->tag->getTag('mention_the_key_feature_of_you', 'Mention the key feature of your property (short description of your property)'),
+											'style' => 'resize: vertical; overflow: hidden; min-height: 50px; max-height: 500px;' // Ensuring resizable, overflow handling, and height constraints
+										))); ?>
+										<div class="text-warning small hide pull-left">
+											<?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::DESC_MIN, '{max}' => $model::DESC_MAX)); ?>
+										</div>
 										<div class="pull-right text-warning" style="font-size: 12px;"><span id="inputcounter2"></span></div>
 										<div class="clearfix"></div>
 										<?php echo $form->error($model, 'ad_description'); ?>
 									</div>
 								</div>
+
+
 
 
 
@@ -1379,7 +1392,7 @@ if ($viewCollection->renderContent) {
 								?>
 								<style>
 									#place_an_ad .col-sm-12 textarea.form-control {
-										height: 70px !important;
+										/* height: 70px !important; */
 										min-height: unset !important;
 									}
 								</style>
