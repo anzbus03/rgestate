@@ -760,118 +760,66 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 };
                 reader.readAsArrayBuffer(excelFile);
             }
-            $('#downloadTemplateBtn').click(function() {
-                // Create a new workbook and add a worksheet
-                var workbook = XLSX.utils.book_new();
-                var worksheet_data = [
-                    [
-                        'Category (For Sale / For Rent)',
-                        'Type (1-> Commercial / 2-> Residential)',
-                        'Ref No',
-                        'Ad Title',
-                        'Permit Number',
-                        'Description',
-                        'Location',
-                        'Size',
-                        'Price',
-                        'Plot Area',
-                        'Furnished',
-                        'Construction Date',
-                        'Contact Name',
-                        'Contact Email',
-                        'Mobile Number',
-                        "Images (image1.png,image2.png,etc..)"
-                    ]
-                ];
-
-                // Create worksheet from the data
-                var worksheet = XLSX.utils.aoa_to_sheet(worksheet_data);
-
-                // Define data validation for the 'Category' column ('For Sale' or 'For Rent')
-                worksheet['A2'] = {
-                    v: '',
-                    t: 's'
-                };
-                worksheet['!ref'] = 'A1:P100'; // Define the range of the sheet
-                worksheet['!dataValidations'] = [{
-                    type: 'list', // Set type to "list" for dropdowns
-                    sqref: 'A2:A100', // Apply the validation to the cells in column A (rows 2-100)
-                    formulas: ['"For Sale,For Rent"'], // Only allow these two options
-                    showDropDown: true // Enable dropdown menu in Excel
-                }];
-
-                // Add the worksheet to the workbook
-                XLSX.utils.book_append_sheet(workbook, worksheet, 'Template');
-
-                // Write the workbook and download the Excel file
-                XLSX.writeFile(workbook, 'template.xlsx');
-            });
 
 
         });
 
         function uploadFiles(formData) {
-            // Show loading bar before starting upload
             $('#loadingBar').show();
 
-            $.ajax({
-                url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/uploadExcel'); ?>',
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    // Hide loading bar once upload completes
+            const excelData = JSON.parse(formData.get('excelData')); // Parse the Excel data
+            const totalRows = excelData.length - 1; // Exclude the header row
+            const batchSize = 100; // Rows per batch
+            const totalBatches = Math.ceil(totalRows / batchSize); // Calculate total batches (including remainder)
+            let stack = 1; // Initialize stack counter
+
+            function sendBatch(batchIndex) {
+                const start = batchIndex * batchSize + 1; // Skip header row
+                const end = Math.min(start + batchSize, excelData.length); // Ensure we don't go out of bounds
+                const batchData = excelData.slice(start, end);
+
+                if (batchData.length === 0) {
                     $('#loadingBar').hide();
-                    if (response.status == "success") {
-                        $('#uploadStatus').html(`Upload successful. <br/> <strong>New properties: ${response.newCount}</strong>. <br/><strong>Updated properties: ${response.updatedCount}.</strong>`);                        
-                        setTimeout(function() {
-                            location.reload();
-                        }, 2000);
-                    } else {
-                        $('#uploadStatus').text(response.message);
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    // Hide loading bar even on error
-                    $('#loadingBar').hide();
-                    $('#uploadStatus').text('Upload failed: ' + textStatus);
+                    $('#uploadStatus').text('All data processed.');
+                    return;
                 }
-            });
+
+                const batchFormData = new FormData();
+                batchFormData.append('excelData', JSON.stringify([excelData[0], ...batchData])); // Include header row
+                batchFormData.append('stack', stack);
+                batchFormData.append('final', totalBatches);
+
+                $.ajax({
+                    url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . "/uploadExcel"); ?>',
+                    type: 'POST',
+                    data: batchFormData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $('#uploadStatus').html(`Stack ${stack}/${totalBatches} processed successfully.`);
+                        } else {
+                            console.error(`Error in stack ${stack}:`, response.message);
+                        }
+
+                        if (stack < totalBatches) {
+                            stack++;
+                            sendBatch(batchIndex + 1);
+                        } else {
+                            $('#loadingBar').hide();
+                            $('#uploadStatus').text('All stacks processed successfully.');
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $('#loadingBar').hide();
+                        $('#uploadStatus').text('Upload failed: ' + textStatus);
+                        console.error('Error:', errorThrown);
+                    }
+                });
+            }
+
+            sendBatch(0); // Start processing from the first batch
         }
-
-        $('#downloadTemplateBtn').click(function() {
-            // Create a new workbook and add a worksheet
-            var workbook = XLSX.utils.book_new();
-            var worksheet_data = [
-                [
-                    'Category (1 -> For Sale / 2 -> For Rent)',
-                    'Type (1-> Commercial / 2-> Residential)',
-                    'Sub Category',
-                    'Ref No',
-                    'Ad Title',
-                    'Permit Number',
-                    'Description',
-                    'Location',
-                    'Size',
-                    'Price',
-                    'Plot Area',
-                    'Furnished',
-                    'Construction Date',
-                    'Contact Name',
-                    'Contact Email',
-                    'Mobile Number',
-                    "Images (image1.png,image2.png,etc..)"
-                ]
-            ];
-            var worksheet = XLSX.utils.aoa_to_sheet(worksheet_data);
-
-            // Add the worksheet to the workbook
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'Template');
-
-            // Write the workbook and download it
-            XLSX.writeFile(workbook, 'template.xlsx');
-        });
     });
     </script>
 

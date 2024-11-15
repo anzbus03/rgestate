@@ -3279,16 +3279,10 @@ class Place_propertyController  extends Controller
 
     public function actionUploadExcel()
     {
-        ini_set('display_errors', 1); 
-        error_reporting(E_ALL);
-        ini_set('memory_limit', '-1');
         $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
         $newCount = 0;
         $updatedCount = 0;
-        // print_r(is_array($excelData));
-        // exit;
-
-        if (isset($_FILES['excelFile']) && is_array($excelData)) {
+        if ((is_array($excelData))) {
             // Collect all RefNo, category names, and user emails for bulk queries
             $refNos = array_filter(array_column($excelData, 4), function($value) {
                 return $value !== null;
