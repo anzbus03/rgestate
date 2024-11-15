@@ -3279,18 +3279,35 @@ class Place_propertyController  extends Controller
 
     public function actionUploadExcel()
     {
-        ini_set('display_errors', 1); error_reporting(E_ALL);
+        ini_set('display_errors', 1); 
+        error_reporting(E_ALL);
         ini_set('memory_limit', '-1');
         $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
         $newCount = 0;
         $updatedCount = 0;
-        if (isset($_FILES['excelFile'])) {
+        // print_r(is_array($excelData));
+        // exit;
+
+        if (isset($_FILES['excelFile']) && is_array($excelData)) {
             // Collect all RefNo, category names, and user emails for bulk queries
-            $refNos = array_column($excelData, 4); 
-            $categoryTypes = array_column($excelData, 7);
-            $categoryNames = array_column($excelData, 8);
-            $stateNames = array_column($excelData, 11);
-            $userEmails = array_column($excelData, 39);
+            $refNos = array_filter(array_column($excelData, 4), function($value) {
+                return $value !== null;
+            });
+            $categoryTypes = array_filter(array_column($excelData, 7), function($value) {
+                return $value !== null;
+            });
+            
+            $categoryNames = array_filter(array_column($excelData, 8), function($value) {
+                return $value !== null;
+            });
+            
+            $stateNames = array_filter(array_column($excelData, 11), function($value) {
+                return $value !== null;
+            });
+            
+            $userEmails = array_filter(array_column($excelData, 39), function($value) {
+                return $value !== null;
+            });
             $filteredStates = array_filter(array_slice($stateNames, 1));
             $filteredrefNos = array_filter(array_slice($refNos, 1));
             $filteredcategoryNames = array_filter(array_slice($categoryNames, 1));
