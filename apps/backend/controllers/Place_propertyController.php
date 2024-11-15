@@ -631,15 +631,15 @@ class Place_propertyController  extends Controller
                     $criteria->compare('isTrash', '1');
                 }
             }
-             
             // if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
             //     $criteria->addCondition("DATE(date_added) >= :startDate AND DATE(date_added) <= :endDate");
             //     $criteria->params[':startDate'] = $_GET['startDate'];
             //     $criteria->params[':endDate'] = $_GET['endDate'];
             // }
-    
+            $criteria->addInCondition('section_id', [1, 2]);
             // Retrieve data using CActiveRecord's findAll method
             if (Yii::app()->user->model->user_id == 2){
+            
                 $data = PlaceAnAd::model()->findAll($criteria);
                 
             }else {
@@ -653,34 +653,70 @@ class Place_propertyController  extends Controller
             
            
             // Prepare data for JSON response
-            $responseData = [];
-            foreach ($data as $item) {
-                $images = AdImage::model()->findAllByAttributes(['ad_id' => $item->id]);
-                $domain = Yii::app()->request->hostInfo;
-                $imageNames = array_map(function($image) use ($domain){
-                    return $domain . '/uploads/files/' . $image->image_name;
-                }, $images);
-                $imageList = implode(',', $imageNames);
-            
-                // Fetch the list of floor plan names associated with the current ad
-                $floorPlans = AdFloorPlan::model()->findAllByAttributes(['ad_id' => $item->id]);
-                $floorPlanNames = array_map(function($floorPlan) use($domain) {
-                    return $domain . '/uploads/floor_plan/' . $floorPlan->floor_title;
-                }, $floorPlans);
-                $floorPlanList = implode(',', $floorPlanNames);
+            // Step 1: Pre-fetch related data for all items in `$data`
+            $itemIds = array_map(fn($item) => $item->id, $data);
+            $userIds = array_map(fn($item) => $item->user_id, $data);
+            $stateIds = array_unique(array_filter(array_map(function($item) {
+                return $item->state ?? null; // Return state or null
+            }, $data)));
+            // print_r($state)            
+            // Fetch images for all items
+            $allImages = AdImage::model()->findAllByAttributes(['ad_id' => $itemIds]);
+            $imageMap = [];
+            foreach ($allImages as $image) {
+                $imageMap[$image->ad_id][] = $image;
+            }
 
+            // Fetch floor plans for all items
+            $allFloorPlans = AdFloorPlan::model()->findAllByAttributes(['ad_id' => $itemIds]);
+            $floorPlanMap = [];
+            foreach ($allFloorPlans as $floorPlan) {
+                $floorPlanMap[$floorPlan->ad_id][] = $floorPlan;
+            }
+
+            // Fetch all users in one query
+            $users = User::model()->findAllByPk($userIds);
+            $userMap = [];
+            foreach ($users as $user) {
+                $userMap[$user->user_id] = $user;
+            }
+
+            // Fetch all states based on collected state IDs
+            $states = States::model()->findAllByPk($stateIds);
+            $stateMap = [];
+
+            // Populate the stateMap array with state names and their corresponding region names
+            foreach ($states as $state) {
+                $region = MainRegion::model()->findByPk($state->region_id);
+                $stateMap[$state->state_id] = [
+                    'state_name' => $state->state_name,
+                    'region_name' => $region ? $region->name : 'Unknown Region'
+                ];
+            }
+
+            // Step 2: Iterate over $data and build the response
+            $domain = Yii::app()->request->hostInfo;
+            $responseData = [];
+
+            foreach ($data as $item) {
+                // Prepare image list
+                $imageList = isset($imageMap[$item->id]) ? implode(',', array_map(fn($image) => $domain . '/uploads/files/' . $image->image_name, $imageMap[$item->id])) : '';
+
+                // Prepare floor plan list
+                $floorPlanList = isset($floorPlanMap[$item->id]) ? implode(',', array_map(fn($floorPlan) => $domain . '/uploads/floor_plan/' . $floorPlan->floor_title, $floorPlanMap[$item->id])) : '';
+
+                // Get user information
                 $userId = $item->user_id;
-                $agencyName = ''; // Default if no agency found
-    
-                // Find user where 'agents' column contains the agent ID
-                $agency = User::model()->find([
-                    'condition' => 'FIND_IN_SET(:userId, agents)', // Checks for comma-separated userId in 'agents'
-                    'params' => [':userId' => $userId],
-                ]);
-    
-                if ($agency) {
-                    $agencyName = $agency->first_name; // Assume 'agency_name' is the column storing the agency name
+                $user = $userMap[$userId] ?? null;
+                $agencyName = '';
+                if ($user && strpos($user->agents, (string)$userId) !== false) {
+                    $agencyName = $user->first_name;
                 }
+
+                // Get emirate name from state
+                $emirateName = $stateMap[$item->state]['region_name'] ?? 'Unknown Emirate';
+                $formattedCreationDate = (new DateTime($item->date_added))->format('j-M-Y');
+                $formattedRefreshDate = (new DateTime($item->date_added))->format('j-M-Y');            
                 $responseData[] = [
                     'UID'                              => $item->uid,
                     'Sr. No'                           => $item->id,
@@ -688,17 +724,17 @@ class Place_propertyController  extends Controller
                     'Refresh Date'                     => $item->date_added,
                     'Reference ID'                     => $item->RefNo,
                     'Permit Number'                    => $item->PropertyID,
-                    'Offer Type'                       => Section::model()->findByPk($item->section_id)->section_name,
-                    'Property Type Category'           => Category::model()->findByPk($item->listing_type)->category_name??'',
-                    'Property Type'                    => Category::model()->findByPk($item->category_id)->category_name??'',
+                    'Offer Type'                       => $item->section_id == 1 ? "Sale" : "Rent",
+                    'Property Type Category'           => Category::model()->findByPk($item->listing_type)->category_name ?? '',
+                    'Property Type'                    => Category::model()->findByPk($item->category_id)->category_name ?? '',
                     'COUNTRY'                          => $item->country_name ?? "UAE",
-                    'EMIRATE'                          => States::model()->findByPk($item->state)->state_name??'',
-                    'LOCATION'                         => $item->area_location,
+                    'EMIRATE'                          => $emirateName,
+                    'LOCATION'                         => !empty($item->area_location) ? $item->area_location : ($stateMap[$item->state]['state_name'] ?? 'Unknown Location'),
                     'Google Map Property Ads Location' => $item->location_latitude . ', ' . $item->location_longitude,
                     'Ad Title'                         => $item->ad_title,
                     'Ad Description'                   => $item->ad_description,
                     'Amenities'                        => $item->amenities,
-                    'FURNISHED'                        => $item->furnished,
+                    'FURNISHED'                        => $item->furnished == "Y" ? "Yes" : "No",
                     'Resi. Bedrooms'                   => $item->bedrooms,
                     'Resi. Bathrooms'                  => $item->bathrooms,
                     'Number Of Units'                  => $item->no_of_u,
@@ -707,25 +743,25 @@ class Place_propertyController  extends Controller
                     'BUA Size (sqft)'                  => $item->builtup_area,
                     'Sale/Rent Price (AED)'            => $item->price,
                     'Rent Paid Frequency'              => $item->rent_paid,
-                    'PRELEASED STATUS'                 => $item->property_status,
-                    'LEASE STATUS'                     => $item->lease_status,
+                    'PRELEASED STATUS'                 => $item->property_status == 0 ? "No" : "Yes",
+                    'LEASE STATUS'                     => $item->lease_status == 0 ? "Vacant" : "Leased",
                     'CURRENT/EXPECTED RENTAL INCOME'   => $item->income,
                     'CURRENT/EXPECTED ROI PA %'        => $item->roi,
                     'Photos (JPG/PNG)'                 => $imageList,
                     'Floor Plans'                      => $floorPlanList,
                     'Video (YouTube URL)'              => $item->video,
-                    'FEATURED'                         => $item->featured,
-                    'HOT'                              => $item->hot,
-                    'VARIFIED'                         => $item->verified,
-                    'Availability'                     => $item->availability,
-                    'Publish_Status'                   => $item->status,
+                    'FEATURED'                         => $item->featured == "Y" ? "Yes" : "No",
+                    'HOT'                              => $item->hot == 1 ? "Yes" : "No",
+                    'VARIFIED'                         => $item->verified == 1 ? "Yes" : "No",
+                    'Availability'                     => $item->availability == "sold_out" ? "Sold Out" : $item->availability == "not_available" ? "Not Available" : "Available",
+                    'Publish_Status'                   => $item->status == "A" ? "Active" : "Inacive",
                     'AGENCY NAME'                      => $agencyName,
-                    'AGENT NAME'                       => User::model()->findByPk($userId)->first_name??'',
-                    'AGENT EMAIL'                      => User::model()->findByPk($userId)->email??'',
-                    'AGENT CONTACT'                    => User::model()->findByPk($userId)->phone_number??'',
+                    'AGENT NAME'                       => $user->first_name ?? '',
+                    'AGENT EMAIL'                      => $user->email ?? '',
+                    'AGENT CONTACT'                    => $user->phone_number ?? '',
                 ];
-                
             }
+
             header('Content-Type: application/json');
             echo json_encode($responseData);
 
