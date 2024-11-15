@@ -523,6 +523,22 @@ class Place_propertyController  extends Controller
             $criteria->addSearchCondition('ad_title', $searchValue, true, 'OR');
             // Add more search conditions for other columns as needed
         }
+   
+        $startDate = $request->getPost('startDate');
+        $endDate = $request->getPost('endDate');
+
+        if ($startDate && $endDate) {
+            $validStartDate = DateTime::createFromFormat('Y-m-d', $startDate) !== false;
+            $validEndDate = DateTime::createFromFormat('Y-m-d', $endDate) !== false;
+            if ($validStartDate && $validEndDate) {
+                $startDate .= ' 00:00:00';
+                $endDate .= ' 23:59:59';
+                $criteria->addCondition("date_added >= :startDate AND date_added <= :endDate");
+                $criteria->params[':startDate'] = $startDate;
+                $criteria->params[':endDate'] = $endDate;
+            }
+        }
+
     
         // Sorting
         $orderColumnIndex = $request->getPost('order')[0]['column'];
@@ -548,14 +564,14 @@ class Place_propertyController  extends Controller
         foreach ($placeAds as $ad) {
             $data[] = [
                 'id' => '<input type="checkbox" class="bulk-item" value="'.$data->id.'">',
-                'reference_number' => CHtml::encode($ad->ReferenceNumberTitleP),
+                'RefNo' => CHtml::encode($ad->ReferenceNumberTitleP),
                 'ad_title' => CHtml::encode($ad->AdTitle),
                 'section' => CHtml::encode($ad->section->section_name),
                 'price' => CHtml::encode($ad->price),
                 'category' => $ad->getCategoryName($ad->category_id, $categoriesArray),
                 'status' => $ad->statusLink,
                 'priority' => CHtml::textField("priority[$ad->id]", $ad->priority, ['style' => 'width:50px; text-align:center;', 'class' => 'form-control']),
-                'refresh_date' => '<span class="date-display" style="margin-right: 3px;">'.
+                'date_added' => '<span class="date-display" style="margin-right: 3px;">'.
                                         CHtml::encode(date('d-M-Y', strtotime($ad->date_added))).
                                     '</span>
 

@@ -912,31 +912,34 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     // Attach the function to the checkboxes' change event
     // $('#featured, #verified, #preleased, #f_properties, #submited_by').change(submitFilters);
     $(document).ready(function() {
-
         // Initialize the date range picker
         $('#dateRange').daterangepicker({
             locale: {
                 format: 'YYYY-MM-DD'
             },
-            startDate: moment().subtract(29, 'days'),
+            startDate: moment('2020-01-01'), // Set default start date for "All Time"
             endDate: moment(),
             ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
-                    'month').endOf('month')]
+                'Today': [moment().startOf('day'), moment().endOf('day')],
+                'Yesterday': [moment().startOf('day').subtract(1, 'days'), moment().endOf('day').subtract(1, 'days')],
+                'Last 7 Days': [moment().startOf('day').subtract(6, 'days'), moment().endOf('day')],
+                'Last 30 Days': [moment().startOf('day').subtract(29, 'days'), moment().endOf('day')],
+                'This Month': [moment().startOf('day').startOf('month'), moment().endOf('day').endOf('month')],
+                'Last Month': [moment().startOf('day').subtract(1, 'month').startOf('month'), moment().endOf('day').subtract(1, 'month').endOf('month')],
+                'All Time': [moment('2020-01-01'), moment()]
             }
         }, function(start, end, label) {
+            
+            $('#dateRange').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
             fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
         });
 
+
         // Function to fetch filtered data
         function fetchFilteredData(startDate, endDate) {
-            window.location.href = '<?php echo Yii::app()->createUrl($this->route); ?>?startDate=' + startDate +
-                '&endDate=' + endDate;
+            $('#enquiryTable').DataTable().ajax.reload();
+            // window.location.href = '<?php // echo Yii::app()->createUrl($this->route); ?>?startDate=' + startDate +
+            //     '&endDate=' + endDate;
 
         }
         $('#exportExcel').click(function(e) {
@@ -986,7 +989,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             });
         });
 
-
+        
         var table = $('#enquiryTable').DataTable({
             "paging": true, // Enable pagination
             "lengthChange": true, // Allow users to change page length
@@ -999,18 +1002,23 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             "processing": true,
             "ajax": {
                 "url": "<?php echo Yii::app()->createUrl('place_property/serverProcessing'); ?>", // Replace with your server URL
-                "type": "POST"
+                "type": "POST",
+                "data": function(d) {
+                    var dateRangePicker = $('#dateRange').data('daterangepicker');
+                    d.startDate = dateRangePicker.startDate ? dateRangePicker.startDate.format('YYYY-MM-DD') : '';
+                    d.endDate = dateRangePicker.endDate ? dateRangePicker.endDate.format('YYYY-MM-DD') : '';
+                }
             },
             "columns": [
                 { "data": "id" },
-                { "data": "reference_number" },
+                { "data": "RefNo" },
                 { "data": "ad_title" },
                 { "data": "section" },
                 { "data": "price" },
                 { "data": "category" },
                 { "data": "status" },
                 { "data": "priority" },
-                { "data": "refresh_date" },
+                { "data": "date_added" },
                 { "data": "options" }
             ],
             createdRow: function(row, data, index) {

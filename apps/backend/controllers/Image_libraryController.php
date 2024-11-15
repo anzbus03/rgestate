@@ -241,7 +241,7 @@ class Image_libraryController extends Controller
         // Set criteria for search and pagination
         $criteria = new CDbCriteria;
         $criteria->compare('isTrash', '0');
-
+        $criteria->order = 't.floor_id DESC';
         // Add search functionality here (if needed)
 
         // Fetch data with pagination
