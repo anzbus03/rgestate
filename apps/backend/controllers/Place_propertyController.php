@@ -618,7 +618,7 @@ class Place_propertyController  extends Controller
     {
         try {
             ini_set('display_errors', 1); error_reporting(E_ALL);
-            ini_set('memory_limit', '512M');
+            ini_set('memory_limit', '-1');
             $criteria = new CDbCriteria();
           
             // Set filters based on request parameters
@@ -3279,6 +3279,8 @@ class Place_propertyController  extends Controller
 
     public function actionUploadExcel()
     {
+        ini_set('display_errors', 1); error_reporting(E_ALL);
+        ini_set('memory_limit', '-1');
         $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
         $newCount = 0;
         $updatedCount = 0;
