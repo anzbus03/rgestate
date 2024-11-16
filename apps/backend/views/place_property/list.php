@@ -67,8 +67,10 @@ if ($viewCollection->renderContent) { ?>
             $command = $db->createCommand($sql);
             $ads = $command->queryAll();
 
-            $categoryIds = array_column($ads, 'category_id');
-
+            $categoryIds = array_unique(array_filter(array_column($ads, 'category_id')));
+            // echo "<pre>";
+            // print_r($categoryIds);
+            // exit;
             // Fetch categories based on category IDs
             $categories = Category::model()->findAllByAttributes(['category_id' => $categoryIds]);
 
@@ -439,8 +441,10 @@ if ($viewCollection->renderContent) { ?>
                 </div>
                 <div class="modal-body">
                     <form id="uploadForm" enctype="multipart/form-data">
+                        <?php echo CHtml::hiddenField(Yii::app()->request->csrfTokenName, Yii::app()->request->csrfToken); ?>
+
                         <div class="form-group">
-                            <label for="excelFile">Excel File</label>
+                            <label for="    ">Excel File</label>
                             <input type="file" class="form-control" id="excelFile" name="excelFile" accept=".xlsx,.xls">
                         </div>
                         <button type="submit" class="pull-right btn btn-primary mt-4">Upload</button>
@@ -611,95 +615,95 @@ if ($viewCollection->renderContent) { ?>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
-    $(document).ready(function() {
-        $('#select-all').on('change', function() {
-            $('.bulk-item').prop('checked', this.checked);
-        });
+        $(document).ready(function() {
+            $('#select-all').on('change', function() {
+                $('.bulk-item').prop('checked', this.checked);
+            });
 
-        $('#apply-bulk-action').on('click', function() {
-            const action = $('#bulk-action-select').val();
-            const selectedItems = $('.bulk-item:checked').map(function() {
-                return $(this).val();
-            }).get();
-            var csrfToken = '<?php echo Yii::app()->request->csrfToken; ?>';
-            if (action && selectedItems.length) {
-                if (confirm('Are you sure you want to proceed with this action?')) {
+            $('#apply-bulk-action').on('click', function() {
+                const action = $('#bulk-action-select').val();
+                const selectedItems = $('.bulk-item:checked').map(function() {
+                    return $(this).val();
+                }).get();
+                var csrfToken = '<?php echo Yii::app()->request->csrfToken; ?>';
+                if (action && selectedItems.length) {
+                    if (confirm('Are you sure you want to proceed with this action?')) {
 
-                    // Perform an AJAX request to the backend
-                    $.ajax({
-                        url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/bulk_action'); ?>', // Update with your action URL
-                        type: 'GET',
-                        data: {
-                            bulk_action: action,
-                            bulk_item: selectedItems,
-                            YII_CSRF: csrfToken
-                        },
-                        success: function(response) {
-                            // Handle successful response
-                            window.location.reload(); // Reload the page to reflect changes
-                        },
-                        error: function(xhr) {
-                            // Handle error
-                            alert(
-                                'An error occurred while processing your request. Please try again.'
-                            );
-                        }
-                    });
+                        // Perform an AJAX request to the backend
+                        $.ajax({
+                            url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/bulk_action'); ?>', // Update with your action URL
+                            type: 'GET',
+                            data: {
+                                bulk_action: action,
+                                bulk_item: selectedItems,
+                                YII_CSRF: csrfToken
+                            },
+                            success: function(response) {
+                                // Handle successful response
+                                window.location.reload(); // Reload the page to reflect changes
+                            },
+                            error: function(xhr) {
+                                // Handle error
+                                alert(
+                                    'An error occurred while processing your request. Please try again.'
+                                );
+                            }
+                        });
+                    }
+                } else {
+                    alert('Please select an action and at least one item.');
                 }
-            } else {
-                alert('Please select an action and at least one item.');
-            }
+            });
+            $('#locationSelect').select2({
+                placeholder: 'Select Location',
+                allowClear: true
+            });
         });
-        $('#locationSelect').select2({
-            placeholder: 'Select Location',
-            allowClear: true
+
+        function resetFilters() {
+            document.getElementById('filterForm').reset();
+            filterProperties('all'); // Show all properties again
+        }
+
+        function openUp2(propertyId) {
+            // Set the property ID in the hidden input field of the form
+            $('#propertyIdInput').val(propertyId);
+            // Show the modal
+            $('#availabilityModal').modal('show');
+        }
+
+        // AJAX form submission for creating a new sold property record
+        $('#soldPropertyForm').on('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var $submitButton = $(this).find('button[type="submit"]'); // Find the submit button
+            var originalButtonText = $submitButton.text(); // Store the original button text
+
+            // Update the button text to indicate the processing state
+            $submitButton.text('Please wait, processing...');
+            $submitButton.prop('disabled', true); // Disable the button to prevent multiple submissions
+
+            $.ajax({
+                url: '<?php echo Yii::app()->createUrl("place_property/markAsSold"); ?>', // Controller action URL for markAsSold action
+                type: 'POST',
+                data: $(this).serialize(), // Serialize the form data
+                success: function(response) {
+                    // Close the modal after successful submission
+                    $('#soldPropertyModal').modal('hide');
+
+                    // Redirect to place_property/index after successful creation
+                    window.location.href =
+                        '<?php echo Yii::app()->createUrl("place_property/index", array('message' => 'Property marked as sold successfully.')); ?>';
+                },
+                error: function() {
+                    alert('An error occurred while marking the property as sold.');
+
+                    // Re-enable the button and revert the text in case of an error
+                    $submitButton.text(originalButtonText);
+                    $submitButton.prop('disabled', false);
+                }
+            });
         });
-    });
-
-    function resetFilters() {
-        document.getElementById('filterForm').reset();
-        filterProperties('all'); // Show all properties again
-    }
-
-    function openUp2(propertyId) {
-        // Set the property ID in the hidden input field of the form
-        $('#propertyIdInput').val(propertyId);
-        // Show the modal
-        $('#availabilityModal').modal('show');
-    }
-
-    // AJAX form submission for creating a new sold property record
-    $('#soldPropertyForm').on('submit', function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        var $submitButton = $(this).find('button[type="submit"]'); // Find the submit button
-        var originalButtonText = $submitButton.text(); // Store the original button text
-
-        // Update the button text to indicate the processing state
-        $submitButton.text('Please wait, processing...');
-        $submitButton.prop('disabled', true); // Disable the button to prevent multiple submissions
-
-        $.ajax({
-            url: '<?php echo Yii::app()->createUrl("place_property/markAsSold"); ?>', // Controller action URL for markAsSold action
-            type: 'POST',
-            data: $(this).serialize(), // Serialize the form data
-            success: function(response) {
-                // Close the modal after successful submission
-                $('#soldPropertyModal').modal('hide');
-
-                // Redirect to place_property/index after successful creation
-                window.location.href =
-                    '<?php echo Yii::app()->createUrl("place_property/index", array('message' => 'Property marked as sold successfully.')); ?>';
-            },
-            error: function() {
-                alert('An error occurred while marking the property as sold.');
-
-                // Re-enable the button and revert the text in case of an error
-                $submitButton.text(originalButtonText);
-                $submitButton.prop('disabled', false);
-            }
-        });
-    });
     </script>
 
     <?php
@@ -768,6 +772,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             $('#loadingBar').show();
 
             const excelData = JSON.parse(formData.get('excelData')); // Parse the Excel data
+            const crfToken = formData.get('csrf_token');
             const totalRows = excelData.length - 1; // Exclude the header row
             const batchSize = 10; // Rows per batch
             const totalBatches = Math.ceil(totalRows / batchSize); // Calculate total batches (including remainder)
@@ -789,9 +794,10 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 batchFormData.append('excelData', unescape(encodeURIComponent(JSON.stringify([excelData[0], ...batchData])))); // Include header row
                 batchFormData.append('stack', stack);
                 batchFormData.append('final', totalBatches);
+                batchFormData.append('csrf_token', crfToken)
 
                 $.ajax({
-                    url: '<?php echo Yii::app()->createAbsoluteUrl("backend/place_property/uploadExcel"); ?>',
+                    url: '<?php echo Yii::app()->createAbsoluteUrl("place_property/uploadExcel"); ?>',
                     type: 'POST',
                     data: batchFormData,
                     contentType: false,
@@ -809,7 +815,9 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
                         if (stack < totalBatches) {
                             stack++;
-                            sendBatch(batchIndex + 1);
+                            setTimeout(() => {
+                                sendBatch(batchIndex + 1);
+                            }, 1000); //
                         } else {
                             $('#loadingBar').hide();
                             $('#uploadStatus').text('All stacks processed successfully.');
@@ -823,9 +831,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 });
             }
 
-            setTimeout(() => {
-                sendBatch(batchIndex + 1);
-            }, 1000); // // Start processing from the first batch
+            sendBatch(0); // Start processing from the first batch
         }
     });
     </script>

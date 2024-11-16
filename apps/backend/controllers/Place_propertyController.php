@@ -568,7 +568,7 @@ class Place_propertyController  extends Controller
                 'ad_title' => CHtml::encode($ad->AdTitle),
                 'section' => CHtml::encode($ad->section->section_name),
                 'price' => CHtml::encode($ad->price),
-                'category' => $ad->getCategoryName($ad->category_id, $categoriesArray),
+                'category' => $ad->getCategoryName($ad->category_id),
                 'status' => $ad->statusLink,
                 'priority' => CHtml::textField("priority[$ad->id]", $ad->priority, ['style' => 'width:50px; text-align:center;', 'class' => 'form-control']),
                 'date_added' => '<span class="date-display" style="margin-right: 3px;">'.
