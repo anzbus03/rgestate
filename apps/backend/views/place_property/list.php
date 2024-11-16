@@ -817,10 +817,13 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                             stack++;
                             setTimeout(() => {
                                 sendBatch(batchIndex + 1);
-                            }, 1000); //
+                            }, 500); //
                         } else {
                             $('#loadingBar').hide();
                             $('#uploadStatus').text('All stacks processed successfully.');
+                            $("#uploadModal").modal("toggle");
+                            $('#enquiryTable').DataTable().ajax.reload();
+                            
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
