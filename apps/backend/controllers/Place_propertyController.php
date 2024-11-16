@@ -729,7 +729,7 @@ class Place_propertyController  extends Controller
                     'Property Type'                    => Category::model()->findByPk($item->category_id)->category_name ?? '',
                     'COUNTRY'                          => $item->country_name ?? "UAE",
                     'EMIRATE'                          => $emirateName,
-                    'LOCATION'                         => !empty($item->area_location) ? $item->area_location : ($stateMap[$item->state]['state_name'] ?? 'Unknown Location'),
+                    'LOCATION'                         => ($stateMap[$item->state]['state_name'] ?? ''),
                     'Google Map Property Ads Location' => $item->location_latitude . ', ' . $item->location_longitude,
                     'Ad Title'                         => $item->ad_title,
                     'Ad Description'                   => $item->ad_description,
@@ -3277,203 +3277,171 @@ class Place_propertyController  extends Controller
         $this->render('root.apps.frontend.new-theme.views.place_property.form_new_business', compact('model', "country", "section", 'list_type', 'image_array'));
     }
 
+    
     public function actionUploadExcel()
     {
-        $excelData = json_decode(Yii::app()->request->getPost('excelData'), true);
+        ini_set('post_max_size', '300M');
+        ini_set('upload_max_filesize', '300M');
+        ini_set('memory_limit', '-1');
+
+        $rawData = Yii::app()->request->getPost('excelData');
+        $excelData = json_decode(Yii::app()->request->getPost('excelData'),true);
         $newCount = 0;
         $updatedCount = 0;
-        if ((is_array($excelData))) {
-            // Collect all RefNo, category names, and user emails for bulk queries
-            $refNos = array_filter(array_column($excelData, 4), function($value) {
-                return $value !== null;
-            });
-            $categoryTypes = array_filter(array_column($excelData, 7), function($value) {
-                return $value !== null;
-            });
+        $imageInsertData = [];
+        $floorPlanInsertData = [];
+        
+        if (is_array($excelData)) {
+            // Extract unique values for batch fetching
+            $refNos = array_unique(array_filter(array_column($excelData, 4), fn($value) => !empty($value)));
+            $categoryNames = array_unique(array_filter(array_column($excelData, 8), fn($value) => !empty($value)));
+            $categoryTypes = array_unique(array_filter(array_column($excelData, 7), fn($value) => !empty($value)));
+            $stateNames = array_unique(array_filter(array_column($excelData, 11), fn($value) => !empty($value)));
+            $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 39), fn($value) => !empty($value))));
             
-            $categoryNames = array_filter(array_column($excelData, 8), function($value) {
-                return $value !== null;
-            });
-            
-            $stateNames = array_filter(array_column($excelData, 11), function($value) {
-                return $value !== null;
-            });
-            
-            $userEmails = array_filter(array_column($excelData, 39), function($value) {
-                return $value !== null;
-            });
-            $filteredStates = array_filter(array_slice($stateNames, 1));
-            $filteredrefNos = array_filter(array_slice($refNos, 1));
-            $filteredcategoryNames = array_filter(array_slice($categoryNames, 1));
-            $filteredcategoryTypes = array_filter(array_slice($categoryTypes, 1));
-            $filtereduserEmails = array_filter(array_slice($userEmails, 1));
-
-            // Preload data from DB in bulk
+            // Fetch data in bulk
             $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A']);
             $types = Category::model()->findAllByAttributes(['category_name' => $categoryTypes, 'isTrash' => '0', 'status' => 'A']);
-            $states = States::model()->findAllByAttributes(['state_name' => $filteredStates, 'isTrash' => '0']);
-            $criteria = new CDbCriteria();
-            $criteria->addInCondition('LOWER(email)', array_map('strtolower', $userEmails));
-            $users = User::model()->findAll($criteria);
-            
-            // Map the loaded data for quick lookup
-            $adsMap = [];
-            foreach ($ads as $ad) {
-                $adsMap[$ad->RefNo] = $ad;
+            $states = States::model()->findAllByAttributes(['state_name' => $stateNames, 'isTrash' => '0']);
+            $users = User::model()->findAllByAttributes(['email' => $userEmails]);
+    
+            // Map data for quick lookup
+            $adsMap = array_column($ads, null, 'RefNo');
+            $categoriesMap = array_column($categories, null, 'category_name');
+            $typesMap = array_column($types, null, 'category_name');
+            $statesMap = array_column($states, null, 'state_name');
+            $usersMap = array_column($users, null, 'email');
+    
+            // Prepare data for batch processing
+            $insertData = [];
+            $updateData = [];
+            $updateConditions = [];
+            $updateParams = [];
+    
+            foreach (array_slice($excelData, 1) as $data) {
+                if (empty($data) || empty($data[4])) continue; // Skip if data is empty or refNo is null
+    
+                $existingAd = $adsMap[$data[4]] ?? null;
+    
+                $record = [
+                    'section_id' => ($data[6] == "Sale") ? 1 : 2,
+                    'listing_type' => $categoriesMap[$data[7]]->category_id ?? null,
+                    'category_id' => $categoriesMap[$data[8]]->category_id ?? null,
+                    'RefNo' => $data[4],
+                    'lease_status' => empty($data[26]) ? 0 : ($data[26] == "Leased" ? 1 : 0),
+                    'ad_title' => $data[13],
+                    'PropertyID' => $data[5],
+                    'ad_description' => str_replace(["\r\n", "\r", "\n"], "\n", $data[14]),
+                    'date_added' => date('Y-m-d H:i:s', ($data[3] - 25569) * 86400),
+                    'state' => $statesMap[$data[11]]->state_id ?? 0,
+                    'user_id' => $usersMap[$data[39]]->user_id ?? 31988,
+                    'status' => ($data[36] == "Active") ? "A" : "I",
+                    'availability' => ($data[35] == "Sold Out" ? "sold_out" : ($data[35] == "Leased Out" ? "lease_out" : null)),
+                    'price' => $this->calculatePrice($data[23], $data[24]),
+                    'bedrooms' => $data[17],
+                    'bathrooms' => $data[18],
+                    'mobile_number' => $data[40],
+                    'country' => 66124,
+                    'property_status' => $data[25] == "Yes" ? 1 : 0,
+                    'income' => $data[27],
+                    'roi' => $data[28] ?? 0,
+                    'no_of_u' => $data[19],
+                    'FloorNo' => $data[20],
+                    'plot_area' => $data[21],
+                    'builtup_area' => $data[22] ?? 0,
+                    'furnished' => $data[16] == "Yes" ? "Y" : "N",
+                    'featured' => $data[32] == "Yes" ? "Y" : "N",
+                    'hot' => $data[33] == "Yes" ? 1 : 0,
+                    'verified' => $data[34] == "Yes" ? 1 : 0,
+                    'mandate' => $data[2],
+                    'contact_person' => $data[38],
+                    'salesman_email' => $data[39],
+                    'amenities' => $data[15],
+                    'area_location' => $data[11],
+                    'interior_size' => $data[22],
+                    'rent_paid' => strtolower($data[24])
+                ];
+    
+                if ($existingAd) {
+                    $record['id'] = $existingAd->id; // Include ID for updates
+                    $updateData[] = $record;
+                    $updatedCount++;
+                } else {
+                    $insertData[] = $record;
+                    $newCount++;
+                }
+    
             }
-
-            $categoriesMap = [];
-            foreach ($categories as $category) {
-                $categoriesMap[$category->category_name] = $category;
-            }
-
-            $typesMap = [];
-            foreach ($types as $type) {
-                $typesMap[$type->category_name] = $type;
-            }
-
-            $statesMap = [];
-            foreach ($states as $state) {
-                $statesMap[$state->state_name] = $state;
-            }
-
-            $usersMap = [];
-            foreach ($users as $user) {
-                $usersMap[strtolower($user->email)] = $user; // Save the email in lowercase
-            }
-
-            // Validation: Check for missing categories or states
-            $missingCategories = array_diff($filteredcategoryNames, array_keys($categoriesMap));
-            $missingType = array_diff($filteredcategoryTypes, array_keys($categoriesMap));
-            $missingStates = array_diff($filteredStates, array_keys($statesMap));
-
-            if (!empty($missingCategories)) {
-                return $this->sendJsonResponse(['status' => 'error', 'message' => 'Category does not exist: ' . implode(', ', $missingCategories)]);
-            }
-            // if (!empty($missingType)) {
-            //     return $this->sendJsonResponse(['status' => 'error', 'message' => 'Type does not exist: ' . implode(', ', $missingType)]);
-            // }
-
-            if (!empty($missingStates)) {
-                return $this->sendJsonResponse(['status' => 'error', 'message' => 'State does not exist: ' . implode(', ', $missingStates)]);
-            }
-
-            // Transaction for bulk insert/update
+    
+            // Begin transaction
             $transaction = Yii::app()->db->beginTransaction();
             try {
-                foreach (array_slice($excelData, 1) as $data) {
-                    if (count($data) > 0){
-
-                        // Check if ad exists in the preloaded ads
-                        $model = isset($adsMap[$data[4]]) ? $adsMap[$data[4]] : new PlaceAnAd();
-                        if (isset($adsMap[$data[4]])){
-                            $updatedCount++;
-                        }else {
-                            $newCount++;
-                        }
-                        // Set model attributes using preloaded data
-                        $type = isset($typesMap[$data[7]]) ? $typesMap[$data[7]] : null;
-                        $subCategory = isset($categoriesMap[$data[8]]) ? $categoriesMap[$data[8]] : null;
-                        $stateModel = isset($statesMap[$data[11]]) ? $statesMap[$data[11]] : null;
-                        $userModel = isset($usersMap[$data[39]]) ? $usersMap[$data[39]] : null;
-                        // Set model attributes from the Excel data
-                        // Find the first category with the specified attributes
-                        $category = Category::model()->findByAttributes([
-                            'category_name' => $data[7],
-                            'isTrash' => '0',
-                            'status' => 'A'
-                        ]);
-    
-                        // Check if a matching category is found and retrieve its ID
-                        $categoryId = $category ? $category->category_id : null;
-                        $model->section_id = $data[6] == "Sale" ? 1 : 2;
-                        $model->listing_type = $categoryId;
-                        $model->category_id = $subCategory->category_id ?? null;
-                        $model->RefNo = $data[4];
-                        $model->ad_title = $data[13];
-                        $model->PropertyID = $data[5];
-                        $model->ad_description = str_replace(["\r\n", "\r", "\n"], "\n", $data[14]);
-                        $excelDate = $data[3];
-                        $timestamp = ($excelDate - 25569) * 86400; 
-                        $model->date_added = date('Y-m-d H:i:s', $timestamp);
-                        $model->amenities = $data[15];
-                        $model->area_location = $data[11];
-                        $model->interior_size = $data[22];
-                        $model->price = $this->calculatePrice($data[23], $data[24]);
-                        $model->rent_paid = strtolower($data[24]);
-                        if (empty($data[26])) {
-                            $model->lease_status = 0; // Save as 0 if empty
-                        } else {
-                            $model->lease_status = ($data[26] == "Leased" ? 1 : 0); // Save as 1 if "Leased", else 0
-                        }
-                        $model->property_status = $data[25] == "Yes" ? 1 : 0;
-                        $model->income = $data[27];
-                        $model->roi = $data[28]*100 ?? 0;
-                        $model->bedrooms = $data[17];
-                        $model->bathrooms = $data[18];
-                        $model->no_of_u = $data[19];
-                        $model->FloorNo = $data[20];
-                        $model->plot_area = $data[21];
-                        $model->builtup_area = $data[22] ?? 0;
-                        $model->furnished = $data[16] == "Yes" ? "Y" : "N";
-                        $model->featured = $data[32] == "Yes" ? "Y" : "N";
-                        $model->hot = $data[33] == "Yes" ? 1 : 0;
-                        $model->verified = $data[34] == "Yes" ? 1 : 0;
-                        $model->mandate = $data[2];
-                        $model->contact_person = $data[38];
-                        $model->salesman_email = $data[39];
-                        $model->mobile_number = $data[40];
-                        $model->country = 66124;
-                        $model->state = $stateModel->state_id ?? 0;
-                        $model->status = $data[36] == "Active" ? "A" : "I";
-                        $availability = "not_available";
-                        if ($data[35] == "Sold Out") {
-                            $availability = "sold_out";
-                        } else if ($data[35] == "Leased Out") {
-                            $availability = "lease_out";
-                        } else if ($data[35] == "Available") {
-                            $availability = null;
-                        }
-                        $model->availability = $availability;
-                        $model->user_id = $userModel->user_id ?? 31988;
-    
-                        // Save model
-                        if (!$model->save()) {
-                            throw new Exception('Failed to save model: ' . json_encode($model->getErrors()));
-                        }
-                        // Handle image saving separately
-                        foreach(explode(",",$data[29]) as $imageName){
-                            if (isset($imageName) && !empty($imageName)){
-                                $domain = Yii::app()->request->hostInfo; 
-                                $cleanImageName = str_replace($domain.'/uploads/files/', '', $imageName);
-                                ($this->handleImageSaving($model, $cleanImageName));
-                            }
-                        }
-                        foreach(explode(",",$data[30]) as $floorName){
-                            if (isset($floorName) && !empty($floorName)){
-                                $domain             = Yii::app()->request->hostInfo; 
-                                $cleanFloorPlanName = str_replace($domain.'/uploads/floor_plan/', '', $floorName);
-                                ($this->handleFloorPlanSaving($model, $cleanFloorPlanName));
-                            }
-                        }
-                    }
+                if (!empty($insertData)) {
+                    $this->batchInsert('mw_place_an_ad', array_keys($insertData[0]), $insertData);
                 }
-
-                // Commit transaction
+    
+                // Update existing records
+                foreach ($updateData as $update) {
+                    $id = $update['id'];
+                    unset($update['id']); // Remove 'id' from update fields
+                    Yii::app()->db->createCommand()
+                        ->update('mw_place_an_ad', $update, 'id=:id', [':id' => $id]);
+                }
+    
+                // Insert images
+                if (!empty($imageInsertData)) {
+                    $this->batchInsert('mw_ad_images', ['ad_id', 'image_name'], $imageInsertData);
+                }
+    
+                // Insert floor plans
+                if (!empty($floorPlanInsertData)) {
+                    $this->batchInsert('mw_ad_floor_plans', ['ad_id', 'floor_plan_name'], $floorPlanInsertData);
+                }
+    
                 $transaction->commit();
-                return $this->sendJsonResponse(['status' => 'success','newCount' => $newCount,
-                'updatedCount' => $updatedCount]);
+                return $this->sendJsonResponse([
+                    'status' => 'success',
+                    'newCount' => $newCount,
+                    'updatedCount' => $updatedCount,
+                ]);
             } catch (Exception $e) {
-                // Rollback in case of an error
                 $transaction->rollback();
                 return $this->sendJsonResponse(['status' => 'error', 'message' => $e->getMessage()]);
-            }
+           }
+        }else {
+            echo "<pre>";
+            print_r();
+            print_r(var_dump($excelData));
+            exit;
         }
     }
-
     
-    private function calculatePrice($price, $frequency)
+    private function batchInsert($table, $columns, $rows){
+        if (empty($rows)) {
+            return;
+        }
+
+        $values = [];
+        foreach ($rows as $row) {
+            $rowValues = [];
+            foreach ($columns as $column) {
+                $rowValues[] = Yii::app()->db->quoteValue($row[$column] ?? null);
+            }
+            $values[] = '(' . implode(',', $rowValues) . ')';
+        }
+
+        $sql = sprintf(
+            "INSERT INTO %s (%s) VALUES %s",
+            Yii::app()->db->quoteTableName($table),
+            implode(', ', array_map([Yii::app()->db, 'quoteColumnName'], $columns)),
+            implode(', ', $values)
+        );
+
+        Yii::app()->db->createCommand($sql)->execute();
+    }
+    
+    private function calculatePrice($price = 0, $frequency)
     {
         switch (strtolower($frequency)) {
             case 'yearly':

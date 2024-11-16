@@ -769,10 +769,11 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
             const excelData = JSON.parse(formData.get('excelData')); // Parse the Excel data
             const totalRows = excelData.length - 1; // Exclude the header row
-            const batchSize = 100; // Rows per batch
+            const batchSize = 10; // Rows per batch
             const totalBatches = Math.ceil(totalRows / batchSize); // Calculate total batches (including remainder)
             let stack = 1; // Initialize stack counter
-
+            let updatedCount = 0;
+            let newCount = 0;
             function sendBatch(batchIndex) {
                 const start = batchIndex * batchSize + 1; // Skip header row
                 const end = Math.min(start + batchSize, excelData.length); // Ensure we don't go out of bounds
@@ -785,7 +786,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 }
 
                 const batchFormData = new FormData();
-                batchFormData.append('excelData', JSON.stringify([excelData[0], ...batchData])); // Include header row
+                batchFormData.append('excelData', unescape(encodeURIComponent(JSON.stringify([excelData[0], ...batchData])))); // Include header row
                 batchFormData.append('stack', stack);
                 batchFormData.append('final', totalBatches);
 
@@ -797,7 +798,11 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     processData: false,
                     success: function(response) {
                         if (response.status === 'success') {
-                            $('#uploadStatus').html(`Stack ${stack}/${totalBatches} processed successfully.`);
+                            newCount = newCount + response.newCount;
+                            updatedCount = updatedCount + response.updatedCount;
+                            $('#uploadStatus').html(`Stack ${stack}/${totalBatches} processed successfully.<br/>
+                            <strong>New properties: </strong> ${newCount}
+                            <strong>Updated properties: </strong> ${updatedCount}`);
                         } else {
                             console.error(`Error in stack ${stack}:`, response.message);
                         }

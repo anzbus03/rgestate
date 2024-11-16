@@ -147,7 +147,7 @@ class PlaceAnAd extends ActiveRecord
 			array('contact_person', 'validateContact'),
 			array(' currency_abr, area_measurement', 'length', 'max' => 10),
 			array('price,income', 'length', 'max' => 14),
-			array('roi', 'length', 'max' => 3),
+			array('roi', 'length', 'max' => 5),
 			array('price,RentPerMonth,Rent', 'length', 'max' => 14),
 			array('mobile_number', 'length', 'max' => 15),
 			array('date_added,pickerDateStartComparisonSign', 'safe'),
