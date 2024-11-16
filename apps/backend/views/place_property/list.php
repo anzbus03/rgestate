@@ -791,7 +791,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 batchFormData.append('final', totalBatches);
 
                 $.ajax({
-                    url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . "/uploadExcel"); ?>',
+                    url: '<?php echo Yii::app()->createAbsoluteUrl("backend/place_property/uploadExcel"); ?>',
                     type: 'POST',
                     data: batchFormData,
                     contentType: false,
@@ -823,7 +823,9 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 });
             }
 
-            sendBatch(0); // Start processing from the first batch
+            setTimeout(() => {
+                sendBatch(batchIndex + 1);
+            }, 1000); // // Start processing from the first batch
         }
     });
     </script>
