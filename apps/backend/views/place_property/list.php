@@ -817,7 +817,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                             stack++;
                             setTimeout(() => {
                                 sendBatch(batchIndex + 1);
-                            }, 500); //
+                            }, 1000); //
                         } else {
                             $('#loadingBar').hide();
                             $('#uploadStatus').text('All stacks processed successfully.');
