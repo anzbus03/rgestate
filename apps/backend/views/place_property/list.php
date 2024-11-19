@@ -241,134 +241,6 @@ if ($viewCollection->renderContent) { ?>
                                 <th>Options</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php foreach ($placeAds as $data) {
-                                    $isSold = in_array($data->id, $soldPropertyIds); ?>
-                            <tr>
-                                <td><input type="checkbox" class="bulk-item" value="<?php echo $data->id; ?>"></td>
-                                <td><?php echo CHtml::decode($data->ReferenceNumberTitleP); ?></td>
-                                <td>
-                                    <?php echo CHtml::decode($data->AdTitle, Yii::app()->createUrl("place_property/update", array("id" => $data->id))); ?>
-                                    <div><?php echo $data->Tags; ?></div>
-                                    <input type="hidden" class="propertyId" value="<?php echo $data->id; ?>">
-                                    <input type="hidden" class="sId" value="<?php echo $data->section_id; ?>">
-                                    <input type="hidden" class="cId" value="<?php echo $data->category_id; ?>">
-                                    <input type="hidden" class="lId" value="<?php echo $data->listing_type; ?>">
-                                    <input type="hidden" id="meta_title-<?php echo $data->id; ?>" class="meta_title"
-                                        value="<?php echo $data->metaTitleEnglish; ?>">
-                                    <input type="hidden" id="meta_title-ar-<?php echo $data->id; ?>"
-                                        class="meta_title_ar" value="<?php echo $data->MetaTitleArabic; ?>">
-                                    <input type="hidden" id="meta_description-<?php echo $data->id; ?>"
-                                        class="meta_description" value="<?php echo $data->MetaDescriptionEnglish; ?>">
-                                    <input type="hidden" id="meta_description-ar-<?php echo $data->id; ?>"
-                                        class="meta_description_ar" value="<?php echo $data->MetaDescriptionArabic; ?>">
-                                </td>
-                                <!-- <td><?php // echo CHtml::decode($data->CountryNameSection2); 
-                                                    ?></td> -->
-                                <td><?php echo CHtml::encode($data->section->section_name); ?></td>
-                                <td><?php echo CHtml::encode($data->price); ?></td>
-                                <td><?php echo getCategoryName($data->category_id, $categoriesArray); ?></td>
-                                <td style="text-align:center;"><?php echo $data->statusLink; ?></td>
-                                <td><?php echo CHtml::textField("priority[$data->id]", $data->priority, array("style" => "width:50px; text-align:center; display:block; margin:auto;", "class" => "form-controll")); ?>
-                                </td>
-                                <td>
-                                    <span class="date-display" style="margin-right: 3px;">
-                                        <?php echo CHtml::encode(date('d-M-Y', strtotime($data->date_added))); ?>
-                                    </span>
-
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/refresh_date', array('id' => $data->id)); ?>" class="refresh-date" data-id="<?php echo $data->id; ?>"
-                                        data-ldate="<?php echo CHtml::encode($data->Ldate); ?>"
-                                        style="text-decoration: none; color: blue; cursor: pointer;">
-                                        <i class="fa fa-refresh"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('id' => $data->id)); ?>"
-                                        title="<?php echo Yii::t('app', 'Update'); ?>" class="edit-icon">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                    <?php } ?>
-                                   
-
-                                    <?php 
-                                    if ($data->section_id == 2){
-                                        $PreviewURL = ('/rent/'.$data->slug);    
-                                    }else if ($data->section_id == 1){
-                                        $PreviewURL = ('/sale/'.$data->slug);    
-                                    }
-                                        ?>
-                                    <a href="<?php echo $PreviewURL; ?>" title="<?php echo Yii::t('app', 'View'); ?>"
-                                        target="_blank" class="view-icon">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
-                                        <a href="javascript:void(0);"
-                                        title="<?php echo Yii::t('app', 'Delete'); ?>"
-                                        class="delete delete-icon"
-                                        onclick="confirmDelete('<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->id)); ?>')">
-                                            <i class="fa fa-times-circle"></i>
-                                        </a>
-                                    <?php } ?>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/featured')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/featured', array('id' => $data->id, 'featured' => $data->featured)); ?>"
-                                        title="<?php echo Yii::t('app', 'Featured'); ?>"
-                                        class="<?php echo ($data->featured === 'Y') ? 'featured-property' : ''; ?>">
-                                        <i class="fa fa-star"></i>
-                                    </a>
-                                    <?php } ?>
-
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/verified', array('id' => $data->id, 'verified' => $data->verified)); ?>"
-                                        title="<?php echo Yii::t('app', 'Verified'); ?>"
-                                        class="<?php echo ($data->verified === '1') ? 'verified-property' : ''; ?>">
-                                        <i class="fa fa-check-circle"></i>
-                                    </a>
-                                    <?php if ($data->status === "A") { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status_change', array('id' => $data->id, 'val' => "I")); ?>"
-                                        title="<?php echo Yii::t('app', 'Inactive AD'); ?>" class="Block"
-                                        >
-                                        <i class="fa fa-ban"></i>
-                                    </a>
-                                    <?php } ?>
-                                    <?php if ($data->status === "I") { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status_change', array('id' => $data->id, 'val' => "A")); ?>"
-                                        title="<?php echo Yii::t('app', 'Activate AD'); ?>"
-                                        class="Enable active-property">
-                                        <i class="fa fa-check-circle"></i>
-                                    </a>
-                                    <?php } ?>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/hot')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/hot', array('id' => $data->id, 'hot' => $data->hot)); ?>"
-                                        title="<?php echo Yii::t('app', 'Hot'); ?>"
-                                        class="<?php echo ($data->hot === '1') ? 'hot-property' : ''; ?>">
-                                        <i class="fas fa-sun"></i>
-                                    </a>
-                                    <?php } ?>
-
-                                    <a href="javascript:void(0);"
-                                        title="<?php echo Yii::t('app', 'Update Meta Tag'); ?>" data-bs-toggle="modal"
-                                        onclick="openUp(this)">
-                                        <i class="fa fa-tags"></i>
-                                    </a>
-                                    <?php if ($isSold): ?>
-                                    <a href="#" class="sold-property">
-                                        <i class='fas fa-check' title="This property is already sold"></i></a>
-
-                                    <?php else: ?>
-                                    <!-- If the property is not sold, show the clickable icon -->
-                                    <?php if ($data->status == "A"){ ?>
-                                        
-                                        <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Sold property'); ?>"
-                                            onclick="openUp2(<?php echo $data->id; ?>)">
-                                            <i class='far fa-handshake'></i>
-                                        </a>
-                                    <?php } ?>
-
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                            <?php } ?>
-                        </tbody>
                     </table>
                 </div>
             </form>
@@ -881,7 +753,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
         // Initialize the date range picker
         $('#dateRange').daterangepicker({
             locale: {
-                format: 'YYYY-MM-DD'
+                format: 'DD-MMM-YYYY'
             },
             startDate: moment('2020-01-01'), // Set default start date for "All Time"
             endDate: moment(),
@@ -896,7 +768,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             }
         }, function(start, end, label) {
             
-            $('#dateRange').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+            $('#dateRange').val(start.format('DD-MMM-YYYY') + ' - ' + end.format('DD-MMM-YYYY'));
             fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
         });
 
@@ -976,7 +848,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 }
             },
             "columns": [
-                { "data": "id" },
+                { "data": "id", "orderable": false, "className": "unsortable"  },
                 { "data": "RefNo" },
                 { "data": "ad_title" },
                 { "data": "section" },
@@ -1046,3 +918,8 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
         // });
     });
     </script>
+    <style>
+        th.unsortable {
+            background-image: none !important;
+        }
+    </style>

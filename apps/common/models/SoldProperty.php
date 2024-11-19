@@ -205,7 +205,7 @@ class SoldProperty extends ActiveRecord
         }
     
         $sql .= " WHERE YEAR(sp.created_at) = :year
-                  AND (sp.isTrash = 0)"; // Ensure non-deleted ads only if join is used
+                  AND (sp.isTrash = '0')"; // Ensure non-deleted ads only if join is used
     
         // Apply filters
         if ($joinNeeded) {
@@ -282,7 +282,7 @@ class SoldProperty extends ActiveRecord
                   AND MONTH(sp.created_at) = :month";
         
         if ($joinNeeded) {
-            $sql .= " AND sp.isTrash = 0"; // Ensure non-deleted ads
+            $sql .= " AND sp.isTrash = '0'"; // Ensure non-deleted ads
         }
     
         // Apply filters if join is needed
@@ -369,7 +369,7 @@ class SoldProperty extends ActiveRecord
                   AND sp.created_at <= :end_date";
     
         if ($joinNeeded) {
-            $sql .= " AND sp.isTrash = 0"; // Ensure non-deleted ads
+            $sql .= " AND sp.isTrash = '0'"; // Ensure non-deleted ads
         }
     
         // Apply filters if join is needed
@@ -567,8 +567,6 @@ class SoldProperty extends ActiveRecord
         return $this->count($criteria);
     }
     
-
-    // Method to get the top 5 active agents with the highest number of sold properties
     public function getTop5ActiveAgents()
     {
         // Retrieve filter values from the request
@@ -577,18 +575,19 @@ class SoldProperty extends ActiveRecord
         $propertyCategoryId = Yii::app()->request->getParam('property_category');
         $status = Yii::app()->request->getParam('property_status');
     
-        // Base SQL query
+        // Log the filter values for debugging
+        // Yii::log('Location: ' . $locationId . ', Property Type: ' . $propertyTypeId . ', Category: ' . $propertyCategoryId . ', Status: ' . $status, CLogger::LEVEL_INFO);
+    
+        // Base SQL query to get the top agents based on the place_an_ad table
         $sql = "SELECT 
-                    sp.user_id, 
+                    pa.user_id, 
                     COUNT(pa.id) AS property_count, 
-                    SUM(sp.sold_price) AS totalPrice,
                     CONCAT(u.first_name, ' ', u.last_name) AS full_name,
                     u.email
-                FROM {{sold_property}} sp
-                JOIN {{place_an_ad}} pa ON sp.property_id = pa.id
-                INNER JOIN mw_user u ON u.user_id = sp.user_id
-                WHERE u.is_agent = 1 
-                AND sp.isTrash = 0"; // Only active agents and non-deleted ads
+                FROM {{place_an_ad}} pa
+                INNER JOIN mw_user u ON u.user_id = pa.user_id
+                WHERE u.rules = 3    
+                AND pa.isTrash = '0'"; // Only active agents and non-deleted ads
     
         // Apply filters
         if (!empty($locationId)) {
@@ -604,13 +603,14 @@ class SoldProperty extends ActiveRecord
             $sql .= " AND pa.status = :status";
         }
     
-        $sql .= " GROUP BY sp.user_id
+        $sql .= " 
+                  GROUP BY pa.user_id
                   ORDER BY property_count DESC
                   LIMIT 5";
-    
+        
         // Create the command
         $command = Yii::app()->db->createCommand($sql);
-    
+        
         // Bind parameters for filters
         if (!empty($locationId)) {
             $command->bindParam(':locationId', $locationId);
@@ -625,13 +625,18 @@ class SoldProperty extends ActiveRecord
             $command->bindParam(':status', $status);
         }
     
+        // Log the final SQL query for debugging
+        // Yii::log('Executing SQL: ' . $command->text, CLogger::LEVEL_INFO);
+    
         // Execute the query and fetch results
         $result = $command->queryAll();
-        
+    
+        // Check if data was returned and log the results
+        // Yii::log('Query Result: ' . print_r($result, true), CLogger::LEVEL_INFO);
+    
         return $result;
     }
     
-
     
 
     public function beforeSave()

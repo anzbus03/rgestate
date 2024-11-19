@@ -157,121 +157,236 @@ if ($viewCollection->renderContent) {
     </div>
 </div>
 <div class="row">
-    <div class="col-xl-12 col-xxl-12">
-        <div class="card">
-            <div class="card-header d-block d-sm-flex border-0">
-                <div class="me-3">
-                    <h4 class="card-title mb-2">Latest ADS</h4>
-                    <span class="fs-12">Latest Published Properties</span>
-                </div>
-                <div class="card-tabs mt-3 mt-sm-0">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#monthly" role="tab">This Month</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#Weekly" role="tab">This Week</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#Today" role="tab">Today</a>
-                        </li>
-                    </ul>
-                </div>
-
+<div class="col-xl-12 col-xxl-12">
+    <div class="card">
+        <div class="card-header d-block d-sm-flex border-0">
+            <div class="me-3">
+                <h4 class="card-title mb-2">Latest ADS</h4>
+                <span class="fs-12">Latest Published Properties</span>
             </div>
-            <div class="card-body tab-content p-0">
-                <div class="tab-pane active show fade" id="monthly" role="tabpanel">
-                    <?php $this->actionMonthLatestAds(); ?>
-                </div>
-                <div class="tab-pane" id="Weekly" role="tabpanel">
-                    <?php $this->actionWeekLatestAds(); ?>
-
-                </div>
-                <div class="tab-pane" id="Today" role="tabpanel">
-                    <?php $this->actionTodayLatestAds(); ?>
-
-                </div>
+            <div class="d-flex align-items-center mt-3 mt-sm-0">
+                <input type="text" id="dateRange" class="form-control form-control-sm me-2" style="max-width: 250px;" />
+            </div>
+        </div>
+        <div class="card-tabs">
+            <!-- <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#monthly" role="tab">This Month</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#Weekly" role="tab">This Week</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#Today" role="tab">Today</a>
+                </li>
+            </ul> -->
+        </div>
+        <div class="card-body tab-content ">
+            <div class="tab-pane active show fade" id="monthly" role="tabpanel">
+                <table id="enquiryTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Reference Number</th>
+                            <th>Ad Title</th>
+                            <th>Section</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Refresh Date</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
     </div>
+</div>
+
 </div>
 <div class="row">
-    <div class="col-xl-9 col-xxl-8 col-lg-7">
-        <div class="card">
-            <div class="card-header border-0 pb-0">
-                <h3 class="card-title">Latest Blogs</h3>
-                <a href="<?php echo Yii::app()->apps->getBaseUrl('backend/index.php/blog_articles/index'); ?>"
-                    class="text-primary font-w500">View more >></a>
+
+    <?php if (Yii::app()->user->model->user_id == 2){ ?>
+        <div class="col-xl-9 col-xxl-8 col-lg-7">
+            <div class="card">
+                <div class="card-header border-0 pb-0">
+                    <h3 class="card-title">Latest Blogs</h3>
+                    <a href="<?php echo Yii::app()->apps->getBaseUrl('backend/index.php/blog_articles/index'); ?>"
+                        class="text-primary font-w500">View more >></a>
+                </div>
+                <div class="card-body">
+                    <div class="swiper mySwiper swiper-container">
+                        <div class="swiper-wrapper">
+                            <?php foreach ($articleCategoryFromSlug as $k => $v) {
+                                    if (!empty($v->featured_image) && !is_null($v->featured_image)) {
+                                        $featuredImageUrl = Yii::app()->baseUrl . '/uploads/images/' . $v->featured_image;
+                                    } else {
+                                        preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $v->content, $featuredImageUrl);
+                                    }
+                                ?>
+                            <div class="swiper-slide">
+                                <div class="text-center">
+                                    <img src="<?php echo is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl; ?>"
+                                        class="swiper-media" alt="blogImage">
+                                    <p class="fs-12"><?php echo $v->title; ?></p>
+                                    <div class="social-media">
+                                        <a href="<?php echo Yii::app()->apps->getBaseUrl('blog/' . $v->slug); ?>"
+                                            class="btn btn-primary">
+                                            View Blog
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php } ?>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="swiper mySwiper swiper-container">
-                    <div class="swiper-wrapper">
-                        <?php foreach ($articleCategoryFromSlug as $k => $v) {
-                                if (!empty($v->featured_image) && !is_null($v->featured_image)) {
-                                    $featuredImageUrl = Yii::app()->baseUrl . '/uploads/images/' . $v->featured_image;
-                                } else {
-                                    preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $v->content, $featuredImageUrl);
-                                }
-                            ?>
-                        <div class="swiper-slide">
-                            <div class="text-center">
-                                <img src="<?php echo is_array($featuredImageUrl) ? @$featuredImageUrl['1'] : $featuredImageUrl; ?>"
-                                    class="swiper-media" alt="blogImage">
-                                <p class="fs-12"><?php echo $v->title; ?></p>
-                                <div class="social-media">
-                                    <a href="<?php echo Yii::app()->apps->getBaseUrl('blog/' . $v->slug); ?>"
-                                        class="btn btn-primary">
-                                        View Blog
+        </div>
+        <div class="col-xl-3 col-xxl-4 col-lg-5">
+            <div class="card border-0 pb-0">
+                <div class="card-header flex-wrap border-0 pb-0">
+                    <h3 class="card-title">Recent Enquiries</h3>
+                    <a href="<?php echo Yii::app()->apps->getBaseUrl('backend/index.php/contact_services/index'); ?>"
+                        class="text-primary font-w500">View more >></a>
+                </div>
+                <div class="card-body recent-patient px-0">
+                    <div id="DZ_W_Todo2" class="widget-media dlab-scroll px-4 height320">
+                        <ul class="timeline">
+                            <?php
+                                $counter = 0;
+                                foreach ($modelContactServices->search()->getData() as $contactSerivce) {
+                                    if ($counter >= 4) break; // Limit loop to 4 iterations
+                                ?>
+                            <li>
+                                <div class="timeline-panel flex-wrap">
+                                    <div class="media-body">
+                                        <h5 class="fs-16 font-w600 mb-0"><a
+                                                class="text-black"><?php echo $contactSerivce->name; ?></a></h5>
+                                        <span class="fs-12"><?php echo $contactSerivce->email; ?></span>
+                                    </div>
+                                    <a href="javascript:void(0);" class="text-warning mt-2">
+                                        <?php echo date('Y-m-d', strtotime($contactSerivce->date_added)); ?>
                                     </a>
                                 </div>
-                            </div>
-                        </div>
-                        <?php } ?>
+                            </li>
+                            <?php
+                                    $counter++;
+                                }
+                                ?>
+                        </ul>
+
                     </div>
-
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-xl-3 col-xxl-4 col-lg-5">
-        <div class="card border-0 pb-0">
-            <div class="card-header flex-wrap border-0 pb-0">
-                <h3 class="card-title">Recent Enquiries</h3>
-                <a href="<?php echo Yii::app()->apps->getBaseUrl('backend/index.php/contact_services/index'); ?>"
-                    class="text-primary font-w500">View more >></a>
-            </div>
-            <div class="card-body recent-patient px-0">
-                <div id="DZ_W_Todo2" class="widget-media dlab-scroll px-4 height320">
-                    <ul class="timeline">
-                        <?php
-                            $counter = 0;
-                            foreach ($modelContactServices->search()->getData() as $contactSerivce) {
-                                if ($counter >= 4) break; // Limit loop to 4 iterations
-                            ?>
-                        <li>
-                            <div class="timeline-panel flex-wrap">
-                                <div class="media-body">
-                                    <h5 class="fs-16 font-w600 mb-0"><a
-                                            class="text-black"><?php echo $contactSerivce->name; ?></a></h5>
-                                    <span class="fs-12"><?php echo $contactSerivce->email; ?></span>
+    <?php }else {?>
+        <div class="col-xl-12 col-xxl-12 col-lg-12">
+            <div class="card border-0 pb-0">
+                <div class="card-header flex-wrap border-0 pb-0">
+                    <h3 class="card-title">Recent Enquiries</h3>
+                    <a href="<?php echo Yii::app()->apps->getBaseUrl('backend/index.php/contact_services/index'); ?>"
+                        class="text-primary font-w500">View more >></a>
+                </div>
+                <div class="card-body recent-patient px-0">
+                    <div id="DZ_W_Todo2" class="widget-media dlab-scroll px-4 height320">
+                        <ul class="timeline">
+                            <?php
+                                $counter = 0;
+                                foreach ($modelContactServices->search()->getData() as $contactSerivce) {
+                                    if ($counter >= 4) break; // Limit loop to 4 iterations
+                                ?>
+                            <li>
+                                <div class="timeline-panel flex-wrap">
+                                    <div class="media-body">
+                                        <h5 class="fs-16 font-w600 mb-0"><a
+                                                class="text-black"><?php echo $contactSerivce->name; ?></a></h5>
+                                        <span class="fs-12"><?php echo $contactSerivce->email; ?></span>
+                                    </div>
+                                    <a href="javascript:void(0);" class="text-warning mt-2">
+                                        <?php echo date('Y-m-d', strtotime($contactSerivce->date_added)); ?>
+                                    </a>
                                 </div>
-                                <a href="javascript:void(0);" class="text-warning mt-2">
-                                    <?php echo date('Y-m-d', strtotime($contactSerivce->date_added)); ?>
-                                </a>
-                            </div>
-                        </li>
-                        <?php
-                                $counter++;
-                            }
-                            ?>
-                    </ul>
+                            </li>
+                            <?php
+                                    $counter++;
+                                }
+                                ?>
+                        </ul>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    <?php } ?>
+</div>      
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.css"/>
+<script>
+    $(function (){
 
+        $('#dateRange').daterangepicker({
+            locale: {
+                format: 'DD-MMM-YYYY'
+            },
+            startDate: moment().startOf('day'), // Default to Today
+            endDate: moment().endOf('day'),
+            ranges: {
+                'Today': [moment().startOf('day'), moment().endOf('day')],
+                'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                'Last 7 Days': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+                'Last 30 Days': [moment().subtract(29, 'days').startOf('day'), moment().endOf('day')],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, function(start, end) {
+            $('#dateRange').val(start.format('DD-MMM-YYYY') + ' - ' + end.format('DD-MMM-YYYY'));
+            fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+        });
+        function fetchFilteredData(startDate, endDate) {
+            $('#enquiryTable').DataTable().ajax.reload();
+        }
+        var table = $('#enquiryTable').DataTable({
+            "paging": true,
+            "lengthChange": true, 
+            "searching": true, 
+            "ordering": true,
+            "info": true, 
+            "autoWidth": false,
+            "pageLength": 10,
+            "serverSide": true,
+            "processing": true,
+            "ajax": {
+                "url": "<?php echo Yii::app()->createUrl('place_property/serverProcessing'); ?>", // Replace with your server URL
+                "type": "POST",
+                "data": function(d) {
+                    var dateRangePicker = $('#dateRange').data('daterangepicker');
+                    d.startDate = dateRangePicker.startDate ? dateRangePicker.startDate.format('YYYY-MM-DD') : '';
+                    d.endDate = dateRangePicker.endDate ? dateRangePicker.endDate.format('YYYY-MM-DD') : '';
+                }
+            },
+            "columns": [
+                { "data": "RefNo" },
+                { "data": "ad_title" },
+                { "data": "section" },
+                { "data": "price" },
+                { "data": "category" },
+                { "data": "status" },
+                { "data": "date_added" },
+            ],
+            createdRow: function(row, data, index) {
+                $(row).addClass('selected');
+            },
+            language: {
+                paginate: {
+                    next: '<i class="fa fa-angle-double-right" style="line-height:40px;" aria-hidden="true"></i>',
+                    previous: '<i class="fa fa-angle-double-left" style="line-height:40px;" aria-hidden="true"></i>'
+                }
+            },
+
+
+        });
+    })
+</script>
 <?php
 }
 ?>

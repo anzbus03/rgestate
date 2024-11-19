@@ -61,35 +61,123 @@ class DashboardController extends Controller
                 Yii::t('dashboard', 'Dashboard'),
             ),
         ));
-
         // Active For Sale
-        $criteria = new CDbCriteria();
-        $criteria->compare('t.isTrash', '0');
-        $criteria->compare('t.status', 'A');
-        $criteria->compare('t.section_id', '1');
-        if (Yii::app()->user->model->user_id != 2) { // Restrict data for non-admin
-            $criteria->condition = 'user_id = :userId';
-            $criteria->params = [':userId' => Yii::app()->user->model->user_id];
+        $criteriaSale = new CDbCriteria();
+        $criteriaSale->compare('t.isTrash', '0');
+        $criteriaSale->compare('t.status', 'A');
+        $criteriaSale->compare('t.section_id', '1');
+        $loggedInUser = Yii::app()->user->model; 
+        if ($loggedInUser->rules == 3) { // Restrict data for non-admin
+            $criteriaSale->addCondition('user_id = :userId');
+            $criteriaSale->params[':userId'] = Yii::app()->user->model->user_id;
+        } else if ($loggedInUser->rules == 2) {
+            // Multiple user IDs
+            $userAgents = explode(',', $loggedInUser->agents);
+
+            // Create placeholders for named parameters
+            $placeholders = [];
+            foreach ($userAgents as $index => $agentId) {
+                $placeholders[] = ':userId' . $index; // Named placeholders
+                $criteriaSale->params[':userId' . $index] = $agentId; // Assign parameter values
+            }
+
+            $criteriaSale->addCondition('t.user_id IN (' . implode(',', $placeholders) . ')');
         }
-        $ads = PlaceAnAd::model()->findAll($criteria);
+        $ads = PlaceAnAd::model()->findAll($criteriaSale);
 
         // Active For Rent
-        $criteria->compare('t.section_id', '2');
-        $adsRent = PlaceAnAd::model()->findAll($criteria);
+        $criteriaRent = new CDbCriteria();
+        $criteriaRent->compare('t.isTrash', '0');
+        $criteriaRent->compare('t.status', 'A');
+        $criteriaRent->compare('t.section_id', '2');
+        if ($loggedInUser->rules == 3) { // Restrict data for non-admin
+            $criteriaRent->addCondition('user_id = :userId');
+            $criteriaRent->params[':userId'] = Yii::app()->user->model->user_id;
+        } else if ($loggedInUser->rules == 2) {
+            // Multiple user IDs
+            $userAgents = explode(',', $loggedInUser->agents);
+
+            // Create placeholders for named parameters
+            $placeholders = [];
+            foreach ($userAgents as $index => $agentId) {
+                $placeholders[] = ':userId' . $index; // Named placeholders
+                $criteriaRent->params[':userId' . $index] = $agentId; // Assign parameter values
+            }
+
+            $criteriaRent->addCondition('t.user_id IN (' . implode(',', $placeholders) . ')');
+        }
+        $adsRent = PlaceAnAd::model()->findAll($criteriaRent);
 
         // Active Business Opportunities
-        $criteria->compare('t.section_id', '3');
-        $adsBusiness = PlaceAnAd::model()->findAll($criteria);
+        $criteriaBusiness = new CDbCriteria();
+        $criteriaBusiness->compare('t.isTrash', '0');
+        $criteriaBusiness->compare('t.status', 'A');
+        $criteriaBusiness->compare('t.section_id', '6');
+        if ($loggedInUser->rules == 3) { // Restrict data for non-admin
+            $criteriaBusiness->addCondition('user_id = :userId');
+            $criteriaBusiness->params[':userId'] = Yii::app()->user->model->user_id;
+        } else if ($loggedInUser->rules == 2) {
+            // Multiple user IDs
+            $userAgents = explode(',', $loggedInUser->agents);
 
-        // Active New Projects (not restricted by user_id)
-        $criteria = new CDbCriteria();
-        $criteria->compare('t.isTrash', '0');
-        $criteria->compare('t.status', 'A');
-        $newProjects = Project::model()->findAll($criteria);
+            // Create placeholders for named parameters
+            $placeholders = [];
+            foreach ($userAgents as $index => $agentId) {
+                $placeholders[] = ':userId' . $index; // Named placeholders
+                $criteriaBusiness->params[':userId' . $index] = $agentId; // Assign parameter values
+            }
 
+            $criteriaBusiness->addCondition('t.user_id IN (' . implode(',', $placeholders) . ')');
+        }
+        $adsBusiness = PlaceAnAd::model()->findAll($criteriaBusiness);
+
+        // Active New Projects (with user filtering)
+        $criteriaNewProjects = new CDbCriteria();
+        $criteriaNewProjects->compare('t.isTrash', '0');
+        $criteriaNewProjects->compare('t.status', 'A');
+        $criteriaNewProjects->compare('t.section_id', '3');
+
+        $loggedInUser = Yii::app()->user->model;
+        if ($loggedInUser->rules == 3) { // Restrict data for non-admin
+            $criteriaNewProjects->addCondition('user_id = :userId');
+            $criteriaNewProjects->params[':userId'] = Yii::app()->user->model->user_id;
+        } else if ($loggedInUser->rules == 2) { // Restrict data for agents
+            $userAgents = explode(',', $loggedInUser->agents);
+
+            // Create placeholders for named parameters
+            $placeholders = [];
+            foreach ($userAgents as $index => $agentId) {
+                $placeholders[] = ':userId' . $index; // Named placeholders
+                $criteriaNewProjects->params[':userId' . $index] = $agentId; // Assign parameter values
+            }
+
+            $criteriaNewProjects->addCondition('t.user_id IN (' . implode(',', $placeholders) . ')');
+        }
+
+        $newProjects = PlaceAnAd::model()->findAll($criteriaNewProjects);
         // Pre-Leased Properties (not restricted by user_id)
-        $criteria->compare('t.property_status', '1');
-        $preLeasedProperties = PlaceAnAd::model()->findAll($criteria);
+        // Pre-Leased Properties (with user filtering)
+        $criteriaPreLeased = new CDbCriteria();
+        $criteriaPreLeased->compare('t.isTrash', '0');
+        $criteriaPreLeased->compare('t.status', 'A');
+        $criteriaPreLeased->compare('t.property_status', '1');
+
+        if ($loggedInUser->rules == 3) { // Restrict data for non-admin
+            $criteriaPreLeased->addCondition('user_id = :userId');
+            $criteriaPreLeased->params[':userId'] = Yii::app()->user->model->user_id;
+        } else if ($loggedInUser->rules == 2) { // Restrict data for agents
+            $userAgents = explode(',', $loggedInUser->agents);
+
+            // Create placeholders for named parameters
+            $placeholders = [];
+            foreach ($userAgents as $index => $agentId) {
+                $placeholders[] = ':userId' . $index; // Named placeholders
+                $criteriaPreLeased->params[':userId' . $index] = $agentId; // Assign parameter values
+            }
+
+            $criteriaPreLeased->addCondition('t.user_id IN (' . implode(',', $placeholders) . ')');
+        }
+        $preLeasedProperties = PlaceAnAd::model()->findAll($criteriaPreLeased);
 
         // Listing Users (not restricted by user_id)
         $criteria = new CDbCriteria();

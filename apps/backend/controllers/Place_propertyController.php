@@ -526,20 +526,42 @@ class Place_propertyController  extends Controller
    
         $startDate = $request->getPost('startDate');
         $endDate = $request->getPost('endDate');
-
+        $criteria = new CDbCriteria();
+        
         if ($startDate && $endDate) {
             $validStartDate = DateTime::createFromFormat('Y-m-d', $startDate) !== false;
             $validEndDate = DateTime::createFromFormat('Y-m-d', $endDate) !== false;
             if ($validStartDate && $validEndDate) {
                 $startDate .= ' 00:00:00';
                 $endDate .= ' 23:59:59';
-                $criteria->addCondition("date_added >= :startDate AND date_added <= :endDate");
+                $criteria->addCondition("t.date_added >= :startDate AND t.date_added <= :endDate");
                 $criteria->params[':startDate'] = $startDate;
                 $criteria->params[':endDate'] = $endDate;
             }
         }
+        
+        // User-specific conditions
+        $loggedInUser = Yii::app()->user->model; // Assuming you have a method to get the logged-in user model
+        
+        if ($loggedInUser->rules == 3) {
+            // Single user ID
+            $criteria->addCondition('t.user_id = :userId');
+            $criteria->params[':userId'] = $loggedInUser->user_id;
+        } elseif ($loggedInUser->rules == 2) {
+            // Multiple user IDs
+            $userAgents = explode(',', $loggedInUser->agents);
 
-    
+            // Create placeholders for named parameters
+            $placeholders = [];
+            foreach ($userAgents as $index => $agentId) {
+                $placeholders[] = ':userId' . $index; // Named placeholders
+                $criteria->params[':userId' . $index] = $agentId; // Assign parameter values
+            }
+
+            $criteria->addCondition('t.user_id IN (' . implode(',', $placeholders) . ')');
+
+        }
+        
         // Sorting
         $orderColumnIndex = $request->getPost('order')[0]['column'];
         $orderDirection = $request->getPost('order')[0]['dir']; // 'asc' or 'desc'
@@ -547,30 +569,16 @@ class Place_propertyController  extends Controller
         if ($orderColumnName) {
             $criteria->order = "$orderColumnName $orderDirection";
         }
-    
+        
         // Pagination
         $start = $request->getPost('start', 0);
         $length = $request->getPost('length', 10);
         $criteria->offset = $start;
         $criteria->limit = $length;
-        $loggedInUser = Yii::app()->user->model; // Assuming you have a method to get the logged-in user model
-        
-        if ($loggedInUser->rules == 3) {
-            // Single user ID
-            $criteria->condition = 't.user_id = :userId';
-            $criteria->params = [':userId' => $loggedInUser->user_id];
-        } elseif ($loggedInUser->rules == 2) {
-            // Multiple user IDs
-            $userAgents = explode(',', $loggedInUser->agents);
-            $placeholders = implode(',', array_fill(0, count($userAgents), '?'));
-            $criteria->condition = 't.user_id IN (' . $placeholders . ')';
-            $criteria->params = $userAgents;
-        }
         // Fetch data
         $totalRecords = PlaceAnAd::model()->count($criteria);
         $filteredRecords = PlaceAnAd::model()->count($criteria);
         $placeAds = PlaceAnAd::model()->findAll($criteria);
-    
         // Prepare data in a format for DataTables
         $data = [];
         foreach ($placeAds as $ad) {
@@ -3333,7 +3341,20 @@ class Place_propertyController  extends Controller
     
             foreach (array_slice($excelData, 1) as $data) {
                 if (empty($data) || empty($data[4])) continue; // Skip if data is empty or refNo is null
-    
+                
+                if (is_numeric($data[3])) {
+                    // Handle Excel numeric date (e.g., 44197 -> 2021-01-01)
+                    $excelDate = $data[3];
+                    $unixTimestamp = ($excelDate - 25569) * 86400; // Convert Excel date to Unix timestamp
+                    $dateAdded = date('Y-m-d H:i:s', $unixTimestamp);
+                } elseif (strtotime($data[3]) !== false) {
+                    // Handle already valid date string (e.g., "1905-07-14 00:00:00")
+                    $dateAdded = date('Y-m-d H:i:s', strtotime($data[3]));
+                } else {
+                    // Handle invalid format
+                    $dateAdded = null; // Or some fallback value
+                }
+                
                 $existingAd = $adsMap[$data[4]] ?? null;
     
                 $record = [
@@ -3345,7 +3366,7 @@ class Place_propertyController  extends Controller
                     'ad_title' => $data[13],
                     'PropertyID' => $data[5],
                     'ad_description' => str_replace(["\r\n", "\r", "\n"], "\n", $data[14]),
-                    'date_added' => date('Y-m-d H:i:s', ($data[3] - 25569) * 86400),
+                    'date_added' => $dateAdded,
                     'state' => $statesMap[$data[11]]->state_id ?? 0,
                     'user_id' => $usersMap[$data[39]]->user_id ?? 31988,
                     'status' => ($data[36] == "Active") ? "A" : "I",

@@ -35,12 +35,22 @@ class UsersController extends Controller
     {
         $request = Yii::app()->request;
         $user = new User('search');
-
         $user->unsetAttributes();
-
+    
         // for filters.
         $user->attributes = (array)$request->getQuery($user->modelName, array());
-
+    
+        // Get the logged-in user's model
+        $loggedInUser = Yii::app()->user->model;
+    
+        // If the logged-in user's rules is 2, filter users by the same agency
+        if ($loggedInUser->rules == 2) {
+            $userIds = explode(',', $loggedInUser->agents);  // Assuming 'agents' contains user IDs of users under this agency
+            // Add condition to filter users by the agency's user IDs
+            $user->getDbCriteria()->addCondition('user_id IN (' . implode(',', array_map('intval', $userIds)) . ')');
+        }
+    
+        // Set data for the page
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'View users'),
             'pageHeading'       => Yii::t('users', 'View users'),
@@ -49,9 +59,11 @@ class UsersController extends Controller
                 Yii::t('app', 'View all')
             )
         ));
-
+    
+        // Render the view
         $this->render('list', compact('user'));
     }
+    
 
     /**
      * Create a new user

@@ -7,15 +7,34 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 // and render if allowed
 if ($viewCollection->renderContent) {
 ?>
-                 
+    <style>
+        .filter-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 16px;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .filter-item {
+            flex: 0 0 auto;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 8px;
+            flex: 0 0 auto;
+        }
+
+    </style>
     <form id="filterForm" class="mb-4" method="GET" action="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/index'); ?>">
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-2">
-                <?php
-                $locations = States::model()->AllListingStatesOfCountry(66124);
-                $categories = Category::model()->findAll();
-                ?>
+        <div class="filter-container">
+            <?php
+            $locations = States::model()->AllListingStatesOfCountry(66124);
+            $categories = Category::model()->findAll();
+            ?>
+            <div class="filter-item">
                 <select class="form-control" name="location" id="locationSelect">
                     <option value="">Select Location</option>
                     <?php foreach ($locations as $location): ?>
@@ -23,16 +42,15 @@ if ($viewCollection->renderContent) {
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-md-2">
+            <div class="filter-item">
                 <select class="form-control" name="property_type" id="propertyTypeSelect">
                     <option value="">Select Property Type</option>
                     <option value="1">For Sale</option>
                     <option value="2">For Rent</option>
-                    <option value="3">Business Opportiunities</option>
-                    
+                    <option value="3">Business Opportunities</option>
                 </select>
             </div>
-            <div class="col-md-2">
+            <div class="filter-item">
                 <select class="form-control" name="property_category" id="propertyCategorySelect">
                     <option value="">Select Property Category</option>
                     <?php foreach ($categories as $category): ?>
@@ -40,7 +58,7 @@ if ($viewCollection->renderContent) {
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-md-2">
+            <div class="filter-item">
                 <select class="form-control" name="property_status" id="propertyStatusSelect">
                     <option value="">Select Property Status</option>
                     <option value="S">Sold</option>
@@ -48,11 +66,12 @@ if ($viewCollection->renderContent) {
                     <option value="I">Inactive</option>
                 </select>
             </div>
-            <div class="col-md-2">
+            <div class="filter-actions">
                 <button type="submit" class="btn btn-primary btn-sm">Apply Filter</button>
-                <button type="submit" class="btn btn-secondary btn-sm">Reset</button>
+                <button type="reset" class="btn btn-secondary btn-sm">Reset</button>
             </div>
         </div>
+
     </form>
     <div class="row invoice-card-row" data-source="<?php echo $this->createUrl('dashboard/glance'); ?>">
 
@@ -150,7 +169,7 @@ if ($viewCollection->renderContent) {
                                         <div class="flex-wrap mb-sm-4 mb-2 align-items-center">
                                             <div class="d-flex align-items-center">
                                                 <span class="text-num text-black fs-36 font-w500 me-2">
-                                                    <?php echo $totalPropertiesSoldYear . " AED"; ?>
+                                                    <?php echo $totalPropertiesSoldYear ?? 0 . " AED"; ?>
                                                 </span>
                                                 <div class="d-flex align-items-center">
                                                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -171,7 +190,7 @@ if ($viewCollection->renderContent) {
                                         <div class="flex-wrap mb-sm-4 mb-2 align-items-center">
                                             <div class="d-flex align-items-center">
                                                 <span class="text-num text-black fs-36 font-w500 me-2">
-                                                    <?php echo $totalPropertiesSoldMonth . " AED"; ?>
+                                                    <?php echo $totalPropertiesSoldMonth??0 . " AED"; ?>
                                                 </span>
                                                 <div class="d-flex align-items-center">
                                                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -193,7 +212,7 @@ if ($viewCollection->renderContent) {
                                         <div class="flex-wrap mb-sm-4 mb-2 align-items-center">
                                             <div class="d-flex align-items-center">
                                                 <span class="text-num text-black fs-36 font-w500 me-2">
-                                                    <?php echo $totalPropertiesSoldWeek . " AED"; ?>
+                                                    <?php echo $totalPropertiesSoldWeek??0 . " AED"; ?>
                                                 </span>
                                                 <div class="d-flex align-items-center">
                                                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -245,7 +264,7 @@ if ($viewCollection->renderContent) {
                                                     <?php echo $agent['property_count'] . " Properties"; ?>
                                                 </a>
                                                 <a href="javascript:void(0);" class="text-success mt-2">
-                                                    <?php echo $agent['totalPrice'] . " AED"; ?>
+                                                    <?php echo $agent['totalPrice']??0 . " AED"; ?>
                                                 </a>
                                             </div>
                                         </div>
@@ -270,12 +289,48 @@ if ($viewCollection->renderContent) {
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="card-header border-0 flex-wrap pb-2">
-                                <div class="chart-title mb-2 ">
-                                    <h2 class="card-title text-white">Agents Properties / Sales Statistic</h2>
+                                <h2 class="card-title text-white">Agents Properties / Sales Statistic</h2>
+                                <div class="d-flex">
+                                    <div class="card-action card-tabs mt-3 mt-sm-0">
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li class="nav-item agent-properties">
+                                                <a class="nav-link active" data-bs-toggle="tab" href="#sale" role="tab">For Sale</a>
+                                            </li>
+                                            <li class="nav-item agent-properties">
+                                                <a class="nav-link " data-bs-toggle="tab" href="#rent" role="tab" >For Rent</a>
+                                            </li>
+                                            <li class="nav-item agent-properties">
+                                                <a class="nav-link" data-bs-toggle="tab" href="#business" role="tab" >Business Opportiunities</a>
+                                            </li>
+                                            <li class="nav-item agent-properties">
+                                                <a class="nav-link" data-bs-toggle="tab" href="#projects" role="tab" >Projects</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body pt-0 custome-tooltip pe-0">
-                                <div id="chartBarRunning"></div>	
+
+                                <div class="tab-content">
+                                    <div class="tab-pane active show fade" id="sale">
+                                        <div id="chartBarRunning"></div>	
+                                    </div>	
+                                </div>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade" id="rent">
+                                        <div id="chartBarRunningRent"></div>	
+                                    </div>	
+                                </div>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade" id="business">
+                                        <div id="chartBarRunningBusiness"></div>	
+                                    </div>	
+                                </div>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade" id="projects">
+                                        <div id="chartBarRunningProjects"></div>	
+                                    </div>	
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -288,6 +343,17 @@ if ($viewCollection->renderContent) {
         </div>
     </div>
     <style>
+       
+        .agent-properties .active{
+            color: #ffd700 !important;
+        }
+        .nav-tabs .agent-properties .nav-link:after{
+            background: #ffd700 !important;
+        }
+        .card-tabs .agent-properties .nav-link:not(.active) {
+            color: white !important;
+        }
+
         .links-container a {
             display: block; 
             margin-top: 5px; 
@@ -498,6 +564,457 @@ if ($viewCollection->renderContent) {
                     
             }
             chartBarRunning()
+            
+            var chartBarRunningRent = function(){
+                var options  = {
+                    series: [
+                        {
+                            name: 'No. of Properties',
+                            data: <?php echo json_encode($agentPropertiesRent); ?>
+                        }, 
+                        
+                    ],
+                    chart: {
+                    type: 'bar',
+                    height: 350,
+                    
+                    
+                    toolbar: {
+                        show: false,
+                    },
+                    
+                },
+                plotOptions: {
+                bar: {
+                    horizontal: false,
+                    endingShape:'rounded',
+                    columnWidth: '45%',
+                    borderRadius: 5,
+                    
+                },
+                },
+                colors:['#', '#77248B'],
+                dataLabels: {
+                enabled: false,
+                },
+                markers: {
+                    shape: "circle",
+                },
+                legend: {
+                    show: false,
+                    fontSize: '12px',
+                    labels: {
+                        colors: '#000000',
+                        
+                        },
+                    markers: {
+                    width: 30,
+                    height: 30,
+                    strokeWidth: 0,
+                    strokeColor: '#fff',
+                    fillColors: undefined,
+                    radius: 35,	
+                    }
+                },
+                stroke: {
+                show: true,
+                width: 6,
+                colors: ['transparent']
+                },
+                grid: {
+                    borderColor: 'rgba(252, 252, 252,0.2)',
+                },
+                xaxis: {
+                categories: <?php echo json_encode($agents); ?>,
+                labels: {
+                    style: {
+                        colors: '#ffffff',
+                        fontSize: '13px',
+                        fontFamily: 'poppins',
+                        fontWeight: 100,
+                        cssClass: 'apexcharts-xaxis-label',
+                    },		
+                },
+                axisBorder: {
+                    show: false,
+                },
+                axisTicks: {
+                    show: false,
+                    borderType: 'solid',
+                    color: '#78909C',
+                    height: 6,
+                    offsetX: 0,
+                    offsetY: 0
+                },
+                crosshairs: {
+                show: false,
+                }
+                },
+                yaxis: {
+                    labels: {
+                        offsetX:-16,
+                    style: {
+                        colors: '#ffffff',
+                        fontSize: '13px',
+                        fontFamily: 'poppins',
+                        fontWeight: 100,
+                        cssClass: 'apexcharts-xaxis-label',
+                    },
+                },
+                },
+                fill: {
+                opacity: 1,
+                colors:['#ffffff', '#FFD125'],
+                },
+                tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return " " + val + ""
+                    }
+                }
+                },
+                responsive: [{
+                    breakpoint: 575,
+                    options: {
+                        plotOptions: {
+                        bar: {
+                            columnWidth: '1%',
+                            borderRadius: -1,
+                        },
+                        },
+                        chart:{
+                            height:250,
+                        },
+                        series: [
+                            {
+                                name: 'Number Of Properties',
+                                data: <?php echo json_encode($agentPropertiesRent); ?>
+                            }, 
+                            
+                        ],
+                    }
+                }]
+                };
+
+                if(jQuery("#chartBarRunningRent").length > 0){
+
+                    var chart = new ApexCharts(document.querySelector("#chartBarRunningRent"), options);
+                    chart.render();
+                    
+                    jQuery('#dzIncomeSeries').on('change',function(){
+                        jQuery(this).toggleClass('disabled');
+                        chart.toggleSeries('Income');
+                    });
+                    
+                    jQuery('#dzExpenseSeries').on('change',function(){
+                        jQuery(this).toggleClass('disabled');
+                        chart.toggleSeries('Expense');
+                    });
+                    
+                }
+                    
+            }
+            chartBarRunningRent()
+            var chartBarRunningBusiness = function(){
+                var options  = {
+                    series: [
+                        {
+                            name: 'No. of Properties',
+                            data: <?php echo json_encode($agentPropertiesBusiness); ?>
+                        }, 
+                        
+                    ],
+                    chart: {
+                    type: 'bar',
+                    height: 350,
+                    
+                    
+                    toolbar: {
+                        show: false,
+                    },
+                    
+                },
+                plotOptions: {
+                bar: {
+                    horizontal: false,
+                    endingShape:'rounded',
+                    columnWidth: '45%',
+                    borderRadius: 5,
+                    
+                },
+                },
+                colors:['#', '#77248B'],
+                dataLabels: {
+                enabled: false,
+                },
+                markers: {
+                    shape: "circle",
+                },
+                legend: {
+                    show: false,
+                    fontSize: '12px',
+                    labels: {
+                        colors: '#000000',
+                        
+                        },
+                    markers: {
+                    width: 30,
+                    height: 30,
+                    strokeWidth: 0,
+                    strokeColor: '#fff',
+                    fillColors: undefined,
+                    radius: 35,	
+                    }
+                },
+                stroke: {
+                show: true,
+                width: 6,
+                colors: ['transparent']
+                },
+                grid: {
+                    borderColor: 'rgba(252, 252, 252,0.2)',
+                },
+                xaxis: {
+                categories: <?php echo json_encode($agents); ?>,
+                labels: {
+                    style: {
+                        colors: '#ffffff',
+                        fontSize: '13px',
+                        fontFamily: 'poppins',
+                        fontWeight: 100,
+                        cssClass: 'apexcharts-xaxis-label',
+                    },		
+                },
+                axisBorder: {
+                    show: false,
+                },
+                axisTicks: {
+                    show: false,
+                    borderType: 'solid',
+                    color: '#78909C',
+                    height: 6,
+                    offsetX: 0,
+                    offsetY: 0
+                },
+                crosshairs: {
+                show: false,
+                }
+                },
+                yaxis: {
+                    labels: {
+                        offsetX:-16,
+                    style: {
+                        colors: '#ffffff',
+                        fontSize: '13px',
+                        fontFamily: 'poppins',
+                        fontWeight: 100,
+                        cssClass: 'apexcharts-xaxis-label',
+                    },
+                },
+                },
+                fill: {
+                opacity: 1,
+                colors:['#ffffff', '#FFD125'],
+                },
+                tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return " " + val + ""
+                    }
+                }
+                },
+                responsive: [{
+                    breakpoint: 575,
+                    options: {
+                        plotOptions: {
+                        bar: {
+                            columnWidth: '1%',
+                            borderRadius: -1,
+                        },
+                        },
+                        chart:{
+                            height:250,
+                        },
+                        series: [
+                            {
+                                name: 'Number Of Properties',
+                                data: <?php echo json_encode($agentPropertiesBusiness); ?>
+                            }, 
+                            
+                        ],
+                    }
+                }]
+                };
+
+                if(jQuery("#chartBarRunningBusiness").length > 0){
+
+                    var chart = new ApexCharts(document.querySelector("#chartBarRunningBusiness"), options);
+                    chart.render();
+                    
+                    jQuery('#dzIncomeSeries').on('change',function(){
+                        jQuery(this).toggleClass('disabled');
+                        chart.toggleSeries('Income');
+                    });
+                    
+                    jQuery('#dzExpenseSeries').on('change',function(){
+                        jQuery(this).toggleClass('disabled');
+                        chart.toggleSeries('Expense');
+                    });
+                    
+                }
+                    
+            }
+            chartBarRunningBusiness()
+            var chartBarRunningProjects = function(){
+                var options  = {
+                    series: [
+                        {
+                            name: 'No. of Properties',
+                            data: <?php echo json_encode($agentPropertiesProjects); ?>
+                        }, 
+                        
+                    ],
+                    chart: {
+                    type: 'bar',
+                    height: 350,
+                    
+                    
+                    toolbar: {
+                        show: false,
+                    },
+                    
+                },
+                plotOptions: {
+                bar: {
+                    horizontal: false,
+                    endingShape:'rounded',
+                    columnWidth: '45%',
+                    borderRadius: 5,
+                    
+                },
+                },
+                colors:['#', '#77248B'],
+                dataLabels: {
+                enabled: false,
+                },
+                markers: {
+                    shape: "circle",
+                },
+                legend: {
+                    show: false,
+                    fontSize: '12px',
+                    labels: {
+                        colors: '#000000',
+                        
+                        },
+                    markers: {
+                    width: 30,
+                    height: 30,
+                    strokeWidth: 0,
+                    strokeColor: '#fff',
+                    fillColors: undefined,
+                    radius: 35,	
+                    }
+                },
+                stroke: {
+                show: true,
+                width: 6,
+                colors: ['transparent']
+                },
+                grid: {
+                    borderColor: 'rgba(252, 252, 252,0.2)',
+                },
+                xaxis: {
+                categories: <?php echo json_encode($agents); ?>,
+                labels: {
+                    style: {
+                        colors: '#ffffff',
+                        fontSize: '13px',
+                        fontFamily: 'poppins',
+                        fontWeight: 100,
+                        cssClass: 'apexcharts-xaxis-label',
+                    },		
+                },
+                axisBorder: {
+                    show: false,
+                },
+                axisTicks: {
+                    show: false,
+                    borderType: 'solid',
+                    color: '#78909C',
+                    height: 6,
+                    offsetX: 0,
+                    offsetY: 0
+                },
+                crosshairs: {
+                show: false,
+                }
+                },
+                yaxis: {
+                    labels: {
+                        offsetX:-16,
+                    style: {
+                        colors: '#ffffff',
+                        fontSize: '13px',
+                        fontFamily: 'poppins',
+                        fontWeight: 100,
+                        cssClass: 'apexcharts-xaxis-label',
+                    },
+                },
+                },
+                fill: {
+                opacity: 1,
+                colors:['#ffffff', '#FFD125'],
+                },
+                tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return " " + val + ""
+                    }
+                }
+                },
+                responsive: [{
+                    breakpoint: 575,
+                    options: {
+                        plotOptions: {
+                        bar: {
+                            columnWidth: '1%',
+                            borderRadius: -1,
+                        },
+                        },
+                        chart:{
+                            height:250,
+                        },
+                        series: [
+                            {
+                                name: 'Number Of Properties',
+                                data: <?php echo json_encode($agentPropertiesProjects); ?>
+                            }, 
+                            
+                        ],
+                    }
+                }]
+                };
+
+                if(jQuery("#chartBarRunningProjects").length > 0){
+
+                    var chart = new ApexCharts(document.querySelector("#chartBarRunningProjects"), options);
+                    chart.render();
+                    
+                    jQuery('#dzIncomeSeries').on('change',function(){
+                        jQuery(this).toggleClass('disabled');
+                        chart.toggleSeries('Income');
+                    });
+                    
+                    jQuery('#dzExpenseSeries').on('change',function(){
+                        jQuery(this).toggleClass('disabled');
+                        chart.toggleSeries('Expense');
+                    });
+                    
+                }
+                    
+            }
+            chartBarRunningProjects()
             $(document).ready(function() {
                 $('#locationSelect').select2({
                     placeholder: 'Select Location',

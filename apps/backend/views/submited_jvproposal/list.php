@@ -68,7 +68,7 @@ if ($viewCollection->renderContent) { ?>
                                     <?php } ?>
 
                                     <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('jv_id' => $data->jv_id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
+                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->jv_id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
                                             <i class="fa fa-times-circle"></i>
                                         </a>
                                     <?php } ?>

@@ -200,6 +200,11 @@ class User extends ActiveRecord
         $criteria->compare('city', $this->city, true);
         $criteria->compare('status', $this->status);
         $criteria->compare('status!', 'deleted');
+        if (isset(Yii::app()->user->model->agents)) {
+            // Filter by user_id if needed
+            $userIds = explode(',', Yii::app()->user->model->agents);
+            $criteria->addInCondition('user_id', $userIds);
+        }
         return new CActiveDataProvider(get_class($this), array(
             'criteria'      => $criteria,
             'pagination'    => array(
@@ -367,10 +372,10 @@ class User extends ActiveRecord
         }
         return $agentsRes;
     }
-    public function getAllAgentsProperties()
+    public function getAllAgentsProperties($section = 1)
     {
         $criteria = new \CDbCriteria;
-        $criteria->compare('t.is_agent', 1); // Only agents
+        $criteria->compare('t.rules', 3); // Only agents
 
         $criteria->with = array('property'); // Assuming 'property' is the relation defined in your User model
 
@@ -379,10 +384,17 @@ class User extends ActiveRecord
         $agentPropertyCount = [];
 
         foreach ($agents as $agent) {
-            $propertyCount = count($agent->property); // Get the count of properties for the agent
-            $agentPropertyCount[] = $propertyCount; // Replace 'name' with the field for agent's name
+            // Filter properties by section_id
+            $propertyCount = 0;
+    
+            foreach ($agent->property as $property) {
+                if ($property->section_id == $section && $property->isTrash == "0" && $property->status == "A") {
+                    $propertyCount++;
+                }
+            }
+    
+            $agentPropertyCount[] = $propertyCount; // Store the count for the agent
         }
-
         return $agentPropertyCount;
     }
 

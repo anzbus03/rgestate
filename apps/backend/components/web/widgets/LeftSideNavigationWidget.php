@@ -291,10 +291,6 @@ class LeftSideNavigationWidget extends CWidget
                     'icon'      => 'flaticon-041-graph',
                     'active'    => array('agents', 'agent_groups'),
                     'route'     => array('agents/index'),
-                    'items'     => array(
-                        array('url' => array('agents/list'), 'label' => Yii::t('app', 'Agents List'), 'active' => strpos($route, 'agents/list') === 0),
-                        array('url' => array('agents/create'), 'label' => Yii::t('app', 'Create Agent'), 'active' => strpos($route, 'agents/create') === 0),
-                    ),
                 )
             );
             $menuItems['dashboard'] = array(
@@ -308,6 +304,12 @@ class LeftSideNavigationWidget extends CWidget
                 'icon'      => 'flaticon-043-menu',
                 'active'    => array('image_library'),
                 'route'     => array('image_library/index'),
+            );
+            $menuItems['users'] = array(
+                'name'      => Yii::t('app', 'Users'),
+                'icon'      => 'flaticon-047-home',
+                'active'    =>  array('users', 'user_groups'),
+                'route'     => array('users/index'),
             );
             $menuItems['floor_plan'] = array(
                 'name'      => Yii::t('app', 'Floor Plan'),
@@ -330,13 +332,10 @@ class LeftSideNavigationWidget extends CWidget
         if ($rules == 3) {
             $menuItems = array(
                 'agent_management' => array(
-                    'name'      => Yii::t('app', 'Agent Management'),
+                    'name'      => Yii::t('app', 'Agent Dashboard'),
                     'icon'      => 'flaticon-041-graph',
                     'active'    => array('agents', 'agent_groups'),
-                    'route'     => array('agents/index'),
-                    'items'     => array(
-                        array('url' => array('agents/list'), 'label' => Yii::t('app', 'Agents List'), 'active' => strpos($route, 'agents/list') === 0),
-                    ),
+                    'route'     => array('agents/index')
                 )
             );
             $menuItems['dashboard'] = array(

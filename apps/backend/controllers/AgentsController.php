@@ -92,11 +92,12 @@ class AgentsController extends Controller
         $numberOfAgents = User::model()->getNumberOfAgents();
 
         $agents = User::model()->getAllAgents();
-        $agentProperties = User::model()->getAllAgentsProperties();
+        $agentProperties = User::model()->getAllAgentsProperties(1);
+        $agentPropertiesRent = User::model()->getAllAgentsProperties(2);
+        $agentPropertiesProjects = User::model()->getAllAgentsProperties(3);
+        $agentPropertiesBusiness = User::model()->getAllAgentsProperties(6);
         // Get top 5 active agents
         $topAgents = SoldProperty::model()->getTop5ActiveAgents();
-        // print_r($topAgents);
-        // exit;
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Agents List'),
             'pageHeading'       => Yii::t('agent', 'Agent Dashboard'),
@@ -137,7 +138,10 @@ class AgentsController extends Controller
             'numberOfAgents',
             'topAgents',
             'tags',
-            'tags_short'
+            'tags_short',
+            'agentPropertiesRent',
+            'agentPropertiesProjects',
+            'agentPropertiesBusiness'
         ));
     }
 
