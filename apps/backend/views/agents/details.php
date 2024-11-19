@@ -132,7 +132,7 @@ if ($viewCollection->renderContent) {
 
                         <hr>
                         <div>
-                            <h4 class="property-title">Property status</h4>
+                            <h4 class="property-title">Closed Deals</h4>
                             <div class="progress-section">
                                 <div class="card">
                                     <div class="card-info">
