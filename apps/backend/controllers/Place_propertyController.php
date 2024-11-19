@@ -563,7 +563,7 @@ class Place_propertyController  extends Controller
         $data = [];
         foreach ($placeAds as $ad) {
             $data[] = [
-                'id' => '<input type="checkbox" class="bulk-item" value="'.$data->id.'">',
+                'id' => '<input type="checkbox" class="bulk-item" value="'.$ad->id.'">',
                 'RefNo' => CHtml::encode($ad->ReferenceNumberTitleP),
                 'ad_title' => CHtml::encode($ad->AdTitle),
                 'section' => CHtml::encode($ad->section->section_name),
@@ -2790,9 +2790,9 @@ class Place_propertyController  extends Controller
 
         if ($action == PlaceAnAd::BULK_ACTION_DELETE && count($items)) {
             $affected = 0;
-            $customerModel = new  PlaceAnAd();
+            $customerModel = new PlaceAnAd();
             foreach ($items as $item) {
-
+            
                 $customer = $customerModel->findByPk($item);
                 if (!$customer) {
                     continue;

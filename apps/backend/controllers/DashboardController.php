@@ -43,7 +43,6 @@ class DashboardController extends Controller
      */
     public function actionIndex()
     {
-		  
         if (file_exists(Yii::getPathOfAlias('root.install')) && is_dir($dir = Yii::getPathOfAlias('root.install'))) {
             Yii::app()->notify->addWarning(Yii::t('app', 'Please remove the install directory({dir}) from your application!', array(
                 '{dir}' => $dir,
@@ -51,10 +50,10 @@ class DashboardController extends Controller
         }
         
         $group = Yii::app()->user->getModel()->group;
-        if( !empty($group) and  !empty($group->default_url)){
-			$this->redirect(Yii::app()->createUrl($group->default_url));
-		} 
-       
+        if (!empty($group) && !empty($group->default_url)) {
+            $this->redirect(Yii::app()->createUrl($group->default_url));
+        }
+        
         $this->setData(array(
             'pageMetaTitle'     => Yii::app()->name . ' | ' . Yii::t('dashboard', 'Dashboard'), 
             'pageHeading'       => Yii::t('dashboard', 'Dashboard'),
@@ -62,89 +61,98 @@ class DashboardController extends Controller
                 Yii::t('dashboard', 'Dashboard'),
             ),
         ));
-        
+
         // Active For Sale
-        $criteria = PlaceAnAd::model()->search(1);
-        $criteria->compare('t.isTrash','0');
-        $criteria->compare('t.status','A');     
-        $criteria->compare('t.section_id','1');     
+        $criteria = new CDbCriteria();
+        $criteria->compare('t.isTrash', '0');
+        $criteria->compare('t.status', 'A');
+        $criteria->compare('t.section_id', '1');
+        if (Yii::app()->user->model->user_id != 2) { // Restrict data for non-admin
+            $criteria->condition = 'user_id = :userId';
+            $criteria->params = [':userId' => Yii::app()->user->model->user_id];
+        }
         $ads = PlaceAnAd::model()->findAll($criteria);
-        
-        // Active for rent
-        $criteria = PlaceAnAd::model()->search(1);
-        $criteria->compare('t.isTrash','0');
-        $criteria->compare('t.status','A');     
-        $criteria->compare('t.section_id','2');     
+
+        // Active For Rent
+        $criteria->compare('t.section_id', '2');
         $adsRent = PlaceAnAd::model()->findAll($criteria);
 
-        // Active Business Opportiunities
-        $criteria = PlaceAnAd::model()->search(1);
-        $criteria->compare('t.isTrash','0');
-        $criteria->compare('t.status','A');     
-        $criteria->compare('t.section_id','3');     
+        // Active Business Opportunities
+        $criteria->compare('t.section_id', '3');
         $adsBusiness = PlaceAnAd::model()->findAll($criteria);
 
-        // Active New Projects
-        $criteria=new CDbCriteria;
-        $criteria->compare('t.isTrash','0');
-        $criteria->compare('t.status','A');     
+        // Active New Projects (not restricted by user_id)
+        $criteria = new CDbCriteria();
+        $criteria->compare('t.isTrash', '0');
+        $criteria->compare('t.status', 'A');
         $newProjects = Project::model()->findAll($criteria);
 
-        // Active New Projects
-        $criteria=new CDbCriteria;
-        $criteria->compare('t.isTrash','0');
-        $criteria->compare('t.status','A');     
-        $criteria->compare('t.property_status','1');     
+        // Pre-Leased Properties (not restricted by user_id)
+        $criteria->compare('t.property_status', '1');
         $preLeasedProperties = PlaceAnAd::model()->findAll($criteria);
-        
 
-        $criteria=new CDbCriteria;
-        $criteria->compare('t.isTrash','0');
-        $criteria->compare('t.status','W');     
-        // $criteria->compare('t.filled_info','1'); 
-        $criteria->order="t.user_id desc";
+        // Listing Users (not restricted by user_id)
+        $criteria = new CDbCriteria();
+        $criteria->compare('t.isTrash', '0');
+        $criteria->compare('t.status', 'W');
+        $criteria->order = "t.user_id desc";
         $usr = ListingUsers::model()->findAll($criteria);
-       
+
+        // Enquiries, general logic remains unchanged
         $enquiries = SendEnquiry::model()->findAll();
 
-        
-        
-        $limit =25; 
-        $criteria =  SendEnquiry::model()->findEnquiry(array(),false,1);
+        $limit = 25;
+        $criteria = SendEnquiry::model()->findEnquiry(array(), false, 1);
         $criteria->limit = $limit;
-		$pro_enquiry  = SendEnquiry::model()->findAll($criteria);
-		$criteria->compare('is_read','0');
-		$pro_enquiry_unread  = SendEnquiry::model()->count($criteria);
-        
-        $criteria =  ContactUs::model()->findEnquiry(array(),false,1);
+        $pro_enquiry = SendEnquiry::model()->findAll($criteria);
+        $criteria->compare('is_read', '0');
+        $pro_enquiry_unread = SendEnquiry::model()->count($criteria);
+
+        $criteria = ContactUs::model()->findEnquiry(array(), false, 1);
         $criteria->limit = $limit;
-		$general_enquiry  = ContactUs::model()->findAll($criteria);
-		$criteria->compare('is_read','0');
-		$general_enquiry_unread  = ContactUs::model()->count($criteria);
+        $general_enquiry = ContactUs::model()->findAll($criteria);
+        $criteria->compare('is_read', '0');
+        $general_enquiry_unread = ContactUs::model()->count($criteria);
 
-        
-
-        $modelCriteraBlog=Article::model()->findPosts([],$count_future=false,1,$calculate=false);
+        $modelCriteraBlog = Article::model()->findPosts([], $count_future = false, 1, $calculate = false);
         $adsCount = Article::model()->count($modelCriteraBlog);
         $pages = new CPagination($adsCount);
         $pages->pageSize = $limit;
         $pages->applyLimit($modelCriteraBlog);
 
-        
-        $modelCriteraBlog->limit = $limit ;
+        $modelCriteraBlog->limit = $limit;
         $articleCategoryFromSlug = Article::model()->findAll($modelCriteraBlog);
 
-        $criteria =  ContactAgent::model()->findEnquiry(array(),false,1);
+        $criteria = ContactAgent::model()->findEnquiry(array(), false, 1);
         $criteria->limit = $limit;
-		$agent_enquiry  = ContactAgent::model()->findAll($criteria);
-		$criteria->compare('is_read','0');
-		$agent_enquiry_unread  = ContactUs::model()->count($criteria);
-        
+        $agent_enquiry = ContactAgent::model()->findAll($criteria);
+        $criteria->compare('is_read', '0');
+        $agent_enquiry_unread = ContactUs::model()->count($criteria);
 
-        $modelContactServices = new ContactPopup();       
+        $modelContactServices = new ContactPopup();
         $modelContactServices->unsetAttributes();
-        $this->render('index', compact('checkVersionUpdate', 'modelContactServices','articleCategoryFromSlug','ads', 'adsBusiness','enquiries', 'preLeasedProperties', 'newProjects','adsRent','usr','limit','pro_enquiry','general_enquiry','pro_enquiry_unread','general_enquiry_unread','agent_enquiry','agent_enquiry_unread'));
+
+        $this->render('index', compact(
+            'modelContactServices',
+            'articleCategoryFromSlug',
+            'ads',
+            'adsBusiness',
+            'enquiries',
+            'preLeasedProperties',
+            'newProjects',
+            'adsRent',
+            'usr',
+            'limit',
+            'pro_enquiry',
+            'general_enquiry',
+            'pro_enquiry_unread',
+            'general_enquiry_unread',
+            'agent_enquiry',
+            'agent_enquiry_unread'
+        ));
     }
+
+
        public function actionSitemap()
     {
 		  
@@ -337,48 +345,80 @@ class DashboardController extends Controller
         $this->render('my_statistics', compact('ads','usr','catgeoryList','customers_created','from_date','to_date','sales_team','user_id','active_orders_created','active_packages','expired_packages','categoryPackages'));
     }
     
-    public function actionLatestAds(){
-     
-			$model = new PlaceAnAd('serach');
-			$model->unsetAttributes();
-			$model->isTrash  =  '0';
-            $this->renderPartial('latest_files',compact('model'));
-    }
-    public function actionMonthLatestAds(){
+    public function actionLatestAds()
+    {
         $model = new PlaceAnAd('search');
-        $model->unsetAttributes(); // clear any default values
-        $model->isTrash  =  '0';
+        $model->unsetAttributes();
+        $model->isTrash = '0';
+    
+        // Apply user_id restriction
+        if (Yii::app()->user->model->user_id != 2) {
+            $criteria = new CDbCriteria();
+            $criteria->condition = 'user_id = :userId';
+            $criteria->params = [':userId' => Yii::app()->user->model->user_id];
+            $model->dbCriteria->mergeWith($criteria);
+        }
+    
+        $this->renderPartial('latest_files', compact('model'));
+    }
+    
+    public function actionMonthLatestAds()
+    {
+        $model = new PlaceAnAd('search');
+        $model->unsetAttributes();
+        $model->isTrash = '0';
     
         $criteria = new CDbCriteria();
         $criteria->condition = 'DATE_FORMAT(t.date_added, "%Y-%m") = DATE_FORMAT(NOW(), "%Y-%m")';
-        $model->dbCriteria->mergeWith($criteria);
     
+        // Apply user_id restriction
+        if (Yii::app()->user->model->user_id != 2) {
+            $criteria->addCondition('user_id = :userId');
+            $criteria->params[':userId'] = Yii::app()->user->model->user_id;
+        }
+    
+        $model->dbCriteria->mergeWith($criteria);
         $this->renderPartial('latest_files', compact('model'));
     }
     
-    public function actionWeekLatestAds(){
+    public function actionWeekLatestAds()
+    {
         $model = new PlaceAnAd('search');
-        $model->unsetAttributes(); // clear any default values
-        $model->isTrash  =  '0';
+        $model->unsetAttributes();
+        $model->isTrash = '0';
     
         $criteria = new CDbCriteria();
         $criteria->condition = 'YEARWEEK(t.date_added, 1) = YEARWEEK(NOW(), 1)';
-        $model->dbCriteria->mergeWith($criteria);
     
+        // Apply user_id restriction
+        if (Yii::app()->user->model->user_id != 2) {
+            $criteria->addCondition('user_id = :userId');
+            $criteria->params[':userId'] = Yii::app()->user->model->user_id;
+        }
+    
+        $model->dbCriteria->mergeWith($criteria);
         $this->renderPartial('latest_files', compact('model'));
     }
     
-    public function actionTodayLatestAds(){
+    public function actionTodayLatestAds()
+    {
         $model = new PlaceAnAd('search');
-        $model->unsetAttributes(); // clear any default values
-        $model->isTrash  =  '0';
+        $model->unsetAttributes();
+        $model->isTrash = '0';
     
         $criteria = new CDbCriteria();
         $criteria->condition = 'DATE(t.date_added) = CURDATE()';
-        $model->dbCriteria->mergeWith($criteria);
     
+        // Apply user_id restriction
+        if (Yii::app()->user->model->user_id != 2) {
+            $criteria->addCondition('user_id = :userId');
+            $criteria->params[':userId'] = Yii::app()->user->model->user_id;
+        }
+    
+        $model->dbCriteria->mergeWith($criteria);
         $this->renderPartial('latest_files', compact('model'));
     }
+    
     
      public function actionLatestCustomer(){
      

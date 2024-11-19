@@ -297,6 +297,12 @@ class LeftSideNavigationWidget extends CWidget
                     ),
                 )
             );
+            $menuItems['dashboard'] = array(
+                'name'      => Yii::t('app', 'Dashboard'),
+                'icon'      => 'flaticon-025-dashboard',
+                'active'    => array('dashboard'),
+                'route'     => array('dashboard/index'),
+            );
             $menuItems['image_library'] = array(
                 'name'      => Yii::t('app', 'Image Library'),
                 'icon'      => 'flaticon-043-menu',
@@ -333,7 +339,12 @@ class LeftSideNavigationWidget extends CWidget
                     ),
                 )
             );
-
+            $menuItems['dashboard'] = array(
+                'name'      => Yii::t('app', 'Dashboard'),
+                'icon'      => 'flaticon-025-dashboard',
+                'active'    => array('dashboard'),
+                'route'     => array('dashboard/index'),
+            );
             $menuItems['image_library'] = array(
                 'name'      => Yii::t('app', 'Image Library'),
                 'icon'      => 'flaticon-043-menu',

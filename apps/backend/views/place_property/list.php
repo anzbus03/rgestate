@@ -628,7 +628,6 @@ if ($viewCollection->renderContent) { ?>
                 var csrfToken = '<?php echo Yii::app()->request->csrfToken; ?>';
                 if (action && selectedItems.length) {
                     if (confirm('Are you sure you want to proceed with this action?')) {
-
                         // Perform an AJAX request to the backend
                         $.ajax({
                             url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/bulk_action'); ?>', // Update with your action URL
@@ -640,7 +639,7 @@ if ($viewCollection->renderContent) { ?>
                             },
                             success: function(response) {
                                 // Handle successful response
-                                window.location.reload(); // Reload the page to reflect changes
+                                $('#enquiryTable').DataTable().ajax.reload(); // Reload the page to reflect changes
                             },
                             error: function(xhr) {
                                 // Handle error
@@ -820,8 +819,11 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                             }, 1000); //
                         } else {
                             $('#loadingBar').hide();
-                            $('#uploadStatus').text('All stacks processed successfully.');
-                            $("#uploadModal").modal("toggle");
+                            $('#uploadStatus').html(`All stacks processed successfully.
+                                <strong>New properties: </strong> ${newCount}
+                                <strong>Updated properties: </strong> ${updatedCount}
+                            `);
+                            // $("#uploadModal").modal("toggle");
                             $('#enquiryTable').DataTable().ajax.reload();
                             
                         }
