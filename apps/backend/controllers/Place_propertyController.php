@@ -553,9 +553,21 @@ class Place_propertyController  extends Controller
         $length = $request->getPost('length', 10);
         $criteria->offset = $start;
         $criteria->limit = $length;
-    
+        $loggedInUser = Yii::app()->user->model; // Assuming you have a method to get the logged-in user model
+        
+        if ($loggedInUser->rules == 3) {
+            // Single user ID
+            $criteria->condition = 't.user_id = :userId';
+            $criteria->params = [':userId' => $loggedInUser->user_id];
+        } elseif ($loggedInUser->rules == 2) {
+            // Multiple user IDs
+            $userAgents = explode(',', $loggedInUser->agents);
+            $placeholders = implode(',', array_fill(0, count($userAgents), '?'));
+            $criteria->condition = 't.user_id IN (' . $placeholders . ')';
+            $criteria->params = $userAgents;
+        }
         // Fetch data
-        $totalRecords = PlaceAnAd::model()->count();
+        $totalRecords = PlaceAnAd::model()->count($criteria);
         $filteredRecords = PlaceAnAd::model()->count($criteria);
         $placeAds = PlaceAnAd::model()->findAll($criteria);
     
