@@ -623,7 +623,8 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     // Replace \n with \\n in all cells to maintain spacing during transmission
                     json = json.map(row => 
                         row.map(cell => 
-                            typeof cell === 'string' ? cell.replace(/\n/g, '\\n') : cell
+                            typeof cell === 'string' ? 
+                            cell.replace(/\n/g, '\\n').replace(/"/g, '') : cell
                         )
                     );
 
@@ -691,7 +692,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                             }, 1000); //
                         } else {
                             $('#loadingBar').hide();
-                            $('#uploadStatus').html(`All stacks processed successfully.
+                            $('#uploadStatus').html(`All stacks processed successfully. <br/>
                                 <strong>New properties: </strong> ${newCount}
                                 <strong>Updated properties: </strong> ${updatedCount}
                             `);

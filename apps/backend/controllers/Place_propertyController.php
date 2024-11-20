@@ -519,14 +519,21 @@ class Place_propertyController  extends Controller
         // Capture search value
         $searchValue = $request->getPost('search')['value'];
         if (!empty($searchValue)) {
-            $criteria->addSearchCondition('RefNo', $searchValue, true, 'OR');
-            $criteria->addSearchCondition('ad_title', $searchValue, true, 'OR');
-            // Add more search conditions for other columns as needed
+            // Use addCondition to construct search conditions manually
+            $searchCondition = [
+                "t.RefNo LIKE :searchValue",
+                "t.ad_title LIKE :searchValue",
+                // Add more columns as needed
+            ];
+            // Combine conditions with OR
+            $criteria->addCondition(implode(' OR ', $searchCondition));
+            // Bind the search parameter
+            $criteria->params[':searchValue'] = '%' . $searchValue . '%';
+            // Add more conditions for other columns as needed
         }
-   
+        // Yii::log(CVarDumper::dumpAsString($criteria), 'info', 'search.criteria');
         $startDate = $request->getPost('startDate');
         $endDate = $request->getPost('endDate');
-        $criteria = new CDbCriteria();
         
         if ($startDate && $endDate) {
             $validStartDate = DateTime::createFromFormat('Y-m-d', $startDate) !== false;
@@ -3305,7 +3312,11 @@ class Place_propertyController  extends Controller
         ini_set('memory_limit', '-1');
 
         $rawData = Yii::app()->request->getPost('excelData');
-        $excelData = json_decode(Yii::app()->request->getPost('excelData'),true);
+        $rawData = str_replace(["\r", "\n", "\t"], '', $rawData); // Remove unnecessary whitespace
+        $rawData = stripslashes($rawData); // Remove extra slashes if added
+        $rawData = trim($rawData); // Remove leading/trailing whitespace
+        $rawData = utf8_encode($rawData); // Ensure it's encoded in UTF-8   
+        $excelData = json_decode($rawData,true);
         $newCount = 0;
         $updatedCount = 0;
         $imageInsertData = [];
@@ -3313,21 +3324,21 @@ class Place_propertyController  extends Controller
         
         if (is_array($excelData)) {
             // Extract unique values for batch fetching
-            $refNos = array_unique(array_filter(array_column($excelData, 4), fn($value) => !empty($value)));
+            $refNos = array_unique(array_filter(array_column($excelData, 0), fn($value) => !empty($value)));
             $categoryNames = array_unique(array_filter(array_column($excelData, 8), fn($value) => !empty($value)));
             $categoryTypes = array_unique(array_filter(array_column($excelData, 7), fn($value) => !empty($value)));
             $stateNames = array_unique(array_filter(array_column($excelData, 11), fn($value) => !empty($value)));
             $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 39), fn($value) => !empty($value))));
             
             // Fetch data in bulk
-            $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
+            $ads = PlaceAnAd::model()->findAllByAttributes(['uid' => $refNos]);
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A']);
             $types = Category::model()->findAllByAttributes(['category_name' => $categoryTypes, 'isTrash' => '0', 'status' => 'A']);
             $states = States::model()->findAllByAttributes(['state_name' => $stateNames, 'isTrash' => '0']);
             $users = User::model()->findAllByAttributes(['email' => $userEmails]);
     
             // Map data for quick lookup
-            $adsMap = array_column($ads, null, 'RefNo');
+            $adsMap = array_column($ads, null, 'uid');
             $categoriesMap = array_column($categories, null, 'category_name');
             $typesMap = array_column($types, null, 'category_name');
             $statesMap = array_column($states, null, 'state_name');
@@ -3340,7 +3351,7 @@ class Place_propertyController  extends Controller
             $updateParams = [];
     
             foreach (array_slice($excelData, 1) as $data) {
-                if (empty($data) || empty($data[4])) continue; // Skip if data is empty or refNo is null
+                if (empty($data) || empty($data[1])) continue; // Skip if data is empty or refNo is null
                 
                 if (is_numeric($data[3])) {
                     // Handle Excel numeric date (e.g., 44197 -> 2021-01-01)
@@ -3355,8 +3366,11 @@ class Place_propertyController  extends Controller
                     $dateAdded = null; // Or some fallback value
                 }
                 
-                $existingAd = $adsMap[$data[4]] ?? null;
-    
+                $existingAd = $adsMap[$data[0]] ?? null;
+                if (empty($data[4])) {
+                    $data[4] = 'REF-' . rand(100000, 999999); // Random RefNo
+                    $data[36] = "I"; // Set status to "Inactive"
+                }
                 $record = [
                     'section_id' => ($data[6] == "Sale") ? 1 : 2,
                     'listing_type' => $categoriesMap[$data[7]]->category_id ?? null,
@@ -3444,8 +3458,13 @@ class Place_propertyController  extends Controller
            }
         }else {
             echo "<pre>";
-            print_r();
             print_r(var_dump($excelData));
+            echo "<br/>";
+            print_r(var_dump($rawData));
+            echo "<br/>";
+            print_r($rawData);
+            echo "<br/>";
+            echo json_last_error_msg();
             exit;
         }
     }
