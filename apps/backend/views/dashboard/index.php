@@ -30,7 +30,7 @@ if ($viewCollection->renderContent) {
 <div class="row invoice-card-row" data-source="<?php echo $this->createUrl('dashboard/glance'); ?>">
 
     <div class="col-xl-4 col-xxl-4 col-sm-6">
-        <a href="<?php echo Yii::app()->createUrl('place_property/index', array('PlaceAnAd[status]' => 'A', 'PlaceAnAd[section_id]' => '1')); ?>"
+        <a href="<?php echo Yii::app()->createUrl('place_property/index', array('status' => 'A', 'section_id' => '1')); ?>"
             class="card-link">
             <div class="card bg-warning invoice-card">
                 <div class="card-body d-flex">
@@ -52,7 +52,7 @@ if ($viewCollection->renderContent) {
     </div>
 
     <div class="col-xl-4 col-xxl-4 col-sm-6">
-        <a href="<?php echo Yii::app()->createUrl('place_property/index', array('PlaceAnAd[status]' => 'A', 'PlaceAnAd[section_id]' => '2')); ?>"
+        <a href="<?php echo Yii::app()->createUrl('place_property/index', array('status' => 'A', 'section_id' => '2')); ?>"
             class="card-link">
             <div class="card bg-success invoice-card">
                 <div class="card-body d-flex">
@@ -76,7 +76,7 @@ if ($viewCollection->renderContent) {
     </div>
 
     <div class="col-xl-4 col-xxl-4 col-sm-6">
-        <a href="<?php echo Yii::app()->createUrl('place_property/index', array('PlaceAnAd[status]' => 'A', 'PlaceAnAd[section_id]' => '6')); ?>"
+        <a href="<?php echo Yii::app()->createUrl('place_property/index', array('status' => 'A', 'section_id' => '6')); ?>"
             class="card-link">
             <div class="card bg-info invoice-card">
                 <div class="card-body d-flex">
@@ -100,7 +100,7 @@ if ($viewCollection->renderContent) {
     </div>
 
     <div class="col-xl-4 col-xxl-4 col-sm-6">
-        <a href="<?php echo Yii::app()->createUrl('new_projects/index', array('NewDevelopment[status]' => 'A')); ?>"
+        <a href="<?php echo Yii::app()->createUrl('new_projects/index', array('status' => 'A')); ?>"
             class="card bg-secondary invoice-card text-white">
             <div class="card-body d-flex">
                 <div class="icon me-3">
@@ -118,7 +118,7 @@ if ($viewCollection->renderContent) {
     </div>
 
     <div class="col-xl-4 col-xxl-4 col-sm-6">
-        <a href="<?php echo Yii::app()->createUrl('place_property/index', array('PlaceAnAd[status]' => 'A', 'PlaceAnAd[preleased]' => '1')); ?>"
+        <a href="<?php echo Yii::app()->createUrl('place_property/index', array('status' => 'A', 'preleased' => '1')); ?>"
             style="color: inherit; text-decoration: none;">
             <div class="card bg-secondary invoice-card">
                 <div class="card-body d-flex">

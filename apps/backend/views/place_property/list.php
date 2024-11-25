@@ -148,7 +148,7 @@ if ($viewCollection->renderContent) { ?>
                         </div>
                     </div>
 
-                    <!-- <?php $locations = States::model()->AllListingStatesOfCountry(66124); ?> -->
+                    <!-- <?php $locations = States::model()->AllStatesOfCountry(66124); ?> -->
                     <!-- Select for Category -->
                     <div class="col-sm-3 mt-2 hide">
                         <div class="form-group">
@@ -163,12 +163,12 @@ if ($viewCollection->renderContent) { ?>
                         </div>
                     </div>
 
-                    <?php $locations = States::model()->AllListingStatesOfCountry(66124); ?>
+                    <?php $locations = States::model()->AllStatesOfCountry(66124); ?>
                     <!-- Select for Location -->
                     <div class="col-sm-3 mt-2">
                         <div class="form-group">
-                            <label for="locationSelect">Location</label>
-                            <select class="form-control" name="location" id="locationSelect">
+                            <label for="locationSelect2">Location</label>
+                            <select class="form-control" name="location" id="locationSelect2">
                                 <option value="">Select Location</option>
                                 <?php foreach ($locations as $location): ?>
                                 <option value="<?php echo $location->state_id; ?>">
@@ -178,12 +178,14 @@ if ($viewCollection->renderContent) { ?>
                         </div>
                     </div>
                     <div class="col-sm-3 text-right mt-4">
-                        <!-- Submit button for form submission -->
-                        <button type="submit" class="btn btn-primary btn-sm" style="margin-top: 20px;">Apply
-                            Filters</button>
-                        <button type="submit" class="btn btn-secondary btn-sm" style="margin-top: 20px;"
-                            onclick="resetFilters()">Reset</button>
+                        <button type="button" class="btn btn-primary btn-sm" style="margin-top: 20px;" onclick="$('#enquiryTable').DataTable().ajax.reload();">
+                            Apply Filters
+                        </button>
+                        <button type="button" id="resetButton" class="btn btn-secondary btn-sm" style="margin-top: 20px;">
+                            Reset
+                        </button>
                     </div>
+
                 </div>
 
             </form>
@@ -236,7 +238,7 @@ if ($viewCollection->renderContent) { ?>
                                 <th>Price</th>
                                 <th>Category</th>
                                 <th>Status</th>
-                                <th>Priority</th>
+                                <th>State</th>
                                 <th>Refresh Date</th>
                                 <th>Options</th>
                             </tr>
@@ -247,8 +249,8 @@ if ($viewCollection->renderContent) { ?>
             <!-- priority update button  -->
             <div class="box-footer">
                 <div class="pull-right">
-                    <button type="submit" class="btn btn-primary btn-submit"
-                        data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', 'Update Priority'); ?></button>
+                    <!-- <button type="submit" class="btn btn-primary btn-submit"
+                        data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', 'Update Priority'); ?></button> -->
                 </div>
             </div>
 
@@ -712,51 +714,61 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             sendBatch(0); // Start processing from the first batch
         }
     });
-    </script>
-
-
-    <script>
     function reloadTable() {
         $('#enquiryTable').DataTable().ajax.reload();
     }
 
-    // function submitFilters() {
-    //     var selectedFilters = {};
-
-    //     // Collect selected checkbox values
-    //     if ($('#featured').is(':checked')) {
-    //         selectedFilters['PlaceAnAd[featured]'] = $('#featured').val();
-    //     }
-    //     if ($('#verified').is(':checked')) {
-    //         selectedFilters['PlaceAnAd[verified]'] = $('#verified').val();
-    //     }
-    //     if ($('#preleased').is(':checked')) {
-    //         selectedFilters['PlaceAnAd[preleased]'] = $('#preleased').val();
-    //     }
-    //     if ($('#f_properties').is(':checked')) {
-    //         selectedFilters['PlaceAnAd[f_properties]'] = $('#f_properties').val();
-    //     }
-    //     var submitedByValue = $('#submited_by').val();
-    //     if (submitedByValue) {
-    //         selectedFilters['PlaceAnAd[submited_by]'] = submitedByValue;
-    //     }
-    //     // Convert the selected filters to query string parameters
-    //     var queryString = $.param(selectedFilters, true);
-
-    //     // Reload the page with the query parameters
-    //     window.location.href = window.location.pathname + '?' + queryString;
-    // }
-
-
-    // Attach the function to the checkboxes' change event
-    // $('#featured, #verified, #preleased, #f_properties, #submited_by').change(submitFilters);
     $(document).ready(function() {
+        function getPathParameter(key) {
+            const path = window.location.pathname.split('/');
+            const index = path.indexOf(key);
+            return index !== -1 && path[index + 1] ? path[index + 1] : ''; // Return the value if found
+        }
+
+
+        const status = getPathParameter('status');
+        const sectionId = getPathParameter('section_id');
+        const preleased = getPathParameter('preleased');
+
+        $(document).on('click', '.refresh-date', function(e) {
+            e.preventDefault(); // Prevent the default link behavior
+
+            const adId = $(this).data('id'); // Get the ad ID from data attribute
+            const url = $(this).attr('href'); // Get the URL from the href attribute
+
+            // Show a loading state or spinner if needed
+            const $dateDisplay = $(`#date-display-${adId}`);
+            $dateDisplay.text('Updating...');
+
+            // Perform the AJAX request
+            $.ajax({
+                url: url,
+                type: 'POST', // or 'GET' if your backend expects GET
+                dataType: 'json', // Expect a JSON response
+                success: function(response) {
+                    if (response.success) {
+                        // Update the date display with the new date
+                        $dateDisplay.text(response.newDate);
+                    } else {
+                        // Handle error, e.g., show a message
+                        $dateDisplay.text('Error');
+                        alert(response.message || 'Failed to refresh date.');
+                    }
+                },
+                error: function() {
+                    // Handle server or network error
+                    $dateDisplay.text('Error');
+                    alert('An error occurred while refreshing the date.');
+                }
+            });
+        });
+
         // Initialize the date range picker
         $('#dateRange').daterangepicker({
             locale: {
                 format: 'DD-MMM-YYYY'
             },
-            startDate: moment('2020-01-01'), // Set default start date for "All Time"
+            startDate: moment('1900-01-01'), // Set default start date for "All Time"
             endDate: moment(),
             ranges: {
                 'Today': [moment().startOf('day'), moment().endOf('day')],
@@ -844,8 +856,17 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 "type": "POST",
                 "data": function(d) {
                     var dateRangePicker = $('#dateRange').data('daterangepicker');
-                    d.startDate = dateRangePicker.startDate ? dateRangePicker.startDate.format('YYYY-MM-DD') : '';
-                    d.endDate = dateRangePicker.endDate ? dateRangePicker.endDate.format('YYYY-MM-DD') : '';
+                    d.startDate         = dateRangePicker.startDate ? dateRangePicker.startDate.format('YYYY-MM-DD') : '';
+                    d.endDate           = dateRangePicker.endDate ? dateRangePicker.endDate.format('YYYY-MM-DD') : '';
+                    d.featured          = $('#featuredSelect').val();
+                    d.verified          = $('#verifiedSelect').val();
+                    d.preleased         = $('#preleasedSelect').val();
+                    d.submited_by       = $('[name="submited_by"]').val();
+                    d.property_category = $('#propertyCategorySelect').val();
+                    d.location          = $('#locationSelect2').val();
+                    d.status            = status;
+                    d.section_id        = sectionId;
+                    d.preleasedR        = preleased;
                 }
             },
             "columns": [
@@ -873,7 +894,16 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
         });
 
+        $('#featuredSelect, #verifiedSelect, #preleasedSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').on('change', function () {
+            table.ajax.reload();
+        });
 
+        // Reset Filters
+        $('#resetButton').on('click', function (e) {
+            e.preventDefault();
+            $('#featuredSelect, #verifiedSelect, #preleasedSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').val('');
+            table.ajax.reload();
+        });
         // Handle select all checkbox
         $('#selectAll').on('click', function() {
             var rows = $('#enquiryTable').DataTable().rows({

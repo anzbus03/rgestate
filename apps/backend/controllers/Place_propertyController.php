@@ -407,109 +407,79 @@ class Place_propertyController  extends Controller
 
     public function actionIndex()
     {
-        echo '<script>function iniFrame() {   if(window.self !== window.top) {   parent.closeBackendIFrame();  }  }  iniFrame();  </script> ';
+        echo '<script>function iniFrame() { if(window.self !== window.top) { parent.closeBackendIFrame(); } } iniFrame(); </script>';
+    
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
-        $model = new PlaceAnAd('serach');
-
+        $model = new PlaceAnAd('search');
+    
         if ($request->isPostRequest) {
             $sortOrderAll = $_POST['priority'];
-            if (count($sortOrderAll) > 0) {
+            if (!empty($sortOrderAll)) {
                 foreach ($sortOrderAll as $menuId => $sortOrder) {
                     $model->isNewRecord = true;
-
-                    $model->updateByPk($menuId, array('priority' => $sortOrder));
+                    $model->updateByPk($menuId, ['priority' => $sortOrder]);
                 }
             }
             $notify->addSuccess(Yii::t('app', 'Priority successfully updated!'));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
-
+    
         $model->unsetAttributes();
         $model->hide_new_development = '1';
-
-        $model->attributes = (array)$request->getQuery($model->modelName, array());
+        $model->attributes = (array)$request->getQuery($model->modelName, []);
         $model->isTrash = '0';
-        // Create a new CDbCriteria object
+    
         $criteria = new CDbCriteria();
-
-        // Add condition for 'featured'
-        if (isset($_GET['featured']) && $_GET['featured'] !== '') {
-            $criteria->compare('t.featured', $_GET['featured']);
-        }
-
-        // Add condition for 'verified'
-        if (isset($_GET['verified']) && $_GET['verified'] !== '') {
-            $criteria->compare('t.verified', $_GET['verified']);
-        }
-
-        // Add condition for 'preleased'
-        if (isset($_GET['preleased']) && $_GET['preleased'] !== '') {
-            $criteria->compare('t.preleased', $_GET['preleased']);
-        }
+    
+      
+    
         if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
             $criteria->addCondition("DATE(date_added) >= :startDate AND DATE(date_added) <= :endDate");
             $criteria->params[':startDate'] = $_GET['startDate'];
             $criteria->params[':endDate'] = $_GET['endDate'];
         }
-        // Add condition for 'submitted_properties'
-        if (isset($_GET['submited_by']) && $_GET['submited_by'] !== '') {
-            $criteria->compare('t.submited_by', $_GET['submited_by']);
-        }
-
-        // Add conditions for any other filters (e.g., category, location)
-        if (isset($_GET['property_category']) && $_GET['property_category'] !== '') {
-            $criteria->compare('t.category_id', $_GET['property_category']);
-        }
-
-        if (isset($_GET['location']) && $_GET['location'] !== '') {
-            $criteria->compare('t.state', $_GET['location']);
-        }
-        if ($request->isAjaxRequest)
-        {
-            $pageSize = $_GET['pageSize'];
-            $page = $_GET['page'];
-        }
-
-        $criteria->limit = 500;
-        $criteria->order = ("t.id DESC");
-        $loggedInUser = Yii::app()->user->model; // Assuming you have a method to get the logged-in user model
+    
+        // Add conditions for logged-in user roles
+        $loggedInUser = Yii::app()->user->model;
         if ($loggedInUser->is_agent == 1) {
-            // Filter properties where user_id matches the logged-in user's ID
-            $criteria->compare('t.user_id', $loggedInUser->user_id);
-        } else if ($loggedInUser->rules == 2) {
+            $criteria->addCondition('t.user_id = :userId');
+            $criteria->params[':userId'] = $loggedInUser->user_id;
+        } elseif ($loggedInUser->rules == 2) {
             $userAgents = explode(",", $loggedInUser->agents);
             $criteria->addInCondition('t.user_id', $userAgents);
         }
-        // Fetch the filtered data directly with criteria
+    
+        $criteria->limit = 500;
+        $criteria->order = "t.id DESC";
+    
         $filteredData = PlaceAnAd::model()->findAll($criteria);
-
+    
         define('NO_BUSINESS', '1');
-        // $model->listing_type = 'C';
-        $this->setData(array(
-            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
-            'pageHeading'       => Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
-            'pageBreadcrumbs'   => array(
+    
+        $this->setData([
+            'pageMetaTitle' => $this->data->pageMetaTitle . ' | ' . Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
+            'pageHeading' => Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
+            'pageBreadcrumbs' => [
                 Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title}") => $this->createUrl(Yii::app()->controller->id . '/index'),
-                Yii::t('app', 'View all')
-            )
-        ));
-
-        // Fetch all SoldProperty records that match the list of property IDs
+                Yii::t('app', 'View all'),
+            ],
+        ]);
+    
         $soldProperties = SoldProperty::model()->findAll();
-
-        // Extract property_id from each SoldProperty record
-        $soldPropertyIds = array_map(function ($soldProperty) {
-            return $soldProperty->property_id;
-        }, $soldProperties);
-
-        $criteria = new CDbCriteria;
-        $criteria->compare('tag_type', 'L');
-        $tagModel = Tag::model()->findAll($criteria);
+        $soldPropertyIds = array_map(fn($soldProperty) => $soldProperty->property_id, $soldProperties);
+    
+        $tagCriteria = new CDbCriteria;
+        $tagCriteria->addCondition('tag_type = :tagType');
+        $tagCriteria->params[':tagType'] = 'L';
+        $tagModel = Tag::model()->findAll($tagCriteria);
+    
         $tags = CHtml::listData($tagModel, 'tag_id', 'tag_name');
-        $tags_short =  $model->place_ad_tag_code();
+        $tags_short = $model->place_ad_tag_code();
+    
         $this->render('list', compact('model', 'filteredData', 'soldPropertyIds', 'tags', 'tags_short'));
     }
+    
 
     public function actionServerProcessing()
     {
@@ -547,6 +517,53 @@ class Place_propertyController  extends Controller
             }
         }
         
+
+        // Add conditions dynamically
+        if (!empty($_POST['featured'])) {
+            $criteria->addCondition('featured = :featured');
+            $criteria->params[':featured'] = $_POST['featured'];
+        }
+        if (!empty($_POST['status'])) {
+            $criteria->addCondition('status = :status');
+            $criteria->params[':status'] = $_POST['status'];
+            $criteria->addCondition('isTrash LIKE :isTrash');
+            $criteria->params[':isTrash'] = 0;
+        }
+
+        if (!empty($_POST['section_id'])) {
+            $criteria->addCondition('section_id = :section_id');
+            $criteria->params[':section_id'] = $_POST['section_id'];
+        }
+
+        if (!empty($_POST['preleasedR'])) {
+            $criteria->addCondition('property_status = :preleasedR');
+            $criteria->params[':preleasedR'] = $_POST['preleasedR'];
+        }
+    
+        if (!empty($_POST['verified'])) {
+            $criteria->addCondition('verified = :verified');
+            $criteria->params[':verified'] = $_POST['verified'];
+        }
+    
+        if (!empty($_POST['preleased'])) {
+            $criteria->addCondition('property_status = :lease_status');
+            $criteria->params[':lease_status'] = $_POST['lease_status'];
+        }
+    
+        if (!empty($_POST['submited_by'])) {
+            $criteria->addCondition('submited_by = :submited_by');
+            $criteria->params[':submited_by'] = $_POST['submited_by'];
+        }
+    
+        if (!empty($_POST['property_category'])) {
+            $criteria->addCondition('category_id = :category_id');
+            $criteria->params[':category_id'] = $_POST['property_category'];
+        }
+    
+        if (!empty($_POST['location'])) {
+            $criteria->addCondition('state = :state');
+            $criteria->params[':state'] = $_POST['location'];
+        }
         // User-specific conditions
         $loggedInUser = Yii::app()->user->model; // Assuming you have a method to get the logged-in user model
         
@@ -589,6 +606,7 @@ class Place_propertyController  extends Controller
         // Prepare data in a format for DataTables
         $data = [];
         foreach ($placeAds as $ad) {
+            $stateName = States::model()->findByPk($ad->state);
             $data[] = [
                 'id' => '<input type="checkbox" class="bulk-item" value="'.$ad->id.'">',
                 'RefNo' => CHtml::encode($ad->ReferenceNumberTitleP),
@@ -597,16 +615,17 @@ class Place_propertyController  extends Controller
                 'price' => CHtml::encode($ad->price),
                 'category' => $ad->getCategoryName($ad->category_id),
                 'status' => $ad->statusLink,
-                'priority' => CHtml::textField("priority[$ad->id]", $ad->priority, ['style' => 'width:50px; text-align:center;', 'class' => 'form-control']),
-                'date_added' => '<span class="date-display" style="margin-right: 3px;">'.
-                                        CHtml::encode(date('d-M-Y', strtotime($ad->date_added))).
-                                    '</span>
+                'priority' => $stateName ? $stateName->state_name : '',
+                'date_added' => '<span class="date-display" style="margin-right: 3px;" id="date-display-' . $ad->id . '">' .
+                                    CHtml::encode(date('d-M-Y', strtotime($ad->date_added))) .
+                                '</span>
+                                <a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/refresh_date', array('id' => $ad->id)) . '" 
+                                class="refresh-date" 
+                                data-id="' . $ad->id . '" 
+                                style="text-decoration: none; color: blue; cursor: pointer;">
+                                    <i class="fa fa-refresh"></i>
+                                </a>',
 
-                                    <a href="'. Yii::app()->createUrl(Yii::app()->controller->id . '/refresh_date', array('id' => $ad->id)) . '" class="refresh-date" data-id="'. $ad->id . '"
-                                        data-ldate="'. CHtml::encode($ad->Ldate) . '"
-                                        style="text-decoration: none; color: blue; cursor: pointer;">
-                                        <i class="fa fa-refresh"></i>
-                                    </a>',
                 'options' =>
                     (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update') ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/update', ['id' => $ad->id]) . '" title="' . Yii::t('app', 'Update') . '" class="edit-icon"><i class="fa fa-pencil"></i></a>&nbsp;' : '') .
 
@@ -629,7 +648,19 @@ class Place_propertyController  extends Controller
                     ($isSold ? '<a href="#" class="sold-property"><i class="fas fa-check" title="This property is already sold"></i></a>' : ($ad->status === "A" ? '<a href="javascript:void(0);" title="' . Yii::t('app', 'Sold property') . '" onclick="openUp2(' . $ad->id . ')"><i class="far fa-handshake"></i></a>&nbsp;' : ''))
             ];
         }
-    
+        // $command = PlaceAnAd::model()->getCommandBuilder()->createFindCommand(PlaceAnAd::model()->tableName(), $criteria);
+        // $sql = $command->getText();
+        // $params = $criteria->params;
+
+        // // Log to the Yii application log
+        // print_r("SQL Query: " . $sql);
+        // print_r("Parameters: " . CVarDumper::dumpAsString($params));
+        // exit;
+        // Alternatively, write to a custom log file
+        $logFile = Yii::app()->basePath . '/runtime/serverProcessing.log';
+        file_put_contents($logFile, "SQL Query: " . $sql . PHP_EOL, FILE_APPEND);
+        file_put_contents($logFile, "Parameters: " . print_r($params, true) . PHP_EOL, FILE_APPEND);
+
         // Return JSON response
         echo CJSON::encode([
             'draw' => intval($request->getPost('draw')),
@@ -665,20 +696,39 @@ class Place_propertyController  extends Controller
             // }
             $criteria->addInCondition('section_id', [1, 2]);
             // Retrieve data using CActiveRecord's findAll method
-            if (Yii::app()->user->model->user_id == 2){
+            // if (Yii::app()->user->model->user_id == 2){
             
-                $data = PlaceAnAd::model()->findAll($criteria);
+            //     $data = PlaceAnAd::model()->findAll($criteria);
                 
-            }else {
+            // }else {
                   
-                $criteria->condition = 'user_id = :userId'; // Use a placeholder for security
-                $criteria->params = [':userId' => Yii::app()->user->model->user_id]; // Bind the parameter
+            //     $criteria->condition = 'user_id = :userId'; // Use a placeholder for security
+            //     $criteria->params = [':userId' => Yii::app()->user->model->user_id]; // Bind the parameter
 
-                // Execute the query
-                $data = PlaceAnAd::model()->findAll($criteria);
+            //     // Execute the query
+            //     $data = PlaceAnAd::model()->findAll($criteria);
+            // }
+            $loggedInUser = Yii::app()->user->model;
+            if ($loggedInUser->rules == 3) {
+                // Single user ID
+                $criteria->addCondition('t.user_id = :userId');
+                $criteria->params[':userId'] = $loggedInUser->user_id;
+            } else if ($loggedInUser->rules == 2) {
+                // Multiple user IDs
+                $userAgents = explode(',', $loggedInUser->agents);
+    
+                // Create placeholders for named parameters
+                $placeholders = [];
+                foreach ($userAgents as $index => $agentId) {
+                    $placeholders[] = ':userId' . $index; // Named placeholders
+                    $criteria->params[':userId' . $index] = $agentId; // Assign parameter values
+                }
+    
+                $criteria->addCondition('t.user_id IN (' . implode(',', $placeholders) . ')');
+    
             }
-            
-           
+            $data = PlaceAnAd::model()->findAll($criteria);
+
             // Prepare data for JSON response
             // Step 1: Pre-fetch related data for all items in `$data`
             $itemIds = array_map(fn($item) => $item->id, $data);
@@ -2432,20 +2482,34 @@ class Place_propertyController  extends Controller
     }
     public function actionRefresh_date($id = null)
     {
-        // if (!Yii::app()->request->isAjaxRequest) {
-            //     return false;
-            // }
-        $user = PlaceAnAd::model()->findByPk((int)$id);
-
-        if (empty($user)) {
-            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+        if (!Yii::app()->request->isAjaxRequest) {
+            throw new CHttpException(400, Yii::t('app', 'Invalid request.'));
         }
-
-        PlaceAnAd::model()->updateByPk($id, array(
-            'date_added' => date('Y-m-d H:i:s'),
-        ));
-        $this->redirect(Yii::app()->request->urlReferrer);
+    
+        $ad = PlaceAnAd::model()->findByPk((int)$id);
+    
+        if (empty($ad)) {
+            echo CJSON::encode(['success' => false, 'message' => 'The requested ad does not exist.']);
+            Yii::app()->end();
+        }
+    
+        // Update the date_added field
+        $ad->date_added = date('Y-m-d H:i:s');
+        if ($ad->save()) {
+            echo CJSON::encode([
+                'success' => true,
+                'newDate' => date('d-M-Y', strtotime($ad->date_added)),
+            ]);
+        } else {
+            echo CJSON::encode([
+                'success' => false,
+                'message' => 'Failed to update the date.',
+            ]);
+        }
+    
+        Yii::app()->end();
     }
+    
 
     public function actionUpload_floor_plan($width = null, $height = null)
     {

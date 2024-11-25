@@ -154,7 +154,7 @@ class BlogArticle extends Article
 	}
 	public function getPermalink($absolute = false)
 	{
-		return Yii::app()->apps->getAppUrl('frontend', $this->slug . '/blog', $absolute);
+		return Yii::app()->apps->getAppUrl('frontend', 'blog/' . $this->slug, $absolute);
 	}
 	public function countryOption()
 	{

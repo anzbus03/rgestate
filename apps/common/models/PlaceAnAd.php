@@ -960,6 +960,9 @@ class PlaceAnAd extends ActiveRecord
 			$criteria->addCondition('t.featured = :featured');
 			$criteria->params[':featured'] = $this->featured;
 		}
+		if ($this->verified) {
+			$criteria->compare('t.verified', $this->verified);
+		}
 		$criteria->compare('id', $this->id);
 		if (!empty($this->reference_number)) {
 			$criteria->condition .=  ' and t.id like :reference_number or t.RefNo like :reference_number ';

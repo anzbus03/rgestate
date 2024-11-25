@@ -365,10 +365,10 @@ class Blog_articlesController extends Controller
     //         $this->redirect($request->getPost('returnUrl', array('blog_articles/index')));
     //     }
     // }
-    public function actionDelete($id)
+    public function actionDelete()
     {
         $request = Yii::app()->request;
-
+        $id = Yii::app()->request->getPost('id');
         if (!$request->isPostRequest) {
             throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
         }

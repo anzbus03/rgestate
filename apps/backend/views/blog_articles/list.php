@@ -90,7 +90,7 @@ if ($viewCollection->renderContent) { ?>
                             <td><?php echo $data->dateAdded; ?></td>
                             <td><?php echo $data->lastUpdated; ?></td>
                             <td>
-                                <a href="<?php echo $data->permalink; ?>" title="<?php echo Yii::t('app', 'View'); ?>"
+                                <a href="<?php echo $data->getPermalink(); ?>" title="<?php echo Yii::t('app', 'View'); ?>"
                                     target="_blank" class="btn btn-xs btn-info">
                                     <span class="fa fa-eye"></span>
                                 </a>
@@ -142,26 +142,27 @@ $(document).ready(function() {
     // Handle delete action using AJAX
     $('.delete-article').on('click', function(e) {
         e.preventDefault();
+        if (confirm("Are you sure you want to delete this blog article?")){
 
-        var articleId = $(this).data('id');
-        var deleteUrl = '<?php echo Yii::app()->createUrl("blog_articles/delete"); ?>';
-
-        $.ajax({
-            type: 'POST',
-            
-            url: deleteUrl,
-            data: {
-                id: articleId,
-                YII_CSRF_TOKEN: csrfToken // Send CSRF token along with the request
-            },
-            success: function(response) {
-                // alert('Article deleted successfully');
-                location.reload(); // Optionally, refresh the page
-            },
-            error: function(xhr, status, error) {
-                // alert('Failed to delete the article');
-            }
-        });
+            var articleId = $(this).data('id');
+            var deleteUrl = '<?php echo Yii::app()->createUrl("blog_articles/delete"); ?>';
+    
+            $.ajax({
+                type: 'POST',
+                url: deleteUrl,
+                data: {
+                    id: articleId,
+                    csrf_token: csrfToken // Send CSRF token along with the request
+                },
+                success: function(response) {
+                    // alert('Article deleted successfully');
+                    location.reload(); // Optionally, refresh the page
+                },
+                error: function(xhr, status, error) {
+                    // alert('Failed to delete the article');
+                }
+            });
+        }
 
     });
 });
