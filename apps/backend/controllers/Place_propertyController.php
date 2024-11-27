@@ -517,7 +517,9 @@ class Place_propertyController  extends Controller
             }
         }
         
-
+        $criteria->addCondition("t.section_id = 1 OR t.section_id = 2");
+        $criteria->params[':startDate'] = $startDate;
+        $criteria->params[':endDate'] = $endDate;
         // Add conditions dynamically
         if (!empty($_POST['featured'])) {
             $criteria->addCondition('featured = :featured');
@@ -607,6 +609,7 @@ class Place_propertyController  extends Controller
         $data = [];
         foreach ($placeAds as $ad) {
             $stateName = States::model()->findByPk($ad->state);
+            $PreviewURL = $ad->PreviewUrlTrash;
             $data[] = [
                 'id' => '<input type="checkbox" class="bulk-item" value="'.$ad->id.'">',
                 'RefNo' => CHtml::encode($ad->ReferenceNumberTitleP),

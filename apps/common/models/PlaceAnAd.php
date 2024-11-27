@@ -4573,7 +4573,7 @@ class PlaceAnAd extends ActiveRecord
 	public function getPreviewUrlTrash()
 	{
 		if (Yii::app()->isAppName('backend')) {
-			if ($this->section_id == self::NEW_ID) {
+			if ($this->section_id == 3) {
 				return Yii::app()->apps->getAppUrl('frontend', 'project/' . $this->slug . '?showTrash=1&admin=1', true);
 			}
 			return  Yii::app()->apps->getAppUrl('frontend', 'property/' . $this->slug . '?showTrash=1&admin=1', true);
