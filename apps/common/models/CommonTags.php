@@ -83,22 +83,22 @@ class CommonTags extends ActiveRecord
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria=new CDbCriteria;
-$criteria->select = 't.*,td.message as translation';
+        $criteria->select = 't.*,td.message as translation';
         $criteria->compare('id',$this->id);
         $criteria->compare('conversion_tag',$this->conversion_tag,true);
         $criteria->join  = 'LEFT JOIN {{translate_relation}} tr ON t.id = tr.tag_id  ';
         $criteria->join  .= ' LEFT JOIN {{translation_data}} td ON tr.translate_id  = td.translation_id and td.lang ="ar" ';
-$criteria->order='id desc';
-if(!empty($return)){
-	return $criteria;
-}
-         return new CActiveDataProvider(get_class($this), array(
+        $criteria->order='id desc';
+        if(!empty($return)){
+            return $criteria;
+        }
+        return new CActiveDataProvider(get_class($this), array(
             'criteria'      => $criteria,
             'pagination'    => array(
                 'pageSize'  => $this->paginationOptions->getPageSize(),
                 'pageVar'   => 'page',
             ),
-       
+
         ));
     }
 

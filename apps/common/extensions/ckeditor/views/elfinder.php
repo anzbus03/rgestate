@@ -13,7 +13,7 @@
 
         <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $assetsUrl;?>/elfinder/css/elfinder.min.css">
         <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $assetsUrl;?>/elfinder/css/theme.css">
-
+    
 		<!-- Mono Theme -->
 		<?php if (!empty($theme)) { ?>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $theme;?>">

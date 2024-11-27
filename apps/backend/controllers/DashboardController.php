@@ -160,7 +160,7 @@ class DashboardController extends Controller
         $criteriaPreLeased = new CDbCriteria();
         $criteriaPreLeased->compare('t.isTrash', '0');
         $criteriaPreLeased->compare('t.status', 'A');
-        $criteriaPreLeased->compare('t.property_status', '1');
+        $criteriaPreLeased->compare('t.property_status', 1);
 
         if ($loggedInUser->rules == 3) { // Restrict data for non-admin
             $criteriaPreLeased->addCondition('user_id = :userId');

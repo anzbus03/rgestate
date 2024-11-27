@@ -85,9 +85,9 @@ class ListingContents extends ActiveRecord
     }
     public function blanArray(){
         return array(
-        '0' => 'All Language',
-        'A' => 'Arabic Only',
-        'E' => 'English Only',
+            '0' => 'All Language',
+            'A' => 'Arabic Only',
+            'E' => 'English Only',
         );
     }
 
@@ -241,7 +241,8 @@ class ListingContents extends ActiveRecord
     
     public function getPermalink($absolute = false)
     {
-        // return Yii::app()->apps->getAppUrl('frontend', 'areaguides/' . $this->slug, $absolute);
+        $areaSlug = States::model()->findByPk($this->city);
+        return Yii::app()->apps->getAppUrl('frontend', 'area-guides/' . $areaSlug->slug??'dubai-industrial-city', $absolute);
     }
     
     public function getStatusesArray()

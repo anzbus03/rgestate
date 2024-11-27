@@ -173,13 +173,20 @@ class ContentPages extends Article
 	}
 	public function getPermalink($absolute = false)
     {
-        return Yii::app()->apps->getAppUrl('frontend', $this->slug .'/blog', $absolute);
+        $url = $this->slug;
+        if (strpos($this->slug, 'business') !== false) {
+            $url = "business-opportunities";
+        } else if(strpos($this->slug, 'home') !== false){
+            $url = "/";
+        }
+        
+        return Yii::app()->apps->getAppUrl('frontend', $url, $absolute);
     }
     
     public function getTranslateHtml($field,$lan='pl', $disableEditer=1){
 		$fiedId = 'Article_'.$field;
 		$fiedId .= ($this->isNewRecord) ? '_[CREATE]_'.$this->random :'_'.$this->primaryKey;
 		$relation_id = $this->primaryField;
-		return '<div class="pull-right"><a href="javascript:void(0)" data-id="'.$fiedId.'" data-lan="'.$lan.'" data-fieldid="Article_'.$field.'" data-relation_id="'.$this->primaryKey.'" data-relation="'.$relation_id.'" data-disableEditer="'.$disableEditer.'"  onclick="showAjaxModal(this)"><small class="label pull-right bg-blue">'.$lan.'</small></a></div>';
+		return '<div class="pull-right"><a style="color: white !important;" href="javascript:void(0)" data-id="'.$fiedId.'" data-lan="'.$lan.'" data-fieldid="Article_'.$field.'" data-relation_id="'.$this->primaryKey.'" data-relation="'.$relation_id.'" data-disableEditer="'.$disableEditer.'"  onclick="showAjaxModal(this)"><small class="label pull-right bg-blue">'.$lan.'</small></a></div>';
 	} 
 }

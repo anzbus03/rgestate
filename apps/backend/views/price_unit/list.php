@@ -62,7 +62,7 @@ if ($viewCollection->renderContent) { ?>
                             </td>
                             <td>
                                 <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('id' => $data->master_id)); ?>" class="btn btn-xs btn-primary" title="<?php echo Yii::t('app', 'Update'); ?>"><span class="fa fa-pencil"></span></a>
-                                <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->master_id)); ?>" class="btn btn-xs btn-danger" title="<?php echo Yii::t('app', 'Delete'); ?>"><span class="fa fa-trash"></span></a>
+                                <a href="javascript:void(0)" onclick="confirmDelete('<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->master_id)); ?>')" class="btn btn-xs btn-danger" title="<?php echo Yii::t('app', 'Delete'); ?>"><span class="fa fa-trash"></span></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -77,6 +77,13 @@ if ($viewCollection->renderContent) { ?>
     </div>
     </div>
     <script>
+        function confirmDelete(url) {
+            // Show confirmation dialog
+            if (confirm('Are you sure you want to delete?')) {
+                // If confirmed, proceed to the URL for deletion
+                window.location.href = url;
+            }
+        }
         $(document).ready(function() {
             $('#dataTable').DataTable({
                 language: {

@@ -1769,18 +1769,14 @@ class Place_propertyController  extends Controller
         if (empty($model)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         }
-
-        $status =  'I';
-
+ 
         $model->updateByPk($id, array('status' => $status));
 
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
 
-        if (!$request->getQuery('ajax')) {
-            $notify->addSuccess(Yii::t('app', 'Successfully changed status'));
-            $this->redirect($request->getPost('returnUrl', array(Yii::app()->controller->id . '/index')));
-        }
+        $notify->addSuccess(Yii::t('app', 'Successfully changed status'));
+        $this->redirect(Yii::app()->request->urlReferrer);
     }
 
     public function actionSelect_state()

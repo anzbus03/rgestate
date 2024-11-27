@@ -86,17 +86,22 @@ if ($viewCollection->renderContent) { ?>
                                 <td><?php echo CHtml::encode($data->dateAdded); ?></td>
                                 <td>
                                     <?php if (AccessHelper::hasRouteAccess($this->id.'/view')): ?>
-                                        <a href="<?php echo $data->permalink; ?>" target="_blank" title="<?php echo Yii::t('app', 'View'); ?>">
+                                        <a href="<?php echo $data->permalink; ?>" class="btn btn-sm p-1" target="_blank" title="<?php echo Yii::t('app', 'View'); ?>">
                                             <span class="fa fa-eye"></span>
                                         </a>
                                     <?php endif; ?>
                                     <?php if (AccessHelper::hasRouteAccess($this->id.'/update')): ?>
-                                        <a href="<?php echo Yii::app()->createUrl($this->id.'/update', array('id' => $data->areaguides_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
+                                        <a class="btn btn-sm p-1" href="<?php echo Yii::app()->createUrl($this->id.'/update', array('id' => $data->areaguides_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
                                             <span class="fa fa-pencil"></span>
                                         </a>
                                     <?php endif; ?>
                                     <?php if (AccessHelper::hasRouteAccess($this->id.'/delete')): ?>
-                                        <a href="<?php echo Yii::app()->createUrl($this->id.'/delete', array('id' => $data->areaguides_id)); ?>" class="delete" title="<?php echo Yii::t('app', 'Delete'); ?>">
+                                        <a 
+                                            class="btn btn-sm p-1" 
+                                            onclick="confirmDelete('<?php echo Yii::app()->createUrl($this->id.'/delete', array('id' => $data->areaguides_id)); ?>')" 
+                                            href="javascript:void(0)" 
+                                            title="<?php echo Yii::t('app', 'Delete'); ?>"
+                                        >
                                             <span class="fa fa-trash"></span>
                                         </a>
                                     <?php endif; ?>
@@ -109,6 +114,13 @@ if ($viewCollection->renderContent) { ?>
         </div>
     </div>
     <script>
+        function confirmDelete(url) {
+            // Show confirmation dialog
+            if (confirm('Are you sure you want to delete this listing content?')) {
+                // If confirmed, proceed to the URL for deletion
+                window.location.href = url;
+            }
+        }
         $(document).ready(function() {
             $('#areaguide-table').DataTable({
                 language: {

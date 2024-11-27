@@ -75,6 +75,7 @@ class PlaceAnAd extends ActiveRecord
 	public $f_properties;
 	public $startDate;
 	public $endDate;
+	public $agentIds;
 	const FEATURED_CONDITION = " t.isTrash='0' and featured='Y'  and t.status='A'   ";
 	const LATEST_CONDITION   = " t.isTrash='0'  and t.status='A'  ";
 	const FEATURED_ORDER     = " featured='Y' desc,t.id desc ";
@@ -996,6 +997,12 @@ class PlaceAnAd extends ActiveRecord
 		}
 		if (!empty($this->hide_new_development)) {
 			$criteria->compare('t.section_id!', '3');
+		}
+		if ($this->user_id !== null) { // Non-admin restriction
+			$criteria->compare('t.user_id', $this->user_id);
+		}
+		if (!empty($this->agentIds)) { // Agent restriction
+			$criteria->addInCondition('t.user_id', $this->agentIds);
 		}
 		$criteria->compare('t.verified', $this->verified);
 		$criteria->compare('t.status', $this->status);

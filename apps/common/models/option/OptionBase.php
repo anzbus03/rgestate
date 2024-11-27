@@ -93,7 +93,7 @@ class OptionBase extends FormModel
 		 $dataRealtion = 'common_id';/* Translate relation table relation */
 		 $fiedId = $this->modelName.'_'.$field;
          
-		 return '<div class="pull-right"><a href="javascript:void(0)"  style="'.$style.'"   data-id="'.$fiedId.'" data-fieldid="'.$this->modelName.'_'.$field.'" data-disableEditer="'.$disableEditer.'"  data-relation_id="1" data-lan="'.$lan.'" data-relation="'.$dataRealtion.'" onclick="showAjaxModal(this)"><small class="label pull-right bg-blue">'.$lan.'</small></a></div>';
+		 return '<div class="pull-right"><a style="color: white !important;" href="javascript:void(0)"    data-id="'.$fiedId.'" data-fieldid="'.$this->modelName.'_'.$field.'" data-disableEditer="'.$disableEditer.'"  data-relation_id="1" data-lan="'.$lan.'" data-relation="'.$dataRealtion.'" onclick="showAjaxModal(this)"><small class="label pull-right bg-blue">'.$lan.'</small></a></div>';
 	} 
     public function createTransLinkEditor($filed){
 		return $this->getTranslateHtml($filed,'ar',false,'1200px').'<span class="pull-right">&nbsp;</span>' ;

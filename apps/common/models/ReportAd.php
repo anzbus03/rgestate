@@ -65,11 +65,11 @@ class ReportAd extends ActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id' => 'ID',
-            'user_id' => 'Reported By',
-            'name' =>'Your Full Name',
-            'email' =>'Your Email Address',
-            'ad_id' => 'Ad',
+            'id'        => 'ID',
+            'user_id'   => 'Reported By',
+            'name'      => 'Your Full Name',
+            'email'     => 'Your Email Address',
+            'ad_id'     => 'Ad',
             'date_added' => 'Date Added',
             'status' => 'Status',
             'master_id' => 'Report reason',
@@ -160,15 +160,20 @@ class ReportAd extends ActiveRecord
     {
         return parent::model($className);
     }
-        public function getPropertyDetail(){
-		$modelCriteria  = PlaceAnAd::model()->findAds($formData=array(),$count_future=false,$returnCriteria=1,$calculate=false, false);
-		$modelCriteria->condition .= '   and t.id = :thisadid '; 
-		$modelCriteria->params[':thisadid']  = $this->ad_id ; 
-		$Ad =  PlaceAnAd::model()->find($modelCriteria)  ;
-	
-		$html .= CHtml::link($Ad->ad_title,Yii::App()->createUrl('place_property/update',array('id'=>$this->ad_id)),array('target'=>'_blank')); $html .= '<br />';
-		$html .=   $Ad->ReferenceNumberTitle.'  <t></t>'.CHtml::link('<i class="fa fa-user"></i> '.$Ad->first_name. ' '.$Ad->last_name,Yii::App()->createUrl('listingusers/update',array($Ad->user_id)),array('target'=>'_blank'));
-		$html .=  ' <br />'.$Ad->JavascriptPreview;
-		return $html;
-	}
+    public function getPropertyDetail(){
+        $modelCriteria  = new CDbCriteria();
+        $modelCriteria->condition .= 't.id = :thisadid '; 
+        $modelCriteria->params[':thisadid']  = $this->ad_id; 
+        $Ad = PlaceAnAd::model()->find($modelCriteria);
+        $html = CHtml::link($Ad->ad_title, Yii::App()->createUrl('place_property/update', array('id' => $this->ad_id)), array('target' => '_blank', 'class' => "text-dark"));
+        $html .= '<br />';
+        $html .= CHtml::link($Ad->ReferenceNumberTitle, Yii::App()->createUrl('place_property/update', array('id' => $this->ad_id)), array('target' => '_blank', 'class' => "text-primary")) . '  <t></t>' . CHtml::link(
+            $Ad->first_name . ' ' . $Ad->last_name, 
+            Yii::App()->createUrl('listingusers/update', array($Ad->user_id)), 
+            array('target' => '_blank')
+        );
+        $html .= ' <br />';
+        return $html;
+    }
+    
 }

@@ -55,7 +55,7 @@ class Price_unitController  extends Controller
        
         $model->unsetAttributes();
         $model->attributes = (array)$request->getQuery($model->modelName, array());
-        
+        $model->is_trash = "0";
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"), 
             'pageHeading'       => Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
@@ -147,7 +147,7 @@ class Price_unitController  extends Controller
             }
         }
 		else{
-		    $model->listing_countries = CHtml::listData($model->listCountries,'country_id','country_id');
+		    // $model->listing_countries = CHtml::listData($model->listCountries,'country_id','country_id');
 	    } 
 		$apps = Yii::app()->apps;
         $this->setData(array(
@@ -171,7 +171,7 @@ class Price_unitController  extends Controller
         }
         
         
-            $model->updateByPk($id,array('is_trash'=>Yii::app()->params['onTrash']));    
+        $model->updateByPk($id,array('is_trash'=>Yii::app()->params['onTrash']));    
          
 
         $request = Yii::app()->request;

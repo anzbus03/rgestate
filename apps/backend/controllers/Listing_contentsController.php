@@ -33,9 +33,9 @@ class Listing_contentsController extends Controller
      */
     public function filters()
     {
-        $filters = array(
-            'postOnly + delete, slug',
-        );
+        // $filters = array(
+        //     'postOnly + delete, slug',
+        // );
         
         return CMap::mergeArray($filters, parent::filters());
     }
@@ -193,7 +193,7 @@ class Listing_contentsController extends Controller
      * Delete an existing
      */
     public function actionDelete($id)
-    {
+    {   
         $areaguides = ListingContents::model()->findByPk((int)$id);
         
         if (empty($areaguides)) {

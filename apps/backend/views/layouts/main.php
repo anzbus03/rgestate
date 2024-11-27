@@ -10,11 +10,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
-
     <script type="text/javascript" src="<?php echo $assetsUrl;?>/elfinder/js/elfinder.min.js"></script>
-        <?php if ($language) { ?>
+    <?php if ($language) { ?>
         <script type="text/javascript" src="<?php echo $assetsUrl;?>/elfinder/js/i18n/elfinder.<?php echo $language;?>.js"></script>
-        <?php } ?>
+    <?php } ?>
 
     <!-- FAVICONS ICON -->
     <link rel="shortcut icon" type="image/png"
@@ -159,6 +158,8 @@
             <span style="--i:10">.</span>
         </div>
     </div>
+    <input id="csrf_token" type="hidden" value="<?php echo Yii::app()->request->csrfToken; ?>" />
+
     <!--*******************
         Preloader end
     ********************-->

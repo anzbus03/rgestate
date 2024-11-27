@@ -28,7 +28,8 @@ class Language_tagsController extends Controller
          $notify = Yii::app()->notify;
          $model = new CommonTags('serach');
          
-       
+         $assetsUrl      = '/backend/assets/cache/a3dc85f/';
+
         $model->unsetAttributes();
         $model->attributes = (array)$request->getQuery($model->modelName, array());
         $this->setData(array(
@@ -39,7 +40,7 @@ class Language_tagsController extends Controller
                 Yii::t('app', 'View all')
             )
         ));
-        $this->render('list', compact('model'));
+        $this->render('list', compact('model','assetsUrl'));
     }
     
     public function actionCreate()
@@ -167,75 +168,51 @@ class Language_tagsController extends Controller
 		Yii::app()->end();
 		
 	}
-   public function actionExport(){
-		 
-		$criteria = CommonTags::model()->search(1);
-		$total_result = CommonTags::model()->findAll($criteria);
-	  if(empty($total_result)){
-		       throw new CHttpException(404, Yii::t('app', 'No result found to export.'));
-      
-	  }
-	 
-Yii::import('common.extensions.excel.Classes.PHPExcel');
-$objPHPExcel = new PHPExcel();
-
-// Set document properties
-$objPHPExcel->getProperties()->setCreator("Redspider")
-							 ->setLastModifiedBy("Redspider")
-							 ->setTitle("Office 2007 TAGS Data")
-							 ->setSubject("Office 2007 TAGS Data")
-							 ->setDescription("Agents Data.")
-							 ->setKeywords("office 2007 openxml php")
-							 ->setCategory("TAGS Data file");
-
-
-// Add some data
-$objPHPExcel->setActiveSheetIndex(0);
-$objPHPExcel->getActiveSheet()->setCellValue('A1', "ID");
-$objPHPExcel->getActiveSheet()->setCellValue('B1', "TAG");
-$objPHPExcel->getActiveSheet()->setCellValue('C1', "ARABIC");
-//$objPHPExcel->getActiveSheet()->setCellValue('D1', "Fax");
-//$objPHPExcel->getActiveSheet()->setCellValue('E1', "Is Client ?");
-
-// Miscellaneous glyphs, UTF-8
-$i= 2; 
- foreach($total_result as $res){
-	  
-	$objPHPExcel->getActiveSheet()->setCellValue('A' . $i, $res->primaryKey)
-	                              ->setCellValue('B' . $i,  $res->conversion_tag)
-	                               ->setCellValue('C' . $i,  $res->translation);
-	                              $i++;
-	                              /*
-	                              ->setCellValue('C' . $i, "PhoneNo $i")
-	                              ->setCellValue('D' . $i, "FaxNo $i")
-	                              ->setCellValue('E' . $i, true);
-	                              * */
-}
-// Rename worksheet
-$objPHPExcel->getActiveSheet()->setTitle('data');
+    // 
+    public function actionExport(){
+        try{
+            $model = new CommonTags('search');
+            $model->unsetAttributes();
+            $dataProvider = $model->search();
+            $dataProvider->pagination = false;
+        
+            // Prepare data for export
+            $data = $dataProvider->getData();
+        
+            // Set headers to force download
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="ExportedData_' . date('YmdHis') . '.xls"');
+            header('Cache-Control: max-age=0');
+        
+            // Open output stream
+            $output = fopen('php://output', 'w');
+        
+            // Write column headers
+            $header = array('Conversion Tag', 'Translation', 'Verified');
+            fputcsv($output, $header, "\t");
+        
+            // Write data rows
+            foreach ($data as $item) {
+                $row = array(
+                    $item->conversion_tag,
+                    $item->translation,
+                    $item->is_verified,
+                );
+                fputcsv($output, $row, "\t");
+            }
+        
+            // Close output stream
+            fclose($output);
+        
+            Yii::app()->end();
+        }catch (Exception $e){
+            print_r($e->getMessage());
+            exit;
+        }
 
 
-// Set active sheet index to the first sheet, so Excel opens this as the first sheet
-$objPHPExcel->setActiveSheetIndex(0);
-
-
-// Redirect output to a client’s web browser (Excel2007)
-header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="tags-data-'.date('Ymdhis').'.xlsx"');
-header('Cache-Control: max-age=0');
-// If you're serving to IE 9, then the following may be needed
-header('Cache-Control: max-age=1');
-
-// If you're serving to IE over SSL, then the following may be needed
-header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-header ('Pragma: public'); // HTTP/1.0
-
-$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-$objWriter->save('php://output');
-exit;
- 
-	 }
+       
+    
+    }
     
 }

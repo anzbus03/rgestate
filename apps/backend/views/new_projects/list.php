@@ -26,6 +26,18 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
+<style>
+
+.featured-property {
+    color: #FFD700;
+    /* Gold */
+}
+
+.verified-property {
+    color: #28A745;
+    /* Green */
+}
+</style>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title">
@@ -61,7 +73,13 @@ if ($viewCollection->renderContent) { ?>
                                 next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
                                 previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                             }
-                        }
+                        },
+                        columnDefs: [
+                            { 
+                                orderable: false, // Disable ordering
+                                targets: 0       // Target the first column (0-indexed)
+                            }
+                        ]
                     });
 
                     // Handle select all checkbox
@@ -90,12 +108,13 @@ if ($viewCollection->renderContent) { ?>
                     // Initialize the date range picker
                     $('#dateRange').daterangepicker({
                         locale: {
-                            format: 'YYYY-MM-DD'
+                            format: 'DD-MMM-YYYY'
                         },
-                        startDate: moment().subtract(29, 'days'),
+                        startDate: moment('1900-01-01'),
                         endDate: moment(),
                         ranges: {
                             'Today': [moment(), moment()],
+                            'All Time': [moment('2020-01-01'), moment()],
                             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
@@ -123,17 +142,8 @@ if ($viewCollection->renderContent) { ?>
                         });
                     }
                     $('#exportExcel').click(function(e) {
-                        var dateRange = $('#dateRange').data('daterangepicker');
-                        var startDate = dateRange.startDate.format('YYYY-MM-DD');
-                        var endDate = dateRange.endDate.format('YYYY-MM-DD');
                         var exportUrl = '<?php echo Yii::app()->createUrl('new_projects/exportExcel'); ?>';
 
-                        if (startDate && endDate) {
-                            exportUrl += '?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate);
-                            if (currentUrl.includes("trash")) {
-                                exportUrl += "&type=trash";
-                            }
-                        }
                             
 
                         // Redirect to the export URL
@@ -196,25 +206,23 @@ if ($viewCollection->renderContent) { ?>
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                 <?php } ?>
-                                <!-- <a href="<?php echo Yii::app()->createUrl('statistics/property_statistics', array('property_id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Statistics'); ?>" target="_blank">
-                                    <i class="fa fa-bar-chart text-red"></i>
-                                </a> -->
                                 <a href="<?php echo $data->PreviewUrlTrashB; ?>" title="<?php echo Yii::t('app', 'View'); ?>" target="_blank" class="text-green">
                                     <i class="fa fa-eye"></i>
                                 </a>
                                 <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/delete')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
+                                    <a href="javascript:void(0)" onclick="confirmDelete('<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->id)); ?>')" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
                                         <i class="fa fa-times-circle"></i>
                                     </a>
                                 <?php } ?>
                                 <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/featured')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/featured', array('id' => $data->id, 'featured' => $data->featured)); ?>" title="<?php echo Yii::t('app', 'Featured'); ?>">
+                                    <a 
+                                        href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/featured', array('id' => $data->id, 'featured' => $data->featured)); ?>" 
+                                        title="<?php echo Yii::t('app', 'Featured'); ?>"
+                                        class="<?php echo $data->featured == 'Y' ? 'featured-property' : '' ?>"
+                                    >
                                         <i class="fa fa-star"></i>
                                     </a>
                                 <?php } ?>
-                                <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/verified', array('id' => $data->id, 'verified' => $data->verified)); ?>" title="<?php echo Yii::t('app', 'Verified'); ?>">
-                                    <i class="fa fa-check-circle"></i>
-                                </a>
                                 <?php if ($data->status === "A") { ?>
                                     <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/status', array('id' => $data->id, 'status' => $data->status)); ?>" title="<?php echo Yii::t('app', 'Inactive AD'); ?>" class="Block">
                                         <i class="fa fa-ban"></i>
@@ -226,17 +234,7 @@ if ($viewCollection->renderContent) { ?>
                                         <i class="fa fa-check-circle"></i>
                                     </a>
                                 <?php } ?>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/image_management')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/image_management', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Image Management'); ?>">
-                                        <i class="fa fa-picture-o"></i>
-                                    </a>
-                                <?php } ?>
-                                <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Update Meta Tag'); ?>" data-toggle="modal" onclick="openUp(this)">
-                                    <i class="fa fa-tags"></i>
-                                </a>
-                                <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Tag Your Property'); ?>" data-toggle="modal" onclick="openUp2(this)">
-                                    <i class="fa fa-tags bg-yellow"></i>
-                                </a>
+                               
                             </td>
                         </tr>
                     <?php } ?>
@@ -264,6 +262,13 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
  
  
  <script>
+    function confirmDelete(url) {
+        // Show confirmation dialog
+        if (confirm('Are you sure you want to delete this project?')) {
+            // If confirmed, proceed to the URL for deletion
+            window.location.href = url;
+        }
+    }   
     $(document).ready(function (){ 
 
         $('#select-all').on('change', function() {

@@ -498,45 +498,50 @@ jQuery(document).ready(function ($) {
 		$('.timeinfo').stop().fadeOut();
 	});
 });
-var allowSubmit = true;
-function showAjaxModal(k) {
-	var myTag = $('head > script[src$="js/elfinder.min.js"],script[src$="js/elfinder.full.js"]:first'),
-		baseUrl, hide, fi, cnt;
-	var baseUrl = myTag.attr('src').replace(/js\/[^\/]+$/, '');
+// var allowSubmit = true;
+// function showAjaxModal(k) {
+// 	var myTag = $('head > script[src$="js/elfinder.min.js"],script[src$="js/elfinder.full.js"]:first'),
+// 		baseUrl, hide, fi, cnt;
+// 	var baseUrl = myTag.attr('src').replace(/js\/[^\/]+$/, '');
 
-	if (baseUrl == undefined) { return false; }
-	dataId = $(k).attr('data-id');
+// 	if (baseUrl == undefined) { return false; }
+// 	dataId = $(k).attr('data-id');
 
-	var dataWidth = $(k).attr('data-width');
-	if (dataWidth !== undefined) {
-		$('#modal-7').find('.modal-dialog').css('width', dataWidth);
-	}
-	else {
-		$('#modal-7').find('.modal-dialog').css('width', '800px');
-	}
+// 	var dataWidth = $(k).attr('data-width');
+// 	if (dataWidth !== undefined) {
+// 		$('#modal-7').find('.modal-dialog').css('width', dataWidth);
+// 	}
+// 	else {
+// 		$('#modal-7').find('.modal-dialog').css('width', '800px');
+// 	}
 
-	fieldid = $(k).attr('data-fieldid');
-	dataRelation = $(k).attr('data-relation');
-	dataRelation_id = $(k).attr('data-relation_id');
-	disableEditer = $(k).attr('data-disableediter');
-	fieldid = $(k).attr('data-fieldid');
-	lan = ($(k).data('lan') == undefined) ? 'ar' : $(k).data('lan');
+// 	fieldid = $(k).attr('data-fieldid');
+// 	dataRelation = $(k).attr('data-relation');
+// 	dataRelation_id = $(k).attr('data-relation_id');
+// 	disableEditer = $(k).attr('data-disableediter');
+// 	fieldid = $(k).attr('data-fieldid');
+// 	lan = ($(k).data('lan') == undefined) ? 'ar' : $(k).data('lan');
 
-	$('#text').html($('#' + fieldid).val());
+// 	$('#text').html($('#' + fieldid).val());
 
-	if (dataId == undefined) return false;
-	$('#modal-7').find('#modelContent').html('loading..');
-	jQuery('#modal-7').modal('show', { backdrop: 'static' });
+// 	if (dataId == undefined) return false;
+// 	$('#modal-7').find('#modelContent').html('loading..');
+// 	jQuery('#modal-7').modal('show', { backdrop: 'static' });
+// 	var csrfToken = $("#csrf_token").val();
 
-	jQuery.ajax({
-		url: baseUrl + 'translate/addTerm/id/' + dataId + '/relation/' + dataRelation + '/relationID/' + dataRelation_id + '/disableEditer/' + disableEditer + '/lan/' + lan,
-		success: function (response) {
+// 	$.ajax({
+// 		url: 'backend/index.php/translate/addTerm/id/' + dataId + '/relation/' + dataRelation + '/relationID/' + dataRelation_id + '/disableEditer/' + disableEditer + '/lan/' + lan,
+// 		type: 'POST',
+// 		data:{
+// 			csrf_token: csrfToken
+// 		},
+// 		success: function (response) {
 
 
-			jQuery('#modal-7 #modelContent').html(response);
-		}
-	});
-}
+// 			jQuery('#modal-7 #modelContent').html(response);
+// 		}
+// 	});
+// }
 var translatingFieldsObject;
 function saveFormFunction_grid_update(form, data, hasError) {
 

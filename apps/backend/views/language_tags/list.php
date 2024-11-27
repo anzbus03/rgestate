@@ -21,6 +21,9 @@ if ($viewCollection->renderContent) { ?>
                 td a::after {
                     content: unset!important;
                 }
+                td a{
+                    color: white !important;
+                }
             </style>
         </div>
         <div class="card-body">
@@ -51,6 +54,26 @@ if ($viewCollection->renderContent) { ?>
             </div>
         </div>
     </div>
+<div class="modal fade" id="modal-7"  >
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="btn close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Translate Content</h4>
+            </div>
+            <div class="modal-body" style="min-height:300px;">
+				<div style="padding: 0px 16px;display:none;" ><p style="font-size:13px;font-weight:bold;">Translate Text</p><p id="text" style="max-height:100px; overflow-y:auto;"></p></div>
+                <div id="modelContent"><span style="padding: 0px 16px;">Content is loading...</span></div>
+            </div>
+			 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-bs-dismiss="modal">Close</button>
+                <button type="button" onclick="$('#SubmitClick').click(); " class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div> 
 <?php 
 }
 
@@ -75,5 +98,67 @@ $(document).ready(function() {
             }
     });
 });
+function upddatethis(k){
+ 
+ $.get('<?php echo Yii::app()->createUrl('language_tags/update_status');?>/id/'+$(k).attr('data-id')+'/verify/'+$(k).attr('data-verify'),function(data){
+     
+     var data =JSON.parse(data);
+     if(data.val=='1'){
+         $(k).html('<i class="fa  fa-check-square-o  text-green"></i>'); 
+         $(k).attr('data-verify','1')
+     }
+     else{
+         $(k).html('<i class="fa fa-square text-red"></i>');
+         $(k).attr('data-verify','0');
+     }
+     
+     })
+}
+
+function showAjaxModal(k) {
+	var myTag = $('head > script[src$="js/elfinder.min.js"],script[src$="js/elfinder.full.js"]:first'),
+		baseUrl, hide, fi, cnt;
+	var baseUrl = myTag.attr('src').replace(/js\/[^\/]+$/, '');
+
+	if (baseUrl == undefined) { return false; }
+	dataId = $(k).attr('data-id');
+
+	var dataWidth = $(k).attr('data-width');
+	if (dataWidth !== undefined) {
+		$('#modal-7').find('.modal-dialog').css('width', dataWidth);
+	}
+	else {
+		$('#modal-7').find('.modal-dialog').css('width', '800px');
+	}
+
+	fieldid = $(k).attr('data-fieldid');
+	dataRelation = $(k).attr('data-relation');
+	dataRelation_id = $(k).attr('data-relation_id');
+	disableEditer = $(k).attr('data-disableediter');
+	fieldid = $(k).attr('data-fieldid');
+	lan = ($(k).data('lan') == undefined) ? 'ar' : $(k).data('lan');
+
+	$('#text').html($('#' + fieldid).val());
+
+	if (dataId == undefined) return false;
+	$('#modal-7').find('#modelContent').html('loading..');
+	jQuery('#modal-7').modal('show', { backdrop: 'static' });
+	var csrfToken = $("#csrf_token").val();
+    var baseUrl = '<?php echo Yii::app()->createAbsoluteUrl("/translate/addTerm"); ?>';
+
+    // JavaScript: Dynamically build the full URL
+    var url = baseUrl + '/id/' + dataId + '/relation/' + dataRelation + '/relationID/' + dataRelation_id + '/disableEditer/' + disableEditer + '/lan/' + lan;
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data:{
+			csrf_token: csrfToken
+		},
+		success: function (response) {
+
+			jQuery('#modal-7 #modelContent').html(response);
+		}
+	});
+}
 </script>
     

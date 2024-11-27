@@ -67,14 +67,14 @@ if ($viewCollection->renderContent) { ?>
                                 <td><?php echo CHtml::encode($data->name); ?></td>
                                 <td><?php echo CHtml::encode($data->statusTitle); ?></td>
                                 <td><?php echo CHtml::encode($data->dateAdded); ?></td>
-                                <td>
+                                <td>    
                                     <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/update')) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'View'); ?>" onclick="loadthis(this, event)">
+                                        <a class="btn btn-sm p-1" href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'View'); ?>" onclick="loadthis(this, event)">
                                             <span class="fa fa-eye"></span>
                                         </a>
                                     <?php } ?>
                                     <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/delete')) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
+                                        <a class="btn btn-sm p-1" href="javascript:void(0)" onclick="confirmDelete('<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->id)); ?>')" title="<?php echo Yii::t('app', 'Delete'); ?>">
                                             <span class="fa fa-trash"></span>
                                         </a>
                                     <?php } ?>
@@ -111,6 +111,16 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 ?>
  
 <script>
+
+    $('#exportExcel').click(function(e) {
+        var exportUrl = '<?php echo Yii::app()->createUrl('spam_report/exportExcel'); ?>';
+        window.location.href = exportUrl;
+    });
+    function confirmDelete(url) {
+        if (confirm('Are you sure you want to delete?')) {
+            window.location.href = url;
+        }
+    }
     $(document).ready(function() {
         $('#spamReportList').DataTable({
             createdRow: function (row, data, index) {

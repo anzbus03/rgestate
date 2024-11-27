@@ -28,7 +28,7 @@ class Content_pagesController extends Controller
     public function filters()
     {
         $filters = array(
-            'postOnly + delete, slug',
+            // 'postOnly + delete, slug',
         );
         
         return CMap::mergeArray($filters, parent::filters());

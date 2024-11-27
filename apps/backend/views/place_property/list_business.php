@@ -27,6 +27,18 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 // and render if allowed
 if ($viewCollection->renderContent) { ?>
 
+<style>
+
+.featured-property {
+    color: #FFD700;
+    /* Gold */
+}
+
+.verified-property {
+    color: #28A745;
+    /* Green */
+}
+</style>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title">
@@ -50,34 +62,6 @@ if ($viewCollection->renderContent) { ?>
         </div>
         <div class="card-body">
 
-            <?php
-            function getCategoryName($categoryId, $categoriesArray)
-            {
-                return isset($categoriesArray[$categoryId]) ? $categoriesArray[$categoryId] : '';
-            }
-
-            // Retrieve ads and categories
-            $db = Yii::app()->db;
-
-            // Prepare the SQL query
-            $sql = "SELECT category_id FROM mw_place_an_ad WHERE (section_id = 1 OR section_id = 2)";
-
-            // Execute the SQL query and fetch the results
-            $command = $db->createCommand($sql);
-            $ads = $command->queryAll();
-
-            $categoryIds = array_column($ads, 'category_id');
-
-            // Fetch categories based on category IDs
-            $categories = Category::model()->findAllByAttributes(['category_id' => $categoryIds]);
-
-            // Build the categories array
-            $categoriesArray = [];
-            foreach ($categories as $category) {
-                $categoriesArray[$category->category_id] = $category->category_name;
-            }
-            ?>
-
             <!-- Form to wrap the table and submit the priority updates -->
             <form method="post" action="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/business'); ?>">
 
@@ -88,26 +72,26 @@ if ($viewCollection->renderContent) { ?>
                     <div class="row">
                         <div class="col-sm-2" style="margin-bottom: 15px;">
 
-                            <button type="button" class="btn btn-success btn-xs" data-bs-toggle="modal"
+                            <!-- <button type="button" class="btn btn-success btn-xs" data-bs-toggle="modal"
                                 style="margin-top: -5px;" data-bs-target="#uploadModal">
                                 Upload By Excel
-                            </button>
+                            </button> -->
                         </div>
                         <div class="col-sm-2">
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="featured">
                                     <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;" id="featured">
                                     Featured
                                 </label>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="col-sm-2">
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="verified">
                                     <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;" id="verified">
                                     Verified
                                 </label>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 <div class="table-responsive">
@@ -135,7 +119,7 @@ if ($viewCollection->renderContent) { ?>
                                 <th>Location</th>
                                 <th>Price</th>
                                 <th>Status</th>
-                                <th>Refresh Added</th>
+                                <th>Date Added</th>
                                 <th>Options</th>
                             </tr>
                         </thead>
@@ -160,13 +144,15 @@ if ($viewCollection->renderContent) { ?>
                                     <td><?php echo CHtml::encode($data->price); ?></td>
                                     <td style="text-align:center;"><?php echo $data->statusLink; ?></td>
                                     <td>
-                                        <span class="date-display"
-                                            style="margin-right: 3px;"><?php echo CHtml::encode($data->last_updated); ?></span>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/refresh_date', array('id' => $data->id)); ?>" class="refresh-date" data-id="<?php echo $data->id; ?>"
+                                        <span class="date-display" style="margin-right: 3px;">
+                                            <?php echo CHtml::encode(date('d-M-Y', strtotime($data->date_added))); ?>
+                                        </span>
+
+                                        <!-- <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/refresh_date', array('id' => $data->id)); ?>" class="refresh-date" data-id="<?php echo $data->id; ?>"
                                             data-ldate="<?php echo CHtml::encode($data->Ldate); ?>"
                                             style="text-decoration: none; color: blue; cursor: pointer;">
                                             <i class="fa fa-refresh"></i>
-                                        </a>
+                                        </a> -->
                                     </td>
                                     <td>
                                         <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
@@ -181,40 +167,26 @@ if ($viewCollection->renderContent) { ?>
                                             <i class="fa fa-eye"></i>
                                         </a>
                                         <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
-                                            <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
+                                            <a href="javascript:void(0)" onclick="confirmDelete('<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->id)); ?>')" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
                                                 <i class="fa fa-times-circle"></i>
                                             </a>
                                         <?php } ?>
                                         <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/featured')) { ?>
-                                            <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/featured', array('id' => $data->id, 'featured' => $data->featured)); ?>" title="<?php echo Yii::t('app', 'Featured'); ?>">
+                                            <a class="<?php echo $data->featured == 'Y' ? 'featured-property' : '' ?>" href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/featured', array('id' => $data->id, 'featured' => $data->featured)); ?>" title="<?php echo Yii::t('app', 'Featured'); ?>">
                                                 <i class="fa fa-star"></i>
                                             </a>
                                         <?php } ?>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/verified', array('id' => $data->id, 'verified' => $data->verified)); ?>" title="<?php echo Yii::t('app', 'Verified'); ?>">
-                                            <i class="fa fa-check-circle"></i>
-                                        </a>
                                         <?php if ($data->status === "A") { ?>
-                                            <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status', array('id' => $data->id, 'status' => $data->status)); ?>" title="<?php echo Yii::t('app', 'Inactive AD'); ?>" class="Block">
+                                            <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status', array('id' => $data->id, 'status' => "I")); ?>" title="<?php echo Yii::t('app', 'Inactive AD'); ?>" class="Block">
                                                 <i class="fa fa-ban"></i>
                                             </a>
                                         <?php } ?>
-                                        <?php if ($data->status === "I") { ?>
-                                            <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status', array('id' => $data->id, 'status' => $data->status)); ?>" title="<?php echo Yii::t('app', 'Activate AD'); ?>" class="Enable"
-                                                onclick="event.preventDefault(); $.ajax({type:'POST', url:$(this).attr('href'), success: function() {$.fn.yiiGridView.update('<?php echo $model->modelName; ?>-grid');}});">
+                                        <?php if ($data->status != "A") { ?>
+                                            <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status', array('id' => $data->id, 'status' => "A")); ?>" title="<?php echo Yii::t('app', 'Activate AD'); ?>" class="Enable"
+                                                >
                                                 <i class="fa fa-check-circle"></i>
                                             </a>
                                         <?php } ?>
-                                        <!-- <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/image_management')) { ?>
-                                            <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/image_management', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Image Management'); ?>">
-                                                <i class="fa fa-picture-o"></i>
-                                            </a>
-                                        <?php } ?> -->
-                                        <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Update Meta Tag'); ?>" data-toggle="modal" onclick="openUp(this)">
-                                            <i class="fa fa-tags"></i>
-                                        </a>
-                                        <a href="javascript:void(0);" title="<?php echo Yii::t('app', 'Tag Your Property'); ?>" data-toggle="modal" onclick="openUp2(this)">
-                                            <i class="fa fa-tags bg-yellow"></i>
-                                        </a>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -282,6 +254,13 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
 <!-- for button loading text  -->
 <script>
+    function confirmDelete(url) {
+        // Show confirmation dialog
+        if (confirm('Are you sure you want to delete this business opportiunity?')) {
+            // If confirmed, proceed to the URL for deletion
+            window.location.href = url;
+        }
+    }   
     $(document).ready(function (){
         $('#select-all').on('change', function() {
             $('.bulk-item').prop('checked', this.checked);
@@ -327,10 +306,10 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
         // Collect selected checkbox values
         if ($('#featured').is(':checked')) {
-            selectedFilters['PlaceAnAd[featured]'] = $('#featured').val();
+            selectedFilters['featured'] = $('#featured').val();
         }
         if ($('#verified').is(':checked')) {
-            selectedFilters['PlaceAnAd[verified]'] = $('#verified').val();
+            selectedFilters['verified'] = $('#verified').val();
         }
        
         // Convert the selected filters to query string parameters
@@ -359,11 +338,12 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
         // Initialize the date range picker
         $('#dateRange').daterangepicker({
             locale: {
-                format: 'YYYY-MM-DD'
+                 format: 'DD-MMM-YYYY'
             },
-            startDate: moment().subtract(29, 'days'),
+            startDate: moment('1900-01-01'),
             endDate: moment(),
             ranges: {
+                'All Time': [moment('2020-01-01'), moment()],
                 'Today': [moment(), moment()],
                 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
@@ -470,7 +450,13 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     next: '<i class="fa fa-angle-double-right" style="line-height:40px;" aria-hidden="true"></i>',
                     previous: '<i class="fa fa-angle-double-left" style="line-height:40px;" aria-hidden="true"></i>'
                 }
-            }
+            },
+            columnDefs: [
+                { 
+                    orderable: false, // Disable ordering
+                    targets: 0       // Target the first column (0-indexed)
+                }
+            ]
         });
 
         // Handle select all checkbox

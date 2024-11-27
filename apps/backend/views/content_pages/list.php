@@ -58,7 +58,8 @@ if ($viewCollection->renderContent) { ?>
                 </h3>
             </div>
             <div class="pull-right">
-                  <?php echo CHtml::link(Yii::t('app', 'Refresh'), array($this->id.'/index'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
+                  <?php echo CHtml::link(Yii::t('app', 'Refresh'), array($this->id.'/index'), array('class' => 'btn btn-secondary btn-xs', 'title' => Yii::t('app', 'Refresh')));?>
+                  <?php echo CHtml::link(Yii::t('app', 'Create'), array($this->id.'/create'), array('class' => 'btn btn-primary btn-xs', 'title' => Yii::t('app', 'Create')));?>
             </div>
             <div class="clearfix"><!-- --></div>
         </div>
@@ -86,7 +87,7 @@ if ($viewCollection->renderContent) { ?>
                                 <td>
                                     <a href="<?php echo $data->permalink; ?>" class="btn btn-sm btn-info" title="<?php echo Yii::t('app', 'View'); ?>" target="_blank"><i class="fa fa-eye"></i></a>
                                     <a href="<?php echo Yii::app()->createUrl('content_pages/update', array('id' => $data->article_id)); ?>" class="btn btn-sm btn-warning" title="<?php echo Yii::t('app', 'Update'); ?>"><i class="fa fa-pencil"></i></a>
-                                    <a href="<?php echo Yii::app()->createUrl('content_pages/delete', array('id' => $data->article_id)); ?>" class="btn btn-sm btn-danger delete" title="<?php echo Yii::t('app', 'Delete'); ?>"><i class="fa fa-trash"></i></a>
+                                    <a href="javascript:void(0)" onclick="confirmDelete('<?php echo Yii::app()->createUrl('content_pages/delete', array('id' => $data->article_id)); ?>')" class="btn btn-sm btn-danger delete" title="<?php echo Yii::t('app', 'Delete'); ?>"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -96,6 +97,13 @@ if ($viewCollection->renderContent) { ?>
         </div>
     </div>
     <script>
+        function confirmDelete(url) {
+            // Show confirmation dialog
+            if (confirm('Are you sure you want to delete this content page?')) {
+                // If confirmed, proceed to the URL for deletion
+                window.location.href = url;
+            }
+        }
         $(document).ready(function() {
             $('#content-pages-table').DataTable({
                 language: {

@@ -25,7 +25,7 @@
 				))); 
 				?>
 				<div class="messageDiv"></div>
-				<div class="card-body"> 
+				<div class=""> 
 				
 				 
 				<?php echo $form->hiddenField($model, 'lan' ); ?>
@@ -34,10 +34,15 @@
 				<?php echo $form->error($model, 'source_tag');?>
                 <div class="clearfix"><!-- --></div>  
                 <div class="form-group col-lg-12">
-                    <?php echo $form->labelEx($model, 'translation');?>
-                    <?php echo $form->textArea($model, 'translation', $model->getHtmlOptions('translation',array('dir'=>in_array(Yii::app()->request->getQuery('lan','ar'),OptionCommon::rtlLanguages()) ? 'rtl' : 'ltr' ,'style'=>(Yii::app()->request->getQuery('disableEditer','0') =='1')? '' : 'color:#fff;border:0px;'))); ?>
-                    <?php echo $form->error($model, 'translation');?>
-                </div>  
+					<?php echo $form->labelEx($model, 'translation'); ?>
+					<?php echo $form->textArea($model, 'translation', $model->getHtmlOptions('translation', array(
+						'rows' => 5, // Set the minimum number of rows
+						'dir' => in_array(Yii::app()->request->getQuery('lan', 'ar'), OptionCommon::rtlLanguages()) ? 'rtl' : 'ltr',
+						'style' => (Yii::app()->request->getQuery('disableEditer', '0') == '1') ? 'height:100% !important;' : 'color:#fff;border:0px;height:100% !important;',
+					))); ?>
+					<?php echo $form->error($model, 'translation'); ?>
+				</div>
+
 				<div class="clearfix"><!-- --></div> 
 				</div>
 				<div class="box-footer " style="display:none;">

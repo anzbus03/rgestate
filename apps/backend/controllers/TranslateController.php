@@ -1,9 +1,12 @@
-<?php
+<?php defined('MW_PATH') || exit('No direct script access allowed');
 
 class TranslateController extends  Controller
 {
     
-	 
+	public function init()
+    {
+        parent::Init();
+    }
 	public function actionAddTerm($id=null,$relation=null,$relationID=null,$lan='ar')
 	{
 		 $request = Yii::app()->request;
@@ -70,8 +73,9 @@ class TranslateController extends  Controller
 				  }
 				   
 			  }
-			 
-			  echo $model->primaryKey;
+			  $this->redirect(Yii::app()->request->urlReferrer);
+
+			//   echo $model->primaryKey;
             }
             Yii::app()->end();
         }

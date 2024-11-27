@@ -168,5 +168,48 @@ class Spam_reportController extends Controller
         $this->redirect($request->getPost('returnUrl', $defaultReturn));
     }
    
-    
+    public function actionExportExcel(){
+        try{
+            $model = new ReportAd('search');
+            $model->unsetAttributes();
+            $dataProvider = $model->search();
+            $dataProvider->pagination = false;
+        
+            // Prepare data for export
+            $data = $dataProvider->getData();
+        
+            // Set headers to force download
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="ExportedData_' . date('YmdHis') . '.xls"');
+            header('Cache-Control: max-age=0');
+        
+            // Open output stream
+            $output = fopen('php://output', 'w');
+        
+            // Write column headers
+            $header = array('Ad Title', 'Report Reason', 'Reported By', "Status", "Created On");
+            fputcsv($output, $header, "\t");
+        
+            // Write data rows
+            foreach ($data as $item) {
+                $row = array(
+                    $item->ad->ad_title,
+                    $item->master->master_name,
+                    "Vineeth",
+                    "User Submitted",
+                    $item->date_added,
+                );
+                fputcsv($output, $row, "\t");
+            }
+        
+            // Close output stream
+            fclose($output);
+        
+            Yii::app()->end();
+        }catch (Exception $e){
+            print_r($e->getMessage());
+            exit;
+        }
+
+    }
 }
