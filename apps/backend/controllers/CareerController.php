@@ -161,4 +161,50 @@ class CareerController extends Controller
         $defaultReturn = $request->getServer('HTTP_REFERER', array('career/index'));
         $this->redirect($request->getPost('returnUrl', $defaultReturn));
     }
+
+    public function actionExportExcel() {
+        try{
+            
+            $model = new CareerNew('search');
+            $model->unsetAttributes();  // clear any default values
+        
+            $dataProvider = $model->search();
+            $dataProvider->pagination = false; // Get all data
+        
+            // Prepare data for export
+            $data = $dataProvider->getData();
+        
+            // Set headers to force download
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="ExportedData_' . date('YmdHis') . '.xls"');
+            header('Cache-Control: max-age=0');
+        
+            // Open output stream
+            $output = fopen('php://output', 'w');
+        
+            // Write column headers
+            $header = array('Name', 'Email', 'Phone', 'Date', 'Message');
+            fputcsv($output, $header, "\t");
+        
+            // Write data rows
+            foreach ($data as $item) {
+                $row = array(
+                    $item->name,
+                    $item->email,
+                    $item->phone,
+                    $item->date_added,
+                    $item->cover_letter
+                );
+                fputcsv($output, $row, "\t");
+            }
+        
+            // Close output stream
+            fclose($output);
+        
+            Yii::app()->end();
+        }catch (Exception $e){
+            print_r($e->getMessage());
+            exit;
+        }
+    }
 }

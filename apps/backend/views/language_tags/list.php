@@ -62,6 +62,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 ?>
 <script>
 $(document).ready(function() {
+    
     $('#dataTable').DataTable({
         createdRow: function(row, data, index) {
                 $(row).addClass('selected');

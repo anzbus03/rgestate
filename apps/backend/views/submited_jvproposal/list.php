@@ -53,29 +53,6 @@ if ($viewCollection->renderContent) { ?>
                             <th>Options</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php foreach ($model->search()->getData() as $data) { ?>
-                            <tr>
-                                <td><?php echo CHtml::decode($data->name); ?></td>
-                                <td><?php echo CHtml::decode($data->email); ?></td>
-                                <td><?php echo CHtml::encode($data->mobile); ?></td>
-                                <td><?php echo CHtml::encode($data->date_added); ?></td>
-                                <td>
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('jv_id' => $data->jv_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>" onclick="loadthis(this, event)">
-                                            <i class="fa fa-eye" style="margin-right: 5px"></i>
-                                        </a>
-                                    <?php } ?>
-
-                                    <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->jv_id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
-                                            <i class="fa fa-times-circle"></i>
-                                        </a>
-                                    <?php } ?>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -96,57 +73,56 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
 
 <script>
+    function confirmDelete(url) {
+        // Show confirmation dialog
+        if (confirm('Are you sure you want to delete this jv proposal?')) {
+            // If confirmed, proceed to the URL for deletion
+            window.location.href = url;
+        }
+    }
     $(document).ready(function() {
-        $('#submitedReqList').DataTable({
-            createdRow: function(row, data, index) {
-                $(row).addClass('selected');
-            },
-            language: {
-                paginate: {
-                    next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
-                    previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
-                }
-            }
-        });
-
-        // Initialize the date range picker
         $('#dateRange').daterangepicker({
             locale: {
-                format: 'YYYY-MM-DD'
+                format: 'DD-MMM-YYYY'
             },
-            startDate: moment().subtract(29, 'days'),
+            startDate: moment('1900-01-01'), // Set default start date for "All Time"
             endDate: moment(),
             ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                'Today': [moment().startOf('day'), moment().endOf('day')],
+                'Yesterday': [moment().startOf('day').subtract(1, 'days'), moment().endOf('day').subtract(1, 'days')],
+                'Last 7 Days': [moment().startOf('day').subtract(6, 'days'), moment().endOf('day')],
+                'Last 30 Days': [moment().startOf('day').subtract(29, 'days'), moment().endOf('day')],
+                'This Month': [moment().startOf('day').startOf('month'), moment().endOf('day').endOf('month')],
+                'Last Month': [moment().startOf('day').subtract(1, 'month').startOf('month'), moment().endOf('day').subtract(1, 'month').endOf('month')],
+                'All Time': [moment('2020-01-01'), moment()]
             }
         }, function(start, end, label) {
+            
+            $('#dateRange').val(start.format('DD-MMM-YYYY') + ' - ' + end.format('DD-MMM-YYYY'));
             fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
         });
 
         // Function to fetch filtered data
         function fetchFilteredData(startDate, endDate) {
-            window.location.href = '<?php echo Yii::app()->createUrl($this->route); ?>?startDate=' + startDate + '&endDate=' + endDate;
+            $('#submitedReqList').DataTable().ajax.reload();
 
-            $.ajax({
-                url: '<?php echo Yii::app()->createUrl($this->route); ?>',
-                type: 'GET',
-                data: {
-                    startDate: startDate,
-                    endDate: endDate
-                },
-                success: function(data) {
-                    // console.log(data);
-                    $('#submitedReqList').html($(data).find('#submitedReqList').html());
-                },
-                error: function(error) {
-                    console.error("Error fetching data:", error);
-                }
-            });
+            // window.location.href = '<?php echo Yii::app()->createUrl($this->route); ?>?startDate=' + startDate + '&endDate=' + endDate;
+
+            // $.ajax({
+            //     url: '<?php echo Yii::app()->createUrl($this->route); ?>',
+            //     type: 'GET',
+            //     data: {
+            //         startDate: startDate,
+            //         endDate: endDate
+            //     },
+            //     success: function(data) {
+            //         // console.log(data);
+            //         $('#submitedReqList').html($(data).find('#submitedReqList').html());
+            //     },
+            //     error: function(error) {
+            //         console.error("Error fetching data:", error);
+            //     }
+            // });
         }
 
         $('#exportExcel').click(function(e) {
@@ -164,6 +140,45 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
             // Redirect to the export URL
             window.location.href = exportUrl;
+        });
+        var table = $('#submitedReqList').DataTable({
+            "paging": true, // Enable pagination
+            "lengthChange": true, // Allow users to change page length
+            "searching": true, // Enable searching
+            "ordering": true, // Enable sorting on columns
+            "info": true, // Display table information
+            "autoWidth": false, // Disable auto column width calculation
+            "pageLength": 10,
+            "serverSide": true,
+            "processing": true,
+            "ajax": {
+                "url": "<?php echo Yii::app()->createUrl('submited_jvproposal/serverProcessing'); ?>", // Replace with your server URL
+                "type": "POST",
+                "data": function(d) {
+                    d.csrf_token = "<?php echo Yii::app()->request->csrfToken; ?>";
+                    var dateRangePicker = $('#dateRange').data('daterangepicker');
+                    d.startDate         = dateRangePicker.startDate ? dateRangePicker.startDate.format('YYYY-MM-DD') : '';
+                    d.endDate           = dateRangePicker.endDate ? dateRangePicker.endDate.format('YYYY-MM-DD') : '';
+                }
+            },
+            "columns": [
+                { "data": "name" },
+                { "data": "email" },
+                { "data": "mobile" },
+                { "data": "date_added" },
+                { "data": "options" }
+            ],
+            createdRow: function(row, data, index) {
+                $(row).addClass('selected');
+            },
+            language: {
+                paginate: {
+                    next: '<i class="fa fa-angle-double-right" style="line-height:40px;" aria-hidden="true"></i>',
+                    previous: '<i class="fa fa-angle-double-left" style="line-height:40px;" aria-hidden="true"></i>'
+                }
+            },
+
+
         });
     });
 </script>

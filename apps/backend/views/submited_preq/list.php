@@ -48,7 +48,8 @@ if ($viewCollection->renderContent) { ?>
                                     <?php } ?>
 
                                     <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
+                                        <a href="javascript:void(0)" 
+                                        onclick="confirmDelete('<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->id)); ?>')" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
                                             <i class="fa fa-times-circle"></i>
                                         </a>
                                     <?php } ?>
@@ -77,6 +78,11 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
 
 <script>
+    function confirmDelete(url) {
+        if (confirm('Are you sure you want to delete this requirement?')) {
+            window.location.href = url;
+        }
+    }
     $(document).ready(function() {
         $('#submitedReqList').DataTable({
             createdRow: function(row, data, index) {

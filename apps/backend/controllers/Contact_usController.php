@@ -91,15 +91,9 @@ class Contact_usController extends Controller
         try{
             
             $model = new ContactUs('search');
-            $model->unsetAttributes();  // clear any default values
-        
-            if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
-                $model->startDate = $_GET['startDate'];
-                $model->endDate = $_GET['endDate'];
-            }
-        
+            $model->unsetAttributes();
             $dataProvider = $model->search();
-            $dataProvider->pagination = false; // Get all data
+            $dataProvider->pagination = false;
         
             // Prepare data for export
             $data = $dataProvider->getData();

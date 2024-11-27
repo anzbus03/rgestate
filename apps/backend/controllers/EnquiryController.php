@@ -82,11 +82,6 @@ class EnquiryController extends Controller
             $model = new SendEnquiry('search');
             $model->unsetAttributes();  // clear any default values
         
-            if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
-                $model->startDate = $_GET['startDate'];
-                $model->endDate = $_GET['endDate'];
-            }
-        
             $dataProvider = $model->search();
             $dataProvider->pagination = false; // Get all data
         

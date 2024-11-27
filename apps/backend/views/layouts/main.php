@@ -6,10 +6,15 @@
 <head>
     <!-- PAGE TITLE HERE -->
     <title><?php echo ucfirst($this->getUniqueId()); ?>&nbsp;|
-        <?php echo   Yii::app()->options->get('system.common.site_name'); ?></title>
+        <?php echo Yii::app()->options->get('system.common.site_name'); ?></title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
 
+    <script type="text/javascript" src="<?php echo $assetsUrl;?>/elfinder/js/elfinder.min.js"></script>
+        <?php if ($language) { ?>
+        <script type="text/javascript" src="<?php echo $assetsUrl;?>/elfinder/js/i18n/elfinder.<?php echo $language;?>.js"></script>
+        <?php } ?>
 
     <!-- FAVICONS ICON -->
     <link rel="shortcut icon" type="image/png"
@@ -44,6 +49,7 @@
     }
     iniFrame();
     </script>
+    
     <style>
     html.isOnFram ul.breadcrumb {
         display: none;

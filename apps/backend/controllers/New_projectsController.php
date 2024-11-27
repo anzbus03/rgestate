@@ -42,10 +42,6 @@ class New_projectsController   extends Controller
 			if ( isset( $_GET[ 'type' ] ) && $_GET[ 'type' ] == 'trash' ) {
 				$model->isTrash = '1';
 			}
-			if ( isset( $_GET[ 'startDate' ] ) && isset( $_GET[ 'endDate' ] ) ) {
-				$model->startDate = $_GET[ 'startDate' ];
-				$model->endDate = $_GET[ 'endDate' ];
-			}
 			$model->section_id =  3;
 
 			$dataProvider = $model->search();

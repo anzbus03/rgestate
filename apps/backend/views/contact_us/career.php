@@ -125,7 +125,11 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             }
         });
     });
-
+    $('#exportExcel').click(function(e) {
+       var exportUrl = '<?php echo Yii::app()->createUrl('career/exportExcel'); ?>';
+        // Redirect to the export URL
+        window.location.href = exportUrl;    
+    });
     function UpdateEmailReceivers(k) {
         var id = $(k).attr('data-id');
         if (id !== undefined) {

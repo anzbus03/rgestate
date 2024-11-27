@@ -73,6 +73,87 @@ class Submited_jvproposalController extends Controller
         $this->render('//submited_jvproposal/list', compact('model'));
     }
 
+    public function actionServerProcessing()
+    {
+        $request = Yii::app()->request;
+        $criteria = new CDbCriteria();
+    
+        // Capture search value
+        $searchValue = $request->getPost('search')['value'];
+        if (!empty($searchValue)) {
+            // Use addCondition to construct search conditions manually
+            $searchCondition = [
+                "t.name LIKE :searchValue",
+                "t.email LIKE :searchValue",
+                // Add more columns as needed
+            ];
+            // Combine conditions with OR
+            $criteria->addCondition(implode(' OR ', $searchCondition));
+            // Bind the search parameter
+            $criteria->params[':searchValue'] = '%' . $searchValue . '%';
+            // Add more conditions for other columns as needed
+        }
+        // Yii::log(CVarDumper::dumpAsString($criteria), 'info', 'search.criteria');
+        $startDate = $request->getPost('startDate');
+        $endDate = $request->getPost('endDate');
+        
+        if ($startDate && $endDate) {
+            $validStartDate = DateTime::createFromFormat('Y-m-d', $startDate) !== false;
+            $validEndDate = DateTime::createFromFormat('Y-m-d', $endDate) !== false;
+            if ($validStartDate && $validEndDate) {
+                $startDate .= ' 00:00:00';
+                $endDate .= ' 23:59:59';
+                $criteria->addCondition("t.date_added >= :startDate AND t.date_added <= :endDate");
+                $criteria->params[':startDate'] = $startDate;
+                $criteria->params[':endDate'] = $endDate;
+            }
+        }       
+        
+        // Sorting
+        $orderColumnIndex = $request->getPost('order')[0]['column'];
+        $orderDirection = $request->getPost('order')[0]['dir']; // 'asc' or 'desc'
+        $orderColumnName = $request->getPost('columns')[$orderColumnIndex]['data'];
+        if ($orderColumnName) {
+            $criteria->order = "$orderColumnName $orderDirection";
+        }
+        
+        // Pagination
+        $start = $request->getPost('start', 0);
+        $length = $request->getPost('length', 10);
+        $criteria->offset = $start;
+        $criteria->limit = $length;
+        // Fetch data
+        $totalRecords = JvproposalEnquiry::model()->count($criteria);
+        $filteredRecords = JvproposalEnquiry::model()->count($criteria);
+        $jvProposals = JvproposalEnquiry::model()->findAll($criteria);
+        // Prepare data in a format for DataTables
+        $data = [];
+        foreach ($jvProposals as $ad) {
+            $PreviewURL = Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('jv_id' => $ad->jv_id));
+            $data[] = [
+                'name' => CHtml::decode($ad->name),
+                'email' => CHtml::decode($ad->email),
+                'mobile' => CHtml::encode($ad->mobile),
+                'date_added' => CHtml::encode($ad->date_added),
+                'options' =>
+
+                    '<a href="' . $PreviewURL . '" title="' . Yii::t('app', 'View') . '" target="_blank" class="view-icon" onclick="loadthis(this, event)">
+                    <i class="fa fa-eye"></i></a>&nbsp;' .
+
+                    '<a href="javascript:void(0);" title="' . Yii::t('app', 'Delete') . '" class="delete delete-icon" onclick="confirmDelete(\'' . Yii::app()->createUrl(Yii::app()->controller->id . '/delete', ['id' => $ad->jv_id]) . '\')"><i class="fa fa-times-circle"></i></a>&nbsp;'
+                ];
+        }
+        // Return JSON response
+        echo CJSON::encode([
+            'draw' => intval($request->getPost('draw')),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data' => $data
+        ]);
+    
+        Yii::app()->end();
+    }
+
 
     public function actionView($id)
     {

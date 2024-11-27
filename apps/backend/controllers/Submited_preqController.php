@@ -28,12 +28,25 @@ class Submited_preqController extends Controller
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         $model = new PostRequirements('serach');
-        //  if ( isset( $_GET[ 'startDate' ] ) && isset( $_GET[ 'endDate' ] ) ) {
-        //     $model->startDate = $_GET[ 'startDate' ];
-        //     $model->endDate = $_GET[ 'endDate' ];
-        // }
+        
+        // Retrieve start and end dates from the request
+        $startDate = $_GET['startDate'];
+        $endDate = $_GET['endDate'];
+
         $model->unsetAttributes();
-        $model->attributes = (array)$request->getQuery($model->modelName, array());
+        if ($startDate && $endDate) {
+            // Validate the date format
+            $validStartDate = DateTime::createFromFormat('Y-m-d', $startDate) !== false;
+            $validEndDate = DateTime::createFromFormat('Y-m-d', $endDate) !== false;
+            if ($validStartDate && $validEndDate) {
+                $startDate .= ' 00:00:00';
+                $endDate .= ' 23:59:59';
+              
+                // Directly set attributes on the model for filtering
+                $model->date_added = array('start' => $startDate, 'end' => $endDate);
+            }
+        }
+        // $model->attributes = (array)$request->getQuery($model->modelName, array());
         $this->setData(array(
             'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
             'pageHeading'       => Yii::t(Yii::app()->controller->id, "Requirements Enquires"),
@@ -55,10 +68,6 @@ class Submited_preqController extends Controller
 
             if (isset($_GET['type']) && $_GET['type'] == 'trash') {
                 $model->isTrash = '1';
-            }
-            if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
-                $model->startDate = $_GET['startDate'];
-                $model->endDate = $_GET['endDate'];
             }
             $model->section_id =  3;
 

@@ -23,7 +23,7 @@
 <td><?php echo @$model->phone;?></td>
 </tr>
 <tr class="odd">
-<td style="width:70px;"><?php echo $model->getAttributeLabel('city');?></td>
+<td style="width:70px;">Message</td>
 <td><?php echo @$model->cover_letter;?></td>
 </tr>
 <tr class="odd">

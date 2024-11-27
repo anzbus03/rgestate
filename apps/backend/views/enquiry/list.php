@@ -45,7 +45,7 @@ if ($viewCollection->renderContent) { ?>
                                 $model->section_id,
                                 $model->SectionList(),
                                 array(
-                                    'empty' => 'Please select',
+                                    'empty' => 'Filter by section',
                                     'class' => 'form-control',
                                     'onchange' => 'updateTable(this.value)'
                                 )

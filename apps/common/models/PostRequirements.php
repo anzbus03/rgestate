@@ -53,7 +53,7 @@ class PostRequirements extends  ActiveRecord
             array( 'owner_type', 'length', 'max'=>1 ),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array( 'id, property_type, budget_min, budget_max, area_min, area_max, unit, city_id, name, email, phone, owner_type', 'safe', 'on'=>'search' ),
+            array( 'id, date_added, property_type, budget_min, budget_max, area_min, area_max, unit, city_id, name, email, phone, owner_type', 'safe', 'on'=>'search' ),
         );
     }
 
@@ -348,11 +348,13 @@ class PostRequirements extends  ActiveRecord
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
-        // if ($this->startDate && $this->endDate) {
-		// 	$criteria->addCondition('date_added >= :startDate AND t.date_added <= :endDate');
-		// 	$criteria->params[':startDate'] = $this->startDate;
-		// 	$criteria->params[':endDate'] = $this->endDate;
-		// }
+        // print_r(5);
+        if (isset($this->date_added['start'], $this->date_added['end'])) {
+            
+            $criteria->addCondition('t.date_added >= :startDate AND t.date_added <= :endDate');
+            $criteria->params[':startDate'] = $this->date_added['start'];
+            $criteria->params[':endDate'] = $this->date_added['end'];
+        }
         $criteria->compare( 'id', $this->id );
         $criteria->compare( 'property_type', $this->property_type );
         $criteria->compare( 'budget_min', $this->budget_min, true );
