@@ -41,7 +41,7 @@ class PlaceAnAdNew extends PlaceAnAd
 		 
 	 public function getFetauredOrder(){
 	    /*and (TIMESTAMPDIFF(HOUR,NOW(), f_e_d ) > 0)*/
-		 return '  t.cron_featured = "Y" desc ';
+		 return '  t.date_added desc ';
 	 }
 	 public function getExpityConditionFronEnd(){
 	//    return  ' and t.cron_expiry ="1" '; 
