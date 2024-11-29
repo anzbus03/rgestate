@@ -3375,7 +3375,7 @@ class Place_propertyController  extends Controller
         ini_set('memory_limit', '-1');
 
         $rawData = Yii::app()->request->getPost('excelData');
-        $rawData = str_replace(["\r", "\n", "\t"], '', $rawData); // Remove unnecessary whitespace
+        // $rawData = str_replace(["\r", "\n", "\t"], '', $rawData); // Remove unnecessary whitespace
         $rawData = stripslashes($rawData); // Remove extra slashes if added
         $rawData = trim($rawData); // Remove leading/trailing whitespace
         $rawData = utf8_encode($rawData); // Ensure it's encoded in UTF-8   
