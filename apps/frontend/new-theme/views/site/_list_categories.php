@@ -42,7 +42,7 @@ if(!empty($new_homes)){
             $name = $data1['name'];
             $slug = $data1['slug'];
          }else{
-            echo $v->category_name;  
+            // echo $v->category_name;  
             continue; 
          }
          
