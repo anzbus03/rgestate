@@ -1088,23 +1088,22 @@ if ($viewCollection->renderContent) {
 							}
 							?>
 							<div class="minimize_form full-content">
-								<div class="row for-land  form-group">
+								<!-- <div class="row for-land  form-group">
 									<?php
 									/* $sub_category =  CHtml::listData(Subcategory::model()->ListDataForCategory(121),'sub_category_id','sub_category_name'); */
 									$sub_category = $model->subcategoriesarray();
 									?>
-									<div class="clearfix"><!-- --></div>
+									<div class="clearfix"><!-- </div>
 
 									<div class="col-sm-5 text-right" style="text-align: right;">
 										<label for="PlaceAnAd_sub_category_id" class="required"><?php echo $this->tag->getTag('subcategory', 'Subcategory'); ?> <span class="required">*</span></label>
-
 									</div>
 									<div class="col-sm-7">
 										<?php $mer =  array_merge($model->getHtmlOptions('sub_category_id'), array('class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
 										<?php echo $form->dropDownList($model, 'sub_category_id', $sub_category, $mer); ?>
 										<?php echo $form->error($model, 'sub_category_id'); ?>
 									</div>
-								</div>
+								</div> -->
 								<div class="row  form-group hide <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>">
 									<?php
 									if (!Yii::app()->request->isPostRequest and   empty($model->client_ref)) {

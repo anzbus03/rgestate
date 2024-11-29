@@ -79,7 +79,7 @@ html textarea.input-text.form-control {
                                 <a href="<?php echo $add->detailUrl;?>">
                                 <?php
                                     $imagePath  = $add->getAd_image_singlenew("293");
-                                    $imagePath  = str_replace('/uploads/files/', '', $imagePath);
+                                    // $imagePath  = str_replace('/uploads/files/', '', $imagePath);
                                     $adImage    = AdImage::model()->findByAttributes(['image_name' => $imagePath]);
                                     $titleAltText   = $adImage->image_alt;
                                     $titleText      = $adImage->image_title;
