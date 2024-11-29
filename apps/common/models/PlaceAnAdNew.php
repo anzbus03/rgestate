@@ -41,7 +41,7 @@ class PlaceAnAdNew extends PlaceAnAd
 		 
 	 public function getFetauredOrder(){
 	    /*and (TIMESTAMPDIFF(HOUR,NOW(), f_e_d ) > 0)*/
-		 return '  t.date_added desc ';
+		//  return '  t.date_added desc ';
 	 }
 	 public function getExpityConditionFronEnd(){
 	//    return  ' and t.cron_expiry ="1" '; 
@@ -57,10 +57,10 @@ class PlaceAnAdNew extends PlaceAnAd
 		$criteria->compare('t.isTrash', "0");
 		$criteria->select .= ', t.cron_images as ad_images_g, t.cron_simage as ad_image2';
  	    if(isset($formData['preleased']) and !empty($formData['preleased'])){
-			 $criteria->compare('t.property_status','1');
+			$criteria->compare('t.property_status','1');
 		}else{
 		    if(!defined('SHOW_ALL_PROP')){
-		     //$criteria->compare('t.property_status!','1');
+		    	//$criteria->compare('t.property_status!','1');
 		    }
 		}
        
@@ -70,7 +70,7 @@ class PlaceAnAdNew extends PlaceAnAd
         	$criteria->compare('t.status','A');
 		}
         if(!empty($user_id)){
-					$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END '; 
+			$criteria->condition .= ' and CASE WHEN usr.parent_user is NOT NULL THEN (usr.parent_user = :thisusr or   t.user_id = :thisusr )   ELSE     t.user_id = :thisusr  END '; 
 			$criteria->params[':thisusr'] = (int) $user_id;
 	
 			 
@@ -91,7 +91,7 @@ class PlaceAnAdNew extends PlaceAnAd
 			$states_join = true;
 			$criteria->join  .= ' left join {{states}} st ON st.state_id = t.state ';
 			 
-		    	$criteria->join  .= ' left join {{main_region}} mreg ON mreg.region_id = st.region_id ';
+			$criteria->join  .= ' left join {{main_region}} mreg ON mreg.region_id = st.region_id ';
 		}
 		else if(isset($formData['state']) and !empty($formData['state'])){
 		     

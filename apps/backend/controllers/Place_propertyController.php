@@ -3440,7 +3440,7 @@ class Place_propertyController  extends Controller
                 $record = [
                     'uid' => $data[0],
                     'section_id' => ($data[6] == "Sale") ? 1 : 2,
-                    'listing_type' => $categoriesMap[$data[7]]->category_id ?? null,
+                    'listing_type' => $typesMap[$data[7]]->category_id ?? null,
                     'category_id' => $categoriesMap[$data[8]]->category_id ?? null,
                     'RefNo' => $data[4],
                     'lease_status' => empty($data[26]) ? 0 : ($data[26] == "Leased" ? 1 : 0),
