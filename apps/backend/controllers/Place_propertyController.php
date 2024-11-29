@@ -3435,8 +3435,13 @@ class Place_propertyController  extends Controller
                     $data[36]   = "I"; // Set status to "Inactive"
                 }
                 if (!$existingAd){
-                    $data[0]    = 'UID' . rand(100000, 999999);
+                    if (empty($data[0])){
+                        $data[0]    = 'UID' . rand(100000, 999999);
+                    }
                 }
+                $cleaned_text = preg_replace('/[^\w\s]/', '', $data[13]);
+                // Replace spaces with hyphens and convert to lowercase
+                $result = strtolower(str_replace(' ', '-', $cleaned_text));
                 $record = [
                     'uid' => $data[0],
                     'section_id' => ($data[6] == "Sale") ? 1 : 2,
@@ -3445,6 +3450,7 @@ class Place_propertyController  extends Controller
                     'RefNo' => $data[4],
                     'lease_status' => empty($data[26]) ? 0 : ($data[26] == "Leased" ? 1 : 0),
                     'ad_title' => $data[13],
+                    'slug' => $result,
                     'PropertyID' => $data[5],
                     'ad_description' => str_replace(["\r\n", "\r", "\n"], "\n", $data[14]),
                     'date_added' => $dateAdded,
