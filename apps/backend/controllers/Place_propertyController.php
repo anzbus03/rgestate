@@ -3431,10 +3431,12 @@ class Place_propertyController  extends Controller
                 
                 $existingAd = $adsMap[$data[0]] ?? null;
                 if (empty($data[4])) {
-                    $data[4] = 'REF-' . rand(100000, 999999); // Random RefNo
-                    $data[36] = "I"; // Set status to "Inactive"
+                    $data[4]    = 'REF-' . rand(100000, 999999); // Random RefNo
+                    $data[36]   = "I"; // Set status to "Inactive"
                 }
+                $data[0]    = 'UID' . rand(100000, 999999);
                 $record = [
+                    'uid' => $data[0],
                     'section_id' => ($data[6] == "Sale") ? 1 : 2,
                     'listing_type' => $categoriesMap[$data[7]]->category_id ?? null,
                     'category_id' => $categoriesMap[$data[8]]->category_id ?? null,
