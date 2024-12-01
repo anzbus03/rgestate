@@ -15,10 +15,10 @@ if (defined('MW_FORCE_DEBUG_MODE') && MW_FORCE_DEBUG_MODE) {
 }
 define('SYSTEM_CAHE_K',  1);
 // a few base mw constants
-define('ASKAAN_PATH', 'https://www.rgestate.com/index.php/');
+define('ASKAAN_PATH', 'http://localhost:8000/index.php/');
 define('BREAK_PATH', 'feeta.pk\/');
-define('ASKAAN_PATH_BASE', 'https://www.rgestate.com/');
-define('ASKAAN_PATH_BASE_B', 'https://www.rgestate.com/backend/index.php');
+define('ASKAAN_PATH_BASE', 'http://localhost:8000/');
+define('ASKAAN_PATH_BASE_B', 'http://localhost:8000/backend/index.php');
 define('MW_NAME', 'Hotel Booking');
 define('MW_VERSION', '1.3.4.4'); // never remove or alter this constant, never!
 define('MW_PATH', realpath(dirname(__FILE__).'/..'));

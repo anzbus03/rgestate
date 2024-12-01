@@ -3374,12 +3374,18 @@ class Place_propertyController  extends Controller
         ini_set('upload_max_filesize', '300M');
         ini_set('memory_limit', '-1');
 
-        $rawData = Yii::app()->request->getPost('excelData');
+        $rawData =  Yii::app()->request->getRawBody();
+            // print_r($rawData);
+            // exit;
         // $rawData = str_replace(["\r", "\n", "\t"], '', $rawData); // Remove unnecessary whitespace
-        $rawData = stripslashes($rawData); // Remove extra slashes if added
-        $rawData = trim($rawData); // Remove leading/trailing whitespace
-        $rawData = utf8_encode($rawData); // Ensure it's encoded in UTF-8   
-        $excelData = json_decode($rawData,true);
+        // $rawData = stripslashes($rawData); // Remove extra slashes if added
+        // $rawData = trim($rawData); // Remove leading/trailing whitespace
+        // $rawData = stripslashes($rawData); // Ensure it's encoded in UTF-8   
+        // $jsonData = json_decode(file_get_contents('php://input'), true);
+        // $excelData = $jsonData['excelData'];
+        $data = CJSON::decode($rawData, true);
+        $excelData = ($data['excelData']);
+        
         $newCount = 0;
         $updatedCount = 0;
         $imageInsertData = [];
@@ -3431,17 +3437,19 @@ class Place_propertyController  extends Controller
                 
                 $existingAd = $adsMap[$data[0]] ?? null;
                 if (empty($data[4])) {
-                    $data[4]    = 'REF-' . rand(100000, 999999); // Random RefNo
+                    $data[4]    = 'REF_' . rand(100000, 999999); // Random RefNo
                     $data[36]   = "I"; // Set status to "Inactive"
                 }
                 if (!$existingAd){
                     if (empty($data[0])){
-                        $data[0]    = 'UID' . rand(100000, 999999);
+                        $data[0]    = 'PID_' . rand(100000, 999999);
                     }
                 }
                 $cleaned_text = preg_replace('/[^\w\s]/', '', $data[13]);
                 // Replace spaces with hyphens and convert to lowercase
                 $result = strtolower(str_replace(' ', '-', $cleaned_text));
+                // print_r($data[14]);
+                // exit;
                 $record = [
                     'uid' => $data[0],
                     'section_id' => ($data[6] == "Sale") ? 1 : 2,
@@ -3452,7 +3460,7 @@ class Place_propertyController  extends Controller
                     'ad_title' => $data[13],
                     'slug' => $result,
                     'PropertyID' => $data[5],
-                    'ad_description' => str_replace(["\r\n", "\r", "\n"], "\n", $data[14]),
+                    'ad_description' => $data[14],
                     'date_added' => $dateAdded,
                     'state' => $statesMap[$data[11]]->state_id ?? 0,
                     'user_id' => $usersMap[$data[39]]->user_id ?? 31988,
@@ -3480,7 +3488,7 @@ class Place_propertyController  extends Controller
                     'amenities' => $data[15],
                     'area_location' => $data[11],
                     'interior_size' => $data[22],
-                    'rent_paid' => strtolower($data[24])
+                    'rent_paid' => strtolower($data[24]),
                 ];
     
                 if ($existingAd) {

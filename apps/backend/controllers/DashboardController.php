@@ -49,10 +49,10 @@ class DashboardController extends Controller
             )));
         }
         
-        $group = Yii::app()->user->getModel()->group;
-        if (!empty($group) && !empty($group->default_url)) {
-            $this->redirect(Yii::app()->createUrl($group->default_url));
-        }
+        // $group = Yii::app()->user->getModel()->group;
+        // if (!empty($group) && !empty($group->default_url)) {
+        //     $this->redirect(Yii::app()->createUrl($group->default_url));
+        // }
         
         $this->setData(array(
             'pageMetaTitle'     => Yii::app()->name . ' | ' . Yii::t('dashboard', 'Dashboard'), 
