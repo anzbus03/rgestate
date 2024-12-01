@@ -38,10 +38,11 @@ class AgentsController extends Controller
     }
     public function actionIndex()
     {
+        ini_set('memory_limit', '-1');
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         // for filters.
-        $user->attributes = (array)$request->getQuery($user->modelName, array());
+        // $user->attributes = (array)$request->getQuery($user->modelName, array());
         $salesThisMonth = SoldProperty::model()->getSalesThisMonth();
         $salesTotal = SoldProperty::model()->getSalesTotal();
 
@@ -116,10 +117,8 @@ class AgentsController extends Controller
         $tags_short = CHtml::listData($tagModel, 'tag_id', 'tagCodeWithColor');
 
         $this->render('index', compact(
-            'user',
             'agentProperties',
             'agents',
-            'revenue',
             'salesThisMonth',
             'salesTotal',
             'totalPropertiesSoldYear',

@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
     <script type="text/javascript" src="<?php echo $assetsUrl;?>/elfinder/js/elfinder.min.js"></script>
-    <?php if ($language) { ?>
+    <?php if (isset($language)) { ?>
         <script type="text/javascript" src="<?php echo $assetsUrl;?>/elfinder/js/i18n/elfinder.<?php echo $language;?>.js"></script>
     <?php } ?>
 
