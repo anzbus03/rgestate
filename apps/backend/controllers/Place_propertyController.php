@@ -3471,7 +3471,7 @@ class Place_propertyController  extends Controller
                     'bathrooms' => $data[18],
                     'mobile_number' => $data[40],
                     'country' => 66124,
-                    'property_status' => $data[25] == "Yes" ? 1 : 0,
+                    'property_status' => $data[25] == "Yes" ? "1" : '0',
                     'income' => $data[27],
                     'roi' => $data[28] ?? 0,
                     'no_of_u' => $data[19],
