@@ -3393,21 +3393,21 @@ class Place_propertyController  extends Controller
         
         if (is_array($excelData)) {
             // Extract unique values for batch fetching
-            $refNos = array_unique(array_filter(array_column($excelData, 0), fn($value) => !empty($value)));
+            $refNos = array_unique(array_filter(array_column($excelData, 4), fn($value) => !empty($value)));
             $categoryNames = array_unique(array_filter(array_column($excelData, 8), fn($value) => !empty($value)));
             $categoryTypes = array_unique(array_filter(array_column($excelData, 7), fn($value) => !empty($value)));
             $stateNames = array_unique(array_filter(array_column($excelData, 11), fn($value) => !empty($value)));
             $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 39), fn($value) => !empty($value))));
             
             // Fetch data in bulk
-            $ads = PlaceAnAd::model()->findAllByAttributes(['uid' => $refNos]);
+            $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A']);
             $types = Category::model()->findAllByAttributes(['category_name' => $categoryTypes, 'isTrash' => '0', 'status' => 'A']);
             $states = States::model()->findAllByAttributes(['state_name' => $stateNames, 'isTrash' => '0']);
             $users = User::model()->findAllByAttributes(['email' => $userEmails]);
     
             // Map data for quick lookup
-            $adsMap = array_column($ads, null, 'uid');
+            $adsMap = array_column($ads, null, 'RefNo');
             $categoriesMap = array_column($categories, null, 'category_name');
             $typesMap = array_column($types, null, 'category_name');
             $statesMap = array_column($states, null, 'state_name');
@@ -3420,7 +3420,7 @@ class Place_propertyController  extends Controller
             $updateParams = [];
     
             foreach (array_slice($excelData, 1) as $data) {
-                if (empty($data) || empty($data[1])) continue; // Skip if data is empty or refNo is null
+                if (empty($data) || empty($data[4])) continue; // Skip if data is empty or refNo is null
                 
                 if (is_numeric($data[3])) {
                     // Handle Excel numeric date (e.g., 44197 -> 2021-01-01)
@@ -3435,15 +3435,9 @@ class Place_propertyController  extends Controller
                     $dateAdded = null; // Or some fallback value
                 }
                 
-                $existingAd = $adsMap[$data[0]] ?? null;
-                if (empty($data[4])) {
-                    $data[4]    = 'REF_' . rand(100000, 999999); // Random RefNo
-                    $data[36]   = "I"; // Set status to "Inactive"
-                }
-                if (!$existingAd){
-                    if (empty($data[0])){
-                        $data[0]    = 'PID_' . rand(100000, 999999);
-                    }
+                $existingAd = $adsMap[$data[4]] ?? null;
+                if (empty($data[0])){
+                    $data[0]    = 'PID_' . rand(100000, 999999);
                 }
                 $cleaned_text = preg_replace('/[^\w\s]/', '', $data[13]);
                 // Replace spaces with hyphens and convert to lowercase
