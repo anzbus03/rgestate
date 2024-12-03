@@ -14,18 +14,18 @@
         color: var(--bs-blue)!important;
     }
     span.sec_divdr {
-    color: rgba(0,0,0,.8)!important;
-    line-height: 1!important;
-    display: inline-block;
-    margin: 0 5px;
-}
-html textarea.input-text.form-control {
-    border: 1px solid #dfe0e3;
-    line-height: 1.4;
-    padding: 10px 8px;
-    color: #72727d;
-    font: 13px arial;
-}
+        color: rgba(0,0,0,.8)!important;
+        line-height: 1!important;
+        display: inline-block;
+        margin: 0 5px;
+    }
+    html textarea.input-text.form-control {
+        border: 1px solid #dfe0e3;
+        line-height: 1.4;
+        padding: 10px 8px;
+        color: #72727d;
+        font: 13px arial;
+    }
 </style>
 <!-- Start RG Estate Featured -->
 <section class="rg-featured" dir="ltr">

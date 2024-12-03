@@ -312,63 +312,82 @@ class SiteController extends Controller
         
     }
 	private function getHomeFeaturedListing(){
-        $criteria = new CDbCriteria();
-		$catSlugs = ['featured', 'Warehouse','retail','labor-camp','land','hospital','hospitals','schools','building','hotels'];
-
+		$criteria = new CDbCriteria();
+		$catSlugs = ['featured', 'Warehouse', 'retail', 'labor-camp', 'land', 'hospital', 'hospitals', 'schools', 'building', 'hotels'];
+	
 		$featured = [];
-
+	
 		$model = new PlaceAnAdNew();
+	
 		// Fetch featured listings separately
 		$criteriaFeatured = new CDbCriteria();
-		$criteriaFeatured->select = 't.*,usr.phone as user_number,usr.email as user_email,usr.first_name,usr.first_name_ar,usr.last_name,usr.user_type as user_type,usr.full_number as mobile_number,usr.first_name,usr.last_name';
-		$criteriaFeatured->join = ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
+		$criteriaFeatured->select = '
+			t.*, 
+			COALESCE(usr.phone, u.phone_number) as user_number, 
+			COALESCE(usr.email, u.email) as user_email, 
+			COALESCE(usr.first_name, u.first_name) as first_name, 
+			COALESCE(usr.first_name_ar, u.first_name) as first_name_ar, 
+			COALESCE(usr.last_name, u.last_name) as last_name, 
+			COALESCE(usr.user_type, u.rules) as user_type, 
+			COALESCE(usr.full_number, u.phone_number) as mobile_number';
+		$criteriaFeatured->join = '
+			LEFT JOIN {{listing_users}} usr ON usr.user_id = t.user_id 
+			LEFT JOIN {{user}} u ON u.user_id = t.user_id';
 		$criteriaFeatured->condition = "t.featured = 'Y' AND t.status = :status AND t.isTrash = :isTrash";
 		$criteriaFeatured->params[':status'] = 'A';
 		$criteriaFeatured->params[':isTrash'] = '0';
 		$criteriaFeatured->order = 't.date_added DESC';
 		$criteriaFeatured->limit = 10;
 		$featuredListings = $model->findAll($criteriaFeatured);
-		   // Add featured listings to $featured array
-		   $featured[] = array(
+	
+		// Add featured listings to $featured array
+		$featured[] = array(
 			'category' => (object) ['category_name' => 'Featured Listings'],
 			'listings' => $featuredListings
 		);
-		foreach($catSlugs as $slug){
-
+	
+		foreach ($catSlugs as $slug) {
 			$category = Category::model()->getCategoryFromSlug($slug);
-            $criteria->select = 't.*,usr.phone as user_number,usr.email as user_email,usr.first_name,usr.first_name_ar,usr.last_name,usr.user_type as user_type,usr.full_number as mobile_number,usr.first_name,usr.last_name';
-            $criteria->join  =   ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
-			//$criteria->join  =   ' LEFT JOIN {{listing_users}} p_usr on p_usr.user_id = usr.parent_user ';
-            $criteria->condition ="t.category_id=:category_id AND t.status=:status AND t.isTrash = :isTrash";
-            
-            $criteria->params[':category_id'] = $category->category_id;
-            // $criteria->params[':featured'] = 'Y';
-            $criteria->params[':status'] = 'A';
-            $criteria->params[':isTrash'] = '0';
-            $criteria->order = 't.date_added DESC';
-            
-			$cookieName = 'USERFAV'.COUNTRY_ID;
-			if((isset(Yii::app()->request->cookies[$cookieName])   )){
-				$cook =  Yii::app()->request->cookies[$cookieName]->value;
-				//print_r($cook);exit; 
-				if(!empty($cook) and is_array($cook)){
+	
+			$criteria->select = '
+				t.*, 
+				COALESCE(usr.phone, u.phone_number) as user_number, 
+				COALESCE(usr.email, u.email) as user_email, 
+				COALESCE(usr.first_name, u.first_name) as first_name, 
+				COALESCE(usr.first_name_ar, u.first_name) as first_name_ar, 
+				COALESCE(usr.last_name, u.last_name) as last_name, 
+				COALESCE(usr.user_type, u.rules) as user_type, 
+				COALESCE(usr.full_number, u.phone_number) as mobile_number';
+			$criteria->join = '
+				LEFT JOIN {{listing_users}} usr ON usr.user_id = t.user_id 
+				LEFT JOIN {{user}} u ON u.user_id = t.user_id';
+			$criteria->condition = "t.category_id = :category_id AND t.status = :status AND t.isTrash = :isTrash";
+			$criteria->params[':category_id'] = $category->category_id;
+			$criteria->params[':status'] = 'A';
+			$criteria->params[':isTrash'] = '0';
+			$criteria->order = 't.date_added DESC';
+	
+			$cookieName = 'USERFAV' . COUNTRY_ID;
+			if (isset(Yii::app()->request->cookies[$cookieName])) {
+				$cook = Yii::app()->request->cookies[$cookieName]->value;
+				if (!empty($cook) && is_array($cook)) {
 					$userStr = implode("', '", $cook);
-					$criteria->select .= " , CASE WHEN t.id  in ('{$userStr}') THEN 1 ELSE 0 END as fav " ;
+					$criteria->select .= ", CASE WHEN t.id IN ('{$userStr}') THEN 1 ELSE 0 END as fav";
 				}
 			}
-			
+	
 			$criteria->limit = 10;
 			$listings = $model->findAll($criteria);
-			
+	
 			$featured[] = array(
 				'category' => $category,
 				'listings' => $listings
 			);
 		}
-
+	
 		return $featured;
 	}
-
+	
 
 	public function actionLoad_data($country_id = null, $state_id = null)
 	{
