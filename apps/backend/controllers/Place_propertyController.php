@@ -3439,11 +3439,18 @@ class Place_propertyController  extends Controller
                 if (empty($data[0])){
                     $data[0]    = 'PID_' . rand(100000, 999999);
                 }
-                $cleaned_text = preg_replace('/[^\w\s]/', '', $data[13]);
+               // Limit the ad title to 80 characters
+                $cleaned_text = mb_substr(preg_replace('/[^\w\s]/', '', $data[13]), 0, 80);
                 // Replace spaces with hyphens and convert to lowercase
-                $result = strtolower(str_replace(' ', '-', $cleaned_text));
-                // print_r($data[14]);
-                // exit;
+                $baseSlug = strtolower(trim(str_replace(' ', '-', $cleaned_text), '-'));
+
+                // Generate a unique slug
+                $slug = $baseSlug;
+                $index = 1;
+                while (PlaceAnAd::model()->exists('slug=:slug', [':slug' => $slug])) {
+                    $slug = $baseSlug . '-' . $index++;
+                }
+
                 $record = [
                     'uid' => $data[0],
                     'section_id' => ($data[6] == "Sale") ? 1 : 2,
@@ -3452,7 +3459,7 @@ class Place_propertyController  extends Controller
                     'RefNo' => $data[4],
                     'lease_status' => empty($data[26]) ? 0 : ($data[26] == "Leased" ? 1 : 0),
                     'ad_title' => $data[13],
-                    'slug' => $result,
+                    'slug' => $slug,
                     'PropertyID' => $data[5],
                     'ad_description' => $data[14],
                     'date_added' => $dateAdded,

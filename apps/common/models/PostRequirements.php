@@ -47,7 +47,7 @@ class PostRequirements extends  ActiveRecord
             array( 'property_type, unit, city_id', 'numerical', 'integerOnly'=>true ),
             array( 'is_phone_validated', 'validateHiddenInput' ),
             array( 'budget_min, budget_max, area_min, area_max', 'length', 'max'=>10 ),
-            array( '_recaptcha', 'validateRecaptcha', 'on'=>'insert' ),
+            // array( '_recaptcha', 'validateRecaptcha', 'on'=>'insert' ),
             array( 'name, email', 'length', 'max'=>250 ), array( 'email', 'email' ),
             array( 'phone', 'length', 'max'=>20 ),
             array( 'owner_type', 'length', 'max'=>1 ),

@@ -187,7 +187,14 @@ class New_projectsController   extends Controller
 			    
 				$this->insertAfterSaveFn($model);
 				$notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
-				$this->redirect(Yii::App()->createUrl($this->id . '/Success_posted'));
+								
+				$this->redirect(Yii::App()->createUrl(
+					$this->id . '/Success_posted', 
+					[
+						'name' => $fullName,
+						'email' => $requestParms['mobile_number'],
+					]
+				));
 			}
 		}
 		$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
@@ -212,7 +219,7 @@ class New_projectsController   extends Controller
 			'pageHeading'       => Yii::t(Yii::app()->controller->id, "List your property"),
 
 		));
-		$this->render('root.apps.backend.views.new_projects.form', compact('model', "country", "section", 'list_type', 'image_array', 'img', 'img_mobile'));
+		$this->render('root.apps.backend.views.new_projects.form_frontend', compact('model', "country", "section", 'list_type', 'image_array', 'img', 'img_mobile'));
 	}
 	public function actionSuccess_posted()
 	{

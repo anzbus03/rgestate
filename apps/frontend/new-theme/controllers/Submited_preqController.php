@@ -185,7 +185,10 @@ class Submited_preqController extends Controller
                 
                 // End CRM
                 //$notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
-                $this->redirect(Yii::app()->createUrl('submited_preq/success'));
+                $this->redirect(Yii::app()->createUrl('submited_preq/success',[
+                    'name' => $fullName,
+                    'email' => $requestParams['email'],
+                ]));
             }
 
             Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
