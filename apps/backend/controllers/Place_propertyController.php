@@ -3446,9 +3446,8 @@ class Place_propertyController  extends Controller
 
                 // Generate a unique slug
                 $slug = $baseSlug;
-                $index = 1;
                 while (PlaceAnAd::model()->exists('slug=:slug', [':slug' => $slug])) {
-                    $slug = $baseSlug . '-' . $index++;
+                    $slug = $baseSlug . '-' . rand(100, 999);
                 }
 
                 $record = [
