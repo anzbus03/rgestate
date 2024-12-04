@@ -3423,28 +3423,21 @@ class Place_propertyController  extends Controller
                 if (empty($data) || empty($data[4]) || PlaceAnAd::model()->exists('RefNo=:slug', [':slug' => $data[4]])) continue; // Skip if data is empty or refNo is null
                 
                 if (is_numeric($data[3])) {
-                    // Handle Excel numeric date (e.g., 44197 -> 2021-01-01)
                     $excelDate = $data[3];
-                    $unixTimestamp = ($excelDate - 25569) * 86400; // Convert Excel date to Unix timestamp
+                    $unixTimestamp = ($excelDate - 25569) * 86400;
                     $dateAdded = date('Y-m-d H:i:s', $unixTimestamp);
                 } elseif (strtotime($data[3]) !== false) {
-                    // Handle already valid date string (e.g., "1905-07-14 00:00:00")
                     $dateAdded = date('Y-m-d H:i:s', strtotime($data[3]));
                 } else {
-                    // Handle invalid format
-                    $dateAdded = null; // Or some fallback value
+                    $dateAdded = null;
                 }
                 
                 $existingAd = $adsMap[$data[4]] ?? null;
                 if (empty($data[0])){
                     $data[0]    = 'PID_' . rand(100000, 999999);
                 }
-               // Limit the ad title to 80 characters
                 $cleaned_text = mb_substr(preg_replace('/[^\w\s]/', '', $data[13]), 0, 80);
-                // Replace spaces with hyphens and convert to lowercase
                 $baseSlug = strtolower(trim(str_replace(' ', '-', $cleaned_text), '-'));
-
-                // Generate a unique slug
                 $slug = $baseSlug;
                 while (PlaceAnAd::model()->exists('slug=:slug', [':slug' => $slug])) {
                     $slug = $baseSlug . '-' . rand(100, 999);
