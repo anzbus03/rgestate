@@ -3551,7 +3551,7 @@ class Place_propertyController  extends Controller
             $updateParams = [];
     
             foreach (array_slice($excelData, 1) as $data) {
-                if (empty($data) || empty($data[4]) || PlaceAnAd::model()->exists('RefNo=:slug', [':slug' => $data[4]])) continue; // Skip if data is empty or refNo is null
+                if (empty($data) || empty($data[4])) continue; // Skip if data is empty or refNo is null
                 
                 if (is_numeric($data[3])) {
                     $excelDate = $data[3];
