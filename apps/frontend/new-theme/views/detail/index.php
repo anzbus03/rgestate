@@ -930,7 +930,7 @@ if((!isset($_GET['_pjax']) and  $showTrash=='0')  OR  ($showTrash=='0' and  (iss
       ?>
       <style>
           @media only screen and (max-width: 1024px){ html .for-mobile-menu {        display: none !important;}}      </style>
-       <div style="position:absolute;left:0px;right:0px;bottom:0px;top:0px;background:rgba(255,255,255,0.1);z-index: 11111;" class="disable-keys"></div>
+       <!-- <div style="position:absolute;left:0px;right:0px;bottom:0px;top:0px;background:rgba(255,255,255,0.1);z-index: 11111;" class="disable-keys"></div> -->
       <?
   }
   ?> 
