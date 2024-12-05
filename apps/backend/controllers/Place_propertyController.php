@@ -408,7 +408,6 @@ class Place_propertyController  extends Controller
     public function actionIndex()
     {
         echo '<script>function iniFrame() { if(window.self !== window.top) { parent.closeBackendIFrame(); } } iniFrame(); </script>';
-    
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         $model = new PlaceAnAd('search');
@@ -450,7 +449,6 @@ class Place_propertyController  extends Controller
             $criteria->addInCondition('t.user_id', $userAgents);
         }
     
-        $criteria->limit = 500;
         $criteria->order = "t.id DESC";
     
         $filteredData = PlaceAnAd::model()->findAll($criteria);
@@ -646,7 +644,142 @@ class Place_propertyController  extends Controller
 
                     (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/hot') ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/hot', ['id' => $ad->id, 'hot' => $ad->hot]) . '" title="' . Yii::t('app', 'Hot') . '" class="' . ($ad->hot === '1' ? 'hot-property' : '') . '"><i class="fas fa-sun"></i></a>&nbsp;' : '') .
 
-                    '<a href="javascript:void(0);" title="' . Yii::t('app', 'Update Meta Tag') . '" data-bs-toggle="modal" onclick="openUp(this)"><i class="fa fa-tags"></i></a>&nbsp;' .
+                    ($isSold ? '<a href="#" class="sold-property"><i class="fas fa-check" title="This property is already sold"></i></a>' : ($ad->status === "A" ? '<a href="javascript:void(0);" title="' . Yii::t('app', 'Sold property') . '" onclick="openUp2(' . $ad->id . ')"><i class="far fa-handshake"></i></a>&nbsp;' : ''))
+            ];
+        }
+        // $command = PlaceAnAd::model()->getCommandBuilder()->createFindCommand(PlaceAnAd::model()->tableName(), $criteria);
+        // $sql = $command->getText();
+        // $params = $criteria->params;
+
+        // // Log to the Yii application log
+        // print_r("SQL Query: " . $sql);
+        // print_r("Parameters: " . CVarDumper::dumpAsString($params));
+        // exit;
+        // Alternatively, write to a custom log file
+        $logFile = Yii::app()->basePath . '/runtime/serverProcessing.log';
+        file_put_contents($logFile, "SQL Query: " . $sql . PHP_EOL, FILE_APPEND);
+        file_put_contents($logFile, "Parameters: " . print_r($params, true) . PHP_EOL, FILE_APPEND);
+
+        // Return JSON response
+        echo CJSON::encode([
+            'draw' => intval($request->getPost('draw')),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data' => $data
+        ]);
+    
+        Yii::app()->end();
+    }
+    public function actionServerProcessingBusiness()
+    {
+        $request = Yii::app()->request;
+        $criteria = new CDbCriteria();
+    
+        // Capture search value
+        $searchValue = $request->getPost('search')['value'];
+        if (!empty($searchValue)) {
+            // Use addCondition to construct search conditions manually
+            $searchCondition = [
+                "t.RefNo LIKE :searchValue",
+                "t.ad_title LIKE :searchValue",
+                // Add more columns as needed
+            ];
+            // Combine conditions with OR
+            $criteria->addCondition(implode(' OR ', $searchCondition));
+            // Bind the search parameter
+            $criteria->params[':searchValue'] = '%' . $searchValue . '%';
+            // Add more conditions for other columns as needed
+        }
+        // Yii::log(CVarDumper::dumpAsString($criteria), 'info', 'search.criteria');
+        $startDate = $request->getPost('startDate');
+        $endDate = $request->getPost('endDate');
+        
+        if ($startDate && $endDate) {
+            $validStartDate = DateTime::createFromFormat('Y-m-d', $startDate) !== false;
+            $validEndDate = DateTime::createFromFormat('Y-m-d', $endDate) !== false;
+            if ($validStartDate && $validEndDate) {
+                $startDate .= ' 00:00:00';
+                $endDate .= ' 23:59:59';
+                $criteria->addCondition("t.date_added >= :startDate AND t.date_added <= :endDate");
+                $criteria->params[':startDate'] = $startDate;
+                $criteria->params[':endDate'] = $endDate;
+            }
+        }
+        
+        $criteria->addCondition("t.section_id = 6");
+        $criteria->params[':startDate'] = $startDate;
+        $criteria->params[':endDate'] = $endDate;
+        // User-specific conditions
+        $loggedInUser = Yii::app()->user->model; // Assuming you have a method to get the logged-in user model
+        
+        if ($loggedInUser->rules == 3) {
+            // Single user ID
+            $criteria->addCondition('t.user_id = :userId');
+            $criteria->params[':userId'] = $loggedInUser->user_id;
+        } elseif ($loggedInUser->rules == 2) {
+            // Multiple user IDs
+            $userAgents = explode(',', $loggedInUser->agents);
+
+            // Create placeholders for named parameters
+            $placeholders = [];
+            foreach ($userAgents as $index => $agentId) {
+                $placeholders[] = ':userId' . $index; // Named placeholders
+                $criteria->params[':userId' . $index] = $agentId; // Assign parameter values
+            }
+
+            $criteria->addCondition('t.user_id IN (' . implode(',', $placeholders) . ')');
+
+        }
+        
+        // Sorting
+        $orderColumnIndex = $request->getPost('order')[0]['column'];
+        $orderDirection = $request->getPost('order')[0]['dir']; // 'asc' or 'desc'
+        $orderColumnName = $request->getPost('columns')[$orderColumnIndex]['data'];
+        if ($orderColumnName) {
+            $criteria->order = "$orderColumnName $orderDirection";
+        }
+        
+        // Pagination
+        $start = $request->getPost('start', 0);
+        $length = $request->getPost('length', 10);
+        $criteria->offset = $start;
+        $criteria->limit = $length;
+        // Fetch data
+        $totalRecords = PlaceAnAd::model()->count($criteria);
+        $filteredRecords = PlaceAnAd::model()->count($criteria);
+        $placeAds = PlaceAnAd::model()->findAll($criteria);
+        // Prepare data in a format for DataTables
+        $data = [];
+        foreach ($placeAds as $ad) {
+            $stateName = States::model()->findByPk($ad->state);
+            $PreviewURL = $ad->PreviewUrlTrash;
+            $data[] = [
+                'id' => '<input type="checkbox" class="bulk-item" value="'.$ad->id.'">',
+                'RefNo' => CHtml::encode($ad->ReferenceNumberTitleP),
+                'ad_title' => CHtml::encode($ad->AdTitle),
+                'location' => $stateName ? $stateName->state_name : '',
+                'price' => CHtml::encode($ad->price),
+                'status' => $ad->statusLink,
+                'date_added' => '<span class="date-display" style="margin-right: 3px;" id="date-display-' . $ad->id . '">' .
+                                    CHtml::encode(date('d-M-Y', strtotime($ad->date_added))) .
+                                '</span>',
+
+                'options' =>
+                    (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update') ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/update', ['id' => $ad->id]) . '" title="' . Yii::t('app', 'Update') . '" class="edit-icon"><i class="fa fa-pencil"></i></a>&nbsp;' : '') .
+
+                    '<a href="' . $PreviewURL . '" title="' . Yii::t('app', 'View') . '" target="_blank" class="view-icon"><i class="fa fa-eye"></i></a>&nbsp;' .
+
+                    (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete') ? '<a href="javascript:void(0);" title="' . Yii::t('app', 'Delete') . '" class="delete delete-icon" onclick="confirmDelete(\'' . Yii::app()->createUrl(Yii::app()->controller->id . '/delete', ['id' => $ad->id]) . '\')"><i class="fa fa-times-circle"></i></a>&nbsp;' : '') .
+
+                    (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/featured') ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/featured', ['id' => $ad->id, 'featured' => $ad->featured]) . '" title="' . Yii::t('app', 'Featured') . '" class="' . ($ad->featured === 'Y' ? 'featured-property' : '') . '"><i class="fa fa-star"></i></a>&nbsp;' : '') .
+
+                    '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/verified', ['id' => $ad->id, 'verified' => $ad->verified]) . '" title="' . Yii::t('app', 'Verified') . '" class="' . ($ad->verified === '1' ? 'verified-property' : '') . '"><i class="fa fa-check-circle"></i></a>&nbsp;' .
+
+                    ($ad->status === "A" ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/status_change', ['id' => $ad->id, 'val' => "I"]) . '" title="' . Yii::t('app', 'Inactive AD') . '" class="Block"><i class="fa fa-ban"></i></a>&nbsp;' : '') .
+
+                    ($ad->status === "I" ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/status_change', ['id' => $ad->id, 'val' => "A"]) . '" title="' . Yii::t('app', 'Activate AD') . '" class="Enable active-property"><i class="fa fa-check-circle"></i></a>&nbsp;' : '') .
+
+                    (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/hot') ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/hot', ['id' => $ad->id, 'hot' => $ad->hot]) . '" title="' . Yii::t('app', 'Hot') . '" class="' . ($ad->hot === '1' ? 'hot-property' : '') . '"><i class="fas fa-sun"></i></a>&nbsp;' : '') .
 
                     ($isSold ? '<a href="#" class="sold-property"><i class="fas fa-check" title="This property is already sold"></i></a>' : ($ad->status === "A" ? '<a href="javascript:void(0);" title="' . Yii::t('app', 'Sold property') . '" onclick="openUp2(' . $ad->id . ')"><i class="far fa-handshake"></i></a>&nbsp;' : ''))
             ];
@@ -856,7 +989,7 @@ class Place_propertyController  extends Controller
     
     public function actionBusiness()
     {
-
+        
         echo '<script>function iniFrame() {   if(window.self !== window.top) {   parent.closeBackendIFrame();  }  }  iniFrame();  </script> ';
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
@@ -878,12 +1011,10 @@ class Place_propertyController  extends Controller
             $notify->addSuccess(Yii::t('app', 'Priority successfully updated!'));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
-
         $model->unsetAttributes();
         $model->hide_new_development = '1';
-
         $model->attributes = (array)$request->getQuery($model->modelName, array());
-        $model->isTrash = '0';
+        // $model->isTrash = '0';
         define('ONLY_BUSINESS', '1');
         // $model->listing_type = 'C';
         $this->setData(array(

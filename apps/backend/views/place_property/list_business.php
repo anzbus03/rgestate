@@ -28,17 +28,48 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 if ($viewCollection->renderContent) { ?>
 
 <style>
+        /* Property Status Colors */
+        .hot-property {
+            color: #FF4500;
+            /* Red or choose another suggested color */
+        }
 
-.featured-property {
-    color: #FFD700;
-    /* Gold */
-}
+        .featured-property {
+            color: #FFD700;
+            /* Gold */
+        }
 
-.verified-property {
-    color: #28A745;
-    /* Green */
-}
-</style>
+        .verified-property {
+            color: #28A745;
+            /* Green */
+        }
+
+        .active-property {
+            color: #007BFF;
+            /* Blue */
+        }
+
+        .sold-property {
+            color: #DC3545;
+            /* Red */
+        }
+
+        /* Action Icon Colors */
+        .edit-icon {
+            color: #FFC107;
+            /* Orange */
+        }
+
+        .delete-icon {
+            color: #FF0000;
+            /* Red */
+        }
+
+        .view-icon {
+            color: #6C757D;
+            /* Gray */
+        }
+    </style>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title">
@@ -112,7 +143,6 @@ if ($viewCollection->renderContent) { ?>
                     <table id="enquiryTable" class="table table-striped table-bordered">
                         <thead>
                             <tr>
-
                                 <th><input type="checkbox" id="select-all"></th>
                                 <th>Reference Number</th>
                                 <th>Ad Title</th>
@@ -123,75 +153,6 @@ if ($viewCollection->renderContent) { ?>
                                 <th>Options</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php foreach ($model->search()->getData() as $data) { ?>
-                                <tr>
-                                    <td><input type="checkbox" class="bulk-item" value="<?php echo $data->id; ?>"></td>
-                                    <td><?php echo CHtml::decode($data->ReferenceNumberTitleP); ?></td>
-                                    <td>
-                                        <?php echo CHtml::decode($data->AdTitleWithIcons2, Yii::app()->createUrl("place_property/update", array("id" => $data->id))); ?>
-                                        <div><?php echo $data->Tags; ?></div>
-                                        <input type="hidden" class="propertyId" value="<?php echo $data->id; ?>">
-                                        <input type="hidden" class="sId" value="<?php echo $data->section_id; ?>">
-                                        <input type="hidden" class="cId" value="<?php echo $data->category_id; ?>">
-                                        <input type="hidden" class="lId" value="<?php echo $data->listing_type; ?>">
-                                        <input type="hidden" id="meta_title-<?php echo $data->id; ?>" class="meta_title" value="<?php echo $data->metaTitleEnglish; ?>">
-                                        <input type="hidden" id="meta_title-ar-<?php echo $data->id; ?>" class="meta_title_ar" value="<?php echo $data->MetaTitleArabic; ?>">
-                                        <input type="hidden" id="meta_description-<?php echo $data->id; ?>" class="meta_description" value="<?php echo $data->MetaDescriptionEnglish; ?>">
-                                        <input type="hidden" id="meta_description-ar-<?php echo $data->id; ?>" class="meta_description_ar" value="<?php echo $data->MetaDescriptionArabic; ?>">
-                                    </td>
-                                    <td><?php echo CHtml::decode($data->CountryNameSection2); ?></td>
-                                    <td><?php echo CHtml::encode($data->price); ?></td>
-                                    <td style="text-align:center;"><?php echo $data->statusLink; ?></td>
-                                    <td>
-                                        <span class="date-display" style="margin-right: 3px;">
-                                            <?php echo CHtml::encode(date('d-M-Y', strtotime($data->date_added))); ?>
-                                        </span>
-
-                                        <!-- <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/refresh_date', array('id' => $data->id)); ?>" class="refresh-date" data-id="<?php echo $data->id; ?>"
-                                            data-ldate="<?php echo CHtml::encode($data->Ldate); ?>"
-                                            style="text-decoration: none; color: blue; cursor: pointer;">
-                                            <i class="fa fa-refresh"></i>
-                                        </a> -->
-                                    </td>
-                                    <td>
-                                        <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
-                                            <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
-                                                <i class="fa fa-pencil"></i>
-                                            </a>
-                                        <?php } ?>
-                                        <!-- <a href="<?php echo Yii::app()->createUrl('statistics/property_statistics', array('property_id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Statistics'); ?>" target="_blank">
-                                            <i class="fa fa-bar-chart text-red"></i>
-                                        </a> -->
-                                        <a href="<?php echo $data->PreviewUrlTrashB; ?>" title="<?php echo Yii::t('app', 'View'); ?>" target="_blank" class="text-green">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                        <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete')) { ?>
-                                            <a href="javascript:void(0)" onclick="confirmDelete('<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/delete', array('id' => $data->id)); ?>')" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
-                                                <i class="fa fa-times-circle"></i>
-                                            </a>
-                                        <?php } ?>
-                                        <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/featured')) { ?>
-                                            <a class="<?php echo $data->featured == 'Y' ? 'featured-property' : '' ?>" href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/featured', array('id' => $data->id, 'featured' => $data->featured)); ?>" title="<?php echo Yii::t('app', 'Featured'); ?>">
-                                                <i class="fa fa-star"></i>
-                                            </a>
-                                        <?php } ?>
-                                        <?php if ($data->status === "A") { ?>
-                                            <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status', array('id' => $data->id, 'status' => "I")); ?>" title="<?php echo Yii::t('app', 'Inactive AD'); ?>" class="Block">
-                                                <i class="fa fa-ban"></i>
-                                            </a>
-                                        <?php } ?>
-                                        <?php if ($data->status != "A") { ?>
-                                            <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/status', array('id' => $data->id, 'status' => "A")); ?>" title="<?php echo Yii::t('app', 'Activate AD'); ?>" class="Enable"
-                                                >
-                                                <i class="fa fa-check-circle"></i>
-                                            </a>
-                                        <?php } ?>
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-
                     </table>
                 </div>
 
@@ -441,7 +402,36 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             // Write the workbook and download the Excel file
             XLSX.writeFile(workbook, 'template.xlsx');
         });
-        $('#enquiryTable').DataTable({
+        
+        var table = $('#enquiryTable').DataTable({
+            "paging": true, // Enable pagination
+            "lengthChange": true, // Allow users to change page length
+            "searching": true, // Enable searching
+            "ordering": true, // Enable sorting on columns
+            "info": true, // Display table information
+            "autoWidth": false, // Disable auto column width calculation
+            "pageLength": 10,
+            "serverSide": true,
+            "processing": true,
+            "ajax": {
+                "url": "<?php echo Yii::app()->createUrl('place_property/serverProcessingBusiness'); ?>", // Replace with your server URL
+                "type": "POST",
+                "data": function(d) {
+                    var dateRangePicker = $('#dateRange').data('daterangepicker');
+                    d.startDate         = dateRangePicker.startDate ? dateRangePicker.startDate.format('YYYY-MM-DD') : '';
+                    d.endDate           = dateRangePicker.endDate ? dateRangePicker.endDate.format('YYYY-MM-DD') : '';
+                }
+            },
+            "columns": [
+                { "data": "id", "orderable": false, "className": "unsortable"  },
+                { "data": "RefNo" },
+                { "data": "ad_title" },
+                { "data": "location" },
+                { "data": "price" },
+                { "data": "status" },
+                { "data": "date_added" },
+                { "data": "options" }
+            ],
             createdRow: function(row, data, index) {
                 $(row).addClass('selected');
             },
@@ -451,12 +441,8 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     previous: '<i class="fa fa-angle-double-left" style="line-height:40px;" aria-hidden="true"></i>'
                 }
             },
-            columnDefs: [
-                { 
-                    orderable: false, // Disable ordering
-                    targets: 0       // Target the first column (0-indexed)
-                }
-            ]
+
+
         });
 
         // Handle select all checkbox
