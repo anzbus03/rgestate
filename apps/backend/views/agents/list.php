@@ -38,9 +38,9 @@ if ($viewCollection->renderContent) {
                 $lastNameInitial = strtoupper(substr(htmlspecialchars($user->last_name), 0, 1));
 
                 // Designation name
-                $serviceName = isset($user->services) ? CHtml::encode($user->services->service_name) : 'Unknown';
+                // $serviceName = isset($user->services) ? CHtml::encode($user->services->service_name) : 'Unknown';
                 // Country name 
-                $countryName = isset($user->countries) ? CHtml::encode($user->countries->country_name) : 'Unknown';
+                // $countryName = isset($user->countries) ? CHtml::encode($user->countries->country_name) : 'Unknown';
             ?>
                 <div class="profile-card">
                     <div class="image-container padding">
