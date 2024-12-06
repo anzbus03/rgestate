@@ -3700,6 +3700,7 @@ class Place_propertyController  extends Controller
     
     private function calculatePrice($price = 0, $frequency)
     {
+
         switch (strtolower($frequency)) {
             case 'yearly':
                 return $price;
@@ -3711,7 +3712,7 @@ class Place_propertyController  extends Controller
                 return $price * 2;
             case 'weekly':
             default:
-                return $price * 52;
+                return $price;
         }
     }
     
