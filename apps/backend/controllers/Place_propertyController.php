@@ -3506,14 +3506,6 @@ class Place_propertyController  extends Controller
         ini_set('memory_limit', '-1');
 
         $rawData =  Yii::app()->request->getRawBody();
-            // print_r($rawData);
-            // exit;
-        // $rawData = str_replace(["\r", "\n", "\t"], '', $rawData); // Remove unnecessary whitespace
-        // $rawData = stripslashes($rawData); // Remove extra slashes if added
-        // $rawData = trim($rawData); // Remove leading/trailing whitespace
-        // $rawData = stripslashes($rawData); // Ensure it's encoded in UTF-8   
-        // $jsonData = json_decode(file_get_contents('php://input'), true);
-        // $excelData = $jsonData['excelData'];
         $data = CJSON::decode($rawData, true);
         $excelData = ($data['excelData']);
         
@@ -3573,7 +3565,25 @@ class Place_propertyController  extends Controller
                 while (PlaceAnAd::model()->exists('slug=:slug', [':slug' => $slug])) {
                     $slug = $baseSlug . '-' . rand(100, 999);
                 }
+                $stateName = $data[11];
+                if (!isset($statesMap[$stateName])) {
+                    // Insert new state
+                    $slug = strtolower(trim(str_replace(' ', '-', preg_replace('/[^\w\s]/', '', $stateName)), '-'));
+                    
+                    $region = MainRegion::model()->findByAttributes(['name' => $data[10]]);
+                    $regionId = $region ? $region->region_id : null;
 
+                    $newState = new States();
+                    $newState->state_name = $stateName;
+                    $newState->country_id = 66124;
+                    $newState->isTrash = 0;
+                    $newState->slug = $slug;
+                    $newState->region_id = $regionId;
+                    $newState->save();
+            
+                    // Update `statesMap` with new state
+                    $statesMap[$stateName] = $newState;
+                }
                 $record = [
                     'uid' => $data[0],
                     'section_id' => ($data[6] == "Sale") ? 1 : 2,
@@ -3586,7 +3596,7 @@ class Place_propertyController  extends Controller
                     'PropertyID' => $data[5],
                     'ad_description' => $data[14],
                     'date_added' => $dateAdded,
-                    'state' => $statesMap[$data[11]]->state_id ?? 0,
+                    'state' => $statesMap[$stateName]->state_id ?? 0,
                     'user_id' => $usersMap[$data[39]]->user_id ?? 31988,
                     'status' => ($data[36] == "Active") ? "A" : "I",
                     'availability' => ($data[35] == "Sold Out" ? "sold_out" : ($data[35] == "Leased Out" ? "lease_out" : null)),
