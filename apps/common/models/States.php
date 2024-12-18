@@ -271,21 +271,21 @@ public function getPrimaryField(){
 	public $reg_slug; 
 	public function  AllListingStatesOfCountry($country_id=null,$limit=0,$only_photos=0)
     { 
-		if($limit==0 and !empty($country_id) and !isset($_GET['refresh'])){
-			$cacheKey =  'pak_city_cache12'.Yii::app()->options->get('system.common.city_cache','123s421').$country_id;
-			if(defined('LANGUAGE')){$cacheKey .= LANGUAGE ;   }
-			if ($items = Yii::app()->cache->get($cacheKey)) { 
+		// if($limit==0 and !empty($country_id) and !isset($_GET['refresh'])){
+		// 	$cacheKey =  'pak_city_cache12'.Yii::app()->options->get('system.common.city_cache','123s421').$country_id;
+		// 	if(defined('LANGUAGE')){$cacheKey .= LANGUAGE ;   }
+		// 	if ($items = Yii::app()->cache->get($cacheKey)) { 
 		 
-				 return $items;
-			}
-		}else if($limit==11 and !empty($country_id) and !isset($_GET['refresh'])){  
-		        $cacheKey =  $limit.'pak_city_cache12'.Yii::app()->options->get('system.common.city_cache','123s421').$country_id;
-			if(defined('LANGUAGE')){$cacheKey .= LANGUAGE ;   }
-			if ($items = Yii::app()->cache->get($cacheKey)) { 
+		// 		 return $items;
+		// 	}
+		// }else if($limit==11 and !empty($country_id) and !isset($_GET['refresh'])){  
+		//         $cacheKey =  $limit.'pak_city_cache12'.Yii::app()->options->get('system.common.city_cache','123s421').$country_id;
+		// 	if(defined('LANGUAGE')){$cacheKey .= LANGUAGE ;   }
+		// 	if ($items = Yii::app()->cache->get($cacheKey)) { 
 	 
-				 return $items;
-			}
-		}
+		// 		 return $items;
+		// 	}
+		// }
  
 		$criteria=new CDbCriteria;
 		$criteria->select = 't.country_id,t.state_id ,cn.slug as country_slug,t.slug,t.icon,t.region_id,rg.slug as reg_slug';
