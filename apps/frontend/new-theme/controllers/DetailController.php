@@ -634,7 +634,6 @@ class DetailController extends Controller
 		$request    = Yii::app()->request;
 		$model  = new SendEnquiry2();
 		$requestParms = $request->getPost("SendEnquiry2");
-
 		if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
 			$model->attributes = $attributes;
 			if (!$model->save()) {

@@ -397,32 +397,26 @@
 
                 <script>
                 	$(function() {
+						$(function() {
+							var input = document.querySelector("#<?php echo $contact->modelName; ?>_phone_false");
+							const iti = window.intlTelInput(input, {
+								initialCountry: "<?php echo COUNTRY_CODE; ?>",
+								separateDialCode: true,
+								hiddenInput: "phone",
+								placeholderNumberType: "MOBILE",
+								utilsScript: "<?php echo Yii::app()->apps->getBaseUrl('assets/js/build/js/utils.js'); ?>"
+							});
 
-                		var input = document.querySelector("#<?php echo $contact->modelName; ?>_phone_false");
-                		window.intlTelInput(input, {
-                			// allowDropdown: false,
-                			// autoHideDialCode: false,
-                			// autoPlaceholder: "off",
-                			// dropdownContainer: document.body,
-                			// excludeCountries: ["us"],
-                			// formatOnDisplay: false,
-                			// geoIpLookup: function(callback) {
-                			//   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
-                			//     var countryCode = (resp && resp.country) ? resp.country : "";
-                			//     callback(countryCode);
-                			//   });
-                			// },
-                			hiddenInput: "phone",
-                			initialCountry: "<?php echo COUNTRY_CODE; ?>",
-                			// localizedCountries: { 'de': 'Deutschland' },
-                			// nationalMode: false,
-                			// onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
-                			placeholderNumberType: "MOBILE",
-                			// preferredCountries: ['cn', 'jp'],
-                			separateDialCode: true,
-                			utilsScript: "<?php echo Yii::app()->apps->getBaseUrl('assets/js/build/js/utils.js'); ?>",
-                		});
-
+							// Update the hidden phone field on form submit
+							$('#frm_ctnt1').on('submit', function(e) {
+								const fullPhoneNumber = iti.getNumber(); // Get the full phone number
+								$('<input>').attr({
+									type: 'hidden',
+									name: '<?php echo $contact->modelName; ?>[phone]', // Match your model attribute
+									value: fullPhoneNumber
+								}).appendTo(this);
+							});
+						});
                 	})
                 </script>
                 <style>
@@ -445,7 +439,7 @@
                 			'validateOnSubmit': true,
                 			'validateOnChange': false,
                 			'beforeValidate': function(form) {
-
+							
                 				form.find("#bb2").html("<?php echo $Validating; ?>");
                 				return true;
                 			},
@@ -459,6 +453,13 @@
                 				}
                 			},
                 			'attributes': [{
+                				'class': 'iti__selected-dial-code',
+                				'inputID': 'iti__selected-dial-code',
+                				'errorID': 'iti__selected-dial-code_em_',
+                				'model': 'SendEnquiry2',
+                				'name': 'iti__selected-dial-code',
+                				'enableAjaxValidation': true
+                			},{
                 				'id': 'SendEnquiry2_name',
                 				'inputID': 'SendEnquiry2_name',
                 				'errorID': 'SendEnquiry2_name_em_',
