@@ -1564,7 +1564,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 
 											<div class="row  form-group not-for-franch">
 												<?php
-												$property_type =    Category::model()->ListDataForJSON_ID_ByListingType('151');
+											$property_type =    Category::model()->ListDataForJSON_ID_BySEctionNewSlugww('6');
 
 
 												?>
