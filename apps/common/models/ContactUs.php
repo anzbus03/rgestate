@@ -182,7 +182,7 @@ class ContactUs extends ActiveRecord
         $criteria->compare('meassage',$this->meassage,true);
         $criteria->compare('city',$this->city,true);
         $criteria->compare('date',$this->date,true);
-        $criteria->compare('contact_type','CONTACT');
+        // $criteria->compare('contact_type','CONTACT');
 		if ($this->startDate && $this->endDate) {
 			$criteria->addCondition('date >= :startDate AND date <= :endDate');
 			$criteria->params[':startDate'] = $this->startDate;
@@ -190,11 +190,8 @@ class ContactUs extends ActiveRecord
 		}
          $criteria->order="id desc";
 	 	return new CActiveDataProvider($this, array(
-		'criteria'=>$criteria,
-	   'pagination'    => array(
-                'pageSize'  => $this->paginationOptions->getPageSize(),
-                'pageVar'   => 'page',
-            ),
+			'criteria' => $criteria,
+			'pagination' => false,  // Disable pagination
 		));
     }
 

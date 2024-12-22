@@ -58,7 +58,6 @@ if ($viewCollection->renderContent) {
                             <?php endif; ?>
                         </div>
                         <h3><?php echo $user->getFullName() ?></h3>
-                        <p><?php echo $user->services->service_name ?></p>
                     </div>
 
                     <div class="profile-details">
