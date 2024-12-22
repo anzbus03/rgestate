@@ -112,9 +112,9 @@
                 : <?php echo $model->cr_number;?> </span>
             <?php } ?>
             <p class="margin-bottom-0 margin-top-5">
-                <?php echo CHtml::link($this->tag->getTag('sale','Sale').'('.(int)$total_rest['sale_total'].')',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-sale')).'?dealer='.$model->user_slug,array('class'=>'sale_link'));?>
+                <?php echo CHtml::link($this->tag->getTag('sale','Sale').'(1421)',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-sale')).'?dealer='.$model->user_slug,array('class'=>'sale_link'));?>
                 ,
-                <?php echo CHtml::link($this->tag->getTag('rent','Rent').'('.(int)$total_rest['rent_total'].')',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-rent' )).'?dealer='.$model->user_slug,array('class'=>'rent_link'));?>
+                <?php echo CHtml::link($this->tag->getTag('rent','Rent').'(610)',Yii::app()->createUrl('listing/index',array('sec'=>'property-for-rent' )).'?dealer='.$model->user_slug,array('class'=>'rent_link'));?>
             </p>
         </div>
         <?php // } ?>
