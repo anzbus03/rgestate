@@ -40,29 +40,72 @@ class EnquiryController extends Controller
      */
     public function actionIndex()
     {
-         $request = Yii::app()->request;
-         $notify = Yii::app()->notify;
-         $model = new SendEnquiry('serach');
+        $request = Yii::app()->request;
+    
+        // Initialize filters
+        $startDate = $request->getQuery('startDate', null);
+        $endDate = $request->getQuery('endDate', null);
+        $sectionId = $request->getQuery('section_id', null);
+    
+        // Build SQL query
+        $sql = "SELECT t.*, ads.ad_title, ads.slug AS ad_slug 
+                FROM {{contact_us}} t
+                INNER JOIN {{place_an_ad}} ads ON ads.id = t.ad_id AND ads.isTrash = '0'
+                LEFT JOIN {{listing_users}} usr2 ON usr2.user_id = ads.user_id
+                WHERE t.contact_type = 'ENQUIRY'";
+    
+        // Apply filters
+        $params = array();
+        if ($startDate && $endDate) {
+            $sql .= " AND t.date >= :startDate AND t.date <= :endDate";
+            $params[':startDate'] = $startDate;
+            $params[':endDate'] = $endDate;
+        }
+        if ($sectionId) {
+            $sql .= " AND ads.section_id = :sectionId";
+            $params[':sectionId'] = $sectionId;
+        }
+    
+        // Order by ID descending
+        $sql .= " ORDER BY t.id DESC";
        
-         $model->unsetAttributes();
-         $model->attributes = (array)$request->getQuery($model->modelName, array());
-         if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
-            $model->startDate = $_GET['startDate'];
-            $model->endDate = $_GET['endDate'];
-        }
-        if (isset($_GET['section_id'])) {
-            $model->section_id = $_GET['section_id'];
-        }
-         $this->setData(array(
-            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"), 
-            'pageHeading'       => Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
-            'pageBreadcrumbs'   => array(
-                Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title}") => $this->createUrl(Yii::app()->controller->id.'/index'),
-                Yii::t('app', 'View all')
-            )
-         ));
-        $this->render('list', compact('model'));
+        // Execute query
+        $data = Yii::app()->db->createCommand($sql)->queryAll(true, $params);
+    
+        $this->setData(array(
+            'pageMetaTitle'   => $this->data->pageMetaTitle . ' | ' . Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
+            'pageHeading'     => Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
+            'pageBreadcrumbs' => array(
+                Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title}") => $this->createUrl(Yii::app()->controller->id . '/index'),
+                Yii::t('app', 'View all'),
+            ),
+        ));
+    
+        $this->render('list', compact('data'));
     }
+    
+    // public function actionIndex()
+    // {
+    //     $criteria = new CDbCriteria();
+    //     $criteria->compare('contact_type', 'ENQUIRY');
+    //     $criteria->order = 'id DESC';
+    //     $criteria->with = array(
+    //         'ads' => array('condition' => 'ads.isTrash = "0"'),
+    //     );
+
+    //     $data = SendEnquiry::model()->findAll($criteria);
+
+    //     $this->setData(array(
+    //         'pageMetaTitle'   => $this->data->pageMetaTitle . ' | ' . Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
+    //         'pageHeading'     => Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title} List"),
+    //         'pageBreadcrumbs' => array(
+    //             Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title}") => $this->createUrl(Yii::app()->controller->id . '/index'),
+    //             Yii::t('app', 'View all'),
+    //         ),
+    //     ));
+
+    //     $this->render('list', compact('data'));
+    // }
 
     public function actionUpdateTable($section_id) {
         $model = new SendEnquiry('search');

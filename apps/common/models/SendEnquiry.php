@@ -129,58 +129,74 @@ class SendEnquiry  extends ContactUs
 			return '-';
 		}
 	}
-    public function search($return=false)
-    {
-        // @todo Please modify the following code to remove attributes that should not be searched.
-
-        $criteria=new CDbCriteria;
-        $criteria->compare('id',$this->id);
-        $criteria->compare('type',$this->type);
-         $criteria->compare('ad_title',$this->ad_title,true);
-        $criteria->compare('email',$this->email,true);
-        $criteria->compare('name',$this->name,true);
-        $criteria->compare('meassage',$this->meassage,true);
-        $criteria->compare('city',$this->city,true);
-        $criteria->compare('date',$this->date,true);
-        $criteria->compare('requested_by',$this->requested_by);
+	public function search($return = false)
+	{
+		$criteria = new CDbCriteria;
+	
+		// Search conditions
+		$criteria->compare('id', $this->id);
+		$criteria->compare('type', $this->type);
+		$criteria->compare('ad_title', $this->ad_title, true);
+		$criteria->compare('email', $this->email, true);
+		$criteria->compare('name', $this->name, true);
+		$criteria->compare('meassage', $this->meassage, true);
+		$criteria->compare('city', $this->city, true);
+		$criteria->compare('date', $this->date, true);
+		$criteria->compare('requested_by', $this->requested_by);
+	
+		// Date range filter
 		if ($this->startDate && $this->endDate) {
 			$criteria->addCondition('date >= :startDate AND date <= :endDate');
 			$criteria->params[':startDate'] = $this->startDate;
 			$criteria->params[':endDate'] = $this->endDate;
 		}
+	
+		// Section ID filter
 		if ($this->section_id) {
 			$criteria->compare('section_id', $this->section_id);
 		}
+	
+		// Contact type filter
+		$criteria->compare('contact_type', 'ENQUIRY');
+	
+		// Joins
+		$criteria->select = 't.*, ads.ad_title, ads.slug as ad_slug';
+		$criteria->join = 'INNER JOIN {{place_an_ad}} ads ON ads.id = t.ad_id AND ads.isTrash = "0"';
+		if (!empty($this->section_id)) {
+			switch ($this->section_id) {
+				case 'P':
+					$criteria->compare('ads.property_status', '1');
+					break;
+				default:
+					$criteria->compare('ads.section_id', $this->section_id);
+					break;
+			}
+		}
+		$criteria->join .= ' LEFT JOIN {{listing_users}} usr2 ON usr2.user_id = ads.user_id';
+		if (!empty($this->user_id)) {
+			$criteria->addCondition('CASE WHEN usr2.parent_user IS NOT NULL THEN (usr2.parent_user = :me OR ads.user_id = :me) ELSE ads.user_id = :me END');
+			$criteria->params[':me'] = (int)$this->user_id;
+		}
+	
+		// Order by ID
+		$criteria->order = 't.id DESC';
+	
 
-       // $criteria->compare('usr2.user_id',$this->user_id );
-        $criteria->compare('contact_type','ENQUIRY');
-             $criteria->select = 't.*,ads.ad_title,ads.slug as ad_slug  '; 
-         $criteria->join = ' INNER   JOIN {{place_an_ad}} ads on ads.id = t.ad_id and  ads.isTrash="0" ';
-         if(!empty($this->section_id)){
-             switch($this->section_id){
-                case 'P':
-                    $criteria->compare('ads.property_status','1');
-                break;
-                default:
-                     $criteria->compare('ads.section_id',$this->section_id);
-                break; 
-             }
-         }
-           $criteria->join .= ' LEFT JOIN {{listing_users}} usr2 on usr2.user_id = ads.user_id ';
-           if(!empty($this->user_id)){
-			    $criteria->condition .= ' and CASE WHEN usr2.parent_user is NOT NULL THEN (usr2.parent_user = :me or   ads.user_id = :me )   ELSE     ads.user_id = :me  END '; 
-				$criteria->params[':me'] = (int)$this->user_id;
-		  }
-        $criteria->order="id desc";
-        if(!empty($return)){ return $criteria; }
-	 	return new CActiveDataProvider($this, array(
-		'criteria'=>$criteria,
-	   'pagination'    => array(
-                'pageSize'  => $this->paginationOptions->getPageSize(),
-                'pageVar'   => 'page',
-            ),
+		// Return criteria if requested
+		if (!empty($return)) {
+			return $criteria;
+		}
+	
+		// Return CActiveDataProvider
+		return new CActiveDataProvider($this, array(
+			'criteria' => $criteria,
+			'pagination' => array(
+				'pageSize' => $this->paginationOptions->getPageSize(),
+				'pageVar' => 'page',
+			),
 		));
-    }
+	}
+	
       public function getIp(){
    		$client  = @$_SERVER['HTTP_CLIENT_IP'];
 

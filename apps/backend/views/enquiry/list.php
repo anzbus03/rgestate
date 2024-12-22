@@ -40,18 +40,18 @@ if ($viewCollection->renderContent) { ?>
                 <div class="row">
                     <div class="col-md-3">
                         <?php
-                            echo CHtml::dropDownList(
-                                'section_id',
-                                $model->section_id,
-                                $model->SectionList(),
-                                array(
-                                    'empty' => 'Filter by section',
-                                    'class' => 'form-control',
-                                    'onchange' => 'updateTable(this.value)'
-                                )
-                            );
+                            // echo CHtml::dropDownList(
+                            //     'section_id',
+                            //     $model->section_id,
+                            //     $model->SectionList(),
+                            //     array(
+                            //         'empty' => 'Filter by section',
+                            //         'class' => 'form-control',
+                            //         'onchange' => 'updateTable(this.value)'
+                            //     )
+                            // );
                         ?>
-                    </div>
+                    </div> 
                     <div class="col-md-9">
                         <button type="button" id="exportExcel" class="btn btn-success btn-sm pull-right" style="margin-right: 10px;">Export to Excel</button>
                     </div>
@@ -64,21 +64,26 @@ if ($viewCollection->renderContent) { ?>
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>AD</th>
-                            <th>IP Address</th>
+                            <th>Created At</th>
                             <th>Options</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($model->search()->getData() as $data) { 
-                            ?>
-                            
+                        <?php foreach ($data as $row) { ?>
                             <tr>
-                                <td><?php echo CHtml::encode($data->name); ?></td>
-                                <td><?php echo CHtml::encode($data->email); ?></td>
-                                <td><?php echo CHtml::encode($data->phone); ?></td>
-                                <td><?php echo CHtml::decode($data->PropertyDetail); ?></td>
-                                <td><?php echo CHtml::encode($data->IpInfo); ?></td>
+                                <td><?php echo CHtml::encode($row['name']); ?></td>
+                                <td><?php echo CHtml::encode($row['email']); ?></td>
+                                <td><?php echo CHtml::encode($row['phone']); ?></td>
+                                <td>
+                                    <?php
+                                        // Ensure date is properly formatted
+                                        // $date = DateTime::createFromFormat('Y-m-d H:i:s', $row['date_added']);
+                                        // $formattedDate = $date ? $date->format('d-M-Y') : 'Invalid date';
+                                        $rawDate = $row['date_added']; // Store the raw date for sorting
+                                    ?>
+                                    <!-- <span class="formatted-date"><?php echo $formattedDate; ?></span> -->
+                                    <span class="raw-date"><?php echo $rawDate; ?></span> <!-- Hidden raw date for sorting -->
+                                </td>
                                 <td>
                                     <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/update')) { ?>
                                         <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'View'); ?>" onclick="loadthis(this, event)">
@@ -99,13 +104,13 @@ if ($viewCollection->renderContent) { ?>
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>AD</th>
-                            <th>IP Address</th>
+                            <th>Created At</th>
                             <th>Options</th>
                         </tr>
                     </tfoot>
                 </table>
             </div>
+
         </div>
     </div>
 <?php 
@@ -189,7 +194,6 @@ function updateTable(sectionId) {
     });
 }
 $(document).ready(function() {
-    
     $('#enquiries').DataTable({
         createdRow: function (row, data, index) {
             $(row).addClass('selected');
@@ -199,8 +203,17 @@ $(document).ready(function() {
                 next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
                 previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
             }
-        }
+        },
+        order: [[3, 'desc']], // Order by the 4th column (index 3), which contains the raw date
+        columnDefs: [{
+            targets: 3, // Target the "Created At" column (index 3)
+            render: function (data, type, row) {
+                // If sorting is needed, use the raw date, else display formatted date
+                return type === 'sort' ? row[3].replace(/<[^>]*>/g, '') : data; // Strip out HTML for sorting
+            }
+        }]
     });
+
     // Initialize the date range picker
     $('#dateRange').daterangepicker({
         locale: {
