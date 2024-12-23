@@ -92,30 +92,30 @@ if ($viewCollection->renderContent) {
                 )));
                 ?>
                 <div class="clearfix"><!-- --></div>
-                <div class="form-group">
+                <div class="form-group mb-4">
                     <?php echo $form->labelEx($article, 'title');?><?php echo $article->getTranslateHtml('title','ar');?>
                     <?php echo $form->textField($article, 'title', $article->getHtmlOptions('title', array('data-article-id' => (int)$article->article_id, 'data-slug-url' => $this->createUrl('articles/slug')))); ?>
                     <?php echo $form->error($article, 'title');?>
                 </div>
                 
-                <div class="form-group">
+                <div class="form-group mb-4">
                     <?php echo $form->labelEx($article, 'content');?><?php echo $article->getTranslateHtml('content','ar',false,'1200px');?>
                     <?php echo $form->textArea($article, 'content', $article->getHtmlOptions('content', array('rows' => 15))); ?>
                     <?php echo $form->error($article, 'content');?>
                 </div>
                 
-                <div class="col-lg-4">
-                      <div class="form-group">
+                <div class="row">
+                      <div class="col-lg-4 form-group">
                         <?php echo $form->labelEx($article, 'cords');?>
                         <?php echo $form->dropDownList($article, 'cords', $article->usedin(), $article->getHtmlOptions('cords')); ?>
                         <?php echo $form->error($article, 'cords');?>
                     </div>
-                    <div class="form-group slug-wrapper"<?php if (empty($article->slug)){ echo ' style="display:none"';}?>>
+                    <div class="col-lg-4 form-group slug-wrapper"<?php if (empty($article->slug)){ echo ' style="display:none"';}?>>
                         <?php echo $form->labelEx($article, 'slug');?>
                         <?php echo $form->textField($article, 'slug', $article->getHtmlOptions('slug')); ?>
                         <?php echo $form->error($article, 'slug');?>
                     </div>
-                    <div class="form-group">
+                    <div class="col-lg-4 form-group">
                         <?php echo $form->labelEx($article, 'status');?>
                         <?php echo $form->dropDownList($article, 'status', $article->getStatusesArray(), $article->getHtmlOptions('status')); ?>
                         <?php echo $form->error($article, 'status');?>

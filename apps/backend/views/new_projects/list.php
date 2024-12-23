@@ -183,7 +183,7 @@ if ($viewCollection->renderContent) { ?>
                     <?php foreach ($model->search()->getData() as $data) { ?>
                         <tr>
                             <td><input type="checkbox" class="bulk-item" value="<?php echo $data->id; ?>"></td>
-                            <td><?php echo $data->date_added ?></td>
+                            <td><?php echo date('d-M-Y', strtotime($data->date_added)); ?></td>
                             <td>
                                 <?php echo CHtml::decode($data->AdTitleWithIcons2, Yii::app()->createUrl("place_property/update", array("id" => $data->id))); ?>
                                 <div><?php echo $data->Tags; ?></div>

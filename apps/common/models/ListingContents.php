@@ -129,10 +129,7 @@ class ListingContents extends ActiveRecord
 
         return new CActiveDataProvider(get_class($this), array(
             'criteria'      => $criteria,
-            'pagination'    => array(
-                'pageSize'  => $this->paginationOptions->getPageSize(),
-                'pageVar'   => 'page',
-            ),
+            'pagination'    => false,
             'sort'  => array(
                 'defaultOrder' => array(
                     'article_id' => CSort::SORT_DESC,
