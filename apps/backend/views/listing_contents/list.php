@@ -83,7 +83,7 @@ if ($viewCollection->renderContent) { ?>
                                 <td><?php echo $data->getCityText(); ?></td>
                                 <td><?php echo CHtml::encode($data->sectionName); ?></td>
                                 <td><?php echo CHtml::encode($data->p_typeName); ?></td>
-                                <td><?php echo CHtml::encode($data->dateAdded); ?></td>
+                                <td><?php echo CHtml::encode(date('d-M-Y', strtotime($data->dateAdded))); ?></td>
                                 <td>
                                     <?php if (AccessHelper::hasRouteAccess($this->id.'/view')): ?>
                                         <a href="<?php echo $data->permalink; ?>" class="btn btn-sm p-1" target="_blank" title="<?php echo Yii::t('app', 'View'); ?>">
