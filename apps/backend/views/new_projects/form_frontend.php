@@ -314,7 +314,6 @@ background:
                 <div class="clearfix"><!-- --></div>
                   <div class="subhead font_s ros subhead2">Property Type and Location</div>
                 
-                   <div class="clearfix"><!-- --></div>
                 <div class="form-group col-lg-3 no-front ">
                    <?php echo $form->labelEx($model, 'country');?>
                     <?php echo $form->dropDownList($model, 'country',Countries::model()->ListData(), $model->getHtmlOptions('country',array('empty'=>'Select Country','class'=>'form-control select2','data-url'=>Yii::App()->createUrl($this->id.'/select_city_new'),'onchange'=>'load_via_ajax(this,"state")'))); ?>
@@ -545,6 +544,13 @@ background:
 										echo $form->labelEx($model, 'landline');?>
 										<?php echo $form->textField($model, 'landline', $model->getHtmlOptions('landline')); ?>
 										<?php echo $form->error($model, 'landline');?>
+										</div> 
+											<div class="form-group col-lg-3">
+										<?php 
+									 
+										echo $form->labelEx($model, 'salesman_email');?>
+										<?php echo $form->textField($model, 'salesman_email', $model->getHtmlOptions('salesman_email')); ?>
+										<?php echo $form->error($model, 'salesman_email');?>
 										</div> 
 										 
 										 	 <div class="form-group col-lg-6 no-front">

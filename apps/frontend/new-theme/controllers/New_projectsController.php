@@ -69,6 +69,8 @@ class New_projectsController   extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+		// print_r($request->getPost("NewDevelopment"));
+		// exit;
 		if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
 			$model->attributes = $attributes;
 			if (isset(Yii::app()->params['POST'][$model->modelName]['ad_description'])) {
@@ -112,7 +114,8 @@ class New_projectsController   extends Controller
                         'SECOND_NAME' => $lastName,
                         "TYPE_ID" => "CLIENT",
                         "SOURCE_ID" => "SELF",
-                        "PHONE" => [[ "VALUE" => $requestParms['mobile_number'], "VALUE_TYPE" => "WORK" ]]
+                        "PHONE" => [[ "VALUE" => $requestParms['mobile_number'], "VALUE_TYPE" => "WORK" ]],
+						"EMAIL" => [[ "VALUE" => $requestParms['salesman_email'], "VALUE_TYPE" => "WORK" ]],
                     ],
                 ];
                 $postCustomerData = http_build_query($crmCustomerData);
@@ -189,11 +192,7 @@ class New_projectsController   extends Controller
 				$notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
 								
 				$this->redirect(Yii::App()->createUrl(
-					$this->id . '/Success_posted', 
-					[
-						'name' => $fullName,
-						'email' => $requestParms['mobile_number'],
-					]
+					$this->id . '/Success_posted'
 				));
 			}
 		}
