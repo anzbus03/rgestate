@@ -180,15 +180,15 @@ class ListingController extends Controller
 			$newMetaKeywords = $this->app->options->get('system.common.devpage_meta_keywords', 'New Projects');
 			$newMetaDescription = $this->app->options->get('system.common.devpage_meta_description', 'New Projects');
 		} else if (strpos($url_request, 'property-for-sale') !== false || strpos($url_request, 'for-sale') !== false || strpos($url_request, 'preleased') !== false) {
-			$newMetaTitle =  $this->app->options->get('system.common.buypage_meta_title', 'for sale');
+			$newMetaTitle =  $this->app->options->get('system.common.buypage_meta_title', 'Properties for sale');
 			$newMetaKeywords = $this->app->options->get('system.common.buypage_meta_keywords');
 			$newMetaDescription = $this->app->options->get('system.common.buypage_meta_description');
 		} else if (strpos($url_request, 'property-for-rent') !== false  || strpos($url_request, 'to-sale') !== false) {
-			$newMetaTitle = $this->app->options->get('system.common.rentpage_meta_title', 'for rent');
+			$newMetaTitle = $this->app->options->get('system.common.rentpage_meta_title', 'Properties for rent');
 			$newMetaKeywords = $this->app->options->get('system.common.rentpage_meta_keywords');
 			$newMetaDescription = $this->app->options->get('system.common.rentpage_meta_description');
 		} else if (strpos($url_request, 'wanted') !== false) {
-			$newMetaTitle = $this->app->options->get('system.common.wanted_page_meta_title', 'Wanted');
+			$newMetaTitle = $this->app->options->get('system.common.wanted_page_meta_title', 'Properties Wanted');
 			$newMetaKeywords = $this->app->options->get('system.common.wanted_page_meta_keywords');
 			$newMetaDescription = $this->app->options->get('system.common.wanted_page_meta_description');
 		} else if ($url_request == '/real-estate-agents') {
@@ -395,7 +395,7 @@ class ListingController extends Controller
 			if ($filterModel->section_id != 'new-development') {
 				$m_title  .=  $categoryModelm->PluralName;
 				if (!isset($formData['type_of'])) {
-					// $m_title  .=  '  ' . $this->tag->getTag('properties', '');
+					$m_title  .=  '  ' . $this->tag->getTag('properties', 'Properties');
 				}
 			} else {
 				$m_title  .=  $categoryModelm->category_name;
