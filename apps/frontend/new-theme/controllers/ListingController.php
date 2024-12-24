@@ -224,6 +224,7 @@ class ListingController extends Controller
 		$main = '';
 
 		if (isset($formData['type_of']) and sizeOf($formData['type_of']) == '1') {
+
 			$category_id = $formData['type_of'];
 			if (strpos($category_id, '_') !== false) {
 				$str = explode('_', $category_id);
@@ -400,7 +401,6 @@ class ListingController extends Controller
 				$m_title  .=  $categoryModelm->category_name;
 			}
 		}
-
 		if ($categoryModelm->category_id == '181') {
 			$m_title = 'Business';
 		}
@@ -426,14 +426,7 @@ class ListingController extends Controller
 						$this->sec_id = 'commercial';
 					}
 					break;
-
 			}
-		}
-		// print_r($formData);
-		if ($formData['category'] == 'land'){
-			$m_title = "Lands";
-		}else if ($formData['category'] == 'retail'){
-			$m_title = "Retails";
 		}
 		if (empty($m_title)) {
 			$m_title = $filterModel->SectionViewTitle;
