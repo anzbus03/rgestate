@@ -395,7 +395,7 @@ class ListingController extends Controller
 			if ($filterModel->section_id != 'new-development') {
 				$m_title  .=  $categoryModelm->PluralName;
 				if (!isset($formData['type_of'])) {
-					$m_title  .=  '  ' . $this->tag->getTag('properties', 'Properties');
+					// $m_title  .=  '  ' . $this->tag->getTag('properties', '');
 				}
 			} else {
 				$m_title  .=  $categoryModelm->category_name;
