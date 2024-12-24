@@ -4478,10 +4478,10 @@ class BusinessForSale extends ActiveRecord
 			return $this->mTag()->getTag('explore', 'Explore');
 		} else {
 			if ($this->section_id == 'property-for-sale') {
-				return $this->mTag()->getTag('properties_for_sale', 'Properties for sale');
+				return $this->mTag()->getTag('properties_for_sale', 'for sale');
 			}
 			if ($this->section_id == 'property-for-rent') {
-				return $this->mTag()->getTag('properties_for_rent', 'Properties for rent');
+				return $this->mTag()->getTag('properties_for_rent', 'for rent');
 			}
 			if ($this->section_id == 'new-development') {
 				return $this->mTag()->getTag('new_developments', 'New developments');

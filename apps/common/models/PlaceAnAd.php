@@ -4384,10 +4384,10 @@ class PlaceAnAd extends ActiveRecord
 			return $this->mTag()->getTag('explore', 'Explore');
 		} else {
 			if ($this->section_id == 'property-for-sale') {
-				return $this->mTag()->getTag('properties_for_sale', 'Properties for sale');
+				return $this->mTag()->getTag('properties_for_sale', 'for sale');
 			}
 			if ($this->section_id == 'property-for-rent') {
-				return $this->mTag()->getTag('properties_for_rent', 'Properties for rent');
+				return $this->mTag()->getTag('properties_for_rent', 'for rent');
 			}
 			if ($this->section_id == 'new-development') {
 				return $this->mTag()->getTag('new_projects', 'New Projects');
@@ -6485,13 +6485,13 @@ class PlaceAnAd extends ActiveRecord
 		}
 		switch ($data['sec']) {
 			case 'property-for-sale':
-				$titlte =  !empty($category) ? Yii::t('app', $this->mTag()->getTag('{c}_for_sale_in_{l}', '{c} for sale in {l}'), array('{c}' => '<span>' . $category . '</span>'))   :  $this->mTag()->getTag('properties_for_sale_in_{l}', 'Properties for sale in {l}');
+				$titlte =  !empty($category) ? Yii::t('app', $this->mTag()->getTag('{c}_for_sale_in_{l}', '{c} for sale in {l}'), array('{c}' => '<span>' . $category . '</span>'))   :  $this->mTag()->getTag('properties_for_sale_in_{l}', 'for sale in {l}');
 				break;
 			case 'property-for-rent':
-				$titlte = !empty($category) ?  Yii::t('app', $this->mTag()->getTag('{c}_for_rent_in_{l}', '{c} for rent in {l}'), array('{c}' => '<span>' . $category . '</span>')) : $this->mTag()->getTag('properties_for_rent_in_{l}', 'Properties for rent in {l}');
+				$titlte = !empty($category) ?  Yii::t('app', $this->mTag()->getTag('{c}_for_rent_in_{l}', '{c} for rent in {l}'), array('{c}' => '<span>' . $category . '</span>')) : $this->mTag()->getTag('properties_for_rent_in_{l}', 'for rent in {l}');
 				break;
 			default:
-				$titlte =  !empty($category) ? Yii::t('app', $this->mTag()->getTag('{c}_in_{l}', '{c} in {l}'), array('{c}' => '<span>' . $category . '</span>')) :  $this->mTag()->getTag('properties_for_rent_in_{l}', 'Properties in {l}');
+				$titlte =  !empty($category) ? Yii::t('app', $this->mTag()->getTag('{c}_in_{l}', '{c} in {l}'), array('{c}' => '<span>' . $category . '</span>')) :  $this->mTag()->getTag('properties_for_rent_in_{l}', 'in {l}');
 				break;
 		}
 		$ar = array();
