@@ -13,6 +13,7 @@ class ListingController extends Controller
 
 	public function actionIndex($country = null, $state = null, $city = null, $type = null, $community = null, $sec = null, $category = null, $dealer = null, $loc = null)
 	{
+		// print_r($_GET);
 		define('ITS_LIST_PAGE', '1');
 		if (isset($_GET['reg'])) {
 			if (!isset($_GET['state'])) {
@@ -394,7 +395,7 @@ class ListingController extends Controller
 			//    if($categoryModelm->category_id=='181' and  LANGUAGE =='en'){$s_suffix='';}
 			if ($filterModel->section_id != 'new-development') {
 				$m_title  .=  $categoryModelm->PluralName;
-				if (!isset($formData['type_of'])) {
+				if (!isset($formData['type_of']) && ($formData['category'] != "land" && $formData['category'] != "retail")) {
 					$m_title  .=  '  ' . $this->tag->getTag('properties', 'Properties');
 				}
 			} else {
@@ -404,6 +405,8 @@ class ListingController extends Controller
 		if ($categoryModelm->category_id == '181') {
 			$m_title = 'Business';
 		}
+		// print_r($main);
+		// exit;
 		if (!empty($main)) {
 			switch ($main) {
 				case 'residential':

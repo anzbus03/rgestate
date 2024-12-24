@@ -763,9 +763,15 @@ $selected_text = isset($section[$selected]) ? $section[$selected] :  $this->tag-
 																					if(isset($formData['category']) and $formData['category']== 'residential'  ){
 																					  	$tab_id =  '1' ;  
 																					  	$select_id = 'residential';
-																					}else{
-																				$tab_id = 1; 
-																				$select_id = 'commercial';
+																					}else if (isset($formData['category']) and $formData['category']== 'commercial'){
+                                                                                        $tab_id = 1; 
+                                                                                        $select_id = 'commercial';
+																					}else if (isset($formData['category']) and $formData['category']== 'land'){
+                                                                                        $tab_id = 1; 
+                                                                                        $select_id = 'land';
+																					}else if (isset($formData['category']) and $formData['category']== 'retail'){
+                                                                                        $tab_id = 1; 
+                                                                                        $select_id = 'retail';
 																					}
 																				foreach($categories as $k2=>$v2){
 																					if($k2=='Mixed Use'){ continue; }
@@ -794,7 +800,7 @@ $selected_text = isset($section[$selected]) ? $section[$selected] :  $this->tag-
 																								
 																						foreach($v2 as $k=>$v){
 																						 $checked ='';  
-																						 $vval = in_array($k,array('residential','commercial')) ? 'all' : $k; 
+																						 $vval = in_array($k,array('residential','commercial','land','retail')) ? 'all' : $k; 
 																							 $time = rand(0,1000);
 																							$title_h = $v;
 																							 if($vval=='all' and $formData['category']==$k ){  $checked =  'checked="true"'; echo "<script>$('#listing-type-prop').addClass('filter-button_active-m'); $('#ptype').html('".$title_h."');$('#checkbox-grid-".$k2."').addClass('grid-opened');</script>"; }else{  

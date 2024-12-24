@@ -963,14 +963,14 @@ public function beforeSave(){
 		 return $ar ;
 	}
 	public function  ListDataForJSON_ID_BySEctionNewSlugNtCache($section){
-		$cacheKey =  'category_cacheslug1291'.Yii::app()->options->get('system.common.category_cache','12').$section;
-		if(defined('LANGUAGE')){$cacheKey .= LANGUAGE ;   }
-		if ($items = Yii::app()->cache->get($cacheKey) and !isset($_GET['refresh'])) {
+		// $cacheKey =  'category_cacheslug1291'.Yii::app()->options->get('system.common.category_cache','12').$section;
+		// if(defined('LANGUAGE')){$cacheKey .= LANGUAGE ;   }
+		// if ($items = Yii::app()->cache->get($cacheKey) and !isset($_GET['refresh'])) {
 			
-			 return $items;
-		}  
+		// 	 return $items;
+		// }  
 		$items = $this->ListDataForJSON_ID_BySEctionNewSlugNt($section);
-		Yii::app()->cache->set($cacheKey, $items,60 * 60 * 24 * 360  );
+		// Yii::app()->cache->set($cacheKey, $items,60 * 60 * 24 * 360  );
 		return $items; 
 	}
 	public function  ListDataForJSON_ID_BySEctionNewSlugNtCacheWithId($section=null){
