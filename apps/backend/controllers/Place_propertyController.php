@@ -3559,11 +3559,15 @@ class Place_propertyController  extends Controller
                 if (empty($data[0])){
                     $data[0]    = 'PID_' . rand(100000, 999999);
                 }
-                $cleaned_text = mb_substr(preg_replace('/[^\w\s]/', '', $data[13]), 0, 80);
-                $baseSlug = strtolower(trim(str_replace(' ', '-', $cleaned_text), '-'));
-                $slug = $baseSlug;
-                while (PlaceAnAd::model()->exists('slug=:slug', [':slug' => $slug])) {
-                    $slug = $baseSlug . '-' . rand(100, 999);
+                if (!$existingAd){
+                    $cleaned_text = mb_substr(preg_replace('/[^\w\s]/', '', $data[13]), 0, 80);
+                    $baseSlug = strtolower(trim(str_replace(' ', '-', $cleaned_text), '-'));
+                    $slug = $baseSlug;
+                    while (PlaceAnAd::model()->exists('slug=:slug', [':slug' => $slug])) {
+                        $slug = $baseSlug . '-' . rand(100, 999);
+                    }
+                }else {
+                    $slug = $existingAd->slug;
                 }
                 $stateName = $data[11];
                 if (!isset($statesMap[$stateName])) {
