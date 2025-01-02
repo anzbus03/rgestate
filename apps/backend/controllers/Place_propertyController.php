@@ -3520,20 +3520,24 @@ class Place_propertyController  extends Controller
             $categoryNames = array_unique(array_filter(array_column($excelData, 8), fn($value) => !empty($value)));
             $categoryTypes = array_unique(array_filter(array_column($excelData, 7), fn($value) => !empty($value)));
             $stateNames = array_unique(array_filter(array_column($excelData, 11), fn($value) => !empty($value)));
+            $stateSlugs = array_unique(array_map(
+                fn($stateName) => $this->generateSlug($stateName), 
+                array_filter(array_column($excelData, 11), fn($value) => !empty($value))
+            ));
             $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 39), fn($value) => !empty($value))));
             
             // Fetch data in bulk
             $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'P']);
             $types = Category::model()->findAllByAttributes(['category_name' => $categoryTypes, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'C']);
-            $states = States::model()->findAllByAttributes(['state_name' => $stateNames, 'isTrash' => '0']);
+            $states = States::model()->findAllByAttributes(['slug' => $stateSlugs, 'isTrash' => '0']);
             $users = User::model()->findAllByAttributes(['email' => $userEmails]);
     
             // Map data for quick lookup
             $adsMap = array_column($ads, null, 'RefNo');
             $categoriesMap = array_column($categories, null, 'category_name');
             $typesMap = array_column($types, null, 'category_name');
-            $statesMap = array_column($states, null, 'state_name');
+            $statesMap = array_column($states, null, 'slug');
             $usersMap = array_column($users, null, 'email');
     
             // Prepare data for batch processing
@@ -3570,23 +3574,22 @@ class Place_propertyController  extends Controller
                     $slug = $existingAd->slug;
                 }
                 $stateName = $data[11];
-                if (!isset($statesMap[$stateName])) {
+                $stateSlug = $this->generateSlug($stateName);
+                if (!isset($statesMap[$stateSlug])) {
                     // Insert new state
-                    $slug = strtolower(trim(str_replace(' ', '-', preg_replace('/[^\w\s]/', '', $stateName)), '-'));
-                    
-                    $region = MainRegion::model()->findByAttributes(['name' => $data[10]]);
+                    $region = MainRegion::model()->findByAttributes(['slug' => $stateSlug]);
                     $regionId = $region ? $region->region_id : null;
-
+                
                     $newState = new States();
                     $newState->state_name = $stateName;
                     $newState->country_id = 66124;
                     $newState->isTrash = 0;
-                    $newState->slug = $slug;
+                    $newState->slug = $stateSlug;
                     $newState->region_id = $regionId;
                     $newState->save();
-            
-                    // Update `statesMap` with new state
-                    $statesMap[$stateName] = $newState;
+                
+                    // Update `statesMap` with the new state
+                    $statesMap[$stateSlug] = $newState;
                 }
                 $record = [
                     'uid' => $data[0],
@@ -3600,7 +3603,7 @@ class Place_propertyController  extends Controller
                     'PropertyID' => $data[5],
                     'ad_description' => $data[14],
                     'date_added' => $dateAdded,
-                    'state' => $statesMap[$stateName]->state_id ?? 0,
+                    'state' => $statesMap[$stateSlug]->state_id ?? 0,
                     'user_id' => $usersMap[$data[39]]->user_id ?? 31988,
                     'status' => ($data[36] == "Active") ? "A" : "I",
                     'availability' => ($data[35] == "Sold Out" ? "sold_out" : ($data[35] == "Leased Out" ? "lease_out" : null)),
@@ -3686,6 +3689,12 @@ class Place_propertyController  extends Controller
             echo json_last_error_msg();
             exit;
         }
+    }
+
+    public function generateSlug($text) {
+        $cleanedText = preg_replace('/[^\w\s]/', '', $text); // Remove special characters
+        $slug = strtolower(trim(str_replace(' ', '-', $cleanedText), '-')); // Convert to kebab-case
+        return $slug;
     }
     
     private function batchInsert($table, $columns, $rows){
