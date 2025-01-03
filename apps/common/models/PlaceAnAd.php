@@ -2962,21 +2962,21 @@ class PlaceAnAd extends ActiveRecord
 	}
 	function generateImageWaterMark($image = null, $width = null, $height = null, $opacity = 60, $water_size = 10)
 	{
-		// if (defined('offline')) {
-		// 	$image = '/new_assets/images/logoo.svg';
-		// }
-		// switch ($water_size) {
-		// 	case '10':
-		// 		$marker = '/new_assets/images/logoo.svg';
-		// 		break;
-		// 	case '20':
-		// 		$marker = '/new_assets/images/logoo.svg';
-		// 		break;
-		// 	default:
-		// 		$marker = '/new_assets/images/logoo.svg';
-		// 		break;
-		// }
-		return Yii::app()->apps->getBaseUrl('/new_assets/images/logoo.svg');
+		if (defined('offline')) {
+			$image = '/new_assets/images/logoo.svg';
+		}
+		switch ($water_size) {
+			case '10':
+				$marker = '/new_assets/images/logoo.svg';
+				break;
+			case '20':
+				$marker = '/new_assets/images/logoo.svg';
+				break;
+			default:
+				$marker = '/new_assets/images/logoo.svg';
+				break;
+		}
+		return Yii::app()->apps->getBaseUrl('uploads/files/' . $image);
 		if (empty($width) and empty($height)) {
 
 			return   Yii::app()->easyImage->thumbSrcOf(
