@@ -2965,6 +2965,7 @@ class PlaceAnAd extends ActiveRecord
 		if (defined('offline')) {
 			$image = '/new_assets/images/logoo.svg';
 		}
+
 		switch ($water_size) {
 			case '10':
 				$marker = '/new_assets/images/logoo.svg';
@@ -2976,29 +2977,45 @@ class PlaceAnAd extends ActiveRecord
 				$marker = '/new_assets/images/logoo.svg';
 				break;
 		}
-		return Yii::app()->apps->getBaseUrl('uploads/files/' . $image);
-		if (empty($width) and empty($height)) {
 
-			return   Yii::app()->easyImage->thumbSrcOf(
-				Yii::getpathOfAlias('root')  . '/uploads/files/' . $image,
+		$imagePath = Yii::getPathOfAlias('root') . '/uploads/files/' . $image;
+		$watermarkPath = Yii::getPathOfAlias('root') . $marker;
+
+		// Check if files exist
+		if (!file_exists($imagePath) || !file_exists($watermarkPath)) {
+			return Yii::app()->apps->getBaseUrl('uploads/files/' . $image);
+		}
+
+		// Apply watermark if dimensions are specified
+		if (!empty($width) || !empty($height)) {
+			return Yii::app()->easyImage->thumbSrcOf(
+				$imagePath,
 				array(
-					//	'watermark' => array('watermark' =>'/watermark/'.$marker , 'opacity' => $opacity ), 
-					'sharpen' =>  0,
+					'resize' => array('width' => $width, 'height' => $height, "master" => EasyImage::RESIZE_AUTO),
+					'watermark' => array(
+						'watermark' => $watermarkPath,
+						'opacity' => $opacity,
+						'top' => 'bottom',
+						'left' => 'right',
+					),
+					'sharpen' => 0,
 					'background' => '#fff',
 					'type' => 'jpg',
 					'quality' => 95
 				)
 			);
 		}
-		return Yii::app()->apps->getBaseUrl('uploads/files/' . $image);
-		return   Yii::app()->easyImage->thumbSrcOf(
-			Yii::getpathOfAlias('root')  . '/uploads/files/' . $image,
-			array(
-				'resize' => array('width' => $width, 'height' => $height, "master" => EasyImage::RESIZE_AUTO),
-				//'watermark' => array('watermark' =>'/watermark/'.$marker , 'opacity' => $opacity ), 
-				// 'scaleAndCrop' => array('width' => $width, 'height' => $height),
-				// 'resize' => array('width' => $width, 'height' =>$height,"master"=>EasyImage::RESIZE_AUTO),															
 
+		// Apply watermark without resizing
+		return Yii::app()->easyImage->thumbSrcOf(
+			$imagePath,
+			array(
+				'watermark' => array(
+					'watermark' => $watermarkPath,
+					'opacity' => $opacity,
+					'top' => 'bottom',
+					'left' => 'right',
+				),
 				'sharpen' => 0,
 				'background' => '#fff',
 				'type' => 'jpg',
@@ -3006,6 +3023,7 @@ class PlaceAnAd extends ActiveRecord
 			)
 		);
 	}
+
 
 	public $approved_status;
 	public function getAd_image()
