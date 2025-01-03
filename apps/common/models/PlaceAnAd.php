@@ -2960,37 +2960,20 @@ class PlaceAnAd extends ActiveRecord
 		}
 		return $html;
 	}
-	function watermark_image($target, $wtrmrk_file, $newcopy) {
-		$watermark = imagecreatefrompng($wtrmrk_file);
-		imagealphablending($watermark, false);
-		imagesavealpha($watermark, true);
-		$img = imagecreatefromjpeg($target);
-		$img_w = imagesx($img);
-		$img_h = imagesy($img);
-		$wtrmrk_w = imagesx($watermark);
-		$wtrmrk_h = imagesy($watermark);
-		$dst_x = ($img_w / 2) - ($wtrmrk_w / 2); // For centering the watermark on any image
-		$dst_y = ($img_h / 2) - ($wtrmrk_h / 2); // For centering the watermark on any image
-		imagecopy($img, $watermark, $dst_x, $dst_y, 0, 0, $wtrmrk_w, $wtrmrk_h);
-		imagejpeg($img, $newcopy, 100);
-		imagedestroy($img);
-		imagedestroy($watermark);
-	}
-	
 	function generateImageWaterMark($image = null, $width = null, $height = null, $opacity = 60, $water_size = 10)
 	{
 		if (defined('offline')) {
-			$image = '/new_assets/images/logoo.svg';
+			$image = '0919_1567488950Untitled_.jpg';
 		}
 		switch ($water_size) {
 			case '10':
-				$marker = '/new_assets/images/logoo.svg';
+				$marker = '50-ArabAvenueLogo.png';
 				break;
 			case '20':
-				$marker = '/new_assets/images/logoo.svg';
+				$marker = '50-ArabAvenueLogo.png';
 				break;
 			default:
-				$marker = '/new_assets/images/logoo.svg';
+				$marker = 'logo-watermark-icon.png';
 				break;
 		}
 		return Yii::app()->apps->getBaseUrl('uploads/files/' . $image);
@@ -3045,11 +3028,10 @@ class PlaceAnAd extends ActiveRecord
 			if (!empty($data)) {
 
 				$this->approved_status = 1;
-				return $this->watermark_image($this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10),Yii::app()->apps->getBaseUrl('/new_assets/images/logoNew.png'), 'new_image_name.jpg');
+				return $this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10);
 			}
 		} else {
-			return $this->watermark_image('/new_assets/images/mgrey.jpg',Yii::app()->apps->getBaseUrl('/new_assets/images/logoNew.png'), 'new_image_name.jpg');
-			// return ;
+			return '/new_assets/images/mgrey.jpg';
 		}
 	}
 	public $location_image;

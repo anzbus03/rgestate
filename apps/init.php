@@ -1,5 +1,5 @@
 <?php defined('MW_APP_NAME') || exit('No direct script access allowed');
-//  define('MW_FORCE_DEBUG_MODE',1);
+ define('MW_FORCE_DEBUG_MODE',1);
 // if debug mode is forced then go with it
 if (defined('MW_FORCE_DEBUG_MODE') && MW_FORCE_DEBUG_MODE) {
     error_reporting(1);
