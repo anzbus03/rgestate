@@ -2960,12 +2960,28 @@ class PlaceAnAd extends ActiveRecord
 		}
 		return $html;
 	}
+	function watermark_image($target, $wtrmrk_file, $newcopy) {
+		$watermark = imagecreatefrompng($wtrmrk_file);
+		imagealphablending($watermark, false);
+		imagesavealpha($watermark, true);
+		$img = imagecreatefromjpeg($target);
+		$img_w = imagesx($img);
+		$img_h = imagesy($img);
+		$wtrmrk_w = imagesx($watermark);
+		$wtrmrk_h = imagesy($watermark);
+		$dst_x = ($img_w / 2) - ($wtrmrk_w / 2); // For centering the watermark on any image
+		$dst_y = ($img_h / 2) - ($wtrmrk_h / 2); // For centering the watermark on any image
+		imagecopy($img, $watermark, $dst_x, $dst_y, 0, 0, $wtrmrk_w, $wtrmrk_h);
+		imagejpeg($img, $newcopy, 100);
+		imagedestroy($img);
+		imagedestroy($watermark);
+	}
+	
 	function generateImageWaterMark($image = null, $width = null, $height = null, $opacity = 60, $water_size = 10)
 	{
 		if (defined('offline')) {
 			$image = '/new_assets/images/logoo.svg';
 		}
-
 		switch ($water_size) {
 			case '10':
 				$marker = '/new_assets/images/logoo.svg';
@@ -2977,45 +2993,29 @@ class PlaceAnAd extends ActiveRecord
 				$marker = '/new_assets/images/logoo.svg';
 				break;
 		}
+		return Yii::app()->apps->getBaseUrl('uploads/files/' . $image);
+		if (empty($width) and empty($height)) {
 
-		$imagePath = Yii::getPathOfAlias('root') . '/uploads/files/' . $image;
-		$watermarkPath = Yii::getPathOfAlias('root') . $marker;
-
-		// Check if files exist
-		if (!file_exists($imagePath) || !file_exists($watermarkPath)) {
-			return Yii::app()->apps->getBaseUrl('uploads/files/' . $image);
-		}
-
-		// Apply watermark if dimensions are specified
-		if (!empty($width) || !empty($height)) {
-			return Yii::app()->easyImage->thumbSrcOf(
-				$imagePath,
+			return   Yii::app()->easyImage->thumbSrcOf(
+				Yii::getpathOfAlias('root')  . '/uploads/files/' . $image,
 				array(
-					'resize' => array('width' => $width, 'height' => $height, "master" => EasyImage::RESIZE_AUTO),
-					'watermark' => array(
-						'watermark' => $watermarkPath,
-						'opacity' => $opacity,
-						'top' => 'bottom',
-						'left' => 'right',
-					),
-					'sharpen' => 0,
+					//	'watermark' => array('watermark' =>'/watermark/'.$marker , 'opacity' => $opacity ), 
+					'sharpen' =>  0,
 					'background' => '#fff',
 					'type' => 'jpg',
 					'quality' => 95
 				)
 			);
 		}
-
-		// Apply watermark without resizing
-		return Yii::app()->easyImage->thumbSrcOf(
-			$imagePath,
+		return Yii::app()->apps->getBaseUrl('uploads/files/' . $image);
+		return   Yii::app()->easyImage->thumbSrcOf(
+			Yii::getpathOfAlias('root')  . '/uploads/files/' . $image,
 			array(
-				'watermark' => array(
-					'watermark' => $watermarkPath,
-					'opacity' => $opacity,
-					'top' => 'bottom',
-					'left' => 'right',
-				),
+				'resize' => array('width' => $width, 'height' => $height, "master" => EasyImage::RESIZE_AUTO),
+				//'watermark' => array('watermark' =>'/watermark/'.$marker , 'opacity' => $opacity ), 
+				// 'scaleAndCrop' => array('width' => $width, 'height' => $height),
+				// 'resize' => array('width' => $width, 'height' =>$height,"master"=>EasyImage::RESIZE_AUTO),															
+
 				'sharpen' => 0,
 				'background' => '#fff',
 				'type' => 'jpg',
@@ -3023,7 +3023,6 @@ class PlaceAnAd extends ActiveRecord
 			)
 		);
 	}
-
 
 	public $approved_status;
 	public function getAd_image()
@@ -3046,10 +3045,11 @@ class PlaceAnAd extends ActiveRecord
 			if (!empty($data)) {
 
 				$this->approved_status = 1;
-				return $this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10);
+				return $this->watermark_image($this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10),Yii::app()->apps->getBaseUrl('/new_assets/images/logoNew.png'), 'new_image_name.jpg');
 			}
 		} else {
-			return '/new_assets/images/mgrey.jpg';
+			return $this->watermark_image('/new_assets/images/mgrey.jpg',Yii::app()->apps->getBaseUrl('/new_assets/images/logoNew.png'), 'new_image_name.jpg');
+			// return ;
 		}
 	}
 	public $location_image;
