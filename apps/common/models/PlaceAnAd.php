@@ -2960,20 +2960,22 @@ class PlaceAnAd extends ActiveRecord
 		}
 		return $html;
 	}
+	
+	
 	function generateImageWaterMark($image = null, $width = null, $height = null, $opacity = 60, $water_size = 10)
 	{
 		if (defined('offline')) {
-			$image = '0919_1567488950Untitled_.jpg';
+			$image = '/new_assets/images/logoo.svg';
 		}
 		switch ($water_size) {
 			case '10':
-				$marker = '50-ArabAvenueLogo.png';
+				$marker = '/new_assets/images/logoo.svg';
 				break;
 			case '20':
-				$marker = '50-ArabAvenueLogo.png';
+				$marker = '/new_assets/images/logoo.svg';
 				break;
 			default:
-				$marker = 'logo-watermark-icon.png';
+				$marker = '/new_assets/images/logoo.svg';
 				break;
 		}
 		return Yii::app()->apps->getBaseUrl('uploads/files/' . $image);
@@ -3028,12 +3030,150 @@ class PlaceAnAd extends ActiveRecord
 			if (!empty($data)) {
 
 				$this->approved_status = 1;
-				return $this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10);
+				// return $this->watermark_image($this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10),Yii::app()->apps->getBaseUrl('/new_assets/images/logoNew.png'), 'new_image_name.jpg');
 			}
 		} else {
-			return '/new_assets/images/mgrey.jpg';
+			return $this->getAdImageWithWatermark('/new_assets/images/mgrey.jpg');
 		}
 	}
+	public function getAdImageWithWatermark($imageName = null, $watermarkPath = '/new_assets/images/logoNew.png')
+	{
+		// if (!$imageName) {
+		// 	return $this->generateImageWaterMark('/new_assets/images/mgrey.jpg');
+		// }
+
+		$imagePath = Yii::getPathOfAlias('webroot') . $imageName;
+		$watermarkFullPath = Yii::getPathOfAlias('webroot') . $watermarkPath;
+
+		if (!file_exists($imagePath)) {
+			Yii::log('Image file does not exist: ' . $imagePath, 'error');
+			return $imageName; // Return the original image name if it doesn't exist
+		}
+
+		if (!file_exists($watermarkFullPath)) {
+			Yii::log('Watermark file does not exist: ' . $watermarkFullPath, 'error');
+			return $imageName; // Return the original image name if watermark is missing
+		}
+
+		// Apply watermark
+		$watermarkedImage = $this->applyWatermark($imagePath, $watermarkFullPath);
+		if (!$watermarkedImage) {
+			Yii::log('Failed to apply watermark on: ' . $imagePath, 'error');
+			return $imageName; // Return the original image name if watermarking fails
+		}
+
+		return $imageName; // Return the path of the watermarked image
+	}
+
+	private function applyWatermark($imagePath, $watermarkPath)
+	{
+		$extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+		$image = null;
+	
+		// Load the image based on its extension
+		switch (strtolower($extension)) {
+			case 'jpg':
+			case 'jpeg':
+				$image = imagecreatefromjpeg($imagePath);
+				break;
+			case 'png':
+				$image = imagecreatefrompng($imagePath);
+				break;
+			default:
+				Yii::log('Unsupported image type: ' . $extension, 'error');
+				return false;
+		}
+	
+		if (!$image) {
+			Yii::log('Failed to load image: ' . $imagePath, 'error');
+			return false;
+		}
+	
+		$watermark = imagecreatefrompng($watermarkPath);
+	
+		if (!$watermark) {
+			Yii::log('Failed to load watermark: ' . $watermarkPath, 'error');
+			imagedestroy($image);
+			return false;
+		}
+	
+		// Get dimensions
+		$imageWidth = imagesx($image);
+		$imageHeight = imagesy($image);
+		$watermarkWidth = imagesx($watermark);
+		$watermarkHeight = imagesy($watermark);
+	
+		// Resize watermark to 10% of image width
+		$targetWatermarkWidth = $imageWidth * 0.1; // 10% of image width
+		$scalingFactor = $targetWatermarkWidth / $watermarkWidth;
+		$targetWatermarkHeight = $watermarkHeight * $scalingFactor;
+	
+		$resizedWatermark = imagecreatetruecolor($targetWatermarkWidth, $targetWatermarkHeight);
+		imagesavealpha($resizedWatermark, true);
+		$transparency = imagecolorallocatealpha($resizedWatermark, 0, 0, 0, 127);
+		imagefill($resizedWatermark, 0, 0, $transparency);
+	
+		imagecopyresampled(
+			$resizedWatermark,
+			$watermark,
+			0, 0, 0, 0,
+			$targetWatermarkWidth,
+			$targetWatermarkHeight,
+			$watermarkWidth,
+			$watermarkHeight
+		);
+	
+		imagedestroy($watermark);
+		$watermark = $resizedWatermark;
+		$watermarkWidth = $targetWatermarkWidth;
+		$watermarkHeight = $targetWatermarkHeight;
+	
+		// Calculate watermark position (10px margin from bottom-right corner)
+		$xPosition = $imageWidth - $watermarkWidth - 10;
+		$yPosition = $imageHeight - $watermarkHeight - 10;
+	
+		// Apply the watermark
+		imagecopy($image, $watermark, $xPosition, $yPosition, 0, 0, $watermarkWidth, $watermarkHeight);
+	
+		// Overwrite the original image
+		$saveSuccess = false;
+		$saveError = null;
+		switch (strtolower($extension)) {
+			case 'jpg':
+			case 'jpeg':
+				$saveSuccess = imagejpeg($image, $imagePath, 90); // Save with 90% quality
+				if (!$saveSuccess) {
+					$saveError = error_get_last();
+				}
+				break;
+			case 'png':
+				$saveSuccess = imagepng($image, $imagePath);
+				if (!$saveSuccess) {
+					$saveError = error_get_last();
+				}
+				break;
+			default:
+				Yii::log('Unsupported image type for saving: ' . $extension, 'error');
+		}
+	
+		// Log any errors during saving
+		if (!$saveSuccess && $saveError) {
+			Yii::log('Error saving watermarked image: ' . print_r($saveError, true), 'error');
+		} elseif (!$saveSuccess) {
+			Yii::log('Unknown error occurred while saving the watermarked image.', 'error');
+		} else {
+			Yii::log('Original image overwritten successfully: ' . $imagePath, 'info');
+		}
+	
+		// Free memory
+		imagedestroy($image);
+		imagedestroy($watermark);
+	
+		return $saveSuccess;
+	}
+	
+
+
 	public $location_image;
 	public function getSingleImage($w = '0')
 	{
