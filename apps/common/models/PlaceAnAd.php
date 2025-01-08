@@ -3034,7 +3034,7 @@ class PlaceAnAd extends ActiveRecord
 				// return $this->watermark_image(,Yii::app()->apps->getBaseUrl('/new_assets/images/logoTransparent.png'), 'new_image_name.jpg');
 			}
 		} else {
-			return $this->getAdImageWithWatermark('/new_assets/images/marina-living.jpg');
+			return $this->getAdImageWithWatermark('/new_assets/images/mgrey.jpg');
 		}
 	}
 	public function getAdImageWithWatermark($imageName = null, $watermarkPath = '/new_assets/images/logoNew.png')
@@ -3131,7 +3131,7 @@ class PlaceAnAd extends ActiveRecord
 		$yPosition = ($imageHeight - $targetWatermarkHeight) / 2;
 	
 		// Apply watermark with reduced opacity
-		$opacity = 1.5; // Opacity level (0 is fully transparent, 100 is fully opaque)
+		$opacity = 3; // Opacity level (0 is fully transparent, 100 is fully opaque)
 		imagecopymerge($image, $watermark, $xPosition, $yPosition, 0, 0, $targetWatermarkWidth, $targetWatermarkHeight, $opacity);
 	
 		// Save the watermarked image
