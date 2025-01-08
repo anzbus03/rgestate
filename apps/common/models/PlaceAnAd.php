@@ -3030,7 +3030,8 @@ class PlaceAnAd extends ActiveRecord
 			if (!empty($data)) {
 
 				$this->approved_status = 1;
-				// return $this->watermark_image($this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10),Yii::app()->apps->getBaseUrl('/new_assets/images/logoNew.png'), 'new_image_name.jpg');
+				return $this->getAdImageWithWatermark($this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10));
+				// return $this->watermark_image(,Yii::app()->apps->getBaseUrl('/new_assets/images/logoNew.png'), 'new_image_name.jpg');
 			}
 		} else {
 			return $this->getAdImageWithWatermark('/new_assets/images/mgrey.jpg');
