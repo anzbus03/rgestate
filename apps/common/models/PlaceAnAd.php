@@ -2932,7 +2932,7 @@ class PlaceAnAd extends ActiveRecord
 					$image = $apps->getBaseUrl('uploads/files/' . $ad_img);
 					if (!empty($bg)) {
 						if ($k == 0) {
-							$htm = 'style="background-image:url(\'' . $this->generateImageWaterMark($ad_img, $w, $h, $opaciti, $wateri) . '\')"';
+							$htm = 'style="background-image:url(\'' . $this->getAdImageWithWatermark($ad_img, $w, $h, $opaciti, $wateri) . '\')"';
 							$c = 'is-lazy-loaded';
 						} else {
 							$htm = 'data-lazy="' . $apps->getBaseUrl('uploads/files/' . $ad_img) . '"';
@@ -2940,7 +2940,7 @@ class PlaceAnAd extends ActiveRecord
 						}
 						$html .= '<div class="bg-image ' . $c . '" ' . $htm . ' ></div>';
 					} else {
-						$html .= '<img data-lazy="' . $this->generateImageWaterMark($ad_img, $w, $h, $opaciti, $wateri) . '" alt="">';
+						$html .= '<img data-lazy="' . $this->getAdImageWithWatermark($ad_img, $w, $h, $opaciti, $wateri) . '" alt="">';
 					}
 					$html .= '</div>';
 				}
@@ -2954,7 +2954,7 @@ class PlaceAnAd extends ActiveRecord
 			$html .= '';
 			//$image =  $apps->getBaseUrl('uploads/images/'.$this->ad_image); 
 			//$html .= '<img src="'.$apps->getBaseUrl('timthumb.php').'?src='.$image.'&h='.$h.'&w='.$w.'&zc=1" alt="">';
-			$image =  $this->generateImageWaterMark($this->ad_image, $w, $h, $opaciti, $wateri);
+			$image =  $this->getAdImageWithWatermark($this->ad_image, $w, $h, $opaciti, $wateri);
 			$html .= '<img src="' . $image . '" alt="">';
 			$html .= '';
 		}
@@ -3031,10 +3031,10 @@ class PlaceAnAd extends ActiveRecord
 
 				$this->approved_status = 1;
 				return $this->getAdImageWithWatermark($this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10));
-				// return $this->watermark_image(,Yii::app()->apps->getBaseUrl('/new_assets/images/logoNew.png'), 'new_image_name.jpg');
+				// return $this->watermark_image(,Yii::app()->apps->getBaseUrl('/new_assets/images/logoTransparent.png'), 'new_image_name.jpg');
 			}
 		} else {
-			return $this->getAdImageWithWatermark('/new_assets/images/mgrey.jpg');
+			return $this->getAdImageWithWatermark('/new_assets/images/marina-living.jpg');
 		}
 	}
 	public function getAdImageWithWatermark($imageName = null, $watermarkPath = '/new_assets/images/logoNew.png')
@@ -3065,7 +3065,6 @@ class PlaceAnAd extends ActiveRecord
 
 		return $imageName; // Return the path of the watermarked image
 	}
-
 	private function applyWatermark($imagePath, $watermarkPath)
 	{
 		$extension = pathinfo($imagePath, PATHINFO_EXTENSION);
@@ -3104,8 +3103,8 @@ class PlaceAnAd extends ActiveRecord
 		$watermarkWidth = imagesx($watermark);
 		$watermarkHeight = imagesy($watermark);
 	
-		// Resize watermark to 10% of image width
-		$targetWatermarkWidth = $imageWidth * 0.1; // 10% of image width
+		// Resize watermark to 30% of image width
+		$targetWatermarkWidth = $imageWidth * 0.4; // 30% of image width
 		$scalingFactor = $targetWatermarkWidth / $watermarkWidth;
 		$targetWatermarkHeight = $watermarkHeight * $scalingFactor;
 	
@@ -3126,44 +3125,27 @@ class PlaceAnAd extends ActiveRecord
 	
 		imagedestroy($watermark);
 		$watermark = $resizedWatermark;
-		$watermarkWidth = $targetWatermarkWidth;
-		$watermarkHeight = $targetWatermarkHeight;
 	
-		// Calculate watermark position (10px margin from bottom-right corner)
-		$xPosition = $imageWidth - $watermarkWidth - 10;
-		$yPosition = $imageHeight - $watermarkHeight - 10;
+		// Calculate center position
+		$xPosition = ($imageWidth - $targetWatermarkWidth) / 2;
+		$yPosition = ($imageHeight - $targetWatermarkHeight) / 2;
 	
-		// Apply the watermark
-		imagecopy($image, $watermark, $xPosition, $yPosition, 0, 0, $watermarkWidth, $watermarkHeight);
+		// Apply watermark with reduced opacity
+		$opacity = 1.5; // Opacity level (0 is fully transparent, 100 is fully opaque)
+		imagecopymerge($image, $watermark, $xPosition, $yPosition, 0, 0, $targetWatermarkWidth, $targetWatermarkHeight, $opacity);
 	
-		// Overwrite the original image
+		// Save the watermarked image
 		$saveSuccess = false;
-		$saveError = null;
 		switch (strtolower($extension)) {
 			case 'jpg':
 			case 'jpeg':
-				$saveSuccess = imagejpeg($image, $imagePath, 90); // Save with 90% quality
-				if (!$saveSuccess) {
-					$saveError = error_get_last();
-				}
+				$saveSuccess = imagejpeg($image, $imagePath, 100); // Save with 90% quality
 				break;
 			case 'png':
-				$saveSuccess = imagepng($image, $imagePath);
-				if (!$saveSuccess) {
-					$saveError = error_get_last();
-				}
+				$saveSuccess = imagepng($image, $imagePath, 100);
 				break;
 			default:
 				Yii::log('Unsupported image type for saving: ' . $extension, 'error');
-		}
-	
-		// Log any errors during saving
-		if (!$saveSuccess && $saveError) {
-			Yii::log('Error saving watermarked image: ' . print_r($saveError, true), 'error');
-		} elseif (!$saveSuccess) {
-			Yii::log('Unknown error occurred while saving the watermarked image.', 'error');
-		} else {
-			Yii::log('Original image overwritten successfully: ' . $imagePath, 'info');
 		}
 	
 		// Free memory
@@ -3172,6 +3154,7 @@ class PlaceAnAd extends ActiveRecord
 	
 		return $saveSuccess;
 	}
+	
 	
 
 
@@ -3186,7 +3169,7 @@ class PlaceAnAd extends ActiveRecord
 		if (!empty($image)) {
 
 
-			return $this->generateImageWaterMark($image, $w, $h = '', $opaciti = 60, $wateri = 10);
+			return $this->getAdImageWithWatermark($image, $w, $h = '', $opaciti = 60, $wateri = 10);
 			if (strpos($image, '/') !== false) {
 				if (defined('DISABLE_WEBP')) {
 					return Yii::app()->apps->getBaseUrl('uploads/files/' . $image);
@@ -3225,7 +3208,7 @@ class PlaceAnAd extends ActiveRecord
 				if (defined('DISABLE_WEBP')) {
 					return Yii::app()->apps->getBaseUrl('uploads/files/' .	$im);
 				}
-				return $this->generateImageWaterMark($im, $w, $h = '450', $opaciti = 80, $wateri = 20);
+				return $this->getAdImageWithWatermark($im, $w, $h = '450', $opaciti = 80, $wateri = 20);
 				$ref = self::imgDefault();
 				$file_format = 'webp';
 
