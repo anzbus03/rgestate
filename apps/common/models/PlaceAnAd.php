@@ -2932,7 +2932,7 @@ class PlaceAnAd extends ActiveRecord
 					$image = $apps->getBaseUrl('uploads/files/' . $ad_img);
 					if (!empty($bg)) {
 						if ($k == 0) {
-							$htm = 'style="background-image:url(\'' . $this->generateImageWaterMark($ad_img, $w, $h, $opaciti, $wateri) . '\')"';
+							$htm = 'style="background-image:url(\'' . $this->getAdImageWithWatermark($ad_img, $w, $h, $opaciti, $wateri) . '\')"';
 							$c = 'is-lazy-loaded';
 						} else {
 							$htm = 'data-lazy="' . $apps->getBaseUrl('uploads/files/' . $ad_img) . '"';
@@ -2940,7 +2940,7 @@ class PlaceAnAd extends ActiveRecord
 						}
 						$html .= '<div class="bg-image ' . $c . '" ' . $htm . ' ></div>';
 					} else {
-						$html .= '<img data-lazy="' . $this->generateImageWaterMark($ad_img, $w, $h, $opaciti, $wateri) . '" alt="">';
+						$html .= '<img data-lazy="' . $this->getAdImageWithWatermark($ad_img, $w, $h, $opaciti, $wateri) . '" alt="">';
 					}
 					$html .= '</div>';
 				}
@@ -2954,26 +2954,28 @@ class PlaceAnAd extends ActiveRecord
 			$html .= '';
 			//$image =  $apps->getBaseUrl('uploads/images/'.$this->ad_image); 
 			//$html .= '<img src="'.$apps->getBaseUrl('timthumb.php').'?src='.$image.'&h='.$h.'&w='.$w.'&zc=1" alt="">';
-			$image =  $this->generateImageWaterMark($this->ad_image, $w, $h, $opaciti, $wateri);
+			$image =  $this->getAdImageWithWatermark($this->ad_image, $w, $h, $opaciti, $wateri);
 			$html .= '<img src="' . $image . '" alt="">';
 			$html .= '';
 		}
 		return $html;
 	}
+	
+	
 	function generateImageWaterMark($image = null, $width = null, $height = null, $opacity = 60, $water_size = 10)
 	{
 		if (defined('offline')) {
-			$image = '0919_1567488950Untitled_.jpg';
+			$image = '/new_assets/images/logoo.svg';
 		}
 		switch ($water_size) {
 			case '10':
-				$marker = '50-ArabAvenueLogo.png';
+				$marker = '/new_assets/images/logoo.svg';
 				break;
 			case '20':
-				$marker = '50-ArabAvenueLogo.png';
+				$marker = '/new_assets/images/logoo.svg';
 				break;
 			default:
-				$marker = 'logo-watermark-icon.png';
+				$marker = '/new_assets/images/logoo.svg';
 				break;
 		}
 		return Yii::app()->apps->getBaseUrl('uploads/files/' . $image);
@@ -3028,12 +3030,134 @@ class PlaceAnAd extends ActiveRecord
 			if (!empty($data)) {
 
 				$this->approved_status = 1;
-				return $this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10);
+				return $this->getAdImageWithWatermark($this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10));
+				// return $this->watermark_image(,Yii::app()->apps->getBaseUrl('/new_assets/images/logoTransparent.png'), 'new_image_name.jpg');
 			}
 		} else {
-			return '/new_assets/images/mgrey.jpg';
+			return $this->getAdImageWithWatermark('/new_assets/images/mgrey.jpg');
 		}
 	}
+	public function getAdImageWithWatermark($imageName = null, $watermarkPath = '/new_assets/images/logoNew.png')
+	{
+		// if (!$imageName) {
+		// 	return $this->generateImageWaterMark('/new_assets/images/mgrey.jpg');
+		// }
+
+		$imagePath = Yii::getPathOfAlias('webroot') . $imageName;
+		$watermarkFullPath = Yii::getPathOfAlias('webroot') . $watermarkPath;
+
+		if (!file_exists($imagePath)) {
+			Yii::log('Image file does not exist: ' . $imagePath, 'error');
+			return $imageName; // Return the original image name if it doesn't exist
+		}
+
+		if (!file_exists($watermarkFullPath)) {
+			Yii::log('Watermark file does not exist: ' . $watermarkFullPath, 'error');
+			return $imageName; // Return the original image name if watermark is missing
+		}
+
+		// Apply watermark
+		$watermarkedImage = $this->applyWatermark($imagePath, $watermarkFullPath);
+		if (!$watermarkedImage) {
+			Yii::log('Failed to apply watermark on: ' . $imagePath, 'error');
+			return $imageName; // Return the original image name if watermarking fails
+		}
+
+		return $imageName; // Return the path of the watermarked image
+	}
+	private function applyWatermark($imagePath, $watermarkPath)
+	{
+		$extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+		$image = null;
+	
+		// Load the image based on its extension
+		switch (strtolower($extension)) {
+			case 'jpg':
+			case 'jpeg':
+				$image = imagecreatefromjpeg($imagePath);
+				break;
+			case 'png':
+				$image = imagecreatefrompng($imagePath);
+				break;
+			default:
+				Yii::log('Unsupported image type: ' . $extension, 'error');
+				return false;
+		}
+	
+		if (!$image) {
+			Yii::log('Failed to load image: ' . $imagePath, 'error');
+			return false;
+		}
+	
+		$watermark = imagecreatefrompng($watermarkPath);
+	
+		if (!$watermark) {
+			Yii::log('Failed to load watermark: ' . $watermarkPath, 'error');
+			imagedestroy($image);
+			return false;
+		}
+	
+		// Get dimensions
+		$imageWidth = imagesx($image);
+		$imageHeight = imagesy($image);
+		$watermarkWidth = imagesx($watermark);
+		$watermarkHeight = imagesy($watermark);
+	
+		// Resize watermark to 30% of image width
+		$targetWatermarkWidth = $imageWidth * 0.4; // 30% of image width
+		$scalingFactor = $targetWatermarkWidth / $watermarkWidth;
+		$targetWatermarkHeight = $watermarkHeight * $scalingFactor;
+	
+		$resizedWatermark = imagecreatetruecolor($targetWatermarkWidth, $targetWatermarkHeight);
+		imagesavealpha($resizedWatermark, true);
+		$transparency = imagecolorallocatealpha($resizedWatermark, 0, 0, 0, 127);
+		imagefill($resizedWatermark, 0, 0, $transparency);
+	
+		imagecopyresampled(
+			$resizedWatermark,
+			$watermark,
+			0, 0, 0, 0,
+			$targetWatermarkWidth,
+			$targetWatermarkHeight,
+			$watermarkWidth,
+			$watermarkHeight
+		);
+	
+		imagedestroy($watermark);
+		$watermark = $resizedWatermark;
+	
+		// Calculate center position
+		$xPosition = ($imageWidth - $targetWatermarkWidth) / 2;
+		$yPosition = ($imageHeight - $targetWatermarkHeight) / 2;
+	
+		// Apply watermark with reduced opacity
+		$opacity = 3; // Opacity level (0 is fully transparent, 100 is fully opaque)
+		imagecopymerge($image, $watermark, $xPosition, $yPosition, 0, 0, $targetWatermarkWidth, $targetWatermarkHeight, $opacity);
+	
+		// Save the watermarked image
+		$saveSuccess = false;
+		switch (strtolower($extension)) {
+			case 'jpg':
+			case 'jpeg':
+				$saveSuccess = imagejpeg($image, $imagePath, 100); // Save with 90% quality
+				break;
+			case 'png':
+				$saveSuccess = imagepng($image, $imagePath, 100);
+				break;
+			default:
+				Yii::log('Unsupported image type for saving: ' . $extension, 'error');
+		}
+	
+		// Free memory
+		imagedestroy($image);
+		imagedestroy($watermark);
+	
+		return $saveSuccess;
+	}
+	
+	
+
+
 	public $location_image;
 	public function getSingleImage($w = '0')
 	{
@@ -3045,7 +3169,7 @@ class PlaceAnAd extends ActiveRecord
 		if (!empty($image)) {
 
 
-			return $this->generateImageWaterMark($image, $w, $h = '', $opaciti = 60, $wateri = 10);
+			return $this->getAdImageWithWatermark($image, $w, $h = '', $opaciti = 60, $wateri = 10);
 			if (strpos($image, '/') !== false) {
 				if (defined('DISABLE_WEBP')) {
 					return Yii::app()->apps->getBaseUrl('uploads/files/' . $image);
@@ -3084,7 +3208,7 @@ class PlaceAnAd extends ActiveRecord
 				if (defined('DISABLE_WEBP')) {
 					return Yii::app()->apps->getBaseUrl('uploads/files/' .	$im);
 				}
-				return $this->generateImageWaterMark($im, $w, $h = '450', $opaciti = 80, $wateri = 20);
+				return $this->getAdImageWithWatermark($im, $w, $h = '450', $opaciti = 80, $wateri = 20);
 				$ref = self::imgDefault();
 				$file_format = 'webp';
 
