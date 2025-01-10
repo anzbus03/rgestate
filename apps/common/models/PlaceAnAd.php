@@ -3039,12 +3039,14 @@ class PlaceAnAd extends ActiveRecord
 	}
 	public function getAdImageWithWatermark($imageName = null, $watermarkPath = '/new_assets/images/logoNew.png')
 	{
-		// if (!$imageName) {
-		// 	return $this->generateImageWaterMark('/new_assets/images/mgrey.jpg');
-		// }
-
 		$imagePath = Yii::getPathOfAlias('webroot') . $imageName;
 		$watermarkFullPath = Yii::getPathOfAlias('webroot') . $watermarkPath;
+		$watermarkedImagePath = $imagePath . '_watermarked'; // Define a unique name for the watermarked image
+
+		// Check if the watermarked image already exists
+		if (file_exists($watermarkedImagePath)) {
+			return str_replace(Yii::getPathOfAlias('webroot'), '', $watermarkedImagePath);
+		}
 
 		if (!file_exists($imagePath)) {
 			Yii::log('Image file does not exist: ' . $imagePath, 'error');
@@ -3057,19 +3059,20 @@ class PlaceAnAd extends ActiveRecord
 		}
 
 		// Apply watermark
-		$watermarkedImage = $this->applyWatermark($imagePath, $watermarkFullPath);
+		$watermarkedImage = $this->applyWatermark($imagePath, $watermarkFullPath, $watermarkedImagePath);
 		if (!$watermarkedImage) {
 			Yii::log('Failed to apply watermark on: ' . $imagePath, 'error');
 			return $imageName; // Return the original image name if watermarking fails
 		}
 
-		return $imageName; // Return the path of the watermarked image
+		return str_replace(Yii::getPathOfAlias('webroot'), '', $watermarkedImagePath); // Return the path of the watermarked image
 	}
-	private function applyWatermark($imagePath, $watermarkPath)
+
+	private function applyWatermark($imagePath, $watermarkPath, $watermarkedImagePath)
 	{
 		$extension = pathinfo($imagePath, PATHINFO_EXTENSION);
 		$image = null;
-	
+
 		// Load the image based on its extension
 		switch (strtolower($extension)) {
 			case 'jpg':
@@ -3083,36 +3086,36 @@ class PlaceAnAd extends ActiveRecord
 				Yii::log('Unsupported image type: ' . $extension, 'error');
 				return false;
 		}
-	
+
 		if (!$image) {
 			Yii::log('Failed to load image: ' . $imagePath, 'error');
 			return false;
 		}
-	
+
 		$watermark = imagecreatefrompng($watermarkPath);
-	
+
 		if (!$watermark) {
 			Yii::log('Failed to load watermark: ' . $watermarkPath, 'error');
 			imagedestroy($image);
 			return false;
 		}
-	
+
 		// Get dimensions
 		$imageWidth = imagesx($image);
 		$imageHeight = imagesy($image);
 		$watermarkWidth = imagesx($watermark);
 		$watermarkHeight = imagesy($watermark);
-	
-		// Resize watermark to 30% of image width
-		$targetWatermarkWidth = $imageWidth * 0.4; // 30% of image width
+
+		// Resize watermark
+		$targetWatermarkWidth = $imageWidth * 0.4;
 		$scalingFactor = $targetWatermarkWidth / $watermarkWidth;
 		$targetWatermarkHeight = $watermarkHeight * $scalingFactor;
-	
+
 		$resizedWatermark = imagecreatetruecolor($targetWatermarkWidth, $targetWatermarkHeight);
 		imagesavealpha($resizedWatermark, true);
 		$transparency = imagecolorallocatealpha($resizedWatermark, 0, 0, 0, 127);
 		imagefill($resizedWatermark, 0, 0, $transparency);
-	
+
 		imagecopyresampled(
 			$resizedWatermark,
 			$watermark,
@@ -3122,38 +3125,38 @@ class PlaceAnAd extends ActiveRecord
 			$watermarkWidth,
 			$watermarkHeight
 		);
-	
+
 		imagedestroy($watermark);
 		$watermark = $resizedWatermark;
-	
+
 		// Calculate center position
 		$xPosition = ($imageWidth - $targetWatermarkWidth) / 2;
 		$yPosition = ($imageHeight - $targetWatermarkHeight) / 2;
-	
-		// Apply watermark with reduced opacity
-		$opacity = 3; // Opacity level (0 is fully transparent, 100 is fully opaque)
-		imagecopymerge($image, $watermark, $xPosition, $yPosition, 0, 0, $targetWatermarkWidth, $targetWatermarkHeight, $opacity);
-	
-		// Save the watermarked image
+
+		// Apply watermark
+		imagecopymerge($image, $watermark, $xPosition, $yPosition, 0, 0, $targetWatermarkWidth, $targetWatermarkHeight, 50);
+
+		// Save the watermarked image to a new file
 		$saveSuccess = false;
 		switch (strtolower($extension)) {
 			case 'jpg':
 			case 'jpeg':
-				$saveSuccess = imagejpeg($image, $imagePath, 100); // Save with 90% quality
+				$saveSuccess = imagejpeg($image, $watermarkedImagePath, 100);
 				break;
 			case 'png':
-				$saveSuccess = imagepng($image, $imagePath, 100);
+				$saveSuccess = imagepng($image, $watermarkedImagePath);
 				break;
 			default:
 				Yii::log('Unsupported image type for saving: ' . $extension, 'error');
 		}
-	
+
 		// Free memory
 		imagedestroy($image);
 		imagedestroy($watermark);
-	
+
 		return $saveSuccess;
 	}
+
 	
 	
 
