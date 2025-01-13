@@ -76,19 +76,13 @@ if ($viewCollection->renderContent) { ?>
                 <span class="fa fa-star"></span>
                 <?php echo Yii::t(Yii::app()->controller->id, Yii::app()->controller->Controlloler_title . " List"); ?>
             </h3>
-            <div>
-                <div class="row">
-                    <div class="col-md-4 mt-2">
-                        <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id . '/create'), array('class' => 'btn btn-primary btn-sm', 'title' => Yii::t('app', 'Create new'))); ?>
-                    </div>
-                    <!-- <div class="col-md-3">
-                        <?php //echo CHtml::link(Yii::t('app', 'Refresh'), array(Yii::app()->controller->id.'/index'), array('class' => 'btn btn-primary btn-sm', 'title' => Yii::t('app', 'Refresh')));
-                        ?>
-                    </div> -->
-                    <div class="col-md-8">
-                        <input type="text" id="dateRange" class="form-control" style="margin-left: 10px;" />
-                    </div>
-                </div>
+            <div class="d-flex flex-wrap align-items-center">
+                <?php echo CHtml::link(Yii::t('app', 'Create new'), array(Yii::app()->controller->id . '/create'), array('class' => 'btn btn-primary btn-sm me-2', 'title' => Yii::t('app', 'Create new'))); ?>
+                <button type="button" id="exportExcel" class="btn btn-success btn-sm me-2">Export Excel</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                    Excel Upload
+                </button>
+                <input type="text" id="dateRange" class="form-control ms-3 mt-2 mt-md-0" style="width: auto;" />
             </div>
         </div>
         <div class="card-body">
@@ -174,23 +168,18 @@ if ($viewCollection->renderContent) { ?>
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="uploadModalLabel">Upload Excel and Images</h5>
+                    <h5 class="modal-title" id="uploadModalLabel">Upload Excel</h5>
                     <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button id="downloadTemplateBtn" class="btn btn-secondary btn-xs pull-right mb-2">Download
-                        Template</button>
                     <form id="uploadForm" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="excelFile">Excel File</label>
                             <input type="file" class="form-control" id="excelFile" name="excelFile" accept=".xlsx,.xls">
                         </div>
-                        <div class="form-group mt-2">
-                            <label for="zipFile">ZIP File</label>
-                            <input type="file" class="form-control" id="zipFile" name="zipFile" accept=".zip">
-                        </div>
+                        
                         <button type="submit" class="pull-right btn btn-primary mt-4">Upload</button>
                     </form>
                     <div id="uploadStatus"></div>
@@ -222,6 +211,51 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             window.location.href = url;
         }
     }   
+    $('#exportExcel').click(function(e) {
+        e.preventDefault(); // Prevent default behavior
+
+        var $button = $(this); // Reference to the button
+        $button.prop('disabled', true); // Disable the button
+        $button.text('Loading...'); // Change button text to indicate loading
+
+        var dateRange = $('#dateRange').data('daterangepicker');
+        var startDate = dateRange.startDate.format('YYYY-MM-DD');
+        var endDate = dateRange.endDate.format('YYYY-MM-DD');
+        var exportUrl = '<?php echo Yii::app()->createUrl('place_property/exportDataBusiness'); ?>'; // New action for JSON data
+
+        // Build URL with date range
+        if (startDate && endDate) {
+            exportUrl += '?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate);
+
+            // Check if the current page has a type filter (e.g., trash)
+            var currentUrl = window.location.href;
+            exportUrl += "&type=business";
+        }
+
+        // Make AJAX request to retrieve JSON data
+        $.ajax({
+            url: exportUrl,
+            type: 'GET',
+            success: function(response) {
+                // Convert JSON to Excel format using SheetJS
+                var ws = XLSX.utils.json_to_sheet(response); // Convert JSON to sheet
+                var wb = XLSX.utils.book_new(); // Create a new workbook
+                XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); // Append sheet to workbook
+
+                // Trigger download of the Excel file
+                XLSX.writeFile(wb, "ExportedData_" + new Date().toISOString().slice(0, 10) + ".xlsx");
+            },
+            error: function(xhr, status, error) {
+                console.log("Error: " + error); // Log any errors for debugging
+                alert("An error occurred while exporting the data."); // Alert the user
+            },
+            complete: function() {
+                $button.prop('disabled', false); // Re-enable the button
+                $button.text('Export Excel'); // Reset button text
+            }
+        });
+    });
+
     $(document).ready(function (){
         $('#select-all').on('change', function() {
             $('.bulk-item').prop('checked', this.checked);
@@ -333,25 +367,6 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 }
             });
         }
-        $('#exportExcel').click(function(e) {
-            var dateRange = $('#dateRange').data('daterangepicker');
-            var startDate = dateRange.startDate.format('YYYY-MM-DD');
-            var endDate = dateRange.endDate.format('YYYY-MM-DD');
-            var exportUrl = '<?php echo Yii::app()->createUrl('place_property/exportExcel'); ?>';
-
-            if (startDate && endDate) {
-                exportUrl += '?startDate=' + encodeURIComponent(startDate) + '&endDate=' +
-                    encodeURIComponent(endDate);
-                var currentUrl = window.location.href;
-                if (currentUrl.includes("trash")) {
-                    exportUrl += "&type=trash";
-                }
-            }
-
-
-            // Redirect to the export URL
-            window.location.href = exportUrl;
-        });
         $('#downloadTemplateBtn').click(function() {
             // Create a new workbook and add a worksheet
             var workbook = XLSX.utils.book_new();

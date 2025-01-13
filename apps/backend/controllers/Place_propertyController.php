@@ -985,6 +985,184 @@ class Place_propertyController  extends Controller
             Yii::app()->end();
         }
     }
+    public function actionExportDataBusiness()
+    {
+        try {
+            ini_set('display_errors', 1); error_reporting(E_ALL);
+            ini_set('memory_limit', '-1');
+            $criteria = new CDbCriteria();
+          
+            // Set filters based on request parameters
+            if (isset($_GET['type'])) {
+                if ($_GET['type'] == 'unpublished') {
+                    $criteria->compare('unpublished', '1');
+                } elseif ($_GET['type'] == 'business') {
+                    define('ONLY_BUSINESS', '1');
+                    $criteria->compare('isTrash', '1');
+                } elseif ($_GET['type'] == 'trash') {
+                    $criteria->compare('isTrash', '1');
+                }
+            }
+            // if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+            //     $criteria->addCondition("DATE(date_added) >= :startDate AND DATE(date_added) <= :endDate");
+            //     $criteria->params[':startDate'] = $_GET['startDate'];
+            //     $criteria->params[':endDate'] = $_GET['endDate'];
+            // }
+            $criteria->addInCondition('section_id', [6]);
+            // Retrieve data using CActiveRecord's findAll method
+            // if (Yii::app()->user->model->user_id == 2){
+            
+            //     $data = PlaceAnAd::model()->findAll($criteria);
+                
+            // }else {
+                  
+            //     $criteria->condition = 'user_id = :userId'; // Use a placeholder for security
+            //     $criteria->params = [':userId' => Yii::app()->user->model->user_id]; // Bind the parameter
+
+            //     // Execute the query
+            //     $data = PlaceAnAd::model()->findAll($criteria);
+            // }
+            $loggedInUser = Yii::app()->user->model;
+            if ($loggedInUser->rules == 3) {
+                // Single user ID
+                $criteria->addCondition('t.user_id = :userId');
+                $criteria->params[':userId'] = $loggedInUser->user_id;
+            } else if ($loggedInUser->rules == 2) {
+                // Multiple user IDs
+                $userAgents = explode(',', $loggedInUser->agents);
+    
+                // Create placeholders for named parameters
+                $placeholders = [];
+                foreach ($userAgents as $index => $agentId) {
+                    $placeholders[] = ':userId' . $index; // Named placeholders
+                    $criteria->params[':userId' . $index] = $agentId; // Assign parameter values
+                }
+    
+                $criteria->addCondition('t.user_id IN (' . implode(',', $placeholders) . ')');
+    
+            }
+            $data = PlaceAnAd::model()->findAll($criteria);
+
+            // Prepare data for JSON response
+            // Step 1: Pre-fetch related data for all items in `$data`
+            $itemIds = array_map(fn($item) => $item->id, $data);
+            $userIds = array_map(fn($item) => $item->user_id, $data);
+            $stateIds = array_unique(array_filter(array_map(function($item) {
+                return $item->state ?? null; // Return state or null
+            }, $data)));
+            // print_r($state)            
+            // Fetch images for all items
+            $allImages = AdImage::model()->findAllByAttributes(['ad_id' => $itemIds]);
+            $imageMap = [];
+            foreach ($allImages as $image) {
+                $imageMap[$image->ad_id][] = $image;
+            }
+
+            // Fetch floor plans for all items
+            $allFloorPlans = AdFloorPlan::model()->findAllByAttributes(['ad_id' => $itemIds]);
+            $floorPlanMap = [];
+            foreach ($allFloorPlans as $floorPlan) {
+                $floorPlanMap[$floorPlan->ad_id][] = $floorPlan;
+            }
+
+            // Fetch all users in one query
+            $users = User::model()->findAllByPk($userIds);
+            $userMap = [];
+            foreach ($users as $user) {
+                $userMap[$user->user_id] = $user;
+            }
+
+            // Fetch all states based on collected state IDs
+            $states = States::model()->findAllByPk($stateIds);
+            $stateMap = [];
+
+            // Populate the stateMap array with state names and their corresponding region names
+            foreach ($states as $state) {
+                $region = MainRegion::model()->findByPk($state->region_id);
+                $stateMap[$state->state_id] = [
+                    'state_name' => $state->state_name,
+                    'region_name' => $region ? $region->name : 'Unknown Region'
+                ];
+            }
+
+            // Step 2: Iterate over $data and build the response
+            $domain = Yii::app()->request->hostInfo;
+            $responseData = [];
+
+            foreach ($data as $item) {
+                // Prepare image list
+                $imageList = isset($imageMap[$item->id]) ? implode(',', array_map(fn($image) => $domain . '/uploads/files/' . $image->image_name, $imageMap[$item->id])) : '';
+
+                // Prepare floor plan list
+                $floorPlanList = isset($floorPlanMap[$item->id]) ? implode(',', array_map(fn($floorPlan) => $domain . '/uploads/floor_plan/' . $floorPlan->floor_title, $floorPlanMap[$item->id])) : '';
+
+                // Get user information
+                $userId = $item->user_id;
+                $user = $userMap[$userId] ?? null;
+                $agencyName = '';
+                if ($user && strpos($user->agents, (string)$userId) !== false) {
+                    $agencyName = $user->first_name;
+                }
+
+                // Get emirate name from state
+                $emirateName = $stateMap[$item->state]['region_name'] ?? 'Unknown Emirate';
+                $formattedCreationDate = (new DateTime($item->date_added))->format('j-M-Y');
+                $formattedRefreshDate = (new DateTime($item->date_added))->format('j-M-Y');            
+                $responseData[] = [
+                    'UID'                              => $item->uid,
+                    'Sr. No'                           => $item->id,
+                    'Creation Date'                    => $item->date_added,
+                    'Refresh Date'                     => $item->date_added,
+                    'Reference ID'                     => $item->RefNo,
+                    'Permit Number'                    => $item->PropertyID,
+                    'Offer Type'                       => $item->section_id == 1 ? "Sale" : "Rent",
+                    'Property Type Category'           => Category::model()->findByPk($item->listing_type)->category_name ?? '',
+                    'Property Type'                    => Category::model()->findByPk($item->category_id)->category_name ?? '',
+                    'COUNTRY'                          => $item->country_name ?? "UAE",
+                    'EMIRATE'                          => $emirateName,
+                    'LOCATION'                         => ($stateMap[$item->state]['state_name'] ?? ''),
+                    'Google Map Property Ads Location' => $item->location_latitude . ', ' . $item->location_longitude,
+                    'Ad Title'                         => $item->ad_title,
+                    'Ad Description'                   => $item->ad_description,
+                    'Amenities'                        => $item->amenities,
+                    'FURNISHED'                        => $item->furnished == "Y" ? "Yes" : "No",
+                    'Resi. Bedrooms'                   => $item->bedrooms,
+                    'Resi. Bathrooms'                  => $item->bathrooms,
+                    'Number Of Units'                  => $item->no_of_u,
+                    'Floor Number'                     => $item->FloorNo,
+                    'Plot Area (sqft)'                 => $item->plot_area,
+                    'BUA Size (sqft)'                  => $item->builtup_area,
+                    'Sale/Rent Price (AED)'            => $item->price,
+                    'Rent Paid Frequency'              => $item->rent_paid,
+                    'PRELEASED STATUS'                 => $item->property_status == 0 ? "No" : "Yes",
+                    'LEASE STATUS'                     => $item->lease_status == 0 ? "Vacant" : "Leased",
+                    'CURRENT/EXPECTED RENTAL INCOME'   => $item->income,
+                    'CURRENT/EXPECTED ROI PA %'        => $item->roi,
+                    'Photos (JPG/PNG)'                 => $imageList,
+                    'Floor Plans'                      => $floorPlanList,
+                    'Video (YouTube URL)'              => $item->video,
+                    'FEATURED'                         => $item->featured == "Y" ? "Yes" : "No",
+                    'HOT'                              => $item->hot == 1 ? "Yes" : "No",
+                    'VARIFIED'                         => $item->verified == 1 ? "Yes" : "No",
+                    'Availability'                     => $item->availability == "sold_out" ? "Sold Out" : $item->availability == "not_available" ? "Not Available" : "Available",
+                    'Publish_Status'                   => $item->status == "A" ? "Active" : "Inacive",
+                    'AGENCY NAME'                      => $agencyName,
+                    'AGENT NAME'                       => $user->first_name ?? '',
+                    'AGENT EMAIL'                      => $user->email ?? '',
+                    'AGENT CONTACT'                    => $user->phone_number ?? '',
+                ];
+            }
+
+            header('Content-Type: application/json');
+            echo json_encode($responseData);
+
+            // Send JSON response
+            Yii::app()->end();
+        } catch (Exception $e) {
+            echo json_encode(['error' => $e->getMessage()]);
+            Yii::app()->end();
+        }
+    }
     
     
     public function actionBusiness()

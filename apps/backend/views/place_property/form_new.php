@@ -2210,7 +2210,6 @@ if (Yii::App()->isAppName('frontend') and $model->isNewRecord) { ?>
 		checkdescpCount();
 		$('#PlaceAnAd_ad_title').keyup(function() {
 			checktitleCount();
-
 		});
 		$('#PlaceAnAd_ad_description').keyup(function() {
 			checkdescpCount()
