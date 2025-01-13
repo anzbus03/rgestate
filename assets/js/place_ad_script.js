@@ -492,7 +492,7 @@ function initMapN(lati,longi)
 function checktitleCount(){
 	var value =$('#'+modelName+'_ad_title').val();
     // get MAX chars from textarea
-    var maxlength = 50;
+    var maxlength = 100;
 if (value.length > maxlength){
       //  $("#PlaceAnAd_ad_title").val(value.substring(0, maxlength));return false;
 }
@@ -510,7 +510,7 @@ if (value.length > maxlength){
 function checkdescpCount(){
 	 var value =$('#'+modelName+'_ad_description').val();
     // get MAX chars from textarea
-    var maxlength = 1000;
+    var maxlength = 10000;
 if (value.length > maxlength){
        // $("#PlaceAnAd_ad_description").val(value.substring(0, maxlength));return false;
 }
