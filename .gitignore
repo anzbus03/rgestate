@@ -6,6 +6,7 @@ error_log
 projects/error_log
 staging.rgestate.com
 apps-old
+rgestate_/
 apps/init2.php
 /apps/common/config/main-custom.php 
 /apps/common/runtime/application.log
