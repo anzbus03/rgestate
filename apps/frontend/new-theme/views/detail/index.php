@@ -762,21 +762,31 @@ observer.observe();
 	        .b-r-r-m{border-top-right-radius: 3px !important; }
 	         .b-l-l-m{border-top-left-radius: 3px !important; }
 	    </style>
-<div class="col-sm-12  padding-right-0 call-btn-div  mbtn-div" style="padding:0px;width:100% !important">
-    
-    <?php
-    $text_message = Yii::t('app',$this->tag->getTag('enquiry_text','Hello, I am interested in this property and would like to make an appointment for a visit. Please contact me as soon as possible.{s}Thank you so much,'),array('{s}'=>' %0a','{1}'=>$this->project_name,'{2}'=>$model->ReferenceNumberTitle,'{3}'=>$this->tag->getTag('property_link','Property Link'))) . ' %0a' .   urlencode($share_u_abs);
-    $w_share_url = Yii::t('app','https://wa.me/{number}?text={text}',array('{number}'=>Yii::t('app',!empty($model->whatsapp) ? $model->whatsapp : $model->mobile_number,array('+'=>'',' '=>'')) ,'{text}'=> $text_message  ));?>
-  
-  
-     <button type="button" onclick="OpenFormClickNew(this)" data-reactid="<?php echo $model->id;?>" data-testid="lead-form-submit" style="margin-bottom:8px" class="b-r-r-m Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA"><i class="fa fa-envelope"  style="font-size: 20px;margin-right: 3px;"></i> <?php echo  $this->tag->getTag('email2','Email') ;?></button>
-         <a type="button"   style="color:#fff;padding-left: 2px;padding-right: 2px;"  onclick="OpenCallNewlatest(this)"  data-prop="<?php echo  $model->id ;?>" data-agent="<?php echo $model->OwnerName;?>"  data-ref="<?php echo $model->ReferenceNumberTitle;?>" data-phone="<?php echo $model->mobile_number ;?>"   data-testid="lead-form-submit" style="margin-bottom:8px" class="b-l-l-m  Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA  mob-not-fetc"><i class="fa fa-phone" style="font-size: 20px;margin-right: 3px;"></i> <?php echo  $this->tag->getTag('call','Call') ;?></a>
-    <a type="button"    target="_blank" style="color:#fff" data-prop="<?php echo  $model->id ;?>" data-type="W"  onclick="OpenWhatsappNew(this)" data-href="<?php echo  $w_share_url;?>"   data-testid="lead-form-submit" style="margin-bottom:8px" class="   Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA wtspp"><i class="fa fa-whatsapp" style="font-size: 20px;margin-right: 3px;"></i> <?php echo  $this->tag->getTag('whatsapp','WhatsApp') ;?></a>
-       <?php $sms_link = defined('APLEDEVICE')  ? 'sms://{number}?&body={message}' : 'sms:{number}?body={message}';?>
- <a type="button"    target="_blank" style="color:#fff" data-prop="<?php echo  $model->id ;?>" data-type="T"   onclick="OpenWhatsappNew(this)" data-href="<?php echo Yii::t('app',$sms_link,array('{number}'=>Yii::t('app',$model->mobile_number,array(' '=>'')),'{message}'=> $text_message  ));?>"   data-testid="lead-form-submit" style="margin-bottom:8px" class="   Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA sms"><i class="fa fa-comments" style="font-size: 20px;margin-right: 3px;"></i> <?php echo  $this->tag->getTag('sms','SMS') ;?></a>
-   
-     
-    </div>
+<div class="col-sm-12 call-btn-div mbtn-div" style="padding:0px;width:100% !important; display: flex; justify-content: center; align-items: center; gap: 10px;">
+
+	<?php
+	$text_message = Yii::t('app', $this->tag->getTag('enquiry_text', 'Hello, I am interested in this property and would like to make an appointment for a visit. Please contact me as soon as possible.{s}Thank you so much,'), array('{s}' => ' %0a', '{1}' => $this->project_name, '{2}' => $model->ReferenceNumberTitle, '{3}' => $this->tag->getTag('property_link', 'Property Link'))) . ' %0a' . urlencode($share_u_abs);
+	$w_share_url = Yii::t('app', 'https://wa.me/{number}?text={text}', array('{number}' => Yii::t('app', !empty($model->whatsapp) ? $model->whatsapp : '+971552792403', array('+' => '', ' ' => '')), '{text}' => $text_message));
+	?>
+
+	<!-- Email Button -->
+	<button type="button" onclick="OpenFormClickNew(this)" data-reactid="<?php echo $model->id; ?>" data-testid="lead-form-submit" class="b-r-r-m Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA">
+		<i class="fa fa-envelope" style="font-size: 20px;margin-right: 3px;"></i> <?php echo $this->tag->getTag('email2', 'Email'); ?>
+	</button>
+
+	<!-- Call Button -->
+	<a type="button" style="color:#fff" onclick="OpenCallNewlatest(this)" data-prop="<?php echo $model->id; ?>" data-agent="<?php echo $model->OwnerName; ?>" data-ref="<?php echo $model->ReferenceNumberTitle; ?>" data-phone="<?php echo $model->mobile_number; ?>" data-testid="lead-form-submit" class="b-l-l-m Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA mob-not-fetc">
+		<i class="fa fa-phone" style="font-size: 20px;margin-right: 3px;"></i> <?php echo $this->tag->getTag('call', 'Call'); ?>
+	</a>
+
+	<!-- WhatsApp Button -->
+	<a type="button" target="_blank" style="color:#fff" data-prop="<?php echo $model->id; ?>" data-type="W" onclick="OpenWhatsappNew(this)" data-href="<?php echo $w_share_url; ?>" data-testid="lead-form-submit" class="Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA wtspp">
+		<i class="fa fa-whatsapp" style="font-size: 20px;margin-right: 3px;"></i> <?php echo $this->tag->getTag('whatsapp', 'WhatsApp'); ?>
+	</a>
+
+</div>
+
+
  
 </div>
 <div class="clearfix"></div>

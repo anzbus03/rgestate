@@ -985,8 +985,188 @@ class Place_propertyController  extends Controller
             Yii::app()->end();
         }
     }
+    public function actionExportDataBusiness()
+    {
+        try {
+            ini_set('display_errors', 1); error_reporting(E_ALL);
+            ini_set('memory_limit', '-1');
+            $criteria = new CDbCriteria();
+          
+            // Set filters based on request parameters
+            if (isset($_GET['type'])) {
+                if ($_GET['type'] == 'unpublished') {
+                    $criteria->compare('unpublished', '1');
+                } elseif ($_GET['type'] == 'business') {
+                    define('ONLY_BUSINESS', '1');
+                    $criteria->compare('isTrash', '1');
+                } elseif ($_GET['type'] == 'trash') {
+                    $criteria->compare('isTrash', '1');
+                }
+            }
+            $criteria->addInCondition('section_id', [6]);
+            
+            $loggedInUser = Yii::app()->user->model;
+            if ($loggedInUser->rules == 3) {
+                // Single user ID
+                $criteria->addCondition('t.user_id = :userId');
+                $criteria->params[':userId'] = $loggedInUser->user_id;
+            } else if ($loggedInUser->rules == 2) {
+                // Multiple user IDs
+                $userAgents = explode(',', $loggedInUser->agents);
     
+                // Create placeholders for named parameters
+                $placeholders = [];
+                foreach ($userAgents as $index => $agentId) {
+                    $placeholders[] = ':userId' . $index; // Named placeholders
+                    $criteria->params[':userId' . $index] = $agentId; // Assign parameter values
+                }
     
+                $criteria->addCondition('t.user_id IN (' . implode(',', $placeholders) . ')');
+    
+            }
+            $data = PlaceAnAd::model()->findAll($criteria);
+
+            // Prepare data for JSON response
+            // Step 1: Pre-fetch related data for all items in `$data`
+            $itemIds = array_map(fn($item) => $item->id, $data);
+            $userIds = array_map(fn($item) => $item->user_id, $data);
+            $stateIds = array_unique(array_filter(array_map(function($item) {
+                return $item->state ?? null; // Return state or null
+            }, $data)));
+            // print_r($state)            
+            // Fetch images for all items
+            $allImages = AdImage::model()->findAllByAttributes(['ad_id' => $itemIds]);
+            $imageMap = [];
+            foreach ($allImages as $image) {
+                $imageMap[$image->ad_id][] = $image;
+            }
+
+            // Fetch floor plans for all items
+            $allFloorPlans = AdFloorPlan::model()->findAllByAttributes(['ad_id' => $itemIds]);
+            $floorPlanMap = [];
+            foreach ($allFloorPlans as $floorPlan) {
+                $floorPlanMap[$floorPlan->ad_id][] = $floorPlan;
+            }
+
+            // Fetch all users in one query
+            $users = User::model()->findAllByPk($userIds);
+            $userMap = [];
+            foreach ($users as $user) {
+                $userMap[$user->user_id] = $user;
+            }
+
+            // Fetch all states based on collected state IDs
+            $states = States::model()->findAllByPk($stateIds);
+            $stateMap = [];
+
+            // Populate the stateMap array with state names and their corresponding region names
+            foreach ($states as $state) {
+                $region = MainRegion::model()->findByPk($state->region_id);
+                $stateMap[$state->state_id] = [
+                    'state_name' => $state->state_name,
+                    'region_name' => $region ? $region->name : 'Unknown Region'
+                ];
+            }
+
+            // Step 2: Iterate over $data and build the response
+            $domain = Yii::app()->request->hostInfo;
+            $responseData = [];
+
+            foreach ($data as $item) {
+                // Prepare image list
+                $imageList = isset($imageMap[$item->id]) ? implode(',', array_map(fn($image) => $domain . '/uploads/files/' . $image->image_name, $imageMap[$item->id])) : '';
+
+                // Prepare floor plan list
+                $floorPlanList = isset($floorPlanMap[$item->id]) ? implode(',', array_map(fn($floorPlan) => $domain . '/uploads/floor_plan/' . $floorPlan->floor_title, $floorPlanMap[$item->id])) : '';
+
+                // Get user information
+                $userId = $item->user_id;
+                $user = $userMap[$userId] ?? null;
+                $agencyName = '';
+                if ($user && strpos($user->agents, (string)$userId) !== false) {
+                    $agencyName = $user->first_name;
+                }
+
+                // Get emirate name from state
+                $emirateName = $stateMap[$item->state]['region_name'] ?? 'Unknown Emirate';
+                $formattedCreationDate = (new DateTime($item->date_added))->format('j-M-Y');
+                $formattedRefreshDate = (new DateTime($item->date_added))->format('j-M-Y');            
+                $responseData[] = [
+                    'UID'                              => $item->uid,
+                    'Sr. No'                           => $item->id,
+                    'Creation Date'                    => $item->date_added,
+                    'Refresh Date'                     => $item->date_added,
+                    'Reference ID'                     => $item->RefNo,
+                    'Permit Number'                    => $item->PropertyID,
+                    'Business Category'                => Category::model()->findByPk($item->category_id)->category_name ?? '',
+                    'Business Sub Category'            => Subcategory::model()->findByPk($item->sub_category_id)->sub_category_name ?? '',
+                    'Business Nested Sub Category'     => Subcategory::model()->findByPk($item->nested_sub_category)->sub_category_name ?? '',
+                    'COUNTRY'                          => $item->country_name ?? "UAE",
+                    'EMIRATE'                          => $emirateName,
+                    'LOCATION'                         => ($stateMap[$item->state]['state_name'] ?? ''),
+                    'Google Map Property Ads Location' => $item->location_latitude . ', ' . $item->location_longitude,
+                    'Ad Title'                         => $item->ad_title,
+                    'Ad Description'                   => $item->ad_description,
+
+                    // Different
+                    
+                    'Asking Price (AED)'               => $item->price,
+                    'Revenue (AED)'                    => $item->price_false,
+                    'Business Cash Flow (AED)'         => $item->price_false,
+                    'Business Valuation (AED)'         => $item->price,
+                    'Property Type'                    => Category::model()->findByPk($item->listing_type)->category_name ?? '',
+                    'Ownership Type'                   => $this->getMasterVal($item->ow_type),
+                    'Leasehold Rent Per Annum (AED)'   => $item->Rent,
+                    'Premises Details'                 => $item->mandate,
+
+                    'Expansion Potential'              => '',
+                    'Competition / Market'             => '',
+                    'Reasons for Selling'              => "",
+                    'Trading hours'                    => "",
+                    'Employees'                        => '',
+                    'Established Year'                 => '',
+                    'Support & training'               => '',
+                    'Furniture / Fixtures value (AED) Included in the asking price'
+                                                       => '',
+                    'Inventory / Stock value (AED) Included in the asking price'
+                                                       => '',
+                    'Relocatable'
+                                                       => '',
+
+                    // Same
+                    'Photos (JPG/PNG)'                 => $imageList,
+                    'Floor Plans'                      => $floorPlanList,
+                    'Video (YouTube URL)'              => $item->video,
+                    'FEATURED'                         => $item->featured == "Y" ? "Yes" : "No",
+                    'HOT'                              => $item->hot == 1 ? "Yes" : "No",
+                    'VARIFIED'                         => $item->verified == 1 ? "Yes" : "No",
+                    'Availability'                     => $item->availability == "sold_out" ? "Sold Out" : $item->availability == "not_available" ? "Not Available" : "Available",
+                    'Publish_Status'                   => $item->status == "A" ? "Active" : "Inacive",
+                    'AGENCY NAME'                      => $agencyName,
+                    'AGENT NAME'                       => $user->first_name ?? '',
+                    'AGENT EMAIL'                      => $user->email ?? '',
+                    'AGENT CONTACT'                    => $user->phone_number ?? '',
+                ];
+            }
+
+            header('Content-Type: application/json');
+            echo json_encode($responseData);
+
+            // Send JSON response
+            Yii::app()->end();
+        } catch (Exception $e) {
+            echo json_encode(['error' => $e->getMessage()]);
+            Yii::app()->end();
+        }
+    }
+    
+    public function getMasterVal($id = null)
+	{
+		$data =  Master::model()->findName($id);
+		if (!empty($data)) {
+			return $data->master_name;
+		}
+	}
     public function actionBusiness()
     {
         
@@ -3509,6 +3689,197 @@ class Place_propertyController  extends Controller
         $data = CJSON::decode($rawData, true);
         $excelData = ($data['excelData']);
         
+        $newCount = 0;
+        $updatedCount = 0;
+        $imageInsertData = [];
+        $floorPlanInsertData = [];
+        
+        if (is_array($excelData)) {
+            // Extract unique values for batch fetching
+            $refNos = array_unique(array_filter(array_column($excelData, 4), fn($value) => !empty($value)));
+            $categoryNames = array_unique(array_filter(array_column($excelData, 8), fn($value) => !empty($value)));
+            $categoryTypes = array_unique(array_filter(array_column($excelData, 7), fn($value) => !empty($value)));
+            $stateNames = array_unique(array_filter(array_column($excelData, 11), fn($value) => !empty($value)));
+            $stateSlugs = array_unique(array_map(
+                fn($stateName) => $this->generateSlug($stateName), 
+                array_filter(array_column($excelData, 11), fn($value) => !empty($value))
+            ));
+            $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 39), fn($value) => !empty($value))));
+            
+            // Fetch data in bulk
+            $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
+            $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'P']);
+            $types = Category::model()->findAllByAttributes(['category_name' => $categoryTypes, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'C']);
+            $states = States::model()->findAllByAttributes(['slug' => $stateSlugs, 'isTrash' => '0']);
+            $users = User::model()->findAllByAttributes(['email' => $userEmails]);
+    
+            // Map data for quick lookup
+            $adsMap = array_column($ads, null, 'RefNo');
+            $categoriesMap = array_column($categories, null, 'category_name');
+            $typesMap = array_column($types, null, 'category_name');
+            $statesMap = array_column($states, null, 'slug');
+            $usersMap = array_column($users, null, 'email');
+    
+            // Prepare data for batch processing
+            $insertData = [];
+            $updateData = [];
+            $updateConditions = [];
+            $updateParams = [];
+    
+            foreach (array_slice($excelData, 1) as $data) {
+                if (empty($data) || empty($data[4])) continue; // Skip if data is empty or refNo is null
+                
+                if (is_numeric($data[3])) {
+                    $excelDate = $data[3];
+                    $unixTimestamp = ($excelDate - 25569) * 86400;
+                    $dateAdded = date('Y-m-d H:i:s', $unixTimestamp);
+                } elseif (strtotime($data[3]) !== false) {
+                    $dateAdded = date('Y-m-d H:i:s', strtotime($data[3]));
+                } else {
+                    $dateAdded = null;
+                }
+                
+                $existingAd = $adsMap[$data[4]] ?? null;
+                if (empty($data[0])){
+                    $data[0]    = 'PID_' . rand(100000, 999999);
+                }
+                if (!$existingAd){
+                    $cleaned_text = mb_substr(preg_replace('/[^\w\s]/', '', $data[13]), 0, 80);
+                    $baseSlug = strtolower(trim(str_replace(' ', '-', $cleaned_text), '-'));
+                    $slug = $baseSlug;
+                    while (PlaceAnAd::model()->exists('slug=:slug', [':slug' => $slug])) {
+                        $slug = $baseSlug . '-' . rand(100, 999);
+                    }
+                }else {
+                    $slug = $existingAd->slug;
+                }
+                $stateName = $data[11];
+                $stateSlug = $this->generateSlug($stateName);
+                if (!isset($statesMap[$stateSlug])) {
+                    // Insert new state
+                    $region = MainRegion::model()->findByAttributes(['slug' => $stateSlug]);
+                    $regionId = $region ? $region->region_id : null;
+                
+                    $newState = new States();
+                    $newState->state_name = $stateName;
+                    $newState->country_id = 66124;
+                    $newState->isTrash = 0;
+                    $newState->slug = $stateSlug;
+                    $newState->region_id = $regionId;
+                    $newState->save();
+                
+                    // Update `statesMap` with the new state
+                    $statesMap[$stateSlug] = $newState;
+                }
+                $record = [
+                    'uid' => $data[0],
+                    'section_id' => ($data[6] == "Sale") ? 1 : 2,
+                    'listing_type' => $typesMap[$data[7]]->category_id ?? null,
+                    'category_id' => $categoriesMap[$data[8]]->category_id ?? null,
+                    'RefNo' => $data[4],
+                    'lease_status' => empty($data[26]) ? 0 : ($data[26] == "Leased" ? 1 : 0),
+                    'ad_title' => $data[13],
+                    'slug' => $slug,
+                    'PropertyID' => $data[5],
+                    'ad_description' => $data[14],
+                    'date_added' => $dateAdded,
+                    'state' => $statesMap[$stateSlug]->state_id ?? 0,
+                    'user_id' => $usersMap[$data[39]]->user_id ?? 31988,
+                    'status' => ($data[36] == "Active") ? "A" : "I",
+                    'availability' => ($data[35] == "Sold Out" ? "sold_out" : ($data[35] == "Leased Out" ? "lease_out" : null)),
+                    'price' => $this->calculatePrice($data[23], $data[24]),
+                    'bedrooms' => $data[17],
+                    'bathrooms' => $data[18],
+                    'mobile_number' => $data[40],
+                    'country' => 66124,
+                    'property_status' => $data[25] == "Yes" ? "1" : '0',
+                    'income' => $data[27],
+                    'roi' => $data[28] ?? 0,
+                    'no_of_u' => $data[19],
+                    'FloorNo' => $data[20],
+                    'plot_area' => $data[21],
+                    'builtup_area' => $data[22] ?? 0,
+                    'furnished' => $data[16] == "Yes" ? "Y" : "N",
+                    'featured' => $data[32] == "Yes" ? "Y" : "N",
+                    'hot' => $data[33] == "Yes" ? 1 : 0,
+                    'verified' => $data[34] == "Yes" ? 1 : 0,
+                    'mandate' => $data[2],
+                    'contact_person' => $data[38],
+                    'salesman_email' => $data[39],
+                    'amenities' => $data[15],
+                    'area_location' => $data[11],
+                    'interior_size' => $data[22],
+                    'rent_paid' => strtolower($data[24]),
+                ];
+    
+                if ($existingAd) {
+                    $record['id'] = $existingAd->id; // Include ID for updates
+                    $updateData[] = $record;
+                    $updatedCount++;
+                } else {
+                    $insertData[] = $record;
+                    $newCount++;
+                }
+    
+            }
+    
+            // Begin transaction
+            $transaction = Yii::app()->db->beginTransaction();
+            try {
+                if (!empty($insertData)) {
+                    $this->batchInsert('mw_place_an_ad', array_keys($insertData[0]), $insertData);
+                }
+    
+                // Update existing records
+                foreach ($updateData as $update) {
+                    $id = $update['id'];
+                    unset($update['id']); // Remove 'id' from update fields
+                    Yii::app()->db->createCommand()
+                        ->update('mw_place_an_ad', $update, 'id=:id', [':id' => $id]);
+                }
+    
+                // Insert images
+                if (!empty($imageInsertData)) {
+                    $this->batchInsert('mw_ad_images', ['ad_id', 'image_name'], $imageInsertData);
+                }
+    
+                // Insert floor plans
+                if (!empty($floorPlanInsertData)) {
+                    $this->batchInsert('mw_ad_floor_plans', ['ad_id', 'floor_plan_name'], $floorPlanInsertData);
+                }
+    
+                $transaction->commit();
+                return $this->sendJsonResponse([
+                    'status' => 'success',
+                    'newCount' => $newCount,
+                    'updatedCount' => $updatedCount,
+                ]);
+            } catch (Exception $e) {
+                $transaction->rollback();
+                return $this->sendJsonResponse(['status' => 'error', 'message' => $e->getMessage()]);
+           }
+        }else {
+            echo "<pre>";
+            print_r(var_dump($excelData));
+            echo "<br/>";
+            print_r(var_dump($rawData));
+            echo "<br/>";
+            print_r($rawData);
+            echo "<br/>";
+            echo json_last_error_msg();
+            exit;
+        }
+    }
+    public function actionUploadExcelBusiness()
+    {
+        ini_set('post_max_size', '300M');
+        ini_set('upload_max_filesize', '300M');
+        ini_set('memory_limit', '-1');
+
+        $rawData =  Yii::app()->request->getRawBody();
+        $data = CJSON::decode($rawData, true);
+        $excelData = ($data['excelData']);
+        exit;
         $newCount = 0;
         $updatedCount = 0;
         $imageInsertData = [];
