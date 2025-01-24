@@ -749,7 +749,7 @@ observer.observe();
     
     <?php
     $text_message = Yii::t('app',$this->tag->getTag('enquiry_text','Hello, I am interested in this property and would like to make an appointment for a visit. Please contact me as soon as possible.{s}Thank you so much,'),array('{s}'=>' %0a','{1}'=>$this->project_name,'{2}'=>$model->ReferenceNumberTitle,'{3}'=>$this->tag->getTag('property_link','Property Link'))) . ' %0a' .   urlencode($share_u_abs);
-    $w_share_url = Yii::t('app','https://wa.me/{number}?text={text}',array('{number}'=>Yii::t('app',!empty($model->whatsapp) ? $model->whatsapp : '+971552792403',array('+'=>'',' '=>'')) ,'{text}'=> $text_message  ));?>
+    $w_share_url = Yii::t('app','https://wa.me/{number}?text={text}',array('{number}'=>Yii::t('app',!empty($model->whatsapp) ? $model->whatsapp : '+971562818008',array('+'=>'',' '=>'')) ,'{text}'=> $text_message  ));?>
   
   
      <button type="button" onclick="OpenFormClickNew(this)" data-reactid="<?php echo $model->id;?>" data-testid="lead-form-submit" style="margin-bottom:8px" class="b-r-r-m Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA"><i class="fa fa-envelope"  style="font-size: 20px;margin-right: 3px;"></i> <?php echo  $this->tag->getTag('email2','Email') ;?></button>
