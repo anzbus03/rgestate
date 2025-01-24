@@ -257,6 +257,101 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     });
 
     $(document).ready(function (){
+        $('#uploadForm').on('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            var formData = new FormData(this); // Create FormData object from form
+
+            // Handle Excel file
+            var excelFile = $('#excelFile')[0].files[0];
+            if (excelFile) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var data = new Uint8Array(event.target.result);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var sheetName = workbook.SheetNames[0];
+                    var sheet = workbook.Sheets[sheetName];
+
+                    // Convert Excel data to JSON with line breaks handled
+                    var json = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: true });
+
+                    // Replace \n with \\n in all cells to maintain spacing during transmission
+                    json = json.map(row => 
+                        row.map(cell => 
+                            typeof cell === 'string' ? 
+                            cell.replace(/["']/g, '') : cell
+                        )
+                    );
+
+                    // Prepare the batches to send
+                    var batchSize = 10; // Number of rows per batch
+                    var totalRows = json.length;
+                    var totalBatches = Math.ceil(totalRows / batchSize);
+                    var currentBatch = 0;
+                    let stack = 1; // Initialize stack counter
+                    let updatedCount = 0;
+                    let newCount = 0;
+                    // Function to upload a batch of data
+                    function sendBatch(batchIndex) {
+                        var start = batchIndex * batchSize;
+                        var end = Math.min(start + batchSize, totalRows)+1;
+                        var batchData = json.slice(start, end);
+
+                        var requestData = {
+                            excelData: batchData, 
+                            csrf_token: formData.get('csrf_token'),
+                            batchIndex: batchIndex, // Batch index (1-based)
+                            totalBatches: totalBatches // Total number of batches
+                        };
+
+                        // Make the AJAX request
+                        $.ajax({
+                            url: '<?php echo Yii::app()->createAbsoluteUrl("place_property/uploadExcelBusiness"); ?>',
+                            type: 'POST',
+                            contentType: 'application/json', // Set content type as JSON
+                            data: JSON.stringify(requestData), // Convert the request data to JSON string
+                            success: function(response) {
+                                if (response.status === 'success') {
+                                    newCount += response.newCount;
+                                    updatedCount += response.updatedCount;
+                                    $('#uploadStatus').html(`Stack ${stack}/${totalBatches} processed successfully.<br/>
+                                        <strong>New properties: </strong> ${newCount}
+                                        <strong>Updated properties: </strong> ${updatedCount}`);
+                                } else {
+                                    console.error(`Error in stack ${stack}:`, response.message);
+                                }
+
+                                if (stack < totalBatches) {
+                                    stack++;
+                                    setTimeout(() => {
+                                        sendBatch(batchIndex + 1);
+                                    }, 1300);
+                                } else {
+                                    $('#loadingBar').hide();
+                                    $('#uploadStatus').html(`All stacks processed successfully.<br/>
+                                        <strong>New properties: </strong> ${newCount}
+                                        <strong>Updated properties: </strong> ${updatedCount}`);
+                                    $('#enquiryTable').DataTable().ajax.reload();
+                                }
+
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.error('Error:', errorThrown);
+                                $('#uploadStatus').text('Upload failed: ' + textStatus);
+                                $('#loadingBar').hide();
+                            }
+                        });
+                    }
+
+                    // Start uploading from the first batch
+                    $('#loadingBar').show();
+                    $('#uploadStatus').text('Processing batch 1...');
+                    sendBatch(0); // Start with the first batch
+                };
+                reader.readAsArrayBuffer(excelFile);
+            }
+        });
+
         $('#select-all').on('change', function() {
             $('.bulk-item').prop('checked', this.checked);
         });

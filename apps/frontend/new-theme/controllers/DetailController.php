@@ -746,11 +746,11 @@ class DetailController extends Controller
 	{
 
 
-		$modelCriteria  = PlaceAnAd::model()->findAds($formData = array(), $count_future = false, $returnCriteria = 1, $calculate = false, false);
-		$modelCriteria->condition = Yii::t('app', $modelCriteria->condition, array('and t.section_id != 3' => ''));
-		$modelCriteria->condition .= '   and t.id = :thisadid ';
-		$modelCriteria->params[':thisadid']  = $id;
-		$model =  PlaceAnAd::model()->find($modelCriteria);
+		$modelCriteria = new CDbCriteria();
+		$modelCriteria->condition = 't.section_id != 3 AND t.id = :thisadid';
+		$modelCriteria->params = array(':thisadid' => $id);
+		$model = PlaceAnAd::model()->find($modelCriteria);
+
 		$images  = array();
 		if (empty($model)) {
 			throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));

@@ -83,7 +83,6 @@
     var Close_title 	= '<?php echo $this->tag->getTag('close','Close');?>';
     var call_statistics = '<?php echo $this->app->createUrl('articles/statistics/case/C');?>/';
     var Contact_title 	= '<?php echo $this->tag->getTag('contact_us','Contact Us');?>';
-    
     </script>
   <style>
     .b24-widget-button-wrapper{

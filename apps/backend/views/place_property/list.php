@@ -605,7 +605,6 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     });
     $(document).ready(function () {
 
-        $(document).ready(function() {
             $('#uploadForm').on('submit', function(e) {
                 e.preventDefault(); // Prevent default form submission
 
@@ -700,117 +699,8 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     reader.readAsArrayBuffer(excelFile);
                 }
             });
-        });
 
 
-        // $('#uploadForm').on('submit', function (e) {
-        //     e.preventDefault(); // Prevent default form submission
-
-        //     var formData = new FormData(this); // Create FormData object from form
-
-        //     // Handle Excel file
-        //     var excelFile = $('#excelFile')[0].files[0];
-        //     if (excelFile) {
-        //         var reader = new FileReader();
-        //         reader.onload = function (event) {
-        //             var data = new Uint8Array(event.target.result);
-        //             var workbook = XLSX.read(data, { type: 'array' });
-        //             var sheetName = workbook.SheetNames[0];
-        //             var sheet = workbook.Sheets[sheetName];
-
-        //             // Convert Excel data to an array
-        //             var json = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: true });
-
-        //             // Optionally, sanitize data
-        //             json = json.map(row =>
-        //                 row.map(cell =>
-        //                     typeof cell === 'string' ? cell.replace(/["']/g, '') : cell
-        //                 )
-        //             );
-
-        //             // Add JSON stringified Excel data to FormData
-        //             formData.append('excelData', (json));
-        //             // console.log(typeof json)
-        //             // console.log(formData)
-        //             // Call upload function
-        //             uploadFiles(formData);
-        //         };
-        //         reader.readAsArrayBuffer(excelFile);
-        //     }
-        // });
-
-        // function uploadFiles(formData) {
-        //     $('#loadingBar').show();
-        //     console.log(typeof formData.get('excelData'));
-        //     return;
-        //     // Debugging the type of excelData in FormData
-        //     const crfToken = formData.get('csrf_token');
-        //     const excelData = JSON.parse(formData.get('excelData')); // Parse back the JSON string to an array
-        //     const totalRows = excelData.length - 1; // Exclude the header row
-        //     const batchSize = 10; // Rows per batch
-        //     const totalBatches = Math.ceil(totalRows / batchSize); // Calculate total batches (including remainder)
-        //     let stack = 1; // Initialize stack counter
-        //     let updatedCount = 0;
-        //     let newCount = 0;
-
-        //     function sendBatch(batchIndex) {
-        //         const start = batchIndex * batchSize + 1; // Skip header row
-        //         const end = Math.min(start + batchSize, excelData.length); // Ensure we don't go out of bounds
-        //         const batchData = excelData.slice(start, end);
-
-        //         if (batchData.length === 0) {
-        //             $('#loadingBar').hide();
-        //             $('#uploadStatus').text('All data processed.');
-        //             return;
-        //         }
-
-        //         const batchFormData = new FormData();
-        //         batchFormData.append('excelData', JSON.stringify(batchData));
-        //         batchFormData.append('headers', JSON.stringify(excelData[0]));
-        //         batchFormData.append('stack', stack);
-        //         batchFormData.append('final', totalBatches);
-        //         batchFormData.append('csrf_token', crfToken);
-
-        //         $.ajax({
-        //             url: '<?php echo Yii::app()->createAbsoluteUrl("place_property/uploadExcel"); ?>',
-        //             type: 'POST',
-        //             data: batchFormData,
-        //             contentType: false,
-        //             processData: false,
-        //             success: function (response) {
-        //                 if (response.status === 'success') {
-        //                     newCount += response.newCount;
-        //                     updatedCount += response.updatedCount;
-        //                     $('#uploadStatus').html(`Stack ${stack}/${totalBatches} processed successfully.<br/>
-        //                         <strong>New properties: </strong> ${newCount}
-        //                         <strong>Updated properties: </strong> ${updatedCount}`);
-        //                 } else {
-        //                     console.error(`Error in stack ${stack}:`, response.message);
-        //                 }
-
-        //                 if (stack < totalBatches) {
-        //                     stack++;
-        //                     setTimeout(() => {
-        //                         sendBatch(batchIndex + 1);
-        //                     }, 1300);
-        //                 } else {
-        //                     $('#loadingBar').hide();
-        //                     $('#uploadStatus').html(`All stacks processed successfully.<br/>
-        //                         <strong>New properties: </strong> ${newCount}
-        //                         <strong>Updated properties: </strong> ${updatedCount}`);
-        //                     $('#enquiryTable').DataTable().ajax.reload();
-        //                 }
-        //             },
-        //             error: function (jqXHR, textStatus, errorThrown) {
-        //                 $('#loadingBar').hide();
-        //                 $('#uploadStatus').text('Upload failed: ' + textStatus);
-        //                 console.error('Error:', errorThrown);
-        //             }
-        //         });
-        //     }
-
-        //     sendBatch(0); // Start processing from the first batch
-        // }
     });
 
     function reloadTable() {
