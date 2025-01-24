@@ -3879,7 +3879,7 @@ class Place_propertyController  extends Controller
         $rawData =  Yii::app()->request->getRawBody();
         $data = CJSON::decode($rawData, true);
         $excelData = ($data['excelData']);
-        exit;
+        // exit;
         $newCount = 0;
         $updatedCount = 0;
         $imageInsertData = [];
@@ -3888,18 +3888,22 @@ class Place_propertyController  extends Controller
         if (is_array($excelData)) {
             // Extract unique values for batch fetching
             $refNos = array_unique(array_filter(array_column($excelData, 4), fn($value) => !empty($value)));
-            $categoryNames = array_unique(array_filter(array_column($excelData, 8), fn($value) => !empty($value)));
-            $categoryTypes = array_unique(array_filter(array_column($excelData, 7), fn($value) => !empty($value)));
+            $categoryNames = array_unique(array_filter(array_column($excelData, 6), fn($value) => !empty($value)));
+            $subCategoryNames = array_unique(array_filter(array_column($excelData, 7), fn($value) => !empty($value)));
+            $nestedSubCategoryNames = array_unique(array_filter(array_column($excelData, 8), fn($value) => !empty($value)));
+            $categoryTypes = array_unique(array_filter(array_column($excelData, 19), fn($value) => !empty($value)));
             $stateNames = array_unique(array_filter(array_column($excelData, 11), fn($value) => !empty($value)));
             $stateSlugs = array_unique(array_map(
                 fn($stateName) => $this->generateSlug($stateName), 
                 array_filter(array_column($excelData, 11), fn($value) => !empty($value))
             ));
-            $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 39), fn($value) => !empty($value))));
+            $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 43), fn($value) => !empty($value))));
             
             // Fetch data in bulk
             $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'P']);
+            $subCategories = Subcategory::model()->findAllByAttributes(['sub_category_name' => $subCategoryNames, 'isTrash' => '0', 'status' => 'A']);
+            $nestedSubCategories = Subcategory::model()->findAllByAttributes(['sub_category_name' => $nestedSubCategoryNames, 'isTrash' => '0', 'status' => 'A']);
             $types = Category::model()->findAllByAttributes(['category_name' => $categoryTypes, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'C']);
             $states = States::model()->findAllByAttributes(['slug' => $stateSlugs, 'isTrash' => '0']);
             $users = User::model()->findAllByAttributes(['email' => $userEmails]);
@@ -3907,6 +3911,8 @@ class Place_propertyController  extends Controller
             // Map data for quick lookup
             $adsMap = array_column($ads, null, 'RefNo');
             $categoriesMap = array_column($categories, null, 'category_name');
+            $subCategoriesMap = array_column($subCategories, null, 'sub_category_name');
+            $nestedSubMap = array_column($nestedSubCategories, null, 'sub_category_name');
             $typesMap = array_column($types, null, 'category_name');
             $statesMap = array_column($states, null, 'slug');
             $usersMap = array_column($users, null, 'email');
@@ -3962,45 +3968,85 @@ class Place_propertyController  extends Controller
                     // Update `statesMap` with the new state
                     $statesMap[$stateSlug] = $newState;
                 }
+                /**
+                 * 
+                 * [0] => UID 
+                 * [1] => Sr. No 
+                 * [2] => Creation Date 
+                 * [3] => Refresh Date 
+                 * [4] => Reference ID 
+                 * [5] => Permit Number 
+                 * [6] => Business Category 
+                 * [7] => Business Sub Category 
+                 * [8] => Business Nested Sub Category 
+                 * [9] => COUNTRY 
+                 * [10] => EMIRATE 
+                 * [11] => LOCATION 
+                 * [12] => Google Map Property Ads Location 
+                 * [13] => Ad Title 
+                 * [14] => Ad Description 
+                 * [15] => Asking Price (AED) 
+                 * [16] => Revenue (AED) 
+                 * [17] => Business Cash Flow (AED) 
+                 * [18] => Business Valuation (AED) 
+                 * [19] => Property Type 
+                 * [20] => Ownership Type 
+                 * [21] => Leasehold Rent Per Annum (AED) 
+                 * [22] => Premises Details 
+                 * [23] => Expansion Potential 
+                 * [24] => Competition / Market 
+                 * [25] => Reasons for Selling 
+                 * [26] => Trading hours 
+                 * [27] => Employees 
+                 * [28] => Established Year 
+                 * [29] => Support & training 
+                 * [30] => Furniture / Fixtures value (AED) Included in the asking price 
+                 * [31] => Inventory / Stock value (AED) Included in the asking price 
+                 * [32] => Relocatable 
+                 * [33] => Photos (JPG/PNG) 
+                 * [34] => Floor Plans 
+                 * [35] => Video (YouTube URL) 
+                 * [36] => FEATURED 
+                 * [37] => HOT 
+                 * [38] => VARIFIED 
+                 * [39] => Availability 
+                 * [40] => Publish_Status 
+                 * [41] => AGENCY NAME 
+                 * [42] => AGENT NAME 
+                 * [43] => AGENT EMAIL 
+                 * [44] => AGENT CONTACT 
+                 */
                 $record = [
                     'uid' => $data[0],
-                    'section_id' => ($data[6] == "Sale") ? 1 : 2,
-                    'listing_type' => $typesMap[$data[7]]->category_id ?? null,
-                    'category_id' => $categoriesMap[$data[8]]->category_id ?? null,
+                    'section_id' => 6,
+                    'listing_type' => $typesMap[$data[19]]->category_id ?? null,
+                    'category_id' => $categoriesMap[$data[6]]->category_id ?? null,
+                    'sub_category_id' => $subCategoriesMap[$data[7]]->sub_category_id ?? null,
+                    'nested_sub_category' => $nestedSubMap[$data[8]]->sub_category_id ?? null,
                     'RefNo' => $data[4],
-                    'lease_status' => empty($data[26]) ? 0 : ($data[26] == "Leased" ? 1 : 0),
                     'ad_title' => $data[13],
                     'slug' => $slug,
                     'PropertyID' => $data[5],
                     'ad_description' => $data[14],
                     'date_added' => $dateAdded,
                     'state' => $statesMap[$stateSlug]->state_id ?? 0,
-                    'user_id' => $usersMap[$data[39]]->user_id ?? 31988,
-                    'status' => ($data[36] == "Active") ? "A" : "I",
-                    'availability' => ($data[35] == "Sold Out" ? "sold_out" : ($data[35] == "Leased Out" ? "lease_out" : null)),
-                    'price' => $this->calculatePrice($data[23], $data[24]),
-                    'bedrooms' => $data[17],
-                    'bathrooms' => $data[18],
-                    'mobile_number' => $data[40],
+                    'user_id' => $usersMap[$data[43]]->user_id ?? 31988,
+                    'status' => ($data[40] == "Active") ? "A" : "I",
+                    'availability' => ($data[39] == "Sold Out" ? "sold_out" : ($data[35] == "Leased Out" ? "lease_out" : null)),
+                    'price' => $data[15],
+                    'price_false' => $data[16],
+                    'ow_type' => $data[20] == "Leasehold" ? 188 : 187,
+                    'Rent' => $data[21],
+                    'mobile_number' => $data[44],
                     'country' => 66124,
-                    'property_status' => $data[25] == "Yes" ? "1" : '0',
-                    'income' => $data[27],
-                    'roi' => $data[28] ?? 0,
-                    'no_of_u' => $data[19],
-                    'FloorNo' => $data[20],
-                    'plot_area' => $data[21],
-                    'builtup_area' => $data[22] ?? 0,
-                    'furnished' => $data[16] == "Yes" ? "Y" : "N",
-                    'featured' => $data[32] == "Yes" ? "Y" : "N",
-                    'hot' => $data[33] == "Yes" ? 1 : 0,
-                    'verified' => $data[34] == "Yes" ? 1 : 0,
-                    'mandate' => $data[2],
-                    'contact_person' => $data[38],
-                    'salesman_email' => $data[39],
-                    'amenities' => $data[15],
+                    'property_status' => $data[39] == "Yes" ? "1" : '0',
+                    'featured' => $data[36] == "Yes" ? "Y" : "N",
+                    'hot' => $data[37] == "Yes" ? 1 : 0,
+                    'verified' => $data[38] == "Yes" ? 1 : 0,
+                    'mandate' => $data[22],
+                    'contact_person' => $data[44],
+                    'salesman_email' => $data[43],
                     'area_location' => $data[11],
-                    'interior_size' => $data[22],
-                    'rent_paid' => strtolower($data[24]),
                 ];
     
                 if ($existingAd) {
