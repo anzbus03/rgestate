@@ -389,8 +389,8 @@ class Place_propertyController  extends Controller
     public function actionDynamicNestedSubcategories()
     {
 
-        if (isset($_POST['parentId'])) {
-            $parentId = $_POST['parentId'];
+        if (isset($_GET['parentId'])) {
+            $parentId = $_GET['parentId'];
             $nestedSubcategories = Subcategory::model()->findAllByAttributes(array('parent_id' => $parentId));
             $options = array();
             foreach ($nestedSubcategories as $subcategory) {
@@ -398,7 +398,7 @@ class Place_propertyController  extends Controller
             }
             echo CHtml::tag('option', array('value' => ''), CHtml::encode('Select Nested Sub Category'), true);
             foreach ($options as $value => $name) {
-                $selected = ($_POST['nestedSubcategoryId'] == $value) ? 'selected' : '';
+                $selected = ($_GET['nestedSubcategoryId'] == $value) ? 'selected' : '';
                 echo CHtml::tag('option', array('value' => $value, 'selected' => $selected), CHtml::encode($name), true);
             }
         }
@@ -3675,7 +3675,7 @@ class Place_propertyController  extends Controller
             }
         }
         $model->fieldDecorator->onHtmlOptionsSetup = array($this, '_setupEditorOptions');
-        $this->render('root.apps.frontend.new-theme.views.place_property.form_new_business', compact('model', "country", "section", 'list_type', 'image_array'));
+        $this->render('form_new_business', compact('model', "country", "section", 'list_type', 'image_array'));
     }
 
     
@@ -3693,7 +3693,7 @@ class Place_propertyController  extends Controller
         $updatedCount = 0;
         $imageInsertData = [];
         $floorPlanInsertData = [];
-        
+      
         if (is_array($excelData)) {
             // Extract unique values for batch fetching
             $refNos = array_unique(array_filter(array_column($excelData, 4), fn($value) => !empty($value)));
@@ -3705,7 +3705,7 @@ class Place_propertyController  extends Controller
                 array_filter(array_column($excelData, 11), fn($value) => !empty($value))
             ));
             $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 39), fn($value) => !empty($value))));
-            
+          
             // Fetch data in bulk
             $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'P']);
@@ -3898,7 +3898,7 @@ class Place_propertyController  extends Controller
                 array_filter(array_column($excelData, 11), fn($value) => !empty($value))
             ));
             $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 43), fn($value) => !empty($value))));
-            
+           
             // Fetch data in bulk
             $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'P']);
@@ -4048,7 +4048,9 @@ class Place_propertyController  extends Controller
                     'salesman_email' => $data[43],
                     'area_location' => $data[11],
                 ];
-    
+                // echo "<pre>";
+                // print_r($record);
+                // exit;
                 if ($existingAd) {
                     $record['id'] = $existingAd->id; // Include ID for updates
                     $updateData[] = $record;

@@ -160,6 +160,8 @@ class Place_an_ad_no_loginController extends Controller
 			$this->redirect($this->app->createUrl('place_an_ad/create'));
 		}
 	}
+
+	
 	public function actionCreate($preview = null, $type = null)
 	{
 		$request = Yii::app()->request;
@@ -1534,4 +1536,5 @@ class Place_an_ad_no_loginController extends Controller
 		//  $this->no_header = '1'; $this->secure_header='1';
 		$this->render('//place_an_ad/success_business', compact('model'));
 	}
+	
 }
