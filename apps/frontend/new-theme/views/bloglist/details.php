@@ -4,6 +4,18 @@
 .blog-hero p {
     font-family: 'Roboto', 'Open Sans', sans-serif;
 }
+@media (max-width: 800px) {
+    .blog-detials{
+        padding: 15px;
+    }    
+    .blog-sidebar{
+        padding: 15px;
+        
+    }
+    .subscription-section{
+        padding: 15px;
+    }
+}
 
 .blog-hero h1 {
     font-family: Poppins;
@@ -186,11 +198,13 @@
 <section class="category-section">
     <div class="container">
         <div class="bg-white">
-            <div style="justify-content: space-between;"
-                class="category-menu pb-2 d-flex justify-content-between w-100 border-bottom border-secondary">
-                <ul style="margin: 0;" class="mb-0 d-flex align-items-center list-unstyled">
+            <div
+                style="justify-content: space-between;"
+                class="category-menu pb-2 d-flex justify-content-between w-100 border-bottom border-secondary"
+            >
+                <ul class="mb-0 d-flex align-items-center list-unstyled category-list">
                     <!-- Static Blog Link -->
-                    <li class="mr-4 mb-4">
+                    <li class="mr-4">
                         <a href="<?php echo Yii::app()->createUrl('bloglist/index'); ?>"
                             class="custom-link <?php echo $slug == 'blog' ? 'active' : ''; ?>">
                             <?php echo $this->tag->getTag('blog', 'Blog'); ?>
@@ -199,7 +213,7 @@
 
                     <!-- Dynamic Category Links -->
                     <?php foreach ($category as $k => $v) { ?>
-                    <li class="mr-4 mb-4">
+                    <li class="mr-4">
                         <a href="<?php echo Yii::app()->createUrl('bloglist/index', array('category' => $v->slug)); ?>"
                             class="custom-link <?php echo $slug == $v->slug ? 'active' : ''; ?>">
                             <?php echo ucfirst($v->name); ?>
@@ -513,6 +527,44 @@
 .custom-rotate-90 {
     transform: rotate(90deg);
 }
+/* Category menu container */
+.category-list {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping */
+    overflow-y: auto; /* Allow horizontal scrolling */
+    overflow-x: none;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    gap: 20px; /* Add spacing between items */
+}
+
+/* Ensure no wrapping of list items */
+.category-list li {
+    white-space: nowrap;
+}
+
+/* Remove conflicting styles on smaller screens */
+@media (max-width: 800px) {
+    .category-section ul {
+        flex-direction: row !important; /* Ensure items remain inline */
+        justify-content: flex-start; /* Align to the left */
+    }
+
+    .category-list {
+        gap: 10px; /* Adjust spacing for smaller screens */
+    }
+}
+
+@media (max-width: 640px) {
+    .category-section ul {
+        flex-direction: row !important; /* Force inline layout */
+    }
+
+    .category-section ul li {
+        margin-bottom: 0 !important; /* Remove vertical spacing */
+    }
+}
 
 .custom-spacing-y-4 {
     margin-top: 16px;
@@ -686,7 +738,7 @@
 <!-- main content  -->
 <div class="d-flex justify-content-between align-items-start space-x-10 expertSection">
 
-    <div class="blog-detials">
+    <div class="blog-detials pa-2">
         <?php
         if (isset($model)) {
             $timthumb =  Yii::app()->apps->getBaseUrl('timthumb.php');
@@ -1275,21 +1327,181 @@
     </div>
 </div>
 
-
-
-<section class="subscription-section">
-    <div class="position-relative subscription-bg">
-        <div class="overlay"></div>
-
-        <!-- Content Wrapper -->
-        <div class="content-wrapper">
-            <!-- Left Text Content -->
-            <div class="text-content">
+<section class="newsletter-section">
+    <div class="newsletter-bg">
+        <div class="newsletter-overlay"></div>
+        <div class="newsletter-content">
+            <!-- Text Content -->
+            <div class="newsletter-text">
                 <h2>Get The Latest News & Offers</h2>
                 <p>We'll send you a nice letter once per week. No Spam.</p>
             </div>
 
             <!-- Subscription Form -->
+            <form class="newsletter-form">
+                <div class="newsletter-input-container">
+                    <i class="fa fa-envelope"></i>
+                    <input type="email" name="email" placeholder="Email Address" class="newsletter-input" />
+                </div>
+                <button type="submit" class="newsletter-button">Subscribe</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<style>
+        /* General Section Styles */
+    .newsletter-section {
+        width: 100%;
+        padding: 50px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .newsletter-bg {
+        position: relative;
+        background-image: url('<?php echo $this->app->apps->getBaseUrl('assets/img/blog/subscription.jpeg'); ?>');
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        max-width: 1200px;
+        height: 300px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .newsletter-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    /* Content Wrapper */
+    .newsletter-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        height: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    /* Text Content */
+    .newsletter-text {
+        color: white;
+        max-width: 50%;
+    }
+
+    .newsletter-text h2 {
+        font-size: 2.2rem;
+        color: white;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .newsletter-text p {
+        color: white;
+        font-size: 1.1rem;
+        margin-bottom: 0;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    /* Subscription Form */
+    .newsletter-form {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        max-width: 50%;
+        width: 100%;
+    }
+
+    .newsletter-input-container {
+        position: relative;
+        flex-grow: 1;
+    }
+
+    .newsletter-input {
+        width: 100%;
+        padding: 12px 15px 12px 40px;
+        border: none;
+        border-radius: 5px 0 0 5px;
+        font-size: 1rem;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .newsletter-input-container i.fa-envelope {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #00699E;
+        font-size: 1.2rem;
+    }
+
+    .newsletter-button {
+        padding: 12px 20px;
+        background-color: #EF7D28;
+        color: white;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .newsletter-button:hover {
+        background-color: #e69500;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .newsletter-content {
+            flex-direction: column;
+            text-align: center;
+            height: 80%;
+            padding-top: 30px;
+            gap: 20px;
+        }
+
+        .newsletter-text {
+            max-width: 100%;
+        }
+
+        .newsletter-form {
+            max-width: 100%;
+        }
+
+        .newsletter-input {
+            border-radius: 5px;
+        }
+
+        .newsletter-button {
+            border-radius: 5px;
+        }
+    }
+
+</style>
+
+<!-- <section class="subscription-section">
+    <div class="position-relative subscription-bg">
+        <div class="overlay"></div>
+
+        <div class="content-wrapper">
+            <div class="text-content">
+                <h2>Get The Latest News & Offers</h2>
+                <p>We'll send you a nice letter once per week. No Spam.</p>
+            </div>
+
             <form class="subscription-form">
                 <i class="fa fa-envelope"></i>
                 <input type="email" placeholder="Email Address" />
@@ -1297,7 +1509,7 @@
             </form>
         </div>
     </div>
-</section>
+</section> -->
 <script>
 const message = document.getElementById('message');
 const wordCount = document.getElementById('wordCount');
