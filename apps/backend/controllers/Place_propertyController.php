@@ -3887,27 +3887,29 @@ class Place_propertyController  extends Controller
         
         if (is_array($excelData)) {
             // Extract unique values for batch fetching
-            $refNos = array_unique(array_filter(array_column($excelData, 4), fn($value) => !empty($value)));
-            $categoryNames = array_unique(array_filter(array_column($excelData, 6), fn($value) => !empty($value)));
-            $subCategoryNames = array_unique(array_filter(array_column($excelData, 7), fn($value) => !empty($value)));
+            $refNos             = array_unique(array_filter(array_column($excelData, 4), fn($value) => !empty($value)));
+            $categoryNames      = array_unique(array_filter(array_column($excelData, 6), fn($value) => !empty($value)));
+            $subCategoryNames   = array_unique(array_filter(array_column($excelData, 7), fn($value) => !empty($value)));
             $nestedSubCategoryNames = array_unique(array_filter(array_column($excelData, 8), fn($value) => !empty($value)));
-            $categoryTypes = array_unique(array_filter(array_column($excelData, 19), fn($value) => !empty($value)));
-            $stateNames = array_unique(array_filter(array_column($excelData, 11), fn($value) => !empty($value)));
-            $stateSlugs = array_unique(array_map(
+            $categoryTypes          = array_unique(array_filter(array_column($excelData, 19), fn($value) => !empty($value)));
+            $stateNames             = array_unique(array_filter(array_column($excelData, 11), fn($value) => !empty($value)));
+            $stateSlugs             = array_unique(array_map(
                 fn($stateName) => $this->generateSlug($stateName), 
                 array_filter(array_column($excelData, 11), fn($value) => !empty($value))
             ));
-            $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 43), fn($value) => !empty($value))));
-           
+            $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 42), fn($value) => !empty($value))));
+            // echo "<pre>";
+            // print_r($excelData);
+            // exit;
             // Fetch data in bulk
             $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
-            $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'P']);
+            $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A']);
             $subCategories = Subcategory::model()->findAllByAttributes(['sub_category_name' => $subCategoryNames, 'isTrash' => '0', 'status' => 'A']);
             $nestedSubCategories = Subcategory::model()->findAllByAttributes(['sub_category_name' => $nestedSubCategoryNames, 'isTrash' => '0', 'status' => 'A']);
             $types = Category::model()->findAllByAttributes(['category_name' => $categoryTypes, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'C']);
             $states = States::model()->findAllByAttributes(['slug' => $stateSlugs, 'isTrash' => '0']);
             $users = User::model()->findAllByAttributes(['email' => $userEmails]);
-    
+            
             // Map data for quick lookup
             $adsMap = array_column($ads, null, 'RefNo');
             $categoriesMap = array_column($categories, null, 'category_name');
@@ -3916,7 +3918,7 @@ class Place_propertyController  extends Controller
             $typesMap = array_column($types, null, 'category_name');
             $statesMap = array_column($states, null, 'slug');
             $usersMap = array_column($users, null, 'email');
-    
+            
             // Prepare data for batch processing
             $insertData = [];
             $updateData = [];
@@ -4019,10 +4021,10 @@ class Place_propertyController  extends Controller
                 $record = [
                     'uid' => $data[0],
                     'section_id' => 6,
-                    'listing_type' => $typesMap[$data[19]]->category_id ?? null,
-                    'category_id' => $categoriesMap[$data[6]]->category_id ?? null,
-                    'sub_category_id' => $subCategoriesMap[$data[7]]->sub_category_id ?? null,
-                    'nested_sub_category' => $nestedSubMap[$data[8]]->sub_category_id ?? null,
+                    'listing_type' => $typesMap[rtrim($data[19])]->category_id ?? null,
+                    'category_id' => $categoriesMap[rtrim($data[6])]->category_id ?? null,
+                    'sub_category_id' => $subCategoriesMap[rtrim($data[7])]->sub_category_id ?? null,
+                    'nested_sub_category' => $nestedSubMap[rtrim($data[8])]->sub_category_id ?? null,
                     'RefNo' => $data[4],
                     'ad_title' => $data[13],
                     'slug' => $slug,
@@ -4031,25 +4033,27 @@ class Place_propertyController  extends Controller
                     'date_added' => $dateAdded,
                     'state' => $statesMap[$stateSlug]->state_id ?? 0,
                     'user_id' => $usersMap[$data[43]]->user_id ?? 31988,
-                    'status' => ($data[40] == "Active") ? "A" : "I",
-                    'availability' => ($data[39] == "Sold Out" ? "sold_out" : ($data[35] == "Leased Out" ? "lease_out" : null)),
+                    'status' => ($data[39] == "Active") ? "A" : "I",
+                    'availability' => ($data[38] == "Sold Out" ? "sold_out" : ($data[35] == "Leased Out" ? "lease_out" : null)),
                     'price' => $data[15],
                     'price_false' => $data[16],
                     'ow_type' => $data[20] == "Leasehold" ? 188 : 187,
                     'Rent' => $data[21],
-                    'mobile_number' => $data[44],
+                    'mobile_number' => $data[43],
                     'country' => 66124,
-                    'property_status' => $data[39] == "Yes" ? "1" : '0',
-                    'featured' => $data[36] == "Yes" ? "Y" : "N",
-                    'hot' => $data[37] == "Yes" ? 1 : 0,
-                    'verified' => $data[38] == "Yes" ? 1 : 0,
-                    'mandate' => $data[22],
-                    'contact_person' => $data[44],
-                    'salesman_email' => $data[43],
+                    'property_status' => $data[39] == "Active" ? "1" : '0',
+                    'featured' => $data[35] == "Yes" ? "Y" : "N",
+                    'hot' => $data[36] == "Yes" ? 1 : 0,
+                    'verified' => $data[37] == "Yes" ? 1 : 0,
+                    'mandate' => $data[21],
+                    'contact_person' => $data[43],
+                    'salesman_email' => $data[42],
                     'area_location' => $data[11],
                 ];
                 // echo "<pre>";
-                // print_r($record);
+                // print_r($data[39]);
+                // print_r($nestedSubMap[rtrim($data[8])]->sub_category_id);
+                // print_r($nestedSubMap);
                 // exit;
                 if ($existingAd) {
                     $record['id'] = $existingAd->id; // Include ID for updates
