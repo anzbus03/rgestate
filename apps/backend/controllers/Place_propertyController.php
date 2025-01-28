@@ -3898,9 +3898,7 @@ class Place_propertyController  extends Controller
                 array_filter(array_column($excelData, 11), fn($value) => !empty($value))
             ));
             $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 42), fn($value) => !empty($value))));
-            // echo "<pre>";
-            // print_r($excelData);
-            // exit;
+        
             // Fetch data in bulk
             $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A']);
@@ -3909,7 +3907,7 @@ class Place_propertyController  extends Controller
             $types = Category::model()->findAllByAttributes(['category_name' => $categoryTypes, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'C']);
             $states = States::model()->findAllByAttributes(['slug' => $stateSlugs, 'isTrash' => '0']);
             $users = User::model()->findAllByAttributes(['email' => $userEmails]);
-            
+        
             // Map data for quick lookup
             $adsMap = array_column($ads, null, 'RefNo');
             $categoriesMap = array_column($categories, null, 'category_name');
@@ -3918,7 +3916,9 @@ class Place_propertyController  extends Controller
             $typesMap = array_column($types, null, 'category_name');
             $statesMap = array_column($states, null, 'slug');
             $usersMap = array_column($users, null, 'email');
-            
+            // echo "<pre>";
+            // print_r($usersMap);
+            // exit;
             // Prepare data for batch processing
             $insertData = [];
             $updateData = [];
@@ -4032,7 +4032,7 @@ class Place_propertyController  extends Controller
                     'ad_description' => $data[14],
                     'date_added' => $dateAdded,
                     'state' => $statesMap[$stateSlug]->state_id ?? 0,
-                    'user_id' => $usersMap[$data[43]]->user_id ?? 31988,
+                    'user_id' => $usersMap[$data[42]]->user_id ?? 31988,
                     'status' => ($data[39] == "Active") ? "A" : "I",
                     'availability' => ($data[38] == "Sold Out" ? "sold_out" : ($data[35] == "Leased Out" ? "lease_out" : null)),
                     'price' => $data[15],
@@ -4051,6 +4051,8 @@ class Place_propertyController  extends Controller
                     'area_location' => $data[11],
                 ];
                 // echo "<pre>";
+                // print_r($record);
+                // exit;
                 // print_r($data[39]);
                 // print_r($nestedSubMap[rtrim($data[8])]->sub_category_id);
                 // print_r($nestedSubMap);
