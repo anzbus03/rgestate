@@ -354,7 +354,8 @@ class DetailController extends Controller
 		$mod = new BusinessForSale();
 		$criteria = new CDbCriteria;
 		//$criteria->select = 't.*,'.$mod->FetauredQuery.'usr.enable_l_f,usr.slug as user_slug,usr.premium as premium_u,ct.image as location_image,ct.location_latitude as city_location_latitude,ct.location_longitude as city_location_longitude,usr.whatsapp as whatsapp,usr.full_number as mobile_number,sec.slug as sec_slug,con.country_name as country_name,ct.city_name as city_name ,cat.slug as category_slug ,   sub_com.sub_community_name as sub_community_name,st.state_name as state_name,st.slug as state_slug,cat.category_name as  category_name,sub.sub_category_name as sub_category_name,usr.description as user_description,usr.image as user_image,usr.company_name as company_name,usr.first_name,usr.last_name,usr.phone as user_number,usr.address as user_address,usr.user_type as user_type,sec.section_name,st.state_name as state_name,com.community_name,(SELECT CONCAT(image_name, "||F||", status) FROM {{ad_image}} img  WHERE  img.ad_id = t.id   and  img.isTrash="0" order by img.status="A" desc  limit 1  )     as ad_image2 ';
-		$criteria->select = 't.*,p_usr.user_id as puser_id,CASE WHEN p_usr.user_id  is NOT NULL THEN p_usr.cr_number ELSE usr.cr_number END as cr_number,CASE WHEN p_usr.user_id  is NOT NULL THEN p_usr.licence_no ELSE usr.licence_no END as licence_no,CASE WHEN p_usr.a_chara_ar  is NOT NULL THEN p_usr.a_chara_ar ELSE usr.a_chara_ar END as advertiser_character,usr.slug as agent_slug ,usr.email as user_email,usr.image as image ,usr.total_reviews as total_reviews ,usr.avg_r as avg_r , ' . $mod->FetauredQuery . 'CASE WHEN p_usr.user_id  is NOT NULL THEN p_usr.enable_l_f ELSE usr.enable_l_f END as enable_l_f,CASE WHEN p_usr.user_id  is NOT NULL THEN p_usr.slug ELSE  usr.slug END   as user_slug,usr.premium as premium_u,ct.image as location_image,ct.location_latitude as city_location_latitude,ct.location_longitude as city_location_longitude,usr.whatsapp as whatsapp,usr.full_number as mobile_number,sec.slug as sec_slug,con.country_name as country_name,ct.city_name as city_name ,cat.slug as category_slug ,   sub_com.sub_community_name as sub_community_name,st.state_name as state_name,st.slug as state_slug,cat.category_name as  category_name,sub.sub_category_name as sub_category_name,usr.description as user_description,CASE WHEN p_usr.image is NOT NULL THEN p_usr.image ELSE  usr.image END  as user_image,CASE WHEN p_usr.user_id  is NOT NULL THEN p_usr.company_name ELSE usr.company_name END as company_name,CASE WHEN p_usr.user_id  is NOT NULL THEN p_usr.company_name_ar ELSE usr.company_name_ar END as company_name_ar,usr.first_name,usr.first_name_ar,usr.last_name,usr.phone as user_number,usr.address as user_address,usr.user_type as user_type,sec.section_name,st.state_name as state_name,com.community_name,(SELECT CONCAT(image_name, "||F||", status) FROM {{ad_image}} img  WHERE  img.ad_id = t.id   and  img.isTrash="0" order by img.status="A" desc  limit 1  )     as ad_image2 ';
+		$criteria->select = 't.*, ct.image as location_image, ct.location_latitude as city_location_latitude, ct.location_longitude as city_location_longitude, sec.slug as sec_slug, con.country_name as country_name, ct.city_name as city_name, cat.slug as category_slug, sub_com.sub_community_name as sub_community_name, st.state_name as state_name, st.slug as state_slug, cat.category_name as category_name, sub.sub_category_name as sub_category_name, sec.section_name, st.state_name as state_name, com.community_name, (SELECT CONCAT(image_name, "||F||", status) FROM {{ad_image}} img WHERE img.ad_id = t.id and img.isTrash="0" order by img.status="A" desc limit 1) as ad_image2';
+
 
 		$criteria->condition = '1';
 		if (Yii::app()->request->getQuery('showTrash', '0') == '0') {
@@ -374,8 +375,10 @@ class DetailController extends Controller
 		$criteria->join  .= ' left join {{states}} st ON st.state_id = t.state ';
 		$criteria->join  .= ' left join {{countries}} con ON con.country_id = t.country ';
 		$criteria->join  .= ' LEFT JOIN {{city}} ct on ct.city_id = t.city';
-		$criteria->join  .=   ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
-		$criteria->join  .=   ' LEFT JOIN {{listing_users}} p_usr on p_usr.user_id = usr.parent_user ';
+		
+		// $criteria->join .= ' LEFT JOIN {{listing_users}} usr ON usr.user_id = t.user_id';
+		// $criteria->join .= ' LEFT JOIN {{user}} u ON u.user_id = t.user_id'; // Joining the `user` table
+
 		if (Yii::app()->user->getId()) {
 			$criteria->select .= ' ,fav.ad_id as fav ';
 			$criteria->join  .= ' left join {{ad_favourite}} fav ON fav.ad_id = t.id and fav.user_id =:user_me';
@@ -425,7 +428,7 @@ class DetailController extends Controller
 				$criteria->distinct   = 't.id';
 			}
 		}
-		$criteria->condition .= ' and usr.status = "A" and usr.isTrash="0"';
+		// $criteria->condition .= ' and usr.status = "A" and usr.isTrash="0"';
 		if (empty($id)) {
 			if (defined('LANGUAGE') and LANGUAGE == 'ar'  and isset($_GET['slug_ar'])) {
 				$criteria->condition .= ' and t.slug_ar=:slug ';

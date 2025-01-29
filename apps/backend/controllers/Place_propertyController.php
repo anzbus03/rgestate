@@ -3825,6 +3825,7 @@ class Place_propertyController  extends Controller
     
             // Begin transaction
             $transaction = Yii::app()->db->beginTransaction();
+          
             try {
                 if (!empty($insertData)) {
                     $this->batchInsert('mw_place_an_ad', array_keys($insertData[0]), $insertData);
@@ -3952,6 +3953,11 @@ class Place_propertyController  extends Controller
                 }else {
                     $slug = $existingAd->slug;
                 }
+                // echo "<pre>";
+                // print_r($data[4]);
+                // print_r($existingAd);
+                // exit;
+                // return;
                 $stateName = $data[11];
                 $stateSlug = $this->generateSlug($stateName);
                 if (!isset($statesMap[$stateSlug])) {
@@ -3970,54 +3976,6 @@ class Place_propertyController  extends Controller
                     // Update `statesMap` with the new state
                     $statesMap[$stateSlug] = $newState;
                 }
-                /**
-                 * 
-                 * [0] => UID 
-                 * [1] => Sr. No 
-                 * [2] => Creation Date 
-                 * [3] => Refresh Date 
-                 * [4] => Reference ID 
-                 * [5] => Permit Number 
-                 * [6] => Business Category 
-                 * [7] => Business Sub Category 
-                 * [8] => Business Nested Sub Category 
-                 * [9] => COUNTRY 
-                 * [10] => EMIRATE 
-                 * [11] => LOCATION 
-                 * [12] => Google Map Property Ads Location 
-                 * [13] => Ad Title 
-                 * [14] => Ad Description 
-                 * [15] => Asking Price (AED) 
-                 * [16] => Revenue (AED) 
-                 * [17] => Business Cash Flow (AED) 
-                 * [18] => Business Valuation (AED) 
-                 * [19] => Property Type 
-                 * [20] => Ownership Type 
-                 * [21] => Leasehold Rent Per Annum (AED) 
-                 * [22] => Premises Details 
-                 * [23] => Expansion Potential 
-                 * [24] => Competition / Market 
-                 * [25] => Reasons for Selling 
-                 * [26] => Trading hours 
-                 * [27] => Employees 
-                 * [28] => Established Year 
-                 * [29] => Support & training 
-                 * [30] => Furniture / Fixtures value (AED) Included in the asking price 
-                 * [31] => Inventory / Stock value (AED) Included in the asking price 
-                 * [32] => Relocatable 
-                 * [33] => Photos (JPG/PNG) 
-                 * [34] => Floor Plans 
-                 * [35] => Video (YouTube URL) 
-                 * [36] => FEATURED 
-                 * [37] => HOT 
-                 * [38] => VARIFIED 
-                 * [39] => Availability 
-                 * [40] => Publish_Status 
-                 * [41] => AGENCY NAME 
-                 * [42] => AGENT NAME 
-                 * [43] => AGENT EMAIL 
-                 * [44] => AGENT CONTACT 
-                 */
                 $record = [
                     'uid' => $data[0],
                     'section_id' => 6,
@@ -4050,6 +4008,7 @@ class Place_propertyController  extends Controller
                     'salesman_email' => $data[42],
                     'area_location' => $data[11],
                 ];
+    
                 // echo "<pre>";
                 // print_r($record);
                 // exit;
@@ -4067,6 +4026,10 @@ class Place_propertyController  extends Controller
                 }
     
             }
+            // echo "<pre>";
+            // print_r(array_keys($insertData[0]));
+            // print_r($insertData);
+            // exit;
     
             // Begin transaction
             $transaction = Yii::app()->db->beginTransaction();

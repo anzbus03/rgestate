@@ -19,6 +19,7 @@
 </style>
 <div class=" col-sm-12 no-padding-left pull-left spl-no-padding-mob">
 				<div class="user_details only-mob margin-top-5 no-padding text-center">
+					
 				            							<?php
 							// if(!empty($model->puser_id)){ 
 							// echo '<div style="width:100%;">';

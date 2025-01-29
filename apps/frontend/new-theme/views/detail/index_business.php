@@ -666,6 +666,7 @@ observer.observe();
 
 		                    </style>
 							<div class="user_details margin-top-5 no-padding text-center">
+							 
 							 <?php
 							// if(!empty($model->puser_id)){ 
 								
@@ -687,7 +688,8 @@ observer.observe();
 							</div>
 							<div class="clearfiix"></div>
 							<div class="img_dev_details " style="width:100%; ">
-							<div class="_1p3joamp" style="margin-bottom: 2px !important;"><a href="<?php echo $lnk;?>"class="<?php echo $model->enable_l_f=='1' ? '  ' : '';?>" ><?php echo $model->companyName;?></a>
+								
+							<div class="_1p3joamp" style="margin-bottom: 2px !important;"><a href="<?php echo $lnk;?>"class="<?php echo $model->enable_l_f=='1' ? '  ' : '';?>" ><?php echo $model->companyName;?>RGEstate</a>
 
 							</div> 
 							<?php

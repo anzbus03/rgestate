@@ -115,8 +115,6 @@ class BusinessForSale extends ActiveRecord
 			array('section_id,  category_id,user_id ,ad_title,ad_description,state', 'required', 'message' => $required),
 			array('listing_type', 'validateNonFranchis'),
 			array('maid_room', 'validateBusisessInfo'),
-
-
 			array('ad_description,category_id', 'required', 'on' => 'update_content', 'message' => $required),
 			array('country,state,city', 'safe', 'on' => 'new_insert'),
 			array('category_id', 'validateTitle'),
@@ -3321,10 +3319,9 @@ class BusinessForSale extends ActiveRecord
 
 
 		$criteria->join  .= ' left join {{area_unit}} au ON au.master_id = t.area_unit ';
-		$criteria->join  .=   ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
 
-		$criteria->join  .=   ' LEFT JOIN {{listing_users}} p_usr1 on p_usr1.user_id = usr.parent_user and usr.parent_user IS NOT NULL ';
-		$criteria->select .=  ' , (CASE WHEN usr.parent_user is NOT NULL THEN p_usr1.image  ELSE usr.image END) user_image , CASE WHEN usr.parent_user is NOT NULL THEN p_usr1.company_name ELSE usr.company_name END as company_name ';
+		$criteria->join .= ' LEFT JOIN {{listing_users}} usr ON usr.user_id = t.user_id';
+		$criteria->join .= ' LEFT JOIN {{user}} u ON u.user_id = t.user_id'; // Joining the `user` table
 
 
 		$criteria->select .= ',t.cron_arabic as ad_title2 ';
