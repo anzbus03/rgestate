@@ -715,18 +715,50 @@ class PlaceAnAdNew extends PlaceAnAd
 		$criteria->limit = 50;
 		return  PlaceAnAd::model()->findAll($criteria);
 	} 
-	
-	 	 public function fetchCounter($sect=null,$country){
-		  
-            $adModel = new PlaceAnAdNew();
-            $adModelCriteria =	$adModel->findAds(array() ,false,true);
-            $condition = $adModelCriteria->condition;
-            
-            $new_homesCritieria         	 =	$adModelCriteria;
-            $new_homesCritieria->condition  .= ' and t.section_id = :scte and t.country = :cntt';
-            $new_homesCritieria->params[':cntt'] = $country;
-            $new_homesCritieria->params[':scte'] = $sect;
-            return  $adModel->count($new_homesCritieria);
+	public function getAgencyName($userId){
+		$userDetails = User::model()->findByPk($userId);
+		if ($userDetails && $userDetails->rules == 3){
+			$agencies = User::model()->findAll(
+				'FIND_IN_SET(:userId, agents) > 0 AND rules = 2',
+				array(':userId' => $userId)
+			);
+			if ($agencies) {
+				return $agencies[0]->first_name;
+			}else {
+				return "RGEstate";
+			}
+		}else {
+			return $userDetails->first_name;
+		}
+	}
+
+	public function getMobileNumber($userId){
+		$userDetails = User::model()->findByPk($userId);
+		if ($userDetails && $userDetails->rules == 3){
+			$agencies = User::model()->findAll(
+				'FIND_IN_SET(:userId, agents) > 0 AND rules = 2',
+				array(':userId' => $userId)
+			);
+			if ($agencies) {
+				return $agencies[0]->phone_number;
+			}else {
+				return "RGEstate";
+			}
+		}else {
+			return $userDetails->phone_number;
+		}
+	}
+	public function fetchCounter($sect=null,$country){
+		
+		$adModel = new PlaceAnAdNew();
+		$adModelCriteria =	$adModel->findAds(array() ,false,true);
+		$condition = $adModelCriteria->condition;
+		
+		$new_homesCritieria         	 =	$adModelCriteria;
+		$new_homesCritieria->condition  .= ' and t.section_id = :scte and t.country = :cntt';
+		$new_homesCritieria->params[':cntt'] = $country;
+		$new_homesCritieria->params[':scte'] = $sect;
+		return  $adModel->count($new_homesCritieria);
              
 	}
 	

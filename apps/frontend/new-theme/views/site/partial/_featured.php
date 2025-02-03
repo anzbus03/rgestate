@@ -119,7 +119,12 @@
                                 <ul
                                     class="rg-featured-footer d-flex align-items-center justify-content-between border-top">
                                     <li>
-                                        <a type="button" class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center" onclick="OpenCallNewlatest(this)" data-prop="<?php echo  $add->id ;?>" data-agent="<?php echo $add->OwnerName;?>"  data-ref="<?php echo $add->ReferenceNumberTitle;?>" data-phone="<?php echo $add->mobile_number ;?>" >
+                                        <a type="button" class="btn btn-outline-primary rg-fs-12 rg-fw-500 rg-br-4 d-flex align-items-center" 
+                                            onclick="OpenCallNewlatest(this)" 
+                                            data-prop="<?php echo  $add->id ;?>" 
+                                            data-agent="<?php echo $add->getAgencyName($add->user_id);?>" 
+                                            data-ref="<?php echo $add->ReferenceNumberTitle;?>" 
+                                            data-phone="<?php echo $add->getMobileNumber($add->user_id);?>" >
                                             <svg width="9" height="9" class="me-2">
                                                 <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-call"></use>
                                             </svg>
