@@ -742,7 +742,7 @@ class PlaceAnAdNew extends PlaceAnAd
 			if ($agencies) {
 				return $agencies[0]->phone_number;
 			}else {
-				return "RGEstate";
+				return $userDetails->phone_number;
 			}
 		}else {
 			return $userDetails->phone_number;
