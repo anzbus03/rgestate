@@ -21,7 +21,7 @@ class New_projectsController   extends Controller
      * Define the filters for various controller actions
      * Merge the filters with the ones from parent implementation
      */
-     public $Controlloler_title= "New Projects";
+     public $Controlloler_title= "New Developments";
      public $focus = "country";
      	public $member;
      public function init()
@@ -227,8 +227,8 @@ class New_projectsController   extends Controller
          
 	    $image_array=array();
 	    $this->setData(array(
-			'pageMetaTitle'     =>   Yii::t('app', '{name}   :: {p}', array('{name}' => 'Create New Projects' ,'{p}'=> Yii::app()->options->get('system.common.site_name'))),   
-			'pageHeading'       => Yii::t(Yii::app()->controller->id, "Create  New Projects"),
+			'pageMetaTitle'     =>   Yii::t('app', '{name}   :: {p}', array('{name}' => 'Create New Development' ,'{p}'=> Yii::app()->options->get('system.common.site_name'))),   
+			'pageHeading'       => Yii::t(Yii::app()->controller->id, "Create New Development"),
 			 
         ));
         	$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));

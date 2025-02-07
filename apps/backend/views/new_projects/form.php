@@ -218,7 +218,7 @@ if (Yii::app()->isAppName('frontend')) {
 		<div class="abs-banner">
 			<div class="bloghead container">
 				<div class="fancy-title-hold text-initial clearfix">
-					<h3 class="fancy-title animate animated"><span class="title">Submit New Project</span></h3>
+					<h3 class="fancy-title animate animated"><span class="title">Submit New Development</span></h3>
 				</div>
 			</div>
 		</div>
@@ -627,7 +627,7 @@ if(Yii::app()->isAppName('frontend')){
     <div class="abs-banner"> 
             <div class="bloghead container"> 
                 <div class="fancy-title-hold text-initial clearfix">
-                   <h3 class="fancy-title animate animated"><span class="title">Submit New Project</span></h3>
+                   <h3 class="fancy-title animate animated"><span class="title">Submit New Development</span></h3>
                 </div>
             </div> 
     </div> 
@@ -769,79 +769,7 @@ background:
 }
                 
                 </style>
-          <?php
-           
-								if((int) $model->state>0)
-								{
-								 
-								$lat = @$model->stateLocation->location_latitude;
-								$long =@$model->stateLocation->location_longitude; 
-								 
-								}
-								else
-								{
-								$lat = @$model->country0->location_latitude;
-								$long =@$model->country0->location_longitude; 
-								 
-								}
-								
-								// Saving coordinates after model dragged our marker.
-							   
-							    if ($model->location_latitude!="" and $model->location_longitude!="") {
-									 $lat  =  $model->location_latitude;
-									 $long =  $model->location_longitude;
-									 
-								} 
-							//	$model->country  = '66099' ; 
-          ?>
-               
-                <div class="clearfix"><!-- --></div>
-              
-                <div class="clearfix"><!-- --></div>
-                  <div class="subhead font_s ros subhead2">Property Type and Location</div>
-                
-                   <div class="clearfix"><!-- --></div>
-                <div class="form-group col-lg-3 no-front ">
-                   <?php echo $form->labelEx($model, 'country');?>
-                    <?php echo $form->dropDownList($model, 'country',Countries::model()->ListData(), $model->getHtmlOptions('country',array('empty'=>'Select Country','class'=>'form-control select2','data-url'=>Yii::App()->createUrl($this->id.'/select_city_new'),'onchange'=>'load_via_ajax(this,"state")'))); ?>
-                    <?php echo $form->error($model, 'country');?>
-                </div>  
-               
-                  <?php  
-                     $cities =  CHtml::listData(States::model()->AllListingStatesOfCountry((int) $model->country) ,'state_id' , 'state_name') ;
-                    $m_class = empty( $cities ) ? 'hidden' : '' ; 
-                    ?>
-                <div class="form-group col-lg-3 <?php echo $m_class;?>">
-                      <?php echo $form->labelEx($model, 'state');?>
-                    <?php echo $form->dropDownList($model, 'state', $cities  , $model->getHtmlOptions('state',array('empty'=>'Select City','class'=>'form-control select2 ' ,'data-url'=>Yii::App()->createUrl($this->id.'/select_location'),'onchange'=>'load_via_ajax(this,"city")'))); ?>
-                    <?php echo $form->error($model, 'state');?>
-                </div>  
-     
-                 <?php  
-                     $locationlist =   CHtml::listData(City::model()->FindCities((int) $model->state) ,'city_id' , 'city_name') ;
-                    $m_class = empty(  $locationlist ) ? 'hidden' : '' ; 
-                    ?>
-                <div class="form-group col-lg-3 <?php echo $m_class;?>">
-                    
-                    <?php echo $form->labelEx($model, 'city');?>
-                    <?php echo $form->dropDownList($model, 'city', $locationlist, $model->getHtmlOptions('state',array('empty'=>'Select Location','class'=>'form-control select2','onchange'=>'changeMap()'))); ?>
-                    <?php echo $form->error($model, 'city');?>
-                </div>  
-                 <div class="form-group col-lg-3  ">
-                    
-                    <?php echo $form->labelEx($model, 'project_status');?>
-                    <?php echo $form->dropDownList($model, 'project_status', $model->projectStatus(), $model->getHtmlOptions('state',array('empty'=>'Please Select','class'=>'form-control select2' ))); ?>
-                    <?php echo $form->error($model, 'project_status');?>
-                </div>  
-				<div class="form-group col-lg-3  ">
-					<?php echo $form->labelEx($model, 'Permit Number'); ?>
-					<?php echo $form->textField($model, 'PropertyID', $model->getHtmlOptions('Permit No')); ?>
-					<?php echo $form->error($model, 'PropertyID'); ?>
-                </div>  
-                <div class="clearfix"><!-- --></div>
-                
-	   <?php $this->renderPartial('root.apps.backend.views.new_projects._location',compact('form'));?> 
-		
+        
                 <div class="clearfix"><!-- --></div>
                
                       <?php  
@@ -861,7 +789,7 @@ background:
                   
                  
                 <div class="clearfix"><!-- --></div>
-                  <div class="subhead font_s ros subhead2">Project Details</div>
+                  <div class="subhead font_s ros subhead2">Development Details</div>
                   	<div class="form-group col-lg-12">
 										<?php echo $form->labelEx($model, 'ad_title');?>	<?php  
 											if(!$model->isNewRecord){

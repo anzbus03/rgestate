@@ -177,6 +177,24 @@ if ($viewCollection->renderContent) { ?>
                             </select>
                         </div>
                     </div>
+                      <!-- Select for Category -->
+                    <div class="col-sm-3 mt-2">
+                        <div class="form-group">
+                            <label for="StatusSelect">Status</label>
+                            <select class="form-control" name="property_status" id="propertyStatusSelect">
+                                <option value="">Select Status</option>
+                                <option value="A">
+                                    Active
+                                </option>
+                                <option value="I">
+                                    Inactive
+                                </option>
+                                <option value="W">
+                                    Waiting
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-sm-3 text-right mt-4">
                         <button type="button" class="btn btn-primary btn-sm" style="margin-top: 20px;" onclick="$('#enquiryTable').DataTable().ajax.reload();">
                             Apply Filters
@@ -852,8 +870,8 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     d.preleased         = $('#preleasedSelect').val();
                     d.submited_by       = $('[name="submited_by"]').val();
                     d.property_category = $('#propertyCategorySelect').val();
+                    d.status            = $('#propertyStatusSelect').val();
                     d.location          = $('#locationSelect2').val();
-                    d.status            = status;
                     d.section_id        = sectionId;
                     d.preleasedR        = preleased;
                 }
@@ -883,14 +901,14 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
         });
 
-        $('#featuredSelect, #verifiedSelect, #preleasedSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').on('change', function () {
+        $('#featuredSelect, #verifiedSelect, #propertyStatusSelect, #preleasedSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').on('change', function () {
             table.ajax.reload();
         });
 
         // Reset Filters
         $('#resetButton').on('click', function (e) {
             e.preventDefault();
-            $('#featuredSelect, #verifiedSelect, #preleasedSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').val('');
+            $('#featuredSelect, #verifiedSelect, #preleasedSelect,#propertyStatusSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').val('');
             table.ajax.reload();
         });
         // Handle select all checkbox

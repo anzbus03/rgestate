@@ -106,7 +106,7 @@ class LeftSideNavigationWidget extends CWidget
                     'items'     => array(
                         array('url' => array('place_property/index'), 'label' => Yii::t('app', 'List properties'), 'active' => strpos($route, 'place_property/index') === 0),
                         array('url' => array('place_property/business'), 'label' => Yii::t('app', 'Business Opportiunities'), 'active' => strpos($route, 'place_property/business') === 0),
-                        array('url' => array('new_projects/index'), 'label' => Yii::t('app', 'List New Projects'), 'active' => strpos($route, 'new_projects') === 0),
+                        array('url' => array('new_projects/index'), 'label' => Yii::t('app', 'New Developments'), 'active' => strpos($route, 'new_projects') === 0),
                         // array( 'url' => array( 'place_property/unpublished' ), 'label' => Yii::t( 'app', 'Unpublished properties ' ), 'active' => strpos( $route, 'place_property' ) === 0 ),
                         // array( 'url' => array( 'place_property/trash' ), 'label' => Yii::t( 'app', 'Trash properties' ), 'active' => strpos( $route, 'place_property' ) === 0 ),
                         // array( 'url' => array( 'place_property/image_management2' ), 'label' => Yii::t( 'app', 'Manage property image' ), 'active' => strpos( $route, 'image_management2' ) === 0 ),

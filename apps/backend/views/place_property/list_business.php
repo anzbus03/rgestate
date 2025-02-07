@@ -95,20 +95,27 @@ if ($viewCollection->renderContent) { ?>
                     <input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>" />
                 <?php } ?>
                     <div class="row">
-                        <div class="col-sm-2" style="margin-bottom: 15px;">
-
-                            <!-- <button type="button" class="btn btn-success btn-xs" data-bs-toggle="modal"
-                                style="margin-top: -5px;" data-bs-target="#uploadModal">
-                                Upload By Excel
-                            </button> -->
-                        </div>
                         <div class="col-sm-2">
-                            <!-- <div class="form-group">
-                                <label for="featured">
-                                    <input type="checkbox" value="1" style="width:auto;height:auto;float:left; margin-right:10px;margin-top:2px;" id="featured">
-                                    Featured
-                                </label>
-                            </div> -->
+                            <div class="form-group">
+                                <label for="StatusSelect">Status</label>
+                                <select class="form-control" name="property_status" id="propertyStatusSelect">
+                                    <option value="">Select Status</option>
+                                    <option value="A">
+                                        Active
+                                    </option>
+                                    <option value="I">
+                                        Inactive
+                                    </option>
+                                    <option value="W">
+                                        Waiting
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 text-right mt-3">
+                            <button type="button" id="resetButton" class="btn btn-secondary btn-sm" style="margin-top: 20px;">
+                                Reset
+                            </button>
                         </div>
                         <div class="col-sm-2">
                             <!-- <div class="form-group">
@@ -528,6 +535,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 "type": "POST",
                 "data": function(d) {
                     var dateRangePicker = $('#dateRange').data('daterangepicker');
+                    d.status            = $("#propertyStatusSelect").val();
                     d.startDate         = dateRangePicker.startDate ? dateRangePicker.startDate.format('YYYY-MM-DD') : '';
                     d.endDate           = dateRangePicker.endDate ? dateRangePicker.endDate.format('YYYY-MM-DD') : '';
                 }
@@ -554,7 +562,16 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
 
         });
+        $('#propertyStatusSelect').on('change', function () {
+            table.ajax.reload();
+        });
 
+        // Reset Filters
+        $('#resetButton').on('click', function (e) {
+            e.preventDefault();
+            $('#propertyStatusSelect').val('');
+            table.ajax.reload();
+        });
         // Handle select all checkbox
         $('#selectAll').on('click', function() {
             var rows = $('#enquiryTable').DataTable().rows({

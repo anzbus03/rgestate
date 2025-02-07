@@ -705,7 +705,12 @@ class Place_propertyController  extends Controller
                 $criteria->params[':endDate'] = $endDate;
             }
         }
-        
+        if (!empty($_POST['status'])) {
+            $criteria->addCondition('status = :status');
+            $criteria->params[':status'] = $_POST['status'];
+            $criteria->addCondition('isTrash LIKE :isTrash');
+            $criteria->params[':isTrash'] = 0;
+        }
         $criteria->addCondition("t.section_id = 6");
         $criteria->params[':startDate'] = $startDate;
         $criteria->params[':endDate'] = $endDate;
