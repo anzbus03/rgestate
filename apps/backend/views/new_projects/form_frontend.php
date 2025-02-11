@@ -609,12 +609,7 @@ if(Yii::app()->isAppName('backend')){
         'renderedForm'    => $collection->renderForm,
     )));
 }
-/**
- * This hook gives a chance to append content after the view file default content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * @since 1.3.3.1
- */
+
 $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'controller'        => $this,
     'renderedContent'   => $viewCollection->renderContent,
