@@ -442,7 +442,7 @@ public function getPrimaryField(){
 			} 
 		return   self::model()->find($criteria);
 	}
-	public function  all_cities($country_id)
+	public function  all_cities()
     { 
 		if($limit==0 and !empty($country_id) ){
 			$cacheKey =  'all_cities'.Yii::app()->options->get('system.common.city_cache','abcdefg').COUNTRY_ID;
@@ -498,7 +498,7 @@ public function getPrimaryField(){
 		return   self::model()->find($criteria);
 	}
 	public $region_slug; 
-	public function  all_cities_list($country_id)
+	public function  all_cities_list()
     { 
 		// if($limit==0 and !empty($country_id) ){
 		// 	$cacheKey =  'all_cities-nrew'.Yii::app()->options->get('system.common.city_cache','abcdefg').COUNTRY_ID;
