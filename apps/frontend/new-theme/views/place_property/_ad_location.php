@@ -22,7 +22,8 @@
 	?>
 
 	<?php
-	$cities =  CHtml::listData(States::model()->AllListingStatesOfCountry((int) $model->country), 'state_id', 'state_name');
+	$cities = CHtml::listData(MainRegion::model()->getStateWithCountry_2((int) $model->country), 'region_id', 'name');
+	// print_r(MainRegion::model()->getStateWithCountry_2((int) $model->country));
 	$m_class = empty($cities) ? 'hidden' : '';
 	?>
 

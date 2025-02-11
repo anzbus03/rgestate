@@ -1034,6 +1034,7 @@ if ($viewCollection->renderContent) {
 								html[dir="rtl"] li.suggest {
 									float: right;
 								}
+								
 							</style>
 
 							<div class="listli sector_details r-detail-c">

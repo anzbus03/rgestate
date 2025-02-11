@@ -861,6 +861,9 @@ if ($viewCollection->renderContent) {
 					#section_picker.open-second .only-no-sector {
 						display: none;
 					}
+					.form-group{
+						margin-top: 10px;
+					}
 				</style>
 
 
@@ -1350,7 +1353,7 @@ if ($viewCollection->renderContent) {
 									</div>
 									<div class="col-sm-7 ">
 										<?php $mer =  array_merge($model->getHtmlOptions('no_of_u'), array('empty' => $this->tag->getTag('select', 'Select'), 'class' => 'input-text  form-control')); ?>
-										<?php echo $form->dropDownList($model, 'no_of_u', $model->selectcount($count = 20), $mer); ?>
+										<?php echo $form->dropDownList($model, 'no_of_u', $model->selectcount($count = 50), $mer); ?>
 										<?php echo $form->error($model, 'no_of_u'); ?>
 									</div>
 								</div>
@@ -1711,7 +1714,7 @@ if ($viewCollection->renderContent) {
 										</div>
 
 										<div class="clearfix"></div>
-										<div class="form-group col-lg-4 rent_paid <?php echo $model->section_id == $model::RENT_ID ? '' : 'hidden'; ?>">
+										<div class="form-group col-lg-4 rent_paid <?php echo $model->section_id == $model::RENT_ID ? '' : 'hide'; ?>">
 											<label for="PlaceAnAd_rent_paid" class="required"><?php echo $this->tag->gettag('price', 'Rent Paid'); ?> <span class="required">*</span></label>
 											<div class="clearfix"></div>
 											<?php echo $form->dropDownList($model, 'rent_paid', $model->paidArray(), $model->getHtmlOptions('rent_paid', array('empty' => $this->tag->gettag('select', 'Select'), 'class' => 'form-control'))); ?>

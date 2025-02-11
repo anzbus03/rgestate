@@ -286,7 +286,7 @@ public function getPrimaryField(){
 		// 		 return $items;
 		// 	}
 		// }
- 
+			
 		$criteria=new CDbCriteria;
 		$criteria->select = 't.country_id,t.state_id ,cn.slug as country_slug,t.slug,t.icon,t.region_id,rg.slug as reg_slug';
 		$criteria->join = 'LEFT JOIN {{countries}} cn ON t.country_id  = cn.country_id  ';
@@ -298,10 +298,9 @@ public function getPrimaryField(){
 			$criteria->distinct = 't.state_id'; 
 			$criteria->join  .= ' left join `mw_translate_relation` `translationRelation` on translationRelation.state_id = t.state_id   LEFT  JOIN mw_translation_data tdata ON (`translationRelation`.translate_id=tdata.translation_id and tdata.lang=:lan) ';
 			$criteria->select .= ' ,CASE WHEN tdata.message IS NOT NULL THEN    tdata.message ELSE t.state_name END  AS state_name ';
-			}
-			else{
-				$criteria->select .= ' ,t.state_name';
-			}
+		}else{
+			$criteria->select .= ' ,t.state_name';
+		}
 		$criteria->order = '-t.priority desc,state_name asc';
 		if(!empty($limit)){ $criteria->limit = $limit; }
 		if(!empty($only_photos)){
@@ -443,7 +442,7 @@ public function getPrimaryField(){
 			} 
 		return   self::model()->find($criteria);
 	}
-	public function  all_cities()
+	public function  all_cities($country_id)
     { 
 		if($limit==0 and !empty($country_id) ){
 			$cacheKey =  'all_cities'.Yii::app()->options->get('system.common.city_cache','abcdefg').COUNTRY_ID;
@@ -499,21 +498,22 @@ public function getPrimaryField(){
 		return   self::model()->find($criteria);
 	}
 	public $region_slug; 
-	public function  all_cities_list()
+	public function  all_cities_list($country_id)
     { 
-		if($limit==0 and !empty($country_id) ){
-			$cacheKey =  'all_cities-nrew'.Yii::app()->options->get('system.common.city_cache','abcdefg').COUNTRY_ID;
-			if(defined('LANGUAGE')){$cacheKey .= LANGUAGE ;   }
-			if ($items = Yii::app()->cache->get($cacheKey) and !isset($_GET['refresh'])) { 
+		// if($limit==0 and !empty($country_id) ){
+		// 	$cacheKey =  'all_cities-nrew'.Yii::app()->options->get('system.common.city_cache','abcdefg').COUNTRY_ID;
+		// 	if(defined('LANGUAGE')){$cacheKey .= LANGUAGE ;   }
+		// 	if ($items = Yii::app()->cache->get($cacheKey) and !isset($_GET['refresh'])) { 
 		 
-				 return $items;
-			}
-		}
-			$criteria=new CDbCriteria;
+		// 		 return $items;
+		// 	}
+		// }
+		$criteria=new CDbCriteria;
 		$criteria->select = 't.slug,mr.slug as region_slug';
 		$criteria->condition = ' t.country_id = :country_id   ';
 		$criteria->join .=' INNER JOIN {{main_region}} mr on mr.region_id = t.region_id ';
-		$criteria->params[':country_id'] = COUNTRY_ID ;
+		
+		$criteria->params[':country_id'] = $country_id ;
 		if(defined('LANGUAGE') and LANGUAGE != 'en'){ 
 			$criteria->params[':lan'] = LANGUAGE;
 			$criteria->distinct = 't.state_id'; 
@@ -521,12 +521,12 @@ public function getPrimaryField(){
 			$criteria->join  .= ' left join `mw_translate_relation` `translationRelation2` on translationRelation2.region_id = t.region_id   LEFT  JOIN mw_translation_data tdata2 ON (`translationRelation2`.translate_id=tdata2.translation_id and tdata2.lang=:lan) ';
 	
 			$criteria->select .= ' ,CASE WHEN tdata.message IS NOT NULL THEN    tdata.message ELSE t.state_name END  AS state_name ,CASE WHEN tdata2.message IS NOT NULL THEN    tdata2.message ELSE mr.name END  AS region_name ';
-			}
-			else{
-				$criteria->select .= ' ,t.state_name,mr.name as region_name';
-			}
+		}else{
+			$criteria->select .= ' ,t.state_name,mr.name as region_name';
+		}
+			
 		$criteria->order = '-t.priority desc,state_name asc'; 
-		$arra =  $this->findAll($criteria);
+		$arra =  self::model()->findAll($criteria);
 		$items =array();
 		 if($arra)
 		 {
