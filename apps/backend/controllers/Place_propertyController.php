@@ -1348,13 +1348,13 @@ class Place_propertyController  extends Controller
             // $this->getData('pageStyles')->add(array('src' => $apps->getBaseUrl('assets/css/select2.min.css')));
             // $this->getData('pageScripts')->add(array('src' => $apps->getBaseUrl('assets/js/select2.min.js')));
             // $this->getData('pageScripts')->add(array('src' => $apps->getBaseUrl('assets/js/select2script.js')));
-            //$this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'backend/assets/js/dropzone.min.js' ) ) );
+            $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'backend/assets/js/dropzone.min.js' ) ) );
             // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
             $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/place_ad_css.css')));
             $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/css/dropzone.css')));
             $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/table_common.css')));
 
-            // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=1')));
+            $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=1')));
             $apps = Yii::app()->apps;
             // $this->getData('pageStyles')->add(array('src' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 'priority' => -100));
             // $this->getData('pageStyles')->add(array('src' =>  'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css'));
