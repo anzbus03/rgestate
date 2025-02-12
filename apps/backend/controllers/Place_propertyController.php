@@ -1358,7 +1358,7 @@ class Place_propertyController  extends Controller
             $apps = Yii::app()->apps;
             // $this->getData('pageStyles')->add(array('src' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 'priority' => -100));
             // $this->getData('pageStyles')->add(array('src' =>  'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css'));
-            // $this->getData('pageScripts')->add(array('src' =>  'https://code.jquery.com/ui/1.11.2/jquery-ui.min.js'));
+            $this->getData('pageScripts')->add(array('src' =>  'https://code.jquery.com/ui/1.11.2/jquery-ui.min.js'));
         }
         return parent::beforeAction($action);
     }
