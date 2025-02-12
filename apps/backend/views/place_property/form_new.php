@@ -1,4 +1,5 @@
 
+
 <?php
 if (isset($_GET['type']) and !empty($_GET['type'])) {
 	if ($_GET['type'] == 'business') {
