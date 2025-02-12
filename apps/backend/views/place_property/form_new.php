@@ -1,8 +1,3 @@
-<!-- <script
-	src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/global/global.min.js'); ?>"
-	type="text/javascript"></script> -->
-
-
 
 <?php
 if (isset($_GET['type']) and !empty($_GET['type'])) {
