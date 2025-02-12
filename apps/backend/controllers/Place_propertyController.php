@@ -407,6 +407,17 @@ class Place_propertyController  extends Controller
 
     public function actionIndex()
     {
+        $adsToUpdate = PlaceAnAd::model()->findAll([
+            'condition' => 'city IS NULL OR city = "" AND state IS NOT NULL'
+        ]);
+    
+        foreach ($adsToUpdate as $ad) {
+            $state = States::model()->findByPk($ad->state);
+            if ($state !== null) {
+                PlaceAnAd::model()->updateByPk($ad->id, ['city' => $state->region_id]);
+            }
+        }
+        
         echo '<script>function iniFrame() { if(window.self !== window.top) { parent.closeBackendIFrame(); } } iniFrame(); </script>';
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
@@ -710,6 +721,25 @@ class Place_propertyController  extends Controller
             $criteria->params[':status'] = $_POST['status'];
             $criteria->addCondition('isTrash LIKE :isTrash');
             $criteria->params[':isTrash'] = 0;
+        }
+        if (!empty($_POST['featured'])) {
+            $criteria->addCondition('featured = :featured');
+            $criteria->params[':featured'] = $_POST['featured'];
+        }
+    
+        if (!empty($_POST['verified'])) {
+            $criteria->addCondition('verified = :verified');
+            $criteria->params[':verified'] = $_POST['verified'];
+        }
+    
+        if (!empty($_POST['property_category'])) {
+            $criteria->addCondition('category_id = :category_id');
+            $criteria->params[':category_id'] = $_POST['property_category'];
+        }
+    
+        if (!empty($_POST['location'])) {
+            $criteria->addCondition('state = :state');
+            $criteria->params[':state'] = $_POST['location'];
         }
         $criteria->addCondition("t.section_id = 6");
         $criteria->params[':startDate'] = $startDate;
@@ -1214,7 +1244,7 @@ class Place_propertyController  extends Controller
         $criteria->compare('tag_type', 'L');
         $tagModel = Tag::model()->findAll($criteria);
         $tags = CHtml::listData($tagModel, 'tag_id', 'tag_name');
-        $tags_short =  $model->place_ad_tag_code();;
+        $tags_short =  $model->place_ad_tag_code();
         $this->render('list_business', compact('model', 'tags', 'tags_short'));
     }
 
@@ -1424,13 +1454,13 @@ class Place_propertyController  extends Controller
 
         ));
 
-        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
-        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/css/dropzone.css')));
-        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/table_common.css')));
+        // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
+        // $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/css/dropzone.css')));
+        // $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/table_common.css')));
 
-        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=1')));
+        // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=1')));
 
-        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
+        // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
         // exit;
         if (Yii::app()->request->isAjaxRequest) {
             echo CActiveForm::validate($model);
@@ -1562,85 +1592,6 @@ class Place_propertyController  extends Controller
         $this->render('root.apps.backend.views.place_property.form_new', compact('model', 'country', 'section', 'list_type', 'image_array'));
     }
 
-    /*
-
-        public function actionUpdate( $id = null ) {
-
-            $request = Yii::app()->request;
-            $notify = Yii::app()->notify;
-            $model =   PlaceAnAd::model()->findByPk( $id );
-            if ( empty( $model ) ) {
-                throw new CHttpException( 404, Yii::t( 'app', 'The requested page does not exist.' ) );
-            }
-
-            $model->scenario = 'new_insert';
-
-            $image_array = array();
-
-            if ( isset( $model->adImages ) ) {
-
-                foreach ( $model->adImages as $k=>$v )
-                {
-                    $image_array[] = $v->image_name;
-                }
-            }
-            ;
-
-            $country = Countries::model()->ListDataForJSON();
-
-            $section = Section::model()->ListDataForJSON_New();
-            $list_type = Category::model()->listingTypeArrayMainData();
-
-            $this->setData( array(
-                'pageMetaTitle'     =>   Yii::t( 'app', '{name}   :: {p}', array( '{name}' => 'List your property ', '{p}'=> Yii::app()->options->get( 'system.common.site_name' ) ) ),
-                'pageHeading'       => Yii::t( Yii::app()->controller->id, 'List your property' ),
-
-            ) );
-            if ( Yii::app()->request->isAjaxRequest ) {
-                echo CActiveForm::validate( $model );
-                Yii::app()->end();
-            }
-            $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'backend/assets/js/dropzone.min.js' ) ) );
-            $this->getData( 'pageStyles' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'backend/assets/css/dropzone.css' ) ) );
-            $this->getData( 'pageStyles' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'assets/css/table_common.css' ) ) );
-            $this->getData( 'pageStyles' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'assets/css/place_ad_css.css' ) ) );
-
-            $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'assets/js/custom.js?q=1' ) ) );
-
-            $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'backend/assets/js/jquery.autocomplete.js' ) ) );
-            //  print_r( $_POST );
-            exit;
-            if ( $request->isPostRequest && ( $attributes = ( array )$request->getPost( $model->modelName, array() ) ) ) {
-
-                $model->attributes = $attributes;
-
-                if ( !$model->save() ) {
-
-                    $model->amenities = Yii::app()->request->getPost( 'amenities' );
-                    $exp =  explode( ',', $model->image );
-                    if ( $exp ) {
-                        foreach ( $exp as $k=>$v ) {
-                            if ( $v != '' ) 	 {
-                                $image_array[] = $v;
-                            }
-                        }
-                    }
-
-                    $notify->addError( Yii::t( 'app', 'Your form has a few errors, please fix them and try again!' ) );
-
-                } else {
-                    $this->insertAfterSaveFn( $model );
-                    $notify->addSuccess( Yii::t( 'app', 'Your form has been successfully saved!' ) );
-                    $this->redirect( Yii::App()->createUrl( $this->id.'/index' ) );
-                }
-
-            }
-
-            $this->render( 'form_new', compact( 'model', 'country', 'section', 'list_type', 'image_array' ) );
-
-        }
-        */
-
     public function actionUpdate($id = null, $slug = null)
     {
 
@@ -1679,13 +1630,13 @@ class Place_propertyController  extends Controller
             'pageHeading'       => Yii::t(Yii::app()->controller->id, 'List your property'),
 
         ));
-        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
-        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/css/dropzone.css')));
-        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/table_common.css')));
+        // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
+        // $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/css/dropzone.css')));
+        // $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/table_common.css')));
 
-        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=1')));
+        // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=1')));
 
-        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
+        // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
         //  print_r( $_POST );
         // exit;
         if (Yii::app()->request->isAjaxRequest) {
@@ -1695,28 +1646,43 @@ class Place_propertyController  extends Controller
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
             
             $model->attributes = $attributes;
-
             if (!$model->save()) {
-
-                // $model->amenities = Yii::app()->request->getPost('amenities');
-                $exp =  explode(',', $model->image);
-                if ($exp) {
-                    foreach ($exp as $k => $v) {
-                        if ($v != '') {
+                // Capture validation errors and display them
+                $errors = $model->getErrors();
+                $errorMessage = Yii::t('app', 'Your form has a few errors, please fix them and try again!');
+                
+                if (!empty($errors)) {
+                    foreach ($errors as $attribute => $errorList) {
+                        $errorMessage .= "\n" . Yii::t('app', ucfirst($attribute)) . ': ' . implode(', ', $errorList);
+                    }
+                }
+                
+                $notify->addError($errorMessage);
+            
+                // Handle image processing
+                $image_array = [];
+                $exp = explode(',', $model->image);
+                if (!empty($exp)) {
+                    foreach ($exp as $v) {
+                        if (!empty($v)) {
                             $image_array[] = $v;
                         }
                     }
                 }
-
-                $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
             } else {
                 $this->insertAfterSaveFn($model);
-                //$notify->addSuccess( Yii::t( 'app', 'Your form has been successfully saved!' ) );
+            
+                // Display success message
+                $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
+            
+                // Redirect based on section ID
                 if ($model->section_id == '6') {
                     $this->redirect(Yii::App()->createUrl($this->id . '/business'));
+                } else {
+                    $this->redirect(Yii::App()->createUrl($this->id . '/index'));
                 }
-                $this->redirect(Yii::App()->createUrl($this->id . '/index'));
             }
+            
         }
 
         $model->price = number_format($model->price, 0, '.', '');

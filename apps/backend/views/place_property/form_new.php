@@ -31,6 +31,134 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 	}
 ?>
 	<style>
+		.listli.r-detail-c .inputGroup input:checked~label::after {
+			content: unset;
+			background: #fff;
+			position: absolute;
+			right: 10px;
+			width: 26px;
+			height: 20px;
+			line-height: 20px;
+			vertical-align: middle;
+			padding: 0px 5px;
+			background: var(--logo-color);
+			color: #fff;
+			border-radius: 5px;
+			z-index: 11;
+			font-size: 12px;
+		}
+
+		label span.required {
+			font-size: 14px !important;
+		}
+
+		#member .select2-container--default .select2-selection--single,
+		#place_an_ad .select2-container--default .select2-selection--single {
+			border: 1px solid #eee;
+		}
+
+		#place_an_ad .sector1 .picker_class {
+			padding-left: 0;
+			max-width: 300px;
+			clear: both;
+			margin: auto;
+			float: none;
+		}
+
+		#suggest-main #suggestion-word {
+			color: #000
+		}
+
+		li.suggest {
+			border: 1px solid #eee;
+			padding: 1px 10px;
+			border-radius: 5px;
+			margin-right: 10px;
+			float: left;
+			font-size: 11px;
+			margin-bottom: 5px;
+			line-height: 2
+		}
+
+		html[dir="rtl"] li.suggest {
+			float: right;
+		}
+		
+		@media screen and (max-width: 600px) {
+			table.m-responsive thead {
+				border: none;
+				clip: rect(0 0 0 0);
+				height: 1px;
+				margin: -1px;
+				overflow: hidden;
+				padding: 0;
+				position: absolute;
+				width: 1px;
+			}
+
+			table.m-responsive tr {
+				border-bottom: 3px solid #ddd;
+				display: block;
+				margin-bottom: 0.625em;
+			}
+
+			table.m-responsive td {
+				border-bottom: 1px solid #ddd;
+				display: block;
+				font-size: 0.8em;
+				padding: 5px !important;
+				line-height: 32px !important;
+				padding-left: 7px !important;
+				padding-right: 7px !important;
+				text-align: left !important;
+				vertical-align: middle !important;
+				height: 47px;
+			}
+
+			table.m-responsive td::before {
+				content: attr(data-label);
+				float: left;
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+
+			html[dir="rtl"] table.m-responsive td::before {
+				float: right;
+			}
+
+			table.m-responsive td:last-child {
+				border-bottom: 0;
+			}
+
+			table.m-responsive td .insinert {
+				width: calc(100% - 100px);
+				float: right;
+			}
+
+			html[dir="rtl"] table.m-responsive td .insinert {
+				float: left;
+			}
+
+			html[dir="rtl"] table.m-responsive td {
+				text-align: right !important;
+			}
+
+			table.m-responsive tr:last-child {
+				margin-bottom: 0;
+				border-bottom: 0;
+			}
+		}
+
+		#inputcounter2,
+		#inputcounter {
+			font-size: 14px;
+			color: green;
+		}
+
+		#inputcounter2.error,
+		#inputcounter.error {
+			color: red !important;
+		}
 		html #place_an_ad .place-property {
 			padding: 0px 13px;
 			box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28) !important;
@@ -78,7 +206,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 		}
 
 		.tp_banner .h2 {
-			color: #fff
+			color: #fff;
 		}
 
 		.site-block {
@@ -87,12 +215,8 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 			border: 1px solid #EEE;
 			border-radius: 6px;
 			color: #2B2D2E;
-			display: -ms-flexbox;
-			-js-display: flex;
 			display: flex;
-			-ms-flex-align: center;
 			align-items: center;
-			-ms-flex-pack: center;
 			justify-content: center;
 		}
 
@@ -110,12 +234,10 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 		}
 
 		.site-block:hover h1 {
-
 			color: var(--secondary-color) !important;
-
 		}
 
-		.site-blocks-wrapper>li {
+		.site-blocks-wrapper > li {
 			padding: 8px;
 		}
 
@@ -147,7 +269,6 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 			right: 0;
 			color: #fff;
 			z-index: 1;
-			content: '';
 			background: rgba(0, 0, 0, 0.2);
 		}
 
@@ -170,6 +291,492 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 			margin-bottom: 0px;
 			padding: 0px;
 		}
+		.jqx-combobox-content {
+			text-indent: 4px;
+		}
+
+		span#selected_text,
+		.only-no-sector a {
+			font-size: 14px !important;
+			font-weight: 600;
+		}
+
+		.r-detail-c {
+			margin-top: 15px;
+		}
+
+		#place_an_ad .place-property {
+
+			border: 0px solid rgba(0, 47, 52, .2);
+			-webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+			-moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+			box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+		}
+
+		#place_an_ad .place-property {
+			max-width: 550px;
+		}
+
+		.subheading_font {
+			background: #ededed;
+			padding: 5px 15px;
+			font-size: 17px !important;
+			vertical-align: middle;
+			color: #72727d !important;
+			margin-bottom: 1rem;
+		}
+
+		#place_an_ad h3.box-title {
+
+			margin-bottom: 20px;
+			font-family: var(--main-font) !important;
+			font-weight: 700;
+			font-size: 24px;
+			text-align: initial;
+			line-height: inherit;
+			text-transform: initial;
+			padding: 5px 0px;
+			margin-bottom: 0px;
+
+		}
+
+		#place_an_ad .place-property.sector1 {
+
+
+			padding: 0px 13px;
+
+		}
+
+		@media only screen and (max-width: 600px) {}
+
+		h3.box-title {
+
+			color: #72727d !important;
+			font-weight: 600 !important;
+			font-size: 25px;
+			line-height: 47px;
+			height: auto;
+			vertical-align: middle;
+
+		}
+
+		#place_an_ad ._1ybgv {
+			width: 100%;
+			padding: 0 0 10px;
+		}
+
+		#place_an_ad .place-property {
+			padding: 0px 13px;
+		}
+
+		#place_an_ad .rui-3blDo {
+			padding-left: 0px;
+		}
+
+		#place_an_ad .insidecontent {
+			padding-left: 0px;
+			padding-right: 0px;
+			padding-top: 15px;
+			padding-bottom: 15px;
+		}
+
+		#place_an_ad ._2ytqd {
+
+			box-sizing: border-box;
+			border-bottom: 1px solid rgba(0, 47, 52, .2);
+			float: none;
+			height: 0;
+			width: auto;
+			margin-left: -13px;
+			margin-right: -13px;
+			clear: both;
+			display: block;
+
+		}
+
+		#place_an_ad .row label {
+			color: #72727d !important;
+			font-weight: 400;
+		}
+
+		#place_an_ad .form-control {
+			color: #72727d;
+			font-weight: 400;
+			border-color: #dfe0e3;
+		}
+
+		#place_an_ad .minimize_form {
+			max-width: 100% !important;
+		}
+
+		.amn1 {
+			/* margin-left: -15px;
+
+			margin-right: -15px; */
+		}
+
+		#place_an_ad .amn1 .amn {
+			max-height: initial;
+
+		}
+
+		#moredetails .col-sm-5 label::after {
+
+			content: ':';
+			display: inline-block;
+			margin-left: 10px;
+
+		}
+
+		.rui-qvKkT1 {
+
+			color: rgba(0, 47, 52, .64);
+			font-size: 11px;
+			font-weight: 400;
+			display: inline-block !important;
+			float: none;
+			line-height: 24px;
+			padding-left: 10px;
+
+		}
+
+		.form-check .form-check-label,
+		.form-radio .form-check-label {
+
+			padding-left: 9px;
+			line-height: 1.2;
+		}
+		.select2 {
+			width: 100% !important;
+		}
+
+		.subhead {
+			background-color:
+				#008000;
+			border-radius: 3px;
+			clear: both;
+			color:
+				#ffffff;
+			float: left;
+			margin-bottom: 7px;
+			margin-top: 8px;
+			padding: 7px 0;
+			text-indent: 9px;
+			text-transform: uppercase;
+			width: calc(100% - 15px);
+			margin-top: 25px;
+		}
+
+		.dropzone {
+
+			min-height: 160px;
+			background:
+				#fafafa;
+
+		}
+
+		@media only screen and (max-width: 600px) {
+
+			#place_an_ad ._1ybgv.full-content,
+			#place_an_ad ._1ybgv.full-content .rui-3blDo {
+				display: block;
+			}
+		}
+
+		.only-no-sector {
+			display: none;
+		}
+
+		#section_picker.open-second .sect_select {
+			display: block;
+		}
+
+		#section_picker.open-second .only-no-sector {
+			display: none;
+		}
+
+		.hide {
+			display: none !important;
+		}
+
+		.hidden {
+			display: none !important;
+			visibility: hidden !important;
+		}
+		.cls-closebtn {
+			display: none;
+		}
+
+		.amn .form-check {
+			display: none;
+		}
+
+		.amn .op-d h4.spl-headd {
+			font-size: 29px;
+			margin: 24px 7px !important;
+		}
+
+		.amn .op-d .cls-closebtn {
+			display: block;
+			color: red;
+			position: fixed;
+			right: 50px;
+		}
+
+		.amn .op-d .cls-closebtn svg {
+			width: 50px;
+			height: 50px;
+		}
+
+		.amn .op-d .parent-h-div {
+			max-width: 800px;
+			margin: auto;
+		}
+
+		.amn .op-d .button_icon-style5 {
+			display: none;
+		}
+
+		.amn .op-d {
+			position: fixed;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+			height: 100vh;
+			background: #fff;
+			z-index: 111;
+			min-height: 100vh;
+			overflow-y: scroll;
+		}
+
+		.amn .op-d .form-check {
+			display: block;
+		}
+
+		.amn .spl-headd {
+			color: #00699e;
+			cursor: pointer;
+		}
+
+		.amn .spl-headd svg {
+			width: 20px;
+			height: 20px;
+			margin-left: 15px;
+		}
+
+		.bg-bk.card-1 {
+			box-shadow: unset !important;
+		}
+
+		.bg-bk {
+			width: 100% !important;
+		}
+
+		#place_an_ad .place-property {
+			max-width: 650px !important;
+			box-shadow: unset !important;
+			border: 1px solid #eee !important;
+			width: 100% !important;
+		}
+
+		.d-flex {
+			display: flex;
+		}
+
+		#place_an_ad .row label.or-labels {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		#place_an_ad .form-control {
+			height: 33px;
+			text-indent: 7px;
+			padding-top: 0;
+			padding-bottom: 0;
+		}
+
+		#place_an_ad .btn.btn-default {
+			background: #fff !important;
+		}
+
+		#place_an_ad .place-property.sector1 {
+			box-shadow: unset !important;
+			border: 1px solid #eee !important;
+		}
+
+		html .inputGroup span.img {
+			display: none !important;
+		}
+
+		#place_an_ad .col-sm-12 textarea.form-control {
+			border: 1px solid #dfe0e3;
+		}
+
+		#place_an_ad .form-control {
+			border-color: #dfe0e3;
+			border: 1px solid #eee;
+		}
+
+		::placeholder {
+			color: #2f2f2f !important;
+			opacity: 1;
+		}
+
+		:-ms-input-placeholder {
+			color: #2f2f2f !important;
+		}
+
+		::-ms-input-placeholder {
+			color: #2f2f2f !important;
+		}
+
+		#member .select2-container .select2-selection--single,
+		#place_an_ad .select2-container .select2-selection--single {
+			height: 25px;
+		}
+
+		.ui-datepicker-year {
+			padding: 0 !important;
+		}
+
+		.textFields input {
+			text-align: unset !important;
+		}
+
+		.select2-dropdown {
+			background-color: white;
+			border: 1px solid #dadada;
+		}
+
+		.select2-container--default .select2-selection--single .select2-selection__arrow {
+			height: 22px;
+		}
+
+		.select2-results__option {
+			padding: 2px 6px;
+		}
+
+		li.select2-results__option:first-child {
+			display: none;
+		}
+
+		.form-check .form-check-label .input-helper::before {
+			top: 8px;
+		}
+
+		h4.spl-headd {
+			font-size: 17px;
+		}
+
+		li:hover .coverimg {
+			display: block !important;
+			background-color: #fad440;
+			color: #333 !important;
+		}
+
+		._3IhNg li:first-child .coverimg {
+			display: block !important;
+		}
+
+		._3IhNg li:first-child:hover .coverimg {
+			display: none !important;
+		}
+
+		@media only screen and (max-width: 600px) {
+			.mem_arae {
+				padding-bottom: 0;
+			}
+		}
+		.autocomplete-suggestions {
+			background-color: #fff;
+			border-radius: 4px;
+			border: 1px solid #ccc;
+			box-shadow: 0 4px 6px 2px rgba(0, 0, 0, 0.1);
+			font-size: .875em;
+			margin-left: 1px;
+			clear: both;
+		}
+
+		.autocomplete-suggestions {
+			overflow: auto;
+		}
+
+		.autocomplete-suggestion {
+			position: relative;
+			cursor: pointer;
+		}
+
+		.suggestion-img {
+			float: left;
+			height: 40px;
+			line-height: 40px;
+			margin: 4px 8px 0 6px;
+			overflow: hidden;
+			text-align: center;
+			vertical-align: middle;
+			width: 40px;
+		}
+
+		.suggestion-img img {
+			max-width: 100%;
+			max-height: 40px;
+			display: block;
+		}
+
+		.suggestion-wrapper {
+			display: block;
+			height: 48px;
+			overflow: hidden;
+			position: relative;
+			text-overflow: ellipsis;
+			vertical-align: middle;
+			line-height: 16px;
+			padding: 7px;
+		}
+
+		.suggestion-value {
+			display: block;
+			line-height: normal;
+			font-weight: 700;
+		}
+
+		.sub-text {
+			color: #999;
+			font-size: 11px;
+			font-weight: normal;
+		}
+
+		.sub-text {
+			color: #999;
+			font-size: 11px;
+			font-weight: normal;
+		}
+
+		.card-body.mainb {
+			padding-bottom: 0px;
+		}
+
+		.land-prop .bedroomsclass,
+		.land-prop .bathroomsclass {
+			display: none;
+		}
+
+		.amn-104,
+		.for-land {
+			display: flex;
+		}
+
+		.land-prop .amn-104,
+		.land-prop .for-land {
+			display: flex;
+		}
+
+		.land-prop .amn-99 {
+			display: none;
+		}
 	</style>
 	<section class="panel1 panel-bg banner" style="background-image:url(<?php echo $img; ?>);">
 		<div class="abs-banner">
@@ -184,342 +791,6 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 
 }
 ?>
-<style>
-	.cls-closebtn {
-		display: none;
-	}
-
-	.amn .form-check {
-		display: none;
-	}
-
-	.amn .op-d h4.spl-headd {
-		font-size: 29px;
-		margin: 24px 7px !important;
-	}
-
-	.amn .op-d .cls-closebtn {
-		display: block;
-		color: red;
-		position: fixed;
-		right: 50px;
-	}
-
-	.amn .op-d .cls-closebtn svg {
-		width: 50px;
-		height: 50px;
-	}
-
-	.amn .op-d .parent-h-div {
-		max-width: 800px;
-		margin: auto;
-	}
-
-	.amn .op-d .button_icon-style5 {
-		display: none;
-	}
-
-	.amn .op-d {
-		position: fixed;
-		left: 0px;
-		right: 0px;
-		top: 0px;
-		bottom: 0px;
-		width: 100%;
-		height: 100vh;
-		background: #fff;
-		z-index: 111;
-		min-height: 100vh;
-		overflow-y: scroll;
-	}
-
-	.amn .op-d .form-check {
-		display: block;
-	}
-
-	.amn .spl-headd {
-		color: #00699e;
-		cursor: pointer;
-	}
-
-	.amn .spl-headd svg {
-		width: 20px;
-		height: 20px;
-		margin-left: 15px;
-	}
-
-	.bg-bk.card-1 {
-
-		box-shadow: unset !important;
-	}
-
-	.bg-bk {
-
-		width: 100% !important;
-	}
-
-	#place_an_ad .place-property {
-		max-width: 650px !important;
-		box-shadow: unset !important;
-		border: 1px solid #eee !important;
-		width: 100% !important;
-	}
-
-	.d-flex {
-		display: flex;
-	}
-
-	#place_an_ad .row label.or-labels {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	#place_an_ad .form-control {
-
-		height: 33px;
-		text-indent: 7px;
-		padding-top: 0px;
-		padding-bottom: 0px;
-	}
-
-	#place_an_ad .btn.btn-default {
-		background: #fff !important;
-	}
-
-	font-family: var(--main-font);
-	background: #fff;
-	/* border: 1px solid  var(--logo-color); */
-	}
-
-	#place_an_ad .place-property.sector1 {
-
-		box-shadow: unset !important;
-		border: 1px solid #eee !important;
-	}
-
-	html .inputGroup span.img {
-		display: none !important;
-	}
-
-	#place_an_ad .col-sm-12 textarea.form-control {
-
-		border: 1px solid #dfe0e3;
-	}
-
-	#place_an_ad .form-control {
-
-		border-color: #dfe0e3;
-		border: 1px solid #eee;
-	}
-
-	::placeholder {
-		/* Chrome, Firefox, Opera, Safari 10.1+ */
-		color: #2f2f2f !important;
-		opacity: 1;
-		/* Firefox */
-	}
-
-	:-ms-input-placeholder {
-		/* Internet Explorer 10-11 */
-		color: #2f2f2f !important;
-	}
-
-	::-ms-input-placeholder {
-		/* Microsoft Edge */
-		color: #2f2f2f !important;
-	}
-
-	#member .select2-container .select2-selection--single,
-	#place_an_ad .select2-container .select2-selection--single {
-		height: 25px;
-	}
-
-	.ui-datepicker-year {
-		padding: 0px !important;
-	}
-
-	.textFields input {
-		text-align: unset !important;
-	}
-
-	#member .select2-container--default .select2-selection--single .select2-selection__rendered,
-	#place_an_ad .select2-container--default .select2-selection--single .select2-selection__rendered {
-		line-height: 23px;
-	}
-
-	td.del-ro {
-		padding-left: 0px !important;
-		padding-right: 0px !important;
-	}
-
-	.insinert .select2 {
-		width: 88px !important;
-	}
-
-	html .select2 {
-		max-width: 192px !important;
-	}
-
-	#select2-PlaceAnAd_area_unit-container,
-	#select2-PlaceAnAd_area_unit_1-container {
-		font-size: 12px;
-	}
-
-	[id^="select2-PlaceAnAd_state"] li:first-child {
-		display: block !important;
-	}
-
-	[id^="select2-PlaceAnAd_area_unit"] li:first-child {
-		display: block !important;
-	}
-
-	[id^="select2-PlaceAnAd_rent_paid-result"] li:first-child {
-		display: block !important;
-	}
-
-	[id^="select2-video_urls"] li.select2-results__option:first-child {
-		display: block !important;
-	}
-
-	[id^="select2-amenities"] li.select2-results__option:first-child {
-		display: block !important;
-	}
-
-	#place_an_ad .insinert .select2-container .select2-selection--single {
-		height: 24px;
-	}
-
-	#place_an_ad .insinert .select2-container--default .select2-selection--single .select2-selection__rendered {
-		line-height: 22px;
-	}
-
-	.insinert .select2-container--default .select2-selection--single .select2-selection__arrow {
-		height: 24px;
-		line-height: 24px
-	}
-
-	#place_an_ad .myaccount-menu.is-ended {
-		display: none !important;
-	}
-
-	@media only screen and (max-width: 600px) {
-		.mem_arae {
-			padding-bottom: 0px;
-		}
-	}
-
-	html[dir="rtl"] .select2-container--default .select2-selection--single .select2-selection__arrow b::before {
-
-		top: -11px;
-
-	}
-
-	.insinert .form-control {
-		padding: 0px 7px;
-		font-size: 13px !important;
-		height: 24px;
-	}
-
-	td a {
-
-		max-width: unset !important;
-	}
-
-	.select2-dropdown {
-		background-color: white;
-		border: 1px solid #dadada;
-	}
-
-	.select2-container--default .select2-selection--single .select2-selection__arrow {
-		height: 22px;
-	}
-
-	#member .select2-container--default .select2-selection--single .select2-selection__rendered,
-	#place_an_ad .select2-container--default .select2-selection--single .select2-selection__rendered {
-		line-height: 21px;
-	}
-
-	.select2-results__option {
-		padding: 2px 6px;
-
-	}
-
-	li.select2-results__option:first-child {
-		display: none;
-	}
-
-	html[dir="rtl"] svg.right_svg {
-		left: 10px !important;
-		right: unset !important;
-		transform: rotate(180deg);
-	}
-
-	html[dir="rtl"] .listli .inputGroup label {
-		padding: 8px 46px 8px 30px;
-	}
-
-	html[dir="rtl"] .inputGroup span.img {
-		right: 7px;
-		left: unset;
-	}
-
-	html[dir="rtl"] .form-check .form-check-label input,
-	html[dir="rtl"] .form-radio .form-check-label input {
-		right: 0;
-		left: unset;
-	}
-
-	.form-check .form-check-label .input-helper::before {
-		top: 8px;
-	}
-
-	._3IhNg li:first-child::after {
-
-		background-color: #f27f52 !important;
-		color: #fff !important;
-	}
-
-	h4.spl-headd {
-		font-size: 17px;
-	}
-
-	._3IhNg li:first-child::after {
-		content: '<?php echo $this->tag->getTag('cover', 'Cover'); ?>' !important;
-	}
-
-	.coverimg {
-		display: none !important;
-		width: 78%;
-		height: 25px;
-		background-color: var(--secondary-color);
-		display: block;
-		z-index: 1111111;
-		position: absolute;
-		bottom: 7px;
-		color: #fff !important;
-		text-align: center;
-		left: 10px;
-		right: 10px;
-		text-transform: uppercase;
-		font-weight: 500;
-		text-decoration: none !important;
-	}
-
-	li:hover .coverimg {
-		display: block !important;
-		background-color: #fad440;
-		color: #333 !important;
-	}
-
-	._3IhNg li:first-child .coverimg {
-		display: block !important;
-	}
-
-	._3IhNg li:first-child:hover .coverimg {
-		display: none !important;
-	}
-</style>
 <script>
 	var modelName = '<?php echo $model->modelName; ?>';
 	var sectid = '<?php echo $model->section_id; ?>';
@@ -532,9 +803,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 </script>
 
 <script src="<?php echo Yii::app()->apps->getBaseUrl('assets/js/place_ad_script.js?q=65'); ?>"></script>
-<script>
-	console.log(1);
-</script>
+
 <?php defined('MW_PATH') || exit('No direct script access allowed');
 if ($this->id == 'update_property') {
 	if ($this->functionality == 'picture') {
@@ -551,46 +820,17 @@ if ($model->isNewRecord and $this->action->id != 'preview' and empty($model->ad_
 	echo '<script>var isnewrecord= 1; </script>';
 }
 
-/**
- * This file is part of the MailWizz EMA application.
- * 
- * @package MailWizz EMA
- * @author Serban George Cristian <cristian.serban@mailwizz.com> 
- * @link http://www.mailwizz.com/
- * @copyright 2013-2014 MailWizz EMA (http://www.mailwizz.com)
- * @license http://www.mailwizz.com/license/
- * @since 1.0
- */
-
-/**
- * This hook gives a chance to prepend content or to replace the default view content with a custom content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderContent} to false 
- * in order to stop rendering the default content.
- * @since 1.3.3.1
- */
 $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCollection(array(
 	'controller'    => $this,
 	'renderContent' => true,
 )));
 
-// and render if allowed
 if ($viewCollection->renderContent) {
-	/**
-	 * This hook gives a chance to prepend content before the active form or to replace the default active form entirely.
-	 * Please note that from inside the action callback you can access all the controller view variables 
-	 * via {@CAttributeCollection $collection->controller->data}
-	 * In case the form is replaced, make sure to set {@CAttributeCollection $collection->renderForm} to false 
-	 * in order to stop rendering the default content.
-	 * @since 1.3.3.1
-	 */
 	$hooks->doAction('before_active_form', $collection = new CAttributeCollection(array(
 		'controller'    => $this,
 		'renderForm'    => true,
 	)));
 
-	// and render if allowed
 	if ($collection->renderForm) {
 		$mainText = $this->tag->getTag('submit_property', 'Submit Property');
 		$Validating = $this->tag->getTag('validating', 'Validating..');
@@ -603,196 +843,31 @@ if ($viewCollection->renderContent) {
 				'validateOnSubmit' => true,
 				'validateOnChange' => false,
 				'beforeValidate' => 'js:function(form) {
-				     
-						form.find("#bb").html("' . $Validating . '");
-						return true;
-					}',
+					form.find("#bb").html("' . $Validating . '");
+					return true;
+				}',
 				'afterValidate' => 'js:function(form, data, hasError) { 
 					 
 					if(hasError) {
 					 
-						  $("html, body").animate({
-        scrollTop: form.find(".errorMessage:visible:first").offset().top-110
-    }, 2000);
+						  	$("html, body").animate({
+								scrollTop: form.find(".errorMessage:visible:first").offset().top-110
+							}, 2000);
 						
 							form.find("#bb").html("' . $mainText . '");
 							return false;
-					}
-					else
-					{
+					}else{
 							form.find("#bb").html("' . $please_wait . '");	return true;
 					}
-					}',
-
-
+				}',
 			),
 			'htmlOptions' => array('autocomplete' => 'off')
 		));  ?>
-		<style>
-			.jqx-combobox-content {
-				text-indent: 4px;
-			}
-
-			span#selected_text,
-			.only-no-sector a {
-				font-size: 14px !important;
-				font-weight: 600;
-			}
-
-			.r-detail-c {
-				margin-top: 15px;
-			}
-
-			#place_an_ad .place-property {
-
-				border: 0px solid rgba(0, 47, 52, .2);
-				-webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
-				-moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
-				box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
-			}
-
-			#place_an_ad .place-property {
-				max-width: 550px;
-			}
-
-			.subheading_font {
-				background: #ededed;
-				padding: 5px 15px;
-				font-size: 17px !important;
-				vertical-align: middle;
-				color: #72727d !important;
-				margin-bottom: 1rem;
-			}
-
-			#place_an_ad h3.box-title {
-
-				margin-bottom: 20px;
-				font-family: var(--main-font) !important;
-				font-weight: 700;
-				font-size: 24px;
-				text-align: initial;
-				line-height: inherit;
-				text-transform: initial;
-				padding: 5px 0px;
-				margin-bottom: 0px;
-
-			}
-
-			#place_an_ad .place-property.sector1 {
-
-
-				padding: 0px 13px;
-
-			}
-
-			@media only screen and (max-width: 600px) {}
-
-			h3.box-title {
-
-				color: #72727d !important;
-				font-weight: 600 !important;
-				font-size: 25px;
-				line-height: 47px;
-				height: auto;
-				vertical-align: middle;
-
-			}
-
-			#place_an_ad ._1ybgv {
-				width: 100%;
-				padding: 0 0 10px;
-			}
-
-			#place_an_ad .place-property {
-				padding: 0px 13px;
-			}
-
-			#place_an_ad .rui-3blDo {
-				padding-left: 0px;
-			}
-
-			#place_an_ad .insidecontent {
-				padding-left: 0px;
-				padding-right: 0px;
-				padding-top: 15px;
-				padding-bottom: 15px;
-			}
-
-			#place_an_ad ._2ytqd {
-
-				box-sizing: border-box;
-				border-bottom: 1px solid rgba(0, 47, 52, .2);
-				float: none;
-				height: 0;
-				width: auto;
-				margin-left: -13px;
-				margin-right: -13px;
-				clear: both;
-				display: block;
-
-			}
-
-			#place_an_ad .row label {
-				color: #72727d !important;
-				font-weight: 400;
-			}
-
-			#place_an_ad .form-control {
-				color: #72727d;
-				font-weight: 400;
-				border-color: #dfe0e3;
-			}
-
-			#place_an_ad .minimize_form {
-				max-width: 100% !important;
-			}
-
-			.amn1 {
-				/* margin-left: -15px;
-
-				margin-right: -15px; */
-			}
-
-			#place_an_ad .amn1 .amn {
-				max-height: initial;
-
-			}
-
-			#moredetails .col-sm-5 label::after {
-
-				content: ':';
-				display: inline-block;
-				margin-left: 10px;
-
-			}
-
-			.rui-qvKkT1 {
-
-				color: rgba(0, 47, 52, .64);
-				font-size: 11px;
-				font-weight: 400;
-				display: inline-block !important;
-				float: none;
-				line-height: 24px;
-				padding-left: 10px;
-
-			}
-
-			.form-check .form-check-label,
-			.form-radio .form-check-label {
-
-				padding-left: 9px;
-				line-height: 1.2;
-			}
-		</style>
-
+	
 		<div class="box box-primary place_ad place-property <?php echo $model->isNewRecord ? 'sector1' : 'sector2'; ?>">
 			<h3 class="box-title hide"><?php echo $model->isNewRecord ? 'Post your Property' : 'Update your Property'; ?></h3>
 			<div class="box-header">
 
-
-
-				<div class="clearfix"><!-- --></div>
 			</div>
 			<div class="box-body <?php echo $model->category_id == '121' ? 'land-prop' : ''; ?>" id="boxdy">
 				<div class="spinner rmsdf">
@@ -801,79 +876,12 @@ if ($viewCollection->renderContent) {
 					<div class="bounce3"></div>
 				</div>
 				<?php
-				/**
-				 * This hook gives a chance to prepend content before the active form fields.
-				 * Please note that from inside the action callback you can access all the controller view variables 
-				 * via {@CAttributeCollection $collection->controller->data}
-				 * @since 1.3.3.1
-				 */
+				
 				$hooks->doAction('before_active_form_fields', new CAttributeCollection(array(
 					'controller'    => $this,
 					'form'          => $form
 				)));
 				?>
-				<style>
-					.select2 {
-						width: 100% !important;
-					}
-
-					.subhead {
-						background-color:
-							#008000;
-						border-radius: 3px;
-						clear: both;
-						color:
-							#ffffff;
-						float: left;
-						margin-bottom: 7px;
-						margin-top: 8px;
-						padding: 7px 0;
-						text-indent: 9px;
-						text-transform: uppercase;
-						width: calc(100% - 15px);
-						margin-top: 25px;
-					}
-
-					.dropzone {
-
-						min-height: 160px;
-						background:
-							#fafafa;
-
-					}
-
-					@media only screen and (max-width: 600px) {
-
-						#place_an_ad ._1ybgv.full-content,
-						#place_an_ad ._1ybgv.full-content .rui-3blDo {
-							display: block;
-						}
-					}
-
-					.only-no-sector {
-						display: none;
-					}
-
-					#section_picker.open-second .sect_select {
-						display: block;
-					}
-
-					#section_picker.open-second .only-no-sector {
-						display: none;
-					}
-
-					.hide {
-						display: none !important;
-					}
-
-					.hidden {
-						display: none !important;
-						visibility: hidden !important;
-					}
-				</style>
-
-
-
 				<div id="section_picker">
 					<div class="insidecontent  padding-top-0">
 
@@ -882,12 +890,10 @@ if ($viewCollection->renderContent) {
 
 						<div class="col-sm-12 picker_class sect_select ">
 
-							<div class="clearfix"><!-- --></div>
 							<h3 class="subHeadh2 ain padding-bottom-15 "><span class="only-no-sector11 pull-left"><?php echo $this->tag->gettag('select_category', 'Select Category'); ?></span> <span class="pull-right only-no-sector"><span id="selected_text"></span></span>
-								<div class="clearfix"></div>
+								
 							</h3>
 
-							<div class="clearfix"><!-- --></div>
 							<div class="listli sector_details sector1">
 								<?php
 								if (isset($_GET['type']) and !empty($_GET['type'])) {
@@ -904,143 +910,50 @@ if ($viewCollection->renderContent) {
 									'onclick' => 'load_via_ajax_category(this,"category_id")',
 									'separator' => '',
 									'labelOptions' => array('class' => ''),
-									'template' => '<div class="inputGroup" id="sec_{idInput}">   {input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg><div class="clearfix"><!-- --></div></div>'
+									'template' => '<div class="inputGroup" id="sec_{idInput}">   {input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg></div>'
 								));
 								?>
 							</div>
-							<div class="clearfix"><!-- --></div>
 
 							<div class="col-sm-12 sector1 picker_class no-padding w_for <?php echo ($model->section_id == '4') ?  '' : 'hide'; ?>">
-								<div class="clearfix"><!-- --></div>
-
-								<div class="clearfix"><!-- --></div>
-
-
-
 								<div class="listli  sector_details">
-
 									<?php
 
 									echo CHtml::radioButtonList('w_for', $model->w_for, $model->wanted_for(), array(
 										'onclick' => 'openFields2(this)',
 										'separator' => '',
 										'labelOptions' => array('class' => ''),
-										'template' => '<div class="inputGroup">{input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg><div class="clearfix"><!-- --></div></div>'
+										'template' => '<div class="inputGroup">{input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg></div>'
 									));
 									?>
-
-
 								</div>
-
-
 							</div>
-
 						</div>
 
 
 						<div id="<?php echo $model->modelName . '_l_type_main_div'; ?>" class="col-sm-12 margin-top-15  picker_class  l_type <?php echo  empty($model->section_id) ?  'hidden' : ''; ?>">
-							<div class="clearfix"><!-- --></div>
-
-							<div class="clearfix"><!-- --></div>
-
-
-
 							<div class="listli sector3 sector_details">
-
 								<?php
-								/*
-									echo CHtml::radioButtonList('listing_type',$model->listing_type,$list_type,array('data-url'=>Yii::App()->createUrl($this->id.'/select_category3'),'onchange'=>'load_via_ajax_category(this,"category_id")' ,'separator'=>'','labelOptions'=>array('class'=>'')
-									,'template'=>'<div class="inputGroup" id="l_type_{idInput}"><span class="img"></span> {input}  <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg>  {label}<div class="clearfix"><!-- --></div></div>'));                                              
-									
-									*/
+									$list_typeq =    Category::model()->ListDataForJSON_ID_BySEctionNew($model->section_id);
+
+									echo CHtml::radioButtonList('listing_type', $model->listing_type, $list_typeq, array(
+										'separator' => '',
+										'onclick' => 'load_via_ajax_main_category(this)',
+										'data-url' => Yii::App()->createUrl($this->id . '/select_category4'),
+										'separator' => '',
+										'labelOptions' => array('class' => ''),
+										'template' => '<div class="inputGroup">{input}   {label} <span class="img"></span> <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg></div>'
+									));
 								?>
-								<?php
-								$list_typeq =    Category::model()->ListDataForJSON_ID_BySEctionNew($model->section_id);
-
-								echo CHtml::radioButtonList('listing_type', $model->listing_type, $list_typeq, array(
-									'separator' => '',
-									'onclick' => 'load_via_ajax_main_category(this)',
-									'data-url' => Yii::App()->createUrl($this->id . '/select_category4'),
-									'separator' => '',
-									'labelOptions' => array('class' => ''),
-									'template' => '<div class="inputGroup">{input}   {label} <span class="img"></span> <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg></div>'
-								));
-								?>
-
-
 							</div>
-
-
 						</div>
 						<?php
-						$catlist =  Category::model()->ListDataForJSON_ID_ByListingType($model->listing_type);
-						$m_class = empty($catlist) ? 'hidden' : '';
+							$catlist =  Category::model()->ListDataForJSON_ID_ByListingType($model->listing_type);
+							$m_class = empty($catlist) ? 'hidden' : '';
 						?>
 						<div class="col-sm-12 picker_class c_type <?php echo $m_class; ?>" id="<?php echo $model->modelName . '_category_id_main_div'; ?>">
-							<div class="clearfix"><!-- --></div>
-
-							<div class="clearfix"><!-- --></div>
-
-							<style>
-								.listli.r-detail-c .inputGroup input:checked~label::after {
-									content: unset;
-									background: #fff;
-									position: absolute;
-									right: 10px;
-									width: 26px;
-									height: 20px;
-									line-height: 20px;
-									vertical-align: middle;
-									padding: 0px 5px;
-									background: var(--logo-color);
-									color: #fff;
-									border-radius: 5px;
-									z-index: 11;
-									font-size: 12px;
-								}
-
-								label span.required {
-									font-size: 14px !important;
-								}
-
-								#member .select2-container--default .select2-selection--single,
-								#place_an_ad .select2-container--default .select2-selection--single {
-									border: 1px solid #eee;
-								}
-
-								#place_an_ad .sector1 .picker_class {
-									padding-left: 0;
-									max-width: 300px;
-									clear: both;
-									margin: auto;
-									float: none;
-								}
-
-								#suggest-main #suggestion-word {
-									color: #000
-								}
-
-								li.suggest {
-									border: 1px solid #eee;
-									padding: 1px 10px;
-									border-radius: 5px;
-									margin-right: 10px;
-									float: left;
-									font-size: 11px;
-									margin-bottom: 5px;
-									line-height: 2
-								}
-
-								html[dir="rtl"] li.suggest {
-									float: right;
-								}
-								
-							</style>
-
 							<div class="listli sector_details r-detail-c">
-
 								<?php
-
 								echo CHtml::radioButtonList('category_id', $model->category_id, $catlist, array(
 									'separator' => '',
 									'onclick' => 'validateInputSector()',
@@ -1048,15 +961,9 @@ if ($viewCollection->renderContent) {
 									'template' => '<div class="inputGroup">{input}   {label}</div>'
 								));
 								?>
-
-
 							</div>
-
-
 						</div>
-						<div class="clearfix"><!-- --></div>
 					</div>
-					<div class="clearfix"><!-- --></div>
 				</div>
 				<div id="moredetails">
 
@@ -1070,9 +977,6 @@ if ($viewCollection->renderContent) {
 					</div>
 					<div class="_2ytqd"></div>
 					<div class="rui-2SwH7 rui-1JF_2">
-
-						<div class="clearfix"><!-- --></div>
-
 						<div class="insidecontent">
 							<?php
 							if ($this->id == 'update_property' and $this->functionality == 'picture') {
@@ -1089,22 +993,6 @@ if ($viewCollection->renderContent) {
 							}
 							?>
 							<div class="minimize_form full-content">
-								<!-- <div class="row for-land  form-group">
-									<?php
-									/* $sub_category =  CHtml::listData(Subcategory::model()->ListDataForCategory(121),'sub_category_id','sub_category_name'); */
-									$sub_category = $model->subcategoriesarray();
-									?>
-									<div class="clearfix"><!-- </div>
-
-									<div class="col-sm-5 text-right" style="text-align: right;">
-										<label for="PlaceAnAd_sub_category_id" class="required"><?php echo $this->tag->getTag('subcategory', 'Subcategory'); ?> <span class="required">*</span></label>
-									</div>
-									<div class="col-sm-7">
-										<?php $mer =  array_merge($model->getHtmlOptions('sub_category_id'), array('class' => 'input-text  form-control', 'empty' => $this->tag->getTag('select', 'Select'))); ?>
-										<?php echo $form->dropDownList($model, 'sub_category_id', $sub_category, $mer); ?>
-										<?php echo $form->error($model, 'sub_category_id'); ?>
-									</div>
-								</div> -->
 								<div class="row  form-group hide <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>">
 									<?php
 									if (!Yii::app()->request->isPostRequest and   empty($model->client_ref)) {
@@ -1124,13 +1012,10 @@ if ($viewCollection->renderContent) {
 									</div>
 								</div>
 								<div class="insidecontent full-content">
-									<div class="clearfix"><!-- --></div>
 									<?php $this->renderPartial('root.apps.frontend.new-theme.views.place_property._ad_location', compact('form')); ?>
-									<div class="clearfix"><!-- --></div>
-
 								</div>
 
-								<div class="row  form-group  <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>">
+								<div class="row form-group  <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>">
 
 									<div class="col-sm-5 text-right" style="text-align: right;">
 
@@ -1157,8 +1042,6 @@ if ($viewCollection->renderContent) {
 										<?php echo $form->error($model, 'PropertyID'); ?>
 									</div>
 								</div>
-								<div class="clearfix"><!-- --></div>
-
 								<div class="row form-group">
 
 									<div class="col-sm-12"> <?php echo $form->labelEx($model, 'ad_title'); ?>
@@ -1186,17 +1069,16 @@ if ($viewCollection->renderContent) {
 										<span class="rui-qvKkT"></span>
 										<div class="text-warning small hide  pull-left"><?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::TITL_MIN, '{max}' => $model::TITL_MAX));; ?></div>
 										<div class="pull-right text-warning" style="font-size: 12px;"><span id="inputcounter"></span></div>
-										<div class="clearfix"></div>
+										
 										<?php echo $form->error($model, 'ad_title'); ?>
 
 									</div>
 									<div id="suggest-main" class="col-sm-12">
 										<ul id="option-suggest" class="" style="margin: 0;padding: 0;"></ul>
-										<div class="clearfix"></div>
+										
 									</div>
 								</div>
 
-								<div class="clearfix"><!-- --></div>
 								<div class="row">
 									<div class="form-group col-lg-12">
 										<div style="width:100%;height:15px;"></div>
@@ -1209,7 +1091,7 @@ if ($viewCollection->renderContent) {
 										<?php echo $form->textArea($model, 'ad_description', array_replace($model->getHtmlOptions('ad_description'), array("rows" => "12", 'dir' => 'auto', 'placeholder' => $this->tag->getTag('mention_the_key_feature_of_you', 'Mention the key feature of your property (short description of your property)')))); ?>
 										<div class="text-warning small hide pull-left"><?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::DESC_MIN, '{max}' => $model::DESC_MAX));; ?></div>
 										<div class="pull-right text-warning" style="font-size: 12px;"><span id="inputcounter2"></span></div>
-										<div class="clearfix"></div>
+										
 										<?php echo $form->error($model, 'ad_description'); ?>
 									</div>
 								</div>
@@ -1242,9 +1124,6 @@ if ($viewCollection->renderContent) {
 										</div>
 									<?php } ?>
 								</div>
-								<div class="clearfix"><!-- --></div>
-								<div class="clearfix"><!-- --></div>
-
 								<div class="row  form-group <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_in">
 									<?php
 
@@ -1271,7 +1150,6 @@ if ($viewCollection->renderContent) {
 										</div>
 									<?php } ?>
 								</div>
-								<div class="clearfix"><!-- --></div>
 								<div class="row  form-group bedroomsclass <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_bd">
 									<?php
 									if ($model->checkFieldsShow2('bedrooms')) { ?>
@@ -1287,7 +1165,6 @@ if ($viewCollection->renderContent) {
 										</div>
 									<?php } ?>
 								</div>
-								<div class="clearfix"><!-- --></div>
 								<div class="row  form-group bathroomsclass <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_bth">
 									<?php
 									if ($model->checkFieldsShow2('bathrooms')) { ?>
@@ -1301,8 +1178,7 @@ if ($viewCollection->renderContent) {
 										</div>
 									<?php } ?>
 								</div>
-								<div class="clearfix"><!-- --></div>
-								<Style>
+								<style>
 									#h_selling_price.rent_paid {
 										display: none !important;
 									}
@@ -1315,21 +1191,7 @@ if ($viewCollection->renderContent) {
 									#h_selling_price.rent_paid.hide {
 										display: none !important;
 									}
-								</Style>
-								<?php /* 	
-							   		<div class="row  form-group rent_paid"  id="h_selling_price">
-<div class="col-sm-5 text-right" style="text-align: right;">
-<?php echo $form->labelEx($model, 'selling_price');?> 
-</div>
-<div class="col-sm-7 ">
-<?php $mer =  array_merge($model->getHtmlOptions('selling_price'),array('placeholder'=>'','class'=>'input-text  form-control','oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');")); ?>
-<?php echo $form->textField($model, 'selling_price'  , $mer ); ?>
-<?php echo $form->error($model, 'selling_price');?>
-</div>  
-</div>
-*/
-								?>
-								<div class="clearfix"><!-- --></div>
+								</style>
 								<div class="row  form-group <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_l_no">
 									<div class="col-sm-5 text-right" style="text-align: right;">
 										<?php echo $form->labelEx($model, 'l_no'); ?>
@@ -1383,84 +1245,13 @@ if ($viewCollection->renderContent) {
 										<?php echo $form->error($model, 'unit_no'); ?>
 									</div>
 								</div>
-								<div class="clearfix"><!-- --></div>
-								<?php
-								/*
-<div class="row  form-group is_morclass" id="h_is_mor">
-<div class="col-sm-12  text-aa">
-<?php echo $form->labelEx($model, 'is_mor');?>
-</div>
-<div class="col-sm-12 ">
-<?php $mer =  array_merge($model->getHtmlOptions('is_mor'),array('placeholder'=>'','class'=>'input-text  form-control')); ?>
-<?php echo $form->textArea($model, 'is_mor',   $mer ); ?>
-<?php echo $form->error($model, 'is_mor');?>
-</div> 
-</div>
-*/
-								?>
+								
 								<style>
 									#place_an_ad .col-sm-12 textarea.form-control {
 										height: 70px !important;
 										min-height: unset !important;
 									}
 								</style>
-								<?php
-								/*
-<div class="row  form-group is_morclass" id="h_rights">
-<div class="col-sm-12 text-werright">
-<?php echo $form->labelEx($model, 'rights');?>
-</div>
-<div class="col-sm-12">
-<?php $mer =  array_merge($model->getHtmlOptions('rights'),array('placeholder'=>'','class'=>'input-text  form-control')); ?>
-<?php echo $form->textArea($model, 'rights',   $mer ); ?>
-<?php echo $form->error($model, 'rights');?>
-</div> 
-</div>
-*/
-								?>
-								<?php
-								/*
-<div class="row  form-group is_morclass" id="h_may_affect">
-<div class="col-sm-12 text-right324">
-<?php echo $form->labelEx($model, 'may_affect');?>
-</div>
-<div class="col-sm-12">
-<?php $mer =  array_merge($model->getHtmlOptions('may_affect'),array('placeholder'=>'','class'=>'input-text  form-control')); ?>
-<?php echo $form->textArea($model, 'may_affect',   $mer ); ?>
-<?php echo $form->error($model, 'may_affect');?>
-</div> 
-</div>
-*/
-								?>
-								<?php /* 
-	
-<div class="row  form-group is_morclass" id="h_r_facade">
-<div class="col-sm-12 text-right324">
-<?php echo $form->labelEx($model, 'r_facade');?>
-</div>
-<div class="col-sm-12">
-<?php $mer =  array_merge($model->getHtmlOptions('r_facade'),array('placeholder'=>'','class'=>'input-text  form-control')); ?>
-<?php echo $form->textArea($model, 'r_facade',   $mer ); ?>
-<?php echo $form->error($model, 'r_facade');?>
-</div> 
-</div>
-*/
-								?>
-								<?php /*
-<div class="row  form-group is_morclass" id="h_p_limits">
-<div class="col-sm-12 text234-right">
-<?php echo $form->labelEx($model, 'p_limits');?>
-</div>
-<div class="col-sm-12">
-<?php $mer =  array_merge($model->getHtmlOptions('p_limits'),array('placeholder'=>'','class'=>'input-text  form-control')); ?>
-<?php echo $form->textArea($model, 'p_limits',   $mer ); ?>
-<?php echo $form->error($model, 'p_limits');?>
-</div> 
-</div>
-*/
-								?>
-								<div class="clearfix"></div>
-
 								<div class="row  form-group is_morclass <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_disputes">
 									<div class="col-sm-5 text-right" style="text-align: right;">
 										<?php echo $form->labelEx($model, 'furnished'); ?>
@@ -1472,12 +1263,7 @@ if ($viewCollection->renderContent) {
 									</div>
 								</div>
 
-
-								<div class="clearfix"></div>
 								<div class="row  form-group <?php if (Yii::app()->isAppName('backend')) { ?> mb-3 <?php } ?>" id="h_expiry_date">
-
-
-
 									<div class="col-sm-5 text-right" style="text-align: right;">
 										<?php echo $form->labelEx($model, 'expiry_date'); ?>
 									</div>
@@ -1497,20 +1283,13 @@ if ($viewCollection->renderContent) {
 											'htmlOptions' => array('class' => 'form-control filterInput', 'placeholder' => 'From Date', 'id' => 'from_date', 'autocomplete' => 'off', 'style' => 'width:100%;'),
 										), true); ?>
 										<?php echo $form->error($model, 'expiry_date'); ?>
-
-										<div class="clearfix" style="width:100%;"><!-- --></div>
-
 									</div>
 								</div>
 
-								<div class="clearfix"><!-- --></div>
-
 								<div class="">
-									<div class="clearfix"><!-- --></div>
-									<div class="clearfix"><!-- --></div>
-									<h4 class="subheading_font row "><?php echo $this->tag->getTag('features_/_amenities', 'Features / Amenities'); ?></h4>
-									<div class="clearfix"><!-- --></div>
-
+									<h4 class="subheading_font row ">
+										<?php echo $this->tag->getTag('features_/_amenities', 'Features / Amenities'); ?>
+									</h4>
 									<div class="amn1 row">
 										<div class="row">
 
@@ -1538,75 +1317,13 @@ if ($viewCollection->renderContent) {
 												<div class="pull-right text-warning" style="font-size: 12px;">
 													<span id="inputcounter2"></span>
 												</div>
-												<div class="clearfix"></div>
+												
 												<?php echo $form->error($model, 'amenities'); ?>
 											</div>
 										</div>
-										<!-- <style>
-											.amlabel .form-check {
-												width: 50% !important;
-												float: left;
-											}
-
-											.amlabel .form-check:nth-child(2n+1) {
-												clear: both;
-											}
-										</style> -->
-										<!-- <div class="amn">
-											<?php
-											// $categoris =   CHtml::listData(Master::model()->listData(2), 'master_id', 'master_name');
-											// //print_r($model->amenities) ;exit; 
-
-											// foreach ($categoris as $k => $v) {
-											// 	//$amenities_array=	 CHtml::listData(Amenities::model()->findAllCategories($k),'amenities_id','amenities_name');
-											// 	$amenities_array =	 Amenities::model()->findAllCategories($k);
-
-											// 	//echo $k.''. print_r($amenities_array); echo '<br />';echo '<br />';echo '<br />';echo '<br />';
-											// 	if (!empty($amenities_array)) {
-											// 		echo '<div class="col-sm-12 amlabel amn-' . $k . '" style="">';
-											// 		echo '<div class="parent-h-div">';
-											// 		echo '<a href="javascript:void(0)" class="cls-closebtn"  onclick="updateOpenClose(this)"><svg viewBox="0 0 70.098 53.605" ><use xlink:href="#cls-close"></use></svg></a>';
-											// 		echo '<h4 class="spl-headd margin-top-5  margin-bottom-5" onclick="updateOpen(this)">' . $v . '<svg viewBox="0 0 70.098 53.605" class="button_icon-style5"><use xlink:href="#add-button"></use></svg></h4><div class="clearfix"></div>';
-											// 		foreach ($amenities_array as $k => $v) {
-
-											// 			// echo '<div class="form-check form-check-flat"  id="amnitm_'.$k.'"><label class="form-check-label"><input class="amnit" value="'.$k.'" id="amenities_'.$k.'" '; echo  in_array($k,(array) $model->amenities) ? 'checked' : '';  echo ' type="checkbox" name="amenities[]" onclick="expandthis(this)" >  '.$v.' <i class="input-helper"></i></label></div>';
-
-											// 			if ($v->f_type == '0') {
-											// 				echo '<div class="form-check form-check-flat"  id="amnitm_' . $v->amenities_id . '"><label class="form-check-label"><input class="amnit" value="' . $v->amenities_id . '" id="amenities_' . $v->amenities_id . '" ';
-											// 				echo  in_array($v->amenities_id, (array) $model->amenities) ? 'checked' : '';
-											// 				echo ' type="checkbox" name="amenities[' . $v->amenities_id . ']" onclick="expandthis(this)" >  ' . $v->amenities_name . ' <i class="input-helper"></i></label></div>';
-											// 			} else if ($v->f_type == '1') {
-											// 				echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::dropDownList('amenities[' . $v->amenities_id . '][inp_val]', @$model->amenities[$v->amenities_id], array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8+'), array('empty' => '0', 'class' => 'input-text  form-control')) . '</div></div>';
-											// 			} else {
-											// 				$vals =   isset($model->amenities[$v->amenities_id]['inp_val']) ?  $model->amenities[$v->amenities_id]['inp_val'] :  @$model->amenities[$v->amenities_id];
-											// 				$on_input = ($v->i_o == '1') ? "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" : '';
-											// 				echo '<div class="form-check form-check-flat padding-left-0 padding-right-15"    id="amnitm_' . $v->amenities_id . '"><div style="width:calc(100% - 78px);color: #72727d !important;font-size:14px;line-height:1.2;padding: 2px 0px;" class="pull-left">' . $v->amenities_name . '</div><div style="width:78px;" class="pull-left">' . CHtml::textField('amenities[' . $v->amenities_id . '][inp_val]', $vals, array('class' => 'input-text cmv  form-control', 'max-length' => '50', 'oninput' => $on_input)) . '</div></div>';
-											// 			}
-											// 		}
-
-											// 		echo '</div>';
-
-											// 		echo '</div>';
-											// 	}
-											// }
-
-
-
-											//	echo CHtml::checkBoxList('amenities',$model->amenities ,$amenities_array,array('separator'=>'','labelOptions'=>array('class'=>''),'template'=>'<div class="form-check form-check-flat"><label class="form-check-label">{input}  {labelTitle} <i class="input-helper"></i></label></div>'));                                              
-											?>
-										</div> -->
-										<!-- <div class="clearfix"></div>
-										<div class="expandDiv hide" onclick="toggleClassExpand()"></div>
-										<div class="clearfix"></div>
-										<?php //echo $form->error($model, 'amenities'); ?> -->
 									</div>
-									<div class="clearfix"><!-- --></div>
 								</div>
-
-
-								<div class="clearfix"><!-- --></div>
 							</div>
-
 
 
 							<div class="insidecontent full-content">
@@ -1616,7 +1333,7 @@ if ($viewCollection->renderContent) {
 										<div class="form-group col-lg-12">
 											<label for="PlaceAnAd_price" class="required"><?php echo $this->tag->gettag('price', 'Price'); ?> <span class="required">*</span></label>
 
-											<div class="clearfix"><!-- --></div>
+											
 											<style>
 												html #place_an_ad .row label.or-labels {
 													line-height: 35px;
@@ -1717,7 +1434,7 @@ if ($viewCollection->renderContent) {
 												<div class="pr-ce-1 pr-ce">
 													<span class="lab-p"><?php echo $model->currencyTitle; ?></span>
 													<?php echo $form->textField($model, 'price', $model->getHtmlOptions('price', array('oninput' => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');", 'onchange' => 'disableCheckPor(this)'))); ?>
-													<div class="clearfix"><!-- --></div>
+													
 												</div>
 												<label class="pull-left or-labels pr-ce-2  pr-ce"><?php echo $this->tag->getTag('or', 'OR'); ?></label>
 
@@ -1734,31 +1451,28 @@ if ($viewCollection->renderContent) {
 
 										</div>
 
-										<div class="clearfix"></div>
 										<div class="form-group col-lg-4 rent_paid <?php echo $model->section_id == $model::RENT_ID ? '' : 'hidden'; ?>">
 											<label for="PlaceAnAd_rent_paid" class="required"><?php echo $this->tag->gettag('price', 'Rent Paid'); ?> <span class="required">*</span></label>
-											<div class="clearfix"></div>
+											
 											<?php echo $form->dropDownList($model, 'rent_paid', $model->paidArray(), $model->getHtmlOptions('rent_paid', array('empty' => $this->tag->gettag('select', 'Select'), 'class' => 'form-control'))); ?>
 											<?php echo $form->error($model, 'rent_paid'); ?>
 										</div>
 
 
 									</div>
-									<div class="clearfix"></div>
+									
 								</div>
-								<div class="clearfix"></div>
+								
 
 
-								<div class="clearfix"><!-- --></div>
+								
 
-								<div class="clearfix"><!-- --></div>
-								<div class="clearfix"></div>
+								
+								
 							</div>
 
 
 							<div class="insidecontent">
-								<div class="clearfix"><!-- --></div>
-								<div class="clearfix"><!-- --></div>
 								<div class="">
 									<div class="col-lg-12">
 										<?php
@@ -1771,16 +1485,11 @@ if ($viewCollection->renderContent) {
 										$this->renderPartial('root.apps.frontend.new-theme.views.place_property._file_field_browse', compact('form', 'fileField', 'maxFilesize', 'types', 'maxFiles', 'model', 'title_text')); ?>
 									</div>
 								</div>
-								<div class="clearfix"><!-- --></div>
+								
 							</div>
-
-							<div class="clearfix"><!-- --></div>
-							<div class="clearfix"></div>
 							<div class="insidecontent">
 								<?php $this->renderPartial('root.apps.frontend.new-theme.views.place_property.add_property_types'); ?>
-								<div class="clearfix"></div>
 							</div>
-							<div class="clearfix"></div>
 							<div class="insidecontent">
 								<style>
 									html #file_floor_plan .upload-btn-wrapper {
@@ -1797,21 +1506,15 @@ if ($viewCollection->renderContent) {
 
 									$this->renderPartial('root.apps.frontend.new-theme.views.place_property._file_field_browse_plan', compact('form', 'fileField', 'maxFilesize', 'types', 'maxFiles', 'model', 'title_text')); ?>
 								</div>
-								<div class="clearfix"></div>
 							</div>
-							<div class="clearfix"><!-- --></div>
 
 							<div class="_2ytqd"></div>
-							<div class="clearfix"><!-- --></div>
 							<?php
 							if (Yii::App()->isAppName('frontend')) {  ?>
 								<div class="insidecontent">
 
-									<div class="clearfix"></div>
 									<h3 class="subHeadh2"> Contact Details</h3>
-									<div class="clearfix"></div>
 									<div class="row">
-										<div class="clearfix"></div>
 										<div class="form-group col-lg-6">
 											<?php
 											echo $form->labelEx($model, 'contact_person'); ?>
@@ -1824,7 +1527,7 @@ if ($viewCollection->renderContent) {
 											<?php echo $form->textField($model, 'salesman_email', $model->getHtmlOptions('salesman_email')); ?>
 											<?php echo $form->error($model, 'salesman_email'); ?>
 										</div>
-										<div class="clearfix"></div>
+										
 									</div>
 									<div class="row">
 										<div class="form-group col-lg-4">
@@ -1859,8 +1562,7 @@ if ($viewCollection->renderContent) {
 												<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(User::model()->findAll(), 'user_id', 'fullName'), $model->getHtmlOptions('user_id')); ?>
 												<?php echo $form->error($model, 'user_id'); ?>
 											</div>
-										<?php } else {
-										}
+										<?php }
 
 										?>
 
@@ -1873,7 +1575,7 @@ if ($viewCollection->renderContent) {
 							}
 							if (Yii::App()->isAppName('frontend')) {  ?>
 								<div class="insidecontent hide">
-									<div class="clearfix"></div>
+									
 
 									<div class="row">
 										<div class="form-group col-lg-6 hide">
@@ -1894,7 +1596,7 @@ if ($viewCollection->renderContent) {
 											<?php echo $form->error($model, 'category_id'); ?>
 										</div>
 									</div>
-									<div class="clearfix"><!-- --></div>
+									
 								</div>
 								<div class="_2ytqd"></div>
 							<?php } else {
@@ -1904,11 +1606,11 @@ if ($viewCollection->renderContent) {
 
 							?>
 
-							<div class="clearfix"><!-- --></div>
+							
 
 
 						</div>
-						<div class="clearfix"><!-- --></div>
+						
 					</div>
 				</div>
 			</div>
@@ -1923,34 +1625,22 @@ if ($viewCollection->renderContent) {
 					}
 					?>
 					<button <?php if ($this->id == 'place_an_ad_no_login' and $this->action->id == 'preview') {
-								echo 'type="button" onclick="OpenSignupRequiredNew(this)"';
-							} else {
-								echo 'type="submit"';
-							} ?> id="bb" class="btn btn-primary  " data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', $mainText); ?></button>
+						echo 'type="button" onclick="OpenSignupRequiredNew(this)"';
+					} else {
+						echo 'type="submit"';
+					} ?> id="bb" class="btn btn-primary  " data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', $mainText); ?></button>
 				</div>
-				<div class="clearfix"><!-- --></div>
+				
 			</div>
 		</div>
-<?php
+	<?php
 		$this->endWidget();
 	}
-	/**
-	 * This hook gives a chance to append content after the active form.
-	 * Please note that from inside the action callback you can access all the controller view variables 
-	 * via {@CAttributeCollection $collection->controller->data}
-	 * @since 1.3.3.1
-	 */
 	$hooks->doAction('after_active_form', new CAttributeCollection(array(
 		'controller'      => $this,
 		'renderedForm'    => $collection->renderForm,
 	)));
 }
-/**
- * This hook gives a chance to append content after the view file default content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * @since 1.3.3.1
- */
 $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 	'controller'        => $this,
 	'renderedContent'   => $viewCollection->renderContent,
@@ -1968,9 +1658,6 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 	<?php
 	}
 	?>
-</script>
-
-<script>
 	var location_text_url = '<?php echo Yii::App()->createUrl('place_an_ad/city_details'); ?>';
 	var hiddenAmenities = '<?php echo Yii::App()->createUrl('ajax/hidden_ammenities'); ?>';
 
@@ -1992,103 +1679,10 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 			$(k).val('');
 		}
 	}
-</script>
-<style>
-	.autocomplete-suggestions {
-		background-color: #fff;
-		border-radius: 4px;
-		border: 1px solid #ccc;
-		box-shadow: 0 4px 6px 2px rgba(0, 0, 0, 0.1);
-		font-size: .875em;
-		margin-left: 1px;
-		clear: both;
-	}
 
-	.autocomplete-suggestions {
-		overflow: auto;
-	}
+	<?php
+	if (Yii::App()->isAppName('frontend') and $model->isNewRecord) { ?>
 
-	.autocomplete-suggestion {
-		position: relative;
-		cursor: pointer;
-	}
-
-	.suggestion-img {
-		float: left;
-		height: 40px;
-		line-height: 40px;
-		margin: 4px 8px 0 6px;
-		overflow: hidden;
-		text-align: center;
-		vertical-align: middle;
-		width: 40px;
-	}
-
-	.suggestion-img img {
-		max-width: 100%;
-		max-height: 40px;
-		display: block;
-	}
-
-	.suggestion-wrapper {
-		display: block;
-		height: 48px;
-		overflow: hidden;
-		position: relative;
-		text-overflow: ellipsis;
-		vertical-align: middle;
-		line-height: 16px;
-		padding: 7px;
-	}
-
-	.suggestion-value {
-		display: block;
-		line-height: normal;
-		font-weight: 700;
-	}
-
-	.sub-text {
-		color: #999;
-		font-size: 11px;
-		font-weight: normal;
-	}
-
-	.sub-text {
-		color: #999;
-		font-size: 11px;
-		font-weight: normal;
-	}
-</style>
-
-<style>
-	.card-body.mainb {
-		padding-bottom: 0px;
-	}
-
-	.land-prop .bedroomsclass,
-	.land-prop .bathroomsclass {
-		display: none;
-	}
-
-	.amn-104,
-	.for-land {
-		display: flex;
-	}
-
-	.land-prop .amn-104,
-	.land-prop .for-land {
-		display: flex;
-	}
-
-	.land-prop .amn-99 {
-		display: none;
-	}
-</style>
-
-<?php
-if (Yii::App()->isAppName('frontend') and $model->isNewRecord) { ?>
-
-	<script>
 		var saveCookiesUrl = '<?php echo Yii::app()->createUrl('place_an_ad/savecookies'); ?>';
 
 		function savemycookies() {
@@ -2115,94 +1709,7 @@ if (Yii::App()->isAppName('frontend') and $model->isNewRecord) { ?>
 		});
 	</script>
 <?php } ?>
-<Style>
-	@media screen and (max-width: 600px) {
 
-
-		table.m-responsivw thead {
-			border: none;
-			clip: rect(0 0 0 0);
-			height: 1px;
-			margin: -1px;
-			overflow: hidden;
-			padding: 0;
-			position: absolute;
-			width: 1px;
-		}
-
-		table.m-responsivw tr {
-			border-bottom: 3px solid #ddd;
-			display: block;
-			margin-bottom: .625em;
-		}
-
-		table.m-responsivw td {
-			border-bottom: 1px solid #ddd;
-			display: block;
-			font-size: .8em;
-
-		}
-
-		table.m-responsivw td::before {
-			/*
-    * aria-label has no advantage, it won't be read inside a table
-    content: attr(aria-label);
-    */
-			content: attr(data-label);
-			float: left;
-			font-weight: bold;
-			text-transform: uppercase;
-		}
-
-		html[dir="rtl"] table.m-responsivw td::before {
-			float: right;
-		}
-
-		table.m-responsivw td:last-child {
-			border-bottom: 0;
-		}
-
-		table.m-responsivw td .insinert {
-			width: calc(100% - 100px);
-			float: right;
-		}
-
-		html[dir="rtl"] table.m-responsivw td .insinert {
-			float: left;
-		}
-
-		table.m-responsivw td {
-
-			padding: 5px !important;
-			line-height: 32px !important;
-			padding-left: 7px !important;
-			padding-right: 7px !important;
-			text-align: left !important;
-			vertical-align: middle !important;
-			height: 47px;
-		}
-
-		html[dir="rtl"] table.m-responsivw td {
-			text-align: right !important;
-		}
-
-		table.m-responsivw tr:last-child {
-			margin-bottom: 0px;
-			border-bottom: 0px;
-		}
-	}
-
-	#inputcounter2,
-	#inputcounter {
-		font-size: 14px;
-		color: green;
-	}
-
-	#inputcounter2.error,
-	#inputcounter.error {
-		color: red !important;
-	}
-</Style>
 <script>
 	var text_remaining = '<?php echo Yii::app()->tags->getTag('{n}_remaining', '{n} remaining'); ?>';
 	var text_exceeded = '<?php echo Yii::app()->tags->getTag('{n}_exceeded', '{n} exceeded'); ?>';

@@ -86,16 +86,93 @@ if ($viewCollection->renderContent) { ?>
             </div>
         </div>
         <div class="card-body">
+        <?php
+            function getCategoryName($categoryId, $categoriesArray)
+            {
+                return isset($categoriesArray[$categoryId]) ? $categoriesArray[$categoryId] : '';
+            }
 
+            // Retrieve ads and categories
+            $db = Yii::app()->db;
+
+            // Prepare the SQL query
+            $sql = "SELECT category_id FROM mw_place_an_ad WHERE (section_id = 6)";
+
+            // Execute the SQL query and fetch the results
+            $command = $db->createCommand($sql);
+            $ads = $command->queryAll();
+
+            $categoryIds = array_unique(array_filter(array_column($ads, 'category_id')));
+            $categories = Category::model()->findAllByAttributes(['category_id' => $categoryIds]);
+
+            $categoriesArray = [];
+            foreach ($categories as $category) {
+                $categoriesArray[$category->category_id] = $category->category_name;
+            }
+            ?>
+
+       
             <!-- Form to wrap the table and submit the priority updates -->
             <form method="post" action="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/business'); ?>">
 
                 <!-- CSRF Protection -->
-                <?php if (Yii::app()->request->enableCsrfValidation) { ?>
-                    <input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>" />
-                <?php } ?>
+                    <?php if (Yii::app()->request->enableCsrfValidation) { ?>
+                        <input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>" />
+                    <?php } ?>
                     <div class="row">
-                        <div class="col-sm-2">
+                        <!-- Select for Featured -->
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="featuredSelect">Featured</label>
+                            <select name="featured" id="featuredSelect" class="form-control input-xs">
+                                <option value="">Select Featured</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select for Verified -->
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="verifiedSelect">Verified</label>
+                            <select name="verified" id="verifiedSelect" class="form-control input-xs">
+                                <option value="">Select Verified</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select for Category -->
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="categorySelect">Category</label>
+                            <select class="form-control" name="property_category" id="propertyCategorySelect">
+                                <option value="">Select Property Category</option>
+                                <?php foreach ($categories as $category): ?>
+                                <option value="<?php echo $category->category_id; ?>">
+                                    <?php echo ($category->category_name); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <?php $locations = States::model()->AllStatesOfCountry(66124); ?>
+                    <!-- Select for Location -->
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="locationSelect2">Location</label>
+                            <select class="form-control" name="location" id="locationSelect2">
+                                <option value="">Select Location</option>
+                                <?php foreach ($locations as $location): ?>
+                                <option value="<?php echo $location->state_id; ?>">
+                                    <?php echo CHtml::encode($location->state_name); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                        <div class="col-sm-3 mt-2">
                             <div class="form-group">
                                 <label for="StatusSelect">Status</label>
                                 <select class="form-control" name="property_status" id="propertyStatusSelect">
@@ -112,7 +189,7 @@ if ($viewCollection->renderContent) { ?>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-3 text-right mt-3">
+                        <div class="col-sm-3 text-right mt-4">
                             <button type="button" id="resetButton" class="btn btn-secondary btn-sm" style="margin-top: 20px;">
                                 Reset
                             </button>
@@ -536,6 +613,11 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 "data": function(d) {
                     var dateRangePicker = $('#dateRange').data('daterangepicker');
                     d.status            = $("#propertyStatusSelect").val();
+                    d.featured          = $('#featuredSelect').val();
+                    d.verified          = $('#verifiedSelect').val();
+                    d.submited_by       = $('[name="submited_by"]').val();
+                    d.property_category = $('#propertyCategorySelect').val();
+                    d.location          = $('#locationSelect2').val();
                     d.startDate         = dateRangePicker.startDate ? dateRangePicker.startDate.format('YYYY-MM-DD') : '';
                     d.endDate           = dateRangePicker.endDate ? dateRangePicker.endDate.format('YYYY-MM-DD') : '';
                 }
@@ -562,14 +644,14 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
 
         });
-        $('#propertyStatusSelect').on('change', function () {
+        $('#featuredSelect, #verifiedSelect, #propertyStatusSelect, #preleasedSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').on('change', function () {
             table.ajax.reload();
         });
 
         // Reset Filters
         $('#resetButton').on('click', function (e) {
             e.preventDefault();
-            $('#propertyStatusSelect').val('');
+            $('#featuredSelect, #verifiedSelect, #preleasedSelect,#propertyStatusSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').val('');
             table.ajax.reload();
         });
         // Handle select all checkbox

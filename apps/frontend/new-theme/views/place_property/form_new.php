@@ -1,27 +1,3 @@
-<script
-	src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/global/global.min.js'); ?>"
-	type="text/javascript"></script>
-<div hidden>
-	<svg id="add-button" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-		<g>
-			<g xmlns="http://www.w3.org/2000/svg" id="_x33_">
-				<path d="m18 2c2.206 0 4 1.794 4 4v12c0 2.206-1.794 4-4 4h-12c-2.206 0-4-1.794-4-4v-12c0-2.206 1.794-4 4-4zm0-2h-12c-3.314 0-6 2.686-6 6v12c0 3.314 2.686 6 6 6h12c3.314 0 6-2.686 6-6v-12c0-3.314-2.686-6-6-6z" fill="currentColor" data-original="currentColor"></path>
-			</g>
-			<g xmlns="http://www.w3.org/2000/svg" id="_x32_">
-				<path d="m12 18c-.552 0-1-.447-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10c0 .553-.448 1-1 1z" fill="currentColor" data-original="currentColor"></path>
-			</g>
-			<g xmlns="http://www.w3.org/2000/svg" id="_x31_">
-				<path d="m6 12c0-.552.447-1 1-1h10c.552 0 1 .448 1 1s-.448 1-1 1h-10c-.553 0-1-.448-1-1z" fill="currentColor" data-original="currentColor"></path>
-			</g>
-		</g>
-	</svg>
-	<svg id="cls-close" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" x="0" y="0" viewBox="0 0 311 311.07733" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-		<g>
-			<path xmlns="http://www.w3.org/2000/svg" d="m16.035156 311.078125c-4.097656 0-8.195312-1.558594-11.308594-4.695313-6.25-6.25-6.25-16.382812 0-22.632812l279.0625-279.0625c6.25-6.25 16.382813-6.25 22.632813 0s6.25 16.382812 0 22.636719l-279.058594 279.058593c-3.136719 3.117188-7.234375 4.695313-11.328125 4.695313zm0 0" fill="currentColor" data-original="currentColor" class=""></path>
-			<path xmlns="http://www.w3.org/2000/svg" d="m295.117188 311.078125c-4.097657 0-8.191407-1.558594-11.308594-4.695313l-279.082032-279.058593c-6.25-6.253907-6.25-16.386719 0-22.636719s16.382813-6.25 22.636719 0l279.058594 279.0625c6.25 6.25 6.25 16.382812 0 22.632812-3.136719 3.117188-7.230469 4.695313-11.304687 4.695313zm0 0" fill="currentColor" data-original="currentColor" class=""></path>
-		</g>
-	</svg>
-</div>
 <?php
 if (isset($_GET['type']) and !empty($_GET['type'])) {
 	if ($_GET['type'] == 'business') {
@@ -532,9 +508,6 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 </script>
 
 <script src="<?php echo Yii::app()->apps->getBaseUrl('assets/js/place_ad_script.js?q=65'); ?>"></script>
-<script>
-	console.log(1);
-</script>
 <?php defined('MW_PATH') || exit('No direct script access allowed');
 if ($this->id == 'update_property') {
 	if ($this->functionality == 'picture') {
@@ -551,40 +524,13 @@ if ($model->isNewRecord and $this->action->id != 'preview' and empty($model->ad_
 	echo '<script>var isnewrecord= 1; </script>';
 }
 
-/**
- * This file is part of the MailWizz EMA application.
- * 
- * @package MailWizz EMA
- * @author Serban George Cristian <cristian.serban@mailwizz.com> 
- * @link http://www.mailwizz.com/
- * @copyright 2013-2014 MailWizz EMA (http://www.mailwizz.com)
- * @license http://www.mailwizz.com/license/
- * @since 1.0
- */
-
-/**
- * This hook gives a chance to prepend content or to replace the default view content with a custom content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * In case the content is replaced, make sure to set {@CAttributeCollection $collection->renderContent} to false 
- * in order to stop rendering the default content.
- * @since 1.3.3.1
- */
 $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCollection(array(
 	'controller'    => $this,
 	'renderContent' => true,
 )));
 
-// and render if allowed
 if ($viewCollection->renderContent) {
-	/**
-	 * This hook gives a chance to prepend content before the active form or to replace the default active form entirely.
-	 * Please note that from inside the action callback you can access all the controller view variables 
-	 * via {@CAttributeCollection $collection->controller->data}
-	 * In case the form is replaced, make sure to set {@CAttributeCollection $collection->renderForm} to false 
-	 * in order to stop rendering the default content.
-	 * @since 1.3.3.1
-	 */
+	
 	$hooks->doAction('before_active_form', $collection = new CAttributeCollection(array(
 		'controller'    => $this,
 		'renderForm'    => true,
@@ -612,8 +558,8 @@ if ($viewCollection->renderContent) {
 					if(hasError) {
 					 
 						  $("html, body").animate({
-        scrollTop: form.find(".errorMessage:visible:first").offset().top-110
-    }, 2000);
+						scrollTop: form.find(".errorMessage:visible:first").offset().top-110
+					}, 2000);
 						
 							form.find("#bb").html("' . $mainText . '");
 							return false;
@@ -792,7 +738,7 @@ if ($viewCollection->renderContent) {
 
 
 
-				<div class="clearfix"><!-- --></div>
+				
 			</div>
 			<div class="box-body <?php echo $model->category_id == '121' ? 'land-prop' : ''; ?>" id="boxdy">
 				<div class="spinner rmsdf">
@@ -876,12 +822,12 @@ if ($viewCollection->renderContent) {
 
 						<div class="col-sm-12 picker_class sect_select ">
 
-							<div class="clearfix"><!-- --></div>
+							
 							<h3 class="subHeadh2 ain padding-bottom-15 "><span class="only-no-sector11 pull-left"><?php echo $this->tag->gettag('select_category', 'Select Category'); ?></span> <span class="pull-right only-no-sector"><span id="selected_text"></span></span>
 								<div class="clearfix"></div>
 							</h3>
 
-							<div class="clearfix"><!-- --></div>
+							
 							<div class="listli sector_details sector1">
 								<?php
 								if (isset($_GET['type']) and !empty($_GET['type'])) {
@@ -894,16 +840,16 @@ if ($viewCollection->renderContent) {
 									$section = array('1' => '<span class="img"></span>' . $this->tag->getTag('for_sale', 'For Sale'), '2' => '<span class="img"></span>' . $this->tag->getTag('for_rent', 'For Rent'), '6' => '<span class="img"></span>' . $this->tag->getTag('business_for_sale', 'Business for sale'));
 								}
 								echo CHtml::radioButtonList('section_id', $model->section_id, $section, array(
-									'data-url' => Yii::App()->createUrl($this->id . '/select_category3'), 'onclick' => 'load_via_ajax_category(this,"category_id")', 'separator' => '', 'labelOptions' => array('class' => ''), 'template' => '<div class="inputGroup" id="sec_{idInput}">   {input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg><div class="clearfix"><!-- --></div></div>'
+									'data-url' => Yii::App()->createUrl($this->id . '/select_category3'), 'onclick' => 'load_via_ajax_category(this,"category_id")', 'separator' => '', 'labelOptions' => array('class' => ''), 'template' => '<div class="inputGroup" id="sec_{idInput}">   {input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg></div>'
 								));
 								?>
 							</div>
-							<div class="clearfix"><!-- --></div>
+							
 
 							<div class="col-sm-12 sector1 picker_class no-padding w_for <?php echo ($model->section_id == '4') ?  '' : 'hide'; ?>">
-								<div class="clearfix"><!-- --></div>
+								
 
-								<div class="clearfix"><!-- --></div>
+								
 
 
 
@@ -912,7 +858,7 @@ if ($viewCollection->renderContent) {
 									<?php
 
 									echo CHtml::radioButtonList('w_for', $model->w_for, $model->wanted_for(), array(
-										'onclick' => 'openFields2(this)', 'separator' => '', 'labelOptions' => array('class' => ''), 'template' => '<div class="inputGroup">{input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg><div class="clearfix"><!-- --></div></div>'
+										'onclick' => 'openFields2(this)', 'separator' => '', 'labelOptions' => array('class' => ''), 'template' => '<div class="inputGroup">{input}   {label} <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg></div>'
 									));
 									?>
 
@@ -926,9 +872,9 @@ if ($viewCollection->renderContent) {
 
 
 						<div id="<?php echo $model->modelName . '_l_type_main_div'; ?>" class="col-sm-12 margin-top-15  picker_class  l_type <?php echo  empty($model->section_id) ?  'hidden' : ''; ?>">
-							<div class="clearfix"><!-- --></div>
+							
 
-							<div class="clearfix"><!-- --></div>
+							
 
 
 
@@ -937,7 +883,7 @@ if ($viewCollection->renderContent) {
 								<?php
 								/*
 									echo CHtml::radioButtonList('listing_type',$model->listing_type,$list_type,array('data-url'=>Yii::App()->createUrl($this->id.'/select_category3'),'onchange'=>'load_via_ajax_category(this,"category_id")' ,'separator'=>'','labelOptions'=>array('class'=>'')
-									,'template'=>'<div class="inputGroup" id="l_type_{idInput}"><span class="img"></span> {input}  <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg>  {label}<div class="clearfix"><!-- --></div></div>'));                                              
+									,'template'=>'<div class="inputGroup" id="l_type_{idInput}"><span class="img"></span> {input}  <svg class="right_svg" width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd"><path class="rui-vUQO_" d="M456.533 170.667h-76.8v72.533l268.8 268.8-268.8 268.8v72.533h76.8l341.333-341.333-341.333-341.333z"></path></svg>  {label}</div>'));                                              
 									
 									*/
 								?>
@@ -959,9 +905,9 @@ if ($viewCollection->renderContent) {
 						$m_class = empty($catlist) ? 'hidden' : '';
 						?>
 						<div class="col-sm-12 picker_class c_type <?php echo $m_class; ?>" id="<?php echo $model->modelName . '_category_id_main_div'; ?>">
-							<div class="clearfix"><!-- --></div>
+							
 
-							<div class="clearfix"><!-- --></div>
+							
 
 							<style>
 								.listli.r-detail-c .inputGroup input:checked~label::after {
@@ -1032,9 +978,9 @@ if ($viewCollection->renderContent) {
 
 
 						</div>
-						<div class="clearfix"><!-- --></div>
+						
 					</div>
-					<div class="clearfix"><!-- --></div>
+					
 				</div>
 				<div id="moredetails">
 
@@ -1049,7 +995,7 @@ if ($viewCollection->renderContent) {
 					<div class="_2ytqd"></div>
 					<div class="rui-2SwH7 rui-1JF_2">
 
-						<div class="clearfix"><!-- --></div>
+						
 
 						<div class="insidecontent">
 							<?php
@@ -1073,7 +1019,7 @@ if ($viewCollection->renderContent) {
 									/* $sub_category =  CHtml::listData(Subcategory::model()->ListDataForCategory(121),'sub_category_id','sub_category_name'); */
 									$sub_category = $model->subcategoriesarray();
 									?>
-									<div class="clearfix"><!-- --></div>
+									
 
 									<div class="col-sm-5 text-right">
 										<label for="PlaceAnAd_sub_category_id" class="required"><?php echo $this->tag->getTag('subcategory', 'Subcategory'); ?> <span class="required">*</span></label>
@@ -1104,10 +1050,10 @@ if ($viewCollection->renderContent) {
 									</div>
 								</div>
 								<div class="insidecontent full-content">
-									<div class="clearfix"><!-- --></div>
+									
 									<?php $this->renderPartial('root.apps.frontend.new-theme.views.place_property._ad_location', compact('form')); ?>
 
-									<div class="clearfix"><!-- --></div>
+									
 
 								</div>
 
@@ -1138,7 +1084,7 @@ if ($viewCollection->renderContent) {
 										<?php echo $form->error($model, 'PropertyID'); ?>
 									</div>
 								</div>
-								<div class="clearfix"><!-- --></div>
+								
 
 								<div class="row">
 
@@ -1181,7 +1127,7 @@ if ($viewCollection->renderContent) {
 									</div>
 								</div>
 
-								<div class="clearfix"><!-- --></div>
+								
 								<div class="row">
 									<div class="form-group col-lg-12">
 										<div style="width:100%;height:15px;"></div>
@@ -1236,8 +1182,8 @@ if ($viewCollection->renderContent) {
 										</div>
 									<?php } ?>
 								</div>
-								<div class="clearfix"><!-- --></div>
-								<div class="clearfix"><!-- --></div>
+								
+								
 
 								<div class="row  form-group" id="h_in">
 									<?php
@@ -1265,7 +1211,7 @@ if ($viewCollection->renderContent) {
 										</div>
 									<?php } ?>
 								</div>
-								<div class="clearfix"><!-- --></div>
+								
 
 								<div class="row  form-group bedroomsclass" id="h_bd">
 									<?php
@@ -1282,7 +1228,7 @@ if ($viewCollection->renderContent) {
 										</div>
 									<?php } ?>
 								</div>
-								<div class="clearfix"><!-- --></div>
+								
 								<div class="row  form-group bathroomsclass" id="h_bth">
 									<?php
 									if ($model->checkFieldsShow2('bathrooms')) { ?>
@@ -1296,7 +1242,7 @@ if ($viewCollection->renderContent) {
 										</div>
 									<?php } ?>
 								</div>
-								<div class="clearfix"><!-- --></div>
+								
 								<Style>
 									#h_selling_price.rent_paid {
 										display: none !important;
@@ -1311,20 +1257,7 @@ if ($viewCollection->renderContent) {
 										display: none !important;
 									}
 								</Style>
-								<?php /* 	
-							   		<div class="row  form-group rent_paid"  id="h_selling_price">
-<div class="col-sm-5 text-right">
-<?php echo $form->labelEx($model, 'selling_price');?> 
-</div>
-<div class="col-sm-7 ">
-<?php $mer =  array_merge($model->getHtmlOptions('selling_price'),array('placeholder'=>'','class'=>'input-text  form-control','oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');")); ?>
-<?php echo $form->textField($model, 'selling_price'  , $mer ); ?>
-<?php echo $form->error($model, 'selling_price');?>
-</div>  
-</div>
-*/
-								?>
-								<div class="clearfix"><!-- --></div>
+								
 								<div class="row  form-group" id="h_l_no">
 									<div class="col-sm-5 text-right">
 										<?php echo $form->labelEx($model, 'l_no'); ?>
@@ -1378,7 +1311,7 @@ if ($viewCollection->renderContent) {
 										<?php echo $form->error($model, 'unit_no'); ?>
 									</div>
 								</div>
-								<div class="clearfix"><!-- --></div>
+								
 								<?php
 								/*
 <div class="row  form-group is_morclass" id="h_is_mor">
@@ -1498,13 +1431,13 @@ if ($viewCollection->renderContent) {
 									</div>
 								</div>
 
-								<div class="clearfix"><!-- --></div>
+								
 
 								<div class="">
-									<div class="clearfix"><!-- --></div>
-									<div class="clearfix"><!-- --></div>
+									
+									
 									<h4 class="subheading_font row "><?php echo $this->tag->getTag('features_/_amenities', 'Features / Amenities'); ?></h4>
-									<div class="clearfix"><!-- --></div>
+									
 									<div class="amn1 row">
 										<div class="form-group col-lg-12">
 											<div style="width:100%;height:15px;"></div>
@@ -1579,11 +1512,11 @@ if ($viewCollection->renderContent) {
 										<div class="clearfix"></div>
 										<?php //echo $form->error($model, 'amenities'); ?> -->
 									</div>
-									<div class="clearfix"><!-- --></div>
+									
 								</div>
 
 
-								<div class="clearfix"><!-- --></div>
+								
 							</div>
 
 
@@ -1595,7 +1528,7 @@ if ($viewCollection->renderContent) {
 										<div class="form-group col-lg-12">
 											<label for="PlaceAnAd_price" class="required"><?php echo $this->tag->gettag('price', 'Price'); ?> <span class="required">*</span></label>
 
-											<div class="clearfix"><!-- --></div>
+											
 											<style>
 												html #place_an_ad .row label.or-labels {
 													line-height: 35px;
@@ -1696,7 +1629,7 @@ if ($viewCollection->renderContent) {
 												<div class="pr-ce-1 pr-ce">
 													<span class="lab-p"><?php echo $model->currencyTitle; ?></span>
 													<?php echo $form->textField($model, 'price', $model->getHtmlOptions('price', array('oninput' => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');", 'onchange' => 'disableCheckPor(this)'))); ?>
-													<div class="clearfix"><!-- --></div>
+													
 												</div>
 												<label class="pull-left or-labels pr-ce-2  pr-ce"><?php echo $this->tag->getTag('or', 'OR'); ?></label>
 
@@ -1728,16 +1661,16 @@ if ($viewCollection->renderContent) {
 								<div class="clearfix"></div>
 
 
-								<div class="clearfix"><!-- --></div>
+								
 
-								<div class="clearfix"><!-- --></div>
+								
 								<div class="clearfix"></div>
 							</div>
 
 
 							<div class="insidecontent">
-								<div class="clearfix"><!-- --></div>
-								<div class="clearfix"><!-- --></div>
+								
+								
 								<div class="">
 									<div class="col-lg-12">
 										<?php
@@ -1750,10 +1683,10 @@ if ($viewCollection->renderContent) {
 										$this->renderPartial('root.apps.frontend.new-theme.views.place_property._file_field_browse', compact('form', 'fileField', 'maxFilesize', 'types', 'maxFiles', 'model', 'title_text')); ?>
 									</div>
 								</div>
-								<div class="clearfix"><!-- --></div>
+								
 							</div>
 
-							<div class="clearfix"><!-- --></div>
+							
 							<div class="clearfix"></div>
 							<div class="insidecontent">
 								<?php $this->renderPartial('root.apps.frontend.new-theme.views.place_property.add_property_types'); ?>
@@ -1778,10 +1711,10 @@ if ($viewCollection->renderContent) {
 								</div>
 								<div class="clearfix"></div>
 							</div>
-							<div class="clearfix"><!-- --></div>
+							
 
 							<div class="_2ytqd"></div>
-							<div class="clearfix"><!-- --></div>
+							
 							<?php
 							if (Yii::App()->isAppName('frontend')) {  ?>
 								<div class="insidecontent">
@@ -1874,7 +1807,7 @@ if ($viewCollection->renderContent) {
 											<?php echo $form->error($model, 'category_id'); ?>
 										</div>
 									</div>
-									<div class="clearfix"><!-- --></div>
+									
 								</div>
 								<div class="_2ytqd"></div>
 							<?php } else {
@@ -1884,11 +1817,11 @@ if ($viewCollection->renderContent) {
 
 							?>
 
-							<div class="clearfix"><!-- --></div>
+							
 
 
 						</div>
-						<div class="clearfix"><!-- --></div>
+						
 					</div>
 				</div>
 			</div>
@@ -1908,7 +1841,7 @@ if ($viewCollection->renderContent) {
 								echo 'type="submit"';
 							} ?> id="bb" class="btn btn-primary  " data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', $mainText); ?></button>
 				</div>
-				<div class="clearfix"><!-- --></div>
+				
 			</div>
 		</div>
 <?php
@@ -2095,7 +2028,7 @@ if (Yii::App()->isAppName('frontend') and $model->isNewRecord) { ?>
 		});
 	</script>
 <?php } ?>
-<Style>
+<style>
 	@media screen and (max-width: 600px) {
 
 
@@ -2182,7 +2115,7 @@ if (Yii::App()->isAppName('frontend') and $model->isNewRecord) { ?>
 	#inputcounter.error {
 		color: red !important;
 	}
-</Style>
+</style>
 <script>
 	var text_remaining = '<?php echo Yii::app()->tags->getTag('{n}_remaining', '{n} remaining'); ?>';
 	var text_exceeded = '<?php echo Yii::app()->tags->getTag('{n}_exceeded', '{n} exceeded'); ?>';

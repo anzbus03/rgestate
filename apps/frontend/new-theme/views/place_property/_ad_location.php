@@ -35,8 +35,8 @@
 		</div>
 		<div class="col-sm-7">
 			<?php $mer =  array_merge(); ?>
-			<?php echo $form->dropDownList($model, 'state', $cities, $model->getHtmlOptions('country', array('empty' => $this->tag->getTag('select', 'Select'), 'class' => 'input-text  form-control', 'onchange' => 'changeMap()'))); ?>
-			<?php echo $form->error($model, 'state'); ?>
+			<?php echo $form->dropDownList($model, 'city', $cities, $model->getHtmlOptions('country', array('empty' => $this->tag->getTag('select', 'Select City'), 'class' => 'input-text  form-control', 'onchange' => 'changeMap()'))); ?>
+			<?php echo $form->error($model, 'city'); ?>
 		</div>
 	</div>
 	<div class="clearfix"><!-- --></div>
