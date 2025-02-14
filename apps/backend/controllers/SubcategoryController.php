@@ -35,10 +35,10 @@ class SubcategoryController extends Controller
      */
     public function actionIndex()
     {
-         $request = Yii::app()->request;
-         $notify = Yii::app()->notify;
-         $model = new Subcategory('serach');
-         if($request->isPostRequest) {
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+        $model = new Subcategory('serach');
+        if($request->isPostRequest) {
                 $sortOrderAll = $_POST['priority'];
 				if(count($sortOrderAll)>0)
 				{
