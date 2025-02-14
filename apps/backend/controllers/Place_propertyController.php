@@ -3769,10 +3769,10 @@ class Place_propertyController  extends Controller
         $floorPlanInsertData = [];
       
         if (is_array($excelData)) {
-            // Extract unique values for batch fetching
+
             $refNos = array_unique(array_filter(array_column($excelData, 4), fn($value) => !empty($value)));
-            $categoryNames = array_unique(array_filter(array_column($excelData, 8), fn($value) => !empty($value)));
-            $categoryTypes = array_unique(array_filter(array_column($excelData, 7), fn($value) => !empty($value)));
+            $categoryNames = array_unique(array_filter(array_map('trim', array_column($excelData, 8)), fn($value) => !empty($value)));
+            $categoryTypes = array_unique(array_filter(array_map('trim', array_column($excelData, 7)), fn($value) => !empty($value)));            
             $stateNames = array_unique(array_filter(array_column($excelData, 11), fn($value) => !empty($value)));
             $stateSlugs = array_unique(array_map(
                 fn($stateName) => $this->generateSlug($stateName), 

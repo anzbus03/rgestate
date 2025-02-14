@@ -174,12 +174,14 @@ if ($viewCollection->renderContent) {
 					<?php echo $form->textField($model, 'ad_title', $model->getHtmlOptions('ad_title')); ?>
 					<?php echo $form->error($model, 'ad_title'); ?>
 				</div>      
-
 				<div class="form-group col-lg-12">
 					<?php echo $form->labelEx($model, 'ad_description'); ?>
-					<?php echo $form->textArea($model, 'ad_description', array_replace($model->getHtmlOptions('ad_description'), ["rows" => "5"])); ?>
+					<?php echo $form->textArea($model, 'ad_description', array_merge(
+						$model->getHtmlOptions('ad_description'), 
+						["rows" => "5", "style" => "max-height: 150px; overflow-y: auto; resize: vertical;"]
+					)); ?>
 					<?php echo $form->error($model, 'ad_description'); ?>
-				</div>    
+				</div>
 
 				<div class="form-group col-lg-4">
 					<?php echo $form->labelEx($model, 'price'); ?><label>[<?php echo $model->currencyTitle; ?>]</label>

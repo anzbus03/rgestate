@@ -1143,7 +1143,7 @@ if ($viewCollection->renderContent) {
 											"rows" => "5", 
 											'dir' => 'auto', 
 											'placeholder' => $this->tag->getTag('mention_the_key_feature_of_you', 'Mention the key feature of your property (short description of your property)'),
-											'style' => 'resize: vertical; overflow: hidden; min-height: 50px; max-height: 500px;' // Ensuring resizable, overflow handling, and height constraints
+											'style' => 'resize: vertical; min-height: 50px; max-height: 500px;' // Ensuring resizable, overflow handling, and height constraints
 										))); ?>
 										<div class="text-warning small hide pull-left">
 											<?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::DESC_MIN, '{max}' => $model::DESC_MAX)); ?>
@@ -1282,16 +1282,26 @@ if ($viewCollection->renderContent) {
 									</div>
 								</div>
 
-								<div class="row  form-group" id="h_no_of_u">
+								<div class="row form-group" id="h_no_of_u">
 									<div class="col-sm-5 text-right">
 										<?php echo $form->labelEx($model, 'no_of_u'); ?>
 									</div>
-									<div class="col-sm-7 ">
-										<?php $mer =  array_merge($model->getHtmlOptions('no_of_u'), array('empty' => $this->tag->getTag('select', 'Select'), 'class' => 'input-text  form-control')); ?>
-										<?php echo $form->dropDownList($model, 'no_of_u', $model->selectcount($count = 50), $mer); ?>
+									<div class="col-sm-7">
+										<?php 
+											$mer = array_merge(
+												$model->getHtmlOptions('no_of_u'), 
+												[
+													'class' => 'input-text form-control',
+													'placeholder' => 'Enter number of units'
+												]
+											); 
+										?>
+										<?php echo $form->textField($model, 'no_of_u', $mer); ?>
 										<?php echo $form->error($model, 'no_of_u'); ?>
 									</div>
 								</div>
+
+
 								<div class="row  form-group" id="h_floor_no">
 									<div class="col-sm-5 text-right">
 										<?php echo $form->labelEx($model, 'floor_no'); ?>
