@@ -112,7 +112,6 @@ if ($viewCollection->renderContent) { ?>
             ?>
 
        
-            <!-- Form to wrap the table and submit the priority updates -->
             <form method="post" action="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/business'); ?>">
 
                 <!-- CSRF Protection -->
@@ -121,57 +120,68 @@ if ($viewCollection->renderContent) { ?>
                     <?php } ?>
                     <div class="row">
                         <!-- Select for Featured -->
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="featuredSelect">Featured</label>
-                            <select name="featured" id="featuredSelect" class="form-control input-xs">
-                                <option value="">Select Featured</option>
-                                <option value="Y">Yes</option>
-                                <option value="N">No</option>
-                            </select>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="featuredSelect">Featured</label>
+                                <select name="featured" id="featuredSelect" class="form-control input-xs">
+                                    <option value="">Select Featured</option>
+                                    <option value="Y">Yes</option>
+                                    <option value="N">No</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Select for Verified -->
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="verifiedSelect">Verified</label>
-                            <select name="verified" id="verifiedSelect" class="form-control input-xs">
-                                <option value="">Select Verified</option>
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
-                            </select>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="hotSelect">Hot</label>
+                                <select name="hot" id="hotSelect" class="form-control input-xs">
+                                    <option value="">Select Hot</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Select for Category -->
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="categorySelect">Category</label>
-                            <select class="form-control" name="property_category" id="propertyCategorySelect">
-                                <option value="">Select Property Category</option>
-                                <?php foreach ($categories as $category): ?>
-                                <option value="<?php echo $category->category_id; ?>">
-                                    <?php echo ($category->category_name); ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                        <!-- Select for Verified -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="verifiedSelect">Verified</label>
+                                <select name="verified" id="verifiedSelect" class="form-control input-xs">
+                                    <option value="">Select Verified</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <?php $locations = States::model()->AllStatesOfCountry(66124); ?>
-                    <!-- Select for Location -->
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="locationSelect2">Location</label>
-                            <select class="form-control" name="location" id="locationSelect2">
-                                <option value="">Select Location</option>
-                                <?php foreach ($locations as $location): ?>
-                                <option value="<?php echo $location->state_id; ?>">
-                                    <?php echo CHtml::encode($location->state_name); ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                        <!-- Select for Category -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="categorySelect">Category</label>
+                                <select class="form-control" name="property_category" id="propertyCategorySelect">
+                                    <option value="">Select Property Category</option>
+                                    <?php foreach ($categories as $category): ?>
+                                    <option value="<?php echo $category->category_id; ?>">
+                                        <?php echo ($category->category_name); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                         </div>
-                    </div>
+
+                        <?php $locations = States::model()->AllStatesOfCountry(66124); ?>
+                        <!-- Select for Location -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="locationSelect2">Location</label>
+                                <select class="form-control" name="location" id="locationSelect2">
+                                    <option value="">Select Location</option>
+                                    <?php foreach ($locations as $location): ?>
+                                    <option value="<?php echo $location->state_id; ?>">
+                                        <?php echo CHtml::encode($location->state_name); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-sm-3 mt-2">
                             <div class="form-group">
                                 <label for="StatusSelect">Status</label>
@@ -271,6 +281,26 @@ if ($viewCollection->renderContent) { ?>
             </div>
         </div>
     </div>
+    <div id="assignAgent" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Agent</h5>
+                    <button type="button" class="close btn" data-bs-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="property_id">
+                    <label for="agentSelect">Select an Agent:</label>
+                    <select id="agentSelect" class="form-control"></select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="assignAgent()">Assign</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 <?php
 }
@@ -503,6 +533,57 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             $btn.text($btn.data('loading-text')).prop('disabled', true);
         });
     });
+
+   
+    function openUp3(propertyId) {
+        $('#property_id').val(propertyId);
+
+        $.ajax({
+            url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/getAgents'); ?>', // Adjust the URL based on your route structure
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                var userSelect = $('#agentSelect');
+                userSelect.empty(); // Clear previous options
+
+                if (response.length > 0) {
+                    userSelect.append('<option value="">Select Agent</option>')
+                    response.forEach(function (user) {
+                        userSelect.append('<option value="' + user.id + '">' + user.name + '</option>');
+                    });
+                } else {
+                    userSelect.append('<option value="">No agents available</option>');
+                }
+
+                $('#assignAgent').modal('show'); // Open the modal
+            }
+        });
+    }
+    function assignAgent() {
+        var propertyId = $('#property_id').val();
+        var userId = $('#agentSelect').val();
+
+        if (!userId) {
+            alert('Please select an agent.');
+            return;
+        }
+
+        $.ajax({
+            url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/assignAgent'); ?>',
+            type: 'POST',
+            data: {
+                property_id: propertyId,
+                user_id: userId
+            },
+            success: function (response) {
+                alert('Agent assigned successfully!');
+                $('#assignAgent').modal('hide');
+                $('#enquiryTable').DataTable().ajax.reload();
+            }
+        });
+    }
+
+
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -614,6 +695,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     var dateRangePicker = $('#dateRange').data('daterangepicker');
                     d.status            = $("#propertyStatusSelect").val();
                     d.featured          = $('#featuredSelect').val();
+                    d.hot               = $('#hotSelect').val();
                     d.verified          = $('#verifiedSelect').val();
                     d.submited_by       = $('[name="submited_by"]').val();
                     d.property_category = $('#propertyCategorySelect').val();
@@ -641,17 +723,15 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     previous: '<i class="fa fa-angle-double-left" style="line-height:40px;" aria-hidden="true"></i>'
                 }
             },
-
-
         });
-        $('#featuredSelect, #verifiedSelect, #propertyStatusSelect, #preleasedSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').on('change', function () {
+        $('#featuredSelect, #hotSelect, #verifiedSelect, #propertyStatusSelect, #preleasedSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').on('change', function () {
             table.ajax.reload();
         });
 
         // Reset Filters
         $('#resetButton').on('click', function (e) {
             e.preventDefault();
-            $('#featuredSelect, #verifiedSelect, #preleasedSelect,#propertyStatusSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').val('');
+            $('#featuredSelect, #hotSelect, #verifiedSelect, #preleasedSelect,#propertyStatusSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').val('');
             table.ajax.reload();
         });
         // Handle select all checkbox

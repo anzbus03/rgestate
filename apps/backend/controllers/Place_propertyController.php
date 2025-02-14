@@ -385,25 +385,89 @@ class Place_propertyController  extends Controller
             */
         exit;
     }
-
-    public function actionDynamicNestedSubcategories()
+    public function actionDynamicPropertyTypes()
     {
-
-        if (isset($_GET['parentId'])) {
-            $parentId = $_GET['parentId'];
-            $nestedSubcategories = Subcategory::model()->findAllByAttributes(array('parent_id' => $parentId));
-            $options = array();
-            foreach ($nestedSubcategories as $subcategory) {
-                $options[$subcategory->sub_category_id] = $subcategory->sub_category_name;
-            }
-            echo CHtml::tag('option', array('value' => ''), CHtml::encode('Select Nested Sub Category'), true);
-            foreach ($options as $value => $name) {
-                $selected = ($_GET['nestedSubcategoryId'] == $value) ? 'selected' : '';
-                echo CHtml::tag('option', array('value' => $value, 'selected' => $selected), CHtml::encode($name), true);
+        if (isset($_POST['section_id'])) {
+            $sectionId = (int) $_POST['section_id'];
+            $db = Yii::app()->db;
+    
+            // Fetch category IDs related to the section_id
+            $sql = "SELECT DISTINCT category_id FROM mw_place_an_ad WHERE section_id = :section_id";
+            $command = $db->createCommand($sql);
+            $command->bindParam(':section_id', $sectionId, PDO::PARAM_INT);
+            $ads = $command->queryAll();
+    
+            // Extract category IDs
+            $categoryIds = array_unique(array_filter(array_column($ads, 'category_id')));
+    
+            // Fetch categories based on category IDs
+            $categories = Category::model()->findAllByAttributes(['category_id' => $categoryIds]);
+    
+            // Prepare the response options
+            echo CHtml::tag('option', array('value' => ''), CHtml::encode('Select Category'), true);
+            foreach ($categories as $category) {
+                echo CHtml::tag('option', array('value' => $category->category_id), CHtml::encode($category->category_name), true);
             }
         }
         Yii::app()->end();
     }
+
+
+    public function actionDynamicSubCategories()
+    {
+        if (isset($_POST['category_id'])) {
+            $categoryId = (int) $_POST['category_id'];
+    
+            // Fetch subcategories where category_id matches p_type
+            $subCategories = Subcategory::model()->findAllByAttributes(['category_id' => $categoryId, 'isTrash' => '0']);
+    
+            // Prepare the response options
+            echo CHtml::tag('option', array('value' => ''), CHtml::encode('Select Sub Category'), true);
+            foreach ($subCategories as $subCategory) {
+                echo CHtml::tag('option', array('value' => $subCategory->sub_category_id), CHtml::encode($subCategory->sub_category_name), true);
+            }
+        }
+        Yii::app()->end();
+    }
+    
+    public function actionDynamicNestedSubcategories()
+    {
+        if (isset($_POST['sub_category_id'])) {
+            $subCategoryId = (int) $_POST['sub_category_id'];
+
+            // Fetch nested subcategories where sub_category_id matches
+            $nestedSubCategories = Subcategory::model()->findAllByAttributes(['parent_id' => $subCategoryId, 'isTrash' => '0']);
+
+            // Prepare the response options
+            echo CHtml::tag('option', array('value' => ''), CHtml::encode('Select Nested Sub Category'), true);
+            foreach ($nestedSubCategories as $nestedSubCategory) {
+                echo CHtml::tag('option', array('value' => $nestedSubCategory->sub_category_id), CHtml::encode($nestedSubCategory->sub_category_name), true);
+            }
+        }
+        Yii::app()->end();
+    }
+
+
+    
+    
+    // public function actionDynamicNestedSubcategories()
+    // {
+
+    //     if (isset($_GET['parentId'])) {
+    //         $parentId = $_GET['parentId'];
+    //         $nestedSubcategories = Subcategory::model()->findAllByAttributes(array('parent_id' => $parentId));
+    //         $options = array();
+    //         foreach ($nestedSubcategories as $subcategory) {
+    //             $options[$subcategory->sub_category_id] = $subcategory->sub_category_name;
+    //         }
+    //         echo CHtml::tag('option', array('value' => ''), CHtml::encode('Select Nested Sub Category'), true);
+    //         foreach ($options as $value => $name) {
+    //             $selected = ($_GET['nestedSubcategoryId'] == $value) ? 'selected' : '';
+    //             echo CHtml::tag('option', array('value' => $value, 'selected' => $selected), CHtml::encode($name), true);
+    //         }
+    //     }
+    //     Yii::app()->end();
+    // }
 
     public function actionIndex()
     {
@@ -533,6 +597,11 @@ class Place_propertyController  extends Controller
         if (!empty($_POST['featured'])) {
             $criteria->addCondition('featured = :featured');
             $criteria->params[':featured'] = $_POST['featured'];
+        }
+
+        if (!empty($_POST['hot'])) {
+            $criteria->addCondition('hot = :hot');
+            $criteria->params[':hot'] = $_POST['hot'];
         }
         if (!empty($_POST['status'])) {
             $criteria->addCondition('status = :status');
@@ -726,6 +795,10 @@ class Place_propertyController  extends Controller
             $criteria->addCondition('featured = :featured');
             $criteria->params[':featured'] = $_POST['featured'];
         }
+        if (!empty($_POST['hot'])) {
+            $criteria->addCondition('hot = :hot');
+            $criteria->params[':hot'] = $_POST['hot'];
+        }
     
         if (!empty($_POST['verified'])) {
             $criteria->addCondition('verified = :verified');
@@ -816,7 +889,9 @@ class Place_propertyController  extends Controller
 
                     (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/hot') ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/hot', ['id' => $ad->id, 'hot' => $ad->hot]) . '" title="' . Yii::t('app', 'Hot') . '" class="' . ($ad->hot === '1' ? 'hot-property' : '') . '"><i class="fas fa-sun"></i></a>&nbsp;' : '') .
 
-                    ($isSold ? '<a href="#" class="sold-property"><i class="fas fa-check" title="This property is already sold"></i></a>' : ($ad->status === "A" ? '<a href="javascript:void(0);" title="' . Yii::t('app', 'Sold property') . '" onclick="openUp2(' . $ad->id . ')"><i class="far fa-handshake"></i></a>&nbsp;' : ''))
+                    ($isSold ? '<a href="#" class="sold-property"><i class="fas fa-check" title="This property is already sold"></i></a>' : ($ad->status === "A" ? '<a href="javascript:void(0);" title="' . Yii::t('app', 'Sold property') . '" onclick="openUp2(' . $ad->id . ')"><i class="far fa-handshake"></i></a>&nbsp;' : '')) .
+                
+                    ($loggedInUser->rules != 3 ? '<a href="javascript:void(0);" title="' . Yii::t('app', 'Assign Agent') . '" onclick="openUp3(' . $ad->id . ')"><i class="fa fa-hand-pointer-o"></i></a>&nbsp;' : '')
             ];
         }
         // $command = PlaceAnAd::model()->getCommandBuilder()->createFindCommand(PlaceAnAd::model()->tableName(), $criteria);
@@ -842,7 +917,42 @@ class Place_propertyController  extends Controller
     
         Yii::app()->end();
     }
-    
+
+    public function actiongetAgents(){
+        $agents = User::model()->findAll('rules = :role', [':role' => '3']); // Adjust based on your role system
+        $data = [];
+
+        foreach ($agents as $agent) {
+            $data[] = [
+                'id' => $agent->user_id,
+                'name' => $agent->first_name . " " . $agent->last_name
+            ];
+        }
+
+        echo CJSON::encode($data);
+        Yii::app()->end();
+    }
+    public function actionAssignAgent() {
+
+        $request = Yii::app()->request;
+        $propertyId = $request->getPost('property_id');
+        $userId = $request->getPost('user_id');
+
+        if ($propertyId && $userId) {
+            $ad = PlaceAnAd::model()->findByPk($propertyId);
+            if ($ad) {
+                $ad->user_id = $userId;
+                if ($ad->save()) {
+                    echo CJSON::encode(['success' => true]);
+                    Yii::app()->end();
+                }
+            }
+        }
+        echo CJSON::encode(['success' => false]);
+        Yii::app()->end();
+    }
+
+
     public function actionExportData()
     {
         try {

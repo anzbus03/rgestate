@@ -79,7 +79,7 @@ if ($viewCollection->renderContent) { ?>
             foreach ($categories as $category) {
                 $categoriesArray[$category->category_id] = $category->category_name;
             }
-            ?>
+        ?>
 
         <!-- Form to wrap the table and submit the priority updates -->
         <div class="card-body">
@@ -97,6 +97,17 @@ if ($viewCollection->renderContent) { ?>
                                 <option value="">Select Featured</option>
                                 <option value="Y">Yes</option>
                                 <option value="N">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="hotSelect">Hot</label>
+                            <select name="hot" id="hotSelect" class="form-control input-xs">
+                                <option value="">Select Hot</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
                             </select>
                         </div>
                     </div>
@@ -866,6 +877,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                     d.startDate         = dateRangePicker.startDate ? dateRangePicker.startDate.format('YYYY-MM-DD') : '';
                     d.endDate           = dateRangePicker.endDate ? dateRangePicker.endDate.format('YYYY-MM-DD') : '';
                     d.featured          = $('#featuredSelect').val();
+                    d.hot               = $('#hotSelect').val();
                     d.verified          = $('#verifiedSelect').val();
                     d.preleased         = $('#preleasedSelect').val();
                     d.submited_by       = $('[name="submited_by"]').val();
@@ -901,14 +913,14 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 
         });
 
-        $('#featuredSelect, #verifiedSelect, #propertyStatusSelect, #preleasedSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').on('change', function () {
+        $('#featuredSelect, #hotSelect, #verifiedSelect, #propertyStatusSelect, #preleasedSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').on('change', function () {
             table.ajax.reload();
         });
 
         // Reset Filters
         $('#resetButton').on('click', function (e) {
             e.preventDefault();
-            $('#featuredSelect, #verifiedSelect, #preleasedSelect,#propertyStatusSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').val('');
+            $('#featuredSelect, #hotSelect, #verifiedSelect, #preleasedSelect,#propertyStatusSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').val('');
             table.ajax.reload();
         });
         // Handle select all checkbox
