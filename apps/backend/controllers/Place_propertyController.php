@@ -868,6 +868,7 @@ class Place_propertyController  extends Controller
                 'location' => $stateName ? $stateName->state_name : '',
                 'price' => CHtml::encode($ad->price),
                 'status' => $ad->statusLink,
+                'agent' => $ad->user->first_name??'',
                 'date_added' => '<span class="date-display" style="margin-right: 3px;" id="date-display-' . $ad->id . '">' .
                                     CHtml::encode(date('d-M-Y', strtotime($ad->date_added))) .
                                 '</span>',

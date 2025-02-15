@@ -509,6 +509,7 @@ class PlaceAnAd extends ActiveRecord
 			'Experience' => array(self::BELONGS_TO, 'Experience', 'experience_level'),
 			'Colors' => array(self::BELONGS_TO, 'Color', 'color'),
 			'Customer' => array(self::BELONGS_TO, 'ListingUsers', 'user_id'),
+			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 			'Doors' => array(self::BELONGS_TO, 'Door', 'door'),
 			'Bodyconditions' => array(self::BELONGS_TO, 'Bodycondition', 'bodycondition'),
 			'Mechanicalconditions' => array(self::BELONGS_TO, 'Mechanicalcondition', 'mechanicalcondition'),

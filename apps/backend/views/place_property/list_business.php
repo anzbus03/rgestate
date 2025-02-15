@@ -237,6 +237,7 @@ if ($viewCollection->renderContent) { ?>
                                 <th>Location</th>
                                 <th>Price</th>
                                 <th>Status</th>
+                                <th>Agent</th>
                                 <th>Date Added</th>
                                 <th>Options</th>
                             </tr>
@@ -711,6 +712,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 { "data": "location" },
                 { "data": "price" },
                 { "data": "status" },
+                { "data": "agent","orderable": false  },
                 { "data": "date_added" },
                 { "data": "options" }
             ],

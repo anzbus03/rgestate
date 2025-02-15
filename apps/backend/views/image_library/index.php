@@ -144,6 +144,7 @@ if ($viewCollection->renderContent) { ?>
 
                     <div class="form-group mt-4">
                         <select class="form-control" id="propertySelect" name="property_id">
+                            <option value="">Select Property</option>
                             <?php foreach ($properties as $property): ?>
                             <option value="<?php echo $property->id; ?>">
                                 <?php echo $property->RefNo . ' - ' . $property->ad_title; ?></option>
