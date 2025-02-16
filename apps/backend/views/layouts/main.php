@@ -440,13 +440,13 @@
     ***********************************-->
     <!-- Required vendors -->
 
-        <!-- <script>
+         <script>
             if (typeof jQuery.fn.andSelf === 'undefined') {
                 jQuery.fn.andSelf = function () {
                     return this.addBack();
                 };
             }
-        </script> -->
+        </script> 
 
     <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/chart-js/chart.bundle.min.js'); ?>"
         type="text/javascript"></script>

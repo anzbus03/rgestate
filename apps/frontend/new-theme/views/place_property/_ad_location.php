@@ -1,4 +1,4 @@
-	<?php
+<?php
 	if (Yii::app()->isAppName('backend')) { ?>
 		<div class="clearfix"><!-- --></div>
 		<div class="row  form-group" <?php if (Yii::app()->isAppName('backend')) { ?> style="padding-bottom:15px;" <?php } ?>>
@@ -22,7 +22,7 @@
 	?>
 
 	<?php
-	$cities = CHtml::listData(MainRegion::model()->getStateWithCountry_2((int) $model->country), 'region_id', 'name');
+	$cities = CHtml::listData(MainRegion::model()->getStateWithCountry_2(66124), 'region_id', 'name');
 	// print_r(MainRegion::model()->getStateWithCountry_2((int) $model->country));
 	$m_class = empty($cities) ? 'hidden' : '';
 	?>

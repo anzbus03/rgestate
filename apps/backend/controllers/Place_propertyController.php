@@ -1456,23 +1456,24 @@ class Place_propertyController  extends Controller
         if (in_array($action->id, array('create', 'success', 'update', 'success_edit', 'create_business'))) {
             $apps = Yii::app()->apps;
 
-            // $this->getData('pageStyles')->add(array('src' => $apps->getBaseUrl('assets/css/select2.min.css')));
-            // $this->getData('pageScripts')->add(array('src' => $apps->getBaseUrl('assets/js/select2.min.js')));
-            // $this->getData('pageScripts')->add(array('src' => $apps->getBaseUrl('assets/js/select2script.js')));
-            // $this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'backend/assets/js/dropzone.min.js' ) ) );
-            // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
+            $this->getData('pageStyles')->add(array('src' => $apps->getBaseUrl('assets/css/select2.min.css')));
+            $this->getData('pageScripts')->add(array('src' => $apps->getBaseUrl('assets/js/select2.min.js')));
+            $this->getData('pageScripts')->add(array('src' => $apps->getBaseUrl('assets/js/select2script.js')));
+            //$this->getData( 'pageScripts' )->add( array( 'src' => Yii::app()->apps->getBaseUrl( 'backend/assets/js/dropzone.min.js' ) ) );
+            $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
             $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/place_ad_css.css')));
             $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/css/dropzone.css')));
             $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/table_common.css')));
 
-            // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=1')));
+            $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=1')));
             $apps = Yii::app()->apps;
-            // $this->getData('pageStyles')->add(array('src' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 'priority' => -100));
-            // $this->getData('pageStyles')->add(array('src' =>  'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css'));
-            // $this->getData('pageScripts')->add(array('src' =>  'https://code.jquery.com/ui/1.11.2/jquery-ui.min.js'));
+            $this->getData('pageStyles')->add(array('src' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 'priority' => -100));
+            $this->getData('pageStyles')->add(array('src' =>  'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css'));
+            $this->getData('pageScripts')->add(array('src' =>  'https://code.jquery.com/ui/1.11.2/jquery-ui.min.js'));
         }
         return parent::beforeAction($action);
     }
+    
     /*
 
         public function actionCreate() {
@@ -1565,13 +1566,13 @@ class Place_propertyController  extends Controller
 
         ));
 
-        // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
-        // $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/css/dropzone.css')));
-        // $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/table_common.css')));
+        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
+        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/css/dropzone.css')));
+        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/table_common.css')));
 
-        // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=1')));
+        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=1')));
 
-        // $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
+        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
         // exit;
         if (Yii::app()->request->isAjaxRequest) {
             echo CActiveForm::validate($model);
@@ -1743,6 +1744,14 @@ class Place_propertyController  extends Controller
         ));
         //  print_r( $_POST );
         // exit;
+          $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
+        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/css/dropzone.css')));
+        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/table_common.css')));
+
+        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=1')));
+
+        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
+      
         if (Yii::app()->request->isAjaxRequest) {
             echo CActiveForm::validate($model);
             Yii::app()->end();
@@ -1790,7 +1799,7 @@ class Place_propertyController  extends Controller
         }
 
         $model->price = number_format($model->price, 0, '.', '');
-        $this->render('root.apps.backend.views.place_property.form_new', compact('model', 'country', 'section', 'list_type', 'image_array', 'option'));
+        $this->render('root.apps.frontend.new-theme.views.place_property.form_new', compact('model', 'country', 'section', 'list_type', 'image_array', 'option'));
     }
 
     public function insertAfterSaveFn($model)

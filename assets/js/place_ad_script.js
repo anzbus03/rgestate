@@ -499,8 +499,11 @@ if (value.length > maxlength){
     var compare = maxlength - value.length;
     // decide if chars is under/over
     if (compare >= 0) {
-        var tct = text_remaining.replace("{n}", parseInt(compare));
-        $("#inputcounter").removeClass('error').html(tct);
+        var text_remaining = "You have {n} characters remaining.";
+       if (text_remaining != undefined){
+			var tct = text_remaining.replace("{n}", parseInt(compare));
+			$("#inputcounter2").removeClass('error').html(tct);
+		}
     } else if (compare < 0) {
         //$("#inputcounter").addClass('error').html(compare);
         var tct = text_exceeded.replace("{n}", parseInt(compare));
@@ -518,8 +521,11 @@ if (value.length > maxlength){
     // decide if chars is under/over
     if (compare >= 0) {
         //$("#inputcounter2").removeClass('error').html(compare);
-        var tct = text_remaining.replace("{n}", parseInt(compare));
-        $("#inputcounter2").removeClass('error').html(tct);
+        var text_remaining = "You have {n} characters remaining.";
+        if (text_remaining!= undefined){
+			var tct = text_remaining.replace("{n}", parseInt(compare));
+			$("#inputcounter").removeClass('error').html(tct);
+		}
     } else if (compare < 0) {
         //$("#inputcounter2").addClass('error').html(compare);
         var tct = text_exceeded.replace("{n}", parseInt(compare));
