@@ -3026,18 +3026,30 @@ class PlaceAnAd extends ActiveRecord
 	public function getAd_image_singlenew($w = '0')
 	{
 
+
 		if (!empty($this->ad_images_g)) {
 
 			$data = explode(',', $this->ad_images_g);
 			if (!empty($data)) {
 
 				$this->approved_status = 1;
-				return $this->getAdImageWithWatermark($this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10));
-				// return $this->watermark_image(,Yii::app()->apps->getBaseUrl('/new_assets/images/logoTransparent.png'), 'new_image_name.jpg');
+				return $this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10);
 			}
 		} else {
-			return $this->getAdImageWithWatermark('/new_assets/images/mgrey.jpg');
+			return '/new_assets/images/mgrey.jpg';
 		}
+		// if (!empty($this->ad_images_g)) {
+
+		// 	$data = explode(',', $this->ad_images_g);
+		// 	if (!empty($data)) {
+
+		// 		$this->approved_status = 1;
+		// 		return $this->getAdImageWithWatermark($this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10));
+		// 		// return $this->watermark_image(,Yii::app()->apps->getBaseUrl('/new_assets/images/logoTransparent.png'), 'new_image_name.jpg');
+		// 	}
+		// } else {
+		// 	return $this->getAdImageWithWatermark('/new_assets/images/mgrey.jpg');
+		// }
 	}
 	public function getAdImageWithWatermark($imageName = null, $watermarkPath = '/new_assets/images/logoNew.png')
 	{
@@ -3520,8 +3532,8 @@ class PlaceAnAd extends ActiveRecord
 			$criteria->params[':ad_title2'] = $formData['project_title'];
 		}
 		if (isset($formData['_state_id']) and !empty($formData['_state_id'])) {
-			$criteria->condition .= ' and t.state =:_state_id ';
-			$criteria->params[':_state_id'] = $formData['_state_id'];
+			// $criteria->condition .= ' and t.state =:_state_id ';
+			// $criteria->params[':_state_id'] = $formData['_state_id'];
 		}
 		if (isset($formData['state']) and !empty($formData['state'])) {
 			$criteria->condition .= ' and st.slug=:state ';

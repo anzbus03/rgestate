@@ -3831,7 +3831,6 @@ class Place_propertyController  extends Controller
                 $stateName = $data[11];
                 $stateSlug = $this->generateSlug($stateName);
                 if (!isset($statesMap[$stateSlug])) {
-                    // Insert new state
                     $region = MainRegion::model()->findByAttributes(['slug' => $stateSlug]);
                     $regionId = $region ? $region->region_id : null;
                 
@@ -3843,7 +3842,6 @@ class Place_propertyController  extends Controller
                     $newState->region_id = $regionId;
                     $newState->save();
                 
-                    // Update `statesMap` with the new state
                     $statesMap[$stateSlug] = $newState;
                 }
                 $record = [
@@ -3888,7 +3886,7 @@ class Place_propertyController  extends Controller
                 ];
     
                 if ($existingAd) {
-                    $record['id'] = $existingAd->id; // Include ID for updates
+                    $record['id'] = $existingAd->id;
                     $updateData[] = $record;
                     $updatedCount++;
                 } else {
