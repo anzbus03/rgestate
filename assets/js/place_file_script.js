@@ -129,6 +129,7 @@ function delete_property_image3(val,k)
 									
 							   }
 var mdropZone = new Dropzone("div#file_image", { url: upload_url ,addRemoveLinks: true, maxThumbnailFilesize :40 ,timeout: 300000,  maxFiles:mxFiles,resizeWidth :960,  acceptedFiles: aFiles,
+<<<<<<< HEAD
 			   
 			   init: function() {
 					 
@@ -136,6 +137,29 @@ var mdropZone = new Dropzone("div#file_image", { url: upload_url ,addRemoveLinks
 							   //    console.log('uploading...'); 
 							   //	$('#li_'+rand).find('._20pqz').css({'background-image':'url("'+dataUrl+'")'}) ; 
 									  
+=======
+					
+					init: function() {
+					  	
+						this.on("thumbnail", function(file, dataUrl) {
+						            //    console.log('uploading...'); 
+									//	$('#li_'+rand).find('._20pqz').css({'background-image':'url("'+dataUrl+'")'}) ; 
+										   
+								 
+						}),
+						this.on('sending', function(file, xhr, formData){
+							rand = rand+1;
+							formData.append('rand',rand);
+							  
+									  // file_id= file.lastModified;
+									   file_array[rand] = file;
+									   file_id  = rand;
+									    
+									   var set_text = "Set Cover";
+									  $('._3IhNg').append('<li class="_1mplE loading" id="li_'+file_id+'"  ><div class="_3BJtT" data-aut-id="listSortable"><div class="_20pqz"   data-aut-id="image"></div><a class="_1cS9Q" id="liremove_'+file_id+'" data-id="'+file_id+'" onclick="afterSuccessdelete(this)"  ><span class="rui-1XUas rui-3_XwO"></span></a><a id="link_'+file_id+'" data-id="'+file_id+'" onclick="removeUpload(this)"  class="rmlink">Cancel</a></div><a href="javascript:void(0)" class="coverimg" onclick="setThiscover(this)" >'+set_text+'</a></li>')
+									    
+									    rowCountCalc();
+>>>>>>> 14689bb7 (f)
 							
 				   }),
 				   this.on('sending', function(file, xhr, formData){
