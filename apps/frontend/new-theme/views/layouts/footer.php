@@ -355,7 +355,7 @@ smartad_title a {
                                 </svg>
                             </div>
                             <span class="rg-fs-16 rg-fw-400 rg-text-gray-600">
-                                <?php echo $this->tag->getTag('office_location','Office Suite# 1005, Aspect Tower, Business Bay - Dubai UAE P.O. Box 232574');?>
+                                <?php echo $this->tag->getTag('office_location','Al Fattan Lotus Plaza - Office Suite 102 - Off Sheikh Zayed Rd - Dubai - UAE POB 232574');?>
                             </span>
                         </li>
                         <li class="d-flex align-items-center">
