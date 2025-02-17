@@ -349,13 +349,17 @@ smartad_title a {
                         <li class="d-flex align-items-start">
                             <div href="#"
                                 class="rg-footer-icon rg-bg-blue rg-wh-32 rounded-circle position-relative d-block">
-                                <svg width="16" height="20"
+                                <svg width="16" height="40"
                                     class="rg-fill-white position-absolute top-50 start-50 translate-middle">
                                     <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-location"></use>
                                 </svg>
                             </div>
                             <span class="rg-fs-16 rg-fw-400 rg-text-gray-600">
-                                <?php echo $this->tag->getTag('office_location','Al Fattan Lotus Plaza - Office Suite 102 - Off Sheikh Zayed Rd - Dubai - UAE POB 232574');?>
+                                <?php echo $this->tag->getTag('office_location','
+                                Al Fattan Lotus Plaza - Office Suite 102 - Off Sheikh Zayed Rd - Dubai - UAE POB 232574
+                                ');?>
+                                <br>
+                                <a href="https://maps.app.goo.gl/yypk54WEH96Y86Ec6" target="_blank" class="rg-text-blue">https://maps.app.goo.gl/yypk54WEH96Y86Ec6</a>
                             </span>
                         </li>
                         <li class="d-flex align-items-center">
