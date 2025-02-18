@@ -545,10 +545,11 @@ html .continue {
             <h2 class="animate animated"> <span
                     class="title"><?php echo $this->tag->getTag('get_directions', 'Get Directions'); ?></span></h2>
 
-            <iframe
+            <!-- <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3616.026526429091!2d55.16789981500552!3d24.999214583988667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f696247868065%3A0x109d4609df87abd2!2sRGEstate.com%20-%20By%20Riveria%20Global%20Group!5e0!3m2!1sen!2sin!4v1645769710574!5m2!1sen!2sin"
                 width="100%" height="350" style="background:#eee" style="border:0;" allowfullscreen=""
-                loading="lazy"></iframe>
+                loading="lazy"></iframe> -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4900.294603782877!2d55.223545699999995!3d25.1447009!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6bb4bccc0b77%3A0xa2b43256971fbaec!2sRG%20Group!5e1!3m2!1sen!2sae!4v1739853336503!5m2!1sen!2sae" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
 
         </div>
