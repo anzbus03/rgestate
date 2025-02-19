@@ -346,10 +346,10 @@ smartad_title a {
                                     <use xlink:href="<?php echo $app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-location"></use>
                                 </svg>
                             </div>
-                            <span class="rg-fs-16 rg-fw-400 rg-text-gray-600">Al Fattan Lotus Plaza Office Suite 102 Off Sheikh
-Zayed Rd - Dubai - UAE
-POB 232574
-P.O. Box 232574</span>
+                            <span class="rg-fs-16 rg-fw-400 rg-text-gray-600">Al Fattan Lotus Plaza,
+Office Suite 102,
+Off Sheikh Zayed Rd, Dubai 
+UAE POB 232574.</span>
                         </li>
                         <li class="d-flex align-items-center">
                             <div href="#"

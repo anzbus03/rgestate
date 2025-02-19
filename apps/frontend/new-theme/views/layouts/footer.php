@@ -356,10 +356,10 @@ smartad_title a {
                             </div>
                             <span class="rg-fs-16 rg-fw-400 rg-text-gray-600">
                                 <a href="https://maps.app.goo.gl/yypk54WEH96Y86Ec6" target="_blank" class="rg-text-blue" style="text-decoration: none; color: inherit;">
-                                    <?php echo nl2br($this->tag->getTag('office_location', 'Al Fattan Lotus Plaza
-                                        Office Suite 102 Off Sheikh 
-                                        Zayed Rd - Dubai - UAE
-                                        POB 232574
+                                    <?php echo nl2br($this->tag->getTag('office_location', 'Al Fattan Lotus Plaza,
+Office Suite 102,
+Off Sheikh Zayed Rd, Dubai 
+UAE POB 232574.
                                     ')); ?>
                                 </a>
                             </span>

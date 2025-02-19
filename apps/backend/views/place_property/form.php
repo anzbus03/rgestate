@@ -81,6 +81,7 @@ if ($viewCollection->renderContent) {
 					} 
 					$model->country  = '66099' ; 
 				?>
+				
 				<div class="subhead font_s ros subhead2">Property Type and Location</div>
                 <div class="form-group col-lg-4 hidden">
                    <?php echo $form->labelEx($model, 'country');?>
@@ -289,6 +290,9 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'renderedContent'   => $viewCollection->renderContent,
 )));
 ?>
+<script
+                        src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/global/global.min.js'); ?>"
+                        type="text/javascript"></script>
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<?php echo  Yii::app()->options->get('system.common.google_map_api_keys','AIzaSyBJ2Jo_mnCk9CnTNbTQAcb__elC9cKt6WQ');?>"></script>
 
 <script type="text/javascript">

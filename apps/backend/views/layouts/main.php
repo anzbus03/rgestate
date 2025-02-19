@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-
-<head>
-    <!-- PAGE TITLE HERE -->
-    <title><?php echo ucfirst($this->getUniqueId()); ?>&nbsp;|
-        <?php echo Yii::app()->options->get('system.common.site_name'); ?></title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
+    <head>
+        <!-- PAGE TITLE HERE -->
+        <title><?php echo ucfirst($this->getUniqueId()); ?>&nbsp;|
+        <?php echo Yii::app()->options->get('system.common.site_name'); ?></title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <script type="text/javascript" src="<?php echo $assetsUrl;?>/elfinder/js/elfinder.min.js"></script>
-    <?php if (isset($language)) { ?>
-        <script type="text/javascript" src="<?php echo $assetsUrl;?>/elfinder/js/i18n/elfinder.<?php echo $language;?>.js"></script>
-    <?php } ?>
+    <?php if (!empty($language)) : ?>
+    <script type="text/javascript" src="<?php echo $assetsUrl;?>/elfinder/js/i18n/elfinder.<?php echo $language;?>.js"></script>
+<?php endif; ?>
+
 
     <!-- FAVICONS ICON -->
-    <link rel="shortcut icon" type="image/png"
-        href="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/images/favicon.png') ?>">
-
+    <link rel="shortcut icon" type="image/png" href="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/images/favicon.png'); ?>">
     <link href="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/nouislider/nouislider.min.css'); ?>"
         rel="stylesheet" type="text/css" />
     <link
