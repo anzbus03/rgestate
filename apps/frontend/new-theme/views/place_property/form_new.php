@@ -1145,7 +1145,7 @@ if ($viewCollection->renderContent) {
 											"rows" => "5", 
 											'dir' => 'auto', 
 											'placeholder' => $this->tag->getTag('mention_the_key_feature_of_you', 'Mention the key feature of your property (short description of your property)'),
-											'style' => 'resize: vertical; overflow: hidden; min-height: 50px; max-height: 500px;' // Ensuring resizable, overflow handling, and height constraints
+											'style' => 'resize: vertical; min-height: 50px; max-height: 500px;' // Ensuring resizable, overflow handling, and height constraints
 										))); ?>
 										<div class="text-warning small hide pull-left">
 											<?php echo Yii::t('app', $this->tag->getTag('recommanded_length_{s}{min}_-_', 'Recommanded length {s}{min} - {max}{e}'), array('{s}' => '<span dir="ltr" style="white-space:nowrap;">', '{e}' => '</span>', '{min}' => $model::DESC_MIN, '{max}' => $model::DESC_MAX)); ?>
