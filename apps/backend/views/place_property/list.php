@@ -287,6 +287,25 @@ if ($viewCollection->renderContent) { ?>
     </div>
 
     <style>
+        #enquiryTable td {
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            max-width: 200px; /* Adjust based on your requirement */
+        }
+
+        #enquiryTable td:hover {
+            overflow: visible; 
+            white-space: normal; 
+            word-wrap: break-word;
+            position: absolute;
+            background: #fff;
+            z-index: 10;
+            padding: 5px;
+            border: 1px solid #ddd;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
         /* Property Status Colors */
         .hot-property {
             color: #FF4500;
