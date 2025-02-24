@@ -12,6 +12,9 @@ RewriteRule ^property-for-rent/commercial/land/?$ /property-for-rent/land/all/ [
 RewriteRule ^property-for-rent/commercial/land/dubai/?$ /property-for-rent/land/all/dubai/ [R=301,L]
 RewriteRule ^property-for-sale/commercial/retail/dubai/?$ /property-for-sale/retail/all/dubai/  [R=301,L]
 RewriteRule ^property-for-rent/commercial/retail/dubai/?$ /property-for-rent/retail/all/dubai/  [R=301,L]
+RewriteRule ^property-for-sale/commercial/retail/?$ /property-for-sale/retail/all/ [R=301,L]
+RewriteRule ^property-for-rent/commercial/showroom/dubai/?$ /property-for-rent/retail/showroom/dubai/ [R=301,L]
+RewriteRule ^property-for-sale/commercial/shopping-mall/dubai/?$ /property-for-sale/retail/shopping-mall/dubai/ [R=301,L]
 
 RewriteCond %{HTTPS} off
 	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
