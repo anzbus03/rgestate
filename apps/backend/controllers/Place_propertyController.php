@@ -1574,6 +1574,7 @@ class Place_propertyController  extends Controller
 
         $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
         // exit;
+
         if (Yii::app()->request->isAjaxRequest) {
             echo CActiveForm::validate($model);
             Yii::app()->end();
@@ -1673,15 +1674,25 @@ class Place_propertyController  extends Controller
 
             $model->status = 'I';
         }
-
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
 
             $model->attributes = $attributes;
-
+        
             if (!$model->save()) {
-
-                // $model->amenities = Yii::app()->request->getPost('amenities');
-                $exp =  explode(',', $model->image);
+                // Collect missing fields or errors
+                $errors = [];
+                foreach ($model->getErrors() as $attribute => $errorMessages) {
+                    $errors[] = ucfirst($attribute) . ': ' . implode(', ', $errorMessages);
+                }
+        
+                // Prepare error message
+                $errorMessage = Yii::t('app', 'Your form has a few errors:') . ' ' . implode('; ', $errors);
+        
+                // Notify user with exact errors
+                $notify->addError($errorMessage);
+        
+                // Process images if needed
+                $exp = explode(',', $model->image);
                 if ($exp) {
                     foreach ($exp as $k => $v) {
                         if ($v != '') {
@@ -1689,18 +1700,15 @@ class Place_propertyController  extends Controller
                         }
                     }
                 }
-
-                $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
             } else {
                 $this->insertAfterSaveFn($model);
-                //$notify->addSuccess( Yii::t( 'app', 'Your form has been successfully saved!' ) );
                 if ($model->section_id == '6') {
                     $this->redirect(Yii::App()->createUrl($this->id . '/business'));
                 }
                 $this->redirect(Yii::App()->createUrl($this->id . '/index'));
             }
         }
-
+        
         $this->render('root.apps.backend.views.place_property.form_new', compact('model', 'country', 'section', 'list_type', 'image_array'));
     }
 

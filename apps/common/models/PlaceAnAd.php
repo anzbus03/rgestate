@@ -126,7 +126,7 @@ class PlaceAnAd extends ActiveRecord
 			$rules1[] =   array((array) $this->_notMadatory, 'safe');
 		}
 		$rules  =  array(
-			array('section_id,state, category_id,user_id ,ad_title,ad_description', 'required', 'message' => $required),
+			array('section_id, category_id,user_id ,ad_title,ad_description', 'required', 'message' => $required),
 			//array('city', 'required','on'=>'new_insert', 'message'=>$required),
 			array('ad_description', 'required', 'on' => 'update_content', 'message' => $required),
 			array('country,state,city', 'safe', 'on' => 'new_insert'),
