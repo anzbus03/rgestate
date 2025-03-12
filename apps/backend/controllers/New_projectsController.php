@@ -21,9 +21,9 @@ class New_projectsController   extends Controller
      * Define the filters for various controller actions
      * Merge the filters with the ones from parent implementation
      */
-     public $Controlloler_title= "New Developments";
-     public $focus = "country";
-     	public $member;
+	public $Controlloler_title= "New Developments";
+	public $focus = "country";
+	public $member;
      public function init()
     {
 		 
@@ -266,6 +266,247 @@ class New_projectsController   extends Controller
  
         
     }
+
+	public function actionServerProcessing()
+    {
+        $request = Yii::app()->request;
+        $criteria = new CDbCriteria();
+    
+        // Capture search value
+		$searchValue = $request->getQuery('search')['value'];
+        if (!empty($searchValue)) {
+            // Use addCondition to construct search conditions manually
+            $searchCondition = [
+                "t.RefNo LIKE :searchValue",
+                "t.ad_title LIKE :searchValue",
+                // Add more columns as needed
+            ];
+            // Combine conditions with OR
+            $criteria->addCondition(implode(' OR ', $searchCondition));
+            // Bind the search parameter
+            $criteria->params[':searchValue'] = '%' . $searchValue . '%';
+            // Add more conditions for other columns as needed
+        }
+        // Yii::log(CVarDumper::dumpAsString($criteria), 'info', 'search.criteria');
+        $startDate = $request->getQuery('startDate');
+        $endDate = $request->getQuery('endDate');
+        
+        if ($startDate && $endDate) {
+            $validStartDate = DateTime::createFromFormat('Y-m-d', $startDate) !== false;
+            $validEndDate = DateTime::createFromFormat('Y-m-d', $endDate) !== false;
+            if ($validStartDate && $validEndDate) {
+                $startDate .= ' 00:00:00';
+                $endDate .= ' 23:59:59';
+                $criteria->addCondition("t.date_added >= :startDate AND t.date_added <= :endDate");
+                $criteria->params[':startDate'] = $startDate;
+                $criteria->params[':endDate'] = $endDate;
+            }
+        }
+        
+        $criteria->addCondition("t.section_id = 3");
+        $criteria->params[':startDate'] = $startDate;
+        $criteria->params[':endDate'] = $endDate;
+        // Add conditions dynamically
+        if (!empty($_GET['featured'])) {
+            $criteria->addCondition('featured = :featured');
+            $criteria->params[':featured'] = $_GET['featured'];
+        }
+
+        if (!empty($_GET['hot'])) {
+            $criteria->addCondition('hot = :hot');
+            $criteria->params[':hot'] = $_GET['hot'];
+        }
+        if (!empty($_GET['status'])) {
+            $criteria->addCondition('status = :status');
+            $criteria->params[':status'] = $_GET['status'];
+            $criteria->addCondition('isTrash LIKE :isTrash');
+            $criteria->params[':isTrash'] = 0;
+        }
+
+        if (!empty($_GET['verified'])) {
+            $criteria->addCondition('verified = :verified');
+            $criteria->params[':verified'] = $_GET['verified'];
+        }
+
+        if (!empty($_GET['location'])) {
+            $criteria->addCondition('state = :state');
+            $criteria->params[':state'] = $_GET['location'];
+        }
+        // User-specific conditions
+        $loggedInUser = Yii::app()->user->model; // Assuming you have a method to get the logged-in user model
+        
+        if ($loggedInUser->rules == 3) {
+            // Single user ID
+            $criteria->addCondition('t.user_id = :userId');
+            $criteria->params[':userId'] = $loggedInUser->user_id;
+        } elseif ($loggedInUser->rules == 2) {
+            // Multiple user IDs
+            $userAgents = explode(',', $loggedInUser->agents);
+
+            // Create placeholders for named parameters
+            $placeholders = [];
+            foreach ($userAgents as $index => $agentId) {
+                $placeholders[] = ':userId' . $index; // Named placeholders
+                $criteria->params[':userId' . $index] = $agentId; // Assign parameter values
+            }
+
+            $criteria->addCondition('t.user_id IN (' . implode(',', $placeholders) . ')');
+
+        }
+        
+        // Sorting
+        $orderColumnIndex = $request->getQuery('order')[0]['column'];
+        $orderDirection = $request->getQuery('order')[0]['dir']; // 'asc' or 'desc'
+        $orderColumnName = $request->getQuery('columns')[$orderColumnIndex]['data'];
+        if ($orderColumnName) {
+            $criteria->order = "$orderColumnName $orderDirection";
+        }
+        
+        // Pagination
+        $start = $request->getQuery('start', 0);
+        $length = $request->getQuery('length', 10);
+        $criteria->offset = $start;
+        $criteria->limit = $length;
+        // Fetch data
+        $totalRecords = PlaceAnAd::model()->count($criteria);
+        $filteredRecords = PlaceAnAd::model()->count($criteria);
+        $placeAds = PlaceAnAd::model()->findAll($criteria);
+        // Prepare data in a format for DataTables
+        $data = [];
+        foreach ($placeAds as $ad) {
+            $stateName = States::model()->findByPk($ad->state);
+            $PreviewURL = $ad->PreviewUrlTrash;
+            $data[] = [
+                'id' => '<input type="checkbox" class="bulk-item" value="'.$ad->id.'">',
+                'date' => CHtml::encode(date('d-M-Y', strtotime($ad->date_added))),
+                'ad_title' => CHtml::encode($ad->AdTitle),
+                'city' => $stateName ? $stateName->state_name : '',
+                'section' => CHtml::encode($ad->section->section_name),
+                'investment_range' => CHtml::encode($ad->price),
+                'status' => $ad->statusLink,
+                'options' =>
+                    (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update') ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/update', ['id' => $ad->id]) . '" title="' . Yii::t('app', 'Update') . '" class="edit-icon"><i class="fa fa-pencil"></i></a>&nbsp;' : '') .
+
+                    '<a href="' . $PreviewURL . '" title="' . Yii::t('app', 'View') . '" target="_blank" class="view-icon"><i class="fa fa-eye"></i></a>&nbsp;' .
+
+                    (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/delete') ? '<a href="javascript:void(0);" title="' . Yii::t('app', 'Delete') . '" class="delete delete-icon" onclick="confirmDelete(\'' . Yii::app()->createUrl(Yii::app()->controller->id . '/delete', ['id' => $ad->id]) . '\')"><i class="fa fa-times-circle"></i></a>&nbsp;' : '') .
+
+                    (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/featured') ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/featured', ['id' => $ad->id, 'featured' => $ad->featured]) . '" title="' . Yii::t('app', 'Featured') . '" class="' . ($ad->featured === 'Y' ? 'featured-property' : '') . '"><i class="fa fa-star"></i></a>&nbsp;' : '') .
+
+                    '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/verified', ['id' => $ad->id, 'verified' => $ad->verified]) . '" title="' . Yii::t('app', 'Verified') . '" class="' . ($ad->verified === '1' ? 'verified-property' : '') . '"><i class="fa fa-check-circle"></i></a>&nbsp;' .
+
+                    ($ad->status === "A" ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/status_change', ['id' => $ad->id, 'val' => "I"]) . '" title="' . Yii::t('app', 'Inactive AD') . '" class="Block"><i class="fa fa-ban"></i></a>&nbsp;' : '') .
+
+                    ($ad->status === "I" ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/status_change', ['id' => $ad->id, 'val' => "A"]) . '" title="' . Yii::t('app', 'Activate AD') . '" class="Enable active-property"><i class="fa fa-check-circle"></i></a>&nbsp;' : '') .
+
+                    (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/hot') ? '<a href="' . Yii::app()->createUrl(Yii::app()->controller->id . '/hot', ['id' => $ad->id, 'hot' => $ad->hot]) . '" title="' . Yii::t('app', 'Hot') . '" class="' . ($ad->hot === '1' ? 'hot-property' : '') . '"><i class="fas fa-sun"></i></a>&nbsp;' : '')
+
+            ];
+        }
+        // $command = PlaceAnAd::model()->getCommandBuilder()->createFindCommand(PlaceAnAd::model()->tableName(), $criteria);
+        // $sql = $command->getText();
+        // $params = $criteria->params;
+
+        // // Log to the Yii application log
+        // print_r("SQL Query: " . $sql);
+        // print_r("Parameters: " . CVarDumper::dumpAsString($params));
+        // exit;
+        // Alternatively, write to a custom log file
+        $logFile = Yii::app()->basePath . '/runtime/serverProcessing.log';
+        file_put_contents($logFile, "SQL Query: " . $sql . PHP_EOL, FILE_APPEND);
+        file_put_contents($logFile, "Parameters: " . print_r($params, true) . PHP_EOL, FILE_APPEND);
+
+        // Return JSON response
+        echo CJSON::encode([
+            'draw' => intval($request->getQuery('draw')),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data' => $data
+        ]);
+    
+        Yii::app()->end();
+    }
+	
+	public function actionDelete($id)
+    {
+        $model = PlaceAnAd::model()->findByPk((int)$id);
+
+        if (empty($model)) {
+            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+        }
+
+        $model->updateByPk($id, array('isTrash' => Yii::app()->params['onTrash']));
+
+        //144
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+
+        if (!$request->getQuery('ajax')) {
+            $notify->addSuccess(Yii::t('app', 'The item has been successfully deleted!'));
+            $this->redirect($request->getPost('returnUrl', array(Yii::app()->controller->id . '/index')));
+        }
+    }
+
+    public function actionVerified($id, $verified)
+    {
+        $model = PlaceAnAd::model()->findByPk((int)$id);
+
+        if (empty($model)) {
+            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+        }
+
+        $featured = ($verified == '1') ? '0' : '1';
+        $model->updateByPk($id, array('verified' => $featured, 'last_updated' => date('Y-m-d h:i:s')));
+
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+
+        if (!$request->getQuery('ajax')) {
+            $notify->addSuccess(Yii::t('app', 'The item has been successfully updated!'));
+            $this->redirect($request->getPost('returnUrl', array(Yii::app()->controller->id . '/index')));
+        }
+    }
+
+    public function actionFeatured($id, $featured)
+    {
+        $model = PlaceAnAd::model()->findByPk((int)$id);
+
+        if (empty($model)) {
+            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+        }
+
+        $featured = ($featured == 'N') ? 'Y' : 'N';
+        $model->updateByPk($id, array('featured' => $featured, 'last_updated' => date('Y-m-d h:i:s')));
+
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+
+        if (!$request->getQuery('ajax')) {
+            $notify->addSuccess(Yii::t('app', 'The item has been successfully updated!'));
+            $this->redirect($request->getPost('returnUrl', array(Yii::app()->controller->id . '/index')));
+        }
+    }
+
+    public function actionHot($id, $hot)
+    {
+        $model = NewDevelopment::model()->findByPk((int)$id);
+
+        if (empty($model)) {
+            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+        }
+
+        $hot = (is_null($hot) || $hot == '0') ? '1' : '0';
+        $model->updateByPk($id, array('hot' => $hot, 'last_updated' => date('Y-m-d h:i:s')));
+
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+
+        // if (!$request->getQuery('ajax')) {
+		$notify->addSuccess(Yii::t('app', 'The item has been successfully updated!'));
+		$this->redirect($request->getPost('returnUrl', array(Yii::app()->controller->id . '/index')));
+        // }
+    }
+   
     public function actionUpdate($id=null)
     {  
         $request = Yii::app()->request;
@@ -630,46 +871,7 @@ class New_projectsController   extends Controller
     /**
      * Delete existing user
      */
-    public function actionDelete($id)
-    {
-        $model = NewDevelopment::model()->findByPk((int)$id);
-        
-        if (empty($model)) {
-            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
-        }
-        
-        
-            $model->updateByPk($id,array('isTrash'=>Yii::app()->params['onTrash']));    
-         
-
-        $request = Yii::app()->request;
-        $notify = Yii::app()->notify;
-        
-        if (!$request->getQuery('ajax')) {
-            $notify->addSuccess(Yii::t('app', 'The item has been successfully deleted!'));
-            $this->redirect($request->getPost('returnUrl', array(Yii::app()->controller->id.'/index')));
-        }
-    }
-    public function actionFeatured($id,$featured)
-    {
-        $model = NewDevelopment::model()->findByPk((int)$id);
-        
-        if (empty($model)) {
-            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
-        }
-        
-            $featured = ($featured=="N") ? "Y" : "N";
-            $model->updateByPk($id,array('featured'=>$featured ));    
-         
-
-        $request = Yii::app()->request;
-        $notify = Yii::app()->notify;
-        
-        if (!$request->getQuery('ajax')) {
-            $notify->addSuccess(Yii::t('app', 'The item has been successfully updated!'));
-            $this->redirect($request->getPost('returnUrl', array(Yii::app()->controller->id.'/index')));
-        }
-    }
+   
     public function actionStatus($id,$status)
     {
 		 
@@ -1376,16 +1578,19 @@ class New_projectsController   extends Controller
     }
      public function actionStatus_change($id=null,$val=null)
     {
-		if(!Yii::app()->request->isAjaxRequest){
-			return false;
-		}
+		// if(!Yii::app()->request->isAjaxRequest){
+		// 	return false;
+		// }
         $user = NewDevelopment::model()->findByPk((int)$id);
 
         if (empty($user)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         } 
+
+        $notify  = Yii::app()->notify;
         $user::model()->updateByPk($id,array('status'=>$val));
-        echo 1; 
+		$notify->addSuccess(Yii::t('app', 'Status successfully changed!'));
+		$this->redirect(Yii::app()->request->urlReferrer);
     }
     public function actionUpload_floor_plan($width=null,$height=null)
     {
@@ -1705,9 +1910,9 @@ class New_projectsController   extends Controller
 
         if ($action == PlaceAnAd::BULK_ACTION_DELETE && count($items)) {
             $affected = 0;
-            $customerModel = new  PlaceAnAd();
+            $customerModel = new PlaceAnAd();
             foreach ($items as $item) {
-
+            
                 $customer = $customerModel->findByPk($item);
                 if (!$customer) {
                     continue;

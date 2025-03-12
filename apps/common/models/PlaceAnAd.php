@@ -4576,8 +4576,8 @@ class PlaceAnAd extends ActiveRecord
 		if ($this->section_id == 'new-development') {
 			return array(
 				'best-asc' => $this->mTag()->getTag('featured', 'Featured'),
-				'price-desc' => $this->mTag()->getTag('price_(high_to_low)', 'Price (High to Low)'),
-				'price-asc' => $this->mTag()->getTag('price_(low_to_high)', 'Price (Low to High)'),
+				'price-desc' => $this->mTag()->getTag('price_(high_to_low)', 'Investment (High to Low)'),
+				'price-asc' => $this->mTag()->getTag('price_(low_to_high)', 'Investment (Low to High)'),
 				'featured' => $this->mTag()->getTag('featured', 'Featured'),
 				'verified' => $this->mTag()->getTag('verified', 'Verified'),
 				'title-asc' => $this->mTag()->getTag('show(a-z)', 'Show(A-Z)'),
@@ -5206,10 +5206,13 @@ class PlaceAnAd extends ActiveRecord
 	{
 		switch ($this->project_status) {
 			case '1':
-				return 'Off Plan';
+				return 'Ready';
 				break;
 			case '2':
-				return 'Ready';
+				return 'Under Construction';
+				break;
+			case '2':
+				return 'Build to Suit';
 				break;
 		}
 	}
@@ -6666,8 +6669,8 @@ class PlaceAnAd extends ActiveRecord
 		return array(
 			'all' => $this->mTag()->getTag('all', 'All'),
 			'ready' => $this->mTag()->getTag('ready', 'Ready'),
-			'off-plan' => $this->mTag()->getTag('off_plan', 'Off Plan'),
-
+			'under-construction' => $this->mTag()->getTag('off_plan', 'Under Construction'),
+			'build-to-suit' => $this->mTag()->getTag('off_plan', 'Build to Suit'),
 		);
 	}
 	public $category_img;

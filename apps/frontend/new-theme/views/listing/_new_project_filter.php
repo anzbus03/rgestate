@@ -382,6 +382,8 @@ html  .only-for-mobile-t {
 
 <input id="min-price" type="hidden"    value="<?php echo @$formData['minPrice'];?>" name="minPrice">
 <input id="max-price" type="hidden"     value="<?php echo @$formData['maxPrice'];?>" name="maxPrice">
+<input id="min-roi" type="hidden"  value="<?php echo @$formData['minRoi'];?>"     name="minRoi">
+<input id="max-roi"type="hidden" value="<?php echo @$formData['maxRoi'];?>"     name="maxRoi">
 <input type="hidden" id="zoom" value="<?php echo @$formData['zoom'] ;?>" name="zoom" />
  <?php
  $project_status =  $this->tag->getTag('project_status','Project Status');
@@ -394,6 +396,9 @@ html  .only-for-mobile-t {
      
 	$price_array =  $filterModel->getPriceArrayFrom();
 	$price_array2 =  $filterModel->getPriceArrayTo();
+    for($i=1;$i<=100;$i++){
+	    $roi_sec[$i] = $i.'%';
+	}
 	 $done = $this->tag->getTag('done','Done');
 	 $property_type = $this->tag->getTag('property_type','Property Type');
 	  
@@ -930,7 +935,7 @@ html  .only-for-mobile-t {
 
 <li class="arab-drop-down  arab-li-1 sectionFilter margin-right-10  port-price form-container-list-item"   id="price-parent">
 				<div class="list-item-p list-item-purpose" onclick="openthisBpx(this)">
-								   <label class="list-item-p-label" for="filter-title"><?php echo $this->tag->getTag('asking_price','Asking Price');?>(<?php echo SELECT_CURRENCY_TITLE;?>)</label>
+								   <label class="list-item-p-label" for="filter-title"><?php echo $this->tag->getTag('asking_price','Investment Range');?>(<?php echo SELECT_CURRENCY_TITLE;?>)</label>
 								   <div    class="list-item-p-label-button">
 									  <span class="list-item-p-label-button-container">
 										<span class="price-changer">
@@ -1038,6 +1043,114 @@ html  .only-for-mobile-t {
 </li>
 
 
+
+<li class="arab-drop-down  arab-li-1 sectionFilter margin-right-10  port-more right-handle form-container-list-item" id="roi-parent">
+		<div class="list-item-p list-item-purpose" onclick="openthisBpx(this)">
+								   <label class="list-item-p-label" for="filter-title"><?php echo  $this->tag->getTag('roi_range','ROI Range');?> (%)</label>
+								   <div    class="list-item-p-label-button">
+									  <span class="list-item-p-label-button-container">
+										<span class="price-changer">
+										<span class="price-changer-from"  id="roi-changer-from"><?php echo  isset($formData['minRoi']) ? $formData['minRoi'] : 0;?></span>
+										<span class="price-changer-to-text">to</span>
+										<span class="price-changer-to" id="roi-changer-to"><?php echo  isset($formData['maxRoi']) ? $formData['maxRoi'] :   $this->tag->getTag('any','Any') ;?></span>
+										</span>
+									 </span>
+									  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" class="eedc221b">
+										 <path class="cls-1" d="M12 6L6 0 0 6h12z"></path>
+									  </svg>
+								   </div>
+								</div>
+								
+								<div class="search-popup-cntainer price-list-row">
+									<div class="search-popup-cntainer-wrapper" role="listbox">
+											<div class="only-for-mobile">
+										<div class="row m-0 only-for-mobile-t">
+										<div class="col-sm-61">
+										
+											<div class="two-sect-selct">
+											<span class="divvisee"  ><?php echo $this->tag->getTag('minimum','Minimum');?>:</span>
+											<select class=""  id="mobile-minRoi" onchange="changeValuedropDownSelect(this,'mobile-maxRoi','<','minRoi')">
+												<option value="0">0</option>
+												<?php
+												foreach($roi_sec as $k=>$v){ 
+												$checked1 = ( $k == @$formData['minRoi']  ) ? 'selected=true' : '';
+												echo '<option value="'.(int)$k.'" '; echo $checked1; echo ' >'.$v.'</option>';
+												} ?>
+												 </select>
+											</div>
+										
+										</div>
+										
+										
+										<div class="col-sm-61">
+										
+											<div class="two-sect-selct">
+											<span class="divvisee"><?php echo $this->tag->getTag('maximum','Maximum');?>:</span>
+											<select class="" id="mobile-maxRoi" onchange="changeValuedropDownSelect(this,'mobile-minRoi','>','maxRoi')">
+												<option value="0"><?php echo  $this->tag->getTag('any','Any');?></option>
+												<?php
+												foreach($roi_sec as $k=>$v){ 
+													$checked1 = ( $k == @$formData['maxRoi']  ) ? 'selected=true' : '';
+												echo '<option value="'.(int)$k.'" '; echo $checked1; echo ' >'.$v.'</option>';
+												} ?>
+												 </select>
+											</div>
+										
+										</div>
+										
+										
+										</div>
+										
+										</div>
+											
+											<div>
+												<div>
+   <div class="price-frm-selct" id="minRoi" data-input="min-roi" data-parent-input="roi-changer-from">
+      <span class="price-frm-selct1"><?php echo $this->tag->getTag('min','min');?>:</span>
+      <div class="a0c631cb price-frm-selct2">
+         <div class="price-frm-selct3">
+            
+         </div>
+         <input placeholder="0" class="_12173fb7"  value="">
+      </div>
+      <div class="price-frm-selct4" >
+		    <span><button type="button" aria-label="0" aria-value="" onclick="changeValuedropDown(this,'maxRoi','<','minRoi','roi-parent')"    class="search-popup-cntainer-btn1 indeividual price-changer search-popup-cntainer-btn <?php echo !isset($formData['minRoi']) ? 'active':'';?>">0</button></span>
+		
+		<?php
+		foreach($roi_sec as $k=>$v){ ?>
+		<span><button type="button" aria-label="<?php echo $v;?>" aria-value="<?php echo $k;?>" onclick="changeValuedropDown(this,'maxRoi','<','minRoi','roi-parent')"   class="search-popup-cntainer-btn1 indeividual price-changer search-popup-cntainer-btn <?php echo ($k==@$formData['minRoi']) ? 'active':'';?>" <?php echo (isset($formData['maxRoi']) and  $k>@$formData['maxRoi']) ? 'disabled':'';?>><?php echo $v;?></button></span>
+		<?php } ?>
+      </div>
+   </div>
+   <div class="price-frm-selct"  id="maxRoi" data-input="max-roi" data-parent-input="roi-changer-to">
+      <span class="price-frm-selct1"><?php echo $this->tag->getTag('max','max');?>:</span>
+      <div class="a0c631cb price-frm-selct2">
+         <div class="price-frm-selct3">
+           
+         </div>
+         <input placeholder="Any"  class="_12173fb7" value="">
+      </div>
+      <div class="price-frm-selct4"> 
+		  <span><button type="button"  aria-label="Any" aria-value="" onclick="changeValuedropDown(this,'minRoi','>','maxRoi','roi-parent')"    class="search-popup-cntainer-btn1 indeividual search-popup-cntainer-btn <?php echo !isset($formData['maxRoi']) ? 'active':'';?>"><?php echo  $this->tag->getTag('any','Any');?></button></span>
+		 
+      		<?php
+		foreach($roi_sec as $k=>$v){ ?>
+		<span><button type="button"  aria-label="<?php echo $v;?>" aria-value="<?php echo $k;?>" onclick="changeValuedropDown(this,'minRoi','>','maxRoi','roi-parent')"   class="search-popup-cntainer-btn1 indeividual search-popup-cntainer-btn  <?php echo ($k==@$formData['maxRoi']) ? 'active':'';?>" <?php echo (isset($formData['minRoi']) and  $k<@$formData['minRoi']) ? 'disabled':'';?> ><?php echo $v;?></button></span>
+		<?php } ?>
+
+      
+      </div>
+   </div>
+</div>
+										 	</div>
+										 				 	 	<a href="javascript:void(0)" data-name="minRoi,maxRoi" class="reset-a-form" onclick="resetFormValues(this)" ><?php echo $this->tag->getTag('reset','Reset');?></a>
+
+							
+									</div>
+								
+								</div>
+
+</li>
 
 
 <li class="arab-drop-down  arab-li-1 sectionFilter margin-right-10  form-container-list-item   port-more right-handle">

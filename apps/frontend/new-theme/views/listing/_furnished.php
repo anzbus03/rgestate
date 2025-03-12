@@ -136,7 +136,8 @@
                                                      ?>
                                                               <span><button aria-label="All" onclick="setProjectStatus(this)" aria-value="all" class="acg-fav search-popup-cntainer-btn1 search-popup-cntainer-btn <?php echo $furnished=='' ? 'active' :'';?>">All</button></span>
                                                      <span><button aria-label="Ready"  onclick="setProjectStatus(this)" aria-value="ready" class="acg-fav search-popup-cntainer-btn1 search-popup-cntainer-btn <?php echo $furnished=='ready' ? 'active' :'';?>">Ready</button></span>
-                                                     <span><button aria-label="Off Plan" onclick="setProjectStatus(this)" aria-value="off-plan" class="acg-fav search-popup-cntainer-btn1 search-popup-cntainer-btn <?php echo $furnished=='off-plan' ? 'active' :'';?>">Off Plan</button></span>
+                                                     <span><button aria-label="Under Construction" onclick="setProjectStatus(this)" aria-value="under-construction" class="acg-fav search-popup-cntainer-btn1 search-popup-cntainer-btn <?php echo $furnished=='under-construction' ? 'active' :'';?>">Under Construction</button></span>
+                                                     <span><button aria-label="Build to Suit" onclick="setProjectStatus(this)" aria-value="build-to-suit" class="acg-fav search-popup-cntainer-btn1 search-popup-cntainer-btn <?php echo $furnished=='build-to-suit' ? 'active' :'';?>">Build to Suit</button></span>
                                          
                                                      <?php
                                                  }

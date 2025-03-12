@@ -137,7 +137,7 @@ if ($viewCollection->renderContent) { ?>
                     </div>
 
                     <!-- Dropdown for Submitted Properties -->
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 mt-2">
                         <div class="form-group">
                             <label for="f_properties">Submitted By</label>
                             <?php echo CHtml::dropDownList('submited_by', $model->submited_by, $model->getsubmited_by_array(), array('empty' => 'Please select', 'class' => 'form-control')); ?>

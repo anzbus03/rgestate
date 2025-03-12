@@ -480,7 +480,7 @@ public function beforeSave(){
 		 
 		// $criteria->join  = " INNER JOIN {{listing_section}} ls on ls.category_id = t.category_id and ls.section_id =  :section ";
 	
-		 $criteria->condition = "t.isTrash='0' and  (ls.category_id is not null or use_dev='1' )  ";
+		 $criteria->condition = "t.isTrash='0' and t.f_type='P' and  (ls.category_id is not null or use_dev='1' )  ";
 		 
 		 $criteria->join  = " LEFT JOIN {{listing_section}} ls on ls.category_id = t.category_id and ls.section_id =  :section ";
 		 $criteria->params[":section"] = $section;
@@ -528,6 +528,62 @@ public function beforeSave(){
 		 }
 		     
 		 return $ar ;
+	}
+	public function  ListDataForJSON_ID_BySEctionNewdevelopmentNew($section,$slug=false)
+    {
+		 $criteria=new CDbCriteria;
+		 //$criteria->condition = "t.isTrash='0' and t.listing_type in ('B',:section) ";
+		//  $criteria->condition = "t.isTrash='0'  and  ";
+		 
+		// $criteria->join  = " INNER JOIN {{listing_section}} ls on ls.category_id = t.category_id and ls.section_id =  :section ";
+	
+		 $criteria->condition = "t.isTrash='0' and t.f_type='C' and (ls.category_id is not null or use_dev='1' )  ";
+		 
+		 $criteria->join  = " LEFT JOIN {{listing_section}} ls on ls.category_id = t.category_id and ls.section_id =  :section ";
+		 $criteria->params[":section"] = $section;
+		 
+		// if(empty($section)){  $criteria->condition .= " and t.listing_type = :section " ; /* for blank*/ }
+		//  $criteria->params[":section"] =  $section;
+		
+		 $criteria->select ="t.category_id,t.category_name,t.slug";
+		 if(defined('LANGUAGE') and LANGUAGE != 'en'){ 
+			$criteria->params[':lan'] = LANGUAGE;
+			$criteria->distinct = 't.category_id'; 
+			$criteria->join  .= ' left join `mw_translate_relation` `translationRelation` on translationRelation.category_id = t.category_id   LEFT  JOIN mw_translation_data tdata ON (`translationRelation`.translate_id=tdata.translation_id and tdata.lang=:lan) ';
+			$criteria->select .= ' ,CASE WHEN tdata.message IS NOT NULL THEN    tdata.message ELSE t.category_name END  AS category_name ';
+		}else{
+			$criteria->select .= ' ,t.category_name';
+		}
+		$criteria->order="-t.priority desc , t.category_name";
+		$arra =  $this->findAll($criteria);
+		if(!empty($array_format)){
+			$ar =array();
+			foreach($arra as $k=>$v)
+			{
+				$ar[$v->category_id]=   array('name'=>$v->category_name,'slug'=>$v->slug)   ;
+			}
+			return $ar;
+		}
+		$sec_desend ='';
+		
+		$ar =array();
+		if($arra)
+		{
+			$field = 'category_id';
+			if(!empty($slug)){
+			$field = 'slug';   
+			}
+			foreach($arra as $k=>$v)
+			{
+				
+				$ar[$v->$field]=   $v->category_name  ;
+			}
+		}
+		if(!empty( $sec_desend)){  
+			foreach($sec_desend  as $k2=>$v2){ $ar[$k2]  = $v2; }
+		}
+			
+		return $ar ;
 	}
 		public function  ListDataForJSON_ID_BySEctionNewProperty($section,$slug=false)
     {

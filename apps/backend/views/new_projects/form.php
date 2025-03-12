@@ -287,9 +287,9 @@ if ($viewCollection->renderContent) {
 					 
 					if(hasError) {
 					 
-						  $("html, body").animate({
-        scrollTop: form.find(".errorMessage:visible:first").offset().top-110
-    }, 2000);
+					$("html, body").animate({
+						scrollTop: form.find(".errorMessage:visible:first").offset().top-110
+					}, 2000);
 						
 							form.find("#bb").html("' . $mainText . '");
 							return false;
@@ -389,204 +389,294 @@ if ($viewCollection->renderContent) {
 				//	$model->country  = '66099' ; 
 				?>
 
-
-
-
-				<div class="subhead font_s ros subhead2">Property Type and Location</div>
 				<div class="row">
-				<div class="form-group col-lg-3 no-front ">
+					<div class="form-group col-lg-4 no-front ">
 
-					<?php echo $form->labelEx($model, 'country'); ?>
-					<?php echo $form->dropDownList($model, 'country', Countries::model()->ListData(), $model->getHtmlOptions('country', array('empty' => 'Select Country', 'class' => 'form-control select2', 'data-url' => Yii::App()->createUrl($this->id . '/select_city_new'), 'onchange' => 'load_via_ajax(this,"state")'))); ?>
-					<?php echo $form->error($model, 'country'); ?>
-				</div>
-	
-				<?php
-				$cities =  CHtml::listData(States::model()->AllListingStatesOfCountry((int) $model->country), 'state_id', 'state_name');
-				$m_class = empty($cities) ? 'hidden' : '';
-				?>
-				<div class="form-group col-lg-3 <?php echo $m_class; ?>">
-					<?php echo $form->labelEx($model, 'state'); ?>
-					<?php echo $form->dropDownList($model, 'state', $cities, $model->getHtmlOptions('state', array('empty' => 'Select City', 'class' => 'form-control select2 ', 'data-url' => Yii::App()->createUrl($this->id . '/select_location'), 'onchange' => 'load_via_ajax(this,"city")'))); ?>
-					<?php echo $form->error($model, 'state'); ?>
-				</div>
-	
-				<?php
-				$locationlist =   CHtml::listData(City::model()->FindCities((int) $model->state), 'city_id', 'city_name');
-				$m_class = empty($locationlist) ? 'hidden' : '';
-				?>
-				<div class="form-group col-lg-3 <?php echo $m_class; ?>">
-	
-					<?php echo $form->labelEx($model, 'city'); ?>
-					<?php echo $form->dropDownList($model, 'city', $locationlist, $model->getHtmlOptions('state', array('empty' => 'Select Location', 'class' => 'form-control select2', 'onchange' => 'changeMap()'))); ?>
-					<?php echo $form->error($model, 'city'); ?>
-				</div>
-				<div class="form-group col-lg-3  ">
-	
-					<?php echo $form->labelEx($model, 'project_status'); ?>
-					<?php echo $form->dropDownList($model, 'project_status', $model->projectStatus(), $model->getHtmlOptions('state', array('empty' => 'Please Select', 'class' => 'form-control select2'))); ?>
-					<?php echo $form->error($model, 'project_status'); ?>
-				</div>
-				<div class="form-group col-lg-3  ">
-					<?php echo $form->labelEx($model, 'Permit Number'); ?>
-					<?php echo $form->textField($model, 'PropertyID', $model->getHtmlOptions('Permit No')); ?>
-					<?php echo $form->error($model, 'PropertyID'); ?>
-				</div>
+						<?php echo $form->labelEx($model, 'country'); ?>
+						<?php echo $form->dropDownList($model, 'country', Countries::model()->ListData(), $model->getHtmlOptions('country', array('empty' => 'Select Country', 'class' => 'form-control select2', 'data-url' => Yii::App()->createUrl($this->id . '/select_city_new'), 'onchange' => 'load_via_ajax(this,"state")'))); ?>
+						<?php echo $form->error($model, 'country'); ?>
+					</div>
+					<?php
+						$cities =   CHtml::listData(MainRegion::model()->getStateWithCountry_2((int) $model->country), 'region_id', 'name');
+						$locationlist =  CHtml::listData(States::model()->AllListingStatesOfCountry((int) $model->country), 'state_id', 'state_name');
+					?>
+					<?php
+						// Fetch all states grouped by city
+						$allStates = [];
+						foreach (States::model()->findAll() as $state) {
+							$allStates[$state->region_id][] = [
+								'id' => $state->state_id,
+								'name' => $state->state_name
+							];
+						}
+
+						// Convert PHP array to JavaScript JSON object
+						$allStatesJson = json_encode($allStates);
+					?>
+					<script>
+						var allStates = <?php echo $allStatesJson; ?>;
+					</script>
+
+					<div class="form-group col-lg-4">
+						<?php echo $form->labelEx($model, 'city'); ?>
+						<?php echo $form->dropDownList($model, 'city', $cities, $model->getHtmlOptions('city', array(
+							'empty' => 'Select City', 
+							'class' => 'form-control select2', 
+							'onchange' => 'updateLocations(this.value)'
+						))); ?>
+						<?php echo $form->error($model, 'city'); ?>
+					</div>
+
+					<div class="form-group col-lg-4">
+						<?php echo $form->labelEx($model, 'location'); ?>
+						<?php echo $form->dropDownList($model, 'location', [], $model->getHtmlOptions('state', array(
+							'empty' => 'Select Location', 
+							'class' => 'form-control select2',
+							'onchange' => 'changeMap()'
+						))); ?>
+						<?php echo $form->error($model, 'location'); ?>
+					</div>
+
+			
+					<script>
+						function updateLocations(cityId) {
+							var locationDropdown = document.getElementById('<?php echo CHtml::activeId($model, 'location'); ?>');
+							
+							// Clear existing options
+							locationDropdown.innerHTML = '<option value="">Select Location</option>';
+							
+							if (cityId && allStates[cityId]) {
+								allStates[cityId].forEach(function(state) {
+									var option = document.createElement("option");
+									option.value = state.id;
+									option.textContent = state.name;
+									locationDropdown.appendChild(option);
+								});
+							}
+						}
+
+					</script>
+				
 	
 	
 				<?php $this->renderPartial('root.apps.backend.views.new_projects._location', compact('form')); ?>
-				</div>
-
-
-
+			
 
 				<?php
-				$catlist =  Category::model()->ListDataForJSON_ID_BySEctionNewdevelopment(3);
-				$m_class = empty($catlist) ? 'hidden' : '';
+				$catlist =  Category::model()->ListDataForJSON_ID_BySEctionNewdevelopmentNew(3);
+				$propertylist =  Category::model()->ListDataForJSON_ID_BySEctionNewdevelopment(3);
 				?>
-				<div class="form-group col-lg-12 <?php echo $m_class; ?>">
-					<?php echo $form->labelEx($model, 'p_types');
+				<div class="form-group col-lg-4 mt-2">
+					<?php echo $form->labelEx($model, 'Project Category');
 					if (!$model->isNewRecord and !Yii::app()->request->isPostRequest) {
 						$model->p_types = CHtml::listData($model->pCategories, 'category_id', 'category_id');
 					}
 
 					?>
-					<?php echo $form->dropDownList($model, 'p_types', $catlist, $model->getHtmlOptions('p_types', array('data-placeholder' => 'Select Types', 'empty' => 'Select Types', 'class' => 'form-control select2', 'multiple' => true))); ?>
-					<?php echo $form->error($model, 'p_types'); ?>
+					<?php echo $form->dropDownList($model, 'category_id', $catlist, $model->getHtmlOptions('category_id', array('data-placeholder' => 'Select Project Category', 'empty' => 'Select Project Category', 'class' => 'form-control select2', 'multiple' => false))); ?>
+					<?php echo $form->error($model, 'category_id'); ?>
 				</div>
 
-
-
-				<div class="subhead font_s ros subhead2">Project Details</div>
-				<div class="form-group col-lg-12">
-					<?php echo $form->labelEx($model, 'ad_title'); ?> <?php
-																		if (!$model->isNewRecord) {
-																		?>
-						<a href="javascript:void(0)" style="" data-id="PlaceAnAd_ad_title_<?php echo $model->id; ?>" data-lan="ar" data-fieldid="PlaceAnAd_ad_title" data-relation_id="<?php echo $model->id; ?>" data-relation="ad_id" data-disableediter="1" onclick="showAjaxModal(this)"><small class="label pull-right bg-blue">ar</small></a>
-					<?php
-																		}
+				<div class="form-group col-lg-4 mt-2">
+					<?php echo $form->labelEx($model, 'Project Type');
+					if (!$model->isNewRecord and !Yii::app()->request->isPostRequest) {
+						$model->p_types = CHtml::listData($model->pCategories, 'category_id', 'category_id');
+					}
 
 					?>
-					<?php echo $form->textField($model, 'ad_title', $model->getHtmlOptions('ad_title')); ?>
-					<?php echo $form->error($model, 'ad_title'); ?>
+					<?php echo $form->dropDownList($model, 'p_types', $propertylist, $model->getHtmlOptions('p_types', array('data-placeholder' => 'Select Project Type', 'empty' => 'Select Project Type', 'class' => 'form-control select2', 'multiple' => false))); ?>
+					<?php echo $form->error($model, 'p_types'); ?>
+				</div>
+				<div class="form-group col-lg-4 mt-2">
+					<?php echo $form->labelEx($model, 'plot_area');?>
+					<?php echo $form->textField($model, 'plot_area', $model->getHtmlOptions('plot_area')); ?>
+					<?php echo $form->error($model, 'plot_area');?>
+				</div>       
+				<div class="form-group col-lg-4 mt-2">
+					<?php echo $form->labelEx($model, 'plot_area');?>
+					<?php echo $form->textField($model, 'plot_area', $model->getHtmlOptions('plot_area')); ?>
+					<?php echo $form->error($model, 'plot_area');?>
+				</div>       
+				<div class="form-group col-lg-4 mt-2">
+					<?php echo $form->labelEx($model, 'builtup_area');?>
+					<?php echo $form->textField($model, 'builtup_area', $model->getHtmlOptions('builtup_area')); ?>
+					<?php echo $form->error($model, 'builtup_area');?>
+				</div>     
+
+				<div class="form-group col-lg-4 mt-2">
+					<?php echo $form->labelEx($model, 'project_status'); ?>
+					<?php echo $form->dropDownList($model, 'project_status', $model->projectStatus(), 
+						$model->getHtmlOptions('state', array(
+							'empty' => 'Please Select', 
+							'class' => 'form-control select2', 
+							'onchange' => 'updatePriceLabels()' // Call JavaScript function on change
+						))
+					); ?>
+					<?php echo $form->error($model, 'project_status'); ?>
 				</div>
 
-
-
-				<div class="form-group col-lg-12">
-					<?php echo $form->labelEx($model, 'ad_description'); ?><?php
-																			if (!$model->isNewRecord) {
-																			?>
-					<a href="javascript:void(0)" style="" data-id="PlaceAnAd_ad_description_<?php echo $model->id; ?>" data-lan="ar" data-fieldid="PlaceAnAd_ad_description" data-relation_id="<?php echo $model->id; ?>" data-relation="ad_id" data-disableediter="" onclick="showAjaxModal(this)"><small class="label pull-right bg-blue">ar</small></a>
+			</div>
+			<div class="subhead font_s ros subhead2">Project Details</div>
+			<div class="form-group col-lg-12 mt-2">
+				<?php echo $form->labelEx($model, 'ad_title'); ?> <?php
+				if (!$model->isNewRecord) {
+					?>
+						<a href="javascript:void(0)" style="" data-id="PlaceAnAd_ad_title_<?php echo $model->id; ?>" data-lan="ar" data-fieldid="PlaceAnAd_ad_title" data-relation_id="<?php echo $model->id; ?>" data-relation="ad_id" data-disableediter="1" onclick="showAjaxModal(this)"><small class="label pull-right bg-blue">ar</small></a>
 				<?php
-																			}
+				}
 				?>
-				<?php echo $form->textArea($model, 'ad_description', array_replace($model->getHtmlOptions('ad_description'), array("rows" => "5"))); ?>
+				<?php echo $form->textField($model, 'ad_title', $model->getHtmlOptions('ad_title')); ?>
+				<?php echo $form->error($model, 'ad_title'); ?>
+			</div>
+			<div class="form-group col-lg-12 mt-2">
+				<?php echo $form->labelEx($model, 'ad_description'); ?>
+				
+				<?php if (!$model->isNewRecord) { ?>
+					<a href="javascript:void(0)" style="" 
+					data-id="PlaceAnAd_ad_description_<?php echo $model->id; ?>" 
+					data-lan="ar" 
+					data-fieldid="PlaceAnAd_ad_description" 
+					data-relation_id="<?php echo $model->id; ?>" 
+					data-relation="ad_id" 
+					data-disableediter="" 
+					onclick="showAjaxModal(this)">
+						<small class="label pull-right bg-blue">ar</small>
+					</a>
+				<?php } ?>
+
+				<?php echo $form->textArea($model, 'ad_description', array_merge(
+					$model->getHtmlOptions('ad_description'), ["rows" => "5", "id" => "ad_description"]
+				)); ?>
+
 				<?php echo $form->error($model, 'ad_description'); ?>
-				</div>
+			</div>
+
+			<!-- Include CKEditor -->
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
+
+			<script>
+				CKEDITOR.replace('ad_description', {
+					height: 250,
+					toolbar: [
+						{ name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike'] },
+						{ name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Blockquote'] },
+						{ name: 'insert', items: ['Image', 'Link', 'Unlink'] },
+						{ name: 'tools', items: ['Maximize'] },
+						{ name: 'document', items: ['Source'] }
+					]
+				});
+			</script>
 
 
-				<div class="form-group col-lg-12">
-					<?php echo $form->labelEx($model, 'video'); ?>
-					<?php echo $form->textField($model, 'video', array_replace($model->getHtmlOptions('video'))); ?>
-					<?php echo $form->error($model, 'video'); ?>
-				</div>
-				<style>
-					label span.required {
-						font-size: 13px;
-					}
-				</style>
 
+			<div class="form-group col-lg-12 mt-2">
+				<?php echo $form->labelEx($model, 'video'); ?>
+				<?php echo $form->textField($model, 'video', array_replace($model->getHtmlOptions('video'))); ?>
+				<?php echo $form->error($model, 'video'); ?>
+			</div>
+			<style>
+				label span.required {
+					font-size: 13px;
+				}
+			</style>
 
-
-				<div class="form-group col-lg-4" style="max-width: 250px;">
-
-					<style>
-						.lab-p {
-							z-index: 22;
-						}
-					</style>
-					<?php echo $form->labelEx($model, 'price_false'); ?>
-					<div class="input-group" style=" max-width: 250px;border: 1px solid #eee;display:flex">
-						<span class="lab-p" style="width: auto; min-width: 30px; text-align: center;    line-height: 2.3;"><?php echo $model->currencyTitle; ?></span>
-						<?php echo $form->textField($model, 'price_false', $model->getHtmlOptions('price_false', array('placeholder' => $model->getAttributeLabel('price_false'), 'style' => 'max-width: 150px;', 'oninput' => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"))); ?>
-						<?php echo $form->dropDownList($model, 'from_price_unit', CHtml::listData(PriceUnit::model()->listData($model->country), 'master_id', 'master_name'), $model->getHtmlOptions('from_price_unit', array('empty' => '----', 'style' => 'max-width: 79px;'))); ?>
+			<div class="row">
+				<!-- Price From -->
+				<div class="form-group col-md-4 mt-2" style="max-width: 300px;">
+					<label id="price_label_from"><?php echo $model->getAttributeLabel('price_false'); ?></label>
+					<div class="input-group" style="max-width: 300px; border: 1px solid #eee; display: flex;">
+						<span class="lab-p" style="width: auto; min-width: 40px; text-align: center; line-height: 2.3;">
+							<?php echo $model->currencyTitle; ?>
+						</span>
+						<?php echo $form->textField($model, 'price_false', 
+							$model->getHtmlOptions('price_false', array(
+								'placeholder' => $model->getAttributeLabel('price_false'), 
+								'style' => 'max-width: 300px;', 
+								'oninput' => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+							))
+						); ?>
+						<?php echo $form->dropDownList($model, 'from_price_unit', 
+							CHtml::listData(PriceUnit::model()->listData($model->country), 'master_id', 'master_name'), 
+							$model->getHtmlOptions('from_price_unit', array('empty' => '----', 'style' => 'max-width: 79px;'))
+						); ?>
 					</div>
 					<?php echo $form->error($model, 'price_false'); ?>
 				</div>
-
-				<div class="form-group col-lg-4">
-
-					<style>
-						.lab-p {
-							z-index: 22;
-						}
-					</style>
-					<?php echo $form->labelEx($model, 'price_to_false'); ?>
-					<div class="input-group" style=" max-width: 250px;border: 1px solid #eee;display:flex">
-						<span class="lab-p" style="width: auto; min-width: 30px; text-align: center;    line-height: 2.3;"><?php echo $model->currencyTitle; ?></span>
-						<?php echo $form->textField($model, 'price_to_false', $model->getHtmlOptions('price_to_false', array('placeholder' => $model->getAttributeLabel('price_to_false'), 'style' => 'max-width: 156px;', 'oninput' => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"))); ?>
-						<?php echo $form->dropDownList($model, 'to_price_unit', CHtml::listData(PriceUnit::model()->listData($model->country), 'master_id', 'master_name'), $model->getHtmlOptions('to_price_unit', array('empty' => '----', 'style' => 'max-width: 79px;'))); ?>
+	
+				<!-- Price To -->
+				<div class="form-group col-md-4 mt-2">
+					<label id="price_label_to"><?php echo $model->getAttributeLabel('price_to_false'); ?></label>
+					<div class="input-group" style="max-width: 300px; border: 1px solid #eee; display: flex;">
+						<span class="lab-p" style="width: auto; min-width: 40px; text-align: center; line-height: 2.3;">
+							<?php echo $model->currencyTitle; ?>
+						</span>
+						<?php echo $form->textField($model, 'price_to_false', 
+							$model->getHtmlOptions('price_to_false', array(
+								'placeholder' => $model->getAttributeLabel('price_to_false'), 
+								'style' => 'max-width: 300px;', 
+								'oninput' => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+							))
+						); ?>
+						<?php echo $form->dropDownList($model, 'to_price_unit', 
+							CHtml::listData(PriceUnit::model()->listData($model->country), 'master_id', 'master_name'), 
+							$model->getHtmlOptions('to_prisce_unit', array('empty' => '----', 'style' => 'max-width: 79px;'))
+						); ?>
 					</div>
 					<?php echo $form->error($model, 'price_to_false'); ?>
 				</div>
-
-
-
-
-
-				
-
-				<div class="subhead font_s ros subhead_img">Amenities</div>
-
-
-
-
-				<div class="form-group col-lg-12">
-					<div class="">
-						<div class="container34">
-							<?php
-							$amenities_array =	 CHtml::listData(Amenities::model()->findAll(), 'amenities_id', 'amenities_name');
-
-							echo CHtml::checkBoxList('amenities', $model->amenities, $amenities_array, array('separator' => '', 'labelOptions' => array('class' => ''), 'template' => '<div class="form-check form-check-flat"><label class="form-check-label">{input}  {labelTitle} <i class="input-helper"></i></label></div>'));
-							?>
-						</div>
-						<?php echo $form->error($model, 'amenities'); ?>
-					</div>
-
+				<div class="form-group col-lg-4 mt-2">
+					<label id="roi_label"><?php echo $model->getAttributeLabel('roi'); ?></label>
+					<?php echo $form->textField($model, 'roi', $model->getHtmlOptions('roi')); ?>
+					<?php echo $form->error($model, 'roi'); ?>
 				</div>
-
-
-				
-				<?php $this->renderPartial('root.apps.backend.views.new_projects.add_property_types'); ?>
-				
-				<div class="form-group col-lg-12 margin-top-15 no-front">
-
-					<div class="subhead font_s ros  " style="padding-right:10px;"> Available Units</div>
-					<?php $mer =  array_merge($model->getHtmlOptions('available_units'), array('empty' => "Select Customer", 'class' => "  form-control")); ?>
-					<?php
-					if (Yii::app()->request->isPostRequest) {
-						if (!empty($model->available_units)) {
-							foreach ($model->available_units  as $k5 => $v5) {
-								$dats[$v5]  = $v5;
-							}
+				<div class="form-group col-lg-12 mt-2">
+					<label id="price_label"><?php echo $model->getAttributeLabel('price'); ?></label>
+					<?php echo $form->textField($model, 'price', $model->getHtmlOptions('price')); ?>
+					<?php echo $form->error($model, 'price'); ?>
+				</div>
+				<!-- JavaScript to Change Labels -->
+				<script>
+					function updatePriceLabels() {
+						var status = document.getElementById("<?php echo CHtml::activeId($model, 'project_status'); ?>").value;
+						var labelFrom = document.getElementById("price_label_from");
+						var labelTo = document.getElementById("price_label_to");
+						var price = document.getElementById("price_label");
+						var roiLabel = document.getElementById("roi_label");
+						if (status === "1") { // Ready
+							labelFrom.innerText = "Invested Value";
+							labelTo.innerText = "Invested Value";
+							roiLabel.innerText = "Generated ROI";
+						} else {
+							labelFrom.innerText = "Investment Value";
+							labelTo.innerText = "Investment Value";
+							roiLabel.innerText = "Expected ROI";
 						}
-					} else {
-						$unitIds = PlaceAnAdUnits::model()->getFullUnits($model->id);
-						$model->available_units =  CHtml::listData($unitIds, 'unit_id', 'unit_id');
-						$dats = CHtml::listData($unitIds, 'unit_id', 'fullName');
+						price.innerText = "Sale Value (AED)";
 					}
-					echo $form->dropDownList($model, 'available_units',   $dats,  $model->getHtmlOptions('available_units', array('multiple' => true))); ?>
-					<?php echo $form->error($model, 'available_units'); ?>
+	
+					// Call the function on page load to set the correct labels
+					document.addEventListener("DOMContentLoaded", updatePriceLabels);
+				</script>
+				  
+			</div>
+
+			<div class="subhead font_s ros subhead_img">Amenities</div>
+
+			<div class="form-group col-lg-12">
+				<div class="">
+					<div class="container34">
+						<?php
+						$amenities_array =	 CHtml::listData(Amenities::model()->findAll(), 'amenities_id', 'amenities_name');
+
+						echo CHtml::checkBoxList('amenities', $model->amenities, $amenities_array, array('separator' => '', 'labelOptions' => array('class' => ''), 'template' => '<div class="form-check form-check-flat"><label class="form-check-label">{input}  {labelTitle} <i class="input-helper"></i></label></div>'));
+						?>
+					</div>
+					<?php echo $form->error($model, 'amenities'); ?>
 				</div>
 
-				
-
+			</div>
 
 				<?php $this->renderPartial('root.apps.backend.views.new_projects._image_upload', compact('form')); ?>
-
-				
-
 
 				<div class="">
 					<?php
@@ -598,51 +688,65 @@ if ($viewCollection->renderContent) {
 
 					$this->renderPartial('root.apps.backend.views.new_projects._file_field_browse', compact('form', 'fileField', 'maxFilesize', 'types', 'maxFiles', 'model', 'title_text')); ?>
 				</div>
-				
-
-				<div class="col-md-12 col-sm-12">
-					<?php
-					$fileField = 'floor_plan';
-					$title_text = 'Upload Floor Plan++';
-					$types = '.pdf,.png,.jpg';
-					$maxFiles = '1';
-					$maxFilesize = '5';
-
-					$this->renderPartial('root.apps.backend.views.new_projects._file_field_browse_plan', compact('form', 'fileField', 'maxFilesize', 'types', 'maxFiles', 'model', 'title_text')); ?>
+				<div class="row">
+					
+					<div class="form-group col-md-12 col-sm-12">
+						<?php
+						$fileField = 'floor_plan';
+						$title_text = 'Upload Floor Plan++';
+						$types = '.pdf,.png,.jpg';
+						$maxFiles = '1';
+						$maxFilesize = '5';
+	
+						$this->renderPartial('root.apps.backend.views.new_projects._file_field_browse_plan', compact('form', 'fileField', 'maxFilesize', 'types', 'maxFiles', 'model', 'title_text')); ?>
+					</div>
 				</div>
 
 				
 				<div class="subhead font_s ros subhead_img">Contact Details</div>
+				<div class="row">
+					<div class="form-group col-md-4">
+						<?php
+						echo $form->labelEx($model, 'contact_person'); ?>
+						<?php echo $form->textField($model, 'contact_person', $model->getHtmlOptions('contact_person')); ?>
+						<?php echo $form->error($model, 'contact_person'); ?>
+					</div>
+					<div class="form-group col-md-4">
+						<?php
+						echo $form->labelEx($model, 'mobile_number'); ?>
+						<?php echo $form->textField($model, 'mobile_number', $model->getHtmlOptions('mobile_number')); ?>
+						<?php echo $form->error($model, 'mobile_number'); ?>
+					</div>
+					<div class="form-group col-md-4">
+						<?php
+	
+						echo $form->labelEx($model, 'landline'); ?>
+						<?php echo $form->textField($model, 'landline', $model->getHtmlOptions('landline')); ?>
+						<?php echo $form->error($model, 'landline'); ?>
+					</div>
+					
+					<div class="form-group col-md-12 mt-2">
+						<?php echo $form->labelEx($model, 'developer_description'); ?>
+						<?php echo $form->textArea($model, 'developer_description', $model->getHtmlOptions('developer_description', ['rows' => 5])); ?>
+						<?php echo $form->error($model, 'developer_description'); ?>
+					</div>
+					<div class="form-group col-md-12 mt-2">
+						<?php echo $form->labelEx($model, 'developer_profile'); ?>
+						<?php echo $form->fileField($model, 'developer_profile', $model->getHtmlOptions('developer_profile')); ?>
+						<?php echo $form->error($model, 'developer_profile'); ?>
+					</div>
 
-				<div class="form-group col-lg-3">
-					<?php
-					echo $form->labelEx($model, 'contact_person'); ?>
-					<?php echo $form->textField($model, 'contact_person', $model->getHtmlOptions('contact_person')); ?>
-					<?php echo $form->error($model, 'contact_person'); ?>
-				</div>
-				<div class="form-group col-lg-3">
-					<?php
-					echo $form->labelEx($model, 'mobile_number'); ?>
-					<?php echo $form->textField($model, 'mobile_number', $model->getHtmlOptions('mobile_number')); ?>
-					<?php echo $form->error($model, 'mobile_number'); ?>
-				</div>
-				<div class="form-group col-lg-3">
-					<?php
-
-					echo $form->labelEx($model, 'landline'); ?>
-					<?php echo $form->textField($model, 'landline', $model->getHtmlOptions('landline')); ?>
-					<?php echo $form->error($model, 'landline'); ?>
+					<div class="form-group col-md-4 no-front">
+	
+						<?php
+						$model->user_id = empty($model->user_id) ? '31988' : $model->user_id;
+						echo $form->labelEx($model, 'user_id'); ?>
+						<?php $mer =  array_merge($model->getHtmlOptions('user_id'), array('empty' => "Select Customer", 'class' => "  form-control")); ?>
+						<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(ListingUsers::model()->findAllByPk($model->user_id), 'user_id', 'fullName'), $mer); ?>
+						<?php echo $form->error($model, 'user_id'); ?>
+					</div>
 				</div>
 
-				<div class="form-group col-lg-6 no-front">
-
-					<?php
-					$model->user_id = empty($model->user_id) ? '31988' : $model->user_id;
-					echo $form->labelEx($model, 'user_id'); ?>
-					<?php $mer =  array_merge($model->getHtmlOptions('user_id'), array('empty' => "Select Customer", 'class' => "  form-control")); ?>
-					<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(ListingUsers::model()->findAllByPk($model->user_id), 'user_id', 'fullName'), $mer); ?>
-					<?php echo $form->error($model, 'user_id'); ?>
-				</div>
 
 
 				<?php
@@ -652,13 +756,13 @@ if ($viewCollection->renderContent) {
 					<div class="subhead font_s ros subhead_img">Admin Settings</div>
 					<h2 class="main_head_purpose"></h2>
 					
-					<div class=" ">
-						<div class="form-group col-lg-6">
+					<div class="row">
+						<div class="form-group col-md-6">
 							<?php echo $form->labelEx($model, 'status'); ?>
 							<?php echo $form->dropDownList($model, 'status', $model->statusArray(), $model->getHtmlOptions('community_id', array('class' => 'form-control selectt2'))); ?>
 							<?php echo $form->error($model, 'status'); ?>
 						</div>
-						<div class="form-group col-lg-6">
+						<div class="form-group col-md-6">
 							<?php echo $form->labelEx($model, 'featured'); ?>
 							<?php echo $form->dropDownList($model, 'featured', array('N' => 'Not Featured', 'Y' => 'Featured'), $model->getHtmlOptions('featured', array('class' => 'form-control selectt2'))); ?>
 							<?php echo $form->error($model, 'featured'); ?>

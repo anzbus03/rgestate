@@ -37,6 +37,47 @@ if ($viewCollection->renderContent) { ?>
     color: #28A745;
     /* Green */
 }
+/* Property Status Colors */
+.hot-property {
+    color: #FF4500;
+    /* Red or choose another suggested color */
+}
+
+.featured-property {
+    color: #FFD700;
+    /* Gold */
+}
+
+.verified-property {
+    color: #28A745;
+    /* Green */
+}
+
+.active-property {
+    color: #007BFF;
+    /* Blue */
+}
+
+.sold-property {
+    color: #DC3545;
+    /* Red */
+}
+
+/* Action Icon Colors */
+.edit-icon {
+    color: #FFC107;
+    /* Orange */
+}
+
+.delete-icon {
+    color: #FF0000;
+    /* Red */
+}
+
+.view-icon {
+    color: #6C757D;
+    /* Gray */
+}
 </style>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -59,222 +100,181 @@ if ($viewCollection->renderContent) { ?>
             </div>
         </div>
         <div class="card-body">
-            <div class="col-sm-2">
-                <button type="button" id="exportExcel" class="btn btn-success btn-xs" style="margin-left: 10px;">Export to Excel</button>
-            </div>
-            <script>
-                $(document).ready(function() {
-                    $('#projectsList').DataTable({
-                        createdRow: function (row, data, index) {
-                            $(row).addClass('selected');
-                        },
-                        language: {
-                            paginate: {
-                                next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
-                                previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
-                            }
-                        },
-                        columnDefs: [
-                            { 
-                                orderable: false, // Disable ordering
-                                targets: 0       // Target the first column (0-indexed)
-                            }
-                        ]
-                    });
+            <div class="row" style="margin-bottom: 10px;margin-top: 10px;">
 
-                    // Handle select all checkbox
-                    $('#selectAll').on('click', function() {
-                        var rows = $('#projectsList').DataTable().rows({ 'search': 'applied' }).nodes();
-                        $('input[type="checkbox"]', rows).prop('checked', this.checked);
-                    });
-
-                    $('#selectAllFoot').on('click', function() {
-                        var rows = $('#projectsList').DataTable().rows({ 'search': 'applied' }).nodes();
-                        $('input[type="checkbox"]', rows).prop('checked', this.checked);
-                    });
-
-                    $('#projectsList tbody').on('change', 'input[type="checkbox"]', function() {
-                        if(!this.checked) {
-                            var el = $('#selectAll').get(0);
-                            var elFoot = $('#selectAllFoot').get(0);
-                            if(el && el.checked && ('indeterminate' in el)) {
-                                el.indeterminate = true;
-                            }
-                            if(elFoot && elFoot.checked && ('indeterminate' in elFoot)) {
-                                elFoot.indeterminate = true;
-                            }
-                        }
-                    });
-                    // Initialize the date range picker
-                    $('#dateRange').daterangepicker({
-                        locale: {
-                            format: 'DD-MMM-YYYY'
-                        },
-                        startDate: moment('1900-01-01'),
-                        endDate: moment(),
-                        ranges: {
-                            'Today': [moment(), moment()],
-                            'All Time': [moment('2020-01-01'), moment()],
-                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                            'This Month': [moment().startOf('month'), moment().endOf('month')],
-                            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                        }
-                    }, function(start, end, label) {
-                        fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
-                    });
-
-                    // Function to fetch filtered data
-                    function fetchFilteredData(startDate, endDate) {
-                        window.location.href = '<?php echo Yii::app()->createUrl($this->route); ?>?startDate=' + startDate + '&endDate=' + endDate;
-
-                        $.ajax({
-                            url: '<?php echo Yii::app()->createUrl($this->route); ?>',
-                            type: 'GET',
-                            data: {
-                                startDate: startDate,
-                                endDate: endDate
-                            },
-                            success: function(data) {
-                                $('#<?php echo $model->modelName; ?>-grid').html($(data).find('#<?php echo $model->modelName; ?>-grid').html());
-                            }
-                        });
-                    }
-                    $('#exportExcel').click(function(e) {
-                        var exportUrl = '<?php echo Yii::app()->createUrl('new_projects/exportExcel'); ?>';
-
-                            
-
-                        // Redirect to the export URL
-                        window.location.href = exportUrl;    
-                    });
-                });
-            </script>
-            <div class="table-responsive">
-                <div class="bulk-actions pull-right mb-4">
-                    <div class="form-group" style="width: 200px; display: inline-block;">
-                        <select name="bulk-action" id="bulk-action-select" class="form-control input-xs">
-                            <option value="">Select Action</option>
-                            <option value="trash">Trash</option>
-                            <option value="restore">Restore</option>
-                            <option value="unpublish">Unpublish</option>
-                            <option value="publish">Publish</option>
-                            <option value="delete">Delete</option>
+                <!-- Select for Featured -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="featuredSelect">Featured</label>
+                        <select name="featured" id="featuredSelect" class="form-control input-xs">
+                            <option value="">Select Featured</option>
+                            <option value="Y">Yes</option>
+                            <option value="N">No</option>
                         </select>
                     </div>
-                    <button id="apply-bulk-action" type="button" class="btn btn-primary btn-sm"
-                        style="height:50px;">Apply</button>
                 </div>
-                <table id="projectsList" class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="select-all"></th>
-                            <th>Date</th>
-                            <th>Project Title</th>
-                            <th>City</th>
-                            <th>Section</th>
-                            <th>Status</th>
-                            <!-- <th>Priority</th> -->
-                            <th>Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($model->search()->getData() as $data) { ?>
-                        <tr>
-                            <td><input type="checkbox" class="bulk-item" value="<?php echo $data->id; ?>"></td>
-                            <td><?php echo date('d-M-Y', strtotime($data->date_added)); ?></td>
-                            <td>
-                                <?php echo CHtml::decode($data->AdTitleWithIcons2, Yii::app()->createUrl("place_property/update", array("id" => $data->id))); ?>
-                                <div><?php echo $data->Tags; ?></div>
-                                <input type="hidden" class="propertyId" value="<?php echo $data->id; ?>">
-                                <input type="hidden" class="sId" value="<?php echo $data->section_id; ?>">
-                                <input type="hidden" class="cId" value="<?php echo $data->category_id; ?>">
-                                <input type="hidden" class="lId" value="<?php echo $data->listing_type; ?>">
-                                <input type="hidden" id="meta_title-<?php echo $data->id; ?>" class="meta_title" value="<?php echo $data->metaTitleEnglish; ?>">
-                                <input type="hidden" id="meta_title-ar-<?php echo $data->id; ?>" class="meta_title_ar" value="<?php echo $data->MetaTitleArabic; ?>">
-                                <input type="hidden" id="meta_description-<?php echo $data->id; ?>" class="meta_description" value="<?php echo $data->MetaDescriptionEnglish; ?>">
-                                <input type="hidden" id="meta_description-ar-<?php echo $data->id; ?>" class="meta_description_ar" value="<?php echo $data->MetaDescriptionArabic; ?>">
-                            </td>
-                            <td><?php echo CHtml::decode($data->CountryNameSection); ?></td>
-                            <td><?php echo CHtml::encode($data->section->section_name); ?></td>
-                            <td><?php echo $data->statusLink; ?></td>
-                            <!-- <td><?php echo CHtml::textField("priority[$data->id]", $data->priority, array("style" => "width:50px;text-align:center", "class" => "form-controll")); ?></td> -->
-                            <td>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/update')) { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/update', array('id' => $data->id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                <?php } ?>
-                                <a href="<?php echo $data->PreviewUrlTrashB; ?>" title="<?php echo Yii::t('app', 'View'); ?>" target="_blank" class="text-green">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/delete')) { ?>
-                                    <a href="javascript:void(0)" onclick="confirmDelete('<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/delete', array('id' => $data->id)); ?>')" title="<?php echo Yii::t('app', 'Delete'); ?>" class="delete">
-                                        <i class="fa fa-times-circle"></i>
-                                    </a>
-                                <?php } ?>
-                                <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id.'/featured')) { ?>
-                                    <a 
-                                        href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/featured', array('id' => $data->id, 'featured' => $data->featured)); ?>" 
-                                        title="<?php echo Yii::t('app', 'Featured'); ?>"
-                                        class="<?php echo $data->featured == 'Y' ? 'featured-property' : '' ?>"
-                                    >
-                                        <i class="fa fa-star"></i>
-                                    </a>
-                                <?php } ?>
-                                <?php if ($data->status === "A") { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/status', array('id' => $data->id, 'status' => $data->status)); ?>" title="<?php echo Yii::t('app', 'Inactive AD'); ?>" class="Block">
-                                        <i class="fa fa-ban"></i>
-                                    </a>
-                                <?php } ?>
-                                <?php if ($data->status === "I") { ?>
-                                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id.'/status', array('id' => $data->id, 'status' => $data->status)); ?>" title="<?php echo Yii::t('app', 'Activate AD'); ?>" class="Enable" 
-                                    onclick="event.preventDefault(); $.ajax({type:'POST', url:$(this).attr('href'), success: function() {$.fn.yiiGridView.update('<?php echo $model->modelName; ?>-grid');}});">
-                                        <i class="fa fa-check-circle"></i>
-                                    </a>
-                                <?php } ?>
-                               
-                            </td>
-                        </tr>
-                    <?php } ?>
-                    </tbody>
-                
-                </table>
-          
-            </div>    
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="hotSelect">Hot</label>
+                        <select name="hot" id="hotSelect" class="form-control input-xs">
+                            <option value="">Select Hot</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Select for Verified -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="verifiedSelect">Verified</label>
+                        <select name="verified" id="verifiedSelect" class="form-control input-xs">
+                            <option value="">Select Verified</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- <?php $locations = States::model()->AllStatesOfCountry(66124); ?> -->
+                <!-- Select for Category -->
+                <div class="col-sm-4 hide">
+                    <div class="form-group">
+                        <label for="locationSelect">Location</label>
+                        <select class="form-control" name="location" id="locationSelect">
+                            <option value="">Select Location</option>
+                            <?php foreach ($locations as $location): ?>
+                            <option value="<?php echo $location->state_id; ?>">
+                                <?php echo CHtml::encode($location->state_name); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <?php $locations = States::model()->AllStatesOfCountry(66124); ?>
+                <!-- Select for Location -->
+                <div class="col-sm-4 mt-2">
+                    <div class="form-group">
+                        <label for="locationSelect2">Location</label>
+                        <select class="form-control" name="location" id="locationSelect2">
+                            <option value="">Select Location</option>
+                            <?php foreach ($locations as $location): ?>
+                            <option value="<?php echo $location->state_id; ?>">
+                                <?php echo CHtml::encode($location->state_name); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                    <!-- Select for Category -->
+                <div class="col-sm-4 mt-2">
+                    <div class="form-group">
+                        <label for="StatusSelect">Status</label>
+                        <select class="form-control" name="property_status" id="propertyStatusSelect">
+                            <option value="">Select Status</option>
+                            <option value="A">
+                                Active
+                            </option>
+                            <option value="I">
+                                Inactive
+                            </option>
+                            <option value="W">
+                                Waiting
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3 text-right mt-4">
+                    <button type="button" class="btn btn-primary btn-sm" style="margin-top: 20px;" onclick="$('#projectsList').DataTable().ajax.reload();">
+                        Apply Filters
+                    </button>
+                    <button type="button" id="resetButton" class="btn btn-secondary btn-sm" style="margin-top: 20px;">
+                        Reset
+                    </button>
+                </div>
+
+            </div>
+            <form method="post" action="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/index'); ?>">
+
+                <!-- CSRF Protection -->
+                <?php if (Yii::app()->request->enableCsrfValidation) { ?>
+                <input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>" />
+                <?php } ?>
+
+                <div class="table-responsive">
+                    <div class="bulk-actions pull-right mb-4">
+                        <div class="form-group" style="width: 200px; display: inline-block;">
+                            <select name="bulk-action" id="bulk-action-select" class="form-control input-xs">
+                                <option value="">Select Action</option>
+                                <option value="trash">Trash</option>
+                                <option value="restore">Restore</option>
+                                <option value="unpublish">Unpublish</option>
+                                <option value="publish">Publish</option>
+                                <option value="delete">Delete</option>
+                            </select>
+                        </div>
+                        <button id="apply-bulk-action" type="button" class="btn btn-primary btn-sm"
+                            style="height:50px;">Apply</button>
+                    </div>
+                    <table id="projectsList" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all"></th>
+                                <th>Date</th>
+                                <th>Project Title</th>
+                                <th>City</th>
+                                <th>Section</th>
+                                <th>Investment Range</th>
+                                <th>Status</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+                    
+                    </table>
+            
+                </div>  
+            </form>  
         </div>
     </div>
-<?php 
-}
-/**
- * This hook gives a chance to append content after the view file default content.
- * Please note that from inside the action callback you can access all the controller view
- * variables via {@CAttributeCollection $collection->controller->data}
- * @since 1.3.3.1
- */
-$hooks->doAction('after_view_file_content', new CAttributeCollection(array(
-    'controller'        => $this,
-    'renderedContent'   => $viewCollection->renderContent,
-)));
-?>
- 
- 
- 
+
  <script>
     function confirmDelete(url) {
-        // Show confirmation dialog
         if (confirm('Are you sure you want to delete this project?')) {
-            // If confirmed, proceed to the URL for deletion
             window.location.href = url;
         }
-    }   
-    $(document).ready(function (){ 
+    }
 
-        $('#select-all').on('change', function() {
-            $('.bulk-item').prop('checked', this.checked);
+    $(document).ready(function () {
+      // Initialize the date range picker
+      $('#dateRange').daterangepicker({
+            locale: {
+                format: 'DD-MMM-YYYY'
+            },
+            startDate: moment('1900-01-01'), // Set default start date for "All Time"
+            endDate: moment(),
+            ranges: {
+                'Today': [moment().startOf('day'), moment().endOf('day')],
+                'Yesterday': [moment().startOf('day').subtract(1, 'days'), moment().endOf('day').subtract(1, 'days')],
+                'Last 7 Days': [moment().startOf('day').subtract(6, 'days'), moment().endOf('day')],
+                'Last 30 Days': [moment().startOf('day').subtract(29, 'days'), moment().endOf('day')],
+                'This Month': [moment().startOf('day').startOf('month'), moment().endOf('day').endOf('month')],
+                'Last Month': [moment().startOf('day').subtract(1, 'month').startOf('month'), moment().endOf('day').subtract(1, 'month').endOf('month')],
+                'All Time': [moment('2020-01-01'), moment()]
+            }
+        }, function(start, end, label) {
+            
+            $('#dateRange').val(start.format('DD-MMM-YYYY') + ' - ' + end.format('DD-MMM-YYYY'));
+            fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
         });
-    
+
+
+        // Function to fetch filtered data
+        function fetchFilteredData(startDate, endDate) {
+            $('#projectsList').DataTable().ajax.reload();
+            // window.location.href = '<?php // echo Yii::app()->createUrl($this->route); ?>?startDate=' + startDate +
+            //     '&endDate=' + endDate;
+
+        }
         $('#apply-bulk-action').on('click', function() {
             const action = $('#bulk-action-select').val();
             const selectedItems = $('.bulk-item:checked').map(function() {
@@ -283,7 +283,6 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
             var csrfToken = '<?php echo Yii::app()->request->csrfToken; ?>';
             if (action && selectedItems.length) {
                 if (confirm('Are you sure you want to proceed with this action?')) {
-
                     // Perform an AJAX request to the backend
                     $.ajax({
                         url: '<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/bulk_action'); ?>', // Update with your action URL
@@ -295,7 +294,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                         },
                         success: function(response) {
                             // Handle successful response
-                            window.location.reload(); // Reload the page to reflect changes
+                            $('#projectsList').DataTable().ajax.reload(); // Reload the page to reflect changes
                         },
                         error: function(xhr) {
                             // Handle error
@@ -309,263 +308,103 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 alert('Please select an action and at least one item.');
             }
         });
+        var table = $('#projectsList').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false, 
+            "pageLength": 10,
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000], [10, 25, 50, 100, 500, 1000]],
+            "serverSide": true,
+            "processing": true,
+            "ajax": {
+                "url": "<?php echo Yii::app()->createUrl('new_projects/serverProcessing'); ?>", // Replace with your server URL
+                "type": "GET",
+                "data": function(d) {
+                    var dateRangePicker = $('#dateRange').data('daterangepicker');
+                    d.startDate         = dateRangePicker.startDate ? dateRangePicker.startDate.format('YYYY-MM-DD') : '';
+                    d.endDate           = dateRangePicker.endDate ? dateRangePicker.endDate.format('YYYY-MM-DD') : '';
+                    d.featured          = $('#featuredSelect').val();
+                    d.hot               = $('#hotSelect').val();
+                    d.verified          = $('#verifiedSelect').val();
+                    d.preleased         = $('#preleasedSelect').val();
+                    d.submited_by       = $('[name="submited_by"]').val();
+                    d.property_category = $('#propertyCategorySelect').val();
+                    d.status            = $('#propertyStatusSelect').val();
+                    d.location          = $('#locationSelect2').val();
+                }
+            },
+            "columns": [
+                { "data": "id", "orderable": false, "className": "unsortable"  },
+                { "data": "date", "orderable": false , "className": "unsortable" },
+                { "data": "ad_title" },
+                { "data": "city" },
+                { "data": "section" },
+                { "data": "investment_range" },
+                { "data": "status" },
+                { "data": "options" }
+            ],
+            createdRow: function(row, data, index) {
+                $(row).addClass('selected');
+            },
+            language: {
+                paginate: {
+                    next: '<i class="fa fa-angle-double-right" style="line-height:40px;" aria-hidden="true"></i>',
+                    previous: '<i class="fa fa-angle-double-left" style="line-height:40px;" aria-hidden="true"></i>'
+                }
+            },
+
+
+        });
+
+        $('#featuredSelect, #hotSelect, #verifiedSelect, #propertyStatusSelect, #preleasedSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').on('change', function () {
+            table.ajax.reload();
+        });
+
+        // Reset Filters
+        $('#resetButton').on('click', function (e) {
+            e.preventDefault();
+            $('#featuredSelect, #hotSelect, #verifiedSelect, #preleasedSelect,#propertyStatusSelect, #propertyCategorySelect, #locationSelect2, [name="submited_by"]').val('');
+            table.ajax.reload();
+        });
+        // Handle select all checkbox
+        $('#selectAll').on('click', function() {
+            var rows = $('#projectsList').DataTable().rows({
+                'search': 'applied'
+            }).nodes();
+            $('input[type="checkbox"]', rows).prop('checked', this.checked);
+        });
+
+        $('#selectAllFoot').on('click', function() {
+            var rows = $('#projectsList').DataTable().rows({
+                'search': 'applied'
+            }).nodes();
+            $('input[type="checkbox"]', rows).prop('checked', this.checked);
+        });
+
+        $('#projectsList tbody').on('change', 'input[type="checkbox"]', function() {
+            if (!this.checked) {
+                var el = $('#selectAll').get(0);
+                var elFoot = $('#selectAllFoot').get(0);
+                if (el && el.checked && ('indeterminate' in el)) {
+                    el.indeterminate = true;
+                }
+                if (elFoot && elFoot.checked && ('indeterminate' in elFoot)) {
+                    elFoot.indeterminate = true;
+                }
+            }
+        });
     });
- function previewthis(k,e)
-{
-	e.preventDefault();
-	var url_d = $(k).attr('href') ;
-	$('#myModal').modal('show');
-	$('#preview_body').html('loading...');
-	$.get(url_d,function(data){ if(data){ $('#preview_body').html(data); } })
-}
-function updateStatus(k)
-{
-	 
-	var url_d = $(k).attr('data-url') ;
-	$.get(url_d,function(data){ if(data=='1'){  alert("Succesfully Updated");$('#myModal').modal('hide'); } })
-} 
-function  saveFormFunction_grid_update_new(form, data, hasError ,Url )
-{ if(!hasError) { $.ajax({  "type":"POST",
-									"url": Url,
-                                    "data":form.serialize(),
-                                    "success":function(data){
-										if(data==1){ 
-											alert('Successfuly updated');
-											$('#myModal').modal('hide');
-				  
-										}
-										else{
-										    
-										 	
-											$('#messager').html('<div class="alert alert-warning"><strong>Warning!</strong>  '+data+'.</div>');
-										}
-                                     },
 
-                                  });
-     }
-      else
-    { 
-		form.find("button.btn-submit").button("reset");
-        alert('error');
-     }
- }
  </script>
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-
-                </button>
-                 <h4 class="modal-title" id="myModalLabel"> Approval</h4>
-
-            </div>
-            <div id="preview_body">
-            
-            </div>
-        </div>
-    </div>
-</div>
-<style>
-a.strike { text-decoration: line-through; }
-</style>
-
- <script>
-   function  openUp(k)
-    {
-		$('#<?php echo $model->modelName;?>_id').val($(k).parent().parent().find('.propertyId').val())
-		$('#<?php echo $model->modelName;?>_meta_title').val($(k).parent().parent().find('.meta_title').val())
-		$('#<?php echo $model->modelName;?>_meta_description').val($(k).parent().parent().find('.meta_description').val())
-		$('#extension-upload-modal').modal();
-	 
-	}
-	function  openUp2(k)
-    {
-		var property_id = $(k).parent().parent().find('.propertyId').val();
-		var section_id = $(k).parent().parent().find('.sId').val();
-		var category_id = $(k).parent().parent().find('.cId').val();
-		var listing_type = $(k).parent().parent().find('.lId').val();
-		 
-		if(property_id !=undefined){
-			$('.cli').prop('checked', false);
-			$.get('<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/get_tag_list"); ?>',{id:property_id,sect_id:section_id,category_id:category_id,listing_type:listing_type},function(data){ 
-				 var data = JSON.parse(data);
-				//  alert(data.enabled)
-				// $('.cli').prop('disabled','disabled');
-				 if(data.enabled !== undefined){
-					// $.each(data.enabled,function(v){  $("input[type=checkbox][value="+v+"]").prop("disabled",false); })
-				 }
-				 if(data.items !==undefined){
-					 
-						 $.each(data.items,function(v){ $("input[type=checkbox][value="+v+"]").prop("checked",true);;})
-					 
-				 }
-				$('#<?php echo $model->modelName;?>_id2').val(property_id); $('#extension-upload-modal2').modal();  })
-			
-		
-		}
-		
-	 
-	}
-	$(function(){
-	$('.ajax-Smit').click(function(){
-		  
-		 var data=$("#miscellaneous-pages-form").serialize();
+<?php 
+}
+$hooks->doAction('after_view_file_content', new CAttributeCollection(array(
+    'controller'        => $this,
+    'renderedContent'   => $viewCollection->renderContent,
+)));
+?>
  
-
-		$.ajax({
-		type: 'POST',
-		url: '<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/updatemetatag"); ?>',
-		data:data,
-		success:function(data){
-		
-		 $(".ajax-Smit").removeClass("disabled");
-		 $(".ajax-Smit").removeAttr("disabled");
-		 $(".ajax-Smit").text("Update Meta Tag");
-		 if(parseInt(data)>0)
-		 {
-				$('#meta_description-'+data).val($('#<?php echo $model->modelName;?>_meta_description').val());
-				$('#meta_title-161'+data).val($('#<?php echo $model->modelName;?>_meta_title').val())
-				$("#notify-container-success").show();
-				setTimeout(function(){ $("#notify-container-success").hide();$('#extension-upload-modal').modal('hide'); }, 2000);
-			 
-		 }
-		 else
-		 {
-			   $("#notify-container-failure").show();
-		 }
-		},
-		error: function(data) { // if error occured
-		alert("Error occured.please try again");
-		alert(data);
-		},
-
-		dataType:'html'
-		});
-		
-		})
-			$('.ajax-Smit2').click(function(){
-		  
-		 var data=$("#miscellaneous-pages-form2").serialize();
- 
-
-		$.ajax({
-		type: 'POST',
-		url: '<?php echo Yii::app()->createAbsoluteUrl("place_an_ad/savetaglist"); ?>',
-		data:data,
-		success:function(data){
-		
-		 $(".ajax-Smit2").removeClass("disabled");
-		 $(".ajax-Smit2").removeAttr("disabled");
-		 $(".ajax-Smit2").text("Update   Tag");
-		 if(parseInt(data)>0)
-		 {
-				 	$("#notify-container-success2").show();
-				setTimeout(function(){ $("#notify-container-success2").hide();$('#extension-upload-modal2').modal('hide'); }, 2000);
-			 
-		 }
-		 else
-		 {
-			   $("#notify-container-failure2").show();
-		 }
-		},
-		error: function(data) { // if error occured
-		alert("Error occured.please try again");
-		alert(data);
-		},
-
-		dataType:'html'
-		});
-		
-		})
-		})
-    </script> 
- 
-<div aria-hidden="false" aria-labelledby="extension-upload-modal-label" role="dialog" tabindex="-1" id="extension-upload-modal" class="modal fade in" style="display: none;">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-              <h4 class="modal-title">Update Meta Tags.</h4>
-            </div>
-            <div class="modal-body">
-				
-				
-                     
-				<?php $form=$this->beginWidget('CActiveForm', array(
-				'id'=>'miscellaneous-pages-form',
-				'enableAjaxValidation'=>false,
-				)); ?>
-				<div id="notify-container-success" style="display:none;"><div class="alert alert-block alert-success"><button data-dismiss="alert" class="close" type="button">×</button><ul><li>Succesfully updated meta tag!</li></ul></div></div>    
-				<div id="notify-container-failure" style="display:none;"><div class="alert alert-block alert-danger"><button data-dismiss="alert" class="close" type="button">×</button><ul><li>Failted to  Updated Meta Tag!</li></ul></div></div>
-				<div class="form-group">
-				<?php echo $form->labelEx($model, 'meta_title');?>
-				<?php echo $form->textField($model, 'meta_title',$model->getHtmlOptions('meta_title')); ?>
-				<?php echo $form->error($model, 'meta_title');?>
-				<?php echo $form->hiddenField($model, 'id',$model->getHtmlOptions('id')); ?>
-				</div>   
-                  
-                <div class="clearfix"><!-- --></div>  
-				<div class="form-group">
-				<?php echo $form->labelEx($model, 'meta_description');?>
-				<?php echo $form->textArea($model, 'meta_description',$model->getHtmlOptions('meta_description')); ?>
-				<?php echo $form->error($model, 'meta_description');?>
-				</div>   
-                <div class="clearfix"><!-- --></div>  
-                <?php 
-				$this->endWidget();
-				?>
-                </div>
-            <div class="modal-footer">
-              <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-              <button onclick="" data-loading-text="Please wait, processing..." class="btn btn-primary btn-submit ajax-Smit" type="button">Update Meta Tag</button>
-            </div>
-          </div>
-        </div>
-    </div>
-<div aria-hidden="false" aria-labelledby="extension-upload-modal2-label" role="dialog" tabindex="-1" id="extension-upload-modal2" class="modal fade in" style="display: none;">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-              <h4 class="modal-title">Update   Tags.</h4>
-            </div>
-            <div class="modal-body">
-				
-				
-                     
-				<?php $form=$this->beginWidget('CActiveForm', array(
-				'action'=> Yii::app()->createUrl('place_an_ad/save_tags'),
-				'id'=>'miscellaneous-pages-form2',
-				'enableAjaxValidation'=>false,
-				)); ?>
-				<style>.cbox label { width:50%;float:left; }.cbox input { width:auto; float:left;margin-right: 10px;height:auto;}#<?php echo $model->modelName;?>_tags_list { display: block;
-
-width: 100%;
-
-clear: both; }.cbox br { clear:both;}</style>
-				<div id="notify-container-success2" style="display:none;"><div class="alert alert-block alert-success"><button data-dismiss="alert" class="close" type="button">×</button><ul><li>Succesfully updated   tags!</li></ul></div></div>    
-				<div id="notify-container-failure2" style="display:none;"><div class="alert alert-block alert-danger"><button data-dismiss="alert" class="close" type="button">×</button><ul><li>Failted to  Updated   tags!</li></ul></div></div>
-				<div class="form-group cbox">
-				<?php echo $form->labelEx($model, 'tags_list');?>
-				<?php echo $form->checkBoxList($model, 'tags_list',$model->place_ad_tag(),$model->getHtmlOptions('tags_list',array('class'=>'form-control cli'))); ?>
-				<?php echo $form->error($model, 'tags_list');?>
-				<?php echo $form->hiddenField($model, 'id2',$model->getHtmlOptions('id2')); ?>
-				</div>   
-                  
-                <div class="clearfix"><!-- --></div>  
-				 
-                <div class="clearfix"><!-- --></div>  
-                <?php 
-				$this->endWidget();
-				?>
-                </div>
-            <div class="modal-footer">
-              <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-              <button onclick="" data-loading-text="Please wait, processing..." class="btn btn-primary btn-submit ajax-Smit2" type="button">Update   Tags</button>
-            </div>
-          </div>
-        </div>
-    </div>
 

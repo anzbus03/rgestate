@@ -137,6 +137,9 @@
     }
     </style>
     <?php } ?>
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script> -->
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/44.3.0/classic/ckeditor.js"></script> -->
+
 </head>
 
 <body>

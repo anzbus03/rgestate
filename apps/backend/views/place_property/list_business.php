@@ -701,12 +701,12 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
         });
         
         var table = $('#enquiryTable').DataTable({
-            "paging": true, // Enable pagination
-            "lengthChange": true, // Allow users to change page length
-            "searching": true, // Enable searching
-            "ordering": true, // Enable sorting on columns
-            "info": true, // Display table information
-            "autoWidth": false, // Disable auto column width calculation
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
             "pageLength": 10,
             "lengthMenu": [[10, 25, 50, 100, 500, 1000], [10, 25, 50, 100, 500, 1000]],
             "serverSide": true,
