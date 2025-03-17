@@ -3168,10 +3168,6 @@ class PlaceAnAd extends ActiveRecord
 		return $saveSuccess;
 	}
 
-	
-	
-
-
 	public $location_image;
 	public function getSingleImage($w = '0')
 	{
@@ -3181,8 +3177,6 @@ class PlaceAnAd extends ActiveRecord
 			return  Yii::app()->apps->getBaseUrl('assets/img/waiting-feeta.jpg');
 		}
 		if (!empty($image)) {
-
-
 			return $this->getAdImageWithWatermark($image, $w, $h = '', $opaciti = 60, $wateri = 10);
 			if (strpos($image, '/') !== false) {
 				if (defined('DISABLE_WEBP')) {

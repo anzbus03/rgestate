@@ -3269,7 +3269,7 @@ class BusinessForSale extends ActiveRecord
 	{
 		$criteria = new CDbCriteria;
 		$criteria->select = 't.ad_title,t.isTrash,t.status,cat.category_name as category_name, t.verified,t.income,t.roi,t.hot,t.slug_en,t.slug_ar,t.user_id as user_id,t.property_status,t.id,t.slug,t.section_id,t.category_id,t.state,t.listing_type,t.sub_category_id,t.location_latitude,t.location_longitude,from_price_unit,to_price_unit,area_unit,rent_paid,price,p_o_r,bathrooms,bedrooms,t.builtup_area,t.view_360,t.view_video,t.view_floor,t.cron_featured as featured2,   usr.full_number as mobile_number ,  usr.first_name,usr.last_name';
-		$criteria->select .= ', t.cron_images  as ad_images_g,t.cron_simage as ad_image2';
+		$criteria->select .= ', (SELECT  group_concat(CASE WHEN img.status="A" THEN `image_name` ELSE "waiting-feeta.jpg" END)  FROM {{ad_image}} img  WHERE  img.ad_id = t.id   and  img.isTrash="0"    )   as ad_images_g,t.cron_simage as ad_image2';
 
 
 		$criteria->select .= ',f_fee,price_to,price_false,price_to_false,request_r,price_b,price_b_to,p_b_r,price_v,price_v_to,p_v_r';
