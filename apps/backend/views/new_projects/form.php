@@ -393,7 +393,7 @@ if ($viewCollection->renderContent) {
 					<div class="form-group col-lg-4 no-front ">
 
 						<?php echo $form->labelEx($model, 'country'); ?>
-						<?php echo $form->dropDownList($model, 'country', Countries::model()->ListData(), $model->getHtmlOptions('country', array('empty' => 'Select Country', 'class' => 'form-control select2', 'data-url' => Yii::App()->createUrl($this->id . '/select_city_new'), 'onchange' => 'load_via_ajax(this,"state")'))); ?>
+						<?php echo $form->dropDownList($model, 'country', Countries::model()->ListData(), $model->getHtmlOptions('country', array('empty' => 'Select Country', 'class' => 'form-control select2', 'data-url' => Yii::App()->createUrl($this->id . '/select_city_new')))); ?>
 						<?php echo $form->error($model, 'country'); ?>
 					</div>
 					<?php
@@ -428,19 +428,19 @@ if ($viewCollection->renderContent) {
 					</div>
 
 					<div class="form-group col-lg-4">
-						<?php echo $form->labelEx($model, 'location'); ?>
-						<?php echo $form->dropDownList($model, 'location', [], $model->getHtmlOptions('state', array(
+						<?php echo $form->labelEx($model, 'state'); ?>
+						<?php echo $form->dropDownList($model, 'state', [], $model->getHtmlOptions('state', array(
 							'empty' => 'Select Location', 
 							'class' => 'form-control select2',
 							'onchange' => 'changeMap()'
 						))); ?>
-						<?php echo $form->error($model, 'location'); ?>
+						<?php echo $form->error($model, 'state'); ?>
 					</div>
 
 			
 					<script>
 						function updateLocations(cityId) {
-							var locationDropdown = document.getElementById('<?php echo CHtml::activeId($model, 'location'); ?>');
+							var locationDropdown = document.getElementById('<?php echo CHtml::activeId($model, 'state'); ?>');
 							
 							// Clear existing options
 							locationDropdown.innerHTML = '<option value="">Select Location</option>';
@@ -736,15 +736,15 @@ if ($viewCollection->renderContent) {
 						<?php echo $form->error($model, 'developer_profile'); ?>
 					</div>
 
-					<div class="form-group col-md-4 no-front">
-	
-						<?php
-						$model->user_id = empty($model->user_id) ? '31988' : $model->user_id;
-						echo $form->labelEx($model, 'user_id'); ?>
-						<?php $mer =  array_merge($model->getHtmlOptions('user_id'), array('empty' => "Select Customer", 'class' => "  form-control")); ?>
-						<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(ListingUsers::model()->findAllByPk($model->user_id), 'user_id', 'fullName'), $mer); ?>
+					<div class="form-group col-lg-6">
+						<?php echo $form->labelEx($model, 'user_id'); ?>
+						<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(User::model()->findAll(), 'user_id', 'fullName'), array_merge($model->getHtmlOptions('user_id'), [
+							'empty' => "Select User",
+							'class' => "form-control"
+						])); ?>
 						<?php echo $form->error($model, 'user_id'); ?>
 					</div>
+
 				</div>
 
 

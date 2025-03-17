@@ -217,7 +217,7 @@ class New_projectsController   extends Controller
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         $model = new NewDevelopment();
-          $model->fieldDecorator->onHtmlOptionsSetup = array($this, '_setupEditorOptions');
+		$model->fieldDecorator->onHtmlOptionsSetup = array($this, '_setupEditorOptions');
         $model->scenario = 'new_insert'; 
         $image_array = array(); 
         $country = Countries::model()->ListDataForJSON();
@@ -231,40 +231,58 @@ class New_projectsController   extends Controller
 			'pageHeading'       => Yii::t(Yii::app()->controller->id, "Create New Development"),
 			 
         ));
-        	$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
+		$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
 		$this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/css/dropzone.css')));
 		$this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/table_common.css')));
-		
-		
-						$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=5')));
- 
-				$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
-      //  print_r($_POST);exit;
-        if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) { 
-			 $model->attributes = $attributes;
-			 	  if (isset(Yii::app()->params['POST'][$model->modelName]['ad_description'])) {
-                $model->ad_description = Yii::app()->ioFilter->purify(Yii::app()->params['POST'][$model->modelName]['ad_description']);
-            }
-           if (!$model->save()) {
-				  
+		$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=5')));
+		// $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
+   
+		if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) { 
+			$model->attributes = $attributes;
+			if (isset(Yii::app()->params['POST'][$model->modelName]['ad_description'])) {
+				$model->ad_description = Yii::app()->ioFilter->purify(Yii::app()->params['POST'][$model->modelName]['ad_description']);
+			}
+			$uploadedFile = CUploadedFile::getInstance($model, 'developer_profile');
+			if ($uploadedFile !== null) {
+				$fileName = time() . '_' . $uploadedFile->name; // Unique file name
+				$filePath = Yii::getPathOfAlias('webroot.uploads.files.'.date("Y")) . '/' . $fileName; 
+				
+				if ($uploadedFile->saveAs($filePath)) {
+					$model->developer_profile = $fileName; // Save file name in DB
+				} else {
+					$notify->addError(Yii::t('app', 'Failed to upload the PDF file.'));
+				}
+			}
+			if (!$model->save()) {
 				$model->amenities = Yii::app()->request->getPost("amenities");
 				$exp =  explode(",",$model->image);
-				if($exp){ foreach($exp as $k=>$v) { 	if($v!="") 	{ 	$image_array[] = $v; 		} 		} }		
-                $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
-                
-            } else {
+				if($exp){ 
+					foreach($exp as $k=>$v) { 
+						if($v!=""){ 	
+							$image_array[] = $v;
+						}
+					} 
+				}		
+				$errors = $model->getErrors();
+				$errorMessages = [];
+			
+				foreach ($errors as $attribute => $errorList) {
+					foreach ($errorList as $error) {
+						$errorMessages[] = Yii::t('app', ucfirst($attribute) . ': ' . $error);
+					}
+				}
+			
+				if (!empty($errorMessages)) {
+					$notify->addError(implode('<br>', $errorMessages));
+				}				
+			} else {
 				$this->insertAfterSaveFn($model);
-                $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
-                $this->redirect(Yii::App()->createUrl($this->id.'/index'));
-            }
-           
-        }
+				$notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
+				$this->redirect(Yii::App()->createUrl($this->id.'/index'));
+			}   
+		}
         
-		 $this->render('form', compact('model',"country","section",'list_type','image_array'));
-		 
-        
- 
-        
+		$this->render('form', compact('model',"country","section",'list_type','image_array'));        
     }
 
 	public function actionServerProcessing()
@@ -520,15 +538,12 @@ class New_projectsController   extends Controller
         $model->scenario = 'new_insert'; 
         $image_array = array(); 
         if(isset($model->adImages) )
-            {
-				
-				
-				foreach($model->adImages as $k=>$v)
-				{
-					$image_array[] = $v->image_name;
-				}
-		    }
-	;
+		{
+			foreach($model->adImages as $k=>$v)
+			{
+				$image_array[] = $v->image_name;
+			}
+		}
 		
         $country = Countries::model()->ListDataForJSON();
       
@@ -541,27 +556,33 @@ class New_projectsController   extends Controller
 			'pageHeading'       => Yii::t(Yii::app()->controller->id, "Update New Projects"),
 			 
         ));
-        	$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
+		$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/dropzone.min.js')));
 		$this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/css/dropzone.css')));
 		$this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/table_common.css')));
-		
-		
-						$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=5')));
- 
-				$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
-      //  print_r($_POST);exit;
-        if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) { 
-			 $model->attributes = $attributes;
-			  if (isset(Yii::app()->params['POST'][$model->modelName]['ad_description'])) {
+		$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/custom.js?q=5')));
+		$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
+
+		if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) { 
+			$model->attributes = $attributes;
+			if (isset(Yii::app()->params['POST'][$model->modelName]['ad_description'])) {
                 $model->ad_description = Yii::app()->ioFilter->purify(Yii::app()->params['POST'][$model->modelName]['ad_description']);
-            }
-           if (!$model->save()) {
-				  
+			}
+			$uploadedFile = CUploadedFile::getInstance($model, 'developer_profile');
+			if ($uploadedFile !== null) {
+				$fileName = time() . '_' . $uploadedFile->name; // Unique file name
+				$filePath = Yii::getPathOfAlias('webroot.uploads.files.'.date("Y")) . '/' . $fileName; 
+				
+				if ($uploadedFile->saveAs($filePath)) {
+					$model->developer_profile = $fileName; // Save file name in DB
+				} else {
+					$notify->addError(Yii::t('app', 'Failed to upload the PDF file.'));
+				}
+			}
+           if (!$model->save()) {	  
 				$model->amenities = Yii::app()->request->getPost("amenities");
 				$exp =  explode(",",$model->image);$image_array = array();
 				if($exp){ foreach($exp as $k=>$v) { 	if($v!="") 	{ 	$image_array[] = $v; 		} 		} }		
                 $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
-                
             } else {
 				$this->insertAfterSaveFn($model);
                 $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
@@ -569,61 +590,44 @@ class New_projectsController   extends Controller
             }
            
         }
-        	 
-		 $this->render('form', compact('model',"country","section",'list_type','image_array'));
-		 
-        
- 
-        
+		$this->render('form', compact('model',"country","section",'list_type','image_array'));
     }
     
     
     public function insertAfterSaveFn($model){
-						$room_image = new AdImage;
-						$room_image->deleteAll(array("condition"=>"ad_id=:ad_id","params"=>array(":ad_id"=>$model->id)));
-						$imgArr =  explode(',',$model->image);
-						 
-						if($imgArr)
-						{
-							 
-							 
-							$img_saved =false;
-							foreach($imgArr as $k)
-							{
-								 
-									if(!$img_saved and $model->image!="")
-									{
-										 
-									 $model->updateByPk($model->id,array('image'=>$k));  	
-									 
-									}
-									$room_image->isNewRecord = true;
-									$room_image->id = "";
-									$room_image->ad_id = $model->id;
-									$room_image->image_name =  $k;
-									$room_image->save();
-									 
-								 
-								
-							}
-						 
-							
-						 }
-						  $am = new  AdAmenities();
-						  $am->deleteAll(array("condition"=>"ad_id=:ad_id","params"=>array(":ad_id"=>$model->id)));
-						  if($ameni = Yii::app()->request->getPost("amenities"))
-						  {
-							 
-							 foreach($ameni as $k)
-							 {
-								 
-									$am->isNewRecord = true;
-									$am->ad_id = $model->id;
-									$am->amenities_id =  $k;
-									$am->save();
-							 }
-							 
-						  }
+		$room_image = new AdImage;
+		$room_image->deleteAll(array("condition"=>"ad_id=:ad_id","params"=>array(":ad_id"=>$model->id)));
+		$imgArr =  explode(',',$model->image);
+		if($imgArr)
+		{				
+			$img_saved =false;
+			foreach($imgArr as $k)
+			{
+					
+				if(!$img_saved and $model->image!="")
+				{
+					$model->updateByPk($model->id,array('image'=>$k));  		
+				}
+				$room_image->isNewRecord = true;
+				$room_image->id = "";
+				$room_image->ad_id = $model->id;
+				$room_image->image_name =  $k;
+				$room_image->save();
+			}	
+		}
+		$am = new  AdAmenities();
+		$am->deleteAll(array("condition"=>"ad_id=:ad_id","params"=>array(":ad_id"=>$model->id)));
+		if($ameni = Yii::app()->request->getPost("amenities")){
+			foreach($ameni as $k)
+			{
+				
+				$am->isNewRecord = true;
+				$am->ad_id = $model->id;
+				$am->amenities_id =  $k;
+				$am->save();
+			}
+			
+		}
 	}
     
      public function actionDetails($model,$subcategory,$category,$fields,$image_array)
