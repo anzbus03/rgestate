@@ -205,7 +205,7 @@ if ($viewCollection->renderContent) {
 <div class="row">
 
     <?php if (Yii::app()->user->model->user_id == 2){ ?>
-        <div class="col-xl-9 col-xxl-8 col-lg-7">
+        <!-- <div class="col-xl-9 col-xxl-8 col-lg-7">
             <div class="card">
                 <div class="card-header border-0 pb-0">
                     <h3 class="card-title">Latest Blogs</h3>
@@ -241,8 +241,8 @@ if ($viewCollection->renderContent) {
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-3 col-xxl-4 col-lg-5">
+        </div> -->
+        <div class="col-xl-12 col-xxl-12 col-lg-12">
             <div class="card border-0 pb-0">
                 <div class="card-header flex-wrap border-0 pb-0">
                     <h3 class="card-title">Recent Enquiries</h3>

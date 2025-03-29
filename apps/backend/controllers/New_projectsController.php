@@ -569,11 +569,11 @@ class New_projectsController   extends Controller
 			}
 			$uploadedFile = CUploadedFile::getInstance($model, 'developer_profile');
 			if ($uploadedFile !== null) {
-				$fileName = time() . '_' . $uploadedFile->name; // Unique file name
+				$fileName = time() . '_' . $uploadedFile->name;
 				$filePath = Yii::getPathOfAlias('webroot.uploads.files.'.date("Y")) . '/' . $fileName; 
 				
 				if ($uploadedFile->saveAs($filePath)) {
-					$model->developer_profile = $fileName; // Save file name in DB
+					$model->developer_profile = $fileName;
 				} else {
 					$notify->addError(Yii::t('app', 'Failed to upload the PDF file.'));
 				}

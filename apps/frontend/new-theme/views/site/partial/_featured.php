@@ -62,7 +62,6 @@
                         // echo '<pre>'; print_r($add->category_id . " ASD"); echo '</pre>'; 
                         
                     ?>
-                    <?php $add->ad_images_g = $add->cron_images; ?>
                     <li>
                         <div class="rg-featured-card rg-br-16">
                             <div class="rg-featured-img position-relative">
@@ -80,15 +79,30 @@
                                 <?php
                                     $imagePath  = $add->getAd_image_singlenew("293");
                                     // $imagePath  = str_replace('/uploads/files/', '', $imagePath);
-                                    $adImage    = AdImage::model()->findByAttributes(['image_name' => $imagePath]);
+                                    
+                                    $adImage    = AdImage::model()->findByAttributes(['ad_id' => $add->id]);
                                     $titleAltText   = $adImage->image_alt;
                                     $titleText      = $adImage->image_title;
-                                ?>
+                                    // print_r();
+                                    if ($adImage){ ?>
+                                        
+                               
                                 <img class="d-block w-100 h-100 object-fit-cover"  
-                                    src="<?php echo $imagePath;?>"
+                                    src="<?php echo '/uploads/files/'.$adImage->image_name;?>"
                                     alt="<?php echo $titleAltText; ?>"
                                     title="<?php echo $titleText; ?>">
-
+                                <?php
+                                    }else {
+                                ?>
+                                  <img class="d-block w-100 h-100 object-fit-cover"  
+                                    src="<?php echo '/new_assets/images/mgrey.jpg';?>"
+                                    alt="<?php echo $titleAltText; ?>"
+                                    title="<?php echo $titleText; ?>">
+                                
+                                <?php
+                                        
+                                    }
+                                ?>
                                 </a>
                             </div>
                             <div class="rg-featured-body">
