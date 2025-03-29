@@ -1301,7 +1301,7 @@
             </ul>
             <?php
             if (empty($ads)) {
-                echo $this->renderPartial('_no_result_page');
+                echo $this->renderPartial('root.apps.frontend.new-theme.views.listing._no_result_page');
             }
             ?>
 
