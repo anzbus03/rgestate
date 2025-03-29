@@ -62,7 +62,6 @@
                         // echo '<pre>'; print_r($add->category_id . " ASD"); echo '</pre>'; 
                         
                     ?>
-                    <?php $add->ad_images_g = $add->cron_images; ?>
                     <li>
                         <div class="rg-featured-card rg-br-16">
                             <div class="rg-featured-img position-relative">
