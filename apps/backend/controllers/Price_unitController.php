@@ -72,42 +72,47 @@ class Price_unitController  extends Controller
         $request = Yii::app()->request;
         $notify = Yii::app()->notify;
         $model = new PriceUnit();
+    
         if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
             $model->attributes = $attributes;
-              $model->listing_countries = Yii::app()->request->getPost("listing_countries");
-             if (!$model->save()) {
-				 
-                $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
-                
+            $model->listing_countries = $request->getPost("listing_countries");
+    
+            if (!$model->save()) {
+                // Show detailed errors instead of a generic message
+                $errors = $model->getErrors();
+                foreach ($errors as $attribute => $messages) {
+                    foreach ($messages as $message) {
+                        $notify->addError(Yii::t('app', ucfirst($attribute) . ': ' . $message));
+                    }
+                }
             } else {
-				 
-				 
                 $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
             }
-            
-            
+    
             Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
                 'controller' => $this,
                 'success'    => $notify->hasSuccess,
-                'model'       => $model,
+                'model'      => $model,
             )));
-            
+    
             if ($collection->success) {
-                $this->redirect($this->createUrl(Yii::app()->controller->id.'/index' ));
+                $this->redirect($this->createUrl(Yii::app()->controller->id . '/index'));
             }
         }
-               $apps = Yii::app()->apps;
+    
+        $apps = Yii::app()->apps;
         $this->setData(array(
-            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t(Yii::app()->controller->id, "Create new {$this->Controlloler_title}"), 
-            'pageHeading'       => Yii::t(Yii::app()->controller->id, "Create new {$this->Controlloler_title}"),
-            'pageBreadcrumbs'   => array(
-                Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title}") => $this->createUrl(Yii::app()->controller->id.'/index'),
+            'pageMetaTitle'   => $this->data->pageMetaTitle . ' | ' . Yii::t(Yii::app()->controller->id, "Create new {$this->Controlloler_title}"),
+            'pageHeading'     => Yii::t(Yii::app()->controller->id, "Create new {$this->Controlloler_title}"),
+            'pageBreadcrumbs' => array(
+                Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title}") => $this->createUrl(Yii::app()->controller->id . '/index'),
                 Yii::t('app', 'Create new'),
             )
         ));
-        
+    
         $this->render('form', compact('model'));
     }
+    
     
     /**
      * Update existing user

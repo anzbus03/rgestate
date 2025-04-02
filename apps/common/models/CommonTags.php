@@ -94,10 +94,11 @@ class CommonTags extends ActiveRecord
         }
         return new CActiveDataProvider(get_class($this), array(
             'criteria'      => $criteria,
-            'pagination'    => array(
-                'pageSize'  => $this->paginationOptions->getPageSize(),
-                'pageVar'   => 'page',
-            ),
+            // 'pagination'    => array(
+            //     'pageSize'  => $this->paginationOptions->getPageSize(),
+            //     'pageVar'   => 'page',
+            // ),
+            'pagination' => false,
 
         ));
     }

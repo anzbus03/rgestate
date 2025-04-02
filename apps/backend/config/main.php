@@ -57,6 +57,7 @@ return array(
                     
             'rules' => array(
                'sitemap.xml' => 'site/sitemap',
+               'report_ad/<action:\w+>' => 'report_ad/<action>',
             ),
         ),
         	'log'=>array(

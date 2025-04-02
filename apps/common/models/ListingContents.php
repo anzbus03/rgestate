@@ -239,7 +239,11 @@ class ListingContents extends ActiveRecord
     public function getPermalink($absolute = false)
     {
         $areaSlug = States::model()->findByPk($this->city);
-        return Yii::app()->apps->getAppUrl('frontend', 'area-guides/' . $areaSlug->slug??'dubai-industrial-city', $absolute);
+        $slug = isset($areaSlug->slug) && !empty($areaSlug->slug) ? $areaSlug->slug : '';
+        $path = 'area-guides' . ($slug ? '/' . $slug : '');
+        $url = Yii::app()->apps->getAppUrl('frontend', $path, $absolute);
+        $url = str_replace('/index.php', '', $url);
+        return $url;
     }
     
     public function getStatusesArray()
@@ -451,5 +455,84 @@ class ListingContents extends ActiveRecord
 	    return  self::model()->find($criteria);
 	    
     }
-  
+    public function getListingContentNew($section = null, $category = null, $city = null, $area = null, $subcategory = null, $nested_subcategory = null)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.*';
+        $criteria->condition = 't.f_type = "L"';
+        $cityModel = MainRegion::model()->findByAttributes(['slug' => $city]);
+        $city_id = $cityModel ? $cityModel->region_id : null;
+        
+        $areaModel = States::model()->findByAttributes(['slug' => $area]);
+        $area_id = $areaModel ? $areaModel->state_id : null;
+        
+        if ($city_id && $area_id) {
+            $criteria->condition .= ' AND t.area = :area_id AND t.city = :city_id';
+            $criteria->params[':area_id'] = $city_id;
+            $criteria->params[':city_id'] = $area_id;
+        } elseif ($city_id) {
+            $criteria->condition .= ' AND t.area = :area_id AND t.city IS NULL';
+            $criteria->params[':area_id'] = $city_id;
+        } else {
+            $criteria->condition .= ' AND t.area IS NULL AND t.city IS NULL';
+        }
+        // print_r($city_id);
+        // echo "<br>";
+        // print_r($area_id);
+        // exit;
+        
+		
+		if(!empty($section)){
+            $sec_id = '';
+            switch($section){
+                case 'property-for-sale':
+                $sec_id = '1';
+                break;
+                case 'preleased':
+                $sec_id = '1';
+                break;
+                case 'property-for-rent':
+                $sec_id = '2';
+                break;
+                case 'business-opportunities':
+                $sec_id = '3';
+                break;
+            }
+            if(!empty($sec_id)){
+                $criteria->condition .= ' and t.section_id= :section_id ';
+                $criteria->params[':section_id']  =$sec_id;
+            }
+		}
+		
+		if(!empty($category)){
+		    $criteria->join .=' inner join {{category}} cat on cat.category_id = t.p_type and  cat.slug = :p_type '; 
+            $criteria->params[':p_type']  = $category;
+		}else{
+		    $criteria->condition .= ' and t.p_type is null  ';
+		}
+		if(!empty($subcategory)){
+		    $criteria->join .=' inner join {{subcategory}} subcat on subcat.sub_category_id = t.sub_category and subcat.slug = :sub_category'; 
+            $criteria->params[':sub_category']  = $subcategory;
+		}else{
+		    $criteria->condition .= ' and t.sub_category is null  ';
+		}
+		if(!empty($nested_subcategory)){
+		    $criteria->join .=' inner join {{subcategory}} nestedsub on nestedsub.sub_category_id = t.nested_sub_category and nestedsub.slug = :nested_sub_category '; 
+            $criteria->params[':nested_sub_category']  = $nested_subcategory;
+		}else{
+		    $criteria->condition .= ' and t.nested_sub_category is null  ';
+		}
+		if(defined('LANGUAGE') and LANGUAGE != 'en'){ 
+			$criteria->params[':lan'] = LANGUAGE;
+			$criteria->distinct = 't.areaguides_id'; 
+		    $criteria->join  .= ' left join `mw_translate` `translate` on ( translate.source_tag = concat("ListingContents_meta_title_","",t.areaguides_id) ) left join `mw_translate_relation` `translationRelation` on translationRelation.areaguide_id = t.areaguides_id  and  translationRelation.translate_id = translate.translate_id   LEFT  JOIN mw_translation_data tdata ON (`translationRelation`.translate_id=tdata.translation_id and tdata.lang=:lan) ';
+			$criteria->join  .= '  left join `mw_translate` `translate1` on ( translate1.source_tag = concat("ListingContents_meta_description_","",t.areaguides_id) )  left join `mw_translate_relation` `translationRelationP` on translationRelationP.areaguide_id = t.areaguides_id  and  translationRelationP.translate_id = translate1.translate_id  LEFT  JOIN mw_translation_data tdataP ON (`translationRelationP`.translate_id=tdataP.translation_id and tdataP.lang=:lan) ';
+			$criteria->join  .= '  left join `mw_translate` `translate2` on ( translate2.source_tag = concat("ListingContents_highlights_","",t.areaguides_id) )  left join `mw_translate_relation` `translationRelationH` on translationRelationH.areaguide_id = t.areaguides_id  and  translationRelationH.translate_id = translate2.translate_id  LEFT  JOIN mw_translation_data tdataH ON (`translationRelationH`.translate_id=tdataH.translation_id and tdataH.lang=:lan) ';
+	    	$criteria->select .= ' ,CASE WHEN tdata.message IS NOT NULL THEN    tdata.message ELSE t.meta_title END  AS meta_title ,CASE WHEN tdataP.message IS NOT NULL THEN    tdataP.message ELSE t.meta_description END  AS meta_description,CASE WHEN tdataH.message IS NOT NULL THEN    tdataH.message ELSE t.highlights END  AS highlights ';
+	    }  
+	    	
+	     
+	    return  self::model()->find($criteria);
+	    
+    }
 }

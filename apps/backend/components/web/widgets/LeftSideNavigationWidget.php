@@ -87,15 +87,15 @@ class LeftSideNavigationWidget extends CWidget
                 'career' => array(
                     'name'      => Yii::t('app', 'Careers'),
                     'icon'      => 'fa fa-briefcase',
-                    'active'    => 'spam_report',
+                    'active'    => 'career',
                     'route'     => array('career/index'),
                 ),
 
                 'spam_report1' => array(
                     'name'      => Yii::t('app', 'Report AD'),
                     'icon'      => 'fa fa-bug',
-                    'active'    => 'spam_report',
-                    'route'     => array('spam_report/index'),
+                    'active'    => 'report_ad',
+                    'route'     => array('report_ad/index'),
                 ),
 
                 'place_an_ad' => array(

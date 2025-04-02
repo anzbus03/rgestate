@@ -13,7 +13,7 @@
  * @since 1.0
  */
  
-class Spam_reportController extends Controller
+class Report_adController extends Controller
 {
  
     /**
@@ -164,7 +164,7 @@ class Spam_reportController extends Controller
             }
             
         } 
-        $defaultReturn = $request->getServer('HTTP_REFERER', array('spam_report/index'));
+        $defaultReturn = $request->getServer('HTTP_REFERER', array('report_ad/index'));
         $this->redirect($request->getPost('returnUrl', $defaultReturn));
     }
    

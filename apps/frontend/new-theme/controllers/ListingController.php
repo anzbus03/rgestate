@@ -502,8 +502,55 @@ class ListingController extends Controller
 		$newMetaDescription = Yii::t('app', $newMetaDescription, array('[META_TITLE]' => $m_title, '[LOC_PTYPE]' => $location_ptpe));
 		$newMetaKeywords = Yii::t('app', $newMetaKeywords, array('[Ptype_plural]' => $ptype_plural, '[Mtype]' => $sec_t, '[Location]' => $location_title_only, '[Ptype]' => $ptype, '[BrandName]' => BRAND_TITLE));
 		$cat_i = isset($formData['type_of']) ? $formData['type_of'] : $formData['category'];
+	
+		// $pageContent = ListingContents::model()->getListingContent($formData['sec'], $cat_i, $formData['state']);
+		$stateSlug = $formData['state'] ?? null;
+		$stateModel = null;
+		$regionModel = null;
 
-		$pageContent = ListingContents::model()->getListingContent($formData['sec'], $cat_i, $formData['state']);
+		if ($stateSlug) {
+			$stateModel = States::model()->findByAttributes(['slug' => $stateSlug]);
+
+			if ($stateModel) {
+				$regionModel = MainRegion::model()->findByPk($stateModel->region_id);
+			}
+		}
+
+		$citySlug = null;
+		$areaSlug = null;
+
+		if ($stateModel && $regionModel) {
+			if (trim(strtolower($stateModel->state_name)) === trim(strtolower($regionModel->name))) {
+				// Just a city
+				$citySlug = $stateModel->slug;
+			} else {
+				// City + area
+				$citySlug = $regionModel->slug;
+				$areaSlug = $stateModel->slug;
+			}
+		}
+
+
+		// print_r($formData['sec']);
+		// echo "<br>";
+		// print_r($cat_i);
+		// echo "<br>";
+		// print_r($citySlug);
+		// echo "<br>";
+		// print_r($areaSlug);
+
+		$pageContent = ListingContents::model()->getListingContentNew(
+			$formData['sec'],
+			$cat_i,
+			$citySlug,
+			$areaSlug // new parameter
+		);
+
+		if ($pageContent) {
+			$m_title = $pageContent->meta_title;
+			$newMetaDescription = $pageContent->meta_description;
+			$newMetaKeywords = $pageContent->meta_keywords;
+		}
 
 
 		if ($filterModel->section_id != 'new-development') {

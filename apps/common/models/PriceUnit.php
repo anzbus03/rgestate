@@ -35,7 +35,7 @@ class PriceUnit extends  ActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('master_name, value, show_all', 'required'),
+            array('master_name, value', 'required'),
             array('master_name', 'length', 'max'=>150),
             array('value', 'length', 'max'=>15),
             array('is_trash, show_all,f_type', 'length', 'max'=>1),

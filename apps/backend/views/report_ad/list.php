@@ -113,7 +113,7 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
 <script>
 
     $('#exportExcel').click(function(e) {
-        var exportUrl = '<?php echo Yii::app()->createUrl('spam_report/exportExcel'); ?>';
+        var exportUrl = '<?php echo Yii::app()->createUrl('report_ad/exportExcel'); ?>';
         window.location.href = exportUrl;
     });
     function confirmDelete(url) {
