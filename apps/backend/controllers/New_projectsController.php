@@ -214,9 +214,10 @@ class New_projectsController   extends Controller
 	}
     public function actionCreate()
     {  
-        $request = Yii::app()->request;
+		$request = Yii::app()->request;
         $notify = Yii::app()->notify;
         $model = new NewDevelopment();
+		
 		$model->fieldDecorator->onHtmlOptionsSetup = array($this, '_setupEditorOptions');
         $model->scenario = 'new_insert'; 
         $image_array = array(); 
@@ -238,21 +239,33 @@ class New_projectsController   extends Controller
 		// $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
    
 		if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) { 
+			unset($attributes['developer_profile']);
 			$model->attributes = $attributes;
 			if (isset(Yii::app()->params['POST'][$model->modelName]['ad_description'])) {
 				$model->ad_description = Yii::app()->ioFilter->purify(Yii::app()->params['POST'][$model->modelName]['ad_description']);
 			}
+			$model->setAttribute('sub_category_id', (int)$attributes['sub_category_id']);
+
 			$uploadedFile = CUploadedFile::getInstance($model, 'developer_profile');
 			if ($uploadedFile !== null) {
-				$fileName = time() . '_' . $uploadedFile->name; // Unique file name
-				$filePath = Yii::getPathOfAlias('webroot.uploads.files.'.date("Y")) . '/' . $fileName; 
+				$uploadDir = Yii::getPathOfAlias('root.uploads.files.' . date("Y") . "/" . date("m"));
+				if (!file_exists($uploadDir)) {
+					mkdir($uploadDir, 0755, true); // Create directory if not exists
+				}
 				
-				if ($uploadedFile->saveAs($filePath)) {
-					$model->developer_profile = $fileName; // Save file name in DB
+				$fileName = time() . '_' . $uploadedFile->name; // Unique file name
+				$filePath = $uploadDir . '/' . $fileName;
+				// print_r($filePath);
+				// // print_r($fileName);
+				// exit;
+
+				if (move_uploaded_file($uploadedFile->tempName, $filePath)) {
+					$model->developer_profile = date("Y") . "/" . date("m") . '/' . $fileName; // Save only the file name in DB
 				} else {
-					$notify->addError(Yii::t('app', 'Failed to upload the PDF file.'));
+					$notify->addError(Yii::t('app', 'Failed to move the uploaded PDF file.'));
 				}
 			}
+
 			if (!$model->save()) {
 				$model->amenities = Yii::app()->request->getPost("amenities");
 				$exp =  explode(",",$model->image);
@@ -534,6 +547,7 @@ class New_projectsController   extends Controller
           if (empty($model)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
         }
+
             
         $model->scenario = 'new_insert'; 
         $image_array = array(); 
@@ -563,21 +577,32 @@ class New_projectsController   extends Controller
 		$this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('backend/assets/js/jquery.autocomplete.js')));
 
 		if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) { 
+			unset($attributes['developer_profile']);
 			$model->attributes = $attributes;
 			if (isset(Yii::app()->params['POST'][$model->modelName]['ad_description'])) {
                 $model->ad_description = Yii::app()->ioFilter->purify(Yii::app()->params['POST'][$model->modelName]['ad_description']);
 			}
+			$model->setAttribute('sub_category_id', (int)$attributes['sub_category_id']);
 			$uploadedFile = CUploadedFile::getInstance($model, 'developer_profile');
 			if ($uploadedFile !== null) {
-				$fileName = time() . '_' . $uploadedFile->name;
-				$filePath = Yii::getPathOfAlias('webroot.uploads.files.'.date("Y")) . '/' . $fileName; 
+				$uploadDir = Yii::getPathOfAlias('root.uploads.files.' . date("Y") . "/" . date("m"));
+				if (!file_exists($uploadDir)) {
+					mkdir($uploadDir, 0755, true); // Create directory if not exists
+				}
 				
-				if ($uploadedFile->saveAs($filePath)) {
-					$model->developer_profile = $fileName;
+				$fileName = time() . '_' . $uploadedFile->name; // Unique file name
+				$filePath = $uploadDir . '/' . $fileName;
+				// print_r($filePath);
+				// // print_r($fileName);
+				// exit;
+
+				if (move_uploaded_file($uploadedFile->tempName, $filePath)) {
+					$model->developer_profile = date("Y") . "/" . date("m") . '/' . $fileName; // Save only the file name in DB
 				} else {
-					$notify->addError(Yii::t('app', 'Failed to upload the PDF file.'));
+					$notify->addError(Yii::t('app', 'Failed to move the uploaded PDF file.'));
 				}
 			}
+
            if (!$model->save()) {	  
 				$model->amenities = Yii::app()->request->getPost("amenities");
 				$exp =  explode(",",$model->image);$image_array = array();

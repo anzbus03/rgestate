@@ -1,6 +1,47 @@
 <!-- Listing Item -->
+<style>
+    .icon {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
+        vertical-align: middle;
+    }
+
+    /* Example: simple circle pin for location */
+    .location-icon {
+        background-color: #555;
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        width: 12px;
+        height: 12px;
+        margin-bottom: 2px;
+    }
+
+    /* Example: simple square for building */
+    .building-icon {
+        background-color: #555;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+    }
+    .roi-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background-color: rgba(255, 193, 7, 0.9); /* golden yellow */
+        color: #000;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 4px 8px;
+        border-radius: 4px;
+        z-index: 2;
+    }
+
+</style>
 <?php
 $from = $this->tag->getTag('from', 'from');
+$to = $this->tag->getTag('to', 'to');
 $view_details = $this->tag->getTag('view_details', 'View Details');
 $links_open_in = $this->options->get('system.common.link_open_in', 'S');
 $apps = $this->app->apps;
@@ -8,19 +49,23 @@ $s_class_n = 'col-sm-4';
 $bg = true;
 
 foreach ($works as $k => $v) { 
-   $img_link = $v->getAd_image_singlenew("293");
-   $imagePath  = str_replace('/uploads/files/', '', $img_link);
-	$adImage    = AdImage::model()->findByAttributes(['image_name' => $imagePath]);
+    $img_link = $v->getAd_image_singlenew("293");
+    $imagePath  = str_replace('/uploads/files/', '', $img_link);
+	$adImage    = AdImage::model()->findByAttributes(['ad_id' => $v->id]);
 	$titleAltText   = $adImage->image_alt;
 	$titleText      = $adImage->image_title;
-   
    ?>
-
+    
     <li class="col-xl-6 col-lg-6 col-md-6 project">
         <div class="proj-info">
             <a href="<?php echo $v->detailUrl; ?>">
                 <figure class="project-effect llod">
-                    <img data-src="<?php echo $v->getAd_image_singlenew('600'); ?>"
+                    <?php if (strtolower($v->ProjectstatusTitle) == 'ready'): ?>
+                        <div class="roi-badge">Generated ROI: <?php echo $v->roi; ?>%</div>
+                    <?php else: ?>
+                        <div class="roi-badge">Expected ROI: <?php echo $v->roi; ?>%</div>
+                    <?php endif; ?>
+                    <img data-src="<?php echo '/uploads/files/'.$adImage->image_name; ?>"
                          alt="<?php echo $titleAltText; ?>"
                          title="<?php echo $titleText; ?>"
                          class="img-fluid lozad"
@@ -62,17 +107,34 @@ foreach ($works as $k => $v) {
                             <h2 class="title"><?php echo $v->adTitle; ?></h2>
                             <h3 class="dev">
                                 <p class="add margin-top-10">
-                                    <span class="flaticon-placeholder"></span><?php echo $v->stateName; ?>
-                                    <span><b> . </b><?php echo $v->ProjectstatusTitle; ?></span>
+                                    <span class="icon location-icon"></span> <?php echo $v->stateName; ?>
+                                    <span><b> · </b> <?php echo $v->ProjectstatusTitle; ?></span>
+                                </p>
+                                <p class="add">
+                                    <span class="icon building-icon"></span> <?php echo $v->SubCategoryName; ?>
+                                    <span><b> | </b> <?php echo $v->CategoryName; ?></span>
                                 </p>
                             </h3>
+
                             <div class="price"><?php echo $from . ' ' . $v->PriceTitleSpanL; ?></div>
                         </div>
                         <div class="clear"></div>
                     </div>
-                    <div class="price-m-info">
-                        <div class="price"><?php echo $from . ' ' . $v->PriceTitleSpanL; ?></div>
-                    </div>
+                    <?php if (strtolower($v->ProjectstatusTitle) == 'ready') : ?>
+                        <div class="price-m-info">
+                            <strong style="color:black;font-size:12px;">Invested Value</strong><br>
+                            <div class="price"><?php echo $from . ' ' . $v->PriceTitleSpanL; ?></div><br>
+                        </div>
+                    <?php else: ?>
+                        <div class="price-m-info">
+                            <strong style="color:black;font-size:12px;">Investment Opportunity</strong><br>
+                            <div class="price"><?php echo $from . ' ' . $v->PriceTitleSpanL; ?></div><br>
+                            <div class="price"><?php echo $to . ' ' . $v->PriceToTitleSpanL; ?></div><br>
+                            <strong style="color:black;font-size:12px;">
+                                Possession: <?php echo ($v->getAttribute('possession')); ?>
+                            </strong>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </a>
             <div class="clearfix"></div>

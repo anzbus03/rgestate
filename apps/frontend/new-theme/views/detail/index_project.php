@@ -144,10 +144,9 @@ function setEmptyval(k){ $(k).val('');$('#frm_sec').val('');
            <?php 
             $images = $model->all_images();
             
-             
             
             if($images){
-            
+				
              $image_size = sizeOf($images);
             ?>
             	  <style>
@@ -158,9 +157,9 @@ function setEmptyval(k){ $(k).val('');$('#frm_sec').val('');
 					  .image_sec_1 img { border-radius:0px;    width: 100%; }
 					  .image_sec_2 .image_sec_2_sec_1 {   margin-bottom:10px   }
 					  .image_sec_2 .image_sec_2_sec_2 {  ;  }
-					   .image_sec_2 .image_sec_2_sec_1 img { max-height:50%;      object-fit: cover;
+					   .image_sec_2 .image_sec_2_sec_1 img { max-height:100%;      object-fit: cover;
     object-position: center;}
-					   .image_sec_2 .image_sec_2_sec_2 img { max-height:50%;     object-fit: cover;
+					   .image_sec_2 .image_sec_2_sec_2 img { max-height:100%;     object-fit: cover;
     object-position: center;}
      html[dir="rtl"]  .seec_b_2 {
    
@@ -181,10 +180,10 @@ html[dir="rtl"] #detail			.button.orangeb {     float: left;    margin-right: 15
                      </div>
                   </span>
                   <span> 
+					  <!-- <span style="position:relative;z-index:1;display:inline-block" class="mainBtn-share">
+					<button id="PDPShareButton" class="   " onclick="$('#share_widget').toggle();" ><span class=""><img src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/shapes.png');?>" /></span> -->
 					  
-					    <span style="position:relative;z-index:1;display:inline-block" class="mainBtn-share">
-                      <button id="PDPShareButton" class="   " onclick="$('#share_widget').toggle();" ><span class=""><img src="<?php echo Yii::app()->apps->getBaseUrl('assets/img/shapes.png');?>" /></span>
-                  </button>
+					  </button>
                   	<div class="a2a_kit a2a_kit_size_32 a2a_floating_style a2a_vertical_style" id="share_widget" style="">
 
 					<a class="a2a_button_facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(Yii::app()->createAbsoluteUrl('detail/index_project',array('slug'=>$model->slug)));?>&quote=" rel="nofollow noopener"><span class="a2a_svg a2a_s__default a2a_s_facebook" style="background-color: rgb(59, 89, 152);"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="#FFF" d="M17.78 27.5V17.008h3.522l.527-4.09h-4.05v-2.61c0-1.182.33-1.99 2.023-1.99h2.166V4.66c-.375-.05-1.66-.16-3.155-.16-3.123 0-5.26 1.905-5.26 5.405v3.016h-3.53v4.09h3.53V27.5h4.223z"></path></svg></span><span class="a2a_label">Facebook</span></a>
@@ -202,19 +201,102 @@ html[dir="rtl"] #detail			.button.orangeb {     float: left;    margin-right: 15
             </span>
            <script>
             $(function() {
-// nslider();
- fancyclgroup()
+				// nslider();
+				fancyclgroup()
             });
+			window.addEventListener('load', function () {
+				const sec1 = document.querySelector('.image_sec_1');
+				const sec2 = document.querySelector('.image_sec_2');
+
+				if (sec1 && sec2) {
+					const height = sec1.offsetHeight;
+					sec2.style.height = height + 'px';
+				}
+			});
             </script>
 					  </div>
-			
-					 <div class="image_sec_1">
-						 <?php $image_url =   $model->getdetailImages($images[0]->image_name,$images[0]->status,'856')  ; ?>
-						 <?php $image_url1 =  $image_url ;
-						 unset($images[0]);
-						 ?>
-					   <a href="<?php echo $image_url;?>" data-fancybox="cl-group" data-thumb="<?php echo $image_url;?>"   data-background-image="<?php echo $image_url;?>"    > <img src="<?php echo $image_url;?>" alt="<?php echo $pageTitle;?>" title="<?php echo $model->ad_title;?>"></a>
-					 </div>
+					  <style>
+						.image-gallery-container {
+							display: flex;
+							gap: 10px; /* optional spacing between sections */
+						}
+
+						.image_sec_1, .image_sec_2 {
+							flex: 1;
+							position: relative;
+						}
+
+						/* Split image_sec_2 vertically */
+						.image_sec_2 {
+							display: flex;
+							flex-direction: column;
+							justify-content: space-between;
+						}
+
+						.image_sec_2_sec_1,
+						.image_sec_2_sec_2 {
+							flex: 1;
+							overflow: hidden;
+						}
+
+						.image_sec_2_sec_1 img,
+						.image_sec_2_sec_2 img {
+							height: 100%;
+							width: 100%;
+							object-fit: cover;
+						}
+
+					  </style>
+					  <?php
+							$hasVideo = false;
+							$youtube_id = '';
+							if (!empty($model->video)) {
+								preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $model->video, $match);
+								$youtube_id = @$match[1];
+								$hasVideo = !empty($youtube_id);
+							}
+						?>
+
+					  <div class="image_sec_1">
+						<?php if ($hasVideo): ?>
+							<div class="video-container3">
+								<iframe width="853" height="480"
+										src="https://www.youtube.com/embed/<?php echo $youtube_id; ?>"
+										frameborder="0"
+										allowfullscreen></iframe>
+							</div>
+							<style>
+								.video-container3 {
+									position: relative;
+									padding-bottom: 56.25%;
+									margin-top: 15px;
+									padding-top: 30px;
+									height: 0;
+									overflow: hidden;
+								}
+
+								.video-container3 iframe {
+									position: absolute;
+									top: 0;
+									left: 0;
+									width: 100%;
+									height: 100%;
+								}
+							</style>
+							<?php unset($images[0]); // Skip first image if video is shown ?>
+						<?php else: ?>
+							<?php if (!empty($images[0])): ?>
+								<?php
+								$image_url = $model->getdetailImages($images[0]->image_name, $images[0]->status, '856');
+								?>
+								<a href="<?php echo $image_url; ?>" data-fancybox="cl-group" data-thumb="<?php echo $image_url; ?>" data-background-image="<?php echo $image_url; ?>">
+									<img src="<?php echo $image_url; ?>" alt="<?php echo $pageTitle; ?>" title="<?php echo $model->ad_title; ?>">
+								</a>
+								<?php unset($images[0]); ?>
+							<?php endif; ?>
+						<?php endif; ?>
+					</div>
+
 					 <div class="image_sec_2">
 						 <div class="image_sec_2_sec_1">
 						 <?php
@@ -453,30 +535,6 @@ html[dir="rtl"] #detail			.button.orangeb {     float: left;    margin-right: 15
    </a>
 </div>
 
-
-     <div class="b-complex-menu-slider__item swiper-slide " id="prop_type_a"   >
-		 <a    href="#m_property_types" > 
-   <div class="b-complex-menu-slider__icon-wrapper">
-     <svg xmlns="http://www.w3.org/2000/svg" id="outline" width="30px" class="b-complex-menu-slider__icon" viewBox="0 0 512 512"  ><g><path d="m472 16h-432a24.0275 24.0275 0 0 0 -24 24v432a24.0275 24.0275 0 0 0 24 24h432a24.0275 24.0275 0 0 0 24-24v-432a24.0275 24.0275 0 0 0 -24-24zm8 456a8.00917 8.00917 0 0 1 -8 8h-432a8.00917 8.00917 0 0 1 -8-8v-432a8.00917 8.00917 0 0 1 8-8h432a8.00917 8.00917 0 0 1 8 8z" data-original="#000000" class="active-path" fill="#000000"/><circle cx="56" cy="56" r="8" data-original="#000000" class="active-path" fill="#000000"/><circle cx="80" cy="56" r="8" data-original="#000000" class="active-path" fill="#000000"/><circle cx="104" cy="56" r="8" data-original="#000000" class="active-path" fill="#000000"/><path d="m248 216h-32a7.99977 7.99977 0 0 0 -8 8v32a7.99977 7.99977 0 0 0 8 8h32a7.99977 7.99977 0 0 0 8-8v-32a7.99977 7.99977 0 0 0 -8-8zm-8 32h-16v-16h16z" data-original="#000000" class="active-path" fill="#000000"/><path d="m280 232h24v16h-24z" data-original="#000000" class="active-path" fill="#000000"/><path d="m320 232h112v16h-112z" data-original="#000000" class="active-path" fill="#000000"/><path d="m248 280h-32a7.99977 7.99977 0 0 0 -8 8v32a7.99977 7.99977 0 0 0 8 8h32a7.99977 7.99977 0 0 0 8-8v-32a7.99977 7.99977 0 0 0 -8-8zm-8 32h-16v-16h16z" data-original="#000000" class="active-path" fill="#000000"/><path d="m280 296h24v16h-24z" data-original="#000000" class="active-path" fill="#000000"/><path d="m320 296h112v16h-112z" data-original="#000000" class="active-path" fill="#000000"/><path d="m248 344h-32a7.99977 7.99977 0 0 0 -8 8v32a7.99977 7.99977 0 0 0 8 8h32a7.99977 7.99977 0 0 0 8-8v-32a7.99977 7.99977 0 0 0 -8-8zm-8 32h-16v-16h16z" data-original="#000000" class="active-path" fill="#000000"/><path d="m280 360h24v16h-24z" data-original="#000000" class="active-path" fill="#000000"/><path d="m320 360h112v16h-112z" data-original="#000000" class="active-path" fill="#000000"/><path d="m248 408h-32a7.99977 7.99977 0 0 0 -8 8v32a7.99977 7.99977 0 0 0 8 8h32a7.99977 7.99977 0 0 0 8-8v-32a7.99977 7.99977 0 0 0 -8-8zm-8 32h-16v-16h16z" data-original="#000000" class="active-path" fill="#000000"/><path d="m280 424h24v16h-24z" data-original="#000000" class="active-path" fill="#000000"/><path d="m320 424h112v16h-112z" data-original="#000000" class="active-path" fill="#000000"/><path d="m448 96h-384a7.99977 7.99977 0 0 0 -8 8v344a7.99977 7.99977 0 0 0 8 8h112a7.99977 7.99977 0 0 0 8-8v-256h264a7.99977 7.99977 0 0 0 8-8v-80a7.99977 7.99977 0 0 0 -8-8zm-280 344h-96v-248h96zm272-264h-368v-64h368z" data-original="#000000" class="active-path" fill="#000000"/></g> </svg>
-
-   </div>
-   <div class="b-complex-menu-slider__title">
-      <?php echo $this->tag->getTag('property_types','Property Types');?>
-   </div>
-    </a>
-</div>
-
- <div class="b-complex-menu-slider__item swiper-slide " id="available_type_a"   >
-		 <a    href="#m_available" > 
-   <div class="b-complex-menu-slider__icon-wrapper">
-     <svg xmlns="http://www.w3.org/2000/svg" id="outline" width="30px" class="b-complex-menu-slider__icon" viewBox="0 0 512 512"  ><g><path d="m472 16h-432a24.0275 24.0275 0 0 0 -24 24v432a24.0275 24.0275 0 0 0 24 24h432a24.0275 24.0275 0 0 0 24-24v-432a24.0275 24.0275 0 0 0 -24-24zm8 456a8.00917 8.00917 0 0 1 -8 8h-432a8.00917 8.00917 0 0 1 -8-8v-432a8.00917 8.00917 0 0 1 8-8h432a8.00917 8.00917 0 0 1 8 8z" data-original="#000000" class="active-path" fill="#000000"/><circle cx="56" cy="56" r="8" data-original="#000000" class="active-path" fill="#000000"/><circle cx="80" cy="56" r="8" data-original="#000000" class="active-path" fill="#000000"/><circle cx="104" cy="56" r="8" data-original="#000000" class="active-path" fill="#000000"/><path d="m248 216h-32a7.99977 7.99977 0 0 0 -8 8v32a7.99977 7.99977 0 0 0 8 8h32a7.99977 7.99977 0 0 0 8-8v-32a7.99977 7.99977 0 0 0 -8-8zm-8 32h-16v-16h16z" data-original="#000000" class="active-path" fill="#000000"/><path d="m280 232h24v16h-24z" data-original="#000000" class="active-path" fill="#000000"/><path d="m320 232h112v16h-112z" data-original="#000000" class="active-path" fill="#000000"/><path d="m248 280h-32a7.99977 7.99977 0 0 0 -8 8v32a7.99977 7.99977 0 0 0 8 8h32a7.99977 7.99977 0 0 0 8-8v-32a7.99977 7.99977 0 0 0 -8-8zm-8 32h-16v-16h16z" data-original="#000000" class="active-path" fill="#000000"/><path d="m280 296h24v16h-24z" data-original="#000000" class="active-path" fill="#000000"/><path d="m320 296h112v16h-112z" data-original="#000000" class="active-path" fill="#000000"/><path d="m248 344h-32a7.99977 7.99977 0 0 0 -8 8v32a7.99977 7.99977 0 0 0 8 8h32a7.99977 7.99977 0 0 0 8-8v-32a7.99977 7.99977 0 0 0 -8-8zm-8 32h-16v-16h16z" data-original="#000000" class="active-path" fill="#000000"/><path d="m280 360h24v16h-24z" data-original="#000000" class="active-path" fill="#000000"/><path d="m320 360h112v16h-112z" data-original="#000000" class="active-path" fill="#000000"/><path d="m248 408h-32a7.99977 7.99977 0 0 0 -8 8v32a7.99977 7.99977 0 0 0 8 8h32a7.99977 7.99977 0 0 0 8-8v-32a7.99977 7.99977 0 0 0 -8-8zm-8 32h-16v-16h16z" data-original="#000000" class="active-path" fill="#000000"/><path d="m280 424h24v16h-24z" data-original="#000000" class="active-path" fill="#000000"/><path d="m320 424h112v16h-112z" data-original="#000000" class="active-path" fill="#000000"/><path d="m448 96h-384a7.99977 7.99977 0 0 0 -8 8v344a7.99977 7.99977 0 0 0 8 8h112a7.99977 7.99977 0 0 0 8-8v-256h264a7.99977 7.99977 0 0 0 8-8v-80a7.99977 7.99977 0 0 0 -8-8zm-280 344h-96v-248h96zm272-264h-368v-64h368z" data-original="#000000" class="active-path" fill="#000000"/></g> </svg>
-
-   </div>
-   <div class="b-complex-menu-slider__title">
-     <?php echo $this->tag->getTag('property_types','Available Units');?>
-   </div>
-    </a>
-</div>
 
      <div class="b-complex-menu-slider__item swiper-slide " id="payment_plan_a" onclick="moveTo3('payment_plan','54')" href="#payment_plan"    >
 		 <a id="payment_plan_a"   href="#m_payment_plan"    >

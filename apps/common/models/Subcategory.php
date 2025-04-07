@@ -322,5 +322,24 @@ class Subcategory extends ActiveRecord
 		$criteria->condition = ' TRIM(LOWER(t.sub_category_name)) like  :sub_category_name  and  t.isTrash="0" and status="A"  ';
 		$criteria->params[":sub_category_name"] = '%'.trim(strtolower($category)).'%';
 		return $this->find($criteria);
-	 }
+	}
+	public static function all_sub_categories_list()
+	{
+		static $list = null;
+
+		if ($list !== null) {
+			return $list;
+		}
+
+		$criteria = new CDbCriteria();
+		$criteria->select = 'sub_category_id, sub_category_name';
+		$criteria->order = 'sub_category_name ASC';
+
+		$models = self::model()->findAll($criteria);
+
+		$list = CHtml::listData($models, 'sub_category_id', 'sub_category_name');
+
+		return $list;
+	}
+
 }

@@ -246,7 +246,7 @@ class DetailController extends Controller
 	public function actionProject($slug = null)
 	{
 		$criteria = new CDbCriteria;
-		$criteria->select = 't.*,usr.enable_l_f,usr.premium as premium_u,usr.whatsapp as whatsapp,cat.slug as category_slug,usr.full_number as mobile_number,sec.slug as sec_slug,con.country_name as country_name,usr.company_name as company_name,sub_com.sub_community_name as sub_community_name,st.slug as state_slug,cat.category_name as  category_name,sub.sub_category_name as sub_category_name,usr.description as user_description,usr.image as user_image,usr.first_name,usr.last_name,usr.description as user_description,usr.phone as user_number,usr.email as user_email,usr.company_name as company_name2,usr.website as user_website,usr.address as user_address,usr.user_type as user_type,usr.slug as user_slug,sec.section_name,st.state_name as state_name,com.community_name,(SELECT image_name FROM {{ad_image}} img  WHERE  img.ad_id = t.id and  img.status="A" and  img.isTrash="0" limit 1 )   as ad_image';
+		$criteria->select = 't.*,cat.slug as category_slug,sec.slug as sec_slug,con.country_name as country_name,sub_com.sub_community_name as sub_community_name,st.slug as state_slug,cat.category_name as  category_name,sub.sub_category_name as sub_category_name,sec.section_name,st.state_name as state_name,com.community_name,(SELECT image_name FROM {{ad_image}} img  WHERE  img.ad_id = t.id and  img.status="A" and  img.isTrash="0" limit 1 )   as ad_image';
 		$criteria->condition = '1';
 		if (Yii::app()->request->getQuery('showTrash', '0') == '0') {
 			$criteria->compare('t.isTrash', '0');
@@ -259,8 +259,9 @@ class DetailController extends Controller
 		$criteria->join  .= ' left join {{sub_community}} sub_com ON sub_com.sub_community_id = t.sub_community_id ';
 		$criteria->join  .= ' left join {{states}} st ON st.state_id = t.state ';
 		$criteria->join  .= ' left join {{countries}} con ON con.country_id = t.country ';
-		$criteria->join  .=   ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
-		$criteria->condition .= ' and usr.status = "A" and usr.isTrash="0"';
+		// $criteria->join  .=   ' INNER JOIN {{listing_users}} usr on usr.user_id = t.user_id ';
+		// $criteria->join .= ' INNER JOIN {{user}} u ON u.user_id = t.user_id'; // Joining the `user` table
+		// $criteria->condition .= ' and usr.status = "A" and usr.isTrash="0"';
 		$criteria->condition .= ' and t.slug=:slug ';
 		if (Yii::app()->user->getId()) {
 			$criteria->select .= ' ,fav.ad_id as fav ';

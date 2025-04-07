@@ -58,7 +58,7 @@ border-bottom: 1px solid
 <div id="m_property_types" class="padding-top-40"></div>
 <div class="project_type   margin-top-0  np_view_tabs_data" id="prop_type" style="position: relative;">
    <!--Property types start -->
-   <h3 class="headline" >Property Types</h3>
+   <!-- <h3 class="headline" >Property Types</h3> -->
     <ul class="content">
         <style>
             

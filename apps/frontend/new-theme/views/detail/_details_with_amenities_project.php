@@ -25,6 +25,14 @@
       <div class="value left"><?php echo $model->LocationTitle;?></div>
    </li>
    <li class="left">
+      <?php if (strtolower($model->ProjectstatusTitle) == 'ready'): ?>
+         <div class="category left"><?php echo $this->tag->getTag('Generated ROI', 'Generated ROI') ;?></div>
+      <?php else: ?>
+         <div class="category left"><?php echo $this->tag->getTag('Expected ROI', 'Expected ROI') ;?></div>
+      <?php endif; ?>
+      <div class="value left"><?php echo $model->roi."%";?></div>
+   </li>
+   <li class="left">
       <div class="category left"><?php echo $this->tag->getTag('price', 'Price') ;?></div>
       <div class="value left" style="font-weight:600">
          <span>
@@ -37,22 +45,29 @@
       </div>
    </li>
    <li class="left">
-      <div class="category left"><?php echo $this->tag->getTag('Type', 'Type') ;?></div>
-      <div class="value left">  <?php
-  $all_property_types = $model->all_property_types();
-  if(!empty($all_property_types)){  ?> 
-    
-       <?php
-       $str = '';
-			 foreach($all_property_types as $k2=>$v2){  $str .= $v2->category_name.',';}
-			echo rtrim( $str , ','); 	 
-		}
-       ?> 
-       </div>
+      <div class="category left">
+         <?php echo $this->tag->getTag('Type', 'Type'); ?>
+      </div>
+      <div class="value left">
+         <?php
+            echo $model->CategoryName;
+         ?>
+      </div>
    </li>
    <li class="left">
+      <div class="category left">
+         <?php echo $this->tag->getTag('Category', 'Category'); ?>
+      </div>
+      <div class="value left">
+         <?php
+         echo $model->SubCategoryName;
+         ?>
+      </div>
+   </li>
+
+   <li class="left">
       <div class="category left"><?php echo $this->tag->getTag('developer', 'Developer') ;?></div>
-      <div class="value left"><?php echo $model->companyName;?> </div>
+      <div class="value left"><?php echo $model->contact_person;?> </div>
    </li>
 </ul>
          <div class="clearfix"></div>
@@ -61,43 +76,7 @@
    
 	<style>.top-desc    span  {white-space:initial !important; }  #txttrim ul {overflow: initial;    margin: 0px 20px;}  #txttrim  li{display: list-item;float: none;background: transparent;line-height: 1.8;list-style-type: disc;margin: 0px !important;height: auto;list-style: initial !important;} </style>
 	<div data-qs="text-trimmer"  id="txttrim" class=" "  ><div class="top-desc"><?php echo $model->adDescription2;?></div>
-	<?php
-						  if(!empty($model->video)){
-						      preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $model->video, $match);
-$youtube_id = @$match[1];
- 
-							  echo '<div class="clearfix"></div> ';
-							  ?>
-							  <style>
-							      .video-container3 {
-position: relative;
-padding-bottom: 56.25%;margin-top:15px;
-padding-top: 30px; height: 0; overflow: hidden;
-}
- 
-.video-container3 iframe,
-.video-container3 object,
-.video-container3 embed {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-}
-							      
-							  </style>
-							  <?php 
-							   
-			//  echo '<div style="position:relative;margin-top:15px;width:100%"><div class="video-container2" style="width:100%; "><iframe class="video"   src="https://www.youtube.com/embed/'.@$youtube_id.'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" style="height:100%;" allowfullscreen></iframe></div> </div>';
-					 
-					 echo '<div class="video-container3"><iframe width="853" height="480"   src="https://www.youtube.com/embed/'.@$youtube_id.'" frameborder="0" allowfullscreen></iframe></div>';
-					 	  echo '<div class="clearfix"></div> ';
-						  ?>
-						  
-						  <?
-							}
-					 	?>
-	
+
 	</div></div>
  
 <div class="clearfix"></div>
@@ -215,7 +194,7 @@ if(!empty( $amentites)){ ?>
 					
 <div class="clearfix"></div>
 <div class="clearfix"></div> 
-					<?php $this->renderPartial('_property_types');?>
+					<?php // $this->renderPartial('_property_types');?>
 <div class="clearfix"></div>
 <?php 
 					if(!empty($unitIds)){
@@ -257,68 +236,108 @@ if(!empty( $amentites)){ ?>
    </div>
 	<?php } 
 	?>			
-	
-<div class="clearfix"></div>
-	<div id="m_developer" class="padding-top-40"></div>
-<div class="propertypage_factsamenities margin-top-0 margin-bottom-15  ">
-   <div class="facts">
-      <div class="facts_container">
-         <h2 class="headline"  id="to_developer"><?php echo  $this->tag->getTag('contact','Contact') ;?></h2>
-         <div class="clearfix"></div>
-         <style>
-             .m-mob-dip1 .mbtn-div {     max-width: 378px;; }
-             #detail  .m-mob-dip1 .mbtn-div .fENbfA {
-    background-color: #fff !important;
-}       #detail  .m-mob-dip1 .mbtn-div .fENbfA {
-    background-color: #fff !important;
-    color: #222!important;
-    border: 1px solid #222!important;
-    margin-right: 6px !important;
-}
-         </style>
-         			<div class="m-mob-dip1">
- 
-<div class="col-sm-12  padding-right-0 call-btn-div  mbtn-div" style="padding:0px;width:100% !important">
-    <a type="button"    style="color:#fff;padding-left: 2px;padding-right: 2px; " onclick="OpenCallNew(this)" data-prop="<?php echo $model->id;?>" data-phone="<?php echo base64_encode($model->mobile_number);?>"   data-testid="lead-form-submit" style="margin-bottom:8px" class="b-l-l-m    Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA" dir="ltr"><i class="fa fa-phone" style="font-size: 20px;margin-right: 3px;"></i> <?php echo  $this->tag->getTag('call','Call')  ;?></a>
-    <?php $w_share_url = Yii::t('app','https://wa.me/{number}?text={text}',array('{number}'=>Yii::t('app',!empty($model->whatsapp) ? $model->whatsapp : $model->mobile_number,array('+'=>'',' '=>'')) ,'{text}'=>  'I would like to inquire about your property Feeta - '.$model->ReferenceNumberTitle.'. Please contact me at your earliest convenience. %0aProperty Link %0a' .   urlencode(Yii::app()->createAbsoluteUrl('detail/index_project',array('slug'=>$model->slug))) ));?>
- 
-    <a type="button"    target="_blank" style="color:#fff; "  onclick="OpenWhatsappNew(this)" data-href="<?php echo  $w_share_url;?>"    data-testid="lead-form-submit" style="margin-bottom:8px" class="   Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA wtspp"><i class="fa fa-whatsapp" style="font-size: 20px;margin-right: 3px;"></i> </a>
-    <button type="button" onclick="OpenFormClickNew(this)" data-reactid="<?php echo $model->id;?>" data-testid="lead-form-submit" style=" " class="b-r-r-m Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA"><i class="fa fa-envelope"  style="font-size: 20px;margin-right: 3px;"></i> <?php echo  $this->tag->getTag('email','Email') ;?></button>
-    
-    </div>
- 
-</div>
+	   <div id="m_developer" class="padding-top-40"></div>
 
-         <div class="hide">
-				 <div class="img_dev mobe pull-left" style="width:90px;height:90px;border:1px solid #eee;text-align: center; ">
-				 <?php 
-								   
-								$image = $model->companyImage; 
-								$profile_url = ($model->premium_u=='1') ? 'detail_developer'  : 'detail'; 
-								$lnk = $model->enable_l_f=='1' ?  Yii::app()->createUrl('user_listing/'.$profile_url ,array('slug'=>$model->user_slug)) : 'javascript:void(0)' ; 
-								if(!empty($image)){
-								echo '<a href="'.$lnk.'"  style="display: block;margin: 0 auto;line-height:90px;" ><img src="'.$image.'" style="object-fit:contain;width:90%;height:90%;" ></a>';
-								 } ?>
-				 </div>
-				   <div class="img_dev_details  pull-right" style="width:calc(100% - 105px); ">
-					   <div class="_1p3joamp" style="margin-bottom: 5px !important;"><a href="<?php echo $lnk;?>"class="<?php echo $model->enable_l_f=='1' ? 'link_color ' : '';?>" ><?php echo $model->companyName;?></a>
-					   
-					   </div> 
-					   <p class="margin-bottom-5"><span style="font-weight:600"><?php echo  $this->tag->getTag('contact_person','Contact Person') ;?></span> : <?php echo $model->first_name;?> </p>
-					   <?php
-					   if(!empty($model->user_address)){ ?> 
-					   <p class="margin-bottom-5"><span style="font-weight:600"><?php echo  $this->tag->getTag('address','Address') ;?></span> : <?php echo $model->user_address;?> </p>
-					   <?php } ?> 
-					</div> 
+      <div class="propertypage_factsamenities margin-top-0 margin-bottom-15">
+         <div class="facts">
+            <div class="facts_container">
+               
+
+                  <h2 class="headline" id="to_developer">
+                     <?php echo $this->tag->getTag('contact', 'Contact'); ?>
+                  </h2>
+
+                  <div class="clearfix"></div>
+
+                  <style>
+                     .m-mob-dip1 .mbtn-div {
+                        max-width: 378px;
+                     }
+
+                     #detail .m-mob-dip1 .mbtn-div .fENbfA {
+                        background-color: #fff !important;
+                        color: #222 !important;
+                        border: 1px solid #222 !important;
+                        margin-right: 6px !important;
+                     }
+                  </style>
+
+                  <div class="m-mob-dip1">
+                     <?php if (!empty($model->developer_description) || !empty($model->developer_profile)) : ?>
+                        <div class="developer-info-block" style="margin-bottom:20px;">
+                           <?php if (!empty($model->contact_person)) : ?>
+                                 <h3 class="developer-name" style="font-size: 18px; font-weight: bold;">
+                                    Developer Name: <?php echo $model->contact_person; ?>
+                                 </h3>
+                                 
+                           <?php endif; ?>
+
+                           <?php if (!empty($model->developer_description)) : ?>
+                                 <p class="developer-description" style="margin-top: 10px;">
+                                    <?php echo nl2br(CHtml::encode($model->developer_description)); ?>
+                                 </p>
+                           <?php endif; ?>
+
+                           <?php if (!empty($model->developer_profile)) :
+                                 $pdfUrl = Yii::app()->baseUrl . '/uploads/files/' . $model->developer_profile;
+                           ?>
+                                 <a href="<?php echo $pdfUrl; ?>" target="_blank" class="btn btn-outline-dark" style="margin-top:10px; display:inline-block;">
+                                    <i class="fa fa-download" style="margin-right:5px;"></i>
+                                    <?php echo Yii::t('app', 'Download Developer Profile'); ?>
+                                 </a>
+                           <?php endif; ?>
+                        </div>
+                     <?php endif; ?>
+                     <div class="col-sm-12 padding-right-0 call-btn-div mbtn-div" style="padding:0; width:100% !important">
+
+                        <!-- Call Button -->
+                        <a type="button"
+                           style="color:#fff; padding-left:2px; padding-right:2px;"
+                           onclick="OpenCallNew(this)"
+                           data-prop="<?php echo $model->id; ?>"
+                           data-phone="<?php echo base64_encode($model->mobile_number); ?>"
+                           data-testid="lead-form-submit"
+                           class="b-l-l-m Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA"
+                           dir="ltr">
+                              <i class="fa fa-phone" style="font-size:20px; margin-right:3px;"></i>
+                              <?php echo $this->tag->getTag('call', 'Call'); ?>
+                        </a>
+
+                        <!-- WhatsApp URL -->
+                        <?php
+                        $w_share_url = Yii::t('app', 'https://wa.me/{number}?text={text}', array(
+                              '{number}' => Yii::t('app', !empty($model->whatsapp) ? $model->whatsapp : $model->mobile_number, array('+' => '', ' ' => '')),
+                              '{text}' => 'I would like to inquire about your property Feeta - ' . $model->ReferenceNumberTitle . '. Please contact me at your earliest convenience. %0aProperty Link %0a' . urlencode(Yii::app()->createAbsoluteUrl('detail/index_project', array('slug' => $model->slug)))
+                        ));
+                        ?>
+
+                        <!-- WhatsApp Button -->
+                        <a type="button"
+                           target="_blank"
+                           style="color:#fff;"
+                           onclick="OpenWhatsappNew(this)"
+                           data-href="<?php echo $w_share_url; ?>"
+                           data-testid="lead-form-submit"
+                           class="Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA wtspp">
+                              <i class="fa fa-whatsapp" style="font-size:20px; margin-right:3px;"></i>
+                        </a>
+
+                        <!-- Email Button -->
+                        <button type="button"
+                                 onclick="OpenFormClickNew(this)"
+                                 data-reactid="<?php echo $model->id; ?>"
+                                 data-testid="lead-form-submit"
+                                 class="b-r-r-m Button__ButtonBase-sc-1ea9wz-0 TertiaryButton-sc-1ve5gq4-0 fENbfA">
+                              <i class="fa fa-envelope" style="font-size:20px; margin-right:3px;"></i>
+                              <?php echo $this->tag->getTag('email', 'Email'); ?>
+                        </button>
+
+                     </div>
+                  </div>
+            </div>
          </div>
-       
-         <div class="clearfix"></div>
-<div class="text-trimmer-wrapper  margin-top-20">
-	<input type="text" id="asss"  style="position:absolute;left:-999999px;height:1px;visinility:hidden;"/>
-	<input type="text" id="asss2"  style="position:absolute;left:-999999px;height:1px;visinility:hidden;"/>
-	<div data-qs="text-trimmer"  id="txttrim" class=" "  ><?php echo nl2br($model->user_description);?></div></div>
- 
-<div class="clearfix"></div>
+      </div>
+
       </div>
    </div>
 </div>

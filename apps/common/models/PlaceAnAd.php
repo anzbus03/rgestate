@@ -1329,9 +1329,9 @@ class PlaceAnAd extends ActiveRecord
 			}
 			$this->status  =  Yii::app()->options->get('system.common.frontend_default_ad_status', 'W');
 		}
-		if ($this->category_id != '121') {
-			$this->sub_category_id = '';
-		}
+		// if ($this->category_id != '121') {
+		// 	$this->sub_category_id = '';
+		// }
 		$this->interior_size = empty($this->interior_size) ? null : $this->interior_size;
 		$city =  City::model()->findByPk($this->city);
 		if (!empty($city)) {
@@ -3053,19 +3053,21 @@ class PlaceAnAd extends ActiveRecord
 	}
 	public function getAdImageWithWatermark($imageName = null, $watermarkPath = '/new_assets/images/logoNew.png')
 	{
+
+		return '/uploads/files/'.$imageName;
 		$imagePath = Yii::getPathOfAlias('webroot') . $imageName;
 		$watermarkFullPath = Yii::getPathOfAlias('webroot') . $watermarkPath;
 		$watermarkedImagePath = $imagePath . '_watermarked'; // Define a unique name for the watermarked image
-
 		// Check if the watermarked image already exists
 		if (file_exists($watermarkedImagePath)) {
-			return str_replace(Yii::getPathOfAlias('webroot'), '', $watermarkedImagePath);
+			return str_replace(Yii::getPathOfAlias('webroot'), 'uploads/files/', $watermarkedImagePath);
 		}
-
+		
 		if (!file_exists($imagePath)) {
 			Yii::log('Image file does not exist: ' . $imagePath, 'error');
-			return $imageName; // Return the original image name if it doesn't exist
+			return '/uploads/files/'.$imageName; // Return the original image name if it doesn't exist
 		}
+		return '/uploads/files/'.$imageName;
 
 		if (!file_exists($watermarkFullPath)) {
 			Yii::log('Watermark file does not exist: ' . $watermarkFullPath, 'error');
@@ -3076,10 +3078,9 @@ class PlaceAnAd extends ActiveRecord
 		$watermarkedImage = $this->applyWatermark($imagePath, $watermarkFullPath, $watermarkedImagePath);
 		if (!$watermarkedImage) {
 			Yii::log('Failed to apply watermark on: ' . $imagePath, 'error');
-			return $imageName; // Return the original image name if watermarking fails
+			return 'uploads/files/'.$imageName; // Return the original image name if watermarking fails
 		}
-
-		return str_replace(Yii::getPathOfAlias('webroot'), '', $watermarkedImagePath); // Return the path of the watermarked image
+		return str_replace(Yii::getPathOfAlias('webroot'), 'uploads/files/', $watermarkedImagePath); // Return the path of the watermarked image
 	}
 
 	private function applyWatermark($imagePath, $watermarkPath, $watermarkedImagePath)
@@ -3216,9 +3217,9 @@ class PlaceAnAd extends ActiveRecord
 	public function getdetailImages($im, $status, $w = '960')
 	{
 		if ($status == 'A') {
-
+			
 			if (strpos($im, '/') !== false) {
-
+				
 				if (defined('DISABLE_WEBP')) {
 					return Yii::app()->apps->getBaseUrl('uploads/files/' .	$im);
 				}
@@ -3229,9 +3230,9 @@ class PlaceAnAd extends ActiveRecord
 				$src =   'uploads/files/' .	$im;
 				$ref->resize($src, 'uploads/mobile_images', $w, 91, $file_format, FALSE);
 
-				return Yii::app()->apps->getBaseUrl($ref->newfilename);;
+				return Yii::app()->apps->getBaseUrl($ref->newfilename);
 			} else {
-				return  ENABLED_AWS_PATH . $this->ad_image;
+				return  'uploads/files/'.$this->ad_image;
 			}
 		} else {
 			return  Yii::app()->apps->getBaseUrl('assets/img/waiting.png');
@@ -5211,7 +5212,7 @@ class PlaceAnAd extends ActiveRecord
 			case '2':
 				return 'Under Construction';
 				break;
-			case '2':
+			case '3':
 				return 'Build to Suit';
 				break;
 		}
@@ -5320,6 +5321,25 @@ class PlaceAnAd extends ActiveRecord
 
 		return $html;
 	}
+	public function getPriceToTitleSpanL($code = '')
+	{
+		if ($this->p_o_r == '1') {
+			return '<span class="pri sec_' . $this->section_id . '"><span class="price-on-request">' . $this->mTag()->getTag('price_on_request', 'Price on Request') . '</span></span>';
+		}
+
+		if (defined('SELECTED_CURRENCY') && SELECTED_CURRENCY != '2') {
+			$num = Yii::t('app', ($this->price_to * SELECT_CURRENCY_RATE), array('.00' => ''));
+			return '<span class="pri sec_' . $this->section_id . '"><span class="codc"> ' . SELECT_CURRENCY_TITLE . ' </span>' . Yii::t('app', $this->getnewFormat($num), array('.00' => '')) . '</span>';
+		} elseif (defined('SYSTEM_CURRENCY') && SYSTEM_CURRENCY == 'usd') {
+			$num = Yii::t('app', ($this->price_to / $this->UsdValue), array('.00' => ''));
+			return '<span class="pri sec_' . $this->section_id . '"><span class="codc"> $ </span>' . Yii::t('app', $num, array('.00' => '')) . '</span>';
+		} else {
+			$code = $this->currencyTitle;
+			$html = '<span class="pri sec_' . $this->section_id . '"><span class="codc"> ' . $code . ' </span>' . Yii::t('app', $this->newToFormat, array('.00' => '')) . '</span>';
+		}
+
+		return $html;
+	}
 
 	public function getPriceTitleSpanL2($code = '')
 	{
@@ -5356,6 +5376,37 @@ class PlaceAnAd extends ActiveRecord
 	public function getNewFormat($price = null)
 	{
 		$price = empty($price) ? $this->price : $price;
+		$num = number_format($price, 0, '.', ',');;
+		return $num;
+		$ext = ""; //thousand,lac, crore
+		$number_of_digits = $this->count_digit($num); //this is call :)
+
+		if ($number_of_digits <= 5) {
+
+			return number_format($num, 0, '.', ',');
+		}
+		if ($number_of_digits > 3) {
+			if ($number_of_digits % 2 != 0)
+				$divider = $this->divider($number_of_digits - 1);
+			else
+				$divider = $this->divider($number_of_digits);
+		} else
+			$divider = 1;
+
+		$fraction = $num / $divider;
+		$fraction = number_format($fraction, 2);
+
+		if ($number_of_digits == 6 || $number_of_digits == 7)
+			$ext = "Lac";
+		if ($number_of_digits == 8 || $number_of_digits == 9)
+			$ext = "Cr";
+		if ($number_of_digits > 9)
+			$ext = "Cr";
+		return $fraction . " " . $ext;
+	}
+	public function getNewToFormat($price = null)
+	{
+		$price = empty($price) ? $this->price_to : $price;
 		$num = number_format($price, 0, '.', ',');;
 		return $num;
 		$ext = ""; //thousand,lac, crore
@@ -6314,6 +6365,17 @@ class PlaceAnAd extends ActiveRecord
 		}
 		return $_categoryList;
 	}
+	public function sub_category_list()
+	{
+		// static $_subCategoryList;
+
+		// if ($_subCategoryList !== null) {
+		// 	return $_subCategoryList;
+		// }
+
+		$_subCategoryList = Category::model()->all_categories_list(); // Assumes this returns id => name
+		return $_subCategoryList;
+	}
 	public function states_list()
 	{
 		static $_statesList;
@@ -6333,6 +6395,15 @@ class PlaceAnAd extends ActiveRecord
 		$ar = $this->category_list();
 
 		return isset($ar[$this->category_id]) ? $ar[$this->category_id] : '';
+	}
+	public function getSubCategoryName()
+	{
+		// if (!empty($this->sub_category_name)) {
+		// 	return $this->sub_category_name;
+		// }
+
+		$list = $this->sub_category_list();
+		return isset($list[$this->sub_category_id]) ? $list[$this->sub_category_id] : '';
 	}
 	public function getStateName()
 	{

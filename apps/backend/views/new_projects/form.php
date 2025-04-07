@@ -305,7 +305,12 @@ if ($viewCollection->renderContent) {
 				'htmlOptions' => array('autocomplete' => 'off')
 			));
 		} else {
-			$form = $this->beginWidget('CActiveForm', array('focus' => array($model, Yii::app()->controller->focus)));
+			$form = $this->beginWidget('CActiveForm', array(
+				'focus' => array($model, Yii::app()->controller->focus),
+				'htmlOptions' => array(
+					'enctype' => 'multipart/form-data' // ✅ Required for file uploads
+				)
+			));
 		}
 	?>
 		<style>
@@ -412,6 +417,13 @@ if ($viewCollection->renderContent) {
 
 						// Convert PHP array to JavaScript JSON object
 						$allStatesJson = json_encode($allStates);
+						$selectedStates = [];
+						if (!empty($model->city) && isset($allStates[$model->city])) {
+							foreach ($allStates[$model->city] as $state) {
+								$selectedStates[$state['id']] = $state['name'];
+							}
+						}
+
 					?>
 					<script>
 						var allStates = <?php echo $allStatesJson; ?>;
@@ -429,7 +441,7 @@ if ($viewCollection->renderContent) {
 
 					<div class="form-group col-lg-4">
 						<?php echo $form->labelEx($model, 'state'); ?>
-						<?php echo $form->dropDownList($model, 'state', [], $model->getHtmlOptions('state', array(
+						<?php echo $form->dropDownList($model, 'state', $selectedStates, $model->getHtmlOptions('state', array(
 							'empty' => 'Select Location', 
 							'class' => 'form-control select2',
 							'onchange' => 'changeMap()'
@@ -454,6 +466,12 @@ if ($viewCollection->renderContent) {
 								});
 							}
 						}
+						// document.addEventListener("DOMContentLoaded", function () {
+						// 	var selectedCity = '<?php echo (int) $model->city; ?>';
+						// 	if (selectedCity) {
+						// 		updateLocations(selectedCity);
+						// 	}
+						// });
 
 					</script>
 				
@@ -484,19 +502,19 @@ if ($viewCollection->renderContent) {
 					}
 
 					?>
-					<?php echo $form->dropDownList($model, 'p_types', $propertylist, $model->getHtmlOptions('p_types', array('data-placeholder' => 'Select Project Type', 'empty' => 'Select Project Type', 'class' => 'form-control select2', 'multiple' => false))); ?>
-					<?php echo $form->error($model, 'p_types'); ?>
+					<?php echo $form->dropDownList($model, 'sub_category_id', $propertylist, $model->getHtmlOptions('sub_category_id', array(
+						'data-placeholder' => 'Select Project Type',
+						'empty' => 'Select Project Type',
+						'class' => 'form-control select2',
+						'multiple' => false
+					))); ?>
+					<?php echo $form->error($model, 'sub_category_id'); ?>
 				</div>
 				<div class="form-group col-lg-4 mt-2">
 					<?php echo $form->labelEx($model, 'plot_area');?>
 					<?php echo $form->textField($model, 'plot_area', $model->getHtmlOptions('plot_area')); ?>
 					<?php echo $form->error($model, 'plot_area');?>
-				</div>       
-				<div class="form-group col-lg-4 mt-2">
-					<?php echo $form->labelEx($model, 'plot_area');?>
-					<?php echo $form->textField($model, 'plot_area', $model->getHtmlOptions('plot_area')); ?>
-					<?php echo $form->error($model, 'plot_area');?>
-				</div>       
+				</div>           
 				<div class="form-group col-lg-4 mt-2">
 					<?php echo $form->labelEx($model, 'builtup_area');?>
 					<?php echo $form->textField($model, 'builtup_area', $model->getHtmlOptions('builtup_area')); ?>
@@ -629,10 +647,15 @@ if ($viewCollection->renderContent) {
 					<?php echo $form->textField($model, 'roi', $model->getHtmlOptions('roi')); ?>
 					<?php echo $form->error($model, 'roi'); ?>
 				</div>
-				<div class="form-group col-lg-12 mt-2">
+				<div class="form-group col-lg-6 mt-2">
 					<label id="price_label"><?php echo $model->getAttributeLabel('price'); ?></label>
 					<?php echo $form->textField($model, 'price', $model->getHtmlOptions('price')); ?>
 					<?php echo $form->error($model, 'price'); ?>
+				</div>
+				<div class="form-group col-lg-6 mt-2">
+					<label id="price_label"><?php echo $model->getAttributeLabel('possession'); ?></label>
+					<?php echo $form->textField($model, 'possession', $model->getHtmlOptions('possession')); ?>
+					<?php echo $form->error($model, 'possession'); ?>
 				</div>
 				<!-- JavaScript to Change Labels -->
 				<script>
@@ -727,16 +750,23 @@ if ($viewCollection->renderContent) {
 					
 					<div class="form-group col-md-12 mt-2">
 						<?php echo $form->labelEx($model, 'developer_description'); ?>
-						<?php echo $form->textArea($model, 'developer_description', $model->getHtmlOptions('developer_description', ['rows' => 5])); ?>
+						<?php echo $form->textArea($model, 'developer_description', array_merge(
+							$model->getHtmlOptions('developer_description'), [
+								'rows' => '5',
+								'id' => 'developer_description',
+								'style' => 'height: 12rem;'
+							]
+						)); ?>
 						<?php echo $form->error($model, 'developer_description'); ?>
 					</div>
-					<div class="form-group col-md-12 mt-2">
+
+					<div class="form-group col-md-6 mt-2">
 						<?php echo $form->labelEx($model, 'developer_profile'); ?>
 						<?php echo $form->fileField($model, 'developer_profile', $model->getHtmlOptions('developer_profile')); ?>
 						<?php echo $form->error($model, 'developer_profile'); ?>
 					</div>
 
-					<div class="form-group col-lg-6">
+					<div class="form-group col-lg-6 mt-2">
 						<?php echo $form->labelEx($model, 'user_id'); ?>
 						<?php echo $form->dropDownList($model, 'user_id', CHtml::listData(User::model()->findAll(), 'user_id', 'fullName'), array_merge($model->getHtmlOptions('user_id'), [
 							'empty' => "Select User",
