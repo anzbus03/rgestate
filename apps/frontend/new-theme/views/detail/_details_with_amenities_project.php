@@ -32,18 +32,18 @@
       <?php endif; ?>
       <div class="value left"><?php echo $model->roi."%";?></div>
    </li>
-   <li class="left">
+   <!-- <li class="left">
       <div class="category left"><?php echo $this->tag->getTag('price', 'Price') ;?></div>
       <div class="value left" style="font-weight:600">
          <span>
-         <?php echo $this->tag->getTag('price', 'Starting from') ;?>
+         <?php// echo $this->tag->getTag('price', 'Starting from') ;?>
          </span>
-         <?php echo $model->PriceTitleSpanL; $model->price_to;   
-         if(!empty($model->price_to) and  $model->price_to != '0.00'){
-		  echo ' to '.$model->PriceTitleSpanT;
-		  };?>
+         <?php //echo $model->PriceTitleSpanL; $model->price_to;   
+         // if(!empty($model->price_to) and  $model->price_to != '0.00'){
+		  // echo ' to '.$model->PriceTitleSpanT;
+		 // };?>
       </div>
-   </li>
+   </li> -->
    <li class="left">
       <div class="category left">
          <?php echo $this->tag->getTag('Type', 'Type'); ?>
