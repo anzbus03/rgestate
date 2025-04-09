@@ -86,9 +86,9 @@ if ($viewCollection->renderContent) { ?>
                                 <td><?php echo CHtml::encode(date('d-M-Y', strtotime($data->dateAdded))); ?></td>
                                 <td>
                                     <?php if (AccessHelper::hasRouteAccess($this->id.'/view')): ?>
-                                        <a href="<?php echo $data->permalink; ?>" class="btn btn-sm p-1" target="_blank" title="<?php echo Yii::t('app', 'View'); ?>">
+                                        <!-- <a href="<?php echo $data->permalink; ?>" class="btn btn-sm p-1" target="_blank" title="<?php echo Yii::t('app', 'View'); ?>">
                                             <span class="fa fa-eye"></span>
-                                        </a>
+                                        </a> -->
                                     <?php endif; ?>
                                     <?php if (AccessHelper::hasRouteAccess($this->id.'/update')): ?>
                                         <a class="btn btn-sm p-1" href="<?php echo Yii::app()->createUrl($this->id.'/update', array('id' => $data->areaguides_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>">

@@ -238,13 +238,50 @@ class ListingContents extends ActiveRecord
     
     public function getPermalink($absolute = false)
     {
-        $areaSlug = States::model()->findByPk($this->city);
-        $slug = isset($areaSlug->slug) && !empty($areaSlug->slug) ? $areaSlug->slug : '';
-        $path = 'area-guides' . ($slug ? '/' . $slug : '');
+        Yii::app()->createUrl('listing/index', $formData1 );
+        // Determine section slug based on section_id
+        switch ($this->section_id) {
+            case 1:
+                $sectionSlug = 'for-sale';
+                break;
+            case 2:
+                $sectionSlug = 'for-rent';
+                break;
+            case 3:
+                $sectionSlug = 'business-opportunities';
+                break;
+            default:
+                $sectionSlug = ''; // or handle unexpected section_id values as needed
+                break;
+        }
+    
+        // Initialize the path with the section slug
+        $path = $sectionSlug;
+    
+        // Append p_type slug from the category table if p_type is not empty
+        if (!empty($this->p_type)) {
+            $category = Category::model()->findByPk($this->p_type);
+            if ($category && isset($category->slug) && !empty($category->slug)) {
+                $path .= '/' . $category->slug;
+            }
+        }
+    
+        // Append area slug from the main_region table if area is not empty
+        if (!empty($this->area)) {
+            $region = MainRegion::model()->findByPk($this->area);
+            if ($region && isset($region->slug) && !empty($region->slug)) {
+                $path .= '/' . $region->slug;
+            }
+        }
+    
+        // Generate the URL using the determined path
         $url = Yii::app()->apps->getAppUrl('frontend', $path, $absolute);
+        // Remove '/index.php' from the URL if present
         $url = str_replace('/index.php', '', $url);
+    
         return $url;
     }
+    
     
     public function getStatusesArray()
     {

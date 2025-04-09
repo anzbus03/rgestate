@@ -281,9 +281,23 @@ if ($viewCollection->renderContent) {
                  
                     <div class="form-group col-lg-12">
                         <?php echo $form->labelEx($areaguides, 'highlights');?><?php echo $areaguides->getTranslateHtml('highlights','ar',false,'1200px');?>
-                        <?php echo $form->textArea($areaguides, 'highlights', $areaguides->getHtmlOptions('highlights', array('rows' => 15))); ?>
+                        <?php echo $form->textArea($areaguides, 'highlights', $areaguides->getHtmlOptions('highlights', array('rows' => 15,'id' => 'highlights'))); ?>
                         <?php echo $form->error($areaguides, 'highlights');?>
                     </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
+
+                    <script>
+                        CKEDITOR.replace('highlights', {
+                            height: 250,
+                            toolbar: [
+                                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike'] },
+                                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Blockquote'] },
+                                { name: 'insert', items: ['Image', 'Link', 'Unlink'] },
+                                { name: 'tools', items: ['Maximize'] },
+                                { name: 'document', items: ['Source'] }
+                            ]
+                        });
+                    </script>
                      
                    
                     <div class="form-group col-lg-12">
