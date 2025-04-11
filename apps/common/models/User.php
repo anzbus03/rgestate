@@ -381,12 +381,12 @@ class User extends ActiveRecord
         $criteria->with = array('property');
     
         // If a date range is provided, filter properties based on their date_added field.
-        if ($startDate !== null && $endDate !== null) {
-            // Add condition to the criteria for the related property.
-            $criteria->addCondition('property.date_added >= :startDate AND property.date_added <= :endDate');
-            $criteria->params[':startDate'] = $startDate;
-            $criteria->params[':endDate'] = $endDate;
-        }
+        // if ($startDate !== null && $endDate !== null) {
+        //     // Add condition to the criteria for the related property.
+        //     $criteria->addCondition('property.date_added >= :startDate AND property.date_added <= :endDate');
+        //     $criteria->params[':startDate'] = $startDate;
+        //     $criteria->params[':endDate'] = $endDate;
+        // }
     
         $agents = User::model()->findAll($criteria);
         $agentPropertyCount = array();
