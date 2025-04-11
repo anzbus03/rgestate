@@ -372,31 +372,51 @@ class User extends ActiveRecord
         }
         return $agentsRes;
     }
-    public function getAllAgentsProperties($section = 1)
+    public function getAllAgentsProperties($section = 1, $startDate = null, $endDate = null)
     {
-        $criteria = new \CDbCriteria;
+        $criteria = new CDbCriteria;
         $criteria->compare('t.rules', 3); // Only agents
-
-        $criteria->with = array('property'); // Assuming 'property' is the relation defined in your User model
-
-        $agents = User::model()->findAll($criteria);
-
-        $agentPropertyCount = [];
-
-        foreach ($agents as $agent) {
-            // Filter properties by section_id
-            $propertyCount = 0;
     
+        // Include the 'property' relation.
+        $criteria->with = array('property');
+    
+        // If a date range is provided, filter properties based on their date_added field.
+        if ($startDate !== null && $endDate !== null) {
+            // Add condition to the criteria for the related property.
+            $criteria->addCondition('property.date_added >= :startDate AND property.date_added <= :endDate');
+            $criteria->params[':startDate'] = $startDate;
+            $criteria->params[':endDate'] = $endDate;
+        }
+    
+        $agents = User::model()->findAll($criteria);
+        $agentPropertyCount = array();
+    
+        foreach ($agents as $agent) {
+            $propertyCount = 0;
             foreach ($agent->property as $property) {
-                if ($property->section_id == $section && $property->isTrash == "0" && $property->status == "A") {
-                    $propertyCount++;
+                if (
+                    $property->section_id == $section && 
+                    $property->isTrash == "0" && 
+                    $property->status == "A"
+                ) {
+                    // (Optional) If your relation is not filtered by date, verify manually:
+                    if ($startDate !== null && $endDate !== null) {
+                        if (
+                            strtotime($property->date_added) >= strtotime($startDate) && 
+                            strtotime($property->date_added) <= strtotime($endDate)
+                        ) {
+                            $propertyCount++;
+                        }
+                    } else {
+                        $propertyCount++;
+                    }
                 }
             }
-    
-            $agentPropertyCount[] = $propertyCount; // Store the count for the agent
+            $agentPropertyCount[] = $propertyCount;
         }
         return $agentPropertyCount;
     }
+    
 
     public function findByUid($user_uid)
     {

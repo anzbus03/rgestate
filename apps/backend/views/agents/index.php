@@ -8,10 +8,12 @@ $hooks->doAction('before_view_file_content', $viewCollection = new CAttributeCol
 if ($viewCollection->renderContent) {
 ?>
     <style>
-        .filter-container {
+       .filter-container {
             display: flex;
             flex-wrap: nowrap;
             gap: 16px;
+            overflow-x: auto;  /* Only horizontal overflow */
+            overflow-y: hidden; /* Hide vertical overflow */
             justify-content: flex-end;
             align-items: center;
             margin-bottom: 16px;
@@ -65,6 +67,9 @@ if ($viewCollection->renderContent) {
                     <option value="A">Active</option>
                     <option value="I">Inactive</option>
                 </select>
+            </div>
+            <div class="filter-item">
+                <input type="text" id="dateRange" name="date_range" class="form-control" style="width: auto;height: 2.5rem !important;" placeholder="Select Date Range">
             </div>
             <div class="filter-actions">
                 <button type="submit" class="btn btn-primary btn-sm">Apply Filter</button>
@@ -414,6 +419,31 @@ if ($viewCollection->renderContent) {
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
         <script>
+            $(document).ready(function() {
+                $('#dateRange').daterangepicker({
+                    locale: {
+                        format: 'DD-MMM-YYYY'
+                    },
+                    // For example, using a default start date of 1900-01-01 to represent an "all time" selection
+                    startDate: moment('1900-01-01'),
+                    endDate: moment(),
+                    ranges: {
+                        'Today': [moment().startOf('day'), moment().endOf('day')],
+                        'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                        'Last 7 Days': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+                        'Last 30 Days': [moment().subtract(29, 'days').startOf('day'), moment().endOf('day')],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                        'All Time': [moment('2020-01-01'), moment()]
+                    }
+                }, function(start, end, label) {
+                    // Update the input value with the selected range
+                    $('#dateRange').val(start.format('DD-MMM-YYYY') + ' - ' + end.format('DD-MMM-YYYY'));
+                    // Optionally, if you want to fetch filtered data immediately, call your function here:
+                    // fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                });
+            });
+
             var chartBarRunning = function(){
                 var options  = {
                     series: [

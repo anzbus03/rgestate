@@ -40,82 +40,105 @@ class AgentsController extends Controller
     {
         ini_set('memory_limit', '-1');
         $request = Yii::app()->request;
-        $notify = Yii::app()->notify;
-        // for filters.
-        // $user->attributes = (array)$request->getQuery($user->modelName, array());
-        $salesThisMonth = SoldProperty::model()->getSalesThisMonth();
-        $salesTotal = SoldProperty::model()->getSalesTotal();
-
-        // Get total properties sold this year
-        $startDateYear = date('Y-01-01');
-        $endDateYear = date('Y-m-d', strtotime('+1 day'));
-        $totalPropertiesSoldYear = SoldProperty::model()->getRevenueForAll($startDateYear, $endDateYear);
-
-        // Get total properties sold last year
-        $startDateLastYear = date('Y-01-01', strtotime('-1 year'));
-        $endDateLastYear = date('Y-12-31', strtotime('-1 year'));
-        $totalPropertiesSoldLastYear = SoldProperty::model()->getRevenueForAll($startDateLastYear, $endDateLastYear);
-
-        // Calculate percentage change between this year and last year
-        $percentageChangeYear = $this->calculatePercentageDifference($totalPropertiesSoldYear, $totalPropertiesSoldLastYear);
-
-        // Get total properties sold this month
-        $startDateMonth = date('Y-m-01');
-        $endDateMonth = date('Y-m-t', strtotime('+1 day'));
-        $totalPropertiesSoldMonth = SoldProperty::model()->getRevenueForAll($startDateMonth, $endDateMonth);
-
-        // Get total properties sold last month
-        $startDateLastMonth = date('Y-m-01', strtotime('-1 month'));
-        $endDateLastMonth = date('Y-m-t', strtotime('-1 month'));
-        $totalPropertiesSoldLastMonth = SoldProperty::model()->getRevenueForAll($startDateLastMonth, $endDateLastMonth);
-
-        // Calculate percentage change between this month and last month
-        $percentageChangeMonth = $this->calculatePercentageDifference($totalPropertiesSoldMonth, $totalPropertiesSoldLastMonth);
-
-        // Get total properties sold this week
-        $startDateWeek = date('Y-m-d', strtotime('monday this week'));
-        $endDateWeek = date('Y-m-d', strtotime('sunday this week' . ' +1 day'));
-
-        $totalPropertiesSoldWeek = SoldProperty::model()->getRevenueForAll($startDateWeek, $endDateWeek);
-        $dailySalesData = SoldProperty::model()->getDailySalesData($startDateWeek, $endDateWeek);
+        $notify  = Yii::app()->notify;
+    
+        // Check if a custom date range was provided in GET
+        $dateRange = $request->getQuery('date_range');
+        
+        if (!empty($dateRange)) {
+            // Expected format: "DD-MMM-YYYY - DD-MMM-YYYY"
+            list($customStart, $customEnd) = explode(' - ', $dateRange);
+            // Convert to Y-m-d format; add one day to $customEnd to include the selected end date
+            $customStart = date('Y-m-d', strtotime($customStart));
+            $customEnd   = date('Y-m-d', strtotime($customEnd . ' +1 day'));
+         
+        }
+    
+        // Example: For properties sold this year,
+        // If custom date range exists use it; otherwise use default start of the year and tomorrow’s date
+        $totalPropertiesSoldYear = SoldProperty::model()->getRevenueForAll(
+            isset($customStart) ? $customStart : date('Y-01-01'),
+            isset($customEnd)   ? $customEnd   : date('Y-m-d', strtotime('+1 day'))
+        );
+    
+        // Similarly, for properties sold this month:
+        $totalPropertiesSoldMonth = SoldProperty::model()->getRevenueForAll(
+            isset($customStart) ? $customStart : date('Y-m-01'),
+            isset($customEnd)   ? $customEnd   : date('Y-m-t', strtotime('+1 day'))
+        );
+    
+        // And for properties sold this week:
+        $totalPropertiesSoldWeek = SoldProperty::model()->getRevenueForAll(
+            isset($customStart) ? $customStart : date('Y-m-d', strtotime('monday this week')),
+            isset($customEnd)   ? $customEnd   : date('Y-m-d', strtotime('sunday this week' . ' +1 day'))
+        );
+    
+        // For daily sales data, we use the same week range:
+        $dailySalesData = SoldProperty::model()->getDailySalesData(
+            isset($customStart) ? $customStart : date('Y-m-d', strtotime('monday this week')),
+            isset($customEnd)   ? $customEnd   : date('Y-m-d', strtotime('sunday this week' . ' +1 day'))
+        );
+    
+        // For monthly and weekly sales data, if you want to override the default year/month filtering,
+        // you may do the same; otherwise keep the current defaults.
+        // (Below we keep the defaults; change as needed.)
         $monthlySalesData = SoldProperty::model()->getMonthlySalesData(date('Y'));
-        $weeklySalesData = SoldProperty::model()->getWeeklySalesData(date('Y'), date('m'));
-        // Get total properties sold last week
-        $startDateLastWeek = date('Y-m-d', strtotime('monday last week'));
-        $endDateLastWeek = date('Y-m-d', strtotime('sunday last week' . ' +1 day'));
-        $totalPropertiesSoldLastWeek = SoldProperty::model()->getRevenueForAll($startDateLastWeek, $endDateLastWeek);
-
-        // Calculate percentage change between this week and last week
+        $weeklySalesData  = SoldProperty::model()->getWeeklySalesData(date('Y'), date('m'));
+    
+        // Similarly for properties sold last year:
+        $totalPropertiesSoldLastYear = SoldProperty::model()->getRevenueForAll(
+            isset($customStart) ? $customStart : date('Y-01-01', strtotime('-1 year')),
+            isset($customEnd)   ? $customEnd   : date('Y-12-31', strtotime('-1 year'))
+        );
+    
+        // And last month:
+        $totalPropertiesSoldLastMonth = SoldProperty::model()->getRevenueForAll(
+            isset($customStart) ? $customStart : date('Y-m-01', strtotime('-1 month')),
+            isset($customEnd)   ? $customEnd   : date('Y-m-t', strtotime('-1 month'))
+        );
+    
+        // Calculate percentage changes using existing helper method
+        $percentageChangeYear  = $this->calculatePercentageDifference($totalPropertiesSoldYear, $totalPropertiesSoldLastYear);
+        $percentageChangeMonth = $this->calculatePercentageDifference($totalPropertiesSoldMonth, $totalPropertiesSoldLastMonth);
+    
+        // For last week:
+        $totalPropertiesSoldLastWeek = SoldProperty::model()->getRevenueForAll(
+            isset($customStart) ? $customStart : date('Y-m-d', strtotime('monday last week')),
+            isset($customEnd)   ? $customEnd   : date('Y-m-d', strtotime('sunday last week' . ' +1 day'))
+        );
         $percentageChangeWeek = $this->calculatePercentageDifference($totalPropertiesSoldWeek, $totalPropertiesSoldLastWeek);
-
-
-        // Get number of agents
-        $numberOfAgents = User::model()->getNumberOfAgents();
-
-        $agents = User::model()->getAllAgents();
-        $agentProperties = User::model()->getAllAgentsProperties(1);
-        $agentPropertiesRent = User::model()->getAllAgentsProperties(2);
-        $agentPropertiesProjects = User::model()->getAllAgentsProperties(3);
-        $agentPropertiesBusiness = User::model()->getAllAgentsProperties(6);
-        // Get top 5 active agents
-        $topAgents = SoldProperty::model()->getTop5ActiveAgents();
+    
+        // Other queries that do not use dates remain unchanged:
+        $salesThisMonth = SoldProperty::model()->getSalesThisMonth();
+        $salesTotal     = SoldProperty::model()->getSalesTotal();
+    
+        // Get number of agents and related agent data
+        $numberOfAgents        = User::model()->getNumberOfAgents();
+        $agents                = User::model()->getAllAgents();
+        $agentProperties       = User::model()->getAllAgentsProperties(1, $customStart, $customEnd);
+        $agentPropertiesRent   = User::model()->getAllAgentsProperties(2, $customStart, $customEnd);
+        $agentPropertiesProjects = User::model()->getAllAgentsProperties(3, $customStart, $customEnd);
+        $agentPropertiesBusiness = User::model()->getAllAgentsProperties(6, $customStart, $customEnd);
+        $topAgents = SoldProperty::model()->getTop5ActiveAgents($customStart, $customEnd);
+            
+        // Set page metadata
         $this->setData(array(
-            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Agents List'),
-            'pageHeading'       => Yii::t('agent', 'Agent Dashboard'),
-            'pageBreadcrumbs'   => array(
+            'pageMetaTitle'   => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Agents List'),
+            'pageHeading'     => Yii::t('agent', 'Agent Dashboard'),
+            'pageBreadcrumbs' => array(
                 Yii::t('capacity', 'Agents') => $this->createUrl('agents/index'),
                 Yii::t('app', 'View all')
             )
         ));
-        // echo "<pre>";
-        // print_r($dailySalesData);
-        // exit;
+    
+        // Get tags
         $criteria = new CDbCriteria;
         $criteria->compare('tag_type', 'C');
         $tagModel = Tag::model()->findAll($criteria);
         $tags = CHtml::listData($tagModel, 'tag_id', 'tag_name');
         $tags_short = CHtml::listData($tagModel, 'tag_id', 'tagCodeWithColor');
-
+    
+        // Render the view, passing all variables including the custom date range revenue if set.
         $this->render('index', compact(
             'agentProperties',
             'agents',
@@ -130,7 +153,6 @@ class AgentsController extends Controller
             'totalPropertiesSoldWeek',
             'totalPropertiesSoldLastWeek',
             'percentageChangeWeek',
-            'salesThisMonth',
             'monthlySalesData',
             'weeklySalesData',
             'dailySalesData',
@@ -140,9 +162,11 @@ class AgentsController extends Controller
             'tags_short',
             'agentPropertiesRent',
             'agentPropertiesProjects',
-            'agentPropertiesBusiness'
+            'agentPropertiesBusiness',
+            'totalPropertiesSoldRange' // available if a date range was provided
         ));
     }
+    
 
     /**
      * List of  users
@@ -226,6 +250,9 @@ class AgentsController extends Controller
         $propertyTypeId = Yii::app()->request->getParam('property_type');
         $propertyCategoryId = Yii::app()->request->getParam('property_category');
         $status = Yii::app()->request->getParam('property_status');
+        $dateRange = Yii::app()->request->getParam('date_range');
+        print_r($dateRange);
+        exit;
         // Check if the user exists, if not throw a 404 error
         if (empty($user)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));

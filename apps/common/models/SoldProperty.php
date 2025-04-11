@@ -567,18 +567,15 @@ class SoldProperty extends ActiveRecord
         return $this->count($criteria);
     }
     
-    public function getTop5ActiveAgents()
+    public function getTop5ActiveAgents($startDate = null, $endDate = null)
     {
-        // Retrieve filter values from the request
+        // Retrieve additional filter values from the request.
         $locationId = Yii::app()->request->getParam('location');
         $propertyTypeId = Yii::app()->request->getParam('property_type');
         $propertyCategoryId = Yii::app()->request->getParam('property_category');
         $status = Yii::app()->request->getParam('property_status');
     
-        // Log the filter values for debugging
-        // Yii::log('Location: ' . $locationId . ', Property Type: ' . $propertyTypeId . ', Category: ' . $propertyCategoryId . ', Status: ' . $status, CLogger::LEVEL_INFO);
-    
-        // Base SQL query to get the top agents based on the place_an_ad table
+        // Base SQL query (adjust the date field name if needed)
         $sql = "SELECT 
                     pa.user_id, 
                     COUNT(pa.id) AS property_count, 
@@ -587,9 +584,14 @@ class SoldProperty extends ActiveRecord
                 FROM {{place_an_ad}} pa
                 INNER JOIN mw_user u ON u.user_id = pa.user_id
                 WHERE u.rules = 3    
-                AND pa.isTrash = '0'"; // Only active agents and non-deleted ads
+                  AND pa.isTrash = '0'";
     
-        // Apply filters
+        // Add date filtering if provided.
+        if (!empty($startDate) && !empty($endDate)) {
+            $sql .= " AND pa.date_added >= :startDate AND pa.date_added <= :endDate";
+        }
+    
+        // Append additional filters from GET parameters.
         if (!empty($locationId)) {
             $sql .= " AND pa.state = :locationId";
         }
@@ -603,15 +605,19 @@ class SoldProperty extends ActiveRecord
             $sql .= " AND pa.status = :status";
         }
     
+        // Complete SQL query.
         $sql .= " 
-                  GROUP BY pa.user_id
-                  ORDER BY property_count DESC
-                  LIMIT 5";
-        
-        // Create the command
+                 GROUP BY pa.user_id
+                 ORDER BY property_count DESC
+                 LIMIT 5";
+    
         $command = Yii::app()->db->createCommand($sql);
-        
-        // Bind parameters for filters
+    
+        // Bind date parameters, if provided.
+        if (!empty($startDate) && !empty($endDate)) {
+            $command->bindParam(':startDate', $startDate);
+            $command->bindParam(':endDate', $endDate);
+        }
         if (!empty($locationId)) {
             $command->bindParam(':locationId', $locationId);
         }
@@ -625,15 +631,7 @@ class SoldProperty extends ActiveRecord
             $command->bindParam(':status', $status);
         }
     
-        // Log the final SQL query for debugging
-        // Yii::log('Executing SQL: ' . $command->text, CLogger::LEVEL_INFO);
-    
-        // Execute the query and fetch results
         $result = $command->queryAll();
-    
-        // Check if data was returned and log the results
-        // Yii::log('Query Result: ' . print_r($result, true), CLogger::LEVEL_INFO);
-    
         return $result;
     }
     

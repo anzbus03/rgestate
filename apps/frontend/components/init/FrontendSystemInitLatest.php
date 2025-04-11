@@ -77,7 +77,7 @@ class FrontendSystemInitLatest extends CApplicationComponent
                 array('src' =>  $assetsUrl.'/js/minified.min.js?q=4', 'priority' => -1000,'position'=>CClientScript::POS_HEAD),
                 array('src' =>  $assetsUrl.'/js/minified_commonn.min.js?q=27' , 'priority' => -1000,'position'=>CClientScript::POS_HEAD ),
                 array('src' =>  $assetsUrl.'/js/build/js/intlTelInput.min.js' , 'priority' => -1000,'position'=>CClientScript::POS_END),
-                array('src' => $apps->getBaseUrl('assets/js/main4.min.js?q=2655525'), 'priority' => -1000,'position'=>CClientScript::POS_HEAD),
+                array('src' => $apps->getBaseUrl('assets/js/main4.min.js?q=2655525'), 'priority' => -1000,'position'=>CClientScript::POS_END),
                array('src' => $apps->getBaseUrl('assets/js/multiselect/jquery.dropdown.js?q=111'), 'priority' => -1000,'position'=>CClientScript::POS_END),
         ));  
         return $scripts;

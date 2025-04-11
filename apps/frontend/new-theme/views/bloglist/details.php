@@ -1279,22 +1279,27 @@
                                 <input type="email" name="email" id="email" placeholder="Enter your email address">
                             </div>
                             <div class="contact-input-phone col-12 col-md-12">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_19_853)">
-                                        <path
-                                            d="M15.8286 12.1339C15.2329 11.0079 13.1647 9.78708 13.0736 9.73369C12.8078 9.58241 12.5305 9.50233 12.271 9.50233C11.8851 9.50233 11.5692 9.67911 11.3778 10.0006C11.0753 10.3625 10.7001 10.7855 10.609 10.851C9.90426 11.3292 9.35256 11.2749 8.74213 10.6645L5.33521 7.25725C4.72863 6.65067 4.67287 6.09215 5.14775 5.39125C5.21419 5.29959 5.63716 4.92408 5.99903 4.62123C6.2298 4.4839 6.38819 4.27983 6.4576 4.02949C6.54984 3.69639 6.48192 3.30456 6.2642 2.92282C6.21289 2.83502 4.99143 0.766426 3.86607 0.17112C3.65607 0.0598894 3.41937 0.00115967 3.18208 0.00115967C2.79114 0.00115967 2.42334 0.15362 2.14689 0.429768L1.39409 1.18228C0.203473 2.3726 -0.227508 3.7219 0.112412 5.19251C0.395976 6.41813 1.22235 7.72234 2.56898 9.06868L6.9307 13.4304C8.63505 15.1347 10.2599 15.9991 11.7602 15.9991C12.8639 15.9991 13.8923 15.5301 14.8171 14.6056L15.5696 13.8531C16.027 13.396 16.1308 12.7049 15.8286 12.1339Z"
-                                            fill="#A9A9A9" />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_19_853">
-                                            <rect width="16" height="16" fill="white" />
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                                <input type="tel" name="contact" id="contact1" placeholder="Enter your contact number">
+                               
+                                <input type="tel" name="contact" id="popup-phone" placeholder="Enter your contact number">
                             </div>
+                            <div class="contact-input-select">
+                               
+                                <select name="service" id="service" class="form-control">
+                                    <option value="">Select your service</option>
+                                    <option value="Real Estate">Real Estate</option>
+                                    <option value="Project Funding">Project Funding</option>
+                                    <option value="Retail Investments">Retail Investments</option>
+                                    <option value="Business Funding">Business Funding</option>
+                                    <option value="Project Development">Project Development</option>
+                                    <option value="Project Contracting">Project Contracting</option>
+                                    <option value="Interior Fitouts">Interior Fitouts</option>
+                                    <option value="Building Maintenance">Building Maintenance</option>
+                                    <option value="Buy/Sell Business">Buy/Sell Business</option>
+                                </select>
+                            </div>
+
                         </div>
+                     
                         <!-- <div class="row"> -->
                         <div class="w-full contact-textarea">
                             <div style="position: relative;">
@@ -1510,7 +1515,9 @@
         </div>
     </div>
 </section> -->
+
 <script>
+    
 const message = document.getElementById('message');
 const wordCount = document.getElementById('wordCount');
 const maxWords = 50;
@@ -1525,51 +1532,75 @@ message.addEventListener('input', function() {
     } else {
         this.removeAttribute("maxlength"); // Remove limit if under max
     }
-    wordCount.textContent = `${words.length}/${maxWords} words`;
+    // wordCount.textContent = `${words.length}/${maxWords} words`;
 });
 </script>
 
-<!-- jQuery (if not already included in your project) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<!-- Include intlTelInput initialization -->
 <script>
-$(document).ready(function() {
-    $('#submitFormContact').click(function(e) {
-        e.preventDefault(); // Prevent the default form submission
-        // Get form data
-        var formData = $(this).serialize();
-        let name = $("#name").val();
-        let email = $("#email").val();
-        let contact = $("#contact1").val();
-        let message = $("#message").val();
-        let csrf_token = $("#csrf_token").val();
-        // Send form data using AJAX
-        $.ajax({
-            url: "<?php echo Yii::app()->createAbsoluteUrl('site/submit'); ?>", // Adjust the URL as necessary
-            type: 'POST',
-            data: {
-                name: name,
-                email: email,
-                contact: contact,
-                message: message,
-                csrf_token: csrf_token,
-            },
-            dataType: 'json',
-            success: function(response) {
-                // No need to parse, response should already be a JSON object
-                if (response.status === 'success') {
-                    $('#successMessage').show().html(response
-                    .message); // Show success message
-                    $('#contactForm')[0].reset(); // Clear form fields
-                    $('#errorMessage').hide(); // Hide error message if previously shown
-                } else {
-                    $('#errorMessage').html(response.message).show(); // Show error message
-                    $('#successMessage').hide(); // Hide success message
-                }
-            }
-        });
-    });
-});
+  // Declare iti globally so it can be used in the submit handler.
+  var iti;
+  $(document).ready(function() {
+      var popup = document.querySelector("#popup-phone");
+      iti = window.intlTelInput(popup, {
+          hiddenInput: "phone",
+          initialCountry: "<?php echo COUNTRY_CODE;?>",
+          placeholderNumberType: "MOBILE",
+          separateDialCode: true,
+          utilsScript: "<?php echo Yii::app()->apps->getBaseUrl('assets/js/build/js/utils.js');?>",
+      });
+  
+      // Submit form handler
+      $('#submitFormContact').click(function(e) {
+          e.preventDefault(); // Prevent default form submission
+  
+          // Get the selected country code (dial code) from intlTelInput instance
+          var dialCode = iti.getSelectedCountryData().dialCode;
+          
+          // Retrieve other form values
+          let name       = $("#name").val();
+          let email      = $("#email").val();
+          let contact    = $("#popup-phone").val();
+          let service    = $("#service").val();
+          let message    = $("#message").val();
+          let csrf_token = $("#csrf_token").val();
+  
+          // Logging for debug
+          console.log("Dial Code:", dialCode);
+          console.log("Name:", name);
+          console.log("Email:", email);
+          console.log("Contact:", contact);
+          console.log("Service:", service);
+          console.log("Message:", message);
+          return;
+          // Now send the data via AJAX, including the dial code
+          $.ajax({
+              url: "<?php echo Yii::app()->createAbsoluteUrl('site/submit'); ?>",
+              type: 'POST',
+              data: {
+                  name: name,
+                  email: email,
+                  contact: contact,
+                  dialCode: dialCode, // pass the selected country dial code here
+                  service: service,
+                  message: message,
+                  csrf_token: csrf_token,
+              },
+              dataType: 'json',
+              success: function(response) {
+                  if (response.status === 'success') {
+                      $('#successMessage').show().html(response.message);
+                      $('#contactForm')[0].reset();
+                      $('#errorMessage').hide();
+                  } else {
+                      $('#errorMessage').html(response.message).show();
+                      $('#successMessage').hide();
+                  }
+              }
+          });
+      });
+  });
 </script>
 
 
@@ -1896,16 +1927,28 @@ h2 {
     width: 100%;
     /* margin: 0 20px 20px 0; */
 }
+.contact-input-select {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    /* gap: 10px; */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px 29px 0 #00000014;
+    /* padding: 10px 20px; */
+    width: 100%;
+    /* margin: 0 20px 20px 0; */
+}
 
 .contact-input-phone {
     display: flex;
     align-items: center;
     justify-content: start;
-    gap: 10px;
+    /* gap: 10px; */
     background-color: white;
     border-radius: 8px;
     box-shadow: 2px 2px 29px 0 #00000014;
-    padding: 10px 20px;
+    padding: 10px 13px;
     /* width: 100%; */
     /* margin: 0 20px 20px 0; */
 }
