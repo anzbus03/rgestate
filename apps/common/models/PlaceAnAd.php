@@ -2924,7 +2924,6 @@ class PlaceAnAd extends ActiveRecord
 			$itemsI = explode(',', $this->ad_images_g);
 			if (!empty($itemsI)) {
 				foreach ($itemsI as $k => $ad_img) {
-
 					$html .= '<div>';
 
 					if (defined('offline')) {
