@@ -3023,7 +3023,7 @@ class BusinessForSale extends ActiveRecord
 				return $this->generateImageWaterMark($data['0'], $w, $h = '', $opaciti = 60, $wateri = 10);
 			}
 		} else {
-			return '/new_assets/images/mgrey.jpg';
+			return '/new_assets/images/mgrey.png';
 		}
 	}
 	public $location_image;
