@@ -2916,7 +2916,6 @@ class PlaceAnAd extends ActiveRecord
 		}
 		return $html;
 	}
-	//Yii::app()->apps->getBaseUrl('assets/img/waiting-feeta.jpg')
 	public function generateImage2($apps, $h = 190, $w = 285, $s_id = null, $bg = null, $opaciti = 60, $wateri = '10')
 	{
 		$html = '';
