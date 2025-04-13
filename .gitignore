@@ -1,6 +1,10 @@
 .history
 .lh
 ar
+/frontend/assets/cache/
+error_log
+projects/error_log
+staging.rgestate.com
 apps-old
 apps/init2.php
 /apps/common/config/main-custom.php 
