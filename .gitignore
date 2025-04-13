@@ -8,3 +8,4 @@ apps/init2.php
 uploads/images/*
 backend/assets/cache/*
 uploads/
+assets/easyimage/
