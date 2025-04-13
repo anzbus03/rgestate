@@ -612,6 +612,13 @@ $works = $ads;
 				}
 				
 				?>
+                <script>
+                    function setPagenumber(k){
+                        var pageNaumber =  $(k).attr('data-page')
+                        $('#page1').val(pageNaumber).change();
+                        return false;  
+                    }
+                </script>
 
 
                     <div class=" ">
@@ -622,7 +629,7 @@ $works = $ads;
                                 <ul class="actions li-css-n m-0 margin-top-0 margin-bottom-0">
                                     <?php
                             $this->widget('frontend.components.web.widgets.SimplaPager4', array(
-                            'pages'=>$pages,	 'maxButtonCount'=>3,));  
+                            'pages'=>$pages,	 'maxButtonCount'=>$pages->pageCount > 3 ? 3 : $pages->pageCount,)); 
                             ?>
                                 </ul>
 
@@ -636,9 +643,9 @@ $works = $ads;
                                     </li>
                                 </ul>
                                 <?php
-                if(empty($ads)){
-				echo $this->renderPartial('_no_result_page');
-				}
+                    if(empty($ads)){
+                    echo $this->renderPartial('_no_result_page');
+                    }
 				?>
 
                             </div>

@@ -2956,7 +2956,7 @@ class PlaceAnAd extends ActiveRecord
 			$html .= '';
 			//$image =  $apps->getBaseUrl('uploads/images/'.$this->ad_image); 
 			//$html .= '<img src="'.$apps->getBaseUrl('timthumb.php').'?src='.$image.'&h='.$h.'&w='.$w.'&zc=1" alt="">';
-			$image =  $this->getAdImageWithWatermark($this->ad_image, $w, $h, $opaciti, $wateri);
+			$image =  $this->getAd_image_singlenew($this->ad_image, $w, $h, $opaciti, $wateri);
 			$html .= '<img src="' . $image . '" alt="">';
 			$html .= '';
 		}

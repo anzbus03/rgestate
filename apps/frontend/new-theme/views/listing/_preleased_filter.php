@@ -324,7 +324,7 @@ html  .only-for-mobile-t {
 }
 </style>
 <script>
-
+ 
 $(function(){clickBtnSerach()});
 </script>
 <form id="frmId" method="get" class="blackheader2" style="z-index: 112;position: relative;background: var(--secondary-color);border-bottom:1px solid var(--logo-color) " autocomplete="off" onSubmit="return false;" name="rwe">

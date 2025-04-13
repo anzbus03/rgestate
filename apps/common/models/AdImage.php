@@ -25,12 +25,12 @@ class AdImage extends ActiveRecord
 
     /**
      * @return array validation rules for model attributes.
-     */
-     public $xml_image;
-     public $image_type;
-     public $Title;
-     public $IsMarketingImage;
-     public $ImageRemarks;
+    */
+    public $xml_image;
+    public $image_type;
+    public $Title;
+    public $IsMarketingImage;
+    public $ImageRemarks;
     public function rules()
     {
         // NOTE: you should only define rules for those attributes that
@@ -146,13 +146,13 @@ class AdImage extends ActiveRecord
 		$arr = array("A"=>"Approved","I"=>"Disapproved");
 		return $arr;
 	}
-	 public function getStatusWithStats($sta=null)
+	public function getStatusWithStats($sta=null)
     {
-	  $ar = $this->activeArray();
-	   return (isset($ar[$sta]))?$ar[$sta]:"Inactive";
+	    $ar = $this->activeArray();
+	    return (isset($ar[$sta]))?$ar[$sta]:"Inactive";
 		 
     }
-	 public function getimageLink()
+	public function getimageLink()
     {
         if (strpos( $this->image_name ,'/') !== false) {
 					

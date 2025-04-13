@@ -65,6 +65,12 @@ class LeftSideNavigationWidget extends CWidget
                     'active'    => 'image_library',
                     'route'     => array('image_library/index'),
                 ),
+                'image_watermark' => array(
+                    'name'      => Yii::t('app', 'Images Watermark'),
+                    'icon'      => 'flaticon-043-menu',
+                    'active'    => 'image_watermark',
+                    'route'     => array('image_watermark/index'),
+                ),
                 'floor_plan' => array(
                     'name'      => Yii::t('app', 'Floor Plan'),
                     'icon'      => 'flaticon-043-menu',

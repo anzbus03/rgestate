@@ -448,12 +448,25 @@ observer.observe();
                 <div class="nslider" style="position:relative;">
 				<?php 
 				 
+				 $watermarkImage = ImageWatermark::model()->findByPk(1);
+				 $watermarkSrc = '/uploads/files/' . $watermarkImage->watermark_image;
 				 if(!empty($location_image)){
 				     	$image_url =  $this->app->apps->getBaseUrl('uploads/map/'.$model->location_image)  ;
+
 				        ?>
 				           <a href="<?php echo $image_url;?>"    class="item   spch">
-				               <img src="<?php echo $image_url;?>" alt="<?php echo $pageTitle;?>" title="<?php echo $model->ad_title;?>" style="height:450px;">
-				               
+				               <img class="watermarked-img" 
+									src="<?php echo $image_url;?>" 
+									data-watermark-src="<?php echo $watermarkSrc; ?>" 
+									data-x="<?php echo $watermarkImage->position_x; ?>" 
+									data-y="<?php echo $watermarkImage->position_y; ?>"
+									data-wm-width="<?php echo $watermarkImage->watermark_width; ?>"
+									data-wm-height="<?php echo $watermarkImage->watermark_height; ?>"
+									data-opacity="<?php echo $watermarkImage->opacity / 100; ?>"
+									alt="<?php echo $pageTitle;?>" 
+									title="<?php echo $model->ad_title;?>" 
+									style="height:450px;">
+
 				           </a> 
             
 				        <?
@@ -466,11 +479,33 @@ observer.observe();
 			    	$status = 	 ($showTrash == '1' ) ? 'A' : $image->status; 
 		        	$image_url =   $model->getdetailImages($image->image_name,$status )  ;
 		        	$image_url2 =  $this->app->apps->getBaseUrl('uploads/files/'.$image->image_name)  ;
-			     
-					$html_c .= '<div class="prp_img" id="prop_img'.$c.'"><img data-src="'.$image_url2.'" " alt="'.$pageTitle.'" title="'.$model->ad_title.'"  class="lozad" data-hi="@"> <div><span class="imgc" dir="auto">'.$c.' of '.$sizeOf1.'</span></div><div class="clearfix"></div></div>';
+					$dataAttrs = ' 
+						data-watermark-src="' . $watermarkSrc . '" 
+						data-x="' . $watermarkImage->position_x . '" 
+						data-y="' . $watermarkImage->position_y . '" 
+						data-wm-width="' . $watermarkImage->watermark_width . '" 
+						data-wm-height="' . $watermarkImage->watermark_height . '" 
+						data-opacity="' . ($watermarkImage->opacity / 100) . '"';
+				
+					$html_c .= '<div class="prp_img" id="prop_img'.$c.'">
+					<img data-src="'.$image_url2.'" '.$dataAttrs.' " alt="'.$pageTitle.'" title="'.$model->ad_title.'"  class="lozad watermarked-img" data-hi="@"> <div><span class="imgc" dir="auto">
+					'.$c.' of '.$sizeOf1.'</span></div><div class="clearfix"></div></div>';
 					
 				?>
-               <a href="javascript:void(0)" data-moveto="prop_img<?php echo $c;?>"  onclick="openThisPopupImg(this)"   class="item   spch"><img data-src="<?php echo $image_url2;?>" data-sls="!" class="lozad"   alt="<?php echo $pageTitle;?>" title="<?php echo $model->ad_title;?>"   ></a> 
+               <a href="javascript:void(0)" data-moveto="prop_img<?php echo $c;?>"  onclick="openThisPopupImg(this)"   class="item   spch">
+				
+			   <img class="lozad watermarked-img" 
+					data-src="<?php echo $image_url2;?>" 
+					data-watermark-src="<?php echo $watermarkSrc; ?>" 
+					data-x="<?php echo $watermarkImage->position_x; ?>"
+					data-y="<?php echo $watermarkImage->position_y; ?>"
+					data-wm-width="<?php echo $watermarkImage->watermark_width; ?>"
+					data-wm-height="<?php echo $watermarkImage->watermark_height; ?>"
+					data-opacity="<?php echo $watermarkImage->opacity / 100; ?>"
+					alt="<?php echo $pageTitle;?>" 
+					title="<?php echo $model->ad_title;?>">
+
+				</a> 
                
                <?php  $html_dot .= '<div class="slider_navigators"></div>'; $c++; }
                
@@ -480,7 +515,89 @@ observer.observe();
                       <div class="HomeDetailsHero__HeroFooter-hubkl0-5 hIfUYc sizi-<?php echo sizeOf($images);?>"><button type="button" data-testid="hdp-hero-photo-count"   class="Button__ButtonBase-sc-1ea9wz-0 Button-sc-1ea9wz-1 HomeDetailsHeroCta__HeroCta-sc-35yfrg-0 jQnIeH"><div class="MediaBlock__MediaContainer-skmvlj-0 bOGJGe"><div class="ui__SvgContainer-sc-1z03173-0 dlXmJI"><svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g fill="#ffffff" fill-rule="nonzero"><path d="M2.5 2.5V13H13V2.5H2.5zm-.5-1h11.5a.5.5 0 0 1 .5.5v11.5a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V2a.5.5 0 0 1 .5-.5z"></path><path d="M13.5 10a.5.5 0 1 1 0 1H2a.5.5 0 1 1 0-1h11.5zm-7-7a1.75 1.75 0 1 1 0 3.5H5a1.25 1.25 0 0 1-.078-2.498A1.746 1.746 0 0 1 6.5 3zm0 1a.747.747 0 0 0-.736.63.5.5 0 0 1-.673.389.248.248 0 0 0-.341.231c0 .138.112.25.25.25h1.5a.75.75 0 1 0 0-1.5z"></path><path d="M9.076 6.664c.536-.919 1.88-.874 2.353.076l1.768 3.536a.5.5 0 1 1-.894.448l-1.77-3.537a.339.339 0 0 0-.594-.019L8.432 9.752a.5.5 0 0 1-.848.025 3.957 3.957 0 0 0-.58-.66C6.58 8.726 6.149 8.5 5.75 8.5c-.324 0-.752.372-1.175 1.022a7.385 7.385 0 0 0-.61 1.164.5.5 0 0 1-.93-.372 8.366 8.366 0 0 1 .701-1.337C4.331 8.066 4.981 7.5 5.751 7.5c.696 0 1.341.337 1.933.883.089.082.171.163.248.243l1.145-1.962z"></path></g></svg></div><div class="MediaBlock__MediaContent-skmvlj-1 dCsAgE" style="margin-left:2px !important;"><span color="inverse" data-testid="photo-count" class="Text__TextBase-sc-1cait9d-0 bqfOkU"><?php echo sizeOf($images);?></span></div></div></button></div>
               
                 <div style="display:flex;"   class="detailAbs" id="detailAbs">
-                 
+				<script>
+					document.addEventListener("DOMContentLoaded", function () {
+					// Define base dimensions (the reference dimensions)
+					const baseWidth = 800;
+					const baseHeight = 600;
+
+					const images = document.querySelectorAll("img.watermarked-img");
+					images.forEach(img => {
+						console.log(img);
+						// Get the main image source and watermark source
+						const src = img.getAttribute("data-src") || img.src;
+						const watermarkSrc = img.getAttribute("data-watermark-src");
+
+						// Retrieve the watermark's base coordinates and dimensions (for reference base size)
+						const baseX = parseInt(img.getAttribute("data-x") || 10, 10);
+						const baseY = parseInt(img.getAttribute("data-y") || 10, 10);
+						const baseWmWidth = parseInt(img.getAttribute("data-wm-width") || 100, 10);
+						const baseWmHeight = parseInt(img.getAttribute("data-wm-height") || 40, 10);
+						const opacity = parseFloat(img.getAttribute("data-opacity") || 0.5);
+
+						const canvas = document.createElement("canvas");
+						const ctx = canvas.getContext("2d");
+
+						// Load main image and watermark image
+						const mainImg = new Image();
+						mainImg.crossOrigin = "anonymous";
+						mainImg.src = src;
+
+						const watermark = new Image();
+						watermark.crossOrigin = "anonymous";
+						watermark.src = watermarkSrc;
+
+						Promise.all([
+						new Promise(res => { mainImg.onload = res; }),
+						new Promise(res => { watermark.onload = res; })
+						]).then(() => {
+						// Use natural dimensions of the main image for calculations.
+						const mainNaturalWidth = mainImg.naturalWidth;
+						const mainNaturalHeight = mainImg.naturalHeight;
+						
+						// Set canvas internal size to match the main image's natural dimensions.
+						canvas.width = mainNaturalWidth;
+						canvas.height = mainNaturalHeight;
+
+						// Draw the main image onto the canvas.
+						ctx.drawImage(mainImg, 0, 0);
+
+						// Compute scaling factors based on how the main image differs from the base (reference) dimensions.
+						const factorX = mainNaturalWidth / baseWidth;
+						const factorY = mainNaturalHeight / baseHeight;
+
+						// Calculate the scaled watermark position and dimensions.
+						const scaledX = baseX * factorX;
+						const scaledY = baseY * factorY;
+						const scaledWmWidth = baseWmWidth * factorX;
+						const scaledWmHeight = baseWmHeight * factorY;
+
+						// Draw the watermark with the desired opacity.
+						ctx.globalAlpha = opacity;
+						ctx.drawImage(watermark, scaledX, scaledY, scaledWmWidth, scaledWmHeight);
+						ctx.globalAlpha = 1;
+
+						// Set the canvas style dimensions to match the original image element.
+						// If no specific style is set, fall back to using the natural dimensions.
+						canvas.style.width = "100%";
+						canvas.style.height = "100%";
+
+						// Copy over attributes and class names.
+						canvas.className = img.className;
+						canvas.alt = img.alt;
+						canvas.title = img.title;
+
+						// Replace the original image with the watermarked canvas.
+						img.parentNode.replaceChild(canvas, img);
+
+						}).catch(err => {
+							console.error("Failed to load image for watermarking:", err);
+						});
+					});
+					});
+					</script>
+
+
             <?php
             if(!empty($video_list)){ ?> 
 			<?php  if($model->view_360){  ?>

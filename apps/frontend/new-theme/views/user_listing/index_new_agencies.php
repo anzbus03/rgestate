@@ -68,17 +68,17 @@ else{
 	<div class="container margin-top-20">
 			<?php // echo $this->renderPartial('_ad_section_listing');?>
 			 <style>
-	.listing-item-content.absC { position:absolute;z-index:11111;}
-	html .listing-item-container .listing-item-content.absC h3.white {  color:#fff !important; text-shadow: 2px 2px 3px #666;}
-	._add_row_5 .listing-item{ height:242px;  }
-	._add_row_3 .listing-item{ height:208px;  }
-	 
-	._add_row_1 .simple-slick-carousel .slick-slide{ padding:10px;  }
-	.slick-prev, .slick-next { z-index:1; border-radius: 50% !important;padding: 10px 10px;}
-	.slick-prev::before, .slick-next::before { font-size:18px;}
-	.slick-prev {    left: 46px; } 
-	.home_section .seperate_mar { padding:0px !important; }
-  ._ba2wq3 {
+				.listing-item-content.absC { position:absolute;z-index:11111;}
+				html .listing-item-container .listing-item-content.absC h3.white {  color:#fff !important; text-shadow: 2px 2px 3px #666;}
+				._add_row_5 .listing-item{ height:242px;  }
+				._add_row_3 .listing-item{ height:208px;  }
+				
+				._add_row_1 .simple-slick-carousel .slick-slide{ padding:10px;  }
+				.slick-prev, .slick-next { z-index:1; border-radius: 50% !important;padding: 10px 10px;}
+				.slick-prev::before, .slick-next::before { font-size:18px;}
+				.slick-prev {    left: 46px; } 
+				.home_section .seperate_mar { padding:0px !important; }
+			._ba2wq3 {
     margin-left: -8px !important;
     margin-right: -8px !important;
 }

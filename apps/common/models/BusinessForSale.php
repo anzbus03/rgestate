@@ -2975,12 +2975,12 @@ class BusinessForSale extends ActiveRecord
 		return   Yii::app()->easyImage->thumbSrcOf(
 			Yii::getpathOfAlias('root')  . '/uploads/files/' . $image,
 			array(
-				'resize' => array('width' => $width, 'height' => $height, "master" => EasyImage::RESIZE_AUTO),
+				// 'resize' => array('width' => $wid	th, 'height' => $height, "master" => EasyImage::RESIZE_AUTO),
 				//'watermark' => array('watermark' =>'/watermark/'.$marker , 'opacity' => $opacity ), 
 				// 'scaleAndCrop' => array('width' => $width, 'height' => $height),
 				// 'resize' => array('width' => $width, 'height' =>$height,"master"=>EasyImage::RESIZE_AUTO),															
 
-				'sharpen' => 0,  'background' => '#fff', 'type' => 'jpg',  'quality' => 95
+				// 'sharpen' => 0,  'background' => '#fff', 'type' => 'jpg',  'quality' => 95
 			)
 		);
 	}
