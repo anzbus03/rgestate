@@ -2940,8 +2940,22 @@ class BusinessForSale extends ActiveRecord
 			//$image =  $apps->getBaseUrl('uploads/images/'.$this->ad_image); 
 			//$html .= '<img src="'.$apps->getBaseUrl('timthumb.php').'?src='.$image.'&h='.$h.'&w='.$w.'&zc=1" alt="">';
 			$image =  $this->generateImageWaterMark($this->ad_image, $w, $h, $opaciti, $wateri);
-			$html .= '<img src="' . $image . '" alt="">';
-			$html .= '';
+			$watermarkImage = ImageWatermark::model()->findByPk(1);
+			$watermarkSrc = '/uploads/files/' . $watermarkImage->watermark_image;
+	   
+			$html .= '<img class="watermarked-img"
+				data-placeholder-background="#eee"
+				alt="' .  $titleAltText. '"
+				title="' .  $titleText . '"
+				data-src="' . $image . '"
+				data-watermark-src="' .  $watermarkSrc . '"
+				data-opacity="' .  ($watermarkImage->opacity / 100) . '"
+				data-x="' .  $watermarkImage->position_x . '"
+				data-y="' .  $watermarkImage->position_y . '"
+				data-wm-width="' .  $watermarkImage->watermark_width. '"
+				data-wm-height="' .  $watermarkImage->watermark_height. '"
+				data-lazy="' . $this->getAdImageWithWatermark($ad_img, $w, $h, $opaciti, $wateri) . '" >';
+				$html .= '';
 		}
 		return $html;
 	}
