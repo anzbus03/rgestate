@@ -415,18 +415,44 @@ if ($viewCollection->renderContent) {
         }
     </style>
         <script src="<?php echo Yii::app()->apps->getBaseUrl('assets_backend/vendor/apexchart/apexchart.js');?>" type="text/javascript"></script>
+        <?php
+            // Check if a date_range filter was provided in the GET parameters.
+            $dateRangeValue = isset($_GET['date_range']) ? $_GET['date_range'] : '';
+
+            if (!empty($dateRangeValue)) {
+                // Expecting the format "DD-MMM-YYYY - DD-MMM-YYYY"
+                $dates = explode(' - ', $dateRangeValue);
+                if (count($dates) == 2) {
+                    // Convert to a known format if needed (e.g., "YYYY-MM-DD")
+                    $startDate = date('Y-MM-DD', strtotime($dates[0])); // for example "YYYY-MM-DD"
+                    $endDate   = date('Y-MM-DD', strtotime($dates[1]));
+                } else {
+                    // Fallback to default if date_range is somehow malformed.
+                    $startDate = '1900-01-01';
+                    $endDate   = date('Y-m-d');
+                    $dateRangeValue = '';
+                }
+            } else {
+                // Default values
+                $startDate = '1900-01-01';
+                $endDate   = date('Y-m-d');
+            }
+        ?>
 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
         <script>
             $(document).ready(function() {
+                var initialStartDate = moment('<?php echo $startDate; ?>');
+                var initialEndDate   = moment('<?php echo $endDate; ?>');
+
                 $('#dateRange').daterangepicker({
                     locale: {
                         format: 'DD-MMM-YYYY'
                     },
                     // For example, using a default start date of 1900-01-01 to represent an "all time" selection
-                    startDate: moment('1900-01-01'),
-                    endDate: moment(),
+                    startDate: initialStartDate,
+                    endDate: initialEndDate,
                     ranges: {
                         'Today': [moment().startOf('day'), moment().endOf('day')],
                         'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
@@ -442,6 +468,9 @@ if ($viewCollection->renderContent) {
                     // Optionally, if you want to fetch filtered data immediately, call your function here:
                     // fetchFilteredData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
                 });
+                <?php if (!empty($dateRangeValue)) : ?>
+                    $('#dateRange').val('<?php echo $dateRangeValue; ?>');
+                <?php endif; ?>
             });
 
             var chartBarRunning = function(){

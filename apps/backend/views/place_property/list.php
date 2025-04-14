@@ -640,7 +640,29 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
     'renderedContent'   => $viewCollection->renderContent,
 )));
     ?>
+ <?php
+    // Check if a date_range filter was provided in the GET parameters.
+    $dateRangeValue = isset($_GET['date_range']) ? $_GET['date_range'] : '';
 
+    if (!empty($dateRangeValue)) {
+        // Expecting the format "DD-MMM-YYYY - DD-MMM-YYYY"
+        $dates = explode(' - ', $dateRangeValue);
+        if (count($dates) == 2) {
+            // Convert to a known format if needed (e.g., "YYYY-MM-DD")
+            $startDate = date('Y-MM-DD', strtotime($dates[0])); // for example "YYYY-MM-DD"
+            $endDate   = date('Y-MM-DD', strtotime($dates[1]));
+        } else {
+            // Fallback to default if date_range is somehow malformed.
+            $startDate = '1900-01-01';
+            $endDate   = date('Y-m-d');
+            $dateRangeValue = '';
+        }
+    } else {
+        // Default values
+        $startDate = '1900-01-01';
+        $endDate   = date('Y-m-d');
+    }
+?>
     <!-- for button loading text  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
@@ -799,14 +821,16 @@ $hooks->doAction('after_view_file_content', new CAttributeCollection(array(
                 }
             });
         });
+        var initialStartDate = moment('<?php echo $startDate; ?>');
+        var initialEndDate   = moment('<?php echo $endDate; ?>');
 
         // Initialize the date range picker
         $('#dateRange').daterangepicker({
             locale: {
                 format: 'DD-MMM-YYYY'
             },
-            startDate: moment('1900-01-01'), // Set default start date for "All Time"
-            endDate: moment(),
+            startDate: initialStartDate, // Set default start date for "All Time"
+            endDate: initialEndDate,
             ranges: {
                 'Today': [moment().startOf('day'), moment().endOf('day')],
                 'Yesterday': [moment().startOf('day').subtract(1, 'days'), moment().endOf('day').subtract(1, 'days')],
