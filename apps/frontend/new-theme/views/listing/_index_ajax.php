@@ -119,12 +119,12 @@ if($filterModel->section_id=='new-development'){
                     margin-bottom: 7px
                 }
 
-                .style2 h1 {
+                .style2 h2 {
                     font-size: 28px;
                 }
 
                 @media only screen and (max-width: 600px) {
-                    .style2 h1 {
+                    .style2 h2 {
                         font-size: 20px;
                     }
                 }
@@ -134,14 +134,14 @@ if($filterModel->section_id=='new-development'){
                 <div class="col-md-8 col-lg-8 margin-top-20 no-margin-mob" id="titl-hd">
                     <div class="breadcrumb_content style2 margin-bottom-5">
 
-                        <h1 class="margin-bottom-5">
+                        <h2 class="margin-bottom-5">
                             <?php 
 						echo $m_title; 
                          if(!empty($userM)){
     						 echo ' <small class="user-nameing secname_'.$filterModel->section_id.'"><b>['.$userM->fullName.'] <a href="'.$this->app->createUrl('listing/index',array('sec'=>$filterModel->section_id)).'"><img src="'.$this->app->apps->getBaseUrl('assets/img/cancel.png').'" style="width:15px; "/></a></b></small>';
     					}
 			        	?>
-                        </h1>
+                        </h2>
                         <div class="left_area tac-xsd">
                             <p class="margin-top-0">
                                 <?php echo Yii::t('app',$this->tag->getTag('{n}_results_found.','{n} results found.'),array('{n}'=>$adsCount)) ;?>
