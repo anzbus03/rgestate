@@ -3847,20 +3847,24 @@ class Place_propertyController  extends Controller
                 }
                 $stateName = $data[11];
                 $stateSlug = $this->generateSlug($stateName);
-                if (!isset($statesMap[$stateSlug])) {
+                $stateID = null;
+                if (isset($statesMap[$stateSlug])){
+                    $stateID = $statesMap[$stateSlug]->state_id;
+                }else {
                     $region = MainRegion::model()->findByAttributes(['slug' => $stateSlug]);
                     $regionId = $region ? $region->region_id : null;
                 
-                    $newState = new States();
-                    $newState->state_name = $stateName;
-                    $newState->country_id = 66124;
-                    $newState->isTrash = 0;
-                    $newState->slug = $stateSlug;
-                    $newState->region_id = $regionId;
-                    $newState->save();
+                    // $newState = new States();
+                    // $newState->state_name = $stateName;
+                    // $newState->country_id = 66124;
+                    // $newState->isTrash = 0;
+                    // $newState->slug = $stateSlug;
+                    // $newState->region_id = $regionId;
+                    // $newState->save();
                 
-                    $statesMap[$stateSlug] = $newState;
+                    // $statesMap[$stateSlug] = null;
                 }
+                
                 $record = [
                     'uid' => $data[0],
                     'section_id' => ($data[6] == "Sale") ? 1 : 2,
@@ -3873,7 +3877,7 @@ class Place_propertyController  extends Controller
                     'PropertyID' => $data[5],
                     'ad_description' => $data[14],
                     'date_added' => $dateAdded,
-                    'state' => $statesMap[$stateSlug]->state_id ?? 0,
+                    'state' => $stateID,
                     'user_id' => $usersMap[$data[39]]->user_id ?? 31988,
                     'status' => ($data[36] == "Active") ? "A" : "I",
                     'availability' => ($data[35] == "Sold Out" ? "sold_out" : ($data[35] == "Leased Out" ? "lease_out" : null)),

@@ -1,88 +1,94 @@
 <?php
-	 $cityDats = States::model()->byIdIterate();
-//  print_r($formData);
-$adModelCriteria =	$adModel->findAds($formData ,false,true); 
-$adModelCriteria->select= 't.state as city_name,count(t.id) as id   ';
-$adModelCriteria->join.= ' LEFT JOIN {{states}} city ON t.state = city.state_id  ';
-$adModelCriteria->group = 't.state'; 
-$adModelCriteria->order  ='city.state_name asc '; 
-$new_homes =  $adModel->findAll($adModelCriteria);
- unset($formData['section_id']); unset($formData['country']);unset($formData['reg_id']);
-  if(isset($formData['preleased'])){
-          unset($formData['preleased']);
-          $formData['sec'] = 'preleased'; 
-      }
-  $create_array = array();
- foreach($formData as $k1=>$v1){
-     if(!in_array($k1,array('sec','type_of','state','reg','category'))){
-         unset($formData[$k1]);
-         $create_array[$k1] = $v1; 
-     }
- }
- $query = '?';
- if(!empty($create_array)){
-      
-     $query .= http_build_query($create_array);
- }
- if($query=='?'){ $query =''; }
-if(!empty($new_homes)){
- 
-    echo '<ul id="ldlist" class="list-inline-item row col-sm-12 ">';
-    $count ='1';
-    foreach($new_homes as $k=>$v){
-		 $formData1 = $formData;
-		  if(isset($cityDats[$v->city_name])){
-             $data1 = $cityDats[$v->city_name]; 
-             $name = $data1['name'];
-             $slug = $data1['slug'];
-         }else{
-             continue; 
-         }
-		 $formData1['state'] = $slug;
-		 $dClass = ($count>='41') ? 'd-none hideles' : ''; 
-    	echo '<li class="'.$dClass.' col-sm-3"><p><a href="'.Yii::app()->createUrl('listing/index', $formData1 ).$query.'">'.$name.'<span> ('.$v->id.')</span></a></p></li>';
-    	$count++;
-	}
-    echo '</ul>';
-    if($count>41){
-        echo '<a href="javascript:void(0)" id="v_moer" class=" btn-more-view" onclick="showAlllist()" >View All</a>';
-        echo '<a href="javascript:void(0)" class="d-none btn-more-view" id="v_less" onclick="hideAlllist()" >View Less</a>';
-        ?>
-         <style>
-     .btn-more-view {
-    display: inline-block;
-    margin: auto;
-    text-align: center;
-    border: 1px solid var(--logo-color);
-    padding: 5px 10px;
-    border-radius: 10px;
-    line-height: 1;
-    font-weight: bold;
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: auto;
-    max-width: 100px;
-    background: #fff;
+// 1) Fetch your data
+$cityDats        = States::model()->byIdIterate();
+$adModelCriteria = $adModel->findAds($formData, false, true);
+$adModelCriteria->select = 't.state AS city_name, COUNT(t.id) AS id';
+$adModelCriteria->join  .= ' LEFT JOIN {{states}} city ON t.state = city.state_id';
+$adModelCriteria->group  = 't.state';
+$adModelCriteria->order  = 'city.state_name ASC';
+$new_homes = $adModel->findAll($adModelCriteria);
+
+// 2) Clean up URL params
+unset($formData['section_id'], $formData['country'], $formData['reg_id']);
+if (isset($formData['preleased'])) {
+    unset($formData['preleased']);
+    $formData['sec'] = 'preleased';
 }
-    </style>
-    <script>
-        function showAlllist(){
-            $('#ldlist').find('li.hideles').removeClass('d-none');
-            $('#v_less').removeClass('d-none');
-             $('#v_moer').addClass('d-none');
-        }
-         function hideAlllist(){
-            $('#ldlist').find('.hideles').addClass('d-none');
-             $('#v_less').addClass('d-none');
-            $('#v_moer').removeClass('d-none');
-        }
-    </script>
+$extra = [];
+foreach ($formData as $k => $v) {
+    if (!in_array($k, ['sec','type_of','state','reg','category'])) {
+        unset($formData[$k]);
+        $extra[$k] = $v;
+    }
+}
+$query = $extra ? '?' . http_build_query($extra) : '';
+
+// 3) Render the list
+if (!empty($new_homes)) {
+    echo '<ul id="ldlist" class="row list-inline-item col-sm-12">';
+    $i = 1;
+    foreach ($new_homes as $home) {
+        if (!isset($cityDats[$home->city_name])) { $i++; continue; }
+        $data  = $cityDats[$home->city_name];
+        $name  = $data['name'];
+        $slug  = $data['slug'];
+        $count = $home->id;
+        $url   = Yii::app()->createUrl('listing/index',
+                    array_merge($formData, ['state'=>$slug])
+                 ) . $query;
+
+        // hide items past #20
+        $hiddenClass = $i > 20 ? 'd-none hideles' : '';
+        echo "<li class=\"col-sm-3 {$hiddenClass}\">
+                <p><a href=\"{$url}\">{$name} <span>({$count})</span></a></p>
+              </li>";
+        $i++;
+    }
+    echo '</ul>';
+
+    // 4) View All / View Less buttons
+    if ($i > 20) {
+        echo '<a href="javascript:void(0)" id="v_more" class="btn-more-view" onclick="showAlllist()">View All</a>';
+        echo '<a href="javascript:void(0)" id="v_less" class="btn-more-view d-none" onclick="hideAlllist()">View Less</a>';
+        ?>
+        <style>
+          .btn-more-view {
+            display: inline-block;
+            margin: 10px auto;
+            text-align: center;
+            border: 1px solid var(--logo-color);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            position: relative;
+            left: 45%;
+            background: #fff;
+          }
+          .d-none { display: none !important; }
+        </style>
+        <script>
+          function showAlllist(){
+            document.querySelectorAll('#ldlist li.hideles')
+                    .forEach(el => el.classList.remove('d-none'));
+            const more = document.getElementById('v_more'),
+                  less = document.getElementById('v_less');
+            more.classList.add('d-none');
+            more.style.display = 'none';
+            less.classList.remove('d-none');
+            less.style.display = 'inline-block';
+          }
+          function hideAlllist(){
+            document.querySelectorAll('#ldlist li.hideles')
+                    .forEach(el => el.classList.add('d-none'));
+            const more = document.getElementById('v_more'),
+                  less = document.getElementById('v_less');
+            less.classList.add('d-none');
+            less.style.display = 'none';
+            more.classList.remove('d-none');
+            more.style.display = 'inline-block';
+          }
+        </script>
         <?php
     }
-    ?>
-   
-    <?php
-    
-    
 }
+?>

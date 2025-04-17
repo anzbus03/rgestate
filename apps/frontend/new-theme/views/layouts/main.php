@@ -468,7 +468,7 @@ if($this->id != 'contact'){ ?>
     </div>
 </div>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   (function(d, t) {
       var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
       v.onload = function() {
@@ -480,7 +480,7 @@ if($this->id != 'contact'){ ?>
       }
       v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
   })(document, 'script');
-</script>
+</script> -->
     
 <div id="dynamicScripts"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
