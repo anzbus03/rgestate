@@ -75,7 +75,7 @@ class PlaceAnAdNew extends PlaceAnAd
 	
 			 
 		}
-		// $criteria->condition .= ' t.status = "A" and t.isTrash = "0" '; 
+		$criteria->condition .= ' and t.category_id != "" and t.state != "" and t.city != "" '; 
 		
         $criteria->distinct =  't.id' ;
         $criteria->select .= ',  (t.builtup_area*(1/au.value))   as converted_unit ,au.master_name as atitle'; 
@@ -206,8 +206,8 @@ class PlaceAnAdNew extends PlaceAnAd
 			$criteria->condition .= " and  CASE WHEN t.id  in ('{$userStr}') THEN 1 ELSE 0 END   " ;
 		}
 		if(isset($formData['lease_status'])){
-		          $criteria->condition .= " and t.lease_status = :lease_status  ";  
-		          $criteria->params[':lease_status'] = $formData['lease_status']; 
+			$criteria->condition .= " and t.lease_status = :lease_status  ";  
+			$criteria->params[':lease_status'] = $formData['lease_status']; 
 		}
 		if(isset($formData['pstatus'])){
 		    switch($formData['pstatus']){

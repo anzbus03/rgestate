@@ -974,14 +974,7 @@ public function beforeSave(){
 		return $items; 
 	}
 	public function  ListDataForJSON_ID_BySEctionNewSlugNtCacheWithId($section=null){
-		$cacheKey =  'category_cacheslug12911ids1'.Yii::app()->options->get('system.common.category_cache','12').$section;
-		if(defined('LANGUAGE')){$cacheKey .= LANGUAGE ;   }
-		if ($items = Yii::app()->cache->get($cacheKey) and !isset($_GET['refresh'])) {
-			
-			 return $items;
-		}  
 		$arra = self::model()->ListDataForJSON_ID_BySEctionNewSlugNtNEw($section,1);
-
 		$items = array();
 		 $ar =array();
 		 if($arra)
@@ -991,22 +984,7 @@ public function beforeSave(){
 			     
 			     	 
 				 $results =  Category::model()->ListDataForJSON_ID_ByListingType2($v->primaryKey);
-			 	
-				/*
-				   $criteria=new CDbCriteria;
-		  
-		 $criteria->condition = "t.isTrash='0'   ";
-		 
-		 //$criteria->join  = " INNER JOIN {{listing_type_filelds}} ls on ls.category_id = t.category_id and ls.category_id =  :listing_type ";
-		  $criteria->join  .= " INNER JOIN {{category}} ca on ca.category_id = :listing_type  ";
-		
-		 $criteria->params[":listing_type"] = $v->category_id;
-		  
-		 $criteria->select ="ca.slug"; 
-		 $results =    $this->findAll($criteria);
-				 */
-				 
-				 
+			
 				 
 				 if($results){
 				 	 foreach($results as $k2=>$v2){

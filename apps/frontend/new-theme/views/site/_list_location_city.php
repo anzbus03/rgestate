@@ -5,7 +5,6 @@ $adModelCriteria =	$adModel->findAds($formData ,false,true);
 $adModelCriteria->select= 'rgn.region_id as city_name,count(t.id) as id   ';
 $adModelCriteria->join.= ' LEFT JOIN {{states}} city ON t.state = city.state_id  ';
 $adModelCriteria->join.= ' LEFT JOIN {{main_region}} rgn ON rgn.region_id = city.region_id  ';
-
 $adModelCriteria->group = 'city.region_id'; 
 $adModelCriteria->order  ='rgn.name asc '; 
 $new_homes =  $adModel->findAll($adModelCriteria);

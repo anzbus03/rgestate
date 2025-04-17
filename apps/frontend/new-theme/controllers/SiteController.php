@@ -1751,73 +1751,38 @@ Jq4pd48R
 		if (isset($formData['type_of']) and strpos($formData['type_of'], 'business') !== false) {
 			define('BUSINESS', '1');
 		}
-
-
+		
 		$adModel = new PlaceAnAdNew();
 		
 
 		$htm = '';
-		/*
-		    if(!isset($formData['reg'])){
-		        $htm = $this->renderPartial('_list_cities',compact('formData','adModel'),true,false);
-		    }else 
-		    
-		    _list_location_city =region 
-	    */
+
 		if (!isset($formData['state']) && !isset($formData['type_of']) && !isset($formData['sub_category'])) {
 			$htm = $this->renderPartial('_list_categories', compact('formData', 'adModel'), true, false);
         } else if (isset($formData['state']) && !isset($formData['type_of']) && !isset($formData['sub_category'])) {
 			if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai'))) {
-				
 				$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
-            } else {
-				
+            } else {	
 				$htm = $this->renderPartial('_list_categories', compact('formData', 'adModel'), true, false);
             }
-        } 
-        // else if (!isset($formData['state']) && isset($formData['type_of']) && !isset($formData['sub_category'])) {
-			
-			// $subCategories = SubCategory::model()->find($fermData['sub_category']);
-            // $htm = $this->renderPartial('_list_sub_categories', compact('formData', 'adModel', 'subCategories'), true, false);
-			// } 
-			else if (isset($formData['state']) && isset($formData['type_of']) && isset($formData['sub_category'])) {
-				$htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
-			} else if (!isset($formData['state']) && isset($formData['type_of']) && !isset($formData['sub_category'])) {
-				$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
-			} else if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai')) && !isset($formData['sub_category'])) {
-				// $htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
-				// print_r(5);
+        } else if (isset($formData['state']) && isset($formData['type_of']) && isset($formData['sub_category'])) {
+			$htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
+		} else if (!isset($formData['state']) && isset($formData['type_of']) && !isset($formData['sub_category'])) {
+			$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
+		} else if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai')) && !isset($formData['sub_category'])) {
+			// $htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
+			// print_r(5);
         } else {
 			$htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
         }
 
-		
-		    // if( !isset($formData['state'])){
-		    //     $htm = $this->renderPartial('_list_location',compact('formData','adModel'),true,false);
-		    // }else if(isset($formData['state']) and !isset($formData['type_of'])){
-		    //     $htm = $this->renderPartial('_list_categories',compact('formData','adModel'),true,false);
-		    // }else if(isset($formData['state']) and in_array($formData['state'],array('fujairah','umm-al-quwain','ras-al-khaimah','al-ain','ajman','sharjah','abu-dhabi','dubai'))){
-		    //        $htm = $this->renderPartial('_list_location',compact('formData','adModel'),true,false);
-		    // }
-		    
-
-		//$htm = $this->renderPartial('_list_categories',compact('new_homes','formData'),true,false);
-
-
-		//Yii::app()->cache->set($cacheKey, $htm,60 * 15  );
-		//print_r(CHtml::listData($new_homes,'category_name','id'));exit;
-
-
 		if (!empty($htm)) {
-
 			echo json_encode(array('status' => '1', 'html' => $htm));
 			exit;
 		} else {
-
 			echo   json_encode(array('status' => '0', 'html' => ''));
 			exit;
 		}
-
 
 		echo json_encode($data);
 		exit;

@@ -81,7 +81,7 @@ if (!empty($neighbours)) {
             $s_id = "sale_item" . $v->id;
             $company_image = $v->CompanyImage2;
             $imagePath  = str_replace('/uploads/files/', '', $img_link);
-            $adImage    = AdImage::model()->findByAttributes(['image_name' => $imagePath]);
+            $adImage    = AdImage::model()->findByAttributes(['ad_id' => $v->id]);
             $titleAltText   = $adImage->image_alt;
             $titleText      = $adImage->image_title;
         ?>

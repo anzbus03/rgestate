@@ -342,8 +342,7 @@ class ListingController extends Controller
 		}
 
 
-		$adsCount =   $placead->count($criteria);
-
+		$adsCount = $placead->count($criteria);
 
 		if ($file_view != 'map') {
 

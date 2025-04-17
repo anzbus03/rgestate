@@ -79,7 +79,7 @@
                                 <?php
                                     $imagePath  = $add->getAd_image_singlenew("293");
                                     // $imagePath  = str_replace('/uploads/files/', '', $imagePath);
-                                    $adImage    = AdImage::model()->findByAttributes(['image_name' => $imagePath]);
+                                    $adImage    = AdImage::model()->findByAttributes(['ad_id' => $add->id]);
                                     $titleAltText   = $adImage->image_alt;
                                     $titleText      = $adImage->image_title;
 

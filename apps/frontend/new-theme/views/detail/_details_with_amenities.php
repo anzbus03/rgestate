@@ -68,7 +68,7 @@
 
 							$lnk = $model->DetLink  ; 
 							if(!empty($image)){
-							echo '<a href="'.$lnk.'"  style="    line-height: 1 !important;    display: inline-block !important;    height: 100%;    width: 100%;" ><img src="'.$image.'" style="box-shadow: 0 1px 6px 0 rgba(32,33,36,.28);    border-radius: 50%;object-fit:contain;width:100%;height:100%;padding:5px; " ></a>';
+							echo '<a href="'.$lnk.'"  style="    line-height: 1 !important;    display: inline-block !important;    height: 100%;    width: 100%;" ><img src="/uploads/files/2022/02/2022-02-02043122-6512.png" style="box-shadow: 0 1px 6px 0 rgba(32,33,36,.28);    border-radius: 50%;object-fit:contain;width:100%;height:100%;padding:5px; " ></a>';
 							} ?>
         </div>
 
@@ -80,7 +80,7 @@
             </div>
             <?php
 							if(empty($model->companyName)){ ?>
-            <p class="margin-bottom-2" style="margin-bottom:2px;white-space: nowrap;"><i class="fa fa-user"></i>
+            <p class="margin-bottom-2" style="margin-bottom:2px;white-space: nowrap;">RGEstate <i class="fa fa-user"></i>
                 <?php echo $model->first_name;?> </p>
             <?php } ?>
             <?php

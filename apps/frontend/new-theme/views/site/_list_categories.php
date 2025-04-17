@@ -2,21 +2,22 @@
  
 $cityDats = Category::model()->ListDataForJSON_ID_BySEctionNewSlugNtCacheWithId(''); 
 //  print_r($cityDats['Commercial Plots']);
-$adModelCriteria =	$adModel->findAds($formData ,false,true); 
-
-$adModelCriteria->select = 't.category_id as category_name,count(t.id) as id  ';
- 
+$adModelCriteria =	$adModel->findAds($formData ,false,1);
+$adModelCriteria->addCondition('t.status = :status');
+$adModelCriteria->addCondition('t.isTrash = "0"');
+$adModelCriteria->params[':status'] = 'A';
+$adModelCriteria->select = 't.category_id as category_name,count(t.id) as id';
 $adModelCriteria->group = 't.category_id'; 
 $adModelCriteria->order  ='count(t.id) desc ';
 $new_homes =  $adModel->findAll($adModelCriteria);
 
 // echo "<pre>";
 // print_r($new_homes);
- unset($formData['section_id']);unset($formData['country']);
-  if(isset($formData['preleased'])){
-          unset($formData['preleased']);
-          $formData['sec'] = 'preleased'; 
-      }
+unset($formData['section_id']);unset($formData['country']);
+if(isset($formData['preleased'])){
+    unset($formData['preleased']);
+    $formData['sec'] = 'preleased'; 
+}
  $create_array = array();
  foreach($formData as $k1=>$v1){
      if(!in_array($k1,array('sec','type_of','state','reg','category'))){
@@ -42,7 +43,7 @@ if(!empty($new_homes)){
             $name = $data1['name'];
             $slug = $data1['slug'];
          }else{
-            // echo $v->category_name;  
+            echo $v->category_id;  
             continue; 
          }
          
