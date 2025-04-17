@@ -82,7 +82,7 @@
                                     $adImage    = AdImage::model()->findByAttributes(['ad_id' => $add->id]);
                                     $titleAltText   = $adImage->image_alt;
                                     $titleText      = $adImage->image_title;
-
+                                    $imagePath = str_replace('/uploads/files/', '', $adImage->image_name);
                                     $watermarkImage = ImageWatermark::model()->findByPk(1);
                                     $watermarkSrc = '/uploads/files/' . $watermarkImage->watermark_image;
                                 ?>
