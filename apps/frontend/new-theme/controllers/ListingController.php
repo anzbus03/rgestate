@@ -565,7 +565,7 @@ class ListingController extends Controller
 			'pageMetaTitle'     => Yii::t('app',  'Properties Listing' . '  | {project} ', array('{project}' => $this->project_name)),
 			'noFooter'     		=> $file_view == 'index_map' ? '1' : false,
 			'newMetaTitle' 		=> $m_title,
-			'pageTitle' 		=> $m_title . '  | ' . BRAND_TITLE,
+			'pageTitle' 		=> $p_title . '  | ' . BRAND_TITLE,
 			'meta_keyword' 		=> $newMetaKeywords,
 			'pageMetaDescription' 	=> $newMetaDescription,
 			'schema'            	=>  !empty($pageContent->neighborhood) ? $pageContent->neighborhood : ''
