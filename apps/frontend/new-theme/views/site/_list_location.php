@@ -65,6 +65,12 @@ if (!empty($new_homes)) {
             background: #fff;
           }
           .d-none { display: none !important; }
+          @media (max-width: 575.98px) {
+            #v_more,
+            #v_less {
+              display: none !important;
+            }
+          }
         </style>
         <script>
           function showAlllist(){
