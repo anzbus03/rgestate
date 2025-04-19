@@ -6,16 +6,27 @@ $s_class_n = 'col-sm-4';
 $bg = true;
 
 foreach ($works as $k => $v) { 
-    $s_id = "sale_item" . $v->id;
-  $company_image = $v->CompanyImage2;
-  $img_link = $v->getAd_image_singlenew("293");
-  $imagePath  = str_replace('/uploads/files/', '', $img_link);
-  $adImage    = AdImage::model()->findByAttributes(['ad_id' => $v->id]);
-  $titleAltText   = $adImage->image_alt;
-  $titleText      = $adImage->image_title;
+    //     $s_id = "sale_item" . $v->id;
+    //   $company_image = $v->CompanyImage2;
+    //   $img_link = $v->getAd_image_singlenew("293");
+    //   $imagePath  = str_replace('/uploads/files/', '', $img_link);
+    //   $adImage    = AdImage::model()->findByAttributes(['ad_id' => $v->id]);
+    //   $titleAltText   = $adImage->image_alt;
+    //   $titleText      = $adImage->image_title;
 
-  $watermarkImage = ImageWatermark::model()->findByPk(1);
-  $watermarkSrc = '/uploads/files/' . $watermarkImage->watermark_image;
+    //   $watermarkImage = ImageWatermark::model()->findByPk(1);
+    //   $watermarkSrc = '/uploads/files/' . $watermarkImage->watermark_image;
+    $imagePath  = $v->getAd_image_singlenew("293");
+    $adImage    = AdImage::model()->findByAttributes(['ad_id' => $v->id, 'status' => 'A', "isTrash" => "0"]);
+    if ($adImage){
+        $imagePath  = ('/uploads/files/' . $adImage->image_name);
+        $titleAltText   = $adImage->image_alt;
+        $titleText      = $adImage->image_title;
+    }else {
+        $adImage    = AdImage::model()->findByAttributes(['image_name' => $imagePath]);
+        $titleAltText   = $adImage->image_alt;
+        $titleText      = $adImage->image_title;
+    }
 ?>
     <div class="col-md-12 col-lg-12 lst-prop list-items prop-status-<?php echo $v->property_status; ?>" id="<?php echo $s_id; ?>" data-price="<?php echo $v->price; ?>">
         <!-- Overlay link -->
