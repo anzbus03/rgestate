@@ -79,27 +79,15 @@
                                 <?php
                                     $imagePath  = $add->getAd_image_singlenew("293");
                                     // $imagePath  = str_replace('/uploads/files/', '', $imagePath);
-                                    $adImage    = AdImage::model()->findByAttributes(['ad_id' => $add->id]);
+                                    $adImage    = AdImage::model()->findByAttributes(['image_name' => $imagePath]);
                                     $titleAltText   = $adImage->image_alt;
                                     $titleText      = $adImage->image_title;
-                                    if ($adImage){
-                                        $imagePath = ('/uploads/files/'. $adImage->image_name);
-                                    }
-                                    $watermarkImage = ImageWatermark::model()->findByPk(1);
-                                    $watermarkSrc = '/uploads/files/' . $watermarkImage->watermark_image;
                                 ?>
-                                    
-                                    <img class="d-block w-100 h-100 object-fit-cover watermarked-img"
-                                        data-placeholder-background="#eee"
-                                        alt="<?php echo $titleAltText; ?>"
-                                        title="<?php echo $titleText; ?>"
-                                        data-src="<?php echo $imagePath;?>"
-                                        data-watermark-src="<?php echo $watermarkSrc; ?>"
-                                        data-opacity="<?php echo $watermarkImage->opacity / 100; ?>"
-                                        data-x="<?php echo $watermarkImage->position_x; ?>"
-                                        data-y="<?php echo $watermarkImage->position_y; ?>"
-                                        data-wm-width="<?php echo $watermarkImage->watermark_width; ?>"
-                                        data-wm-height="<?php echo $watermarkImage->watermark_height; ?>">
+                                <img class="d-block w-100 h-100 object-fit-cover"  
+                                    src="<?php echo $imagePath;?>"
+                                    alt="<?php echo $titleAltText; ?>"
+                                    title="<?php echo $titleText; ?>">
+
                                 </a>
                             </div>
                             <div class="rg-featured-body">
