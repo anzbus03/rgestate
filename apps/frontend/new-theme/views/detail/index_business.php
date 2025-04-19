@@ -478,7 +478,7 @@ observer.observe();
                       <div class="HomeDetailsHero__HeroFooter-hubkl0-5 hIfUYc sizi-<?php echo sizeOf($images);?>"><button type="button" data-testid="hdp-hero-photo-count"   class="Button__ButtonBase-sc-1ea9wz-0 Button-sc-1ea9wz-1 HomeDetailsHeroCta__HeroCta-sc-35yfrg-0 jQnIeH"><div class="MediaBlock__MediaContainer-skmvlj-0 bOGJGe"><div class="ui__SvgContainer-sc-1z03173-0 dlXmJI"><svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g fill="#ffffff" fill-rule="nonzero"><path d="M2.5 2.5V13H13V2.5H2.5zm-.5-1h11.5a.5.5 0 0 1 .5.5v11.5a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V2a.5.5 0 0 1 .5-.5z"></path><path d="M13.5 10a.5.5 0 1 1 0 1H2a.5.5 0 1 1 0-1h11.5zm-7-7a1.75 1.75 0 1 1 0 3.5H5a1.25 1.25 0 0 1-.078-2.498A1.746 1.746 0 0 1 6.5 3zm0 1a.747.747 0 0 0-.736.63.5.5 0 0 1-.673.389.248.248 0 0 0-.341.231c0 .138.112.25.25.25h1.5a.75.75 0 1 0 0-1.5z"></path><path d="M9.076 6.664c.536-.919 1.88-.874 2.353.076l1.768 3.536a.5.5 0 1 1-.894.448l-1.77-3.537a.339.339 0 0 0-.594-.019L8.432 9.752a.5.5 0 0 1-.848.025 3.957 3.957 0 0 0-.58-.66C6.58 8.726 6.149 8.5 5.75 8.5c-.324 0-.752.372-1.175 1.022a7.385 7.385 0 0 0-.61 1.164.5.5 0 0 1-.93-.372 8.366 8.366 0 0 1 .701-1.337C4.331 8.066 4.981 7.5 5.751 7.5c.696 0 1.341.337 1.933.883.089.082.171.163.248.243l1.145-1.962z"></path></g></svg></div><div class="MediaBlock__MediaContent-skmvlj-1 dCsAgE" style="margin-left:2px !important;"><span color="inverse" data-testid="photo-count" class="Text__TextBase-sc-1cait9d-0 bqfOkU"><?php echo sizeOf($images);?></span></div></div></button></div>
               
                 <div style="display:flex;"   class="detailAbs" id="detailAbs">
-				<script>
+				<!-- <script>
 					document.addEventListener("DOMContentLoaded", function () {
 						// Define base dimensions (the reference dimensions)
 						const baseWidth = 800;
@@ -558,7 +558,7 @@ observer.observe();
 							});
 						});
 					});
-					</script>
+				</script> -->
 
 
           

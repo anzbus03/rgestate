@@ -516,85 +516,85 @@ observer.observe();
               
                 <div style="display:flex;"   class="detailAbs" id="detailAbs">
 				<script>
-					document.addEventListener("DOMContentLoaded", function () {
-					// Define base dimensions (the reference dimensions)
-					const baseWidth = 800;
-					const baseHeight = 600;
+					// document.addEventListener("DOMContentLoaded", function () {
+					// // Define base dimensions (the reference dimensions)
+					// const baseWidth = 800;
+					// const baseHeight = 600;
 
-					const images = document.querySelectorAll("img.watermarked-img");
-					images.forEach(img => {
-						console.log(img);
-						// Get the main image source and watermark source
-						const src = img.getAttribute("data-src") || img.src;
-						const watermarkSrc = img.getAttribute("data-watermark-src");
+					// const images = document.querySelectorAll("img.watermarked-img");
+					// images.forEach(img => {
+					// 	console.log(img);
+					// 	// Get the main image source and watermark source
+					// 	const src = img.getAttribute("data-src") || img.src;
+					// 	const watermarkSrc = img.getAttribute("data-watermark-src");
 
-						// Retrieve the watermark's base coordinates and dimensions (for reference base size)
-						const baseX = parseInt(img.getAttribute("data-x") || 10, 10);
-						const baseY = parseInt(img.getAttribute("data-y") || 10, 10);
-						const baseWmWidth = parseInt(img.getAttribute("data-wm-width") || 100, 10);
-						const baseWmHeight = parseInt(img.getAttribute("data-wm-height") || 40, 10);
-						const opacity = parseFloat(img.getAttribute("data-opacity") || 0.5);
+					// 	// Retrieve the watermark's base coordinates and dimensions (for reference base size)
+					// 	const baseX = parseInt(img.getAttribute("data-x") || 10, 10);
+					// 	const baseY = parseInt(img.getAttribute("data-y") || 10, 10);
+					// 	const baseWmWidth = parseInt(img.getAttribute("data-wm-width") || 100, 10);
+					// 	const baseWmHeight = parseInt(img.getAttribute("data-wm-height") || 40, 10);
+					// 	const opacity = parseFloat(img.getAttribute("data-opacity") || 0.5);
 
-						const canvas = document.createElement("canvas");
-						const ctx = canvas.getContext("2d");
+					// 	const canvas = document.createElement("canvas");
+					// 	const ctx = canvas.getContext("2d");
 
-						// Load main image and watermark image
-						const mainImg = new Image();
-						mainImg.crossOrigin = "anonymous";
-						mainImg.src = src;
+					// 	// Load main image and watermark image
+					// 	const mainImg = new Image();
+					// 	mainImg.crossOrigin = "anonymous";
+					// 	mainImg.src = src;
 
-						const watermark = new Image();
-						watermark.crossOrigin = "anonymous";
-						watermark.src = watermarkSrc;
+					// 	const watermark = new Image();
+					// 	watermark.crossOrigin = "anonymous";
+					// 	watermark.src = watermarkSrc;
 
-						Promise.all([
-						new Promise(res => { mainImg.onload = res; }),
-						new Promise(res => { watermark.onload = res; })
-						]).then(() => {
-						// Use natural dimensions of the main image for calculations.
-						const mainNaturalWidth = mainImg.naturalWidth;
-						const mainNaturalHeight = mainImg.naturalHeight;
+					// 	Promise.all([
+					// 	new Promise(res => { mainImg.onload = res; }),
+					// 	new Promise(res => { watermark.onload = res; })
+					// 	]).then(() => {
+					// 	// Use natural dimensions of the main image for calculations.
+					// 	const mainNaturalWidth = mainImg.naturalWidth;
+					// 	const mainNaturalHeight = mainImg.naturalHeight;
 						
-						// Set canvas internal size to match the main image's natural dimensions.
-						canvas.width = mainNaturalWidth;
-						canvas.height = mainNaturalHeight;
+					// 	// Set canvas internal size to match the main image's natural dimensions.
+					// 	canvas.width = mainNaturalWidth;
+					// 	canvas.height = mainNaturalHeight;
 
-						// Draw the main image onto the canvas.
-						ctx.drawImage(mainImg, 0, 0);
+					// 	// Draw the main image onto the canvas.
+					// 	ctx.drawImage(mainImg, 0, 0);
 
-						// Compute scaling factors based on how the main image differs from the base (reference) dimensions.
-						const factorX = mainNaturalWidth / baseWidth;
-						const factorY = mainNaturalHeight / baseHeight;
+					// 	// Compute scaling factors based on how the main image differs from the base (reference) dimensions.
+					// 	const factorX = mainNaturalWidth / baseWidth;
+					// 	const factorY = mainNaturalHeight / baseHeight;
 
-						// Calculate the scaled watermark position and dimensions.
-						const scaledX = baseX * factorX;
-						const scaledY = baseY * factorY;
-						const scaledWmWidth = baseWmWidth * factorX;
-						const scaledWmHeight = baseWmHeight * factorY;
+					// 	// Calculate the scaled watermark position and dimensions.
+					// 	const scaledX = baseX * factorX;
+					// 	const scaledY = baseY * factorY;
+					// 	const scaledWmWidth = baseWmWidth * factorX;
+					// 	const scaledWmHeight = baseWmHeight * factorY;
 
-						// Draw the watermark with the desired opacity.
-						ctx.globalAlpha = opacity;
-						ctx.drawImage(watermark, scaledX, scaledY, scaledWmWidth, scaledWmHeight);
-						ctx.globalAlpha = 1;
+					// 	// Draw the watermark with the desired opacity.
+					// 	ctx.globalAlpha = opacity;
+					// 	ctx.drawImage(watermark, scaledX, scaledY, scaledWmWidth, scaledWmHeight);
+					// 	ctx.globalAlpha = 1;
 
-						// Set the canvas style dimensions to match the original image element.
-						// If no specific style is set, fall back to using the natural dimensions.
-						canvas.style.width = "100%";
-						canvas.style.height = "100%";
+					// 	// Set the canvas style dimensions to match the original image element.
+					// 	// If no specific style is set, fall back to using the natural dimensions.
+					// 	canvas.style.width = "100%";
+					// 	canvas.style.height = "100%";
 
-						// Copy over attributes and class names.
-						canvas.className = img.className;
-						canvas.alt = img.alt;
-						canvas.title = img.title;
+					// 	// Copy over attributes and class names.
+					// 	canvas.className = img.className;
+					// 	canvas.alt = img.alt;
+					// 	canvas.title = img.title;
 
-						// Replace the original image with the watermarked canvas.
-						img.parentNode.replaceChild(canvas, img);
+					// 	// Replace the original image with the watermarked canvas.
+					// 	img.parentNode.replaceChild(canvas, img);
 
-						}).catch(err => {
-							console.error("Failed to load image for watermarking:", err);
-						});
-					});
-					});
+					// 	}).catch(err => {
+					// 		console.error("Failed to load image for watermarking:", err);
+					// 	});
+					// });
+					// });
 					</script>
 
 
