@@ -87,98 +87,98 @@ foreach ($works as $k => $v) {
   </div>
   <script>
     // Helper function to load an image with a Promise.
-    function loadImage(src) {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = () => resolve(img);
-        img.onerror = () => reject(new Error("Failed to load image: " + src));
-        img.src = src;
-      });
-    }
+    // function loadImage(src) {
+    //   return new Promise((resolve, reject) => {
+    //     const img = new Image();
+    //     img.crossOrigin = "anonymous";
+    //     img.onload = () => resolve(img);
+    //     img.onerror = () => reject(new Error("Failed to load image: " + src));
+    //     img.src = src;
+    //   });
+    // }
 
-    // Main function to apply watermarks to all images with the class "watermarked-img".
-    function applyWatermarks() {
-      // Define your base image dimensions (the reference dimensions).
-      const baseWidth = 800;
-      const baseHeight = 600;
+    // // Main function to apply watermarks to all images with the class "watermarked-img".
+    // function applyWatermarks() {
+    //   // Define your base image dimensions (the reference dimensions).
+    //   const baseWidth = 800;
+    //   const baseHeight = 600;
 
-      const watermarkedImages = document.querySelectorAll("img.watermarked-img");
+    //   const watermarkedImages = document.querySelectorAll("img.watermarked-img");
 
-      watermarkedImages.forEach(img => {
-        // Prevent processing the same image twice.
-        if (img.dataset.processed === "1") return;
-        img.dataset.processed = "1";
+    //   watermarkedImages.forEach(img => {
+    //     // Prevent processing the same image twice.
+    //     if (img.dataset.processed === "1") return;
+    //     img.dataset.processed = "1";
 
-        // Extract image and watermark settings from data attributes.
-        // In this version, data-x and data-y represent the absolute coordinates in the base image.
-        const mainSrc = img.getAttribute("data-src");
-        const watermarkSrc = img.getAttribute("data-watermark-src");
-        const opacity = parseFloat(img.getAttribute("data-opacity") || "0.5");
+    //     // Extract image and watermark settings from data attributes.
+    //     // In this version, data-x and data-y represent the absolute coordinates in the base image.
+    //     const mainSrc = img.getAttribute("data-src");
+    //     const watermarkSrc = img.getAttribute("data-watermark-src");
+    //     const opacity = parseFloat(img.getAttribute("data-opacity") || "0.5");
         
-        // These values (e.g. 250 and 284) are the positions in the base image (800x600).
-        const baseX = parseFloat(img.getAttribute("data-x") || "0");
-        const baseY = parseFloat(img.getAttribute("data-y") || "0");
+    //     // These values (e.g. 250 and 284) are the positions in the base image (800x600).
+    //     const baseX = parseFloat(img.getAttribute("data-x") || "0");
+    //     const baseY = parseFloat(img.getAttribute("data-y") || "0");
         
-        // Watermark size (could be set as fixed dimensions in the base image).
-        const wmWidth = parseInt(img.getAttribute("data-wm-width") || "100", 10);
-        const wmHeight = parseInt(img.getAttribute("data-wm-height") || "100", 10);
+    //     // Watermark size (could be set as fixed dimensions in the base image).
+    //     const wmWidth = parseInt(img.getAttribute("data-wm-width") || "100", 10);
+    //     const wmHeight = parseInt(img.getAttribute("data-wm-height") || "100", 10);
 
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
+    //     const canvas = document.createElement("canvas");
+    //     const ctx = canvas.getContext("2d");
 
-        // Wait for both the main image and watermark image to load.
-        Promise.all([loadImage(mainSrc), loadImage(watermarkSrc)])
-          .then(([mainImg, watermarkImg]) => {
-            // Use natural dimensions (original size) of the main image.
-            const mainWidth = mainImg.naturalWidth;
-            const mainHeight = mainImg.naturalHeight;
+    //     // Wait for both the main image and watermark image to load.
+    //     Promise.all([loadImage(mainSrc), loadImage(watermarkSrc)])
+    //       .then(([mainImg, watermarkImg]) => {
+    //         // Use natural dimensions (original size) of the main image.
+    //         const mainWidth = mainImg.naturalWidth;
+    //         const mainHeight = mainImg.naturalHeight;
 
-            // Set canvas dimensions to the main image's natural dimensions.
-            canvas.width = mainWidth;
-            canvas.height = mainHeight;
+    //         // Set canvas dimensions to the main image's natural dimensions.
+    //         canvas.width = mainWidth;
+    //         canvas.height = mainHeight;
 
-            // Draw the main image onto the canvas.
-            ctx.drawImage(mainImg, 0, 0);
+    //         // Draw the main image onto the canvas.
+    //         ctx.drawImage(mainImg, 0, 0);
 
-            // Compute scaling factors relative to the base dimensions.
-            const factorX = mainWidth / baseWidth;
-            const factorY = mainHeight / baseHeight;
+    //         // Compute scaling factors relative to the base dimensions.
+    //         const factorX = mainWidth / baseWidth;
+    //         const factorY = mainHeight / baseHeight;
 
-            // Calculate new watermark coordinates based on the base position and scaling factors.
-            const x = baseX * factorX;
-            const y = baseY * factorY;
+    //         // Calculate new watermark coordinates based on the base position and scaling factors.
+    //         const x = baseX * factorX;
+    //         const y = baseY * factorY;
 
-            // Optionally scale the watermark dimensions as well.
-            const scaledWmWidth = wmWidth * factorX;
-            const scaledWmHeight = wmHeight * factorY;
+    //         // Optionally scale the watermark dimensions as well.
+    //         const scaledWmWidth = wmWidth * factorX;
+    //         const scaledWmHeight = wmHeight * factorY;
 
-            // Apply the watermark with the designated opacity and scaled size.
-            ctx.globalAlpha = opacity;
-            ctx.drawImage(watermarkImg, x, y, scaledWmWidth, scaledWmHeight);
-            ctx.globalAlpha = 1;
+    //         // Apply the watermark with the designated opacity and scaled size.
+    //         ctx.globalAlpha = opacity;
+    //         ctx.drawImage(watermarkImg, x, y, scaledWmWidth, scaledWmHeight);
+    //         ctx.globalAlpha = 1;
 
-            // Set canvas display style to match the original image element size.
-            canvas.style.width = img.width + "px";
-            canvas.style.height = img.height + "px";
+    //         // Set canvas display style to match the original image element size.
+    //         canvas.style.width = img.width + "px";
+    //         canvas.style.height = img.height + "px";
 
-            // Copy over any class names and attributes.
-            canvas.className = img.className;
-            canvas.alt = img.alt;
-            canvas.title = img.title;
+    //         // Copy over any class names and attributes.
+    //         canvas.className = img.className;
+    //         canvas.alt = img.alt;
+    //         canvas.title = img.title;
 
-            // Replace the original image element with the canvas.
-            img.parentNode.replaceChild(canvas, img);
-          })
-          .catch(err => {
-            console.error("Failed to load image for watermarking:", err);
-          });
-      });
-    }
+    //         // Replace the original image element with the canvas.
+    //         img.parentNode.replaceChild(canvas, img);
+    //       })
+    //       .catch(err => {
+    //         console.error("Failed to load image for watermarking:", err);
+    //       });
+    //   });
+    // }
 
-    // Execute the function once the DOM is fully loaded.
-    document.addEventListener("DOMContentLoaded", applyWatermarks);
-    applyWatermarks();
+    // // Execute the function once the DOM is fully loaded.
+    // document.addEventListener("DOMContentLoaded", applyWatermarks);
+    // applyWatermarks();
     </script>
 
 
