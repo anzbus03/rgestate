@@ -35,8 +35,7 @@ foreach ($works as $k => $v) {
         <div class="feat_property home7 style4 list">
             <!-- Thumbnail Section -->
             <div class="thumb">
-                <?php if (!empty($img_link)) { ?> 
-                    <img class="img-whp watermarked-img"
+                    <!-- <img class="img-whp watermarked-img"
                         data-placeholder-background="#eee"
                         alt="<?php echo $titleAltText; ?>"
                         title="<?php echo $titleText; ?>"
@@ -46,9 +45,9 @@ foreach ($works as $k => $v) {
                         data-x="<?php echo $watermarkImage->position_x; ?>"
                         data-y="<?php echo $watermarkImage->position_y; ?>"
                         data-wm-width="<?php echo $watermarkImage->watermark_width; ?>"
-                        data-wm-height="<?php echo $watermarkImage->watermark_height; ?>">
-                    <!-- <img class="img-whp" src="<?php echo $img_link; ?>" alt="<?php echo $titleAltText; ?>" title="<?php echo $titleText; ?>"> -->
-                <?php } ?>
+                        data-wm-height="<?php echo $watermarkImage->watermark_height; ?>"> -->
+                    <img class="img-whp" src="<?php echo $imagePath; ?>" alt="<?php echo $titleAltText; ?>" title="<?php echo $titleText; ?>">
+                
                 
                 <div class="thmb_cntnt">
                     <?php echo $v->getTagList('F'); ?>
