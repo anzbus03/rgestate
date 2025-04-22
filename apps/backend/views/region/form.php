@@ -118,12 +118,12 @@ if ($viewCollection->renderContent) {
                         <?php echo $form->textField($model, 'state_name', $model->getHtmlOptions('state_name')); ?>
                         <?php echo $form->error($model, 'state_name');?>
                     </div>        
-                    
+<!--                     
                      <div class="col-lg-6 mt-2">
                         <?php echo $form->labelEx($model, 'p_name');?>
                         <?php echo $form->textField($model, 'p_name', $model->getHtmlOptions('p_name')); ?>
                         <?php echo $form->error($model, 'p_name');?>
-                    </div>  
+                    </div>   -->
                      
                       <?php
                     if($model->isNewRecord){ ?> 
@@ -134,7 +134,7 @@ if ($viewCollection->renderContent) {
                     </div>  
                     <?php } ?> 
                     
-                        <div class="col-lg-6 mt-2">
+                        <!-- <div class="col-lg-6 mt-2">
                             <div class="col-lg-6 no-margin no-padding" style="width:50%;float:left;">
                             <?php echo $form->labelEx($model, 'icon');?>
                             </div>
@@ -147,7 +147,7 @@ if ($viewCollection->renderContent) {
                             <?php echo $form->fileField($model, 'icon',$model->getHtmlOptions('icon')); ?>
                             <?php echo $form->error($model, 'icon');?>
                         </div>   
-                        <div class="col-lg-2" style="width:100px;height:100px; background-image:url('<?php echo Yii::App()->apps->getBaseUrl('uploads/default/'.$model->icon);?>');background-size:cover;background-repeat:no-repeat:"></div>	 	
+                        <div class="col-lg-2" style="width:100px;height:100px; background-image:url('<?php echo Yii::App()->apps->getBaseUrl('uploads/default/'.$model->icon);?>');background-size:cover;background-repeat:no-repeat:"></div>	 	 -->
                               
                 </div>
                 

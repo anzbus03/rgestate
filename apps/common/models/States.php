@@ -147,10 +147,11 @@ public function getPrimaryField(){
          $criteria->order = "mr.region_id desc ,  t.country_id =  '65949'  desc ,t.country_id =  '65946'  desc  , t.state_name asc    " ;
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
-             'pagination'    => array(
-                'pageSize'  => $this->paginationOptions->getPageSize(),
-                'pageVar'   => 'page',
-            ),
+            //  'pagination'    => array(
+            //     'pageSize'  => $this->paginationOptions->getPageSize(),
+            //     'pageVar'   => 'page',
+            // ),
+			'pagination' => false
         ));
     }
 

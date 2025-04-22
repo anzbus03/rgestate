@@ -235,10 +235,11 @@ if(!empty($this->country_id)){
 }
            return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
-             'pagination'    => array(
-                'pageSize'  => $this->paginationOptions->getPageSize(),
-                'pageVar'   => 'page',
-            ),
+            //  'pagination'    => array(
+            //     'pageSize'  => $this->paginationOptions->getPageSize(),
+            //     'pageVar'   => 'page',
+            // ),
+			'pagination' => false
         ));
     }
 

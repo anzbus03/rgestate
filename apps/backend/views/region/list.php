@@ -39,8 +39,8 @@ if ($viewCollection->renderContent) {
                         <tr>
                             <th><?php echo Yii::t('app', 'State Name'); ?></th>
                             <th><?php echo Yii::t('app', 'Region'); ?></th>
+                            <th><?php echo Yii::t('app', 'Properties'); ?></th>
                             <th><?php echo Yii::t('app', 'Country'); ?></th>
-                            <th><?php echo Yii::t('app', 'Priority'); ?></th>
                             <th><?php echo Yii::t('app', 'Options'); ?></th>
                         </tr>
                     </thead>
@@ -49,9 +49,14 @@ if ($viewCollection->renderContent) {
                         <tr>
                             <td><?php echo "<span>".$data->state_name."</span>&nbsp;".$data->getTranslateHtml("state_name"); ?></td>
                             <td><?php echo $data->region_name; ?></td>
-                           
+                            <td>
+                                <?php 
+                                    echo PlaceAnAd::model()->countByAttributes([
+                                        'state' => $data->state_id
+                                    ]);
+                                ?>
+                            </td>
                             <td><?php echo $data->con->country_name; ?></td>
-                            <td><?php echo CHtml::textField("priority[$data->state_id]", $data->priority, array("style" => "width:50px;text-align:center", "class" => "form-controll")); ?></td>
                             <td style="width:70px;">
                                 <?php if (AccessHelper::hasRouteAccess(Yii::app()->controller->id . '/update')) { ?>
                                     <a href="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/update', array('id' => $data->state_id)); ?>" title="<?php echo Yii::t('app', 'Update'); ?>" class=""><span class="fa fa-pencil"></span></a>
@@ -101,6 +106,15 @@ if ($viewCollection->renderContent) {
             </div>
         </div>
     </div>
+    <script>
+        // Handle select all checkbox
+        $('#selectAll').on('click', function() {
+            var rows = $('#enquiryTable').DataTable().rows({
+                'search': 'applied'
+            }).nodes();
+            $('input[type="checkbox"]', rows).prop('checked', this.checked);
+        });
+    </script>
     <?php 
     $this->endWidget();
 }
