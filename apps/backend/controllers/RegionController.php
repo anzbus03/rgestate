@@ -268,5 +268,239 @@ class RegionController extends Controller
     }
     
    
-    
+    public function actionBulk_action()
+    {
+        $request = Yii::app()->request;
+        $notify  = Yii::app()->notify;
+
+        $action = $_GET['bulk_action'];
+        $items  = $_GET['bulk_item'];
+
+        if ($action == PlaceAnAd::BULK_ACTION_TRASH && count($items)) {
+            $affected = 0;
+            $customerModel = new  States();
+            foreach ($items as $item) {
+
+                $customer = $customerModel->findByPk($item);
+                if (!$customer) {
+                    continue;
+                }
+                //echo $customer->id;echo "<br />";
+
+                $customer->updateByPk($item, array('isTrash' => '1'));
+                $affected++;
+            }
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+        if ($action == PlaceAnAd::BULK_ACTION_RESTORE && count($items)) {
+            $affected = 0;
+            $customerModel = new  States();
+            foreach ($items as $item) {
+
+                $customer = $customerModel->findByPk($item);
+                if (!$customer) {
+                    continue;
+                }
+                //echo $customer->id;echo "<br />";
+
+                $customer->updateByPk($item, array('isTrash' => '0'));
+                $affected++;
+            }
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+        if ($action == PlaceAnAd::BULK_ACTION_TRASLATE && count($items)) {
+            $affected = 0;
+            $customerModel = new  States();
+            foreach ($items as $item) {
+
+                $customer = $customerModel->findByPk($item);
+                if (!$customer) {
+                    continue;
+                }
+                //echo $customer->id;echo "<br />";
+
+                $customer->getUpdateTag();
+                $customer->getUpdateImages();
+                $affected++;
+            }
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+
+        if ($action == PlaceAnAd::BULK_ACTION_UNPUBLISH && count($items)) {
+            $affected = 0;
+            $customerModel = new  States();
+            foreach ($items as $item) {
+
+                $customer = $customerModel->findByPk($item);
+                if (!$customer) {
+                    continue;
+                }
+                //echo $customer->id;echo "<br />";
+
+                $customer->updateByPk($item, array('status' => 'I'));
+                $affected++;
+            }
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+        if ($action == PlaceAnAd::BULK_ACTION_UNLEASE && count($items)) {
+            $affected = 0;
+            $customerModel = new  States();
+            foreach ($items as $item) {
+
+                $customer = $customerModel->findByPk($item);
+                if (!$customer) {
+                    continue;
+                }
+                //echo $customer->id;echo "<br />";
+
+                $customer->updateByPk($item, array('property_status' => '0'));
+                $affected++;
+            }
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+        if ($action == PlaceAnAd::BULK_ACTION_PUBLISH && count($items)) {
+            $affected = 0;
+            $customerModel = new  States();
+            foreach ($items as $item) {
+
+                $customer = $customerModel->findByPk($item);
+                if (!$customer) {
+                    continue;
+                }
+                //echo $customer->id;echo "<br />";
+
+                $customer->updateByPk($item, array('status' => 'A'));
+                $affected++;
+            }
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+
+
+        if ($action == PlaceAnAd::BULK_ACTION_DELETE && count($items)) {
+            $affected = 0;
+            $customerModel = new States();
+            foreach ($items as $item) {
+            
+                $customer = $customerModel->findByPk($item);
+                if (!$customer) {
+                    continue;
+                }
+
+                $customer->delete();;
+                $affected++;
+            }
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+
+        if ($action == PlaceAnAd::BULK_ACTION_EXPIRED && count($items)) {
+
+
+            $affected = 0;
+            $customerModel = new States();
+            foreach ($items as $item) {
+
+                $customer = $customerModel->findByPk($item);
+                if (!$customer) {
+                    continue;
+                }
+                $customer->updateByPk($customer->id, array('extended_on' => date('Y-m-d h:i:s'), 'n_send_at' => NULL));
+
+
+                $affected++;
+            }
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+
+        if ($action == PlaceAnAd::BULK_ACTION_SENDNOTIFICATIOB && count($items)) {
+            $affected = 0;
+            $customerModel = new  States();
+            foreach ($items as $item) {
+
+                $customer = $customerModel->findByPk($item);
+                if (!$customer) {
+                    continue;
+                }
+                $send =      $customer->SendNotificationExpire;
+                PlaceAnAd::model()->updateByPk($customer->id, array('n_send_at' => date('Y-m-d h:i:s')));
+
+
+                $affected++;
+            }
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+
+        if ($action == PlaceAnAd::BULK_ACTION_REFRESH && count($items)) {
+            $affected = 0;
+            $customerModel = new  States();
+            foreach ($items as $item) {
+
+                $customer = $customerModel->findByPk($item);
+                if (!$customer) {
+                    continue;
+                }
+
+                PlaceAnAd::model()->updateByPk($customer->id, array('last_updated' => date('Y-m-d H:i:s')));
+
+
+                $affected++;
+            }
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+
+
+
+        if ($action == PlaceAnAd::BULK_ACTION_DOWNLOAD && count($items)) {
+            $affected = 0;
+            $customerModel = new  States();
+            foreach ($items as $item) {
+
+                $customer = $customerModel->findByPk($item);
+                if (!$customer) {
+                    continue;
+                }
+
+                $ids =   $customer->city;
+                if (!empty($ids)) {
+                    $citymodel = City::model()->findByPk((int)$ids);
+                    if (!empty($citymodel) and !empty($citymodel->location_latitude) and !empty($citymodel->location_longitude)) {
+
+                        $src  = 'https://maps.googleapis.com/maps/api/staticmap?center = ' . $citymodel->location_latitude . '%2C' . $citymodel->location_longitude . '&language = en&size = 640x256&zoom = 15&scale = 1&key = AIzaSyCE4LF1fuKkM5b0ffhY7dEoZ4ULkG2Uazk';
+                        $time = date('Ymdhis') . '_' . time();
+                        $desFolder =   Yii::getPathOfAlias('root.uploads.map') . '/';;
+                        $imageName = 'google-map_' . $time . '.png';
+                        $imagePath = $desFolder . $imageName;
+                        file_put_contents($imagePath, file_get_contents($src));
+                        $citymodel->updateByPk($citymodel->city_id, array('image' => $imageName));
+                        $affected++;
+                    }
+                }
+            }
+
+            if ($affected) {
+                $notify->addSuccess(Yii::t('app', 'The action has been successfully completed!'));
+            }
+        }
+        $defaultReturn = $request->getServer('HTTP_REFERER', array('place_property/index'));
+        $this->redirect($request->getPost('returnUrl', $defaultReturn));
+    }
 }
