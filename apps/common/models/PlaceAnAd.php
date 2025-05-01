@@ -5151,7 +5151,7 @@ class PlaceAnAd extends ActiveRecord
 					if (in_array($user->user_id, $agents)) {
 						// Display profile_image for the agent (if available)
 						$agentProfileImage = !empty($agencyUser->profile_image) ? $agencyUser->profile_image : 'default_agent_image.jpg';
-						$html .= '<img style="width: 80px;height:40px;float: right;" src="/uploads/images/' . $agentProfileImage . '" alt="Agent Profile Image">';
+						$html .= '<img style="width: 80px;height:40px;float: right;" src="/uploads/images/' . $agentProfileImage . '" alt="Agent Image">';
 						break; // Exit loop after finding the match
 					}
 				}
@@ -6622,6 +6622,7 @@ class PlaceAnAd extends ActiveRecord
 	{
 		$region_list = array('dubai' => 'Dubai', 'abu-dhabi' => 'Abu Dhabi', 'sharjah' => 'Sharjah', 'ajman' => 'Ajman', 'al-ain' => 'Al Ain', 'ras-al-khaimah' => 'Ras Al Khaimah', 'umm-al-quwain' => 'Umm Al Quwain', 'fujairah' => 'Fujairah');
 		$data =  array_filter($formData);
+	
 		$html = '';
 
 		if (!empty($category_text)) {
@@ -6645,6 +6646,7 @@ class PlaceAnAd extends ActiveRecord
 			$ar['sec'] = $data['sec'];
 		}
 		if (!empty($category)) {
+			$ar['category'] = $data['category'];
 			$ar['type_of'] = $data['type_of'];
 		}
 		if (isset($data['state']) and in_array($data['state'], array_keys($region_list))) {

@@ -683,7 +683,7 @@ $works = $ads;
 				    }else{
 					$category_title = !empty($categoryModelm)  ? $categoryModelm->PluralName : ''; 
 					switch($filterModel->section_id)	{
-						case 'property-for-sale': 
+						case 'property-for-sale':
 						$html =  $filterModel->generateLinks($formData,$category_title);
 						if($html){ echo '<h4 class="title" style="margin-bottom: 5px;">'.$this->tag->getTag('recommended_links','Recommended Links').'</h4>'; echo   '<ul class="list_details">';echo  $html;echo '</ul>';   }
 						//else{   echo Countries::model()->saleLeftLinkdb();  }
