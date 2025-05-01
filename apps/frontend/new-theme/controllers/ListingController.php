@@ -538,13 +538,13 @@ class ListingController extends Controller
 		// echo "<br>";
 		// print_r($areaSlug);
 
-		// $pageContent = ListingContents::model()->getListingContentNew(
-		// 	$formData['sec'],
-		// 	$cat_i,
-		// 	$citySlug,
-		// 	$areaSlug // new parameter
-		// );
-		$pageContent = ListingContents::model()->getListingContent($formData['sec'], $cat_i, $formData['state']);
+		$pageContent = ListingContents::model()->getListingContentNew(
+			$formData['sec'],
+			$cat_i,
+			$citySlug,
+			$areaSlug // new parameter
+		);
+		// $pageContent = ListingContents::model()->getListingContent($formData['sec'], $cat_i, $formData['state']);
 
 		if ($pageContent) {
 			// $m_title = $pageContent->meta_title;
