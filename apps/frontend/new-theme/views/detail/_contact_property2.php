@@ -344,11 +344,18 @@
 									</label>
 									<?php echo $form->error($contact, 'agree'); ?>
 								</div>
-								
+
 							</div>
 						</div>
 					</div>
-					
+					<div class="row">
+						<div class="col-sm-11">
+							<div class="checkbox mb-3">
+								<div id="cfTurnstileModal" class="cf-turnstile" data-sitekey="0x4AAAAAABaczT6sNg53sDRh" data-theme="light"></div>
+							</div>
+						</div>
+					</div>
+
 
 					<div class="form-group  margin-bottom-5">
 
