@@ -20,8 +20,75 @@ if (isset($_GET['floor']) and $_GET['floor'] == '1') {
 </script>
 
 <style>
-	.success-modal .anim{background-color:#3fc59d;position:relative}.success-modal>div{height:180px;text-align:center}.success-modal .container22{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.success-modal svg{transform:scale(.4)}.success-modal .info{padding:30px;color:#3b475e}.success-modal .info .title{font-weight:var(--weight-800)}.success-modal .info .text{margin-top:20px;font-size:14px;font-weight:400}.success-modal .info .continue{margin-top:20px;padding:10px 30px;border-radius:50px;border:none;font-size:13px;color:#fff;background:#585dc9;background:var(--bs-blue);background:var(--bs-blue);background:var(--bs-blue);cursor:pointer}.success-modal .info .continue{font-size:13px;color:#fff;cursor:pointer}.ion-android-arrow-forward::before{content:"\f30f"}.success-modal{margin:-20px;display:none}.success-modal.visible{display:block}
-	
+	.success-modal .anim {
+		background-color: #3fc59d;
+		position: relative
+	}
+
+	.success-modal>div {
+		height: 180px;
+		text-align: center
+	}
+
+	.success-modal .container22 {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%)
+	}
+
+	.success-modal svg {
+		transform: scale(.4)
+	}
+
+	.success-modal .info {
+		padding: 30px;
+		color: #3b475e
+	}
+
+	.success-modal .info .title {
+		font-weight: var(--weight-800)
+	}
+
+	.success-modal .info .text {
+		margin-top: 20px;
+		font-size: 14px;
+		font-weight: 400
+	}
+
+	.success-modal .info .continue {
+		margin-top: 20px;
+		padding: 10px 30px;
+		border-radius: 50px;
+		border: none;
+		font-size: 13px;
+		color: #fff;
+		background: #585dc9;
+		background: var(--bs-blue);
+		background: var(--bs-blue);
+		background: var(--bs-blue);
+		cursor: pointer
+	}
+
+	.success-modal .info .continue {
+		font-size: 13px;
+		color: #fff;
+		cursor: pointer
+	}
+
+	.ion-android-arrow-forward::before {
+		content: "\f30f"
+	}
+
+	.success-modal {
+		margin: -20px;
+		display: none
+	}
+
+	.success-modal.visible {
+		display: block
+	}
+
 	#cn_property {
 		padding: 0 !important;
 		overflow: hidden
@@ -154,7 +221,7 @@ if (isset($_GET['floor']) and $_GET['floor'] == '1') {
 		<div data-reactroot="" class="pvn clearfix">
 			<div class="false" style="padding: 10px;">
 
-			<?php
+				<?php
 				$mainTex =   $this->tag->getTag('send', 'Send');
 				$Validating = $this->tag->getTag('validating', 'Validating..');
 				$please_wait = $this->tag->getTag('please_wait', 'Please wait..');
@@ -374,14 +441,14 @@ if (isset($_GET['floor']) and $_GET['floor'] == '1') {
 						<div class="col-sm-12">
 
 							<?php
-								if (isset($_GET['floor']) and $_GET['floor'] == '1') {
-									$contact->floor = '1';
-									echo $form->hiddenField($contact, 'floor');
-									$contact->meassage = Yii::t('tran', $this->tag->getTag('i_would_like_to_inquire_about_', 'I would like to inquire about the floorplan for your property {REF}. Please contact me at your earliest convenience.'), array('[PROPERTY]' => $model->DetailUrlAbs, '{REF}' => $model->ReferenceNumberTitle, '{site}' => $this->project_name));
-								} else {
-									$contact->meassage = Yii::t('tran', $this->tag->getTag('i_would_like_to_inquire_about_', 'Hello, I am interested in this property and would like to make an appointment for a visit. Please contact me as soon as possible.{b}Thank you so much - [PROPERTY]'), array('[PROPERTY]' => $model->DetailUrlAbs, '{REF}' => $model->ReferenceNumberTitle, '{site}' => $this->project_name, '{b}' => "\r\n"));
-								}
-								echo $form->textArea($contact, 'meassage',  $contact->getHtmlOptions('meassage', array('class' => 'input-text form-control', 'placeholder' => '')));  ?>
+							if (isset($_GET['floor']) and $_GET['floor'] == '1') {
+								$contact->floor = '1';
+								echo $form->hiddenField($contact, 'floor');
+								$contact->meassage = Yii::t('tran', $this->tag->getTag('i_would_like_to_inquire_about_', 'I would like to inquire about the floorplan for your property {REF}. Please contact me at your earliest convenience.'), array('[PROPERTY]' => $model->DetailUrlAbs, '{REF}' => $model->ReferenceNumberTitle, '{site}' => $this->project_name));
+							} else {
+								$contact->meassage = Yii::t('tran', $this->tag->getTag('i_would_like_to_inquire_about_', 'Hello, I am interested in this property and would like to make an appointment for a visit. Please contact me as soon as possible.{b}Thank you so much - [PROPERTY]'), array('[PROPERTY]' => $model->DetailUrlAbs, '{REF}' => $model->ReferenceNumberTitle, '{site}' => $this->project_name, '{b}' => "\r\n"));
+							}
+							echo $form->textArea($contact, 'meassage',  $contact->getHtmlOptions('meassage', array('class' => 'input-text form-control', 'placeholder' => '')));  ?>
 
 							<?php echo $form->error($contact, 'meassage'); ?>
 
@@ -392,7 +459,7 @@ if (isset($_GET['floor']) and $_GET['floor'] == '1') {
 				</div>
 				<div class="cols24">
 					<div id="msg_alert"></div>
-				
+
 					<div class="form-group  mb-3 ">
 
 						<div class="row">
@@ -411,7 +478,7 @@ if (isset($_GET['floor']) and $_GET['floor'] == '1') {
 						</div>
 					</div>
 					<div class="checkbox mb-3">
-						<div id="cfTurnstileModal" class="cf-turnstile" data-sitekey="0x4AAAAAABaczT6sNg53sDRh" data-theme="light"></div>
+						<div class="cf-turnstile cfTurnstileModal" data-sitekey="0x4AAAAAABaczT6sNg53sDRh" data-theme="light"></div>
 					</div>
 
 
@@ -452,18 +519,18 @@ if (isset($_GET['floor']) and $_GET['floor'] == '1') {
 
 
 <script>
-
 	$(function() {
-		$('#myModal2').on('shown.bs.modal', function () {
-			$('#cfTurnstileModal').empty();
-			turnstile.render('#cfTurnstileModal', {
+		$('#myModal2').on('shown.bs.modal', function() {
+			console.log('shown');
+			$('.cfTurnstileModal').empty();
+			turnstile.render('.cfTurnstileModal', {
 				sitekey: '0x4AAAAAABaczT6sNg53sDRh',
 				theme: 'light'
 			});
 		});
-		$('#emailModal').on('shown.bs.modal', function () {
-			$('#cfTurnstileModal').empty();
-			turnstile.render('#cfTurnstileModal', {
+		$('#emailModal').on('shown.bs.modal', function() {
+			$('.cfTurnstileModal').empty();
+			turnstile.render('.cfTurnstileModal', {
 				sitekey: '0x4AAAAAABaczT6sNg53sDRh',
 				theme: 'light'
 			});
