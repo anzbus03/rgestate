@@ -455,12 +455,14 @@ if (isset($_GET['floor']) and $_GET['floor'] == '1') {
 
 	$(function() {
 		$('#myModal2').on('shown.bs.modal', function () {
+			$('#cfTurnstileModal').empty();
 			turnstile.render('#cfTurnstileModal', {
 				sitekey: '0x4AAAAAABaczT6sNg53sDRh',
 				theme: 'light'
 			});
 		});
 		$('#emailModal').on('shown.bs.modal', function () {
+			$('#cfTurnstileModal').empty();
 			turnstile.render('#cfTurnstileModal', {
 				sitekey: '0x4AAAAAABaczT6sNg53sDRh',
 				theme: 'light'
