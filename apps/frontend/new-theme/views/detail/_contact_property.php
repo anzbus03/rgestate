@@ -521,7 +521,6 @@ if (isset($_GET['floor']) and $_GET['floor'] == '1') {
 <script>
 	$(function() {
 		$('#myModal2').on('shown.bs.modal', function() {
-			console.log('shown');
 			$('.cfTurnstileModal').empty();
 			turnstile.render('.cfTurnstileModal', {
 				sitekey: '0x4AAAAAABaczT6sNg53sDRh',
