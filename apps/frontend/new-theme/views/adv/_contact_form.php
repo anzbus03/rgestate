@@ -254,7 +254,7 @@
  $(function(){
 	 $('.primary-btn').on('click',function(){
 		 
-		
+
 		 $('.success-modal').removeClass('visible');
 		 $('#topThirdPlacementLeadFormContainer').removeClass('hide');
 		 $('#topThirdPlacementLeadFormContainer').show();

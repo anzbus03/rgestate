@@ -527,7 +527,6 @@ if(!hasError)
 										if($("#requestBtn").length>0){  var hhtmk = $("#requestBtn").attr('data-html');  if(hhtmk !==undefined){  $("#requestBtn").attr('disabled',false); $("#requestBtn").html(hhtmk); } }
 										if($("#bb").length>0){  var hhtmk = $("#bb").attr('data-html'); if(hhtmk !==undefined){  $("#bb").attr('disabled',false); $("#bb").val(hhtmk); } }
 										 if(data.status=='1'){ 
-										   
 										     $('#signUpForm').find('input.form-control').val('');
 										      form.find("#bb").val(imgSucces); 
 										     $('#signUpForm').find('textarea').val(''); $('#signUpForm').find('select').val('');

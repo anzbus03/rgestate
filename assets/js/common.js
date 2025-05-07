@@ -15,7 +15,7 @@ if(!hasError)
 										 if(data.status=='1'){ 
 										      $('#topThirdPlacementLeadFormContainer').hide();
 										      $('.rms-data-h').addClass("hide")
-										      
+										 
 											 $('.success-modal').addClass('visible');
 											 		  Moveit.put(popGroup, {
           start: '0%',

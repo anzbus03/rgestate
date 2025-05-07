@@ -127,7 +127,9 @@ class DetailController extends Controller
 		}
 
 		//echo $model->mobile_number;exit;
-		define('RETURN_URL',  $model->id);
+		if (!defined('RETURN_URL')) {
+			define('RETURN_URL', $model->id);
+		}
 		if (isset($_POST['ajax'])) {
 			$model->scenario = 'update_content';
 			echo CActiveForm::validate($model);
@@ -159,8 +161,12 @@ class DetailController extends Controller
 			} catch (Exception $e) {
 			}
 		}
-		define('sell_title', $this->tag->getTag('post_property', 'Post Property'));
-		define('sell_url', $this->app->createUrl('place_an_ad_no_login/create', array('type' => 'property')));
+		if (!defined('sell_title')) {
+			define('sell_title', $this->tag->getTag('post_property', 'Post Property'));
+		}
+		if (!defined('sell_url')) {
+			define('sell_url', $this->app->createUrl('place_an_ad_no_login/create', array('type' => 'property')));
+		}
 
 		$titl = LANGUAGE == 'ar' ? $model->MetaTitleArabic : $model->MetaTitleEnglish;
 
@@ -224,15 +230,31 @@ class DetailController extends Controller
 		Yii::app()->request->cookies['my_views_n' . COUNTRY_ID] = $cookie;
 		/*seraching */
 
-		define('LIST_URL_TITLE', $model->section_id == '1' ? 'for Sale' : 'to Rent');
-		define('LIST_URL', $this->app->createAbsoluteUrl('listing/index', array('sec' => $model->sec_slug)));
-		define('CITY_NAME', $model->state_name);
-		define('CITY_URL', Yii::App()->createAbsoluteUrl('listing/index', array('sec' => $model->sec_slug, 'state' => $model->state_slug)));
-		define('CATEGORY_NAME', $model->category_name);
-		define('CATEGORY_URL', Yii::App()->createAbsoluteUrl('listing/index', array('sec' => $model->sec_slug, 'type_of' => $model->category_slug)));
-		define('AD_TITLE', $model->ad_title);
-		define('AD_URL', CURRENT_URL);
-		
+		if (!defined('LIST_URL_TITLE')) {
+			define('LIST_URL_TITLE', $model->section_id == '1' ? 'for Sale' : 'to Rent');
+		}
+		if (!defined('LIST_URL')) {
+			define('LIST_URL', $this->app->createAbsoluteUrl('listing/index', array('sec' => $model->sec_slug)));
+		}
+		if (!defined('CITY_NAME')) {
+			define('CITY_NAME', $model->state_name);
+		}
+		if (!defined('CITY_URL')) {
+			define('CITY_URL', Yii::App()->createAbsoluteUrl('listing/index', array('sec' => $model->sec_slug, 'state' => $model->state_slug)));
+		}
+		if (!defined('CATEGORY_NAME')) {
+			define('CATEGORY_NAME', $model->category_name);
+		}
+		if (!defined('CATEGORY_URL')) {
+			define('CATEGORY_URL', Yii::App()->createAbsoluteUrl('listing/index', array('sec' => $model->sec_slug, 'type_of' => $model->category_slug)));
+		}
+		if (!defined('AD_TITLE')) {
+			define('AD_TITLE', $model->ad_title);
+		}
+		if (!defined('AD_URL')) {
+			define('AD_URL', CURRENT_URL);
+		}
+
 
 		if ($this->app->request->isAjaxRequest) {
 
@@ -322,8 +344,12 @@ class DetailController extends Controller
 
 		$floor = $model->adFloorPlans;
 
-		define('sell_title', $this->tag->getTag('post_project', 'Post Project '));
-		define('sell_url', $this->app->createUrl('new_projects/create'));
+		if (!defined('sell_title')) {
+			define('sell_title', $this->tag->getTag('post_project', 'Post Project '));
+		}
+		if (!defined('sell_url')) {
+			define('sell_url', $this->app->createUrl('new_projects/create'));
+		}
 
 		$tit =  Yii::t('app', '{name}', array('{name}' => !empty($model->meta_title) ? $model->meta_title : $model->ad_title, '{p}' => $this->options->get('system.common.site_name')));
 
@@ -375,7 +401,7 @@ class DetailController extends Controller
 		$criteria->join  .= ' left join {{states}} st ON st.state_id = t.state ';
 		$criteria->join  .= ' left join {{countries}} con ON con.country_id = t.country ';
 		$criteria->join  .= ' LEFT JOIN {{city}} ct on ct.city_id = t.city';
-		
+
 		// $criteria->join .= ' LEFT JOIN {{listing_users}} usr ON usr.user_id = t.user_id';
 		// $criteria->join .= ' LEFT JOIN {{user}} u ON u.user_id = t.user_id'; // Joining the `user` table
 
@@ -599,13 +625,109 @@ class DetailController extends Controller
 	{
 		$request    = Yii::app()->request;
 		$model  = new SendEnquiry();
+		
 		if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
+			$requestParms = $attributes;
+			
 			$model->attributes = $attributes;
 			if (!$model->save()) {
 				echo json_encode(array('status' => '0', 'msg' => '<div class="alert alert-danger"><strong>Error!</strong> ' . CHtml::errorSummary($model) . '. </div>'));
 				Yii::app()->end();
 			} else {
-				echo json_encode(array('status' => '1', 'msg' => '<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+				// Start Crm
+				$customerId = 0;
+				$createCustomerUrl = 'https://crm.rgestate.com/rest/158/x0g9p2hpse2h48si/crm.contact.add.json';
+
+				// Prepare data for the request
+				$fullName = $requestParms['name'];
+
+				// Split the full name into an array using spaces as the delimiter
+				$nameParts = explode(' ', $fullName);
+
+				// Extract the first and last names
+				$firstName = isset($nameParts[0]) ? $nameParts[0] : null;
+				$lastName = isset($nameParts[1]) ? $nameParts[1] : null;
+
+				$crmCustomerData = [
+					'fields' => [
+						'NAME' => $firstName,
+						'SECOND_NAME' => $lastName,
+						"TYPE_ID" => "CLIENT",
+						"SOURCE_ID" => "SELF",
+						"EMAIL" => [["VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK"]],
+						"PHONE" => [["VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK"]]
+					],
+				];
+				$postCustomerData = http_build_query($crmCustomerData);
+				$contextCusotomerOptions = [
+					'http' => [
+						'method' => 'POST',
+						'header' => 'Content-Type: application/x-www-form-urlencoded',
+						'content' => $postCustomerData,
+					],
+				];
+				$contextCreateCustomer = stream_context_create($contextCusotomerOptions);
+				try {
+					// Send the HTTP request using file_get_contents
+					$data = file_get_contents($createCustomerUrl, false, $contextCreateCustomer);
+					$response = json_decode($data, true);
+					$customerId = $response['result'];
+					// Handle the CRM response as needed
+
+				} catch (Exception $e) {
+					// Handle exceptions, e.g., connection errors
+					echo json_encode(array('status' => '0', 'msg' => '<div class="alert alert-danger1"><strong>Error!</strong> ' . CHtml::errorSummary($e->getMessage()) . '. </div>'));
+				}
+
+				$crmUrl = 'https://crm.rgestate.com/rest/158/x0g9p2hpse2h48si/crm.lead.add.json';
+
+				// Prepare data for the request
+				$crmData = [
+					'FIELDS' => [
+						'TITLE' => 'RGestate Lead - Property Listing Form',
+						'CONTACT_ID' => $customerId,
+						'COMMENTS' => $requestParms['meassage'],
+						'ASSIGNED_BY_ID' => 22
+					],
+				];
+
+				// Convert data to a query string
+				$postData = http_build_query($crmData);
+
+				// Set up options for the stream context
+				$contextOptions = [
+					'http' => [
+						'method' => 'POST',
+						'header' => 'Content-Type: application/x-www-form-urlencoded',
+						'content' => $postData,
+					],
+				];
+
+				$context = stream_context_create($contextOptions);
+
+
+				try {
+					// Send the HTTP request using file_get_contents
+					$response = file_get_contents($crmUrl, false, $context);
+
+					// Handle the CRM response as needed
+
+				} catch (Exception $e) {
+					// Handle exceptions, e.g., connection errors
+					echo json_encode(array('status' => '0', 'msg' => '<div class="alert alert-danger1"><strong>Error!</strong> ' . CHtml::errorSummary($e->getMessage()) . '. </div>'));
+				}
+
+				if ($model->hasErrors()) {
+					echo json_encode(array('status' => '0', 'msg' => '<div class="alert alert-danger1"><strong>Error!</strong> ' . CHtml::errorSummary($model) . '. </div>'));
+				} else {
+					if (!$model->save()) {
+						echo json_encode(array('status' => '0', 'msg' => '<div class="alert alert-danger1"><strong>Error!</strong> ' . CHtml::errorSummary($model) . '. </div>'));
+					} else {
+						echo json_encode(array('status' => '1', 'email' => $requestParms['email'], 'name' => $requestParms['name'], 'msg' => '<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+					}
+				}
+				
+				// echo json_encode(array('status' => '1', 'name' => $attributes['name'],'email' => $attributes['email'], 'msg' => '<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
 				Yii::app()->end();
 			}
 		}
@@ -637,6 +759,7 @@ class DetailController extends Controller
 		$request    = Yii::app()->request;
 		$model  = new SendEnquiry2();
 		$requestParms = $request->getPost("SendEnquiry2");
+
 		if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
 			$model->attributes = $attributes;
 			if (!$model->save()) {
@@ -732,7 +855,7 @@ class DetailController extends Controller
 					if (!$model->save()) {
 						echo json_encode(array('status' => '0', 'msg' => '<div class="alert alert-danger1"><strong>Error!</strong> ' . CHtml::errorSummary($model) . '. </div>'));
 					} else {
-						echo json_encode(array('status' => '1','email' => $requestParms['email'],'name' => $requestParms['name'], 'msg' => '<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
+						echo json_encode(array('status' => '1', 'email' => $requestParms['email'], 'name' => $requestParms['name'], 'msg' => '<div class="alert alert-success"><strong>Success!</strong> Succesfully submited. </div>'));
 					}
 				}
 

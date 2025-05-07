@@ -160,6 +160,8 @@
    
     <!-- jQuery -->
     <script src="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/js/jquery-3.7.0.min.js"></script>
+    <script src="<?php echo $this->app->apps->getBaseUrl('assets/js/main4.min.js?q=2655525'); ?>"></script>
+     
      <script>
     
     // const input = document.querySelector("#telephone");
@@ -229,6 +231,7 @@
                 <h2 class="modal-title rg-fs-20" id="emailModalLabel">Contact For more information</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            
             <div class="modal-body p-4" id="email-model"></div>
         </div>
     </div>
@@ -330,6 +333,7 @@
     </div>
   </div>
   <style>
+    
     .close {
         position: absolute;
         /* top: 10px; */
