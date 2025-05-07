@@ -483,6 +483,8 @@ if($this->id != 'contact'){ ?>
 </script> -->
     
 <div id="dynamicScripts"></div>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
 <script>
     $(document).ready(function() {

@@ -43,6 +43,8 @@
    <!-- Scripts
       ================================================== --> 
    <!--<script type="text/javascript" src="scripts/jquery-2.2.0.min.js"></script> -->
+ 
+   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script> 
    <script type="text/javascript" src="<?php echo $this->appAssetUrl('scripts/mmenu.min.js');?>"></script> 
    <script type="text/javascript" src="<?php echo $this->appAssetUrl('scripts/chosen.min.js');?>"></script> 
    <script type="text/javascript" src="<?php echo $this->appAssetUrl('scripts/slick.min.js');?>"></script> 

@@ -648,33 +648,35 @@ html .continue {
                     ?>
                     <div class="form-group  margin-bottom-0">
 
-                        <script
+                        <!-- <script
                             src="https://www.google.com/recaptcha/api.js?render=explicit&onload=onRecaptchaLoadCallback">
-                        </script>
+                        </script> -->
 
                         <script>
-                        function onRecaptchaLoadCallback() {
-                            var clientId = grecaptcha.render('inline-badge', {
-                                'sitekey': '<?php echo Yii::app()->options->get('system.common.re_captcha_key', '6Ldsl2IaAAAAAGSkGrL7xUeucC9yKthmDsYWdTmy'); ?>',
-                                'badge': 'bottomleft',
-                                'size': 'invisible'
-                            });
+                        // function onRecaptchaLoadCallback() {
+                        //     var clientId = grecaptcha.render('inline-badge', {
+                        //         'sitekey': '<?php echo Yii::app()->options->get('system.common.re_captcha_key', '6Ldsl2IaAAAAAGSkGrL7xUeucC9yKthmDsYWdTmy'); ?>',
+                        //         'badge': 'bottomleft',
+                        //         'size': 'invisible'
+                        //     });
 
-                            grecaptcha.ready(function() {
-                                grecaptcha.execute(clientId, {
-                                        action: 'action_name'
-                                    })
-                                    .then(function(token) {
-                                        $('#signUpForm').prepend(
-                                            '<input type="hidden" name="g-recaptcha-response" value="' +
-                                            token + '">');
-                                        // Verify the token on the server.
-                                    });
-                            });
-                        }
+                        //     grecaptcha.ready(function() {
+                        //         grecaptcha.execute(clientId, {
+                        //                 action: 'action_name'
+                        //             })
+                        //             .then(function(token) {
+                        //                 $('#signUpForm').prepend(
+                        //                     '<input type="hidden" name="g-recaptcha-response" value="' +
+                        //                     token + '">');
+                        //                 // Verify the token on the server.
+                        //             });
+                        //     });
+                        // }
                         </script>
-
-                        <?php echo $form->error($model, '_recaptcha', array('style' => 'top:0px !important;')); ?>
+		<div class="checkbox mb-3 mt-3">
+									<div class="cf-turnstile" data-sitekey="0x4AAAAAABaczT6sNg53sDRh" data-theme="light"></div>
+								</div>
+                        <?php // echo $form->error($model, '_recaptcha', array('style' => 'top:0px !important;')); ?>
 
                     </div>
 

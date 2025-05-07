@@ -178,6 +178,9 @@
 					                <?php echo $form->error($model, 'message');?>
                                     
                                 </div>
+                                <div class="checkbox mb-3">
+                                    <div class="cf-turnstile" data-sitekey="0x4AAAAAABaczT6sNg53sDRh" data-theme="light"></div>
+                                </div>
                                 <input type="submit" id="bb" class="btn btn-light w-100" value="<?php echo $this->tag->getTag('send','SEND INQUIRY') ?>">
                             <?php $this->endWidget();?>
                         </div>

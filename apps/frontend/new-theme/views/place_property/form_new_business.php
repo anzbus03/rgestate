@@ -165,7 +165,7 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 			background: #fff !important;
 		}
 	</style>
-
+	
 	<section class="panel1 panel-bg banner" style="background-image:url(<?php echo $img; ?>);">
 		<div class="abs-banner">
 			<div class="bloghead container">
@@ -2042,11 +2042,11 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 									</div>
 
 									<div class="clearfix"><!-- --></div>
+									
 									<?php
 									if (Yii::App()->isAppName('frontend')) {  ?>
 										<div class="insidecontent hide">
 											<div class="clearfix"></div>
-
 											<div class="row">
 												<div class="form-group col-sm-6 wewqe hide">
 													<?php if ($model->isNewRecord) {
@@ -2066,6 +2066,9 @@ if (isset($_GET['type']) and !empty($_GET['type'])) {
 											</div>
 											<div class="clearfix"><!-- --></div>
 										</div>
+										<div class="checkbox mb-3 mt-3">
+												<div class="cf-turnstile" data-sitekey="0x4AAAAAABaczT6sNg53sDRh" data-theme="light"></div>
+											</div>
 										<div class="_2ytqd"></div>
 									<?php } else {
 

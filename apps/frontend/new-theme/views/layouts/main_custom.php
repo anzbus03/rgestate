@@ -304,9 +304,12 @@
                     <!--</select>-->
                   </div>
                   <div class="form-group mb-4">
-                        <?php echo $form->textArea($model, 'message', $model->getHtmlOptions('message', array('class' => 'form-control form-control-lg', 'placeholder' => $this->tag->getTag('message_*', 'Message *')))); ?>
-                        <?php echo $form->error($model, 'message'); ?>
-                    </div>
+                      <?php echo $form->textArea($model, 'message', $model->getHtmlOptions('message', array('class' => 'form-control form-control-lg', 'placeholder' => $this->tag->getTag('message_*', 'Message *')))); ?>
+                      <?php echo $form->error($model, 'message'); ?>
+                  </div>
+                  <div class="checkbox mb-3">
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAABaczT6sNg53sDRh" data-theme="light"></div>
+                  </div>
                   <!--<p class="rg-fs-12 rg-text-dark">I agree to share my data with rgestate properties, and allow rgestate properties or its affiliates to collect, control or process my data in order to communicate with me. Should I wish to unsubscribe, I will send an email to <a href="mailto:sales@rgestate.com">sales@rgestate.com</a>. For more information on our Terms & Conditions, <a href="https://www.dev.rgestate.com/terms">Please click here</a>.</p>-->
                   <div class="rg-sub-btn text-center mt-5">
                     <input type="submit" id="bb3" class="btn btn-outline-secondary w-100" value="SEND INQUIRY">
@@ -550,6 +553,8 @@ if(!hasError)
      }
  }
  </script>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
 <script>
     $(function(){
     			     

@@ -1007,6 +1007,9 @@
 					</div>	<?php echo $form->error($model, 'agree');?>
 					</div>
 					</div>
+                    <div class="checkbox mb-3 mt-3">
+                        <div class="cf-turnstile" data-sitekey="0x4AAAAAABaczT6sNg53sDRh" data-theme="light"></div>
+                    </div>
 			
 					<input type="submit" class="btn btn-primary btn-block headfont btn-sm-s rounded-btn-n" style="color:#fff;width:100% !important;margin-bottom:40px;" id="bb" value="<?php echo $maintTaxt;?>" />
                     </div>

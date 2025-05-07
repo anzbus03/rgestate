@@ -991,7 +991,8 @@
                     <div class="col-sm-4"> </div>                 
                     <div class="col-sm-8">
                          <div class="row">
-		 				        <script>
+
+                            <script>
 		 				        function setAgree(k){
 		 				            if($(k).is(':checked')){
 		 				                $('#bb2').prop("disabled",false);
@@ -1017,8 +1018,14 @@
 						</label>
 					
 					</div>	<?php echo $form->error($model, 'agree');?>
+                    
 					</div>
+                    
 					</div>
+
+                    <div class="checkbox mb-3" style="margin-top: 20px;">
+                        <div class="cf-turnstile" data-sitekey="0x4AAAAAABaczT6sNg53sDRh" data-theme="light"></div>
+                    </div>
 			
 					<input type="submit" class="btn btn-primary btn-block headfont btn-sm-s rounded-btn-n" style="color:#fff;width:100% !important;margin-bottom:40px;" id="bb" value="<?php echo $maintTaxt;?>" />
                     </div>

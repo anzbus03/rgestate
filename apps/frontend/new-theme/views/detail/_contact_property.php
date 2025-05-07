@@ -259,6 +259,7 @@ html #cn_property .iti {
 						</label>
 						<?php echo $form->error($contact, 'agree');?>
 					</div>
+					
 					</div>
 					</div>
 					</div>

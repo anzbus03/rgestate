@@ -564,6 +564,9 @@ background:
 									</div>
 							 
                 <div class="clearfix"><!-- --></div>
+				<div class="checkbox mb-3 mt-3">
+					<div class="cf-turnstile" data-sitekey="0x4AAAAAABaczT6sNg53sDRh" data-theme="light"></div>
+				</div>
                 <?php
 if(Yii::app()->isAppName('backend')){
 	?>

@@ -343,6 +343,10 @@
                 									</label>
                 									<?php echo $form->error($contact, 'agree'); ?>
                 								</div>
+												<div class="checkbox mb-3 mt-3">
+													<div class="cf-turnstile" data-sitekey="0x4AAAAAABaczT6sNg53sDRh" data-theme="light"></div>
+												</div>
+
                 							</div>
                 						</div>
                 					</div>
