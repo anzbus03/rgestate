@@ -333,7 +333,6 @@
     </div>
   </div>
   <style>
-    
     .close {
         position: absolute;
         /* top: 10px; */

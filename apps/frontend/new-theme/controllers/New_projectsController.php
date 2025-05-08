@@ -157,6 +157,8 @@ class New_projectsController   extends Controller
                             '<br/> Price: '.$requestParms['price_false']
                             ,
                         'UF_CRM_65571AE7B82CF' => 138,
+						'PHONE' => [[ "VALUE" => $requestParms['mobile_number'], "VALUE_TYPE" => "WORK" ]],
+						'EMAIL' => [[ "VALUE" => $requestParms['salesman_email'], "VALUE_TYPE" => "WORK" ]],
                     ],
                 ];
         

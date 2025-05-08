@@ -514,10 +514,6 @@ if (isset($_GET['floor']) and $_GET['floor'] == '1') {
 </div>
 <div class="clearfx"></div>
 
-
-
-
-
 <script>
 	$(function() {
 		$('#myModal2').on('shown.bs.modal', function() {

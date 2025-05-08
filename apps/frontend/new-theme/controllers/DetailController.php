@@ -687,7 +687,9 @@ class DetailController extends Controller
 						'TITLE' => 'RGestate Lead - Property Listing Form',
 						'CONTACT_ID' => $customerId,
 						'COMMENTS' => $requestParms['meassage'],
-						'ASSIGNED_BY_ID' => 22
+						'ASSIGNED_BY_ID' => 22,
+						'EMAIL' => [["VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK"]],
+						'PHONE' => [["VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK"]],
 					],
 				];
 
@@ -819,7 +821,9 @@ class DetailController extends Controller
 						'TITLE' => 'RGestate Lead - Property Listing Form',
 						'CONTACT_ID' => $customerId,
 						'COMMENTS' => $requestParms['meassage'],
-						'ASSIGNED_BY_ID' => 22
+						'ASSIGNED_BY_ID' => 22,
+						'EMAIL' => [["VALUE" => $requestParms['email'], "VALUE_TYPE" => "WORK"]],
+						'PHONE' => [["VALUE" => $requestParms['phone'], "VALUE_TYPE" => "WORK"]],
 					],
 				];
 

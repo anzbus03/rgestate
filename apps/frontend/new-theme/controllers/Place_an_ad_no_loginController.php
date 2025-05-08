@@ -385,18 +385,22 @@ class Place_an_ad_no_loginController extends Controller
                         'TITLE' => 'New Lead - Property Submitted - RGEstate',
                         'CATEGORY_ID' => 10,
                         'CONTACT_ID' => $customerId,
-                        'COMMENTS' => 
-                            'Description: '.$requestParms['ad_description'].
-                            '<br/> Area: '.$requestParms['area_location'].
-                            '<br/> Size: '.$requestParms['interior_size'].
-                            '<br/> Plot Area: '.$requestParms['builtup_area'].
-                            '<br/> Bedrooms: '.$requestParms['bedrooms'].
-                            '<br/> Bathrooms: '.$requestParms['bathrooms'].
-                            '<br/> Furnished: '.$requestParms['furnished'].
-                            '<br/> Listing Type: '.$listingTypesArray[$requestParms['listing_type']].
-                            '<br/> Category: '.$subCategories[$requestParms['category_id']]
-                            
-                            ,
+	                    'EMAIL' => [
+							['VALUE' => $requestParms['salesman_email'], 'VALUE_TYPE' => 'WORK']
+						],
+						'PHONE' => [
+							['VALUE' => $requestParms['mobile_number'], 'VALUE_TYPE' => 'WORK']
+						],
+                        'COMMENTS' =>
+                            'Description: '. $requestParms['ad_description'].
+                            '<br/> Area: '. $requestParms['area_location'].
+                            '<br/> Size: '. $requestParms['interior_size'].
+                            '<br/> Plot Area: '. $requestParms['builtup_area'].
+                            '<br/> Bedrooms: '. $requestParms['bedrooms'].
+                            '<br/> Bathrooms: '. $requestParms['bathrooms'].
+                            '<br/> Furnished: '. $requestParms['furnished'].
+                            '<br/> Listing Type: '. $listingTypesArray[$requestParms['listing_type']].
+                            '<br/> Category: '. $subCategories[$requestParms['category_id']],
                         'OPPORTUNITY' => $requestParms['price'],
                         'UF_CRM_1705665714112' => $requestParms['ad_title'],
                         'UF_CRM_1701236145750' => 2908,
