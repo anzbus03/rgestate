@@ -328,7 +328,8 @@ html  .only-for-mobile-t {
 $(function(){clickBtnSerach()});
 </script>
 <form id="frmId" method="get" class="blackheader2" style="z-index: 112;position: relative;background: var(--secondary-color);border-bottom:1px solid var(--logo-color) " autocomplete="off" onSubmit="return false;" name="rwe">
- 
+     <input type="hidden" name="page" id="page1" >
+
 <input type="hidden" name="community"  id="community_id" value="<?php echo @$community;?>">
 <input type="hidden" id="bed_val" value="<?php echo @$filterModel->bedrooms ;?>" name="bedrooms" />
 <input type="hidden" id="section_val" value="<?php echo @$filterModel->section_id ;?>" name="sec" />
