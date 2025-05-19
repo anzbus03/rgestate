@@ -503,4 +503,180 @@ class RegionController extends Controller
         $defaultReturn = $request->getServer('HTTP_REFERER', array('place_property/index'));
         $this->redirect($request->getPost('returnUrl', $defaultReturn));
     }
+
+    // Start sublocations
+
+    public function actionSub_locations()
+    {
+        $request = Yii::app()->request;
+        $notify  = Yii::app()->notify;
+
+        // Initialize your search model
+        $model = new States('search');
+        $model->unsetAttributes();
+
+        // Apply your GET filters, if any
+        $model->attributes = (array)$request->getQuery($model->modelName, []);
+
+        // **New:** only sub‐locations => parent_id IS NOT NULL
+        $model->getDbCriteria()->addCondition('parent_id IS NOT NULL');
+
+        $this->setData([
+            'pageMetaTitle'   => "Sublocations | " . Yii::t(Yii::app()->controller->id, "Sublocations List"),
+            'pageHeading'     => Yii::t(Yii::app()->controller->id, "Sublocations List"),
+            'pageBreadcrumbs' => [
+                Yii::t(Yii::app()->controller->id, "Sublocations") => $this->createUrl(Yii::app()->controller->id . '/index'),
+                Yii::t('app', 'View all'),
+            ],
+        ]);
+
+        $this->render('sublocations/list', compact('model'));
+    }
+    public function actionCreate_sublocation($name=null,$reg=null)
+    {
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+        $model = new States();
+        if(!empty($name)){
+            
+            if(!empty($reg)){
+            $reg_found =  MainRegion::model()->findByAttributes(array('name'=>$reg));
+            if($reg_found){
+                $model->country_id = $reg_found->country_id;
+                $model->region_id = $reg_found->region_id;
+            }
+           
+            }
+            $model->state_name = $name;$model->p_name = $name;
+        }
+        if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
+            $model->attributes = $attributes;
+            $uploadedFile=CUploadedFile::getInstance($model,'icon');
+            if($uploadedFile){			 
+				$fileName = 'i'.rand(100,1000).$uploadedFile;
+				$model->icon = $fileName;
+		    }
+           if($model->location_longitude!="" and $model->location_longitude!="")
+            {
+				$model->location="1";
+			}
+			 if(!empty($model->mul_city)){
+					$text = trim($model->mul_city); // remove the last \n or whitespace character
+					$text = explode("\n", $text);
+				 
+					if(!empty($text)){ 
+						 $model->scenario = 'mul_city';
+						foreach($text as $k=>$city){
+								if(empty($city)){ continue; }
+								$model2 = new states();
+							 	$model2->country_id = $model->country_id;
+							 	$model2->region_id = $model->region_id;
+								$model2->state_name = $city;
+								if(!$model2->save()){ print_r($model2->getErrors()); exit;  };
+
+						}
+						 $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
+						 $this->redirect(Yii::App()->CreateUrl('region/sub_locations'));
+					}
+ 
+					}
+             if (!$model->save()) {
+
+            // print_r($model->attributes);exit;
+                $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
+                
+            } else {
+				if($uploadedFile)
+				{
+					$path =  Yii::app()->basePath . '/../../uploads';
+					$uploadedFile->saveAs($path.'/default/'. $fileName);
+				}
+				 
+                $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
+            }
+            
+            
+            Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
+                'controller' => $this,
+                'success'    => $notify->hasSuccess,
+                'model'       => $model,
+            )));
+            
+            if ($collection->success) {
+                $this->redirect(array(Yii::app()->controller->id.'/sub_locations'));
+            }
+        }
+        
+        $this->setData(array(
+            'pageMetaTitle'     => "Sublocation" . ' | '. Yii::t(Yii::app()->controller->id, "Create new Sublocation"), 
+            'pageHeading'       => Yii::t(Yii::app()->controller->id, "Create new Sublocation"),
+            'pageBreadcrumbs'   => array(
+                Yii::t(Yii::app()->controller->id, "Sublocation") => $this->createUrl(Yii::app()->controller->id.'/index'),
+                Yii::t('app', 'Create new'),
+            )
+        ));
+        
+        $this->render('sublocations/form', compact('model'));
+    }
+    public function actionUpdate_sublocation($id)
+    {
+		 
+        $model = States::model()->findByPk((int)$id);
+
+        if (empty($model)) {
+            throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+        }
+        
+        $request = Yii::app()->request;
+        $notify = Yii::app()->notify;
+        
+        if ($request->isPostRequest && ($attributes = (array)$request->getPost($model->modelName, array()))) {
+             $model->attributes = $attributes;
+            // $model->slug = $model->getUniqueSlug();
+             $oldfilename =$model->icon;
+             $file = CUploadedFile::getInstance($model, 'icon');
+			 if (is_object($file) && get_class($file)==='CUploadedFile') {	          
+				
+				$fileName = 'i'.rand(100,1000).$file;
+				$model->icon = $fileName;
+			 }  
+            if($model->location_longitude!="" and $model->location_longitude!="")
+            {
+				$model->location="1";
+			}
+            if (!$model->save()) {
+                $notify->addError(Yii::t('app', 'Your form has a few errors, please fix them and try again!'));
+            } else {
+				if (is_object($file) && get_class($file)==='CUploadedFile') {				 
+					$path =  Yii::app()->basePath . '/../../uploads';
+					$file->saveAs($path.'/default/'. $fileName);
+					if ($oldfilename != $fileName) {
+					@unlink(Yii::app()->basePath . '/../../uploads/default/'. $oldfilename);
+					}
+				} 
+                $notify->addSuccess(Yii::t('app', 'Your form has been successfully saved!'));
+            }
+            
+            Yii::app()->hooks->doAction('controller_action_save_data', $collection = new CAttributeCollection(array(
+                'controller' => $this,
+                'success'    => $notify->hasSuccess,
+                'model'       => $model,
+            )));
+            
+            if ($collection->success) {
+                $this->redirect(array(Yii::app()->controller->id.'/index'));
+            }
+        }
+        
+        $this->setData(array(
+            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t(Yii::app()->controller->id, "Update {$this->Controlloler_title}"),
+            'pageHeading'       => Yii::t(Yii::app()->controller->id, "{$this->Controlloler_title}"),
+            'pageBreadcrumbs'   => array(
+                Yii::t(Yii::app()->controller->id,"{$this->Controlloler_title}") => $this->createUrl(Yii::app()->controller->id.'/index'),
+                Yii::t('app', 'Update'),
+            )
+        ));
+        
+        $this->render('sublocations/form', compact('model'));
+    }
 }

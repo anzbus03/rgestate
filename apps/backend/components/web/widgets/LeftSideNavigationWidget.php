@@ -195,6 +195,7 @@ class LeftSideNavigationWidget extends CWidget
                         array('url' => array('countries/index'), 'label' => Yii::t('app', 'Country'), 'active' => strpos($route, 'countries') === 0),
                         array('url' => array('main_region/index'), 'label' => Yii::t('app', 'Region'), 'active' => strpos($route, 'main_region') === 0),
                         array('url' => array('region/index'), 'label' => Yii::t('app', 'City'), 'active' => strpos($route, 'region') === 0),
+                        array('url' => array('region/sub_locations'), 'label' => Yii::t('app', 'Sub Locations'), 'active' => strpos($route, 'sub_locations') === 0),
                         array('url' => array('currencies/index'), 'label' => Yii::t('app', 'Currency'), 'active' => strpos($route, 'currencies') === 0),
                         array('url' => array('amenities/index'), 'label' => Yii::t('app', 'Amenities'), 'active' => strpos($route, 'amenities') === 0),
                         array('url' => array('master_category/index'), 'label' => Yii::t('app', 'Master Category'), 'active' => strpos($route, 'master_category') === 0),

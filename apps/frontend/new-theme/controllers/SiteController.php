@@ -1743,50 +1743,58 @@ Jq4pd48R
 		$ttal_for_rent =  ($ttal_for_rent - ($ttal_for_rent % 10));
 		Yii::app()->options->set('system.common.total_for_rent_' . $country, $ttal_for_rent);
 	}
-	public function actionPopulating_data()
-	{
- 
-	    $formData = (array)$_GET;
+	public function actionPopulating_data() {
+		$formData = (array)$_GET;
 		$formData = array_filter($formData);
-		if (isset($formData['type_of']) and strpos($formData['type_of'], 'business') !== false) {
+
+		if (isset($formData['type_of']) && strpos($formData['type_of'], 'business') !== false) {
 			define('BUSINESS', '1');
 		}
-		
-		$adModel = new PlaceAnAdNew();
-		
 
-		$htm = '';
+		$adModel = new PlaceAnAdNew();
+		$htm     = '';
 
 		if (!isset($formData['state']) && !isset($formData['type_of']) && !isset($formData['sub_category'])) {
 			$htm = $this->renderPartial('_list_categories', compact('formData', 'adModel'), true, false);
-        } else if (isset($formData['state']) && !isset($formData['type_of']) && !isset($formData['sub_category'])) {
-			if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai'))) {
-				$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
-            } else {	
-				$htm = $this->renderPartial('_list_categories', compact('formData', 'adModel'), true, false);
-            }
-        } else if (isset($formData['state']) && isset($formData['type_of']) && isset($formData['sub_category'])) {
-			$htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
-		} else if (!isset($formData['state']) && isset($formData['type_of']) && !isset($formData['sub_category'])) {
-			$htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
-		} else if (isset($formData['state']) && !in_array(strtolower($formData['state']), array('fujairah', 'umm-al-quwain', 'ras-al-khaimah', 'al-ain', 'ajman', 'sharjah', 'abu-dhabi', 'dubai')) && !isset($formData['sub_category'])) {
-			// $htm = $this->renderPartial('_list_location_city', compact('formData', 'adModel'), true, false);
-			// print_r(5);
-        } else {
-			$htm = $this->renderPartial('_list_location', compact('formData', 'adModel'), true, false);
-        }
+		} else if (isset($formData['state']) && !isset($formData['type_of']) && !isset($formData['sub_category'])) {
+			if (!in_array(strtolower($formData['state']), [
+					'fujairah','umm-al-quwain','ras-al-khaimah','al-ain',
+					'ajman','sharjah','abu-dhabi','dubai'
+				])) {
+				$htm = $this->renderPartial('_list_location_city', compact('formData','adModel'), true, false);
+			} else {
+				$htm = $this->renderPartial('_list_categories',     compact('formData','adModel'), true, false);
+			}
 
-		if (!empty($htm)) {
-			echo json_encode(array('status' => '1', 'html' => $htm));
-			exit;
+		} else if (isset($formData['state'], $formData['type_of'], $formData['sub_state'])) {
+
+		} else if (isset($formData['state'], $formData['type_of']) && isset($formData['country']) && !in_array(strtolower($formData['state']), [
+					'fujairah','umm-al-quwain','ras-al-khaimah','al-ain',
+					'ajman','sharjah','abu-dhabi','dubai'
+				])) {
+			$htm = $this->renderPartial('_list_substate', compact('formData','adModel'), true, false);
+
+		} else if (!isset($formData['state']) && isset($formData['type_of']) && !isset($formData['sub_category'])) {
+			$htm = $this->renderPartial('_list_location_city', compact('formData','adModel'), true, false);
+
+		} else if (isset($formData['state'], $formData['type_of'], $formData['country']) && in_array(strtolower($formData['state']), [
+					'fujairah','umm-al-quwain','ras-al-khaimah','al-ain',
+					'ajman','sharjah','abu-dhabi','dubai'
+				])) {
+			$htm = $this->renderPartial('_list_location', compact('formData','adModel'), true, false);
+
 		} else {
-			echo   json_encode(array('status' => '0', 'html' => ''));
-			exit;
+			$htm = $this->renderPartial('_list_location', compact('formData','adModel'), true, false);
 		}
 
-		echo json_encode($data);
-		exit;
+		if (!empty($htm)) {
+			echo json_encode(['status'=>'1','html'=>$htm]);
+		} else {
+			echo json_encode(['status'=>'0','html'=>'']);
+		}
+		Yii::app()->end();
 	}
+
 
 
 	public function actionPopulating_data2()

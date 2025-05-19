@@ -135,6 +135,7 @@ class PlaceAnAd extends ActiveRecord
 			array('salesman_email', 'email'),
 			array('sub_category_id', 'validateSub'),
 			array('amenities', 'safe'),
+			array('sub_state', 'safe'),
 			array('ad_description', 'validateDescription'),
 			array('mobile_number', 'validatePhone'),
 			array('w_for', 'validateSectionValue', 'on' => 'new_insert'),
@@ -180,7 +181,7 @@ class PlaceAnAd extends ActiveRecord
 			array('modified_date, xml_listing_date, xml_update_date, expiry_date,property_overview,LocalAreaAmenitiesDesc,RecommendedProperties,PropertyID,status,rent_paid,name,unsubmited,amenities_fields', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, section_id, category_id, sub_category_id, ad_title, ad_description, price, country, state, city, district, mobile_number, bathrooms, bedrooms, user_id, added_date, modified_date, priority, isTrash, status,occupant_status, slug, image, dynamic, dynamicArray, location_latitude, location_longitude, area_location, xml_inserted, xml_pk, xml_type, xml_reference, xml_listing_date, xml_update_date, code, RefNo, community_id, sub_community_id, property_name, builtup_area, PrimaryUnitView,     FloorNo, HandoverDate,     parking,   salesman_email, expiry_date,       mandate, currency_abr, area_measurement, PDFBrochureLink,property_overview,ReraStrNo,preleased,PropertyID,featured,last_updated', 'safe', 'on' => 'search'),
+			array('id,sub_state, section_id, category_id, sub_category_id, ad_title, ad_description, price, country, state, city, district, mobile_number, bathrooms, bedrooms, user_id, added_date, modified_date, priority, isTrash, status,occupant_status, slug, image, dynamic, dynamicArray, location_latitude, location_longitude, area_location, xml_inserted, xml_pk, xml_type, xml_reference, xml_listing_date, xml_update_date, code, RefNo, community_id, sub_community_id, property_name, builtup_area, PrimaryUnitView,     FloorNo, HandoverDate,     parking,   salesman_email, expiry_date,       mandate, currency_abr, area_measurement, PDFBrochureLink,property_overview,ReraStrNo,preleased,PropertyID,featured,last_updated', 'safe', 'on' => 'search'),
 		);
 		return array_merge($rules1, $rules);
 	}

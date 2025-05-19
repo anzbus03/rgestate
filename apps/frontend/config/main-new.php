@@ -99,8 +99,8 @@ return array(
 					array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|for-sale|preleased|all)>/<state:(.*)>/*'),
 				*/                
 
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<type_of:(.*)>/<state:(.*)>/<sub_state:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<type_of:(.*)>/<state:(.*)>/*'),
-				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<type_of:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<state:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<type_of:(.*)>/<state:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/*'),

@@ -3792,9 +3792,15 @@ class Place_propertyController  extends Controller
             $categoryNames = array_unique(array_filter(array_map('trim', array_column($excelData, 8)), fn($value) => !empty($value)));
             $categoryTypes = array_unique(array_filter(array_map('trim', array_column($excelData, 7)), fn($value) => !empty($value)));            
             $stateNames = array_unique(array_filter(array_column($excelData, 11), fn($value) => !empty($value)));
+            $subStateNames = array_unique(array_filter(array_column($excelData, 12), fn($value) => !empty($value)));
+           
             $stateSlugs = array_unique(array_map(
                 fn($stateName) => $this->generateSlug($stateName), 
                 array_filter(array_column($excelData, 11), fn($value) => !empty($value))
+            ));
+            $allSubSlugs = array_unique(array_map(
+                fn($subStateName) => $this->generateSlug($subStateName), 
+                array_filter(array_column($excelData, 12), fn($value) => !empty($value))
             ));
             $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 39), fn($value) => !empty($value))));
           
@@ -3803,6 +3809,7 @@ class Place_propertyController  extends Controller
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'P']);
             $types = Category::model()->findAllByAttributes(['category_name' => $categoryTypes, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'C']);
             $states = States::model()->findAllByAttributes(['slug' => $stateSlugs, 'isTrash' => '0']);
+            $subStates = States::model()->findAllByAttributes(['slug' => $allSubSlugs, 'isTrash' => '0']);
             $users = User::model()->findAllByAttributes(['email' => $userEmails]);
     
             // Map data for quick lookup
@@ -3810,6 +3817,7 @@ class Place_propertyController  extends Controller
             $categoriesMap = array_column($categories, null, 'category_name');
             $typesMap = array_column($types, null, 'category_name');
             $statesMap = array_column($states, null, 'slug');
+            $subStatesMap = array_column($subStates, null, 'slug');
             $usersMap = array_column($users, null, 'email');
     
             // Prepare data for batch processing
@@ -3864,7 +3872,22 @@ class Place_propertyController  extends Controller
                 
                     // $statesMap[$stateSlug] = null;
                 }
-                
+                $subStateName = $data[12];
+                $subStateSlug = $this->generateSlug($subStateName);
+                $subStateID = null;
+                if (isset($subStatesMap[$subStateSlug])){
+                    $subStateID = $subStatesMap[$subStateSlug]->state_id;
+                }else {
+                    $newSub          = new States();
+                    $newSub->state_name = $subStateName;
+                    $newSub->slug       = $subStateSlug;
+                    $newSub->country_id = 66124;
+                    $newSub->region_id  = $statesMap[$stateSlug]->region_id;
+                    $newSub->parent_id  = $stateID;     // KEY: link to parent
+                    $newSub->isTrash    = 0;
+                    $newSub->save(false);
+                    $subStateID = $newSub->state_id;
+                }
                 $record = [
                     'uid' => $data[0],
                     'section_id' => ($data[6] == "Sale") ? 1 : 2,
@@ -3878,6 +3901,7 @@ class Place_propertyController  extends Controller
                     'ad_description' => $data[14],
                     'date_added' => $dateAdded,
                     'state' => $stateID,
+                    'sub_state' => $subStateID,
                     'user_id' => $usersMap[$data[39]]->user_id ?? 31988,
                     'status' => ($data[36] == "Active") ? "A" : "I",
                     'availability' => ($data[35] == "Sold Out" ? "sold_out" : ($data[35] == "Leased Out" ? "lease_out" : null)),
