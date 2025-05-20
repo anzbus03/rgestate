@@ -251,8 +251,8 @@ class AgentsController extends Controller
         $propertyCategoryId = Yii::app()->request->getParam('property_category');
         $status = Yii::app()->request->getParam('property_status');
         $dateRange = Yii::app()->request->getParam('date_range');
-        print_r($dateRange);
-        exit;
+        // print_r($dateRange);
+        // exit;
         // Check if the user exists, if not throw a 404 error
         if (empty($user)) {
             throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
