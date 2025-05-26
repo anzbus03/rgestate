@@ -235,10 +235,6 @@ class AgentsController extends Controller
         $this->render('list', compact('users'));
     }
 
-
-
-
-
     /**
      * view details of a user
      */

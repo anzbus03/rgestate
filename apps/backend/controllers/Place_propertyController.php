@@ -3862,15 +3862,16 @@ class Place_propertyController  extends Controller
                     $region = MainRegion::model()->findByAttributes(['slug' => $stateSlug]);
                     $regionId = $region ? $region->region_id : null;
                 
-                    // $newState = new States();
-                    // $newState->state_name = $stateName;
-                    // $newState->country_id = 66124;
-                    // $newState->isTrash = 0;
-                    // $newState->slug = $stateSlug;
-                    // $newState->region_id = $regionId;
-                    // $newState->save();
+                    $newState = new States();
+                    $newState->state_name = $stateName;
+                    $newState->country_id = 66124;
+                    $newState->isTrash = 0;
+                    $newState->slug = $stateSlug;
+                    $newState->region_id = $regionId;
+                    $newState->save();
                 
-                    // $statesMap[$stateSlug] = null;
+                    $statesMap[$stateSlug] = $newState;
+                    $stateID = $newState->state_id;
                 }
                 $subStateName = $data[12];
                 $subStateSlug = $this->generateSlug($subStateName);
@@ -3887,6 +3888,7 @@ class Place_propertyController  extends Controller
                     $newSub->isTrash    = 0;
                     $newSub->save(false);
                     $subStateID = $newSub->state_id;
+                    $subStatesMap[$subStateSlug] = $newSub;
                 }
                 $record = [
                     'uid' => $data[0],
