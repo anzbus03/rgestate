@@ -176,17 +176,54 @@ class Listing_contentsController extends Controller
                 $this->redirect(array($this->id.'/index'));
             }
         }
-        
+        $categories = [];
+    
+        if (!empty($areaguides->section_id)) {
+            $criteria = new CDbCriteria();
+            $criteria->compare('category_id', $areaguides->p_type);
+            $categoryModels = Category::model()->findAll($criteria);
+            $categories = CHtml::listData($categoryModels, 'category_id', 'category_name');
+        }
+
+        // (b) PREPARE “Sub-Categories” based on the saved p_type (category)
+        $subCategories = [];
+        if (!empty($areaguides->p_type)) {
+            // Replace `SubCategory` with your actual subcategory AR.
+            $criteria = new CDbCriteria();
+            $criteria->compare('sub_category_id', $areaguides->p_type);
+            $subCategoryModels = Subcategory::model()->findAll($criteria);
+            $subCategories = CHtml::listData($subCategoryModels, 'id', 'name');
+        }
+
+        // (c) PREPARE “Nested Sub-Categories” based on the saved sub_category
+        $nestedSubCategories = [];
+        if (!empty($areaguides->sub_category)) {
+            // Replace `NestedSubCategory` with your actual nested subcategory AR class.
+            $criteria = new CDbCriteria();
+            $criteria->compare('sub_category_id', $areaguides->sub_category);
+            $nestedModels = Subcategory::model()->findAll($criteria);
+            $nestedSubCategories = CHtml::listData($nestedModels, 'id', 'name');
+        }
+
+        // ────────────────────────────────────────────────────────────────────────────
+
+        // 4) Set page metadata and render the form. Note we pass 4 variables now:
         $this->setData(array(
-            'pageMetaTitle'     => $this->data->pageMetaTitle . ' | '. Yii::t('areaguides', 'Update'), 
-            'pageHeading'       => Yii::t('areaguides', 'Update'),
-            'pageBreadcrumbs'   => array(
-                Yii::t('areaguides', 'listing contents') => $this->createUrl($this->id.'/index'),
+            'pageMetaTitle'   => $this->data->pageMetaTitle . ' | ' . Yii::t('areaguides', 'Update'),
+            'pageHeading'     => Yii::t('areaguides', 'Update'),
+            'pageBreadcrumbs' => array(
+                Yii::t('areaguides', 'listing contents') => $this->createUrl($this->id . '/index'),
                 Yii::t('app', 'Update'),
             )
         ));
-        
-        $this->render('form', compact('areaguides'));
+
+        // Pass all three arrays into the view, along with $areaguides itself:
+        $this->render('form', array(
+            'areaguides'           => $areaguides,
+            'categories'           => $categories,
+            'subCategories'        => $subCategories,
+            'nestedSubCategories'  => $nestedSubCategories,
+        ));
     }
     
     /**

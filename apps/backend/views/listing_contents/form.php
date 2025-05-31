@@ -129,142 +129,124 @@ if ($viewCollection->renderContent) {
                         <?php echo $form->dropDownList($areaguides,'city',CHtml::listData(States::model()->getStateWithCountry_2(66124),"state_id" ,"state_name"), $dropdwn  ); ?>
                         <?php echo $form->error($areaguides, 'city');?>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="form-group ">
-                        <?php echo $form->labelEx($areaguides, 'section_id');?> 
-                        <?php $dropdwn =   array_merge( $areaguides->getHtmlOptions('section_id'),array('empty'=>'Select Module ',"style"=>"1")) ;  ?> 
-                        <?php echo $form->dropDownList(
-                                $areaguides,
-                                'section_id',
-                                array('1' => 'For Sale', '2' => 'For Rent', '6' => 'Business Opportunities'),
-                                array_merge(
-                                    $areaguides->getHtmlOptions('section_id'),
-                                    array(
-                                        'empty' => 'Select Module',
-                                        'style' => "1",
-                                        'ajax' => array(
-                                            'type' => 'POST',
-                                            'url' => $this->createUrl('place_property/dynamicPropertyTypes'),
-                                            'update' => '#ListingContents_p_type',
-                                            'data' => array('section_id' => 'js:this.value'),
-                                            'beforeSend' => 'function(){
+                   <div class="col-lg-4">
+                        <div class="form-group">
+                            <?php echo $form->labelEx($areaguides, 'section_id'); ?> 
+                            <?php 
+                                // “Module” dropdown stays the same as before:
+                                echo $form->dropDownList(
+                                    $areaguides,
+                                    'section_id',
+                                    [ '1' => 'For Sale', '2' => 'For Rent', '6' => 'Business Opportunities' ],
+                                    array_merge(
+                                        $areaguides->getHtmlOptions('section_id'),
+                                        [
+                                            'empty' => 'Select Module',
+                                            'ajax'  => [
+                                                'type'    => 'POST',
+                                                'url'     => $this->createUrl('place_property/dynamicPropertyTypes'),
+                                                'update'  => '#ListingContents_p_type',
+                                                'data'    => ['section_id' => 'js:this.value'],
+                                                'beforeSend' => 'function(){
                                                 $("#pTypeLoader").addClass("grid-view-loading");
-                                            }',
-                                            'complete' => 'function(){
+                                                }',
+                                                'complete' => 'function(){
                                                 $("#pTypeLoader").removeClass("grid-view-loading");
-                                            }',
-                                        )
+                                                }',
+                                            ],
+                                        ]
                                     )
-                                )
-                            ); ?>
+                                );
+                            ?>
                             <span id="pTypeLoader" style="padding-left: 10px;"></span>
-                        <?php echo $form->error($areaguides, 'section_id');?>
+                            <?php echo $form->error($areaguides, 'section_id'); ?>
                         </div>
                     </div>
-                    <div class="col-lg-4  ">
-                         <div class="form-group ">
-                        <?php echo $form->labelEx($areaguides, 'p_type');?> 
-                        <?php $dropdwn =   array_merge( $areaguides->getHtmlOptions('city'),array('empty'=>'Select category ',"style"=>"1")) ;  ?> 
-                        <?php echo $form->dropDownList(
-                            $areaguides,
-                            'p_type',
-                            array(), // Initially empty
-                            array_merge(
-                                $areaguides->getHtmlOptions('p_type'),
-                                array(
-                                    'empty' => 'Select Category',
-                                    "style" => "1",
-                                    'ajax' => array(
-                                        'type' => 'POST',
-                                        'url' => $this->createUrl('place_property/dynamicSubCategories'),
-                                        'update' => '#ListingContents_sub_category',
-                                        'data' => array('category_id' => 'js:this.value'),
-                                        'beforeSend' => 'function(){
-                                            $("#subCategoryLoader").addClass("grid-view-loading");
-                                        }',
-                                        'complete' => 'function(){
-                                            $("#subCategoryLoader").removeClass("grid-view-loading");
-                                        }',
-                                    )
-                                )
-                            )
-                        ); ?>
-                        <span id="subCategoryLoader" style="padding-left: 10px;"></span>
 
-                        <?php echo $form->error($areaguides, 'p_type');?>
-                         </div>
-                    </div>
-                
-                    <div class="col-lg-4  ">
-                        <?php echo $form->labelEx($areaguides, 'sub_category');?> 
-                        <?php echo $form->dropDownList(
-                            $areaguides,
-                            'sub_category',
-                            array(), // Initially empty
-                            array_merge(
-                                $areaguides->getHtmlOptions('sub_category'),
-                                array(
-                                    'empty' => 'Select Sub Category',
-                                    "style" => "1",
-                                    'ajax' => array(
-                                        'type' => 'POST',
-                                        'url' => $this->createUrl('place_property/dynamicNestedSubcategories'),
-                                        'update' => '#ListingContents_nested_sub_category',
-                                        'data' => array('sub_category_id' => 'js:this.value'),
-                                        'beforeSend' => 'function(){
-                                            $("#nestedSubCategoryLoader").addClass("grid-view-loading");
-                                        }',
-                                        'complete' => 'function(){
-                                            $("#nestedSubCategoryLoader").removeClass("grid-view-loading");
-                                        }',
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <?php echo $form->labelEx($areaguides, 'p_type'); ?> 
+                            <?php 
+                                // Instead of array(), use $categories that we passed from controller
+                                echo $form->dropDownList(
+                                    $areaguides,
+                                    'p_type',
+                                    $categories,  // <<--- pre‐populated if $areaguides->section_id was set
+                                    array_merge(
+                                        $areaguides->getHtmlOptions('p_type'),
+                                        [
+                                            'empty' => 'Select Category',
+                                            'ajax'  => [
+                                                'type'   => 'POST',
+                                                'url'    => $this->createUrl('place_property/dynamicSubCategories'),
+                                                'update' => '#ListingContents_sub_category',
+                                                'data'   => ['category_id' => 'js:this.value'],
+                                                'beforeSend' => 'function(){
+                                                $("#subCategoryLoader").addClass("grid-view-loading");
+                                                }',
+                                                'complete' => 'function(){
+                                                $("#subCategoryLoader").removeClass("grid-view-loading");
+                                                }',
+                                            ],
+                                        ]
                                     )
-                                )
-                            )
-                        ); ?>
-                        <span id="nestedSubCategoryLoader" style="padding-left: 10px;"></span>
+                                );
+                            ?>
+                            <span id="subCategoryLoader" style="padding-left: 10px;"></span>
+                            <?php echo $form->error($areaguides, 'p_type'); ?>
+                        </div>
+                    </div>
 
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <?php echo $form->labelEx($areaguides, 'sub_category'); ?> 
+                            <?php 
+                                // Instead of array(), use $subCategories
+                                echo $form->dropDownList(
+                                    $areaguides,
+                                    'sub_category',
+                                    $subCategories,  // <<--- pre‐populated if $areaguides->p_type was set
+                                    array_merge(
+                                        $areaguides->getHtmlOptions('sub_category'),
+                                        [
+                                            'empty' => 'Select Sub Category',
+                                            'ajax'  => [
+                                                'type'   => 'POST',
+                                                'url'    => $this->createUrl('place_property/dynamicNestedSubcategories'),
+                                                'update' => '#ListingContents_nested_sub_category',
+                                                'data'   => ['sub_category_id' => 'js:this.value'],
+                                                'beforeSend' => 'function(){
+                                                $("#nestedSubCategoryLoader").addClass("grid-view-loading");
+                                                }',
+                                                'complete' => 'function(){
+                                                $("#nestedSubCategoryLoader").removeClass("grid-view-loading");
+                                                }',
+                                            ],
+                                        ]
+                                    )
+                                );
+                            ?>
+                            <span id="nestedSubCategoryLoader" style="padding-left: 10px;"></span>
+                        </div>
                     </div>
-                    <!-- <script type="text/javascript">
-                        document.addEventListener("DOMContentLoaded", function() {
-                            var subCategoryId = "<?php echo $areaguides->sub_category; ?>";
-                            
-                            populateNestedSubcategoriesOnLoad(subCategoryId);
-                        });
-                        function populateNestedSubcategories(subCategoryId) {
-                            var parentId = $(subCategoryId).val();
-                            $.ajax({
-                                type: 'POST',
-                                url: '<?php echo CController::createUrl("place_property/dynamicNestedSubcategories"); ?>',
-                                data: {parentId: parentId},
-                                success: function(data) {
-                                    $('#ListingContents_nested_sub_category').html(data);
-                                }
-                            });
-                        }
-                        function populateNestedSubcategoriesOnLoad(subCategoryId) {
-                            var parentId = subCategoryId;
-                            $.ajax({
-                                type: 'POST',
-                                url: '<?php echo CController::createUrl("place_property/dynamicNestedSubcategories"); ?>',
-                                data: {parentId: parentId,nestedSubcategoryId: "<?php echo $areaguides->nested_sub_category; ?>"},
-                                success: function(data) {
-                                    $('#ListingContents_nested_sub_category').html(data);
-                                }
-                            });
-                        }
-                    </script> -->
-                    <div class=" form-group col-lg-3  ">
-                        <?php echo $form->labelEx($areaguides, 'nested_sub_category');?> 
-                        <?php echo $form->dropDownList(
-                            $areaguides,
-                            'nested_sub_category',
-                            array(), // Initially empty
-                            array_merge(
-                                $areaguides->getHtmlOptions('nested_sub_category'),
-                                array('empty' => 'Select Nested Sub Category', "style" => "1")
-                            )
-                        ); ?>
+
+                    <div class="form-group col-lg-3">
+                        <?php echo $form->labelEx($areaguides, 'nested_sub_category'); ?> 
+                        <?php 
+                            // Instead of array(), use $nestedSubCategories
+                            echo $form->dropDownList(
+                                $areaguides,
+                                'nested_sub_category',
+                                $nestedSubCategories, // <<--- pre‐populated if $areaguides->sub_category was set
+                                array_merge(
+                                    $areaguides->getHtmlOptions('nested_sub_category'),
+                                    ['empty' => 'Select Nested Sub Category']
+                                )
+                            );
+                        ?>
+                        <?php echo $form->error($areaguides, 'nested_sub_category'); ?>
                     </div>
+
                     <div class="clearfix"><!-- --></div>
                     <div class="form-group col-lg-12">
                         <?php echo $form->labelEx($areaguides, 'meta_title');?><?php echo $areaguides->getTranslateHtml('meta_title');?>
@@ -272,14 +254,14 @@ if ($viewCollection->renderContent) {
                         <?php echo $form->error($areaguides, 'meta_title');?>
                     </div>
                     
-                    <div class="form-group col-lg-12">
+                    <div class="form-group col-lg-12 mt-4">
                         <?php echo $form->labelEx($areaguides, 'meta_description');?><?php echo $areaguides->getTranslateHtml('meta_description');?>
                         <?php echo $form->textArea($areaguides, 'meta_description', $areaguides->getHtmlOptions('meta_description', array('rows' => 4))); ?>
                         <?php echo $form->error($areaguides, 'meta_description');?>
                     </div>
                     <div class="clearfix"><!-- --></div>
                  
-                    <div class="form-group col-lg-12">
+                    <div class="form-group col-lg-12 mt-4">
                         <?php echo $form->labelEx($areaguides, 'highlights');?><?php echo $areaguides->getTranslateHtml('highlights','ar',false,'1200px');?>
                         <?php echo $form->textArea($areaguides, 'highlights', $areaguides->getHtmlOptions('highlights', array('rows' => 15,'id' => 'highlights'))); ?>
                         <?php echo $form->error($areaguides, 'highlights');?>
@@ -287,24 +269,32 @@ if ($viewCollection->renderContent) {
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
 
                     <script>
-                        CKEDITOR.replace('highlights', {
-                            height: 250,
-                            toolbar: [
-                                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike'] },
-                                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Blockquote'] },
-                                { name: 'insert', items: ['Image', 'Link', 'Unlink'] },
-                                { name: 'tools', items: ['Maximize'] },
-                                { name: 'document', items: ['Source'] }
-                            ]
+                        // Wait for DOM to be fully loaded
+                        $(document).ready(function() {
+                            // Initialize first CKEditor
+                            CKEDITOR.replace('highlights', {
+                                height: 250,
+                                toolbar: [
+                                    { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike'] },
+                                    { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Blockquote'] },
+                                    { name: 'insert', items: ['Image', 'Link', 'Unlink'] },
+                                    { name: 'tools', items: ['Maximize'] },
+                                    { name: 'document', items: ['Source'] }
+                                ]
+                            });
                         });
                     </script>
-                     
-                   
-                    <div class="form-group col-lg-12">
+                    <style>
+                        .form-control{
+                            height: auto !important;
+                        }
+                    </style>
+                    <div class="form-group col-lg-12 mt-4">
                         <?php echo $form->labelEx($areaguides, 'neighborhood');?> 
-                        <?php echo $form->textArea($areaguides, 'neighborhood', $areaguides->getHtmlOptions('neighborhood', array('rows' => 15))); ?>
+                        <?php echo $form->textArea($areaguides, 'neighborhood', $areaguides->getHtmlOptions('neighborhood', array('rows' => 15,'id' => 'neighborhood'))); ?>
                         <?php echo $form->error($areaguides, 'neighborhood');?>
                     </div>
+                
                     <div class="col-lg-4">
                         <div class="form-group slug-wrapper"<?php if (empty($areaguides->slug)){ echo ' style="display:none"';}?>>
                             <?php echo $form->labelEx($areaguides, 'slug');?>
