@@ -101,11 +101,15 @@ return array(
 
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<type_of:(.*)>/<state:(.*)>/<sub_state:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<type_of:(.*)>/<state:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<type_of:(.*)>/<sub_state:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<state:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<type_of:(.*)>/<state:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/<sub_state:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<type_of:(.*)>/<sub_state:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<category:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<type_of:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<state:(.*)>/*'),
+				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/<sub_state:(.*)>/*'),
 				array('listing/index', 'pattern' =>'<sec:(property-for-sale|property-for-rent|to-rent|preleased|new-development|all)>/*'),  
 
 				'<sec:(property-for-sale|property-for-rent|preleased)>'=>'listing/index',
