@@ -13,7 +13,7 @@
             </a>
             </li>
             <li>
-            <a href="<?php echo Yii::app()->createUrl('listing/index',array('sec'=>'property-for-sale','category'=>'retail' ,''=>'all'));?>">
+            <a href="<?php echo Yii::app()->createUrl('listing/index',array('sec'=>'property-for-sale','category'=>'retail' ,'type_of'=>'all'));?>">
                 <div class="rg-bg-blue rg-wh-37 rounded-circle position-relative mx-auto">
                     <svg width="19" height="19" class="position-absolute top-50 start-50 translate-middle">
                         <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-retail"></use>
@@ -33,7 +33,7 @@
             </a>
             </li>
             <li>
-            <a href="<?php echo Yii::app()->createUrl('listing/index',array('sec'=>'property-for-sale','category'=>'land' ,''=>'all'));?>">
+            <a href="<?php echo Yii::app()->createUrl('listing/index',array('sec'=>'property-for-sale','category'=>'land' ,'type_of'=>'all'));?>">
                 <div class="rg-bg-blue rg-wh-37 rounded-circle position-relative mx-auto">
                     <svg width="19" height="19" class="position-absolute top-50 start-50 translate-middle">
                         <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-land"></use>

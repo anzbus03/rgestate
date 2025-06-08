@@ -277,10 +277,12 @@ if ($viewCollection->renderContent) {
                                 toolbar: [
                                     { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike'] },
                                     { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Blockquote'] },
+                                    { name: 'styles', items: ['Format'] },
                                     { name: 'insert', items: ['Image', 'Link', 'Unlink'] },
                                     { name: 'tools', items: ['Maximize'] },
                                     { name: 'document', items: ['Source'] }
-                                ]
+                                ],
+                                format_tags: 'p;h1;h2;h3'
                             });
                         });
                     </script>

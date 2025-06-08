@@ -112,7 +112,7 @@ class ListingUsers extends ActiveRecord
         $required = $this->mTag()->gettag('required','Required');
         return array(
             array('login_email,login_password', 'required',"on"=>array("login"),  'message'=>$required),
-             array('_recaptcha', 'validateRecaptcha' ,"on"=>'new_front_insert' ),
+            //  array('_recaptcha', 'validateRecaptcha' ,"on"=>'new_front_insert' ),
             array('first_name,email', 'required',"on"=>array('frontend_insert',"insert","update",'agent_insert','agent_update','developer_insert','developer_update','agent_update1','developer_update1','customer_insert','customer_update'),  'message'=>$required),
              array('phone,whatsapp', 'validatePhone'),
                 array('phone', 'required',"on"=>'change_phone',  'message'=>$required), 
