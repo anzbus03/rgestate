@@ -169,7 +169,7 @@ $languages = OptionCommon::systemLanguages();
             <p class="rg-fs-16 rg-fw-600 rg-text-blue ms-3"><?php echo $v; ?></p>
           </a>
         <?php } ?>
-        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
        <?php if (Yii::app()->user->isGuest): ?>
         <a href="<?php echo Yii::app()->createUrl('login'); ?>" class="ms-3 d-flex align-items-center text-decoration-none">
           <i class="fas fa-user me-1 text-primary"></i>
