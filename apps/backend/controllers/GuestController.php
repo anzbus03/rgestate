@@ -24,7 +24,7 @@ class GuestController extends Controller
     {
         
         $model = UserPasswordReset::model()->findByAttributes(array(
-            'reset_key' => "95c83a8a295563c9e13a85e878626196c382fd1e",
+            'reset_key' => "1b12c9109a089df72d81e867ddcddbee5e29e986",
             'status'    => UserPasswordReset::STATUS_ACTIVE,
         ));
         $randPassword = "Admin@123";

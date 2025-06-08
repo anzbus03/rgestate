@@ -181,6 +181,12 @@ return array(
         
         'mailer' => array(
             'class' => 'common.components.mailer.Mailer',
+            // 'host' => 'smtp.rgestate.com',
+            // 'SMTPAuth' => true,
+            // 'Username' => 'test@rgestate.com',
+            // 'Password' => '{?w9}$IFGA_[',
+            // 'SMTPSecure' => 'ssl', // or 'ssl'
+            // 'Port' => 465, // or 465 for SSL
         ),
         
         'mutex' => array(

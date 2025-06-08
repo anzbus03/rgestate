@@ -404,6 +404,27 @@ class UserController extends Controller
 			//$model->status='A';
 			$model->verification_code = $model->generatePIN(6);
 			if ($model->save()) {
+				$model->sendVerificationEmail();
+				// $emailTemplateModel = CustomerEmailTemplate::model()->findByName("registration");
+				// $emailTemplate = $emailTemplateModel ? $emailTemplateModel->content : Yii::app()->options->get('system.email_templates.common');
+
+				// $emailBody = '';//$this->renderPartial('_registration_verification', compact('model'), true);
+				// $emailContent = str_replace('[CONTENT]', $emailBody, $emailTemplate);
+			
+				// $to      = $model->email;
+				// $subject = Yii::app()->options->get('system.common.site_name') . ' Account created - Explore your new account';
+				// $headers = "MIME-Version: 1.0" . "\r\n";
+				// $headers .= "Content-type: text/html; charset=UTF-8" . "\r\n";
+				// $headers .= 'From: ' . Yii::app()->params['admin_email'] . "\r\n";
+				
+				// if (mail($to, $subject, $emailContent, $headers)) {
+				// 	print_r('Email sent successfully');
+				// 	exit;
+				// } else {
+				// 	$error = error_get_last();
+    			// 	echo 'Email sending failed. Reason: ' . ($error['message'] ?? 'Unknown error');
+				// 	exit;
+				// }
 				$this->redirect(Yii::app()->createUrl('user/EmailVerification', array('email' => base64_encode($model->email))));
 				if ($model->status == 'W') {
 
@@ -521,7 +542,6 @@ class UserController extends Controller
 	public function actionRegister()
 	{
 
-
 		$model = new ListingUsers();
 		$request = Yii::app()->request;
 		ini_set('memory_limit', '-1');
@@ -540,23 +560,23 @@ class UserController extends Controller
 			$model->verification_code = $model->generatePIN(6);
 			if ($model->save()) {
 
-				$emailTemplate =  CustomerEmailTemplate::model()->findByName("registration");
-				if ($emailTemplate) {
-					$emailTemplate = $emailTemplate->content;
-				} else {
-					$emailTemplate = $options->get('system.email_templates.common');
-				}
+				$emailTemplateModel = CustomerEmailTemplate::model()->findByName("registration");
+				$emailTemplate = $emailTemplateModel ? $emailTemplateModel->content : Yii::app()->options->get('system.email_templates.common');
 
 				$emailBody = $this->renderPartial('_registration_verification', compact('model'), true);
-				$emailTemplate = str_replace('[CONTENT]', $emailBody, $emailTemplate);
-				$mail = new YiiMailer();
-				$mail->setFrom(Yii::app()->params['admin_email'], Yii::app()->options->get('system.common.site_name'));
-				$mail->setTo($model->email);
-				$mail->setView('email');
-				$mail->setSubject(Yii::app()->options->get('system.common.site_name') . ' Account created . Explore your new account ');
-				$mail->setData(array('emailTemplate' => $emailTemplate));
-				$mail->send();
-				Yii::app()->user->setFlash('registered', '1');
+				$emailContent = str_replace('[CONTENT]', $emailBody, $emailTemplate);
+				// Set headers for mail()
+				$to      = $model->email;
+				$subject = Yii::app()->options->get('system.common.site_name') . ' Account created - Explore your new account';
+				$headers = "MIME-Version: 1.0" . "\r\n";
+				$headers .= "Content-type: text/html; charset=UTF-8" . "\r\n";
+				$headers .= 'From: ' . Yii::app()->params['admin_email'] . "\r\n";
+				
+				if (mail($to, $subject, $emailContent, $headers)) {
+					Yii::app()->user->setFlash('registered', '1');
+				} else {
+					Yii::app()->user->setFlash('registerfail', 'Unable to send verification email. Please try again later.');
+				}
 
 				$this->redirect(Yii::app()->createUrl('user/signup'));
 			} else {
