@@ -456,5 +456,55 @@ class User extends ActiveRecord
         }
         return $this->group->hasRouteAccess($route);
     }
+
+    public static function getListingBreakdownPerAgent(
+        $startDate        = null,
+        $endDate          = null,
+        $locationId       = null,
+        $propertyTypeId   = null,
+        $propertyCategory = null
+    ) {
+        // build SQL
+        $sql = "
+            SELECT 
+                CONCAT(u.first_name,' ',u.last_name)      AS agent_name,
+                SUM(CASE WHEN pa.status = 'A' THEN 1 END) AS active,
+                SUM(CASE WHEN pa.status = 'I' THEN 1 END) AS inactive,
+                COUNT(*)                                  AS total
+            FROM {{place_an_ad}} pa
+            JOIN {{user}} u           ON u.user_id = pa.user_id
+            WHERE u.rules  = 3               -- agents only
+            AND pa.isTrash = '0'           -- not deleted
+        ";
+
+        // dynamic filters
+        $params = [];
+
+        if ($startDate && $endDate) {
+            $sql   .= " AND pa.date_added >= :start AND pa.date_added < :end";
+            $params[':start'] = $startDate;
+            // half-open range keeps inclusiveness without +1-day hacks
+            $params[':end']   = (new DateTime($endDate))->modify('+1 day')->format('Y-m-d');
+        }
+        if ($locationId) {
+            $sql .= " AND pa.state = :loc";
+            $params[':loc'] = (int)$locationId;
+        }
+        if ($propertyTypeId) {
+            $sql .= " AND pa.section_id = :type";
+            $params[':type'] = (int)$propertyTypeId;
+        }
+        if ($propertyCategory) {
+            $sql .= " AND pa.category_id = :cat";
+            $params[':cat'] = (int)$propertyCategory;
+        }
+
+        $sql .= "
+            GROUP BY pa.user_id
+            ORDER BY total DESC
+        ";
+
+        return Yii::app()->db->createCommand($sql)->queryAll(true, $params);
+    }
     const SALES_TEAM = '8';
 }

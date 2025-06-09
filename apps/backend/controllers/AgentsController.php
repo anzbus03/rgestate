@@ -121,6 +121,24 @@ class AgentsController extends Controller
         $agentPropertiesBusiness = User::model()->getAllAgentsProperties(6, $customStart, $customEnd);
         $topAgents = SoldProperty::model()->getTop5ActiveAgents($customStart, $customEnd);
             
+
+        [$start, $end] = $this->resolveDateRange(
+            Yii::app()->request->getQuery('date_range')        // the raw "DD-MMM-YYYY - DD-MMM-YYYY"
+        );
+
+        $r              = Yii::app()->request;
+        $locationId     = $r->getParam('location');
+        $propertyTypeId = $r->getParam('property_type');
+        $categoryId     = $r->getParam('property_category');
+
+        $agentTable = User::model()->getListingBreakdownPerAgent(
+            $start, $end, $locationId, $propertyTypeId, $categoryId
+        );
+
+        $totActive   = array_sum(array_column($agentTable, 'active'));
+        $totInactive = array_sum(array_column($agentTable, 'inactive'));
+        $totTotal    = array_sum(array_column($agentTable, 'total'));
+
         // Set page metadata
         $this->setData(array(
             'pageMetaTitle'   => $this->data->pageMetaTitle . ' | ' . Yii::t('users', 'Agents List'),
@@ -143,6 +161,10 @@ class AgentsController extends Controller
             'agentProperties',
             'agents',
             'salesThisMonth',
+            'agentTable',
+            'totActive',
+            'totInactive',
+            'totTotal',
             'salesTotal',
             'totalPropertiesSoldYear',
             'totalPropertiesSoldLastYear',
@@ -166,7 +188,37 @@ class AgentsController extends Controller
             'totalPropertiesSoldRange' // available if a date range was provided
         ));
     }
-    
+  
+    private function resolveDateRange(?string $raw): array
+    {
+        if (empty($raw)) {
+            return [
+                date('Y-01-01'),
+                date('Y-m-d', strtotime('+1 day')),
+            ];
+        }
+
+        // Expected delimiter: space-dash-space
+        [$startStr, $endStr] = array_pad(explode(' - ', $raw), 2, '');
+
+        $start = DateTime::createFromFormat('d-M-Y', trim($startStr));
+        $end   = DateTime::createFromFormat('d-M-Y', trim($endStr));
+
+        // Validation failed → fall back to safe defaults
+        if ($start === false || $end === false) {
+            return [
+                date('Y-01-01'),
+                date('Y-m-d', strtotime('+1 day')),
+            ];
+        }
+
+        // Convert to ISO date strings (no time part)
+        return [
+            $start->format('Y-m-d'),
+            $end->format('Y-m-d'),
+        ];
+    }
+
 
     /**
      * List of  users
@@ -274,7 +326,6 @@ class AgentsController extends Controller
         // Fetch the total revenue for the user within the calculated date range
         $revenueForSale = SoldProperty::model()->getRevenueForUser($user->user_id, $startDate, $endDate, 1);
         $revenueForRent = SoldProperty::model()->getRevenueForUser($user->user_id, $startDate, $endDate, 2);
-
 
         // Calculate percentage for "For Sale" target
         if ($user->target_for_sale > 0) {

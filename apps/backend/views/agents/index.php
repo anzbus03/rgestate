@@ -29,6 +29,49 @@ if ($viewCollection->renderContent) {
             flex: 0 0 auto;
         }
 
+        /* --- Table look & feel -------------------------------------------- */
+        .agent-table thead th {
+            background: #ffd700;          /* MailWizz yellow */
+            color: #000;
+            border-bottom: 0;
+            vertical-align: middle;
+        }
+
+        .agent-table tbody td,
+        .agent-table tbody th {
+            vertical-align: middle;
+        }
+
+        .agent-table tbody tr:nth-child(even) {
+            background: #f8f9fa;          /* subtle zebra striping */
+        }
+
+        .agent-table tfoot th,
+        .agent-table tfoot td {
+            background: #fff8e6;
+            font-weight: 600;
+        }
+
+        /* rounded corners on the very first & last cells */
+        .agent-table thead th:first-child { border-radius: .35rem 0 0 0; }
+        .agent-table thead th:last-child  { border-radius: 0 .35rem 0 0; }
+        .agent-table tfoot th:first-child { border-radius: 0 0 0 .35rem; }
+        .agent-table tfoot td:last-child  { border-radius: 0 0 .35rem 0; }
+
+        /* --- Badges -------------------------------------------------------- */
+        .badge.bg-success-soft { background:#d1e7dd; color:#0f5132; }
+        .badge.bg-danger-soft  { background:#f8d7da; color:#842029; }
+
+        /* --- Responsive tweaks -------------------------------------------- */
+        @media (max-width: 576px) {
+            .agent-table thead tr {
+                position: sticky; top: 0; z-index: 1;   /* frozen header while scrolling */
+            }
+            .agent-table th, .agent-table td {
+                white-space: nowrap;                    /* keep numbers on one line */
+            }
+        }
+
     </style>
     <form id="filterForm" class="mb-4" method="GET" action="<?php echo Yii::app()->createUrl(Yii::app()->controller->id . '/index'); ?>">
         <div class="filter-container">
@@ -346,7 +389,96 @@ if ($viewCollection->renderContent) {
             
             <!--/column-->
         </div>
-    </div>
+        <div class="row">
+            <div class="col-md-12">
+                
+                <div class="card mb-4 shadow-sm p-0">
+                    <div class="card-header bg-dark text-white py-2 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 fw-semibold text-white">
+                            Listing Category 
+                            <small class="text-white fw-normal">
+                               <?php
+                                $typeLabels = [
+                                    '1' => 'For Sale',
+                                    '2' => 'For Rent',
+                                    '3' => 'Business Opportunities',
+                                ];
+
+                                if (!empty($_GET['property_type'])) {
+                                    // Use the map; default to “All” if the key isn’t in the array
+                                    $label = $typeLabels[$_GET['property_type']] ?? 'All';
+                                    echo '(' . $label . ')';
+                                } else {
+                                    echo '(default&nbsp;All)';
+                                }
+                                ?>
+                            </small>
+                        </h5>
+                        <!-- optional slot to echo the current date range -->
+                        <?php if (!empty($_GET['date_range'])) : ?>
+                            <span class="badge bg-light text-dark">
+                                <?php echo CHtml::encode($_GET['date_range']); ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+        
+                    <!-- horizontal scroll on narrow screens -->
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover mb-0 agent-table">
+                            <thead>
+                                <tr>
+                                    <th class="w-30">Agent&nbsp;Name</th>
+                                    <th class="text-center">Active</th>
+                                    <th class="text-center">Inactive</th>
+                                    <th class="text-center">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($agentTable as $row): ?>
+                                    <tr>
+                                        <td>
+                                            <i class="bi bi-person-fill text-warning me-1"></i>
+                                            <?php echo CHtml::encode($row['agent_name']); ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-success-soft">
+                                                <?php echo $row['active']; ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-danger-soft">
+                                                <?php echo $row['inactive']; ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center fw-semibold">
+                                            <?php echo $row['total']; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+        
+                                <?php if (empty($agentTable)): ?>
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4 text-muted">
+                                            No listings found for the selected filters
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+        
+                            <tfoot>
+                                <tr>
+                                    <th>Total</th>
+                                    <th class="text-center"><?php echo $totActive; ?></th>
+                                    <th class="text-center"><?php echo $totInactive; ?></th>
+                                    <th class="text-center"><?php echo $totTotal; ?></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     <style>
        
         .agent-properties .active{
