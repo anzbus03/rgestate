@@ -493,72 +493,7 @@ html .continue {
                 justify-content: center;
                 align-items: center;
             }
-            .address-container {
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.section-title {
-    font-size: 14px;
-    color: #666;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.offices-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    margin-top: 20px;
-}
-
-.office-location {
-    padding: 0;
-}
-
-.office-title {
-    font-weight: 600;
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-}
-
-.office-title i {
-    margin-right: 10px;
-    color: #555;
-}
-
-.office-address {
-    font-weight: 400;
-    line-height: 1.6;
-    color: #555;
-    font-size: 15px;
-}
-
-.office-address i {
-    margin-right: 8px;
-    color: #777;
-    width: 16px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .offices-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-    
-    .office-title {
-        font-size: 16px;
-    }
-    
-    .office-address {
-        font-size: 14px;
-    }
-}
+          
             </style>
 
             <div class="widget widget-contact-details">
