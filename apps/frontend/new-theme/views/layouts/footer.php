@@ -344,46 +344,63 @@ smartad_title a {
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-4 mt-5 mt-md-0">
-                    <h5 class="rg-fs-20 rg-fw-700 rg-text-blue">Address</h5>
+                    <h5 class="rg-fs-20 rg-fw-700 rg-text-blue"><?php echo $this->tag->getTag('address','Address');?></h5>
+                    
                     <ul class="rg-address-list mt-5">
-                        <li class="d-flex align-items-start">
-                            <div href="#"
-                                class="rg-footer-icon rg-bg-blue rg-wh-32 rounded-circle position-relative d-block">
+                        <!-- Head Office -->
+                        <li class="d-flex align-items-start mb-3">
+                            <div class="rg-footer-icon rg-bg-blue rg-wh-32 rounded-circle position-relative d-block">
                                 <svg width="16" height="40"
                                     class="rg-fill-white position-absolute top-50 start-50 translate-middle">
                                     <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-location"></use>
                                 </svg>
                             </div>
                             <span class="rg-fs-16 rg-fw-400 rg-text-gray-600">
-                                <a href="https://maps.app.goo.gl/yypk54WEH96Y86Ec6" target="_blank" class="rg-text-blue" style="text-decoration: none; color: inherit;">
-                                    <?php echo nl2br($this->tag->getTag('office_location', 'Al Fattan Lotus Plaza,
-Office Suite 102,
-Off Sheikh Zayed Rd, Dubai 
-UAE POB 232574.
-                                    ')); ?>
+                                <strong class="d-block mb-2">Head Office</strong>
+                                Office Suite#1005, Aspect Tower, Business Bay, Dubai - UAE. POB 232574
+                            </span>
+                        </li>
+
+                        <!-- Corporate Office -->
+                        <li class="d-flex align-items-start mb-3">
+                            <div class="rg-footer-icon rg-bg-blue rg-wh-32 rounded-circle position-relative d-block">
+                                <svg width="16" height="40"
+                                    class="rg-fill-white position-absolute top-50 start-50 translate-middle">
+                                    <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-location"></use>
+                                </svg>
+                            </div>
+                            <span class="rg-fs-16 rg-fw-400 rg-text-gray-600">
+                                <strong class="d-block">Corporate Office</strong>
+                                <a href="https://maps.app.goo.gl/yypk54WEH96Y86Ec6" target="_blank" style="text-decoration: none; color: inherit;">
+                                     Office Suite# 102, Al Fattan Lotus Plaza - Off Sheikh Zayed Rd - Dubai - UAE POB 232574
                                 </a>
                             </span>
-
                         </li>
-                        <li class="d-flex align-items-center">
-                            <div href="#"
-                                class="rg-footer-icon rg-bg-blue rg-wh-32 rounded-circle position-relative d-block">
+
+                        <!-- Phone -->
+                        <li class="d-flex align-items-center mb-2" style="margin-top: 3rem;">
+                            <div class="rg-footer-icon rg-bg-blue rg-wh-32 rounded-circle position-relative d-block">
                                 <svg width="16" height="16"
                                     class="rg-fill-white position-absolute top-50 start-50 translate-middle">
                                     <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-phone"></use>
                                 </svg>
                             </div>
-                            <span class="rg-fs-16 rg-fw-400 rg-text-gray-600"><a href="tel:+971 55 279 2403">+971 55 279 2403</a></span>
+                            <span class="rg-fs-16 rg-fw-400 rg-text-gray-600">
+                                <a href="tel:+971 55 279 2403">+971 55 279 2403</a>
+                            </span>
                         </li>
+
+                        <!-- Email -->
                         <li class="d-flex align-items-center">
-                            <div href="#"
-                                class="rg-footer-icon rg-bg-blue rg-wh-32 rounded-circle position-relative d-block">
+                            <div class="rg-footer-icon rg-bg-blue rg-wh-32 rounded-circle position-relative d-block">
                                 <svg width="15" height="12"
                                     class="rg-fill-white position-absolute top-50 start-50 translate-middle">
                                     <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-email1"></use>
                                 </svg>
                             </div>
-                            <span class="rg-fs-16 rg-fw-400 rg-text-gray-600"><a href="mailto:sales@rgestate.com">sales@rgestate.com</a></span>
+                            <span class="rg-fs-16 rg-fw-400 rg-text-gray-600">
+                                <a href="mailto:sales@rgestate.com">sales@rgestate.com</a>
+                            </span>
                         </li>
                     </ul>
                 </div>
