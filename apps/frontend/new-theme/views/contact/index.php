@@ -493,6 +493,72 @@ html .continue {
                 justify-content: center;
                 align-items: center;
             }
+            .address-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 14px;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.offices-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.office-location {
+    padding: 0;
+}
+
+.office-title {
+    font-weight: 600;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.office-title i {
+    margin-right: 10px;
+    color: #555;
+}
+
+.office-address {
+    font-weight: 400;
+    line-height: 1.6;
+    color: #555;
+    font-size: 15px;
+}
+
+.office-address i {
+    margin-right: 8px;
+    color: #777;
+    width: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .offices-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .office-title {
+        font-size: 16px;
+    }
+    
+    .office-address {
+        font-size: 14px;
+    }
+}
             </style>
 
             <div class="widget widget-contact-details">
@@ -505,12 +571,27 @@ html .continue {
                             class="fa fa-envelope"></i>
                         <?php echo  $this->options->get('system.common.contact_email'); ?></a></p>
 
-                <p class=""> <small class=" "><?php echo $this->tag->getTag('address', 'Address'); ?></small>
-                    <span style="font-weight: 600;; line-height: 23px;">
-                        <i class="fa fa-map-marker"></i>
-                        <?php echo  Yii::t('app', nl2br($this->options->get('system.common.contact_address')), array('Tel. No:' => '<i class="fa fa-phone"></i> ', 'WhatsApp : ' => '<i class="fa fa-whatsapp"></i> ')); ?></span>
-
+                <p class="">
+                    <small class=""><?php echo $this->tag->getTag('address', 'Address'); ?></small>
                 </p>
+              <div style="display: flex; gap: 40px; flex-wrap: wrap;margin-bottom: 20px;">
+                    <!-- Head Office - Left Side -->
+                    <div style="flex: 1; min-width: 50%;">
+                        <span style="font-weight: 600; line-height: 23px;">
+                            <i class="fa fa-map-marker"></i> Head Office <br/><br/>
+                            <?php echo Yii::t('app', nl2br($this->options->get('system.common.contact_address')), array('Tel. No:' => '<i class="fa fa-phone"></i> ', 'WhatsApp : ' => '<i class="fa fa-whatsapp"></i> ')); ?>
+                        </span>
+                    </div>
+
+                    <!-- Corporate Office - Right Side -->
+                    <div style="flex: 2;">
+                        <span style="font-weight: 600; line-height: 23px;">
+                            <i class="fa fa-map-marker"></i> Corporate Office <br/><br/>
+                            Office Suite# 102, Al Fattan <br/>
+                            Lotus Plaza - Off Sheikh Zayed Rd - Dubai - UAE POB 232574
+                        </span>
+                    </div>
+                </div>
 
                 <p> <span><strong
                             style="font-weight: 800;margin-bottom: 9px !important;display: block;"><?php echo $this->tag->getTag('please_note', 'Please Note'); ?>:</strong>
