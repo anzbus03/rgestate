@@ -514,7 +514,7 @@ html .continue {
                     <div style="flex: 1; min-width: 50%;">
                         <span style="font-weight: 600; line-height: 23px;">
                             <i class="fa fa-map-marker"></i> Head Office <br/><br/>
-                            <?php echo Yii::t('app', nl2br($this->options->get('system.common.contact_address')), array('Tel. No:' => '<i class="fa fa-phone"></i> ', 'WhatsApp : ' => '<i class="fa fa-whatsapp"></i> ')); ?>
+                            Office Suite#1005, Aspect Tower, Business Bay, Dubai - UAE. POB 232574
                         </span>
                     </div>
 
@@ -522,8 +522,7 @@ html .continue {
                     <div style="flex: 2;">
                         <span style="font-weight: 600; line-height: 23px;">
                             <i class="fa fa-map-marker"></i> Corporate Office <br/><br/>
-                            Office Suite# 102, Al Fattan <br/>
-                            Lotus Plaza - Off Sheikh Zayed Rd - Dubai - UAE POB 232574
+                            Office Suite# 102, Al Fattan Lotus Plaza - Off Sheikh Zayed Rd - Dubai - UAE POB 232574
                         </span>
                     </div>
                 </div>
