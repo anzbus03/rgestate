@@ -284,7 +284,7 @@ else
 			initialCountry: "<?php echo COUNTRY_CODE; ?>",
 			// localizedCountries: { 'de': 'Deutschland' },
 			// nationalMode: false,
-			onlyCountries: ['<?php echo COUNTRY_CODE; ?>'],
+			// onlyCountries: ['<?php echo COUNTRY_CODE; ?>'],
 			placeholderNumberType: "MOBILE",
 			// preferredCountries: ['cn', 'jp'],
 			separateDialCode: true,

@@ -329,6 +329,7 @@ class UserController extends Controller
 		// }
 		if (Yii::app()->user->getId() and !Yii::app()->request->isPostRequest) {
 			$this->redirect(Yii::app()->createUrl('site/index'));
+			// $this->redirect(Yii::app()->createUrl('member/dashboard'));
 		}
 		//  print_r($_POST);
 		if ($request->isPostRequest && ($attributes = (array)$request->getPost($user->modelName, array()))) {

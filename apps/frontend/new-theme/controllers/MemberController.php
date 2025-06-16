@@ -86,60 +86,99 @@ class MemberController extends Controller
 		return parent::beforeAction($action);
 	}
 	public $secure;
-    public function actionDashboard($show=null)
-    { 
-        
-	   $this->setData(array(
-            'pageMetaTitle'     =>  Yii::t('app', '{dashboard} | {name} ', array('{dashboard}'=>$this->tag->getTag('dashboard','Dashboard') , '{name}' => $this->member->fullName  )), 
-            'pageHeading'       => Yii::t('hotel_booking', 'My Profile'),
-            'pageMetaDescription'   => Yii::app()->params['description'],
-            'hooks'   => Yii::app()->hooks,
+    public function actionDashboard($show = null)
+    {
+        $this->setData(array(
+            'pageMetaTitle' => Yii::t('app', '{dashboard} | {name} ', array(
+                '{dashboard}' => $this->tag->getTag('dashboard', 'Dashboard'),
+                '{name}' => $this->member->fullName
+            )),
+            'pageHeading' => Yii::t('hotel_booking', 'My Profile'),
+            'pageMetaDescription' => Yii::app()->params['description'],
+            'hooks' => Yii::app()->hooks,
         ));
-		$notify = Yii::app()->notify;
-		$user =  $this->member;
-	    if($user->email_verified=='0'){
-	         $notify->addWarning(Yii::t('app', 'Email not verified. '.CHtml::link('Click here to verify your email address ',Yii::App()->createUrl('user/emailverification')) ));
-			
-	    }
-	     if($user->o_verified=='0'){
-	        // $notify->addWarning(Yii::t('app', 'Mobile Number  not verified. '.CHtml::link('Click here to verify your phone number  ',Yii::App()->createUrl('user/otp_verify')) ));
-			
-	    }
-	     
-	    if(Yii::app()->user->getState('user_type','U')=='U'){
-			      $this->render("dashboard_guest");
-			      exit;
 
-		}
-		$premium_downloads = 0;
-		$TotalDownloadCount =  0 ; 
-		$TotalInvoices  = (int) 0 ; 
-		
-		$last_30_Days_pageviews = StatisticsPage::model()->pageCount('30day');
-		
-        	$last_30_Days_callCount = Statistics::model()->callCount('30day');
-        	$last_30_Days_mailCount = Statistics::model()->mailCount('30day');
-        	$searchequiryModel  = new SendEnquiry2();
-        	$searchequiryModel ->user_id =  (int) Yii::app()->user->getId();
-            $searchequiryModelCriteria = 	$searchequiryModel->search(1);
-            $enqTotal = SendEnquiry2::model()->count( $searchequiryModelCriteria);
-     
-            
-            $impressions_graph =  StatisticsPage::model()->pageCountDatewise();
-            $active_properties = $this->mem->ActivePropertys; 
-           
-       if(!empty($this->member->parent_user)){
-										$user_id = $this->member->parent_user;
-									}else{
-										$user_id = $this->member->user_id;
-									}
-									$plans = PricePlanOrder::model()->userActiveListingPackageAll($user_id);
-									
-		    $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/jquery.dynameter.css')));
-        	 $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/jquery.dynameter.js')));
-             					
-        $this->render("dashboard",compact('user_id','active_properties','impressions_graph',"user","pricePlan","premium_downloads",'TotalDownloadCount','TotalInvoices','last_30_Days_pageviews','last_30_Days_callCount','last_30_Days_mailCount','enqTotal','plans'));
-	}
+        $notify = Yii::app()->notify;
+        $user = $this->member;
+
+        // Email verification check
+        if ($user->email_verified == '0') {
+            $notify->addWarning(Yii::t('app', 'Email not verified. ' . CHtml::link('Click here to verify your email address', Yii::App()->createUrl('user/emailverification'))));
+        }
+
+        // Mobile verification check
+        if ($user->o_verified == '0') {
+            // $notify->addWarning(Yii::t('app', 'Mobile Number not verified. '.CHtml::link('Click here to verify your phone number ',Yii::App()->createUrl('user/otp_verify')) ));
+        }
+
+        // Guest user redirect
+        if (Yii::app()->user->getState('user_type', 'U') == 'U') {
+            $this->render("dashboard_guest");
+            exit;
+        }
+
+        // Initialize variables
+        $premium_downloads = 0;
+        $TotalDownloadCount = 0;
+        $TotalInvoices = (int) 0;
+
+        // Get statistics data
+        $last_30_Days_pageviews = StatisticsPage::model()->pageCount('30day');
+        $last_30_Days_callCount = Statistics::model()->callCount('30day');
+        $last_30_Days_mailCount = Statistics::model()->mailCount('30day');
+
+        // Get email enquiries
+        $searchequiryModel = new SendEnquiry2();
+        $searchequiryModel->user_id = (int) Yii::app()->user->getId();
+        $searchequiryModelCriteria = $searchequiryModel->search(1);
+        $enqTotal = SendEnquiry2::model()->count($searchequiryModelCriteria);
+
+        // Get graph data
+        $impressions_graph = StatisticsPage::model()->pageCountDatewise();
+
+        // Get active properties count
+        $active_properties = PlaceAnAd::model()->countByAttributes([
+            'user_id' => Yii::app()->user->id,
+            'isTrash' => "0",
+            "status" => "A"
+        ]);
+
+        // Handle parent user
+        if (!empty($this->member->parent_user)) {
+            $user_id = $this->member->parent_user;
+        } else {
+            $user_id = $this->member->user_id;
+        }
+
+        // Get user plans
+        $plans = PricePlanOrder::model()->userActiveListingPackageAll($user_id);
+
+        // *** UPDATED: Get top 5 properties with proper method call ***
+        $topViews = StatisticsPage::model()->topPropertyViews(5, '30day');
+
+        // Add CSS and JS assets
+        $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/jquery.dynameter.css')));
+        $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/jquery.dynameter.js')));
+
+        // Render the view
+        $this->render("dashboard", compact(
+            'topViews',
+            'user_id',
+            'active_properties',
+            'impressions_graph',
+            "user",
+            "pricePlan",
+            "premium_downloads",
+            'TotalDownloadCount',
+            'TotalInvoices',
+            'last_30_Days_pageviews',
+            'last_30_Days_callCount',
+            'last_30_Days_mailCount',
+            'enqTotal',
+            'plans'
+        ));
+    }
+
     public function actionShow_pendings($show=null)
     { 
         
