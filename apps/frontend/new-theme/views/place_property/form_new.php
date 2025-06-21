@@ -1818,13 +1818,32 @@ if ($viewCollection->renderContent) {
 									
 								</div>
 								<div class="_2ytqd"></div>
+								
 							<?php } else {
 
 								$this->renderPartial('root.apps.frontend.new-theme.views.place_property._admin_settings', compact('form'));
 							}
 
 							?>
-
+							<div class="box-footer  " style="border:0px;padding-top:0px; ">
+									<div class="pull-right">
+										<?php
+										if ($this->action->id == 'preview') {
+										?>
+											<a href="<?php echo Yii::App()->createUrl($this->id . '/create', array('preview' => $LocalStorage->cookie_name)); ?>" class="btn btn-primary  " style="background-color:var(--logo-color);border:1px solid var(--logo-color);"><?php echo $this->tag->getTag('update_property', 'Update Property'); ?></a>
+								
+										<?php
+										}
+										?>
+										<button style="margin: 10px 0;" <?php if ($this->id == 'place_an_ad_no_login' and $this->action->id == 'preview') {
+													echo 'type="button" onclick="OpenSignupRequiredNew(this)"';
+												} else {
+													echo 'type="submit"';
+												} ?> id="bb" class="btn btn-primary  " data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', $mainText); ?>
+										</button>
+									</div>
+									
+								</div>
 							
 
 
@@ -1832,24 +1851,6 @@ if ($viewCollection->renderContent) {
 						
 					</div>
 				</div>
-			</div>
-			<div class="box-footer  " style="border:0px;padding-top:0px; ">
-				<div class="pull-right">
-					<?php
-					if ($this->action->id == 'preview') {
-					?>
-						<a href="<?php echo Yii::App()->createUrl($this->id . '/create', array('preview' => $LocalStorage->cookie_name)); ?>" class="btn btn-primary  " style="background-color:var(--logo-color);border:1px solid var(--logo-color);"><?php echo $this->tag->getTag('update_property', 'Update Property'); ?></a>
-
-					<?php
-					}
-					?>
-					<button <?php if ($this->id == 'place_an_ad_no_login' and $this->action->id == 'preview') {
-								echo 'type="button" onclick="OpenSignupRequiredNew(this)"';
-							} else {
-								echo 'type="submit"';
-							} ?> id="bb" class="btn btn-primary  " data-loading-text="<?php echo Yii::t('app', 'Please wait, processing...'); ?>"><?php echo Yii::t('app', $mainText); ?></button>
-				</div>
-				
 			</div>
 		</div>
 <?php

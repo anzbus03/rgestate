@@ -1,317 +1,238 @@
-<?php 
-					 	$form=$this->beginWidget('CActiveForm', array(
-								 
-							'id'=>'signup3-form',
-							'enableAjaxValidation'=>true,
-							
-							'clientOptions' => array(
-							'validateOnSubmit'=>true,
-							'validateOnChange'=>false,
-							'beforeValidate' => 'js:function(form) {
-				     
-						form.find("#bb").html("Validating..");
-						return true;
-					}',
-					'afterValidate' => 'js:function(form, data, hasError) { 
-					 
-					if(hasError) {
-					 
-						  $("html, body").animate({
-        scrollTop: form.find(".errorMessage:visible:first").offset().top-90
-    }, 2000);
-						
-							form.find("#bb").html("Register");
-							return false;
-					}
-					else
-					{
-							form.find("#bb").html("Please wait..");	return true;
-					}
-					}',
-					
-					
-							),
-							'htmlOptions'=>array('autocomplete'=>'off','class'=>'sign-in-form')
-							));  ?>
+<?php
+/**
+ * _personal_information.php
+ * Professional-styled Personal Information form partial
+ * @var User $model
+ */
+?>
 <style>
-@media only screen  and     (min-width:993px) and     (max-width:1259px){
+/* Personal Info Card */
+.pi-card {
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--surface-color);
+  box-shadow: var(--shadow-md);
+  border-radius: 12px;
+}
+.pi-card h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
 
-    #member .grid-margin #signup-form .col-lg-12 { padding:0px !important; padding-right:10px !important; ; }
+/* Form grid */
+.pi-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.pi-col-6 {
+  width: 100%;
+  padding-right: 1rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 768px) {
+  .pi-col-6 { width: 50%; }
+}
+.pi-col-12 {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Form controls */
+.pi-form-group { margin-bottom: 0.5rem; }
+.pi-label {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+.pi-input, .pi-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  background: var(--surface-color);
+  transition: var(--transition);
+}
+.pi-input:focus, .pi-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.1);
+}
+
+/* Error text */
+.pi-error { color: var(--error-color); font-size: 0.75rem; margin-top: 0.25rem; }
+
+/* Actions */
+.pi-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+.pi-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.pi-btn-cancel {
+  background: var(--background-color);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+.pi-btn-save {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+}
+.pi-btn-cancel:hover { background: var(--surface-color); }
+.pi-btn-save:hover   { background: #1d4ed8; }
+label span{
+	font-size: 10px;
 }
 </style>
 
-	  <div class="clearfix"><!-- --></div> 
-	  <div class="row">
-                <div class="form-group col-lg-9 div_frst no-padding-left">
-					
-						 
- <div class="clearfix"></div>
-<div class="clearfix"></div>
-		<div class="form-group col-sm-12" hint="">
-		<?php echo $form->labelEx($model, 'first_name');?>
-		 <div style="display:block;"><?php echo $model->first_name;?></div>
-		<?php echo $form->error($model, 'first_name');?>
-		<div class="clearfix"></div>
-		</div>			
-         
-		 
-					
-		<div class="clearfix"></div>	
+<section class="pi-card">
+  <h2>Personal Information</h2>
 
-	<div class="form-group col-sm-6" hint="">
-			<?php echo $form->labelEx($model, 'phone');?>
-			 <div style="display:block;"><?php echo $model->phone;?></div>
-			 
-			<?php echo $form->error($model, 'phone');?>
-			<div class="clear"></div>
-	</div>
-	<div class="form-group col-sm-6" hint="">
-			<?php echo $form->labelEx($model, 'mobile');?>
-			 <div  style="display:block;"><?php echo $model->mobile;?></div>
-			 
-			<?php echo $form->error($model, 'mobile');?>
-			<div class="clear"></div>
-	</div>
-		 <div class="clearfix"></div>
-		 <div class="col-sm-12 form-group">
-		 <a href="javascript:void(0)" onclick="showPop(this)" data-href="<?php echo Yii::app()->createUrl('member/change_details');?>" class="btn btn-warning">Change Contact Details</a>
-		 </div>
-		 <div class="clearfix"></div>
-		 
-		  
-					
-		<div class="clearfix"></div>	
-	 
-		<div class="">
-		<?php
-		if(!Yii::App()->request->isPostRequest and empty($model->country_id) ){$model->country_id = $this->project_country_id;}?> 
-		<div class="form-group  col-sm-6    " hint="">
-		<?php echo $form->labelEx($model, 'country_id');?>
-		<?php
-		echo $form->dropDownList($model,'country_id', CHtml::listData(Countries::model()->Countrylist(),"country_id" ,"country_name"),array("class"=>"select2", "empty"=>"Select County*",'data-url'=>Yii::App()->createUrl('site/select_city_new'),'onchange'=>'load_via_ajax2(this,"state_id")')); 
-		?>
-		 
-		<?php echo $form->error($model, 'country_id');?>
-		<div class="clear"></div>
-		</div>
-		<?php
-		       $cities =  CHtml::listData(States::model()->AllListingStatesOfCountry((int) $model->country_id) ,'state_id' , 'state_name') ;
-             ?>
-		<div class="form-group  col-sm-6  " hint="">
-		<?php echo $form->labelEx($model, 'state_id'); 
-		 
-		echo $form->dropDownList($model,'state_id',   $cities ,array("class"=>"select2", "empty"=>"Select Region*","style"=>";")); 
-		?>
-		 
-		<?php echo $form->error($model, 'state_id');?>
-		<div class="clear"></div>
-		</div>
-</div>
-	<div class="clearfix"></div>
-	
-	 
-	
-	 <div class="clearfix"></div>
-	 <div class="openWhenUserType <?php if(!in_array($model->user_type,array('A','C','D'))){ echo 'hide';  };?>">
-			<div class="form-group col-sm-12" hint="">
-			 
-			<?php
-		  	 echo $form->labelEx($model, 'company_name'); 
-			 echo $form->textField($model, 'company_name', $model->getHtmlOptions('company_name',array('class'=>'form-control','placeholder'=>'Agency / Company Name'))); ?>
-			 
-			<?php echo $form->error($model, 'company_name');?>
-			</div> 
-				 <div class="clearfix"></div>
-				 
-				 <div class="clearfix"></div>
-			<div class="form-group  col-sm-12">
-							 
-							<?php
-							 echo $form->labelEx($model, 'address');   
-							 echo $form->textField($model, 'address', $model->getHtmlOptions('form-control',array('placeholder'=>'Company Address'))); ?>
-							 
-							<?php echo $form->error($model, 'address');?>
-							</div> 
-							<div class="clearfix">
-								<div class="form-group col-lg-3">
-							<?php echo $form->labelEx($model, 'zip');?>
-							<?php echo $form->textField($model, 'zip', $model->getHtmlOptions('zip')); ?>
-							<?php echo $form->error($model, 'zip');?>
-							</div> 
-							<div class="form-group col-lg-3">
-							<?php echo $form->labelEx($model, 'fax');?>
-							<?php echo $form->textField($model, 'fax', $model->getHtmlOptions('fax')); ?>
-							<?php echo $form->error($model, 'fax');?>
-							</div> 
-							<div class="form-group col-lg-3">
-								<?php echo $form->labelEx($model, 'webstie');?>
-								<?php echo $form->textField($model, 'website', $model->getHtmlOptions('webiste')); ?>
-								<?php echo $form->error($model, 'website');?>
-								</div> 
-							
-							</div>
-							<div class="clearfix"></div>
-								<div class="form-group  col-sm-12" hint="">
-					<label>
-					<?php
-					if(!$model->isNewRecord and !Yii::app()->request->isPostRequest){
-						$model->service_offerng = CHtml::listData($model->moreSection,'section_id','section_id');
-						 
-					}
-					  echo $form->labelEx($model, 'service_offerng');
-					$datas = array('1'=>'Sale','2'=>'Rent') ;
-					?>
-					<?php echo $form->dropDownList($model, 'service_offerng', $datas , $model->getHtmlOptions('service_offerng',array( 'data-placeholder'=>'Select your Service  Sections', 'class'=>'select2 form-control' ,'style'=>'width:100%;'		,'multiple'=>true	)			)); ?>
-					</label>
-					<?php echo $form->error($model, 'service_offerng');?>
-					</div>
-			
-				<div class="form-group  col-sm-12" hint="">
-					 
-					<?php
-					if(!$model->isNewRecord and !Yii::app()->request->isPostRequest){
-						$model->service_offerng_detail = CHtml::listData($model->moreCategory,'category_id','category_id');
-						 
-					}
-					$datas = CHtml::listData(Category::model()->listData(),'category_id','category_name') ;
-					?>
-					<?php
-					 echo $form->labelEx($model, 'service_offerng_detail');
-					 echo $form->dropDownList($model, 'service_offerng_detail', $datas , $model->getHtmlOptions('service_offerng_detail',array( 'data-placeholder'=>'Select your Service Categories', 'class'=>'select2 form-control' ,'style'=>'width:100%;'		,'multiple'=>true	)			)); ?>
-				 
-					<?php echo $form->error($model, 'service_offerng_detail');?>
-					</div>
-					
-					<div class="clearfix"></div>
-					      <div class="form-group  col-sm-12"> 
-				 
-					 
-						<?php 
-						if(!$model->isNewRecord and !Yii::app()->request->isPostRequest){
-						$model->mul_state_id = CHtml::listData($model->moreState,'state_id','state_id');
-						 
-					}
-						 echo $form->labelEx($model, 'mul_state_id');
-						echo $form->dropDownList($model, 'mul_state_id', CHtml::listData(States::model()->AllListingStatesOfCountry((int) $this->project_country_id),'state_id' , 'state_name') , $model->getHtmlOptions('mul_state_id',array(  'class'=>'select2' ,'style'=>'width:100%;'	,'multiple'=>true	,'data-placeholder'=>'Select Service Areas'	)			)); ?>
-				
-				 
-					
-					<?php echo $form->error($model, 'mul_state_id');?>
-					</div>
-					<div class="clearfix"></div>
-					
-					<div class="clearfix"></div>
-					<div class="form-group col-sm-12" hint="">
-			 
-			<?php
-		  	 echo $form->labelEx($model, 'description'); 
-			 echo $form->textArea($model, 'description', $model->getHtmlOptions('description',array('class'=>'form-control', 'style'=>'height:150px'  ))); ?>
-			 
-			<?php echo $form->error($model, 'description');?>
-			</div> 
-					<div class="clearfix"></div>
-				
-		</div>	
-		</div>	
-		 <div class="form-group col-lg-3 div_sec">
-				<?php 
-										$fileField = 'image';
-										$title_text = 'Add / Change <br /> Photo';
-										$types = '.png,.jpg,.jpeg';
-										$maxFiles = '1';
-									 
-										$this->renderPartial('root.apps.frontend.new-theme.views.member._file_field_browse',compact('form','fileField','maxFilesize','types','maxFiles','model','title_text'));
-										
-		  
-		 
-		 ?>
-		</div>		 				
-		</div>
-		<div class="clearfix"><!-- --></div>	
-						
-						    
-						   
-	
-    
- 	<div class="">
-							<button type="submit" class="btn btn-success mr-2">Submit</button>
-                        <button class="btn btn-light">Cancel</button>
-							<div class="clear"></div>
-						</div>
-					<?php $this->endWidget();?>
-					<style>
-					#avatar_updator .alert-info ul li { color:#000;font-size:10px;}
-					</style>
-		 
+  <?php $form = $this->beginWidget('CActiveForm', [
+      'id'=>'personal-info-form',
+    //   'enableAjaxValidation'=>true,
+    //   'clientOptions'=>[
+    //     'validateOnSubmit'=>true,
+    //     'validateOnChange'=>false,
+    //   ],
+  ]); ?>
+
+  <div class="pi-row">
+    <div class="pi-col-6 pi-form-group">
+      <?php echo $form->labelEx($model,'first_name', ['class'=>'pi-label']); ?>
+      <?php echo $form->textField($model,'first_name',['class'=>'pi-input']); ?>
+      <?php echo $form->error($model,'first_name',['class'=>'pi-error']); ?>
+    </div>
+
+    <div class="pi-col-6 pi-form-group">
+      <?php echo $form->labelEx($model,'last_name', ['class'=>'pi-label']); ?>
+      <?php echo $form->textField($model,'last_name',['class'=>'pi-input']); ?>
+      <?php echo $form->error($model,'last_name',['class'=>'pi-error']); ?>
+    </div>
+
+    <div class="pi-col-6 pi-form-group">
+      <?php echo $form->labelEx($model,'email', ['class'=>'pi-label']); ?>
+      <?php echo $form->textField($model,'email',['class'=>'pi-input']); ?>
+      <?php echo $form->error($model,'email',['class'=>'pi-error']); ?>
+    </div>
+
+    <div class="pi-col-6 pi-form-group">
+      <?php echo $form->labelEx($model,'country_id', ['class'=>'pi-label']); ?>
+      <?php echo $form->dropDownList(
+        $model,'country_id',
+        CHtml::listData(Countries::model()->Countrylist(),'country_id','country_name'),
+        [
+          'class'=>'pi-select',
+          'prompt'=>'Select Country',
+          'ajax'=>[
+            'type'=>'POST',
+            'url'=>Yii::app()->createUrl('site/loadStates'),
+            'update'=>'#'.CHtml::activeId($model,'state_id'),
+            'data'=>'js:{country_id:this.value}',
+          ],
+        ]
+      ); ?>
+      <?php echo $form->error($model,'country_id',['class'=>'pi-error']); ?>
+    </div>
+
+    <div class="pi-col-12 pi-form-group">
+      <?php echo $form->labelEx($model,'address', ['class'=>'pi-label']); ?>
+      <?php echo $form->textField($model,'address',['class'=>'pi-input']); ?>
+      <?php echo $form->error($model,'address',['class'=>'pi-error']); ?>
+    </div>
+  </div>
+
+  <div class="pi-actions">
+    <!-- <button type="button" onclick="loadSection('dashboard')" class="pi-btn pi-btn-cancel">
+      Cancel
+    </button> -->
+    <button type="submit" class="pi-btn pi-btn-save">
+      Save Changes
+    </button>
+  </div>
+
+  <?php $this->endWidget(); ?>
+</section>
 <script>
-	 
-	var cityBaseUrl  = '<?php echo Yii::app()->createUrl('site/loadCity');?>';
-	var modelName = '<?php echo $model->modelName;?>';
-  
-	var countryVal = $('#'+modelName+'_mul_country_id').val();
-	var cityInput =  modelName+'_mul_state_id';
-	var cityVal = $('#'+modelName+'_mul_state_id').val();	 
-	var  cityAjaxUrl = cityBaseUrl+'/country_id/'+countryVal+'city_id/'+cityVal;
-	var cityInput;
-	function cityData(){
-			
-		    $("#"+cityInput).select2({
-			    multiple: true,
-			  ajax: {
-		url: function () {
+(function($){
+  $('#personal-info-form').on('submit', function(e) {
+    e.preventDefault();                // stop normal submit
+    const $form = $(this);
 
-									return changeAllNameRelated();
-								},
-				
-			  dataType: 'json',
-			  delay: 250,
-			  data: function (params) {
-			  return {
-				q: params.term, // search term
-				page: params.page
-			  };
-			},
-			processResults: function (data, params) {
-			  // parse the results into the format expected by Select2
-			  // since we are using custom formatting functions we do not need to
-			  // alter the remote JSON data, except to indicate that infinite
-			  // scrolling can be used
-			  params.page = params.page || 1;
-			  return {
-				results: data.items,
-				pagination: {
-				  more: (params.page * 30) < data.total_count
-				}
-			  };
-			},
-			cache: true
-		  },
-		  escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-		  minimumInputLength: 0,
-		  //templateResult: formatRepo, // omitted for brevity, see the source of this page
-		  //templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
-		});
-	}
-	$(function(){
-		 $('#'+modelName+'_mul_country_id').select2();
-		 $('#'+modelName+'_service_offerng').select2();
-		 $('#'+modelName+'_service_offerng_detail').select2();
-		 $('#'+modelName+'_mul_country_id').select2();
-		 $('#'+modelName+'_languages_known').select2();
-		 $('#'+modelName+'_country_id').select2();
-		 $('#'+modelName+'_designation_id').select2();
-		 $('#'+modelName+'_state_id').select2();
-		 $('#'+modelName+'_mul_state_id').select2();
-	 	 
-		 
-	})
-	function loadCities(k){
-			var Cit = $('#'+modelName+'_mul_state_id').val() ;
-			cityAjaxUrl = cityBaseUrl+'/country_id/'+$(k).val()+'/city_id/'+Cit;
-			
-		}
-function changeAllNameRelated(){
-	 
-	return  cityAjaxUrl;
-}
-	</script>
+    // clear previous errors
+    $form.find('.pi-error').text('');
+
+    // serialize and send
+    $.ajax({
+      url: $form.attr('action'),
+      type: 'POST',
+      dataType: 'json',
+      data: $form.serialize(),
+      beforeSend: function() {
+        $form.find('button[type=submit]')
+             .prop('disabled', true)
+             .text('Saving...');
+      },
+      success: function(response) {
+       if (response.status === 'success') {
+			// create a small toast div
+			const $toast = $('<div>')
+				.text(response.message)
+				.css({
+				position: 'fixed',
+				top: '1rem',
+				right: '1rem',
+				background: 'var(--success-color)',
+				color: 'white',
+				padding: '0.75rem 1.25rem',
+				borderRadius: '6px',
+				boxShadow: 'var(--shadow-md)',
+				zIndex: 10000
+				})
+				.appendTo('body');
+
+			// auto‐dismiss after 2s
+			setTimeout(() => {
+				$toast.fadeOut(300, () => $toast.remove());
+			}, 2000);
+			} else if (response.status === 'error' && response.errors) {
+          // field-level errors come back as { fieldName: [ msg1, msg2 ], … }
+          $.each(response.errors, function(attr, messages){
+            // find the error <div> for that attribute and inject first message
+            const $error = $form.find('#' + $form.attr('id') + '_' + attr + '_em_');
+            if ($error.length) {
+              $error.text(messages[0]).show();
+            }
+          });
+        } else if (response.message) {
+          // generic error
+          alert(response.message);
+        }
+      },
+      error: function(){
+        alert('Unexpected error. Please try again.');
+      },
+      complete: function(){
+        $form.find('button[type=submit]')
+             .prop('disabled', false)
+             .text('Save Changes');
+      }
+    });
+  });
+})(jQuery);
+</script>

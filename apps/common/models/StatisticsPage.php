@@ -100,14 +100,14 @@ class StatisticsPage extends  ActiveRecord
 		}
 		return self::model()->find($criteria);
 	}
-	
+	public $ref_no;  
 	public function topPropertyViews($limit = 5, $duration = '30day')
 	{
 		$userId = (int)Yii::app()->user->getId();
 
 		$criteria = new CDbCriteria;
 		$criteria->alias = 't';
-		$criteria->select = 't.pid AS property_id, SUM(t.count) AS total_views, ad.ad_title, ad.slug, ad.section_id';
+		$criteria->select = 't.pid AS property_id, SUM(t.count) AS total_views, ad.ad_title, ad.slug, ad.section_id, ad.RefNo AS ref_no';
 
 		// Join with place_an_ad and users tables
 		$criteria->join = '
@@ -268,6 +268,8 @@ class StatisticsPage extends  ActiveRecord
 			if ($propertyModel) {
 				$result[] = [
 					'property_id' => $property->property_id,
+					'property_name' => $property->ad_title,
+					'reference_no' => $propertyModel->RefNo,
 					'total_views' => $property->total_views,
 					'ad_title' => $property->ad_title,
 					'slug' => $property->slug,

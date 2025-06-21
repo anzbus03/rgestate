@@ -86,7 +86,7 @@ class MemberController extends Controller
 		return parent::beforeAction($action);
 	}
 	public $secure;
-    public function actionDashboard($show = null)
+    public function actionDashboard($ajax = null,$show = null)
     {
         $this->setData(array(
             'pageMetaTitle' => Yii::t('app', '{dashboard} | {name} ', array(
@@ -137,11 +137,12 @@ class MemberController extends Controller
         $impressions_graph = StatisticsPage::model()->pageCountDatewise();
 
         // Get active properties count
-        $active_properties = PlaceAnAd::model()->countByAttributes([
+        $active_properties_all = PlaceAnAd::model()->userListingsWithViews([
             'user_id' => Yii::app()->user->id,
             'isTrash' => "0",
             "status" => "A"
         ]);
+        $active_properties = count($active_properties_all);
 
         // Handle parent user
         if (!empty($this->member->parent_user)) {
@@ -159,6 +160,51 @@ class MemberController extends Controller
         // Add CSS and JS assets
         $this->getData('pageStyles')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/css/jquery.dynameter.css')));
         $this->getData('pageScripts')->add(array('src' => Yii::app()->apps->getBaseUrl('assets/js/jquery.dynameter.js')));
+      
+        if (Yii::app()->request->isAjaxRequest) {
+            switch (Yii::app()->request->getParam('ajax')) {
+                case 'properties':
+                    $this->renderPartial('_section_properties'); 
+                    Yii::app()->end();
+                case 'personal':
+                    // instead of compact('user'), pass it as 'model'
+                    $model = $this->member;
+                    if (isset($_POST['ListingUsers'])) {
+                        $model->attributes = $_POST['ListingUsers'];
+
+                        // perform AJAX validation
+                        if (!$model->validate()) {
+                            // return each attribute’s error messages
+                            echo CJSON::encode([
+                                'status' => 'error',
+                                'errors' => $model->getErrors(),
+                            ]);
+                            Yii::app()->end();
+                        }
+
+                        // validation passed, save
+                        if ($model->save(false)) {
+                            echo CJSON::encode([
+                                'status'  => 'success',
+                                'message' => 'Your information has been updated.',
+                            ]);
+                        } else {
+                            echo CJSON::encode([
+                                'status'  => 'error',
+                                'message' => 'Unable to save. Please try again later.',
+                            ]);
+                        }
+                        Yii::app()->end();
+                    }
+                    $this->renderPartial(
+                        '_personal_information',
+                        ['model' => ListingUsers::model()->findByPk((int)Yii::app()->user->getId())], 
+                        false, 
+                        true
+                    );
+                    Yii::app()->end();
+            }
+        }
 
         // Render the view
         $this->render("dashboard", compact(
@@ -198,6 +244,18 @@ class MemberController extends Controller
 								
         $this->render("show_notification",compact('plans'));
 	}
+    public function actionLogout()
+    {
+	if (isset(Yii::app()->request->cookies['l_type'])) {
+			unset(Yii::app()->request->cookies['l_type']);
+			unset(Yii::app()->request->cookies['u_user']);
+			unset(Yii::app()->request->cookies['u_password']);
+		}
+		Yii::app()->user->logout();
+        // 3) Redirect away
+        $this->redirect(Yii::app()->homeUrl);
+    }
+
 	   public function actionAddons($show=null,$option=null)
     { 
 		
@@ -909,74 +967,38 @@ class MemberController extends Controller
 	}
 	public function actionProfile_settings($return=null,$slug=null)
     {
-        $this->redirect(Yii::App()->CreateUrl('user/update_profile')); 
-	   $notify = Yii::app()->notify;
-	    $user =   $this->member;
-	   /*
-	    if(!$user->FillPersonalInformation){
-			$this->redirect($this->app->createUrl('member/dashboard',array('slug'=>$user->slug)));
-			Yii::app()->end();
-		}
-	     
-	    if(in_array(Yii::app()->user->user_type,array('C','A'))){
-			if(Yii::app()->user->user_type=='C'){
-				$model = Agencies::model()->findByPk(Yii::app()->user->getId());
-				$scenario = 'agent_update1'; 
-			}
-			else{
-			$model = Agents::model()->findByPk(Yii::app()->user->getId());
-			
-		 
-			$scenario = 'agent_update1'; 
-			}
-		}
-		else if(Yii::app()->user->user_type=='D'){
-			$model = Developer::model()->findByPk(Yii::app()->user->getId());
-			$scenario = 'developer_update1'; 
-			 
-		}*/
-		$scenario = 'new_update';
-		$model = ListingUsers::model()->findByPk(Yii::app()->user->getId());
-	    if(empty($model)){
-          throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
-		}
-		$model->scenario = $scenario;
-		 
-        $request = Yii::app()->request;
-        
-        if (Yii::app()->request->isAjaxRequest) {
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-       
-        if ($request->isPostRequest  ) {
-				
-			$attributes =  (array)$request->getPost($model->modelName, array()) ;
-			$model->attributes = $attributes;
-		 
-			if ($model->save()) {
-			    	    $notify->addSuccess(Yii::t('app',Yii::app()->options->get('system.messages.successfully_saved_personal_information','Succesfully saved personal information.') ));
-			
-						$this->redirect(Yii::app()->createUrl('member/dashboard',array('slug'=>$user->slug)));
-           } 
-        
-            
-            
-	    }
-	    $apps = $this->app->apps;
-       $this->getData('pageStyles')->add(array('src' => $apps->getBaseUrl('assets/css/select2.min.css')));
-        $this->getData('pageScripts')->add(array('src' => $apps->getBaseUrl('assets/js/select2.min.js')));
-		$this->getData('pageScripts')->add(array('src' => $apps->getBaseUrl('assets/js/dropzone.min.js') ));
-		$this->getData('pageStyles')->add(array('src' =>$apps->getBaseUrl('backend/assets/css/dropzone.css')));
-        $this->setData(array(
-            'pageMetaTitle'     =>  Yii::t('app', 'Profile Settings  :: {name} ', array('{name}' => $this->member->fullName .'@'.Yii::app()->options->get('system.common.site_name') )), 
-            'pageHeading'       => Yii::t('hotel_booking', 'My Profile'),
-            'pageMetaDescription'   => Yii::app()->params['description'],
-        ));
-        
-         
-       
-	   $this->render("personal_information" , compact('model','user','return' ));
+        $model = $this->member; 
+
+        if (Yii::app()->request->isAjaxRequest && isset($_POST['ListingUsers'])) {
+            $model->attributes = $_POST['ListingUsers'];
+
+            // perform AJAX validation
+            if (!$model->validate()) {
+                // return each attribute’s error messages
+                echo CJSON::encode([
+                    'status' => 'error',
+                    'errors' => $model->getErrors(),
+                ]);
+                Yii::app()->end();
+            }
+
+            // validation passed, save
+            if ($model->save(false)) {
+                echo CJSON::encode([
+                    'status'  => 'success',
+                    'message' => 'Your information has been updated.',
+                ]);
+            } else {
+                echo CJSON::encode([
+                    'status'  => 'error',
+                    'message' => 'Unable to save. Please try again later.',
+                ]);
+            }
+            Yii::app()->end();
+        }
+
+        // if not AJAX post, render full page or partial as before
+        $this->renderPartial('_personal_information', compact('model'));
     }
    public function actionBilling_settings($return=null,$slug=null)
     {

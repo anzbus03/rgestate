@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Member Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- jQuery -->
+   
     <style>
         :root {
             --primary-color: #2563eb;
@@ -783,7 +786,7 @@
 
                 <a href="/" class="favorites-btn">To Website</a>
 
-                <a href="<?php echo Yii::app()->createUrl('properties/create'); ?>" class="add-property-btn">
+                <a href="<?php echo Yii::app()->createUrl('submit/property'); ?>" target="_blank" class="add-property-btn">
                     <i class="fas fa-plus"></i>
                     <span>Add Property</span>
                 </a>
@@ -804,210 +807,504 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?php echo Yii::app()->createUrl('properties/index'); ?>" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-home"></i>
-                        </div>
+                    <a  href="#"
+                        class="nav-link ajax-nav"
+                        data-url="<?php echo Yii::app()->createUrl('member/dashboard',
+                                        ['ajax' => 'properties']); ?>">
+                        <div class="nav-icon"><i class="fas fa-home"></i></div>
                         <span>My Properties</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?php echo Yii::app()->createUrl('properties/create'); ?>" class="nav-link">
+                    <a href="<?php echo Yii::app()->createUrl('submit/property'); ?>" target="_blank" class="nav-link">
                         <div class="nav-icon">
                             <i class="fas fa-plus-circle"></i>
                         </div>
                         <span>Add Property</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="<?php echo Yii::app()->createUrl('member/profile'); ?>" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-user-cog"></i>
-                        </div>
-                        <span>Account Settings</span>
+               <li class="nav-item">
+                    <a href="#"
+                        class="nav-link ajax-nav"
+                        data-url="<?= Yii::app()->createUrl('member/dashboard', ['ajax'=>'personal']); ?>">
+                        <div class="nav-icon"><i class="fas fa-id-card"></i></div>
+                        <span>Personal Information</span>
                     </a>
                 </li>
-                <li class="nav-item" style="margin-top: 2rem;">
-                    <a href="<?php echo Yii::app()->createUrl('member/logout'); ?>" class="nav-link">
-                        <div class="nav-icon">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </div>
+                <li class="nav-item" >
+                    <a href="javascript:void(0)" class="nav-link">
+                    <?php echo CHtml::beginForm(Yii::app()->createUrl('member/logout'), 'post', [
+                        'style'=>'display:inline;'
+                    ]); ?>
+                        <button type="submit" class="nav-link" 
+                                style="background:none;border:none;padding:0;cursor:pointer;">
+                        <div class="nav-icon"><i class="fas fa-sign-out-alt"></i></div>
                         <span>Sign Out</span>
+                        </button>
+                    <?php echo CHtml::endForm(); ?>
                     </a>
                 </li>
+               
             </ul>
         </nav>
 
         <!-- Main Content -->
-        <main class="main-content">
-            <!-- Notifications -->
-            <?php if($user->email_verified == '0'): ?>
-                <div class="alert alert-warning">
-                    Email not verified. <?php echo CHtml::link('Click here to verify your email address', Yii::app()->createUrl('user/emailverification')); ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if($user->o_verified == '0'): ?>
-                <div class="alert alert-warning">
-                    Mobile Number not verified. <?php echo CHtml::link('Click here to verify your phone number', Yii::app()->createUrl('user/otp_verify')); ?>
-                </div>
-            <?php endif; ?>
-
-            <div class="page-header">
-                <h1 class="page-title">Dashboard</h1>
-                <p class="page-subtitle">Welcome back, <?php echo CHtml::encode($user->fullName); ?>! Here's what's happening with your properties.</p>
-            </div>
-
-            <!-- Stats Cards -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <span class="stat-title">Total Properties</span>
-                        <div class="stat-icon primary">
-                            <i class="fas fa-home"></i>
-                        </div>
-                    </div>
-                    <div class="stat-value"><?php echo ($active_properties); ?></div>
-                    <div class="stat-change positive">
-                        <i class="fas fa-arrow-up"></i>
-                        <span>Total active listings</span>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <span class="stat-title">Page Views (30 Days)</span>
-                        <div class="stat-icon success">
-                            <i class="fas fa-eye"></i>
-                        </div>
-                    </div>
-                    <div class="stat-value"><?php echo number_format($last_30_Days_pageviews->s_count); ?></div>
-                    <div class="stat-change positive">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Property page views</span>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <span class="stat-title">Phone Calls (30 Days)</span>
-                        <div class="stat-icon info">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                    </div>
-                    <div class="stat-value"><?php echo number_format($last_30_Days_callCount->s_count); ?></div>
-                    <div class="stat-change positive">
-                        <i class="fas fa-arrow-up"></i>
-                        <span>Contact inquiries</span>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <span class="stat-title">Email Inquiries</span>
-                        <div class="stat-icon warning">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                    </div>
-                    <div class="stat-value"><?php echo number_format($enqTotal); ?></div>
-                    <div class="stat-change positive">
-                        <i class="fas fa-envelope-open"></i>
-                        <span>Total inquiries received</span>
-                    </div>
-                </div>
-            </div>
-
-
-			<!-- Top-5 Page Views -->
-			<div class="content-card" style="margin-bottom: 2rem;">
-				<div class="card-header">
-					<h3 class="card-title">
-						<i class="fas fa-trophy" style="color: var(--warning-color); margin-right: 0.5rem;"></i>
-						Top 5 Properties by Views (Last 30 Days)
-					</h3>
-				</div>
-				<div class="card-content" style="padding: 0;">
-					<?php if (!empty($topViews)): ?>
-						<div class="table-container">
-							<table class="properties-table">
-								<thead>
-									<tr>
-										<th style="width: 60px;">Rank</th>
-										<th>Property</th>
-										<th style="width: 120px; text-align: center;">Total Views</th>
-										<th style="width: 100px; text-align: center;">Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php foreach($topViews as $index => $property): ?>
-										<tr class="property-row">
-											<td class="rank-cell">
-												<div class="rank-badge rank-<?php echo $index + 1; ?>">
-													<?php if ($index == 0): ?>
-														<i class="fas fa-crown"></i>
-													<?php elseif ($index == 1): ?>
-														<i class="fas fa-medal"></i>
-													<?php elseif ($index == 2): ?>
-														<i class="fas fa-award"></i>
-													<?php else: ?>
-														<?php echo $index + 1; ?>
-													<?php endif; ?>
-												</div>
-											</td>
-											<td class="property-cell">
-												<div class="property-info">
-													<h4 class="property-title">
-														Property ID: <?php echo $property->property_id; ?>
-													</h4>
-													<p class="property-meta">
-														<i class="fas fa-calendar-alt"></i>
-														Last 30 days performance
-													</p>
-												</div>
-											</td>
-											<td class="views-cell">
-												<div class="view-count">
-													<span class="count-number"><?php echo number_format($property->total_views); ?></span>
-													<span class="count-label">views</span>
-												</div>
-											</td>
-											<td class="action-cell">
-												<a href="<?php echo Yii::app()->createUrl('/id-' . $property->property_id); ?>" 
-												class="view-btn" 
-												title="View Property">
-													<i class="fas fa-eye"></i>
-												</a>
-											</td>
-										</tr>
-									<?php endforeach; ?>
-								</tbody>
-							</table>
-						</div>
-					<?php else: ?>
-						<div class="empty-state">
-							<div class="empty-icon">
-								<i class="fas fa-chart-line"></i>
-							</div>
-							<h4>No View Data Available</h4>
-							<p>Start promoting your properties to see view statistics here.</p>
-							<a href="<?php echo Yii::app()->createUrl('properties/create'); ?>" class="add-property-btn">
-								<i class="fas fa-plus"></i>
-								Add Your First Property
-							</a>
-						</div>
-					<?php endif; ?>
-				</div>
-			</div>
-                <!-- Quick Actions -->
-              
-            <!-- </div> -->
-
-            <!-- Plans Section -->
-            
+        <main id="main-container" class="main-content">
+            <?php $this->renderPartial('_section_dashboard', compact(
+                'active_properties',
+                'last_30_Days_pageviews',
+                'last_30_Days_callCount',
+                'last_30_Days_mailCount',
+                'enqTotal',
+                'topViews',
+                'user'
+            )); ?>
         </main>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <script>
+    <!-- DataTables 2 core -->
+    <!-- <link  href="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-dt/2.0.3/css/dataTables.dataTables.css" rel="stylesheet"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-dt/2.0.3/js/dataTables.dataTables.min.js"></script>
+
+    <!-- Flatpickr -->
+    <link  href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+<script>
+// Global variable to track DataTable instance
+let propertiesTable = null;
+
+// Function to load DataTables library with fallback CDNs
+function loadDataTablesLibrary() {
+    return new Promise((resolve, reject) => {
+        // Check if DataTables is already loaded
+        if (typeof $.fn.DataTable !== 'undefined') {
+            console.log('DataTables already loaded');
+            resolve();
+            return;
+        }
+
+        console.log('Loading DataTables library...');
+        
+        // Multiple CDN fallbacks
+        const cdnUrls = [
+            'https://cdn.datatables.net/2.0.3/js/dataTables.min.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/datatables.net-dt/2.0.3/js/dataTables.dataTables.min.js',
+            'https://cdn.jsdelivr.net/npm/datatables.net@2.0.3/js/dataTables.min.js'
+        ];
+
+        const cssUrls = [
+            'https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/datatables.net-dt/2.0.3/css/dataTables.dataTables.min.css'
+        ];
+
+        // Load CSS first
+        if (!$('link[href*="dataTables"]').length) {
+            $('<link>', {
+                rel: 'stylesheet',
+                type: 'text/css',
+                href: cssUrls[0]
+            }).appendTo('head');
+        }
+
+        // Try loading from multiple CDNs
+        function tryLoadScript(urls, index = 0) {
+            if (index >= urls.length) {
+                reject(new Error('All CDN attempts failed'));
+                return;
+            }
+
+            console.log(`Trying CDN ${index + 1}: ${urls[index]}`);
+            
+            $.getScript(urls[index])
+                .done(function() {
+                    // Verify DataTables loaded correctly
+                    if (typeof $.fn.DataTable !== 'undefined') {
+                        console.log('DataTables library loaded successfully from CDN', index + 1);
+                        resolve();
+                    } else {
+                        console.log('DataTables loaded but not available, trying next CDN...');
+                        tryLoadScript(urls, index + 1);
+                    }
+                })
+                .fail(function() {
+                    console.log(`CDN ${index + 1} failed, trying next...`);
+                    tryLoadScript(urls, index + 1);
+                });
+        }
+
+        tryLoadScript(cdnUrls);
+    });
+}
+
+// Function to load Flatpickr library
+function loadFlatpickrLibrary() {
+    return new Promise((resolve, reject) => {
+        if (typeof flatpickr !== 'undefined') {
+            console.log('Flatpickr already loaded');
+            resolve();
+            return;
+        }
+
+        console.log('Loading Flatpickr library...');
+
+        // Load Flatpickr CSS
+        if (!$('link[href*="flatpickr"]').length) {
+            $('<link>', {
+                rel: 'stylesheet',
+                type: 'text/css',
+                href: 'https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css'
+            }).appendTo('head');
+        }
+
+        // Load Flatpickr JS
+        $.getScript('https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js')
+            .done(function() {
+                console.log('Flatpickr library loaded successfully');
+                resolve();
+            })
+            .fail(function() {
+                console.log('Flatpickr failed to load, continuing without date picker');
+                resolve(); // Don't fail the whole process for flatpickr
+            });
+    });
+}
+
+// Fallback: Load libraries from static script tags if dynamic loading fails
+function loadLibrariesFallback() {
+    console.log('Using fallback method to load libraries...');
+    
+    // Add script tags to head
+    const datatablesCss = document.createElement('link');
+    datatablesCss.rel = 'stylesheet';
+    datatablesCss.href = 'https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css';
+    document.head.appendChild(datatablesCss);
+
+    const datatablesJs = document.createElement('script');
+    datatablesJs.src = 'https://cdn.datatables.net/2.0.3/js/dataTables.min.js';
+    
+    return new Promise((resolve, reject) => {
+        datatablesJs.onload = function() {
+            console.log('DataTables loaded via fallback method');
+            // Wait a bit for the library to initialize
+            setTimeout(() => {
+                if (typeof $.fn.DataTable !== 'undefined') {
+                    resolve();
+                } else {
+                    reject(new Error('DataTables still not available after fallback'));
+                }
+            }, 500);
+        };
+        
+        datatablesJs.onerror = function() {
+            reject(new Error('Fallback method also failed'));
+        };
+        
+        document.head.appendChild(datatablesJs);
+    });
+}
+
+// Initialize DataTable with comprehensive error handling
+async function initPropertiesTable() {
+    console.log('Initializing Properties Table...');
+    
+    try {
+        // Check if table exists first
+        const tableElement = $('#properties-table');
+        if (tableElement.length === 0) {
+            console.log('Properties table not found');
+            return;
+        }
+
+        // Destroy existing table if it exists
+        if (propertiesTable && typeof propertiesTable.destroy === 'function') {
+            console.log('Destroying existing DataTable instance');
+            propertiesTable.destroy();
+            propertiesTable = null;
+        }
+
+        // Try to load libraries
+        try {
+            await Promise.all([
+                loadDataTablesLibrary(),
+                loadFlatpickrLibrary()
+            ]);
+        } catch (error) {
+            console.log('Dynamic loading failed, trying fallback method...');
+            await loadLibrariesFallback();
+        }
+
+        // Final check if DataTables is available
+        if (typeof $.fn.DataTable === 'undefined') {
+            throw new Error('DataTables library could not be loaded from any source');
+        }
+
+        console.log('Libraries loaded successfully, initializing DataTable...');
+
+        // Initialize Flatpickr for date range if available
+        if (typeof flatpickr !== 'undefined' && document.getElementById('dateRange')) {
+            // Destroy existing flatpickr instance
+            const dateRangeElement = document.querySelector('#dateRange');
+            if (dateRangeElement && dateRangeElement._flatpickr) {
+                dateRangeElement._flatpickr.destroy();
+            }
+            
+            flatpickr("#dateRange", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                allowInput: true
+            });
+        }
+
+        // Clear any existing search extensions for this table
+        if ($.fn.dataTable.ext.search.length > 0) {
+            $.fn.dataTable.ext.search = $.fn.dataTable.ext.search.filter(function(fn) {
+                return fn.name !== 'propertiesTableSearch';
+            });
+        }
+
+        // Initialize DataTable
+        propertiesTable = tableElement.DataTable({
+            pageLength: 10,
+            order: [[5, 'ASC']], // Sort by views column
+            responsive: true,
+            destroy: true, // Allow reinitialization
+            language: {
+                searchPlaceholder: 'Search properties...',
+                info: "_START_-_END_ of _TOTAL_ properties",
+                emptyTable: "No properties found",
+                zeroRecords: "No matching properties found",
+                loadingRecords: "Loading...",
+                processing: "Processing..."
+            },
+            // dom: '<"top"fl>rt<"bottom"ip><"clear">',
+            columnDefs: [
+                { targets: [6], orderable: false } // Action column not sortable
+            ]
+        });
+
+        // Add custom search function with name for identification
+        const customSearchFunction = function(settings, data, dataIndex) {
+            // Only apply to our specific table
+            if (settings.nTable.id !== 'properties-table') {
+                return true;
+            }
+
+            // Date range filter
+            const rangeStr = $('#dateRange').val();
+            if (rangeStr && rangeStr.includes(' to ')) {
+                const [start, end] = rangeStr.split(' to ');
+                const rowDate = data[4]; // Added On column
+                if (rowDate < start || rowDate > end) {
+                    return false;
+                }
+            }
+
+            // Minimum views filter
+            const minViews = parseInt($('#viewsMin').val(), 10) || 0;
+            const views = parseInt(data[5].replace(/[,\s]/g, ''), 10) || 0;
+            if (views < minViews) {
+                return false;
+            }
+
+            return true;
+        };
+
+        // Add name property for identification
+        customSearchFunction.name = 'propertiesTableSearch';
+        $.fn.dataTable.ext.search.push(customSearchFunction);
+
+        // Bind filter events
+        $('#dateRange, #viewsMin').off('change keyup input').on('change keyup input', function() {
+            if (propertiesTable) {
+                propertiesTable.draw();
+            }
+        });
+
+        console.log('DataTable initialized successfully');
+
+    } catch (error) {
+        console.error('Error initializing DataTable:', error);
+        
+        // Show user-friendly error message
+        const tableContainer = $('.table-container');
+        if (tableContainer.length > 0) {
+            tableContainer.html(`
+                <div style="text-align: center; padding: 2rem; color: #ef4444; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem; color: #dc2626;"></i>
+                    <h4 style="margin-bottom: 0.5rem;">Table Loading Error</h4>
+                    <p style="margin-bottom: 1rem;">Unable to load the data table library. This might be due to network issues or browser restrictions.</p>
+                    <div style="margin-bottom: 1rem;">
+                        <strong>Possible solutions:</strong><br>
+                        • Check your internet connection<br>
+                        • Disable ad blockers temporarily<br>
+                        • Try refreshing the page
+                    </div>
+                    <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                        <i class="fas fa-redo"></i> Refresh Page
+                    </button>
+                </div>
+            `);
+        }
+    }
+}
+
+// AJAX navigation handler
+function handleAjaxNavigation() {
+    $('.ajax-nav').off('click').on('click', function(e) {
+        e.preventDefault();
+
+        const $link = $(this);
+        const $menu = $('.nav-link');
+        const $main = $('#main-container');
+        const url = $link.data('url');
+
+        if (!url) {
+            console.error('No URL specified for AJAX navigation');
+            return;
+        }
+
+        // Visual feedback
+        $menu.removeClass('active');
+        $link.addClass('active');
+        $main.html('<div style="text-align: center; padding: 2rem;"><div class="loading"></div><p>Loading...</p></div>');
+
+        // Make AJAX request
+        $.get(url)
+            .done(function(html) {
+                $main.html(html);
+                
+                // Initialize DataTable after content is loaded
+                setTimeout(async function() {
+                    try {
+                        await initPropertiesTable();
+                    } catch (error) {
+                        console.error('Failed to initialize DataTable after AJAX:', error);
+                    }
+                }, 200); // Slightly longer delay for AJAX content
+            })
+            .fail(function(xhr, status, error) {
+                console.error('AJAX request failed:', status, error);
+                $main.html('<div style="color: #ef4444; text-align: center; padding: 2rem;"><p>Failed to load content. Please try again.</p></div>');
+            });
+    });
+}
+
+// Sidebar toggle
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('show');
+    }
+}
+
+// Initialize everything when DOM is ready
+$(document).ready(function() {
+    console.log('DOM Ready - Initializing...');
+    console.log('jQuery version:', $.fn.jquery);
+    
+    // Initialize navigation
+    handleAjaxNavigation();
+    
+    // Check if we're on the properties page initially
+    if ($('#properties-table').length > 0) {
+        console.log('Properties table found, initializing...');
+        initPropertiesTable().catch(error => {
+            console.error('Failed to initialize properties table:', error);
+        });
+    } else {
+        console.log('Properties table not found on initial load');
+    }
+
+    console.log('Initialization complete');
+});
+
+// Handle window resize for sidebar
+$(window).on('resize', function() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar && window.innerWidth > 768) {
+        sidebar.classList.remove('show');
+    }
+});
+
+// Close sidebar when clicking outside on mobile
+$(document).on('click', function(event) {
+    const sidebar = document.getElementById('sidebar');
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    
+    if (window.innerWidth <= 768 && sidebar && toggle &&
+        !sidebar.contains(event.target) && 
+        !toggle.contains(event.target)) {
+        sidebar.classList.remove('show');
+    }
+});
+
+// Debug function to check library status
+window.checkLibraryStatus = function() {
+    console.log('=== Library Status ===');
+    console.log('jQuery available:', typeof $ !== 'undefined');
+    console.log('jQuery version:', typeof $ !== 'undefined' ? $.fn.jquery : 'N/A');
+    console.log('DataTables available:', typeof $.fn.DataTable !== 'undefined');
+    console.log('Flatpickr available:', typeof flatpickr !== 'undefined');
+    console.log('Properties table exists:', $('#properties-table').length > 0);
+    console.log('Current DataTable instance:', propertiesTable);
+};
+</script>
+    <!-- <script>
+        function initPropertiesTable () {
+
+            flatpickr("#dateRange", {
+                mode: "range",
+                dateFormat: "Y-m-d"
+            });
+
+            const table = $('#properties-table').DataTable({
+                pageLength: 10,
+                order: [[5,'desc']],
+                responsive: true,
+                language: {
+                    searchPlaceholder: 'Search…',
+                    info: "_START_-_END_ of _TOTAL_ properties"
+                }
+            });
+
+            // custom filters
+            $.fn.dataTable.ext.search.push(function (settings, data) {
+                const rangeStr = $('#dateRange').val();
+                if (rangeStr){
+                    const [start, end] = rangeStr.split(' to ');
+                    const rowDate = data[4];
+                    if (rowDate < start || rowDate > end) return false;
+                }
+                const min = parseInt($('#viewsMin').val(),10) || 0;
+                const views = parseInt(data[5].replace(/[, ]/g,''),10) || 0;
+                return views >= min;
+            });
+
+            $('#dateRange, #viewsMin').on('change keyup', () => table.draw());
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            $('.ajax-nav').on('click', function (e) {
+                e.preventDefault();
+
+                const $link  = $(this);
+                const $menu  = $('.nav-link');              // all menu items
+                const $main  = $('#main-container');
+
+                // visual feedback
+                $menu.removeClass('active');
+                $link.addClass('active');
+                $main.html('<div class="loading"></div>');
+              
+                $.get($link.data('url'), function (html) {
+                    $main.html(html);
+                    initPropertiesTable();  
+                }).fail(function () {
+                    $main.html('<p style="color:#ef4444">Failed to load.</p>');
+                });
+            });
+        });
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('show');
@@ -1038,6 +1335,6 @@
             // Add any initialization code here
             console.log('Dashboard loaded for user: <?php echo CHtml::encode($user->fullName); ?>');
         });
-    </script>
+    </script> -->
 </body>
 </html>

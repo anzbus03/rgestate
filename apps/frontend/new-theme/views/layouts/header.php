@@ -176,6 +176,17 @@ $languages = OptionCommon::systemLanguages();
           <span class="rg-fs-14 rg-fw-500"><?php echo Yii::app()->tags->getTag('login', 'Login'); ?></span>
         </a>
 
+        <?php else: ?>
+            <!-- Dashboard Link -->
+            <a style="padding-left: 10px !important;"
+            href="<?php echo Yii::app()->createUrl('member/dashboard'); ?>"
+            class="ms-3 d-flex align-items-center text-decoration-none">
+                <i class="fa fa-th-large me-1 text-primary" style="color: #00699e;"></i>
+                <span class="rg-fs-14 rg-fw-500" style="padding-left: 5px;color: #00699e;">
+                    Dashboard
+                </span>
+            </a>
+
         <?php endif; ?>
 
       </div>

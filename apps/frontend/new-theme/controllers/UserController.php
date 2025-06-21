@@ -404,6 +404,8 @@ class UserController extends Controller
 			$model->attributes = $attributes;
 			//$model->status='A';
 			$model->verification_code = $model->generatePIN(6);
+			$model->email_verified = 1;
+			$model->admin_approved = 1;
 			if ($model->save()) {
 				$model->sendVerificationEmail();
 				// $emailTemplateModel = CustomerEmailTemplate::model()->findByName("registration");

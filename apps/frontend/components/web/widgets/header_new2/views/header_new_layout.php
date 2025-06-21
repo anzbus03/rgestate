@@ -198,12 +198,27 @@
                                  </p>
                                   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> -->
                                 <?php if (Yii::app()->user->isGuest): ?>
-                                    <a style="padding-left: 10px !important;" href="<?php echo Yii::app()->createUrl('login'); ?>" class="ms-3 d-flex align-items-center text-decoration-none">
-                                    <i class="fa fa-user me-1 text-primary" style="color: #00699e;"></i>
-                                    <span class="rg-fs-14 rg-fw-500" style="padding-left: 5px;color: #00699e;"><?php echo Yii::app()->tags->getTag('login', 'Login'); ?></span>
+                                    <a style="padding-left: 10px !important;"
+                                    href="<?php echo Yii::app()->createUrl('login'); ?>"
+                                    class="ms-3 d-flex align-items-center text-decoration-none">
+                                        <i class="fa fa-user me-1 text-primary" style="color: #00699e;"></i>
+                                        <span class="rg-fs-14 rg-fw-500" style="padding-left: 5px;color: #00699e;">
+                                            <?php echo Yii::app()->tags->getTag('login', 'Login'); ?>
+                                        </span>
+                                    </a>
+                                <?php else: ?>
+                                    <!-- Dashboard Link -->
+                                    <a style="padding-left: 10px !important;"
+                                    href="<?php echo Yii::app()->createUrl('member/dashboard'); ?>"
+                                    class="ms-3 d-flex align-items-center text-decoration-none">
+                                        <i class="fa fa-th-large me-1 text-primary" style="color: #00699e;"></i>
+                                        <span class="rg-fs-14 rg-fw-500" style="padding-left: 5px;color: #00699e;">
+                                            Dashboard
+                                        </span>
                                     </a>
 
-                                    <?php endif; ?>
+                                <?php endif; ?>
+
 
                              </div>
                          </div>

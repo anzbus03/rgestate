@@ -185,6 +185,45 @@ class PlaceAnAd extends ActiveRecord
 		);
 		return array_merge($rules1, $rules);
 	}
+	public $total_views;
+	public static function userListingsWithViews($userId, $duration = '30day')
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select  = [
+            't.*',
+            '(SUM(v.count)) AS total_views'
+        ];
+        $criteria->join    = 'LEFT JOIN {{statistics_page}} v ON v.pid = t.id';
+
+        // build all the WHERE parts
+        $where = [
+            // 't.user_id = :uid',
+            // 't.isTrash = "0"'
+        ];
+
+        // date window
+        switch ($duration) {
+            case 'today':
+                $where[] = 'DATE(v.date) = CURDATE()';
+                break;
+            case '7day':
+                $where[] = 'v.date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)';
+                break;
+            case '30day':
+                $where[] = 'v.date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)';
+                break;
+            // 'all' → no extra clause
+        }
+
+        // stitch together
+        $criteria->condition = implode(' AND ', $where);
+        $criteria->params    = [':uid' => (int)$userId];
+
+        $criteria->group = 't.id';
+        $criteria->order = 't.date_added DESC';
+
+        return self::model()->findAll($criteria);
+    }
 	public function validateAddVideo($attribute, $params)
 	{
 		$post =  Yii::App()->request->getPost('video_urls', array());
