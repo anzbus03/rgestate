@@ -353,7 +353,11 @@ if (isset($_GET['floor']) and $_GET['floor'] == '1') {
 						max-width: 300px !important;
 					}
 				</style>
-
+ 				<input type="hidden" name="utm_source" class="utm_source" />
+				<input type="hidden" name="utm_medium" class="utm_medium" />
+				<input type="hidden" name="utm_campaign" class="utm_campaign" />
+				<input type="hidden" name="utm_term" class="utm_term" />
+				<input type="hidden" name="utm_content" class="utm_content" />
 				<div class="cols24">
 					<h1 data-testid="home-details-summary-address" class="HomeSummaryShared__AddressH1-vqaylf-1 cmjCIx"><span data-testid="home-details-summary-headline" class="Text__TextBase-sc-1cait9d-0 dhOdUy titinc smsec_<?php echo $model->section_id; ?>" style="font-size:19px;line-height: 25px;display: block;"><?php echo $model->ad_title; ?></span></h1>
 					<div class="adDetailsinsideform" style="width:calc(100% - 100px);float:left;padding-right:10px;">

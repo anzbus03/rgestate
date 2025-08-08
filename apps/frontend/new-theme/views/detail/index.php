@@ -880,7 +880,11 @@ observer.observe();
 	         .b-l-l-m{border-top-left-radius: 3px !important; }
 	    </style>
 <div class="col-sm-12 call-btn-div mbtn-div" style="padding:0px;width:100% !important; display: flex; justify-content: center; align-items: center; gap: 10px;">
-
+ <input type="hidden" name="utm_source" class="utm_source" />
+                  <input type="hidden" name="utm_medium" class="utm_medium" />
+                  <input type="hidden" name="utm_campaign" class="utm_campaign" />
+                  <input type="hidden" name="utm_term" class="utm_term" />
+                  <input type="hidden" name="utm_content" class="utm_content" />
 	<?php
 	$text_message = Yii::t('app', $this->tag->getTag('enquiry_text', 'Hello, I am interested in this property and would like to make an appointment for a visit. Please contact me as soon as possible.{s}Thank you so much,'), array('{s}' => ' %0a', '{1}' => $this->project_name, '{2}' => $model->ReferenceNumberTitle, '{3}' => $this->tag->getTag('property_link', 'Property Link'))) . ' %0a' . urlencode($share_u_abs);
 	$w_share_url = Yii::t('app', 'https://wa.me/{number}?text={text}', array('{number}' => Yii::t('app', !empty($model->whatsapp) ? $model->whatsapp : '+971562818008', array('+' => '', ' ' => '')), '{text}' => $text_message));
