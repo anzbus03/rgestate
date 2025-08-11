@@ -380,6 +380,25 @@ class LeftSideNavigationWidget extends CWidget
                 ),
             );
         }
+        if ($rules == 4) {
+            $menuItems = array(
+              'articles' => array(
+                    'name'      => Yii::t('app', 'CMS'),
+                    'icon'      => 'flaticon-093-waving',
+                    'active'    => array('article', 'blog_articles', 'blog_links', 'advertisement_articles', 'content_pages', 'listing_contents'),
+                    'route'     => null,
+                    'items'     => array(
+                        array('url' => array('articles/index'), 'label' => Yii::t('app', 'View all articles'), 'active' => strpos($route, 'articles/index') === 0),
+                        array('url' => array('blog_articles/index'), 'label' => Yii::t('app', 'View all blogs'), 'active' => strpos($route, 'blog_articles/index') === 0),
+                        array('url' => array('blog_articles/index_authors'), 'label' => Yii::t('app', 'View Authors'), 'active' => strpos($route, 'blog_articles/index_authors') === 0),
+                        array('url' => array('advertisement_articles/index'), 'label' => Yii::t('app', 'View all adv articles'), 'active' => strpos($route, 'advertisement_articles/index') === 0),
+                        array('url' => array('content_pages/index'), 'label' => Yii::t('app', 'Content Pages'), 'active' => strpos($route, 'content_pages/index') === 0),
+                        array('url' => array('listing_contents/index'), 'label' => Yii::t('app', 'Listing Contents'), 'active' => strpos($route, 'listing_contents/index') === 0),
+                        array('url' => array('article_categories/index'), 'label' => Yii::t('app', 'View all categories'), 'active' => strpos($route, 'article_categories') === 0),
+                    ),
+                ),
+            );
+        }
 
         return $menuItems;
     }

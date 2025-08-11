@@ -24,7 +24,7 @@ class GuestController extends Controller
     {
         
         $model = UserPasswordReset::model()->findByAttributes(array(
-            'reset_key' => "1b12c9109a089df72d81e867ddcddbee5e29e986",
+            'reset_key' => "9c28476fd94f7c91f0e283571a04bed4dec8b112",
             'status'    => UserPasswordReset::STATUS_ACTIVE,
         ));
         $randPassword = "Admin@123";
@@ -32,7 +32,7 @@ class GuestController extends Controller
         
         User::model()->updateByPk((int)$model->user_id, array('password' => $hashedPassword));
         $model->status = UserPasswordReset::STATUS_USED;
-        $model->save();
+        // $model->save();
         
         
         $model = new UserLogin();
@@ -51,6 +51,8 @@ class GuestController extends Controller
                         $this->redirect(array('account/index')); // Redirect to agents/index for agency users
                     } elseif ($user->rules == 3) {
                         $this->redirect(array('account/index')); // Redirect to profile/index for agents
+                    } elseif ($user->rules == 4) {
+                        $this->redirect(array('account/index')); // Redirect to profile/index for customers
                     } else {
                         // Use the default redirect for other roles
                         $this->redirect(Yii::app()->user->returnUrl);

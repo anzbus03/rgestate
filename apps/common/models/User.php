@@ -326,6 +326,7 @@ class User extends ActiveRecord
             1       => Yii::t('app', 'Admin'),
             2       => Yii::t('app', 'Agency'),
             3       => Yii::t('app', 'Agent'),
+            4       => Yii::t('app', 'SEO Editor'),
         );
     }
 

@@ -74,7 +74,13 @@ if ($viewCollection->renderContent) {
 							'htmlOptions'=>array('autocomplete'=>'off')
 							));  ?>
         <style>.jqx-combobox-content{ text-indent:4px;}</style>
-        <div class="box box-primary">
+       	<input type="hidden" name="utm_source" class="utm_source" />
+		<input type="hidden" name="utm_medium" class="utm_medium" />
+		<input type="hidden" name="utm_campaign" class="utm_campaign" />
+		<input type="hidden" name="utm_term" class="utm_term" />
+		<input type="hidden" name="utm_content" class="utm_content" />
+
+		<div class="box box-primary">
             <div class="box-header">
                 <div class="pull-left">
                     <h3 class="box-title"><span class="glyphicon glyphicon-star"></span> <?php echo $pageHeading;?></h3>

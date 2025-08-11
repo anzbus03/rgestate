@@ -313,6 +313,12 @@ if ($viewCollection->renderContent) {
 				text-indent: 4px;
 			}
 		</style>
+		<input type="hidden" name="utm_source" class="utm_source" />
+		<input type="hidden" name="utm_medium" class="utm_medium" />
+		<input type="hidden" name="utm_campaign" class="utm_campaign" />
+		<input type="hidden" name="utm_term" class="utm_term" />
+		<input type="hidden" name="utm_content" class="utm_content" />
+
 		<div class="card">
 			<div class="card-header">
 				<div class="card-header-left">

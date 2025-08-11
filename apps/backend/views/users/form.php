@@ -142,7 +142,7 @@ if ($viewCollection->renderContent) {
                     </div>
                     <div class="form-group col-lg-6 mb-2 mt-4">
                         <div class="">
-                            <?php $options = [2 => "Agency", 3 => "Agent"] ?>
+                            <?php $options = [2 => "Agency", 3 => "Agent", 4 => "SEO Editor"] ?>
                             <?php echo $form->labelEx($user, 'rules'); ?>
                             <?php echo $form->dropDownList($user, 'rules', CMap::mergeArray(array('' => 'Select Role'), $options), $user->getHtmlOptions('rules')); ?>
                             <?php echo $form->error($user, 'rules'); ?>

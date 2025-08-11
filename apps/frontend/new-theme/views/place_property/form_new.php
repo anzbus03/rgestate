@@ -735,6 +735,11 @@ if ($viewCollection->renderContent) {
 				line-height: 1.2;
 			}
 		</style>
+		<input type="hidden" name="utm_source" class="utm_source" />
+		<input type="hidden" name="utm_medium" class="utm_medium" />
+		<input type="hidden" name="utm_campaign" class="utm_campaign" />
+		<input type="hidden" name="utm_term" class="utm_term" />
+		<input type="hidden" name="utm_content" class="utm_content" />
 
 		<div class="box box-primary place_ad place-property <?php echo $model->isNewRecord ? 'sector1' : 'sector2'; ?>">
 			<h3 class="box-title hide"><?php echo $model->isNewRecord ? 'Post your Property' : 'Update your Property'; ?></h3>
