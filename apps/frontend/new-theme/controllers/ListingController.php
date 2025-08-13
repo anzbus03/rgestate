@@ -444,7 +444,7 @@ class ListingController extends Controller
 					$m_title .=  ' ' . $this->tag->getTag('new_projects', 'New Projects');
 					break;
 				case 'investments':
-					$m_title .= ' ' . $this->tag->getTag('for_sale', 'for sale');
+					$m_title .= ' ' . $this->tag->getTag('for_sale', 'for investment');
 					break;
 			}
 		}
@@ -481,7 +481,7 @@ class ListingController extends Controller
 				$sec_t = 'sale/rent';
 				break;
 			case 'investments':
-				$sec_t = 'sale';
+				$sec_t = 'investment';
 				break;
 			default:
 				$sec_t = 'sale/rent';
