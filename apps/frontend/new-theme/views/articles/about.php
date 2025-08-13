@@ -303,11 +303,11 @@ margin-bottom: 50px;
             </div>
             <div class="col-sm-6 col-lg-3 col-xl-3 p0">
               <div class="why_chose_us home6">
-                  <a href="<?php echo $this->app->createUrl('listing/index',array('sec'=>'preleased'));?>" class="full-vuew"></a>
+                  <a href="<?php echo $this->app->createUrl('listing/index',array('sec'=>'investments'));?>" class="full-vuew"></a>
                 <div class="icon"> <img src="<?php echo $this->app->apps->getBaseUrl('new_assets/images/icon3.png');?>"> </div>
                 <div class="details">
                    <?php echo $widget['113'];?>
-                  <a href="<?php echo $this->app->createUrl('listing/index',array('sec'=>'preleased'));?>" class="sc-1oeu0fy-0"><?php echo $widget['114'];?> <img src="<?php echo $this->app->apps->getBaseUrl('new_assets/images/arrow.png');?>"> </a> </div>
+                  <a href="<?php echo $this->app->createUrl('listing/index',array('sec'=>'investments'));?>" class="sc-1oeu0fy-0"><?php echo $widget['114'];?> <img src="<?php echo $this->app->apps->getBaseUrl('new_assets/images/arrow.png');?>"> </a> </div>
               </div>
             </div>
             <div class="col-sm-6 col-lg-3 col-xl-3 p0">

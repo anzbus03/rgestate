@@ -413,7 +413,7 @@
                      </li>
                      <li id="menu-item-5980"
                          class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5980"> <a
-                             href="<?php echo $app->createUrl('listing/index',array('sec'=>'preleased'));?>"><?php echo $tag->getTag('preleased','Preleased');?></a>
+                             href="<?php echo $app->createUrl('listing/index',array('sec'=>'investments'));?>"><?php echo $tag->getTag('preleased','Investment Options');?></a>
                      </li>
                      <li id="menu-item-24655"
                          class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24655"> <a

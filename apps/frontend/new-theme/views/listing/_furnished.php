@@ -112,7 +112,7 @@
 											<div>
                                                 <div role="listbox" class="askaan-listbox">
                                                     <?php
-                                                    if(isset($_GET['preleased'])){
+                                                    if(isset($_GET['investments'])){
 														$lease_ststau = $filterModel->getlease_status();
 														  $lease_status = @$formData['lease_status'];
 														  $k1 =''; 

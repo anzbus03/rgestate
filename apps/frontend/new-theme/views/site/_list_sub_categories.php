@@ -12,10 +12,10 @@ unset($formData['section_id']);
 unset($formData['country']);
 unset($formData['reg_id']);
 
-// Check if preleased is set
-if (isset($formData['preleased'])) {
-    unset($formData['preleased']);
-    $formData['sec'] = 'preleased';
+// Check if investments is set
+if (isset($formData['investments'])) {
+    unset($formData['investments']);
+    $formData['sec'] = 'investments';
 }
 
 $query = '?';

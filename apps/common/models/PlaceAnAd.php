@@ -4564,7 +4564,7 @@ class PlaceAnAd extends ActiveRecord
 	public function getSectionViewTitle()
 	{
 		if ($this->property_status == '1') {
-			return $this->mTag()->getTag('preleased_properties', 'Preleased Properties');
+			return $this->mTag()->getTag('preleased_properties', 'Investment Properties');
 		}
 		if (empty($this->section_id)) {
 			return $this->mTag()->getTag('explore', 'Explore');

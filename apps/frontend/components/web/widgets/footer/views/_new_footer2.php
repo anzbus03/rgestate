@@ -305,7 +305,7 @@ html .openfilter .fil-mob.bottom-f{
   <ul class="row mddmls ">
         <li class="col-xs-6 col-sm-4"><a data-href="<?php echo $app->createUrl('listing/filter',array('sec'=>SALE_SLUG,'quick'=>'1'));?>" onclick="load_filter(this)"  class="site-block"><h1><?php echo $tag->getTag('buy','Buy');?></h1></a></li>
         <li class="col-xs-6 col-sm-4"><a data-href="<?php echo $app->createUrl('listing/filter',array('sec'=>RENT_SLUG,'quick'=>'1'));?>" onclick="load_filter(this)"  class="site-block"><h1><?php echo $tag->getTag('rent','Rent');?></h1></a></li>
-        <li class="col-xs-6 col-sm-4"><a data-href="<?php echo $app->createUrl('listing/filter',array('sec'=>'preleased'));?>" onclick="load_filter(this)"  class="site-block"><h1><?php echo $tag->getTag('preleased','Preleased');?></h1></a></li>
+        <li class="col-xs-6 col-sm-4"><a data-href="<?php echo $app->createUrl('listing/filter',array('sec'=>'investments'));?>" onclick="load_filter(this)"  class="site-block"><h1><?php echo $tag->getTag('preleased','Investment Options');?></h1></a></li>
          <li class="col-xs-6 col-sm-4"><a data-href="<?php echo $app->createUrl('business_listing/filter',array('sec'=>'business-opportunities','quick'=>'1'));?>"  onclick="load_filter(this)"  class="site-block"><h1><?php echo $tag->getTag('businesses_for_sale','Business Opportunities');?></h1></a></li>
          <li class="col-xs-6 col-sm-4"><a data-href="<?php echo $app->createUrl('listing/filter',array('sec'=>'new-development','quick'=>'1'));?>"  onclick="load_filter(this)"  class="site-block"><h1><?php echo $tag->getTag('new_projects','New Projects');?></h1></a></li>
  

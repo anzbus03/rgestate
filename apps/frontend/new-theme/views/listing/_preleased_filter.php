@@ -355,7 +355,7 @@ $(function(){clickBtnSerach()});
 <input type="hidden" id="b" value="<?php echo @$formData['b'] ;?>" name="b" />
 <input type="hidden" id="c" value="<?php echo @$formData['c'] ;?>" name="c" />
 <input type="hidden" id="d" value="<?php echo @$formData['d'] ;?>" name="d" />
-<input type="hidden" id="preleased" value="<?php echo @$formData['preleased']; ;?>" name="preleased" />
+<input type="hidden" id="investments" value="<?php echo @$formData['investments']; ;?>" name="investments" />
 <input type="hidden" id="lt" value="" name="lt" />
 <input type="hidden" id="lg" value="" name="lg" />
 <input type="hidden" id="zoom" value="<?php echo @$formData['zoom'] ;?>" name="zoom" />
@@ -463,7 +463,7 @@ $(function(){clickBtnSerach()});
 </div>
  
  
-<li class="arab-drop-down arab-li-1 sectionFilter margin-right-10 port-sector <?php echo @$filterModel->section_id=='preleased' ? 'hide' :'' ;?>">
+<li class="arab-drop-down arab-li-1 sectionFilter margin-right-10 port-sector <?php echo @$filterModel->section_id=='investments' ? 'hide' :'' ;?>">
 	
 	<button id="sectortype" class="StyledButton-c11n-8-27-0__wpcbcc-0 hnSTQE srp__fdiad6-0 hlkFos filter-button <?php echo !empty($filterModel->section_id)? '  filter-button_active-m ' : '';?>" onclick="openDropDown(this)" tabindex="0" aria-expanded="true"><span><span class="zsg-icon-for-sale"></span> <?php echo $sec_t;?></span></button>
     <div class="arab-drop-down.popover popoversect filter-button-popover  ">
@@ -709,7 +709,7 @@ max-width: unset;
      
     <div  class="search-popup-cntainer-wrapper" style="min-width:350px;">
 	<?php 	$ids =  $filterModel->section_id; 
-	if($ids=='preleased'){$ids ='property-for-sale'; }
+	if($ids=='investments'){$ids ='property-for-sale'; }
 									$categories = Category::model()->ListDataForJSON_ID_BySEctionNewSlugNtCache($ids );
 									 
 							/*		 

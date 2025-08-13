@@ -72,7 +72,7 @@ $banners =   $this->banners;
                         <a href="<?php echo Yii::app()->createUrl('business-opportunities'); ?>" class="btn btn-secondary"><?php echo Yii::app()->tags->getTag('businesses_for_sale','Business Opportunities')?></a>
                     </li>
                     <li>
-                        <a href="<?php echo Yii::app()->createUrl('preleased'); ?>" class="btn btn-secondary"><?php echo Yii::app()->tags->getTag('preleased','Preleased')?></a>
+                        <a href="<?php echo Yii::app()->createUrl('investments'); ?>" class="btn btn-secondary"><?php echo Yii::app()->tags->getTag('preleased','Investment Options')?></a>
                     </li>
                 </ul>
                 <div class="rg-hero-form rg-br-20 rg-mt-25" style="display:none">

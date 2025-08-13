@@ -168,7 +168,7 @@ html .mb-btn-mo-only button.btn-red.slpcls img{      width:25px !important; }
 <input type="hidden" id="b" value="<?php echo @$formData['b'] ;?>" name="b" />
 <input type="hidden" id="c" value="<?php echo @$formData['c'] ;?>" name="c" />
 <input type="hidden" id="d" value="<?php echo @$formData['d'] ;?>" name="d" />
-<input type="hidden" id="preleased" value="<?php echo @$formData['preleased']; ;?>" name="preleased" />
+<input type="hidden" id="investments" value="<?php echo @$formData['investments']; ;?>" name="investments" />
 <input type="hidden" id="lt" value="" name="lt" />
 <input type="hidden" id="lg" value="" name="lg" />
 <input id="min-price" type="hidden"    value="<?php echo @$formData['minPrice'];?>" name="minPrice">

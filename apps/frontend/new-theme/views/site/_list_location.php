@@ -10,9 +10,9 @@ $new_homes = $adModel->findAll($adModelCriteria);
 
 // 2) Clean up URL params
 unset($formData['section_id'], $formData['country'], $formData['reg_id']);
-if (isset($formData['preleased'])) {
-    unset($formData['preleased']);
-    $formData['sec'] = 'preleased';
+if (isset($formData['investments'])) {
+    unset($formData['investments']);
+    $formData['sec'] = 'investments';
 }
 $extra = [];
 foreach ($formData as $k => $v) {

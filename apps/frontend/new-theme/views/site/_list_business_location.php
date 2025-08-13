@@ -11,9 +11,9 @@ $adModelCriteria->group = 'city.region_id';
 $adModelCriteria->order  ='rgn.name asc '; 
 $new_homes =  $adModel->findAll($adModelCriteria);
  unset($formData['section_id']); unset($formData['country']);unset($formData['reg_id']);
-  if(isset($formData['preleased'])){
-          unset($formData['preleased']);
-          $formData['sec'] = 'preleased'; 
+  if(isset($formData['investments'])){
+          unset($formData['investments']);
+          $formData['sec'] = 'investments'; 
       }
     $create_array = array();
     foreach($formData as $k1=>$v1){

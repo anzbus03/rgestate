@@ -63,10 +63,10 @@ class ListingController extends Controller
 		}
 
 		switch ($sec) {
-			case 'preleased':
+			case 'investments':
 				$_GET['sec'] = '';
 				$sec = '';
-				$_GET['preleased'] = '1';
+				$_GET['investments'] = '1';
 				define('PRELE', '1');
 
 				if (!isset($_GET['category'])) {
@@ -95,7 +95,7 @@ class ListingController extends Controller
 				break;
 		}
 
-		if (!isset($_GET['category']) and  in_array($sec, array('preleased', 'for-sale', 'to-rent', 'to-rent', 'property-for-sale', 'property-for-rent'))) {
+		if (!isset($_GET['category']) and  in_array($sec, array('investments', 'for-sale', 'to-rent', 'to-rent', 'property-for-sale', 'property-for-rent'))) {
 			$_GET['category'] = 'commercial';
 		}
 
@@ -179,7 +179,7 @@ class ListingController extends Controller
 			$newMetaTitle =  $this->app->options->get('system.common.devpage_meta_title', 'New Projects');
 			$newMetaKeywords = $this->app->options->get('system.common.devpage_meta_keywords', 'New Projects');
 			$newMetaDescription = $this->app->options->get('system.common.devpage_meta_description', 'New Projects');
-		} else if (strpos($url_request, 'property-for-sale') !== false || strpos($url_request, 'for-sale') !== false || strpos($url_request, 'preleased') !== false) {
+		} else if (strpos($url_request, 'property-for-sale') !== false || strpos($url_request, 'for-sale') !== false || strpos($url_request, 'investments') !== false) {
 			$newMetaTitle =  $this->app->options->get('system.common.buypage_meta_title', 'Properties for sale');
 			$newMetaKeywords = $this->app->options->get('system.common.buypage_meta_keywords');
 			$newMetaDescription = $this->app->options->get('system.common.buypage_meta_description');
@@ -358,9 +358,9 @@ class ListingController extends Controller
 		$filterModel->attributes = $formData;
 		$filterModel->section_id = @$formData['sec'];
 
-		if (isset($formData['preleased']) and sizeOf($formData['preleased']) == '1') {
+		if (isset($formData['investments']) and sizeOf($formData['investments']) == '1') {
 			$filterModel->property_status = '1';
-			$filterModel->section_id = 'preleased';
+			$filterModel->section_id = 'investments';
 		}
 		if ($country_id) {
 			$filterModel->country = $country_id;
@@ -380,11 +380,11 @@ class ListingController extends Controller
 			}
 		}
 		$m_title = '';
-		if ($filterModel->section_id == 'preleased') {
+		if ($filterModel->section_id == 'investments') {
 			if (empty($categoryModelm)) {
-				$m_title = $this->tag->getTag('preleased_Properties', 'Preleased Properties') . ' ';
+				$m_title = $this->tag->getTag('investments_Properties', 'Investment Properties') . ' ';
 			} else {
-				$m_title = $this->tag->getTag('preleased', 'Preleased') . ' ';
+				$m_title = $this->tag->getTag('investments', 'Investment in') . ' ';
 			}
 		}
 		$s_suffix = LANGUAGE == 'en' ? 's' : '';
@@ -443,7 +443,7 @@ class ListingController extends Controller
 				case 'new-development':
 					$m_title .=  ' ' . $this->tag->getTag('new_projects', 'New Projects');
 					break;
-				case 'preleased':
+				case 'investments':
 					$m_title .= ' ' . $this->tag->getTag('for_sale', 'for sale');
 					break;
 			}
@@ -480,7 +480,7 @@ class ListingController extends Controller
 			case 'new-development':
 				$sec_t = 'sale/rent';
 				break;
-			case 'preleased':
+			case 'investments':
 				$sec_t = 'sale';
 				break;
 			default:
@@ -490,9 +490,9 @@ class ListingController extends Controller
 
 		$ptype = !empty($categoryModelm) ?  $categoryModelm->category_name : 'Properties';
 		$ptype_plural = !empty($categoryModelm) ?  $categoryModelm->PluralName : 'Properties';
-		if (isset($formData['preleased']) and sizeOf($formData['preleased']) == '1') {
-			$ptype = 'Preleased ' . $ptype;
-			$ptype_plural  = 'Preleased ' . $ptype_plural;
+		if (isset($formData['investments']) and sizeOf($formData['investments']) == '1') {
+			$ptype = 'Investment ' . $ptype;
+			$ptype_plural  = 'Investment ' . $ptype_plural;
 		}
 		$location_title1  = !empty($location_title) ? ' in ' . $location_title : '';
 		$location_title_only  = !empty($location_title) ? $location_title : 'UAE';
@@ -1074,11 +1074,11 @@ class ListingController extends Controller
 		}
 
 		switch ($sec) {
-			case 'preleased':
+			case 'investments':
 				$_GET['sec'] = '';
 				$sec = '';
-				$_GET['preleased'] = '1';
-				define('PRELE', '1');
+				$_GET['investments'] = '1';
+				define('INVEST', '1');
 
 				if (!isset($_GET['category'])) {
 					$_GET['category'] = 'commercial';
@@ -1106,7 +1106,7 @@ class ListingController extends Controller
 				break;
 		}
 
-		if (!isset($_GET['category']) and  in_array($sec, array('preleased', 'for-sale', 'to-rent', 'to-rent', 'property-for-sale', 'property-for-rent'))) {
+		if (!isset($_GET['category']) and  in_array($sec, array('investments', 'for-sale', 'to-rent', 'to-rent', 'property-for-sale', 'property-for-rent'))) {
 			$_GET['category'] = 'commercial';
 		}
 		$location_title = '';
@@ -1225,9 +1225,9 @@ class ListingController extends Controller
 		$filterModel->attributes = $formData;
 		$filterModel->section_id = @$formData['sec'];
 
-		if (isset($formData['preleased']) and sizeOf($formData['preleased']) == '1') {
+		if (isset($formData['investments']) and sizeOf($formData['investments']) == '1') {
 			$filterModel->property_status = '1';
-			$filterModel->section_id = 'preleased';
+			$filterModel->section_id = 'investments';
 		}
 		if ($country_id) {
 			$filterModel->country = $country_id;
@@ -1236,7 +1236,7 @@ class ListingController extends Controller
 		if ($formData['sec'] == 'new-development') {
 			$view = '_new_project_filter';
 		}
-		if (defined('PRELE')) {
+		if (defined('INVEST')) {
 			$view = '_preleased_filter';
 		}
 		$msgHTML  = $this->renderPartial($view, compact('locations', 'pageContent', 'pages', 'areaData', 'regions', 'cityDats', 'region_list', 'm_title', 'locationas', 'l_view', 'stateModel', 'b_1', 'b_2', 'b_3', 'search_url', 'found_search', 'load_location', 'active_state', 'currency_code', 'section_title', 'country_id', 'state_id', 'ads', 'adsCount', 'pages', 'state_name', 'country_name', 'country', 'state', 'title', 'community', 'filterModel', 'formData', 'city', 'active_city', 'categoryModelm', 'userM', 'limit'), true);

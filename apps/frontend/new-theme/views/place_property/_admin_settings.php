@@ -126,7 +126,7 @@
 		</div>
 		<div class="form-group <?php if (Yii::app()->isAppName('backend')) { ?> col-lg-12 <?php } else { ?> col-lg-6 <?php } ?>">
 			<?php echo $form->labelEx($model, 'property_status'); ?><?php $model->property_status = empty($model->property_status) ? '0' : '1';; ?>
-			<?php echo $form->dropDownList($model, 'property_status', array('0' => 'For Sale', '1' => 'Preleased'), $model->getHtmlOptions('property_status', array('class' => 'form-control selectt2', 'onchange' => 'show_roi(this)'))); ?>
+			<?php echo $form->dropDownList($model, 'property_status', array('0' => 'For Sale', '1' => 'Investment Property'), $model->getHtmlOptions('property_status', array('class' => 'form-control selectt2', 'onchange' => 'show_roi(this)'))); ?>
 			<?php echo $form->error($model, 'property_status'); ?>
 		</div>
 		<div class="clearfix"><!-- --></div>

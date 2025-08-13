@@ -656,7 +656,7 @@ html .openfilter .fil-mob.bottom-f{
   <ul class="row mddmls ">
         <li class="col-xs-6 col-sm-4"><a data-href="<?php echo $app->createUrl('listing/filter',array('sec'=>SALE_SLUG,'quick'=>'1'));?>" onclick="load_filter(this)"  class="site-block"><h4>Buy</h4></a></li>
         <li class="col-xs-6 col-sm-4"><a data-href="<?php echo $app->createUrl('listing/filter',array('sec'=>RENT_SLUG,'quick'=>'1'));?>" onclick="load_filter(this)"  class="site-block"><h4>Rent</h4></a></li>
-        <li class="col-xs-6 col-sm-4"><a data-href="<?php echo $app->createUrl('listing/filter',array('sec'=>'preleased'));?>" onclick="load_filter(this)"  class="site-block"><h4>Preleased</h4></a></li>
+        <li class="col-xs-6 col-sm-4"><a data-href="<?php echo $app->createUrl('listing/filter',array('sec'=>'investments'));?>" onclick="load_filter(this)"  class="site-block"><h4>Investment Options</h4></a></li>
          <li class="col-xs-6 col-sm-4"><a data-href="<?php echo $app->createUrl('business_listing/filter',array('sec'=>'business-opportunities','quick'=>'1'));?>"  onclick="load_filter(this)"  class="site-block"><h4>Business Opportunities</h4></a></li>
          <li class="col-xs-6 col-sm-4"><a data-href="<?php echo $app->createUrl('listing/filter',array('sec'=>'new-development','quick'=>'1'));?>"  onclick="load_filter(this)"  class="site-block"><h4>New Projects</h4></a></li>
  

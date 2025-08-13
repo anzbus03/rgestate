@@ -46,7 +46,7 @@
  <div class="row  topBSafe " style="" >
          <div class="  col-sm-12 ">
             <div class="row">
-               <h3 class="margin-top-0 headline sec-head1 text-center" style="margin-bottom: 5px !important;     "><?php echo $this->tag->gettag('similar_preleased_properties_','Similar Preleased Properties ');?><?php echo  '' ;?> </h3>
+               <h3 class="margin-top-0 headline sec-head1 text-center" style="margin-bottom: 5px !important;     "><?php echo $this->tag->gettag('similar_investment_properties_','Similar Investment Properties ');?><?php echo  '' ;?> </h3>
                 <div class="  dots-nav spandots  m16mar margin-top-25 safe-neibor grid" id="site" style="margin-bottom: 0px; ">
 				 
                   <?php 

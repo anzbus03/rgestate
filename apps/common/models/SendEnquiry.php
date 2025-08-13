@@ -78,7 +78,7 @@ class SendEnquiry  extends ContactUs
         $ar = array(
         '1' => 'Sale',
         '2' => 'Rent',
-        'P' => 'Preleased',
+        'P' => 'Investment Options',
         '6' => 'Business Sale',
         '3' => 'New Project',
         );

@@ -85,7 +85,7 @@
         $this->renderPartial('_new_project_filter');
         //	$this->renderPartial('_filter_html_top_project');
     } else {
-        if (isset($_GET['preleased'])) {
+        if (isset($_GET['investments'])) {
             $this->renderPartial('_preleased_filter');
         } else {
             $this->renderPartial('_arab_avenue_filter');

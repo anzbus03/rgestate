@@ -41,7 +41,7 @@ html #site .main-search-container.dark-overlay h2 {        font-size: 16px !impo
             </li>
             <li class="nav-item"> <a class="nav-link r "  href="javascript:void(0)"  data-href="<?php echo $conntroller->app->createUrl('listing/filter',array('sec'=>'new-development'));?>" onclick="load_filter(this)"><?php echo $tag->getTag('new_projects','New Projects');?> </a> </li>
             <li class="nav-item nav-tabs--searchh"> <a class="nav-link  "  href="javascript:void(0)"  data-href="<?php echo $conntroller->createUrl('business_listing/filter',array('sec'=>'business-opportunities'));?>" onclick="load_filter(this)"><?php echo $tag->getTag('businesses_for_sale','Businesses Opportunities');?> </a> </li>
-            <li class="nav-item nav-tabs--searchh"> <a class="nav-link  "  href="javascript:void(0)"  data-href="<?php echo $conntroller->app->createUrl('listing/filter',array('sec'=>'preleased'));?>" onclick="load_filter(this)"><?php echo $tag->getTag('preleased','Preleased');?> </a> </li>
+            <li class="nav-item nav-tabs--searchh"> <a class="nav-link  "  href="javascript:void(0)"  data-href="<?php echo $conntroller->app->createUrl('listing/filter',array('sec'=>'investments'));?>" onclick="load_filter(this)"><?php echo $tag->getTag('preleased','Investment Options');?> </a> </li>
           </ul>
           
           <ul class="nav-tabs--search" role="tablist">
@@ -50,7 +50,7 @@ html #site .main-search-container.dark-overlay h2 {        font-size: 16px !impo
             </li>
             <li class="nav-item"> <a class="nav-link r "  href="<?php echo $conntroller->app->createUrl('listing/index',array('sec'=>'new-development'));?>"><?php echo $tag->getTag('new_projects','New Projects');?> </a> </li>
             <li class="nav-item nav-tabs--searchh"> <a class="nav-link  "   href="<?php echo $conntroller->createUrl('business_listing/index',array('sec'=>'business-opportunities'));?>"><?php echo $tag->getTag('businesses_for_sale','Businesses Opportunities');?> </a> </li>
-            <li class="nav-item nav-tabs--searchh"> <a class="nav-link  "   href="<?php echo $conntroller->app->createUrl('listing/index',array('sec'=>'preleased'));?>"><?php echo $tag->getTag('preleased','Preleased');?> </a> </li>
+            <li class="nav-item nav-tabs--searchh"> <a class="nav-link  "   href="<?php echo $conntroller->app->createUrl('listing/index',array('sec'=>'investments'));?>"><?php echo $tag->getTag('preleased','Investment Options');?> </a> </li>
           </ul>
           <div class="tab-content hom-content" id="tab-home-srch" data-select2-id="14">
             <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab" data-select2-id="home">

@@ -407,7 +407,7 @@ $(function(){clickBtnSerach()});
 <input type="hidden" id="b" value="<?php echo @$formData['b'] ;?>" name="b" />
 <input type="hidden" id="c" value="<?php echo @$formData['c'] ;?>" name="c" />
 <input type="hidden" id="d" value="<?php echo @$formData['d'] ;?>" name="d" />
-<input type="hidden" id="preleased" value="<?php echo @$formData['preleased']; ;?>" name="preleased" />
+<input type="hidden" id="investment" value="<?php echo @$formData['investments']; ;?>" name="investments" />
 <input type="hidden" id="lt" value="" name="lt" />
 <input type="hidden" id="lg" value="" name="lg" />
 <input type="hidden" id="zoom" value="<?php echo @$formData['zoom'] ;?>" name="zoom" />
@@ -514,7 +514,7 @@ $selected_text = isset($section[$selected]) ? $section[$selected] :  $this->tag-
 					 </div>
 					 <div class="clearfix"></div>
  </div>
-<li class="arab-drop-down arab-li-1 sectionFilter margin-right-10 port-sector form-container-list-item <?php echo @$filterModel->section_id=='preleased' ? 'hide' :'' ;?>">
+<li class="arab-drop-down arab-li-1 sectionFilter margin-right-10 port-sector form-container-list-item <?php echo @$filterModel->section_id=='investments' ? 'hide' :'' ;?>">
 	<script>
 	function setsecval(k){
 	 
@@ -743,7 +743,7 @@ $selected_text = isset($section[$selected]) ? $section[$selected] :  $this->tag-
    
     <div class="search-popup-cntainer-wrapper" style="min-width:350px;">
 	<?php 	$ids =  $filterModel->section_id; 
-	if($ids=='preleased'){$ids ='property-for-sale'; }
+	if($ids=='investments'){$ids ='property-for-sale'; }
 									$categories = Category::model()->ListDataForJSON_ID_BySEctionNewSlugNtCache($ids );
 									 
 							/*		 

@@ -14,9 +14,9 @@ $new_homes =  $adModel->findAll($adModelCriteria);
 // echo "<pre>";
 // print_r($new_homes);
 unset($formData['section_id']);unset($formData['country']);
-if(isset($formData['preleased'])){
-    unset($formData['preleased']);
-    $formData['sec'] = 'preleased'; 
+if(isset($formData['investments'])){
+    unset($formData['investments']);
+    $formData['sec'] = 'investments'; 
 }
  $create_array = array();
  foreach($formData as $k1=>$v1){

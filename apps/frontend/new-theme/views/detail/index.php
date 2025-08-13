@@ -222,8 +222,8 @@ if (Yii::app()->request->isAjaxRequest) {
 	<?php 
 }
  if($model->IsPreleased){
-     $model->sec_slug ='preleased';
-     $model->section_name = $this->tag->getTag('preleased','Preleased');  
+     $model->sec_slug ='investments';
+     $model->section_name = $this->tag->getTag('investments','Investments');  
  }
        $showTrash = Yii::app()->request->getQuery('showTrash','0')  ;
        $admin     = Yii::app()->request->getQuery('admin','0')  ;
