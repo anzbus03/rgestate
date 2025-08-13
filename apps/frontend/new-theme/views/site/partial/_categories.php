@@ -82,6 +82,16 @@
                 <p class="rg-fs-12 rg-fw-400 rg-text-dark mt-3"><?php echo Yii::app()->tags->getTag('hotels','Hotels')?></p>
             </a>
             </li>
+            <li>
+            <a href="<?php echo Yii::app()->createUrl('listing/index',array('sec'=>'property-for-sale','category'=>'commercial' ,'type_of'=>'bulk-units'));?>">
+                <div class="rg-bg-blue rg-wh-37 rounded-circle position-relative mx-auto">
+                    <svg width="19" height="19" class="position-absolute top-50 start-50 translate-middle">
+                        <use xlink:href="<?php echo $this->app->apps->getBaseUrl('theme'); ?>/assets/images/icons.svg#rg-retail"></use>
+                    </svg>
+                </div>
+                <p class="rg-fs-12 rg-fw-400 rg-text-dark mt-3"><?php echo Yii::app()->tags->getTag('bulk-units','Floors / Bulk Units')?></p>
+            </a>
+            </li>
         </ul>
     </div>
 </section>
