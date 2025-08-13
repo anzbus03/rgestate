@@ -384,7 +384,7 @@ class ListingController extends Controller
 			if (empty($categoryModelm)) {
 				$m_title = $this->tag->getTag('investments_Properties', 'Investment Properties') . ' ';
 			} else {
-				$m_title = $this->tag->getTag('investments', 'Investment in') . ' ';
+				$m_title = $this->tag->getTag('investments', 'Invest in') . ' ';
 			}
 		}
 		$s_suffix = LANGUAGE == 'en' ? 's' : '';
