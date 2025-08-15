@@ -3785,25 +3785,25 @@ class Place_propertyController  extends Controller
         $updatedCount = 0;
         $imageInsertData = [];
         $floorPlanInsertData = [];
-      
+    
         if (is_array($excelData)) {
 
             $refNos = array_unique(array_filter(array_column($excelData, 4), fn($value) => !empty($value)));
             $categoryNames = array_unique(array_filter(array_map('trim', array_column($excelData, 8)), fn($value) => !empty($value)));
             $categoryTypes = array_unique(array_filter(array_map('trim', array_column($excelData, 7)), fn($value) => !empty($value)));            
             $stateNames = array_unique(array_filter(array_column($excelData, 11), fn($value) => !empty($value)));
-            $subStateNames = array_unique(array_filter(array_column($excelData, 12), fn($value) => !empty($value)));
-           
+            $subStateNames = array_unique(array_filter(array_column($excelData, 13), fn($value) => !empty($value))); // Updated from 12 to 13
+        
             $stateSlugs = array_unique(array_map(
                 fn($stateName) => $this->generateSlug($stateName), 
                 array_filter(array_column($excelData, 11), fn($value) => !empty($value))
             ));
             $allSubSlugs = array_unique(array_map(
                 fn($subStateName) => $this->generateSlug($subStateName), 
-                array_filter(array_column($excelData, 12), fn($value) => !empty($value))
+                array_filter(array_column($excelData, 13), fn($value) => !empty($value)) // Updated from 12 to 13
             ));
-            $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 39), fn($value) => !empty($value))));
-          
+            $userEmails = array_map('strtolower', array_unique(array_filter(array_column($excelData, 40), fn($value) => !empty($value)))); // Updated from 39 to 40
+        
             // Fetch data in bulk
             $ads = PlaceAnAd::model()->findAllByAttributes(['RefNo' => $refNos]);
             $categories = Category::model()->findAllByAttributes(['category_name' => $categoryNames, 'isTrash' => '0', 'status' => 'A', 'f_type' => 'P']);
@@ -3811,7 +3811,7 @@ class Place_propertyController  extends Controller
             $states = States::model()->findAllByAttributes(['slug' => $stateSlugs, 'isTrash' => '0']);
             $subStates = States::model()->findAllByAttributes(['slug' => $allSubSlugs, 'isTrash' => '0']);
             $users = User::model()->findAllByAttributes(['email' => $userEmails]);
-    
+
             // Map data for quick lookup
             $adsMap = array_column($ads, null, 'RefNo');
             $categoriesMap = array_column($categories, null, 'category_name');
@@ -3819,13 +3819,13 @@ class Place_propertyController  extends Controller
             $statesMap = array_column($states, null, 'slug');
             $subStatesMap = array_column($subStates, null, 'slug');
             $usersMap = array_column($users, null, 'email');
-    
+
             // Prepare data for batch processing
             $insertData = [];
             $updateData = [];
             $updateConditions = [];
             $updateParams = [];
-    
+
             foreach (array_slice($excelData, 1) as $data) {
                 if (empty($data) || empty($data[4])) continue; // Skip if data is empty or refNo is null
                 
@@ -3844,7 +3844,7 @@ class Place_propertyController  extends Controller
                     $data[0]    = 'PID_' . rand(100000, 999999);
                 }
                 if (!$existingAd){
-                    $cleaned_text = mb_substr(preg_replace('/[^\w\s]/', '', $data[13]), 0, 80);
+                    $cleaned_text = mb_substr(preg_replace('/[^\w\s]/', '', $data[14]), 0, 80); // Updated from 13 to 14
                     $baseSlug = strtolower(trim(str_replace(' ', '-', $cleaned_text), '-'));
                     $slug = $baseSlug;
                     while (PlaceAnAd::model()->exists('slug=:slug', [':slug' => $slug])) {
@@ -3873,7 +3873,7 @@ class Place_propertyController  extends Controller
                     $statesMap[$stateSlug] = $newState;
                     $stateID = $newState->state_id;
                 }
-                $subStateName = $data[12];
+                $subStateName = $data[13]; // Updated from 12 to 13
                 $subStateSlug = $this->generateSlug($subStateName);
                 $subStateID = null;
                 if (isset($subStatesMap[$subStateSlug])){
@@ -3896,42 +3896,42 @@ class Place_propertyController  extends Controller
                     'listing_type' => $typesMap[trim($data[7])]->category_id ?? null,
                     'category_id' => $categoriesMap[trim($data[8])]->category_id ?? null,
                     'RefNo' => $data[4],
-                    'lease_status' => empty($data[26]) ? 0 : ($data[26] == "Leased" ? 1 : 0),
-                    'ad_title' => $data[13],
+                    'lease_status' => empty($data[27]) ? 0 : ($data[27] == "Leased" ? 1 : 0), // Updated from 26 to 27
+                    'ad_title' => $data[14], // Updated from 13 to 14
                     'slug' => $slug,
                     'PropertyID' => $data[5],
-                    'ad_description' => $data[14],
+                    'ad_description' => $data[15], // Updated from 14 to 15
                     'date_added' => $dateAdded,
                     'state' => $stateID,
                     'sub_state' => $subStateID,
-                    'user_id' => $usersMap[$data[39]]->user_id ?? 31988,
-                    'status' => ($data[36] == "Active") ? "A" : "I",
-                    'availability' => ($data[35] == "Sold Out" ? "sold_out" : ($data[35] == "Leased Out" ? "lease_out" : null)),
-                    'price' => $this->calculatePrice($data[23], $data[24]),
-                    'bedrooms' => $data[17],
-                    'bathrooms' => $data[18],
-                    'mobile_number' => $data[40],
+                    'user_id' => $usersMap[$data[40]]->user_id ?? 31988, // Updated from 39 to 40
+                    'status' => ($data[37] == "Active") ? "A" : "I", // Updated from 36 to 37
+                    'availability' => ($data[36] == "Sold Out" ? "sold_out" : ($data[36] == "Leased Out" ? "lease_out" : null)), // Updated from 35 to 36
+                    'price' => $this->calculatePrice($data[24], $data[25]), // Updated from 23,24 to 24,25
+                    'bedrooms' => $data[18], // Updated from 17 to 18
+                    'bathrooms' => $data[19], // Updated from 18 to 19
+                    'mobile_number' => $data[41], // Updated from 40 to 41
                     'country' => 66124,
-                    'property_status' => $data[25] == "Yes" ? "1" : '0',
-                    'income' => $data[27],
-                    'roi' => $data[28] ?? 0,
-                    'no_of_u' => $data[19],
-                    'FloorNo' => $data[20],
-                    'plot_area' => $data[21],
-                    'builtup_area' => $data[22] ?? 0,
-                    'furnished' => $data[16] == "Yes" ? "Y" : "N",
-                    'featured' => $data[32] == "Yes" ? "Y" : "N",
-                    'hot' => $data[33] == "Yes" ? 1 : 0,
-                    'verified' => $data[34] == "Yes" ? 1 : 0,
+                    'property_status' => $data[26] == "Yes" ? "1" : '0', // Updated from 25 to 26
+                    'income' => $data[28], // Updated from 27 to 28
+                    'roi' => $data[29] ?? 0, // Updated from 28 to 29
+                    'no_of_u' => $data[20], // Updated from 19 to 20
+                    'FloorNo' => $data[21], // Updated from 20 to 21
+                    'plot_area' => $data[22], // Updated from 21 to 22
+                    'builtup_area' => $data[23] ?? 0, // Updated from 22 to 23
+                    'furnished' => $data[17] == "Yes" ? "Y" : "N", // Updated from 16 to 17
+                    'featured' => $data[33] == "Yes" ? "Y" : "N", // Updated from 32 to 33
+                    'hot' => $data[34] == "Yes" ? 1 : 0, // Updated from 33 to 34
+                    'verified' => $data[35] == "Yes" ? 1 : 0, // Updated from 34 to 35
                     'mandate' => $data[2],
-                    'contact_person' => $data[38],
-                    'salesman_email' => $data[39],
-                    'amenities' => $data[15],
+                    'contact_person' => $data[39], // Updated from 38 to 39
+                    'salesman_email' => $data[40], // Updated from 39 to 40
+                    'amenities' => $data[16], // Updated from 15 to 16
                     'area_location' => $data[11],
-                    'interior_size' => $data[22],
-                    'rent_paid' => strtolower($data[24]),
+                    'interior_size' => $data[23], // Updated from 22 to 23
+                    'rent_paid' => strtolower($data[25]), // Updated from 24 to 25
                 ];
-    
+
                 if ($existingAd) {
                     $record['id'] = $existingAd->id;
                     $updateData[] = $record;
@@ -3940,17 +3940,17 @@ class Place_propertyController  extends Controller
                     $insertData[] = $record;
                     $newCount++;
                 }
-    
+
             }
-    
+
             // Begin transaction
             $transaction = Yii::app()->db->beginTransaction();
-          
+        
             try {
                 if (!empty($insertData)) {
                     $this->batchInsert('mw_place_an_ad', array_keys($insertData[0]), $insertData);
                 }
-    
+
                 // Update existing records
                 foreach ($updateData as $update) {
                     $id = $update['id'];
@@ -3958,17 +3958,17 @@ class Place_propertyController  extends Controller
                     Yii::app()->db->createCommand()
                         ->update('mw_place_an_ad', $update, 'id=:id', [':id' => $id]);
                 }
-    
+
                 // Insert images
                 if (!empty($imageInsertData)) {
                     $this->batchInsert('mw_ad_images', ['ad_id', 'image_name'], $imageInsertData);
                 }
-    
+
                 // Insert floor plans
                 if (!empty($floorPlanInsertData)) {
                     $this->batchInsert('mw_ad_floor_plans', ['ad_id', 'floor_plan_name'], $floorPlanInsertData);
                 }
-    
+
                 $transaction->commit();
                 return $this->sendJsonResponse([
                     'status' => 'success',
@@ -3978,7 +3978,7 @@ class Place_propertyController  extends Controller
             } catch (Exception $e) {
                 $transaction->rollback();
                 return $this->sendJsonResponse(['status' => 'error', 'message' => $e->getMessage()]);
-           }
+        }
         }else {
             echo "<pre>";
             print_r(var_dump($excelData));
