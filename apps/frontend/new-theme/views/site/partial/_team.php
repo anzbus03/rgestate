@@ -2,7 +2,7 @@
 <section class="rg-members rg-mt-70">
     <div class="container">
         <div class="rg-section-header text-center mx-auto">
-            <h3 class="rg-fs-16 rg-text-dark rg-fw-400 text-uppercase"><?php echo Yii::app()->tags->getTag('real_experts','Real State Experts')?></h3>
+            <h3 class="rg-fs-16 rg-text-dark rg-fw-400 text-uppercase"><?php echo Yii::app()->tags->getTag('real_experts','Real Estate Experts')?></h3>
             <h2 class="rg-fs-30 rg-sm-fs-24 rg-text-blue rg-fw-600 text-capitalize rg-mt-20"><?php echo Yii::app()->tags->getTag('meet_directors','Meet Our Visionary Directors')?></h2>
             <p class="rg-fs-18 rg-sm-fs-14 rg-text-gray-600 rg-fw-400 rg-mt-20">
                 <?php echo Yii::app()->tags->getTag('driving_force','Meet the driving force behind our leading real estate agency in Dubai. Our directors bring a wealth of experience and strategic insights, shaping our commitment to excellence in every property transaction.')?>

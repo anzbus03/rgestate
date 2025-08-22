@@ -312,7 +312,7 @@ smartad_title a {
                     <h5 class="rg-fs-20 rg-fw-700 rg-text-blue"><?php echo $this->tag->getTag('our_services','Our Services');?></h5>
                     <ul class="rg-footer-list mt-5 rg-fs-16 rg-fw-400">
                         <li>
-                            <a href="<?php echo Yii::app()->createUrl('property-for-sale/commercial'); ?>"><?php echo $this->tag->getTag('commercial_real_estate','Commercial Real State');?></a>
+                            <a href="<?php echo Yii::app()->createUrl('property-for-sale/commercial'); ?>"><?php echo $this->tag->getTag('commercial_real_estate','Commercial Real Estate');?></a>
                         </li>
                         <li>
                             <a href="<?php echo Yii::app()->createUrl('services/retail_investments'); ?>"><?php echo $this->tag->getTag('retail_investments','Retail Investments');?></a>
