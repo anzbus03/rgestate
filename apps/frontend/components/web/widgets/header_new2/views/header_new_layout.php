@@ -240,8 +240,8 @@
                                  class="menu-icon"><span></span><span></span><span></span><span></span></span> </a>
                      </div>
                  </div>
-                 <div class="col-sm-9 col-md-9 header-right">
-                     <div class="nav">
+                 <div class="col-sm-9 col-md-9 header-right row">
+                     <div class="nav col-sm-9">
                      <ul id="menu-main-menu" class="menu">
                       <?php
                       $menuItems = Menu::model()->findAll('parent_id IS NULL'); // Get all main menu items (those without a parent)
